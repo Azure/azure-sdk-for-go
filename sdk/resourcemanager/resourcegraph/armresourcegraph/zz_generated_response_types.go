@@ -10,39 +10,39 @@ package armresourcegraph
 
 import "net/http"
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// ClientResourcesHistoryResponse contains the response from method Client.ResourcesHistory.
+type ClientResourcesHistoryResponse struct {
+	ClientResourcesHistoryResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationListResult
-}
-
-// ResourceGraphClientResourcesHistoryResponse contains the response from method ResourceGraphClient.ResourcesHistory.
-type ResourceGraphClientResourcesHistoryResponse struct {
-	ResourceGraphClientResourcesHistoryResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceGraphClientResourcesHistoryResult contains the result from method ResourceGraphClient.ResourcesHistory.
-type ResourceGraphClientResourcesHistoryResult struct {
+// ClientResourcesHistoryResult contains the result from method Client.ResourcesHistory.
+type ClientResourcesHistoryResult struct {
 	// Any object
 	Object map[string]interface{}
 }
 
-// ResourceGraphClientResourcesResponse contains the response from method ResourceGraphClient.Resources.
-type ResourceGraphClientResourcesResponse struct {
-	ResourceGraphClientResourcesResult
+// ClientResourcesResponse contains the response from method Client.Resources.
+type ClientResourcesResponse struct {
+	ClientResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGraphClientResourcesResult contains the result from method ResourceGraphClient.Resources.
-type ResourceGraphClientResourcesResult struct {
+// ClientResourcesResult contains the result from method Client.Resources.
+type ClientResourcesResult struct {
 	QueryResponse
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	OperationListResult
 }

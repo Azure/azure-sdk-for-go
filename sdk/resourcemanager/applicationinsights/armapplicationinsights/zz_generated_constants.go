@@ -9,8 +9,8 @@
 package armapplicationinsights
 
 const (
-	module  = "armapplicationinsights"
-	version = "v0.1.0"
+	moduleName    = "armapplicationinsights"
+	moduleVersion = "v0.2.0"
 )
 
 // ApplicationType - Type of application being monitored.
@@ -115,8 +115,8 @@ func (c FavoriteSourceType) ToPtr() *FavoriteSourceType {
 	return &c
 }
 
-// FavoriteType - Enum indicating if this favorite definition is owned by a specific user or is shared between all users with access to the Application
-// Insights component.
+// FavoriteType - Enum indicating if this favorite definition is owned by a specific user or is shared between all users with
+// access to the Application Insights component.
 type FavoriteType string
 
 const (
@@ -137,8 +137,8 @@ func (c FavoriteType) ToPtr() *FavoriteType {
 	return &c
 }
 
-// FlowType - Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set to 'Bluefield' when
-// creating/updating a component via the REST API.
+// FlowType - Used by the Application Insights system to determine what kind of flow this component was created by. This is
+// to be set to 'Bluefield' when creating/updating a component via the REST API.
 type FlowType string
 
 const (
@@ -180,8 +180,8 @@ func (c IngestionMode) ToPtr() *IngestionMode {
 	return &c
 }
 
-// ItemScope - Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights
-// component.
+// ItemScope - Enum indicating if this item definition is owned by a specific user or is shared between all users with access
+// to the Application Insights component.
 type ItemScope string
 
 const (
@@ -226,8 +226,8 @@ func (c ItemScopePath) ToPtr() *ItemScopePath {
 type ItemType string
 
 const (
-	ItemTypeFolder   ItemType = "folder"
 	ItemTypeFunction ItemType = "function"
+	ItemTypeNone     ItemType = "none"
 	ItemTypeQuery    ItemType = "query"
 	ItemTypeRecent   ItemType = "recent"
 )
@@ -235,8 +235,8 @@ const (
 // PossibleItemTypeValues returns the possible values for the ItemType const type.
 func PossibleItemTypeValues() []ItemType {
 	return []ItemType{
-		ItemTypeFolder,
 		ItemTypeFunction,
+		ItemTypeNone,
 		ItemTypeQuery,
 		ItemTypeRecent,
 	}
@@ -340,7 +340,8 @@ func (c MyWorkbookManagedIdentityType) ToPtr() *MyWorkbookManagedIdentityType {
 	return &c
 }
 
-// PublicNetworkAccessType - The network access type for operating on the Application Insights Component. By default it is Enabled
+// PublicNetworkAccessType - The network access type for operating on the Application Insights Component. By default it is
+// Enabled
 type PublicNetworkAccessType string
 
 const (
@@ -384,7 +385,8 @@ func (c PurgeState) ToPtr() *PurgeState {
 	return &c
 }
 
-// RequestSource - Describes what tool created this Application Insights component. Customers using this API should set this to the default 'rest'.
+// RequestSource - Describes what tool created this Application Insights component. Customers using this API should set this
+// to the default 'rest'.
 type RequestSource string
 
 const (

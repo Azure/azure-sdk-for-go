@@ -55,7 +55,7 @@ func ExampleDevicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Device.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/DeviceCreate.json
@@ -70,13 +70,9 @@ func ExampleDevicesClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<device-name>",
 		armhybridnetwork.Device{
-			TrackedResource: armhybridnetwork.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armhybridnetwork.AzureStackEdgeFormat{
-				DevicePropertiesFormat: armhybridnetwork.DevicePropertiesFormat{
-					DeviceType: armhybridnetwork.DeviceTypeAzureStackEdge.ToPtr(),
-				},
+				DeviceType: armhybridnetwork.DeviceType("AzureStackEdge").ToPtr(),
 				AzureStackEdge: &armhybridnetwork.SubResource{
 					ID: to.StringPtr("<id>"),
 				},
@@ -90,7 +86,7 @@ func ExampleDevicesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Device.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/DeviceUpdateTags.json
@@ -114,7 +110,7 @@ func ExampleDevicesClient_UpdateTags() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Device.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DevicesClientUpdateTagsResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/DeviceListBySubscription.json
@@ -126,12 +122,16 @@ func ExampleDevicesClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armhybridnetwork.NewDevicesClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Device.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -146,12 +146,16 @@ func ExampleDevicesClient_ListByResourceGroup() {
 	client := armhybridnetwork.NewDevicesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Device.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -164,11 +168,12 @@ func ExampleDevicesClient_ListRegistrationKey() {
 	}
 	ctx := context.Background()
 	client := armhybridnetwork.NewDevicesClient("<subscription-id>", cred, nil)
-	_, err = client.ListRegistrationKey(ctx,
+	res, err := client.ListRegistrationKey(ctx,
 		"<resource-group-name>",
 		"<device-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DevicesClientListRegistrationKeyResult)
 }

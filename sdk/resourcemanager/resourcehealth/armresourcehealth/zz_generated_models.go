@@ -52,25 +52,26 @@ func (a AvailabilityStatusListResult) MarshalJSON() ([]byte, error) {
 
 // AvailabilityStatusProperties - Properties of availability state.
 type AvailabilityStatusProperties struct {
-	// Availability status of the resource. When it is null, this availabilityStatus object represents an availability impacting event
+	// Availability status of the resource. When it is null, this availabilityStatus object represents an availability impacting
+	// event
 	AvailabilityState *AvailabilityStateValues `json:"availabilityState,omitempty"`
 
 	// Details of the availability status.
 	DetailedStatus *string `json:"detailedStatus,omitempty"`
 
-	// In case of an availability impacting event, it describes the category of a PlatformInitiated health impacting event. Examples are Planned, Unplanned
-	// etc.
+	// In case of an availability impacting event, it describes the category of a PlatformInitiated health impacting event. Examples
+	// are Planned, Unplanned etc.
 	HealthEventCategory *string `json:"healthEventCategory,omitempty"`
 
-	// In case of an availability impacting event, it describes where the health impacting event was originated. Examples are PlatformInitiated, UserInitiated
-	// etc.
+	// In case of an availability impacting event, it describes where the health impacting event was originated. Examples are
+	// PlatformInitiated, UserInitiated etc.
 	HealthEventCause *string `json:"healthEventCause,omitempty"`
 
 	// It is a unique Id that identifies the event
 	HealthEventID *string `json:"healthEventId,omitempty"`
 
-	// In case of an availability impacting event, it describes when the health impacting event was originated. Examples are Lifecycle, Downtime, Fault Analysis
-	// etc.
+	// In case of an availability impacting event, it describes when the health impacting event was originated. Examples are Lifecycle,
+	// Downtime, Fault Analysis etc.
 	HealthEventType *string `json:"healthEventType,omitempty"`
 
 	// Timestamp for when last change in health status occurred.
@@ -79,8 +80,8 @@ type AvailabilityStatusProperties struct {
 	// Chronicity of the availability transition.
 	ReasonChronicity *ReasonChronicityTypes `json:"reasonChronicity,omitempty"`
 
-	// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated. Examples are planned, unplanned,
-	// user initiated or an outage etc.
+	// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated. Examples
+	// are planned, unplanned, user initiated or an outage etc.
 	ReasonType *string `json:"reasonType,omitempty"`
 
 	// An annotation describing a change in the availabilityState to Available from Unavailable with a reasonType of type Unplanned
@@ -92,11 +93,12 @@ type AvailabilityStatusProperties struct {
 	// Timestamp for when the health was last checked.
 	ReportedTime *time.Time `json:"reportedTime,omitempty"`
 
-	// When the resource's availabilityState is Unavailable and the reasonType is not User Initiated, it provides the date and time for when the issue is expected
-	// to be resolved.
+	// When the resource's availabilityState is Unavailable and the reasonType is not User Initiated, it provides the date and
+	// time for when the issue is expected to be resolved.
 	ResolutionETA *time.Time `json:"resolutionETA,omitempty"`
 
-	// When the resource's availabilityState is Unavailable, it provides the Timestamp for when the health impacting event was received.
+	// When the resource's availabilityState is Unavailable, it provides the Timestamp for when the health impacting event was
+	// received.
 	RootCauseAttributionTime *time.Time `json:"rootCauseAttributionTime,omitempty"`
 
 	// Lists the service impacting events that may be affecting the health of the resource.
@@ -193,8 +195,8 @@ func (a *AvailabilityStatusProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// AvailabilityStatusPropertiesRecentlyResolvedState - An annotation describing a change in the availabilityState to Available from Unavailable with a reasonType
-// of type Unplanned
+// AvailabilityStatusPropertiesRecentlyResolvedState - An annotation describing a change in the availabilityState to Available
+// from Unavailable with a reasonType of type Unplanned
 type AvailabilityStatusPropertiesRecentlyResolvedState struct {
 	// Timestamp when the availabilityState changes to Available.
 	ResolvedTime *time.Time `json:"resolvedTime,omitempty"`
@@ -241,56 +243,61 @@ func (a *AvailabilityStatusPropertiesRecentlyResolvedState) UnmarshalJSON(data [
 	return nil
 }
 
-// AvailabilityStatusesGetByResourceOptions contains the optional parameters for the AvailabilityStatuses.GetByResource method.
-type AvailabilityStatusesGetByResourceOptions struct {
+// AvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the AvailabilityStatusesClient.GetByResource
+// method.
+type AvailabilityStatusesClientGetByResourceOptions struct {
 	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
-// AvailabilityStatusesListByResourceGroupOptions contains the optional parameters for the AvailabilityStatuses.ListByResourceGroup method.
-type AvailabilityStatusesListByResourceGroupOptions struct {
+// AvailabilityStatusesClientListByResourceGroupOptions contains the optional parameters for the AvailabilityStatusesClient.ListByResourceGroup
+// method.
+type AvailabilityStatusesClientListByResourceGroupOptions struct {
 	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
-// AvailabilityStatusesListBySubscriptionIDOptions contains the optional parameters for the AvailabilityStatuses.ListBySubscriptionID method.
-type AvailabilityStatusesListBySubscriptionIDOptions struct {
+// AvailabilityStatusesClientListBySubscriptionIDOptions contains the optional parameters for the AvailabilityStatusesClient.ListBySubscriptionID
+// method.
+type AvailabilityStatusesClientListBySubscriptionIDOptions struct {
 	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
-// AvailabilityStatusesListOptions contains the optional parameters for the AvailabilityStatuses.List method.
-type AvailabilityStatusesListOptions struct {
+// AvailabilityStatusesClientListOptions contains the optional parameters for the AvailabilityStatusesClient.List method.
+type AvailabilityStatusesClientListOptions struct {
 	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
-// ChildAvailabilityStatusesGetByResourceOptions contains the optional parameters for the ChildAvailabilityStatuses.GetByResource method.
-type ChildAvailabilityStatusesGetByResourceOptions struct {
+// ChildAvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the ChildAvailabilityStatusesClient.GetByResource
+// method.
+type ChildAvailabilityStatusesClientGetByResourceOptions struct {
 	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
-// ChildAvailabilityStatusesListOptions contains the optional parameters for the ChildAvailabilityStatuses.List method.
-type ChildAvailabilityStatusesListOptions struct {
+// ChildAvailabilityStatusesClientListOptions contains the optional parameters for the ChildAvailabilityStatusesClient.List
+// method.
+type ChildAvailabilityStatusesClientListOptions struct {
 	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
-// ChildResourcesListOptions contains the optional parameters for the ChildResources.List method.
-type ChildResourcesListOptions struct {
+// ChildResourcesClientListOptions contains the optional parameters for the ChildResourcesClient.List method.
+type ChildResourcesClientListOptions struct {
 	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
@@ -382,27 +389,33 @@ func (e EmergingIssueListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EmergingIssuesGetOptions contains the optional parameters for the EmergingIssues.Get method.
-type EmergingIssuesGetOptions struct {
+// EmergingIssuesClientGetOptions contains the optional parameters for the EmergingIssuesClient.Get method.
+type EmergingIssuesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EmergingIssuesClientListOptions contains the optional parameters for the EmergingIssuesClient.List method.
+type EmergingIssuesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // EmergingIssuesGetResult - The Get EmergingIssues operation response.
 type EmergingIssuesGetResult struct {
-	Resource
 	// The emerging issue entity properties.
 	Properties *EmergingIssue `json:"properties,omitempty"`
-}
 
-// EmergingIssuesListOptions contains the optional parameters for the EmergingIssues.List method.
-type EmergingIssuesListOptions struct {
-	// placeholder for future optional parameters
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ErrorResponse - Error details.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
@@ -411,12 +424,6 @@ type ErrorResponse struct {
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
 }
 
 // ImpactedRegion - Object of impacted region.
@@ -465,8 +472,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

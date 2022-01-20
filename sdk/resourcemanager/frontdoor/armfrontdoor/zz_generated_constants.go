@@ -9,8 +9,8 @@
 package armfrontdoor
 
 const (
-	module  = "armfrontdoor"
-	version = "v0.1.0"
+	moduleName    = "armfrontdoor"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Defines the action to take on rule match.
@@ -128,7 +128,8 @@ func (c CustomHTTPSProvisioningState) ToPtr() *CustomHTTPSProvisioningState {
 	return &c
 }
 
-// CustomHTTPSProvisioningSubstate - Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
+// CustomHTTPSProvisioningSubstate - Provisioning substate shows the progress of custom HTTPS enabling/disabling process step
+// by step.
 type CustomHTTPSProvisioningSubstate string
 
 const (
@@ -232,7 +233,8 @@ func (c EndpointType) ToPtr() *EndpointType {
 	return &c
 }
 
-// EnforceCertificateNameCheckEnabledState - Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS requests.
+// EnforceCertificateNameCheckEnabledState - Whether to enforce certificate name check on HTTPS requests to all backend pools.
+// No effect on non-HTTPS requests.
 type EnforceCertificateNameCheckEnabledState string
 
 const (
@@ -523,8 +525,8 @@ func (c HeaderActionType) ToPtr() *HeaderActionType {
 	return &c
 }
 
-// HealthProbeEnabled - Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled if there
-// is a single enabled backend in single enabled backend pool.
+// HealthProbeEnabled - Whether to enable health probes to be made against backends defined under backendPools. Health probes
+// can only be disabled if there is a single enabled backend in single enabled backend pool.
 type HealthProbeEnabled string
 
 const (
@@ -615,8 +617,8 @@ func (c ManagedRuleExclusionMatchVariable) ToPtr() *ManagedRuleExclusionMatchVar
 	return &c
 }
 
-// ManagedRuleExclusionSelectorMatchOperator - Comparison operator to apply to the selector when specifying which elements in the collection this exclusion
-// applies to.
+// ManagedRuleExclusionSelectorMatchOperator - Comparison operator to apply to the selector when specifying which elements
+// in the collection this exclusion applies to.
 type ManagedRuleExclusionSelectorMatchOperator string
 
 const (
@@ -666,7 +668,8 @@ func (c ManagedRuleSetActionType) ToPtr() *ManagedRuleSetActionType {
 	return &c
 }
 
-// MatchProcessingBehavior - If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue.
+// MatchProcessingBehavior - If this rule is a match should the rules engine continue running the remaining rules or stop.
+// If not present, defaults to Continue.
 type MatchProcessingBehavior string
 
 const (

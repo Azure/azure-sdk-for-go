@@ -1,5 +1,522 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*DataPolicyManifestsClient.List` parameter(s) have been changed from `(*DataPolicyManifestsListOptions)` to `(*DataPolicyManifestsClientListOptions)`
+- Function `*DataPolicyManifestsClient.List` return value(s) have been changed from `(*DataPolicyManifestsListPager)` to `(*DataPolicyManifestsClientListPager)`
+- Function `*DataPolicyManifestsClient.GetByPolicyMode` parameter(s) have been changed from `(context.Context, string, *DataPolicyManifestsGetByPolicyModeOptions)` to `(context.Context, string, *DataPolicyManifestsClientGetByPolicyModeOptions)`
+- Function `*DataPolicyManifestsClient.GetByPolicyMode` return value(s) have been changed from `(DataPolicyManifestsGetByPolicyModeResponse, error)` to `(DataPolicyManifestsClientGetByPolicyModeResponse, error)`
+- Function `*PolicyExemptionsClient.CreateOrUpdate` has been removed
+- Function `*PolicySetDefinitionsClient.List` has been removed
+- Function `*PolicyAssignmentsClient.DeleteByID` has been removed
+- Function `*DataPolicyManifestsListPager.PageResponse` has been removed
+- Function `*PolicySetDefinitionsListBuiltInPager.PageResponse` has been removed
+- Function `*PolicyAssignmentsListForResourcePager.NextPage` has been removed
+- Function `*PolicyExemptionsListForResourcePager.PageResponse` has been removed
+- Function `*PolicyAssignmentsListForManagementGroupPager.Err` has been removed
+- Function `*PolicySetDefinitionsClient.CreateOrUpdateAtManagementGroup` has been removed
+- Function `*PolicyDefinitionsListPager.NextPage` has been removed
+- Function `*PolicyExemptionsClient.ListForManagementGroup` has been removed
+- Function `*PolicyExemptionsListPager.PageResponse` has been removed
+- Function `*PolicySetDefinitionsClient.Delete` has been removed
+- Function `*PolicyDefinitionsClient.Delete` has been removed
+- Function `PolicyAssignmentProperties.MarshalJSON` has been removed
+- Function `*PolicySetDefinitionsListPager.PageResponse` has been removed
+- Function `*PolicyAssignmentsClient.ListForResource` has been removed
+- Function `*PolicyAssignmentsListForManagementGroupPager.PageResponse` has been removed
+- Function `*PolicyExemptionsListForResourceGroupPager.PageResponse` has been removed
+- Function `NewPolicyDefinitionsClient` has been removed
+- Function `*PolicyExemptionsListForResourceGroupPager.Err` has been removed
+- Function `*PolicyDefinitionsListByManagementGroupPager.PageResponse` has been removed
+- Function `*PolicySetDefinitionsListByManagementGroupPager.Err` has been removed
+- Function `*PolicySetDefinitionsClient.Get` has been removed
+- Function `PolicyDefinitionReference.MarshalJSON` has been removed
+- Function `*PolicyAssignmentsClient.Update` has been removed
+- Function `NewPolicyAssignmentsClient` has been removed
+- Function `*PolicyAssignmentsClient.UpdateByID` has been removed
+- Function `*PolicySetDefinitionsListBuiltInPager.Err` has been removed
+- Function `*PolicyExemptionsClient.Delete` has been removed
+- Function `*PolicyAssignmentsListForResourceGroupPager.NextPage` has been removed
+- Function `*PolicyAssignmentsListForResourcePager.PageResponse` has been removed
+- Function `*PolicySetDefinitionsClient.CreateOrUpdate` has been removed
+- Function `*PolicyDefinitionsClient.List` has been removed
+- Function `*PolicySetDefinitionsClient.ListBuiltIn` has been removed
+- Function `*PolicyExemptionsListForManagementGroupPager.Err` has been removed
+- Function `*PolicyDefinitionsClient.CreateOrUpdateAtManagementGroup` has been removed
+- Function `*PolicyDefinitionsListByManagementGroupPager.NextPage` has been removed
+- Function `*PolicyExemptionsListForResourcePager.Err` has been removed
+- Function `*PolicyAssignmentsClient.ListForManagementGroup` has been removed
+- Function `*PolicyExemptionsListForResourcePager.NextPage` has been removed
+- Function `*PolicyAssignmentsClient.List` has been removed
+- Function `*PolicyDefinitionsListBuiltInPager.PageResponse` has been removed
+- Function `*PolicyDefinitionsClient.CreateOrUpdate` has been removed
+- Function `*PolicyAssignmentsListPager.Err` has been removed
+- Function `PolicyExemptionListResult.MarshalJSON` has been removed
+- Function `*PolicyExemptionsClient.ListForResourceGroup` has been removed
+- Function `*PolicyExemptionsListForManagementGroupPager.NextPage` has been removed
+- Function `*PolicyExemptionProperties.UnmarshalJSON` has been removed
+- Function `*PolicyDefinitionsClient.GetBuiltIn` has been removed
+- Function `*PolicyDefinitionsListPager.PageResponse` has been removed
+- Function `*PolicyAssignmentsListForManagementGroupPager.NextPage` has been removed
+- Function `*PolicyAssignmentsListForResourcePager.Err` has been removed
+- Function `*PolicyDefinitionsListBuiltInPager.NextPage` has been removed
+- Function `*PolicyDefinitionsClient.Get` has been removed
+- Function `*PolicyAssignmentsClient.Create` has been removed
+- Function `*PolicyAssignmentsListPager.PageResponse` has been removed
+- Function `*PolicyAssignmentsClient.Delete` has been removed
+- Function `PolicySetDefinitionListResult.MarshalJSON` has been removed
+- Function `*PolicyDefinitionsListByManagementGroupPager.Err` has been removed
+- Function `*PolicyExemptionsClient.ListForResource` has been removed
+- Function `*PolicyExemptionsListPager.NextPage` has been removed
+- Function `*PolicySetDefinitionsListByManagementGroupPager.PageResponse` has been removed
+- Function `*DataPolicyManifestsListPager.NextPage` has been removed
+- Function `*PolicyAssignmentsClient.Get` has been removed
+- Function `*PolicySetDefinitionsListPager.NextPage` has been removed
+- Function `*PolicyDefinitionsClient.ListBuiltIn` has been removed
+- Function `*PolicyAssignmentsClient.CreateByID` has been removed
+- Function `CloudError.Error` has been removed
+- Function `NewPolicySetDefinitionsClient` has been removed
+- Function `*PolicySetDefinitionsClient.GetAtManagementGroup` has been removed
+- Function `*PolicyExemptionsListForManagementGroupPager.PageResponse` has been removed
+- Function `PolicyAssignmentListResult.MarshalJSON` has been removed
+- Function `*PolicyDefinitionsClient.ListByManagementGroup` has been removed
+- Function `PolicyAssignmentUpdate.MarshalJSON` has been removed
+- Function `NewPolicyExemptionsClient` has been removed
+- Function `PolicyDefinitionListResult.MarshalJSON` has been removed
+- Function `*PolicyAssignmentsListPager.NextPage` has been removed
+- Function `*PolicyDefinitionsClient.DeleteAtManagementGroup` has been removed
+- Function `*PolicyExemptionsListForResourceGroupPager.NextPage` has been removed
+- Function `*PolicySetDefinitionsListPager.Err` has been removed
+- Function `*PolicyExemptionsListPager.Err` has been removed
+- Function `*PolicyAssignmentsListForResourceGroupPager.Err` has been removed
+- Function `*PolicyExemptionsClient.List` has been removed
+- Function `*PolicySetDefinitionsClient.ListByManagementGroup` has been removed
+- Function `*PolicyAssignmentsListForResourceGroupPager.PageResponse` has been removed
+- Function `*PolicySetDefinitionsListBuiltInPager.NextPage` has been removed
+- Function `*PolicyDefinitionsClient.GetAtManagementGroup` has been removed
+- Function `*PolicyAssignmentsClient.GetByID` has been removed
+- Function `*PolicyExemptionsClient.Get` has been removed
+- Function `PolicyExemptionProperties.MarshalJSON` has been removed
+- Function `*PolicySetDefinitionsClient.GetBuiltIn` has been removed
+- Function `*PolicySetDefinitionsListByManagementGroupPager.NextPage` has been removed
+- Function `*DataPolicyManifestsListPager.Err` has been removed
+- Function `*PolicyDefinitionsListPager.Err` has been removed
+- Function `*PolicyDefinitionsListBuiltInPager.Err` has been removed
+- Function `PolicySetDefinitionProperties.MarshalJSON` has been removed
+- Function `PolicyDefinitionProperties.MarshalJSON` has been removed
+- Function `*PolicySetDefinitionsClient.DeleteAtManagementGroup` has been removed
+- Function `*PolicyAssignmentsClient.ListForResourceGroup` has been removed
+- Struct `DataPolicyManifestsGetByPolicyModeOptions` has been removed
+- Struct `DataPolicyManifestsGetByPolicyModeResponse` has been removed
+- Struct `DataPolicyManifestsGetByPolicyModeResult` has been removed
+- Struct `DataPolicyManifestsListOptions` has been removed
+- Struct `DataPolicyManifestsListPager` has been removed
+- Struct `DataPolicyManifestsListResponse` has been removed
+- Struct `DataPolicyManifestsListResult` has been removed
+- Struct `PolicyAssignment` has been removed
+- Struct `PolicyAssignmentListResult` has been removed
+- Struct `PolicyAssignmentProperties` has been removed
+- Struct `PolicyAssignmentUpdate` has been removed
+- Struct `PolicyAssignmentsClient` has been removed
+- Struct `PolicyAssignmentsCreateByIDOptions` has been removed
+- Struct `PolicyAssignmentsCreateByIDResponse` has been removed
+- Struct `PolicyAssignmentsCreateByIDResult` has been removed
+- Struct `PolicyAssignmentsCreateOptions` has been removed
+- Struct `PolicyAssignmentsCreateResponse` has been removed
+- Struct `PolicyAssignmentsCreateResult` has been removed
+- Struct `PolicyAssignmentsDeleteByIDOptions` has been removed
+- Struct `PolicyAssignmentsDeleteByIDResponse` has been removed
+- Struct `PolicyAssignmentsDeleteByIDResult` has been removed
+- Struct `PolicyAssignmentsDeleteOptions` has been removed
+- Struct `PolicyAssignmentsDeleteResponse` has been removed
+- Struct `PolicyAssignmentsDeleteResult` has been removed
+- Struct `PolicyAssignmentsGetByIDOptions` has been removed
+- Struct `PolicyAssignmentsGetByIDResponse` has been removed
+- Struct `PolicyAssignmentsGetByIDResult` has been removed
+- Struct `PolicyAssignmentsGetOptions` has been removed
+- Struct `PolicyAssignmentsGetResponse` has been removed
+- Struct `PolicyAssignmentsGetResult` has been removed
+- Struct `PolicyAssignmentsListForManagementGroupOptions` has been removed
+- Struct `PolicyAssignmentsListForManagementGroupPager` has been removed
+- Struct `PolicyAssignmentsListForManagementGroupResponse` has been removed
+- Struct `PolicyAssignmentsListForManagementGroupResult` has been removed
+- Struct `PolicyAssignmentsListForResourceGroupOptions` has been removed
+- Struct `PolicyAssignmentsListForResourceGroupPager` has been removed
+- Struct `PolicyAssignmentsListForResourceGroupResponse` has been removed
+- Struct `PolicyAssignmentsListForResourceGroupResult` has been removed
+- Struct `PolicyAssignmentsListForResourceOptions` has been removed
+- Struct `PolicyAssignmentsListForResourcePager` has been removed
+- Struct `PolicyAssignmentsListForResourceResponse` has been removed
+- Struct `PolicyAssignmentsListForResourceResult` has been removed
+- Struct `PolicyAssignmentsListOptions` has been removed
+- Struct `PolicyAssignmentsListPager` has been removed
+- Struct `PolicyAssignmentsListResponse` has been removed
+- Struct `PolicyAssignmentsListResult` has been removed
+- Struct `PolicyAssignmentsUpdateByIDOptions` has been removed
+- Struct `PolicyAssignmentsUpdateByIDResponse` has been removed
+- Struct `PolicyAssignmentsUpdateByIDResult` has been removed
+- Struct `PolicyAssignmentsUpdateOptions` has been removed
+- Struct `PolicyAssignmentsUpdateResponse` has been removed
+- Struct `PolicyAssignmentsUpdateResult` has been removed
+- Struct `PolicyDefinition` has been removed
+- Struct `PolicyDefinitionGroup` has been removed
+- Struct `PolicyDefinitionListResult` has been removed
+- Struct `PolicyDefinitionProperties` has been removed
+- Struct `PolicyDefinitionReference` has been removed
+- Struct `PolicyDefinitionsClient` has been removed
+- Struct `PolicyDefinitionsCreateOrUpdateAtManagementGroupOptions` has been removed
+- Struct `PolicyDefinitionsCreateOrUpdateAtManagementGroupResponse` has been removed
+- Struct `PolicyDefinitionsCreateOrUpdateAtManagementGroupResult` has been removed
+- Struct `PolicyDefinitionsCreateOrUpdateOptions` has been removed
+- Struct `PolicyDefinitionsCreateOrUpdateResponse` has been removed
+- Struct `PolicyDefinitionsCreateOrUpdateResult` has been removed
+- Struct `PolicyDefinitionsDeleteAtManagementGroupOptions` has been removed
+- Struct `PolicyDefinitionsDeleteAtManagementGroupResponse` has been removed
+- Struct `PolicyDefinitionsDeleteOptions` has been removed
+- Struct `PolicyDefinitionsDeleteResponse` has been removed
+- Struct `PolicyDefinitionsGetAtManagementGroupOptions` has been removed
+- Struct `PolicyDefinitionsGetAtManagementGroupResponse` has been removed
+- Struct `PolicyDefinitionsGetAtManagementGroupResult` has been removed
+- Struct `PolicyDefinitionsGetBuiltInOptions` has been removed
+- Struct `PolicyDefinitionsGetBuiltInResponse` has been removed
+- Struct `PolicyDefinitionsGetBuiltInResult` has been removed
+- Struct `PolicyDefinitionsGetOptions` has been removed
+- Struct `PolicyDefinitionsGetResponse` has been removed
+- Struct `PolicyDefinitionsGetResult` has been removed
+- Struct `PolicyDefinitionsListBuiltInOptions` has been removed
+- Struct `PolicyDefinitionsListBuiltInPager` has been removed
+- Struct `PolicyDefinitionsListBuiltInResponse` has been removed
+- Struct `PolicyDefinitionsListBuiltInResult` has been removed
+- Struct `PolicyDefinitionsListByManagementGroupOptions` has been removed
+- Struct `PolicyDefinitionsListByManagementGroupPager` has been removed
+- Struct `PolicyDefinitionsListByManagementGroupResponse` has been removed
+- Struct `PolicyDefinitionsListByManagementGroupResult` has been removed
+- Struct `PolicyDefinitionsListOptions` has been removed
+- Struct `PolicyDefinitionsListPager` has been removed
+- Struct `PolicyDefinitionsListResponse` has been removed
+- Struct `PolicyDefinitionsListResult` has been removed
+- Struct `PolicyExemption` has been removed
+- Struct `PolicyExemptionListResult` has been removed
+- Struct `PolicyExemptionProperties` has been removed
+- Struct `PolicyExemptionsClient` has been removed
+- Struct `PolicyExemptionsCreateOrUpdateOptions` has been removed
+- Struct `PolicyExemptionsCreateOrUpdateResponse` has been removed
+- Struct `PolicyExemptionsCreateOrUpdateResult` has been removed
+- Struct `PolicyExemptionsDeleteOptions` has been removed
+- Struct `PolicyExemptionsDeleteResponse` has been removed
+- Struct `PolicyExemptionsGetOptions` has been removed
+- Struct `PolicyExemptionsGetResponse` has been removed
+- Struct `PolicyExemptionsGetResult` has been removed
+- Struct `PolicyExemptionsListForManagementGroupOptions` has been removed
+- Struct `PolicyExemptionsListForManagementGroupPager` has been removed
+- Struct `PolicyExemptionsListForManagementGroupResponse` has been removed
+- Struct `PolicyExemptionsListForManagementGroupResult` has been removed
+- Struct `PolicyExemptionsListForResourceGroupOptions` has been removed
+- Struct `PolicyExemptionsListForResourceGroupPager` has been removed
+- Struct `PolicyExemptionsListForResourceGroupResponse` has been removed
+- Struct `PolicyExemptionsListForResourceGroupResult` has been removed
+- Struct `PolicyExemptionsListForResourceOptions` has been removed
+- Struct `PolicyExemptionsListForResourcePager` has been removed
+- Struct `PolicyExemptionsListForResourceResponse` has been removed
+- Struct `PolicyExemptionsListForResourceResult` has been removed
+- Struct `PolicyExemptionsListOptions` has been removed
+- Struct `PolicyExemptionsListPager` has been removed
+- Struct `PolicyExemptionsListResponse` has been removed
+- Struct `PolicyExemptionsListResult` has been removed
+- Struct `PolicySetDefinition` has been removed
+- Struct `PolicySetDefinitionListResult` has been removed
+- Struct `PolicySetDefinitionProperties` has been removed
+- Struct `PolicySetDefinitionsClient` has been removed
+- Struct `PolicySetDefinitionsCreateOrUpdateAtManagementGroupOptions` has been removed
+- Struct `PolicySetDefinitionsCreateOrUpdateAtManagementGroupResponse` has been removed
+- Struct `PolicySetDefinitionsCreateOrUpdateAtManagementGroupResult` has been removed
+- Struct `PolicySetDefinitionsCreateOrUpdateOptions` has been removed
+- Struct `PolicySetDefinitionsCreateOrUpdateResponse` has been removed
+- Struct `PolicySetDefinitionsCreateOrUpdateResult` has been removed
+- Struct `PolicySetDefinitionsDeleteAtManagementGroupOptions` has been removed
+- Struct `PolicySetDefinitionsDeleteAtManagementGroupResponse` has been removed
+- Struct `PolicySetDefinitionsDeleteOptions` has been removed
+- Struct `PolicySetDefinitionsDeleteResponse` has been removed
+- Struct `PolicySetDefinitionsGetAtManagementGroupOptions` has been removed
+- Struct `PolicySetDefinitionsGetAtManagementGroupResponse` has been removed
+- Struct `PolicySetDefinitionsGetAtManagementGroupResult` has been removed
+- Struct `PolicySetDefinitionsGetBuiltInOptions` has been removed
+- Struct `PolicySetDefinitionsGetBuiltInResponse` has been removed
+- Struct `PolicySetDefinitionsGetBuiltInResult` has been removed
+- Struct `PolicySetDefinitionsGetOptions` has been removed
+- Struct `PolicySetDefinitionsGetResponse` has been removed
+- Struct `PolicySetDefinitionsGetResult` has been removed
+- Struct `PolicySetDefinitionsListBuiltInOptions` has been removed
+- Struct `PolicySetDefinitionsListBuiltInPager` has been removed
+- Struct `PolicySetDefinitionsListBuiltInResponse` has been removed
+- Struct `PolicySetDefinitionsListBuiltInResult` has been removed
+- Struct `PolicySetDefinitionsListByManagementGroupOptions` has been removed
+- Struct `PolicySetDefinitionsListByManagementGroupPager` has been removed
+- Struct `PolicySetDefinitionsListByManagementGroupResponse` has been removed
+- Struct `PolicySetDefinitionsListByManagementGroupResult` has been removed
+- Struct `PolicySetDefinitionsListOptions` has been removed
+- Struct `PolicySetDefinitionsListPager` has been removed
+- Struct `PolicySetDefinitionsListResponse` has been removed
+- Struct `PolicySetDefinitionsListResult` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+
+### Features Added
+
+- New function `ExemptionListResult.MarshalJSON() ([]byte, error)`
+- New function `*ExemptionsClientListForManagementGroupPager.Err() error`
+- New function `AssignmentProperties.MarshalJSON() ([]byte, error)`
+- New function `*DefinitionsClientListBuiltInPager.PageResponse() DefinitionsClientListBuiltInResponse`
+- New function `*SetDefinitionsClientListBuiltInPager.NextPage(context.Context) bool`
+- New function `*ExemptionsClientListPager.Err() error`
+- New function `DefinitionListResult.MarshalJSON() ([]byte, error)`
+- New function `*ExemptionsClientListForManagementGroupPager.NextPage(context.Context) bool`
+- New function `*DefinitionsClientListByManagementGroupPager.PageResponse() DefinitionsClientListByManagementGroupResponse`
+- New function `*AssignmentsClientListForResourceGroupPager.PageResponse() AssignmentsClientListForResourceGroupResponse`
+- New function `*DefinitionsClient.ListBuiltIn(*DefinitionsClientListBuiltInOptions) *DefinitionsClientListBuiltInPager`
+- New function `*ExemptionsClient.CreateOrUpdate(context.Context, string, string, Exemption, *ExemptionsClientCreateOrUpdateOptions) (ExemptionsClientCreateOrUpdateResponse, error)`
+- New function `*ExemptionsClient.ListForManagementGroup(string, *ExemptionsClientListForManagementGroupOptions) *ExemptionsClientListForManagementGroupPager`
+- New function `*AssignmentsClient.Update(context.Context, string, string, AssignmentUpdate, *AssignmentsClientUpdateOptions) (AssignmentsClientUpdateResponse, error)`
+- New function `*SetDefinitionsClient.DeleteAtManagementGroup(context.Context, string, string, *SetDefinitionsClientDeleteAtManagementGroupOptions) (SetDefinitionsClientDeleteAtManagementGroupResponse, error)`
+- New function `*SetDefinitionsClient.CreateOrUpdateAtManagementGroup(context.Context, string, string, SetDefinition, *SetDefinitionsClientCreateOrUpdateAtManagementGroupOptions) (SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse, error)`
+- New function `*DefinitionsClient.Delete(context.Context, string, *DefinitionsClientDeleteOptions) (DefinitionsClientDeleteResponse, error)`
+- New function `*DefinitionsClientListByManagementGroupPager.NextPage(context.Context) bool`
+- New function `*AssignmentsClientListForManagementGroupPager.Err() error`
+- New function `*ExemptionsClient.List(*ExemptionsClientListOptions) *ExemptionsClientListPager`
+- New function `NewAssignmentsClient(string, azcore.TokenCredential, *arm.ClientOptions) *AssignmentsClient`
+- New function `*DefinitionsClientListPager.Err() error`
+- New function `*ExemptionsClientListPager.NextPage(context.Context) bool`
+- New function `*AssignmentsClientListForResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SetDefinitionsClient.CreateOrUpdate(context.Context, string, SetDefinition, *SetDefinitionsClientCreateOrUpdateOptions) (SetDefinitionsClientCreateOrUpdateResponse, error)`
+- New function `*AssignmentsClientListForManagementGroupPager.NextPage(context.Context) bool`
+- New function `*ExemptionsClientListForResourceGroupPager.Err() error`
+- New function `*DefinitionsClientListPager.PageResponse() DefinitionsClientListResponse`
+- New function `*AssignmentsClientListForManagementGroupPager.PageResponse() AssignmentsClientListForManagementGroupResponse`
+- New function `*SetDefinitionsClient.GetAtManagementGroup(context.Context, string, string, *SetDefinitionsClientGetAtManagementGroupOptions) (SetDefinitionsClientGetAtManagementGroupResponse, error)`
+- New function `*DefinitionsClient.CreateOrUpdate(context.Context, string, Definition, *DefinitionsClientCreateOrUpdateOptions) (DefinitionsClientCreateOrUpdateResponse, error)`
+- New function `*DefinitionsClient.CreateOrUpdateAtManagementGroup(context.Context, string, string, Definition, *DefinitionsClientCreateOrUpdateAtManagementGroupOptions) (DefinitionsClientCreateOrUpdateAtManagementGroupResponse, error)`
+- New function `ExemptionProperties.MarshalJSON() ([]byte, error)`
+- New function `*AssignmentsClient.Get(context.Context, string, string, *AssignmentsClientGetOptions) (AssignmentsClientGetResponse, error)`
+- New function `*ExemptionsClientListForResourcePager.PageResponse() ExemptionsClientListForResourceResponse`
+- New function `*ExemptionsClient.ListForResourceGroup(string, *ExemptionsClientListForResourceGroupOptions) *ExemptionsClientListForResourceGroupPager`
+- New function `*ExemptionsClientListForResourcePager.NextPage(context.Context) bool`
+- New function `*DataPolicyManifestsClientListPager.Err() error`
+- New function `*ExemptionsClientListForResourceGroupPager.PageResponse() ExemptionsClientListForResourceGroupResponse`
+- New function `*SetDefinitionsClientListByManagementGroupPager.PageResponse() SetDefinitionsClientListByManagementGroupResponse`
+- New function `*AssignmentsClientListPager.NextPage(context.Context) bool`
+- New function `*SetDefinitionsClientListPager.NextPage(context.Context) bool`
+- New function `*ExemptionsClientListForResourcePager.Err() error`
+- New function `*SetDefinitionsClient.Get(context.Context, string, *SetDefinitionsClientGetOptions) (SetDefinitionsClientGetResponse, error)`
+- New function `*AssignmentsClientListForResourcePager.Err() error`
+- New function `*AssignmentsClient.CreateByID(context.Context, string, Assignment, *AssignmentsClientCreateByIDOptions) (AssignmentsClientCreateByIDResponse, error)`
+- New function `*ExemptionProperties.UnmarshalJSON([]byte) error`
+- New function `NewExemptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ExemptionsClient`
+- New function `*AssignmentsClientListForResourcePager.NextPage(context.Context) bool`
+- New function `*ExemptionsClientListForManagementGroupPager.PageResponse() ExemptionsClientListForManagementGroupResponse`
+- New function `*ExemptionsClient.Get(context.Context, string, string, *ExemptionsClientGetOptions) (ExemptionsClientGetResponse, error)`
+- New function `*ExemptionsClientListForResourceGroupPager.NextPage(context.Context) bool`
+- New function `SetDefinitionListResult.MarshalJSON() ([]byte, error)`
+- New function `*AssignmentsClient.UpdateByID(context.Context, string, AssignmentUpdate, *AssignmentsClientUpdateByIDOptions) (AssignmentsClientUpdateByIDResponse, error)`
+- New function `*DefinitionsClient.GetAtManagementGroup(context.Context, string, string, *DefinitionsClientGetAtManagementGroupOptions) (DefinitionsClientGetAtManagementGroupResponse, error)`
+- New function `*AssignmentsClient.ListForResourceGroup(string, *AssignmentsClientListForResourceGroupOptions) *AssignmentsClientListForResourceGroupPager`
+- New function `*DefinitionsClient.DeleteAtManagementGroup(context.Context, string, string, *DefinitionsClientDeleteAtManagementGroupOptions) (DefinitionsClientDeleteAtManagementGroupResponse, error)`
+- New function `*DefinitionsClient.GetBuiltIn(context.Context, string, *DefinitionsClientGetBuiltInOptions) (DefinitionsClientGetBuiltInResponse, error)`
+- New function `*AssignmentsClientListPager.Err() error`
+- New function `*DefinitionsClient.Get(context.Context, string, *DefinitionsClientGetOptions) (DefinitionsClientGetResponse, error)`
+- New function `DefinitionProperties.MarshalJSON() ([]byte, error)`
+- New function `*AssignmentsClient.ListForResource(string, string, string, string, string, *AssignmentsClientListForResourceOptions) *AssignmentsClientListForResourcePager`
+- New function `*DataPolicyManifestsClientListPager.PageResponse() DataPolicyManifestsClientListResponse`
+- New function `*AssignmentsClient.List(*AssignmentsClientListOptions) *AssignmentsClientListPager`
+- New function `*SetDefinitionsClient.ListByManagementGroup(string, *SetDefinitionsClientListByManagementGroupOptions) *SetDefinitionsClientListByManagementGroupPager`
+- New function `*DefinitionsClient.List(*DefinitionsClientListOptions) *DefinitionsClientListPager`
+- New function `*DataPolicyManifestsClientListPager.NextPage(context.Context) bool`
+- New function `*SetDefinitionsClient.GetBuiltIn(context.Context, string, *SetDefinitionsClientGetBuiltInOptions) (SetDefinitionsClientGetBuiltInResponse, error)`
+- New function `NewSetDefinitionsClient(string, azcore.TokenCredential, *arm.ClientOptions) *SetDefinitionsClient`
+- New function `*SetDefinitionsClientListByManagementGroupPager.NextPage(context.Context) bool`
+- New function `*AssignmentsClientListForResourcePager.PageResponse() AssignmentsClientListForResourceResponse`
+- New function `AssignmentUpdate.MarshalJSON() ([]byte, error)`
+- New function `*DefinitionsClientListBuiltInPager.Err() error`
+- New function `*SetDefinitionsClient.List(*SetDefinitionsClientListOptions) *SetDefinitionsClientListPager`
+- New function `*SetDefinitionsClientListBuiltInPager.Err() error`
+- New function `*AssignmentsClient.DeleteByID(context.Context, string, *AssignmentsClientDeleteByIDOptions) (AssignmentsClientDeleteByIDResponse, error)`
+- New function `*AssignmentsClientListPager.PageResponse() AssignmentsClientListResponse`
+- New function `*ExemptionsClient.ListForResource(string, string, string, string, string, *ExemptionsClientListForResourceOptions) *ExemptionsClientListForResourcePager`
+- New function `*ExemptionsClient.Delete(context.Context, string, string, *ExemptionsClientDeleteOptions) (ExemptionsClientDeleteResponse, error)`
+- New function `*ExemptionsClientListPager.PageResponse() ExemptionsClientListResponse`
+- New function `*SetDefinitionsClientListPager.Err() error`
+- New function `*DefinitionsClientListByManagementGroupPager.Err() error`
+- New function `SetDefinitionProperties.MarshalJSON() ([]byte, error)`
+- New function `NewDefinitionsClient(string, azcore.TokenCredential, *arm.ClientOptions) *DefinitionsClient`
+- New function `*AssignmentsClient.GetByID(context.Context, string, *AssignmentsClientGetByIDOptions) (AssignmentsClientGetByIDResponse, error)`
+- New function `*SetDefinitionsClientListPager.PageResponse() SetDefinitionsClientListResponse`
+- New function `AssignmentListResult.MarshalJSON() ([]byte, error)`
+- New function `*SetDefinitionsClientListBuiltInPager.PageResponse() SetDefinitionsClientListBuiltInResponse`
+- New function `*DefinitionsClient.ListByManagementGroup(string, *DefinitionsClientListByManagementGroupOptions) *DefinitionsClientListByManagementGroupPager`
+- New function `*SetDefinitionsClientListByManagementGroupPager.Err() error`
+- New function `*SetDefinitionsClient.ListBuiltIn(*SetDefinitionsClientListBuiltInOptions) *SetDefinitionsClientListBuiltInPager`
+- New function `DefinitionReference.MarshalJSON() ([]byte, error)`
+- New function `*AssignmentsClient.Delete(context.Context, string, string, *AssignmentsClientDeleteOptions) (AssignmentsClientDeleteResponse, error)`
+- New function `*AssignmentsClient.ListForManagementGroup(string, *AssignmentsClientListForManagementGroupOptions) *AssignmentsClientListForManagementGroupPager`
+- New function `*AssignmentsClient.Create(context.Context, string, string, Assignment, *AssignmentsClientCreateOptions) (AssignmentsClientCreateResponse, error)`
+- New function `*AssignmentsClientListForResourceGroupPager.Err() error`
+- New function `*DefinitionsClientListPager.NextPage(context.Context) bool`
+- New function `*DefinitionsClientListBuiltInPager.NextPage(context.Context) bool`
+- New function `*SetDefinitionsClient.Delete(context.Context, string, *SetDefinitionsClientDeleteOptions) (SetDefinitionsClientDeleteResponse, error)`
+- New struct `Assignment`
+- New struct `AssignmentListResult`
+- New struct `AssignmentProperties`
+- New struct `AssignmentUpdate`
+- New struct `AssignmentsClient`
+- New struct `AssignmentsClientCreateByIDOptions`
+- New struct `AssignmentsClientCreateByIDResponse`
+- New struct `AssignmentsClientCreateByIDResult`
+- New struct `AssignmentsClientCreateOptions`
+- New struct `AssignmentsClientCreateResponse`
+- New struct `AssignmentsClientCreateResult`
+- New struct `AssignmentsClientDeleteByIDOptions`
+- New struct `AssignmentsClientDeleteByIDResponse`
+- New struct `AssignmentsClientDeleteByIDResult`
+- New struct `AssignmentsClientDeleteOptions`
+- New struct `AssignmentsClientDeleteResponse`
+- New struct `AssignmentsClientDeleteResult`
+- New struct `AssignmentsClientGetByIDOptions`
+- New struct `AssignmentsClientGetByIDResponse`
+- New struct `AssignmentsClientGetByIDResult`
+- New struct `AssignmentsClientGetOptions`
+- New struct `AssignmentsClientGetResponse`
+- New struct `AssignmentsClientGetResult`
+- New struct `AssignmentsClientListForManagementGroupOptions`
+- New struct `AssignmentsClientListForManagementGroupPager`
+- New struct `AssignmentsClientListForManagementGroupResponse`
+- New struct `AssignmentsClientListForManagementGroupResult`
+- New struct `AssignmentsClientListForResourceGroupOptions`
+- New struct `AssignmentsClientListForResourceGroupPager`
+- New struct `AssignmentsClientListForResourceGroupResponse`
+- New struct `AssignmentsClientListForResourceGroupResult`
+- New struct `AssignmentsClientListForResourceOptions`
+- New struct `AssignmentsClientListForResourcePager`
+- New struct `AssignmentsClientListForResourceResponse`
+- New struct `AssignmentsClientListForResourceResult`
+- New struct `AssignmentsClientListOptions`
+- New struct `AssignmentsClientListPager`
+- New struct `AssignmentsClientListResponse`
+- New struct `AssignmentsClientListResult`
+- New struct `AssignmentsClientUpdateByIDOptions`
+- New struct `AssignmentsClientUpdateByIDResponse`
+- New struct `AssignmentsClientUpdateByIDResult`
+- New struct `AssignmentsClientUpdateOptions`
+- New struct `AssignmentsClientUpdateResponse`
+- New struct `AssignmentsClientUpdateResult`
+- New struct `DataPolicyManifestsClientGetByPolicyModeOptions`
+- New struct `DataPolicyManifestsClientGetByPolicyModeResponse`
+- New struct `DataPolicyManifestsClientGetByPolicyModeResult`
+- New struct `DataPolicyManifestsClientListOptions`
+- New struct `DataPolicyManifestsClientListPager`
+- New struct `DataPolicyManifestsClientListResponse`
+- New struct `DataPolicyManifestsClientListResult`
+- New struct `Definition`
+- New struct `DefinitionGroup`
+- New struct `DefinitionListResult`
+- New struct `DefinitionProperties`
+- New struct `DefinitionReference`
+- New struct `DefinitionsClient`
+- New struct `DefinitionsClientCreateOrUpdateAtManagementGroupOptions`
+- New struct `DefinitionsClientCreateOrUpdateAtManagementGroupResponse`
+- New struct `DefinitionsClientCreateOrUpdateAtManagementGroupResult`
+- New struct `DefinitionsClientCreateOrUpdateOptions`
+- New struct `DefinitionsClientCreateOrUpdateResponse`
+- New struct `DefinitionsClientCreateOrUpdateResult`
+- New struct `DefinitionsClientDeleteAtManagementGroupOptions`
+- New struct `DefinitionsClientDeleteAtManagementGroupResponse`
+- New struct `DefinitionsClientDeleteOptions`
+- New struct `DefinitionsClientDeleteResponse`
+- New struct `DefinitionsClientGetAtManagementGroupOptions`
+- New struct `DefinitionsClientGetAtManagementGroupResponse`
+- New struct `DefinitionsClientGetAtManagementGroupResult`
+- New struct `DefinitionsClientGetBuiltInOptions`
+- New struct `DefinitionsClientGetBuiltInResponse`
+- New struct `DefinitionsClientGetBuiltInResult`
+- New struct `DefinitionsClientGetOptions`
+- New struct `DefinitionsClientGetResponse`
+- New struct `DefinitionsClientGetResult`
+- New struct `DefinitionsClientListBuiltInOptions`
+- New struct `DefinitionsClientListBuiltInPager`
+- New struct `DefinitionsClientListBuiltInResponse`
+- New struct `DefinitionsClientListBuiltInResult`
+- New struct `DefinitionsClientListByManagementGroupOptions`
+- New struct `DefinitionsClientListByManagementGroupPager`
+- New struct `DefinitionsClientListByManagementGroupResponse`
+- New struct `DefinitionsClientListByManagementGroupResult`
+- New struct `DefinitionsClientListOptions`
+- New struct `DefinitionsClientListPager`
+- New struct `DefinitionsClientListResponse`
+- New struct `DefinitionsClientListResult`
+- New struct `Exemption`
+- New struct `ExemptionListResult`
+- New struct `ExemptionProperties`
+- New struct `ExemptionsClient`
+- New struct `ExemptionsClientCreateOrUpdateOptions`
+- New struct `ExemptionsClientCreateOrUpdateResponse`
+- New struct `ExemptionsClientCreateOrUpdateResult`
+- New struct `ExemptionsClientDeleteOptions`
+- New struct `ExemptionsClientDeleteResponse`
+- New struct `ExemptionsClientGetOptions`
+- New struct `ExemptionsClientGetResponse`
+- New struct `ExemptionsClientGetResult`
+- New struct `ExemptionsClientListForManagementGroupOptions`
+- New struct `ExemptionsClientListForManagementGroupPager`
+- New struct `ExemptionsClientListForManagementGroupResponse`
+- New struct `ExemptionsClientListForManagementGroupResult`
+- New struct `ExemptionsClientListForResourceGroupOptions`
+- New struct `ExemptionsClientListForResourceGroupPager`
+- New struct `ExemptionsClientListForResourceGroupResponse`
+- New struct `ExemptionsClientListForResourceGroupResult`
+- New struct `ExemptionsClientListForResourceOptions`
+- New struct `ExemptionsClientListForResourcePager`
+- New struct `ExemptionsClientListForResourceResponse`
+- New struct `ExemptionsClientListForResourceResult`
+- New struct `ExemptionsClientListOptions`
+- New struct `ExemptionsClientListPager`
+- New struct `ExemptionsClientListResponse`
+- New struct `ExemptionsClientListResult`
+- New struct `SetDefinition`
+- New struct `SetDefinitionListResult`
+- New struct `SetDefinitionProperties`
+- New struct `SetDefinitionsClient`
+- New struct `SetDefinitionsClientCreateOrUpdateAtManagementGroupOptions`
+- New struct `SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse`
+- New struct `SetDefinitionsClientCreateOrUpdateAtManagementGroupResult`
+- New struct `SetDefinitionsClientCreateOrUpdateOptions`
+- New struct `SetDefinitionsClientCreateOrUpdateResponse`
+- New struct `SetDefinitionsClientCreateOrUpdateResult`
+- New struct `SetDefinitionsClientDeleteAtManagementGroupOptions`
+- New struct `SetDefinitionsClientDeleteAtManagementGroupResponse`
+- New struct `SetDefinitionsClientDeleteOptions`
+- New struct `SetDefinitionsClientDeleteResponse`
+- New struct `SetDefinitionsClientGetAtManagementGroupOptions`
+- New struct `SetDefinitionsClientGetAtManagementGroupResponse`
+- New struct `SetDefinitionsClientGetAtManagementGroupResult`
+- New struct `SetDefinitionsClientGetBuiltInOptions`
+- New struct `SetDefinitionsClientGetBuiltInResponse`
+- New struct `SetDefinitionsClientGetBuiltInResult`
+- New struct `SetDefinitionsClientGetOptions`
+- New struct `SetDefinitionsClientGetResponse`
+- New struct `SetDefinitionsClientGetResult`
+- New struct `SetDefinitionsClientListBuiltInOptions`
+- New struct `SetDefinitionsClientListBuiltInPager`
+- New struct `SetDefinitionsClientListBuiltInResponse`
+- New struct `SetDefinitionsClientListBuiltInResult`
+- New struct `SetDefinitionsClientListByManagementGroupOptions`
+- New struct `SetDefinitionsClientListByManagementGroupPager`
+- New struct `SetDefinitionsClientListByManagementGroupResponse`
+- New struct `SetDefinitionsClientListByManagementGroupResult`
+- New struct `SetDefinitionsClientListOptions`
+- New struct `SetDefinitionsClientListPager`
+- New struct `SetDefinitionsClientListResponse`
+- New struct `SetDefinitionsClientListResult`
+- New field `Error` in struct `CloudError`
+
+
 ## 0.1.1 (2021-12-13)
 
 ### Other Changes

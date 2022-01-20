@@ -11,7 +11,6 @@ package armwindowsiot
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,60 @@ import (
 // ServicesClient contains the methods for the Services group.
 // Don't use this type directly, use NewServicesClient() instead.
 type ServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServicesClient creates a new instance of ServicesClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckDeviceServiceNameAvailability - Check if a Windows IoT Device Service name is available.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *ServicesClient) CheckDeviceServiceNameAvailability(ctx context.Context, deviceServiceCheckNameAvailabilityParameters DeviceServiceCheckNameAvailabilityParameters, options *ServicesCheckDeviceServiceNameAvailabilityOptions) (ServicesCheckDeviceServiceNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceServiceCheckNameAvailabilityParameters - Set the name parameter in the DeviceServiceCheckNameAvailabilityParameters
+// structure to the name of the Windows IoT Device Service to check.
+// options - ServicesClientCheckDeviceServiceNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckDeviceServiceNameAvailability
+// method.
+func (client *ServicesClient) CheckDeviceServiceNameAvailability(ctx context.Context, deviceServiceCheckNameAvailabilityParameters DeviceServiceCheckNameAvailabilityParameters, options *ServicesClientCheckDeviceServiceNameAvailabilityOptions) (ServicesClientCheckDeviceServiceNameAvailabilityResponse, error) {
 	req, err := client.checkDeviceServiceNameAvailabilityCreateRequest(ctx, deviceServiceCheckNameAvailabilityParameters, options)
 	if err != nil {
-		return ServicesCheckDeviceServiceNameAvailabilityResponse{}, err
+		return ServicesClientCheckDeviceServiceNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesCheckDeviceServiceNameAvailabilityResponse{}, err
+		return ServicesClientCheckDeviceServiceNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServicesCheckDeviceServiceNameAvailabilityResponse{}, client.checkDeviceServiceNameAvailabilityHandleError(resp)
+		return ServicesClientCheckDeviceServiceNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkDeviceServiceNameAvailabilityHandleResponse(resp)
 }
 
 // checkDeviceServiceNameAvailabilityCreateRequest creates the CheckDeviceServiceNameAvailability request.
-func (client *ServicesClient) checkDeviceServiceNameAvailabilityCreateRequest(ctx context.Context, deviceServiceCheckNameAvailabilityParameters DeviceServiceCheckNameAvailabilityParameters, options *ServicesCheckDeviceServiceNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ServicesClient) checkDeviceServiceNameAvailabilityCreateRequest(ctx context.Context, deviceServiceCheckNameAvailabilityParameters DeviceServiceCheckNameAvailabilityParameters, options *ServicesClientCheckDeviceServiceNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/checkDeviceServiceNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,48 +89,39 @@ func (client *ServicesClient) checkDeviceServiceNameAvailabilityCreateRequest(ct
 }
 
 // checkDeviceServiceNameAvailabilityHandleResponse handles the CheckDeviceServiceNameAvailability response.
-func (client *ServicesClient) checkDeviceServiceNameAvailabilityHandleResponse(resp *http.Response) (ServicesCheckDeviceServiceNameAvailabilityResponse, error) {
-	result := ServicesCheckDeviceServiceNameAvailabilityResponse{RawResponse: resp}
+func (client *ServicesClient) checkDeviceServiceNameAvailabilityHandleResponse(resp *http.Response) (ServicesClientCheckDeviceServiceNameAvailabilityResponse, error) {
+	result := ServicesClientCheckDeviceServiceNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceServiceNameAvailabilityInfo); err != nil {
-		return ServicesCheckDeviceServiceNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientCheckDeviceServiceNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkDeviceServiceNameAvailabilityHandleError handles the CheckDeviceServiceNameAvailability error response.
-func (client *ServicesClient) checkDeviceServiceNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateOrUpdate - Create or update the metadata of a Windows IoT Device Service. The usual pattern to modify a property is to retrieve the Windows IoT
-// Device Service metadata and security metadata, and then combine
+// CreateOrUpdate - Create or update the metadata of a Windows IoT Device Service. The usual pattern to modify a property
+// is to retrieve the Windows IoT Device Service metadata and security metadata, and then combine
 // them with the modified values in a new body to update the Windows IoT Device Service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, options *ServicesCreateOrUpdateOptions) (ServicesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Windows IoT Device Service.
+// deviceName - The name of the Windows IoT Device Service.
+// deviceService - The Windows IoT Device Service metadata and security metadata.
+// options - ServicesClientCreateOrUpdateOptions contains the optional parameters for the ServicesClient.CreateOrUpdate method.
+func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, options *ServicesClientCreateOrUpdateOptions) (ServicesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, deviceName, deviceService, options)
 	if err != nil {
-		return ServicesCreateOrUpdateResponse{}, err
+		return ServicesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesCreateOrUpdateResponse{}, err
+		return ServicesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ServicesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ServicesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, options *ServicesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, options *ServicesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsIoT/deviceServices/{deviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -133,7 +135,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter deviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -148,46 +150,36 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ServicesClient) createOrUpdateHandleResponse(resp *http.Response) (ServicesCreateOrUpdateResponse, error) {
-	result := ServicesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ServicesClient) createOrUpdateHandleResponse(resp *http.Response) (ServicesClientCreateOrUpdateResponse, error) {
+	result := ServicesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceService); err != nil {
-		return ServicesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a Windows IoT Device Service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *ServicesClient) Delete(ctx context.Context, resourceGroupName string, deviceName string, options *ServicesDeleteOptions) (ServicesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Windows IoT Device Service.
+// deviceName - The name of the Windows IoT Device Service.
+// options - ServicesClientDeleteOptions contains the optional parameters for the ServicesClient.Delete method.
+func (client *ServicesClient) Delete(ctx context.Context, resourceGroupName string, deviceName string, options *ServicesClientDeleteOptions) (ServicesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, deviceName, options)
 	if err != nil {
-		return ServicesDeleteResponse{}, err
+		return ServicesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesDeleteResponse{}, err
+		return ServicesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ServicesDeleteResponse{}, client.deleteHandleError(resp)
+		return ServicesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *ServicesDeleteOptions) (*policy.Request, error) {
+func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *ServicesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsIoT/deviceServices/{deviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,7 +193,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter deviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -213,46 +205,36 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ServicesClient) deleteHandleResponse(resp *http.Response) (ServicesDeleteResponse, error) {
-	result := ServicesDeleteResponse{RawResponse: resp}
+func (client *ServicesClient) deleteHandleResponse(resp *http.Response) (ServicesClientDeleteResponse, error) {
+	result := ServicesClientDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceService); err != nil {
-		return ServicesDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the non-security related metadata of a Windows IoT Device Service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string, deviceName string, options *ServicesGetOptions) (ServicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Windows IoT Device Service.
+// deviceName - The name of the Windows IoT Device Service.
+// options - ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string, deviceName string, options *ServicesClientGetOptions) (ServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, deviceName, options)
 	if err != nil {
-		return ServicesGetResponse{}, err
+		return ServicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesGetResponse{}, err
+		return ServicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServicesGetResponse{}, client.getHandleError(resp)
+		return ServicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *ServicesGetOptions) (*policy.Request, error) {
+func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *ServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsIoT/deviceServices/{deviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -266,7 +248,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter deviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -278,49 +260,37 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesGetResponse, error) {
-	result := ServicesGetResponse{RawResponse: resp}
+func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesClientGetResponse, error) {
+	result := ServicesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceService); err != nil {
-		return ServicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get all the IoT hubs in a subscription.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *ServicesClient) List(options *ServicesListOptions) *ServicesListPager {
-	return &ServicesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+func (client *ServicesClient) List(options *ServicesClientListOptions) *ServicesClientListPager {
+	return &ServicesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ServicesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServicesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceServiceDescriptionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ServicesClient) listCreateRequest(ctx context.Context, options *ServicesListOptions) (*policy.Request, error) {
+func (client *ServicesClient) listCreateRequest(ctx context.Context, options *ServicesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsIoT/deviceServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -332,43 +302,33 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, options *Se
 }
 
 // listHandleResponse handles the List response.
-func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesListResponse, error) {
-	result := ServicesListResponse{RawResponse: resp}
+func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesClientListResponse, error) {
+	result := ServicesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceServiceDescriptionListResult); err != nil {
-		return ServicesListResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ServicesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Get all the IoT hubs in a resource group.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *ServicesClient) ListByResourceGroup(resourceGroupName string, options *ServicesListByResourceGroupOptions) *ServicesListByResourceGroupPager {
-	return &ServicesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Windows IoT Device Service.
+// options - ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup
+// method.
+func (client *ServicesClient) ListByResourceGroup(resourceGroupName string, options *ServicesClientListByResourceGroupOptions) *ServicesClientListByResourceGroupPager {
+	return &ServicesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ServicesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServicesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceServiceDescriptionListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ServicesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ServicesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsIoT/deviceServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -378,7 +338,7 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -390,48 +350,39 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (ServicesListByResourceGroupResponse, error) {
-	result := ServicesListByResourceGroupResponse{RawResponse: resp}
+func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (ServicesClientListByResourceGroupResponse, error) {
+	result := ServicesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceServiceDescriptionListResult); err != nil {
-		return ServicesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ServicesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates the metadata of a Windows IoT Device Service. The usual pattern to modify a property is to retrieve the Windows IoT Device Service metadata
-// and security metadata, and then combine them with
+// Update - Updates the metadata of a Windows IoT Device Service. The usual pattern to modify a property is to retrieve the
+// Windows IoT Device Service metadata and security metadata, and then combine them with
 // the modified values in a new body to update the Windows IoT Device Service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *ServicesClient) Update(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, options *ServicesUpdateOptions) (ServicesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Windows IoT Device Service.
+// deviceName - The name of the Windows IoT Device Service.
+// deviceService - The Windows IoT Device Service metadata and security metadata.
+// options - ServicesClientUpdateOptions contains the optional parameters for the ServicesClient.Update method.
+func (client *ServicesClient) Update(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, options *ServicesClientUpdateOptions) (ServicesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, deviceName, deviceService, options)
 	if err != nil {
-		return ServicesUpdateResponse{}, err
+		return ServicesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesUpdateResponse{}, err
+		return ServicesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServicesUpdateResponse{}, client.updateHandleError(resp)
+		return ServicesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, options *ServicesUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, options *ServicesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsIoT/deviceServices/{deviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -445,7 +396,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter deviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -460,23 +411,10 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServicesClient) updateHandleResponse(resp *http.Response) (ServicesUpdateResponse, error) {
-	result := ServicesUpdateResponse{RawResponse: resp}
+func (client *ServicesClient) updateHandleResponse(resp *http.Response) (ServicesClientUpdateResponse, error) {
+	result := ServicesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceService); err != nil {
-		return ServicesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ServicesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -24,42 +24,54 @@ import (
 // VaultsClient contains the methods for the Vaults group.
 // Don't use this type directly, use NewVaultsClient() instead.
 type VaultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVaultsClient creates a new instance of VaultsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VaultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VaultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VaultsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List vaults for a Netapp Account
-// If the operation fails it returns a generic error.
-func (client *VaultsClient) List(ctx context.Context, resourceGroupName string, accountName string, options *VaultsListOptions) (VaultsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// options - VaultsClientListOptions contains the optional parameters for the VaultsClient.List method.
+func (client *VaultsClient) List(ctx context.Context, resourceGroupName string, accountName string, options *VaultsClientListOptions) (VaultsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return VaultsListResponse{}, err
+		return VaultsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VaultsListResponse{}, err
+		return VaultsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VaultsListResponse{}, client.listHandleError(resp)
+		return VaultsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *VaultsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *VaultsListOptions) (*policy.Request, error) {
+func (client *VaultsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *VaultsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/vaults"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -73,7 +85,7 @@ func (client *VaultsClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,22 +97,10 @@ func (client *VaultsClient) listCreateRequest(ctx context.Context, resourceGroup
 }
 
 // listHandleResponse handles the List response.
-func (client *VaultsClient) listHandleResponse(resp *http.Response) (VaultsListResponse, error) {
-	result := VaultsListResponse{RawResponse: resp}
+func (client *VaultsClient) listHandleResponse(resp *http.Response) (VaultsClientListResponse, error) {
+	result := VaultsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultList); err != nil {
-		return VaultsListResponse{}, runtime.NewResponseError(err, resp)
+		return VaultsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *VaultsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

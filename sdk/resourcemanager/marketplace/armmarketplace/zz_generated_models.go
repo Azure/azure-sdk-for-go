@@ -113,9 +113,20 @@ func (a AdminRequestApprovalsList) MarshalJSON() ([]byte, error) {
 
 // AdminRequestApprovalsResource - Admin request approval resource.
 type AdminRequestApprovalsResource struct {
-	Resource
 	// The privateStore admin Approval request data structure.
 	Properties *AdminRequestApprovalProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BillingAccountsResponse - Billing accounts response object
@@ -154,8 +165,8 @@ type BulkCollectionsPayload struct {
 	Properties *BulkCollectionsDetails `json:"properties,omitempty"`
 }
 
-// BulkCollectionsResponse - The bulk collections response. The response contains two lists that indicate for each collection whether the operation succeeded
-// or failed
+// BulkCollectionsResponse - The bulk collections response. The response contains two lists that indicate for each collection
+// whether the operation succeeded or failed
 type BulkCollectionsResponse struct {
 	// Failed collections
 	Failed []*CollectionsDetails `json:"failed,omitempty"`
@@ -174,9 +185,20 @@ func (b BulkCollectionsResponse) MarshalJSON() ([]byte, error) {
 
 // Collection - The Collection data structure.
 type Collection struct {
-	Resource
 	// The collection data structure.
 	Properties *CollectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CollectionProperties - The collection details
@@ -193,8 +215,8 @@ type CollectionProperties struct {
 	// Indicating whether the collection is enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Gets or sets subscription ids list. Empty list indicates all subscriptions are selected, null indicates no update is done, explicit list indicates the
-	// explicit selected subscriptions. On insert, null
+	// Gets or sets subscription ids list. Empty list indicates all subscriptions are selected, null indicates no update is done,
+	// explicit list indicates the explicit selected subscriptions. On insert, null
 	// is considered as bad request
 	SubscriptionsList []*string `json:"subscriptionsList,omitempty"`
 
@@ -290,19 +312,11 @@ func (c CollectionsToSubscriptionsMappingResponse) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Error response indicates Microsoft.Marketplace service is not able to process the incoming request. The reason is provided in the error
-// message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error response indicates Microsoft.Marketplace service is not able to process the incoming request. The
+// reason is provided in the error message.
 type ErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorResponseError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseError `json:"error,omitempty"`
 }
 
 // ErrorResponseError - The details of the error.
@@ -366,9 +380,20 @@ func (n NotificationsSettingsProperties) MarshalJSON() ([]byte, error) {
 
 // Offer - The privateStore offer data structure.
 type Offer struct {
-	Resource
 	// The privateStore offer data structure.
 	Properties *OfferProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type OfferListResponse struct {
@@ -398,8 +423,8 @@ type OfferProperties struct {
 	// Plan ids limitation for this offer
 	SpecificPlanIDsLimitation []*string `json:"specificPlanIdsLimitation,omitempty"`
 
-	// Indicating whether the offer was not updated to db (true = not updated). If the allow list is identical to the existed one in db, the offer would not
-	// be updated.
+	// Indicating whether the offer was not updated to db (true = not updated). If the allow list is identical to the existed
+	// one in db, the offer would not be updated.
 	UpdateSuppressedDueIdempotence *bool `json:"updateSuppressedDueIdempotence,omitempty"`
 
 	// READ-ONLY; Private store offer creation date
@@ -438,7 +463,8 @@ func (o OfferProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationListResult - Result of the request to list Marketplace operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list Marketplace operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	// List of Microsoft.Marketplace operations supported by the Microsoft.Marketplace resource provider.
 	Value []*SingleOperation `json:"value,omitempty"`
@@ -455,8 +481,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -533,124 +559,191 @@ func (p PlanRequesterDetails) MarshalJSON() ([]byte, error) {
 
 // PrivateStore - The PrivateStore data structure.
 type PrivateStore struct {
-	Resource
 	// The PrivateStore data structure.
 	Properties *PrivateStoreProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// PrivateStoreAcknowledgeOfferNotificationOptions contains the optional parameters for the PrivateStore.AcknowledgeOfferNotification method.
-type PrivateStoreAcknowledgeOfferNotificationOptions struct {
+// PrivateStoreClientAcknowledgeOfferNotificationOptions contains the optional parameters for the PrivateStoreClient.AcknowledgeOfferNotification
+// method.
+type PrivateStoreClientAcknowledgeOfferNotificationOptions struct {
 	Payload *AcknowledgeOfferNotificationProperties
 }
 
-// PrivateStoreAdminRequestApprovalsListOptions contains the optional parameters for the PrivateStore.AdminRequestApprovalsList method.
-type PrivateStoreAdminRequestApprovalsListOptions struct {
+// PrivateStoreClientAdminRequestApprovalsListOptions contains the optional parameters for the PrivateStoreClient.AdminRequestApprovalsList
+// method.
+type PrivateStoreClientAdminRequestApprovalsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateStoreBillingAccountsOptions contains the optional parameters for the PrivateStore.BillingAccounts method.
-type PrivateStoreBillingAccountsOptions struct {
+// PrivateStoreClientBillingAccountsOptions contains the optional parameters for the PrivateStoreClient.BillingAccounts method.
+type PrivateStoreClientBillingAccountsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateStoreBulkCollectionsActionOptions contains the optional parameters for the PrivateStore.BulkCollectionsAction method.
-type PrivateStoreBulkCollectionsActionOptions struct {
+// PrivateStoreClientBulkCollectionsActionOptions contains the optional parameters for the PrivateStoreClient.BulkCollectionsAction
+// method.
+type PrivateStoreClientBulkCollectionsActionOptions struct {
 	Payload *BulkCollectionsPayload
 }
 
-// PrivateStoreCollectionCreateOrUpdateOptions contains the optional parameters for the PrivateStoreCollection.CreateOrUpdate method.
-type PrivateStoreCollectionCreateOrUpdateOptions struct {
-	Payload *Collection
-}
-
-// PrivateStoreCollectionDeleteOptions contains the optional parameters for the PrivateStoreCollection.Delete method.
-type PrivateStoreCollectionDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateStoreCollectionGetOptions contains the optional parameters for the PrivateStoreCollection.Get method.
-type PrivateStoreCollectionGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateStoreCollectionListOptions contains the optional parameters for the PrivateStoreCollection.List method.
-type PrivateStoreCollectionListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateStoreCollectionOfferCreateOrUpdateOptions contains the optional parameters for the PrivateStoreCollectionOffer.CreateOrUpdate method.
-type PrivateStoreCollectionOfferCreateOrUpdateOptions struct {
-	Payload *Offer
-}
-
-// PrivateStoreCollectionOfferDeleteOptions contains the optional parameters for the PrivateStoreCollectionOffer.Delete method.
-type PrivateStoreCollectionOfferDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateStoreCollectionOfferGetOptions contains the optional parameters for the PrivateStoreCollectionOffer.Get method.
-type PrivateStoreCollectionOfferGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateStoreCollectionOfferListOptions contains the optional parameters for the PrivateStoreCollectionOffer.List method.
-type PrivateStoreCollectionOfferListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateStoreCollectionOfferPostOptions contains the optional parameters for the PrivateStoreCollectionOffer.Post method.
-type PrivateStoreCollectionOfferPostOptions struct {
-	Payload *Operation
-}
-
-// PrivateStoreCollectionPostOptions contains the optional parameters for the PrivateStoreCollection.Post method.
-type PrivateStoreCollectionPostOptions struct {
-	Payload *Operation
-}
-
-// PrivateStoreCollectionTransferOffersOptions contains the optional parameters for the PrivateStoreCollection.TransferOffers method.
-type PrivateStoreCollectionTransferOffersOptions struct {
-	Payload *TransferOffersProperties
-}
-
-// PrivateStoreCollectionsToSubscriptionsMappingOptions contains the optional parameters for the PrivateStore.CollectionsToSubscriptionsMapping method.
-type PrivateStoreCollectionsToSubscriptionsMappingOptions struct {
+// PrivateStoreClientCollectionsToSubscriptionsMappingOptions contains the optional parameters for the PrivateStoreClient.CollectionsToSubscriptionsMapping
+// method.
+type PrivateStoreClientCollectionsToSubscriptionsMappingOptions struct {
 	Payload *CollectionsToSubscriptionsMappingPayload
 }
 
-// PrivateStoreCreateApprovalRequestOptions contains the optional parameters for the PrivateStore.CreateApprovalRequest method.
-type PrivateStoreCreateApprovalRequestOptions struct {
+// PrivateStoreClientCreateApprovalRequestOptions contains the optional parameters for the PrivateStoreClient.CreateApprovalRequest
+// method.
+type PrivateStoreClientCreateApprovalRequestOptions struct {
 	Payload *RequestApprovalResource
 }
 
-// PrivateStoreCreateOrUpdateOptions contains the optional parameters for the PrivateStore.CreateOrUpdate method.
-type PrivateStoreCreateOrUpdateOptions struct {
+// PrivateStoreClientCreateOrUpdateOptions contains the optional parameters for the PrivateStoreClient.CreateOrUpdate method.
+type PrivateStoreClientCreateOrUpdateOptions struct {
 	Payload *PrivateStore
 }
 
-// PrivateStoreDeleteOptions contains the optional parameters for the PrivateStore.Delete method.
-type PrivateStoreDeleteOptions struct {
+// PrivateStoreClientDeleteOptions contains the optional parameters for the PrivateStoreClient.Delete method.
+type PrivateStoreClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateStoreGetAdminRequestApprovalOptions contains the optional parameters for the PrivateStore.GetAdminRequestApproval method.
-type PrivateStoreGetAdminRequestApprovalOptions struct {
+// PrivateStoreClientGetAdminRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.GetAdminRequestApproval
+// method.
+type PrivateStoreClientGetAdminRequestApprovalOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateStoreGetApprovalRequestsListOptions contains the optional parameters for the PrivateStore.GetApprovalRequestsList method.
-type PrivateStoreGetApprovalRequestsListOptions struct {
+// PrivateStoreClientGetApprovalRequestsListOptions contains the optional parameters for the PrivateStoreClient.GetApprovalRequestsList
+// method.
+type PrivateStoreClientGetApprovalRequestsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateStoreGetOptions contains the optional parameters for the PrivateStore.Get method.
-type PrivateStoreGetOptions struct {
+// PrivateStoreClientGetOptions contains the optional parameters for the PrivateStoreClient.Get method.
+type PrivateStoreClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateStoreGetRequestApprovalOptions contains the optional parameters for the PrivateStore.GetRequestApproval method.
-type PrivateStoreGetRequestApprovalOptions struct {
+// PrivateStoreClientGetRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.GetRequestApproval
+// method.
+type PrivateStoreClientGetRequestApprovalOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PrivateStoreClientListOptions contains the optional parameters for the PrivateStoreClient.List method.
+type PrivateStoreClientListOptions struct {
+	// Determines if to use cache or DB for serving this request
+	UseCache *string
+}
+
+// PrivateStoreClientQueryApprovedPlansOptions contains the optional parameters for the PrivateStoreClient.QueryApprovedPlans
+// method.
+type PrivateStoreClientQueryApprovedPlansOptions struct {
+	Payload *QueryApprovedPlansPayload
+}
+
+// PrivateStoreClientQueryNotificationsStateOptions contains the optional parameters for the PrivateStoreClient.QueryNotificationsState
+// method.
+type PrivateStoreClientQueryNotificationsStateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreClientQueryOffersOptions contains the optional parameters for the PrivateStoreClient.QueryOffers method.
+type PrivateStoreClientQueryOffersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreClientQueryRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.QueryRequestApproval
+// method.
+type PrivateStoreClientQueryRequestApprovalOptions struct {
+	Payload *QueryRequestApprovalProperties
+}
+
+// PrivateStoreClientUpdateAdminRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.UpdateAdminRequestApproval
+// method.
+type PrivateStoreClientUpdateAdminRequestApprovalOptions struct {
+	Payload *AdminRequestApprovalsResource
+}
+
+// PrivateStoreClientWithdrawPlanOptions contains the optional parameters for the PrivateStoreClient.WithdrawPlan method.
+type PrivateStoreClientWithdrawPlanOptions struct {
+	Payload *WithdrawProperties
+}
+
+// PrivateStoreCollectionClientCreateOrUpdateOptions contains the optional parameters for the PrivateStoreCollectionClient.CreateOrUpdate
+// method.
+type PrivateStoreCollectionClientCreateOrUpdateOptions struct {
+	Payload *Collection
+}
+
+// PrivateStoreCollectionClientDeleteOptions contains the optional parameters for the PrivateStoreCollectionClient.Delete
+// method.
+type PrivateStoreCollectionClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreCollectionClientGetOptions contains the optional parameters for the PrivateStoreCollectionClient.Get method.
+type PrivateStoreCollectionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreCollectionClientListOptions contains the optional parameters for the PrivateStoreCollectionClient.List method.
+type PrivateStoreCollectionClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreCollectionClientPostOptions contains the optional parameters for the PrivateStoreCollectionClient.Post method.
+type PrivateStoreCollectionClientPostOptions struct {
+	Payload *Operation
+}
+
+// PrivateStoreCollectionClientTransferOffersOptions contains the optional parameters for the PrivateStoreCollectionClient.TransferOffers
+// method.
+type PrivateStoreCollectionClientTransferOffersOptions struct {
+	Payload *TransferOffersProperties
+}
+
+// PrivateStoreCollectionOfferClientCreateOrUpdateOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.CreateOrUpdate
+// method.
+type PrivateStoreCollectionOfferClientCreateOrUpdateOptions struct {
+	Payload *Offer
+}
+
+// PrivateStoreCollectionOfferClientDeleteOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.Delete
+// method.
+type PrivateStoreCollectionOfferClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreCollectionOfferClientGetOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.Get
+// method.
+type PrivateStoreCollectionOfferClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreCollectionOfferClientListOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.List
+// method.
+type PrivateStoreCollectionOfferClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreCollectionOfferClientPostOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.Post
+// method.
+type PrivateStoreCollectionOfferClientPostOptions struct {
+	Payload *Operation
 }
 
 // PrivateStoreList - Describes the json payload for the list of available private stores (between zero and one, inclusive)
@@ -666,12 +759,6 @@ func (p PrivateStoreList) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
-}
-
-// PrivateStoreListOptions contains the optional parameters for the PrivateStore.List method.
-type PrivateStoreListOptions struct {
-	// Determines if to use cache or DB for serving this request
-	UseCache *string
 }
 
 // PrivateStoreNotificationsState - Get private store notifications state
@@ -735,36 +822,6 @@ func (p PrivateStoreProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateStoreQueryApprovedPlansOptions contains the optional parameters for the PrivateStore.QueryApprovedPlans method.
-type PrivateStoreQueryApprovedPlansOptions struct {
-	Payload *QueryApprovedPlansPayload
-}
-
-// PrivateStoreQueryNotificationsStateOptions contains the optional parameters for the PrivateStore.QueryNotificationsState method.
-type PrivateStoreQueryNotificationsStateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateStoreQueryOffersOptions contains the optional parameters for the PrivateStore.QueryOffers method.
-type PrivateStoreQueryOffersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateStoreQueryRequestApprovalOptions contains the optional parameters for the PrivateStore.QueryRequestApproval method.
-type PrivateStoreQueryRequestApprovalOptions struct {
-	Payload *QueryRequestApprovalProperties
-}
-
-// PrivateStoreUpdateAdminRequestApprovalOptions contains the optional parameters for the PrivateStore.UpdateAdminRequestApproval method.
-type PrivateStoreUpdateAdminRequestApprovalOptions struct {
-	Payload *AdminRequestApprovalsResource
-}
-
-// PrivateStoreWithdrawPlanOptions contains the optional parameters for the PrivateStore.WithdrawPlan method.
-type PrivateStoreWithdrawPlanOptions struct {
-	Payload *WithdrawProperties
-}
-
 // QueryApprovedPlans - Query approved plans details
 type QueryApprovedPlans struct {
 	// Offer id
@@ -790,8 +847,8 @@ type QueryApprovedPlansDetails struct {
 	// Plan id
 	PlanID *string `json:"planId,omitempty"`
 
-	// Approved subscription ids list. In case all subscriptions are approved for a plan, allSubscriptions flag is true and list is empty ( else flag is set
-	// to false). In case both subscriptions list is
+	// Approved subscription ids list. In case all subscriptions are approved for a plan, allSubscriptions flag is true and list
+	// is empty ( else flag is set to false). In case both subscriptions list is
 	// empty and allSubscriptions flag is false, the plan is not approved for any subscription.
 	SubscriptionIDs []*string `json:"subscriptionIds,omitempty"`
 }
@@ -839,7 +896,8 @@ func (q QueryOffers) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// QueryRequestApproval - Gets the request plans with indication on each plan whether is approved by the admin, has pending request or not requested yet
+// QueryRequestApproval - Gets the request plans with indication on each plan whether is approved by the admin, has pending
+// request or not requested yet
 type QueryRequestApproval struct {
 	// Gets or sets e-tag field
 	Etag *string `json:"etag,omitempty"`
@@ -917,9 +975,20 @@ func (r RequestApprovalProperties) MarshalJSON() ([]byte, error) {
 
 // RequestApprovalResource - Request approval resource.
 type RequestApprovalResource struct {
-	Resource
 	// The privateStore approval request data structure.
 	Properties *RequestApprovalProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RequestApprovalsDetails - Request approvals details
@@ -1168,8 +1237,8 @@ type TransferOffersProperties struct {
 	Properties *TransferOffersDetails `json:"properties,omitempty"`
 }
 
-// TransferOffersResponse - The transfer items response. The response contains two lists that indicate for each collection whether the operation succeeded
-// or failed
+// TransferOffersResponse - The transfer items response. The response contains two lists that indicate for each collection
+// whether the operation succeeded or failed
 type TransferOffersResponse struct {
 	// Failed collections
 	Failed []*CollectionsDetails `json:"failed,omitempty"`

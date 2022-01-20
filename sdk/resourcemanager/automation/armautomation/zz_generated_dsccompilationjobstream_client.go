@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // DscCompilationJobStreamClient contains the methods for the DscCompilationJobStream group.
 // Don't use this type directly, use NewDscCompilationJobStreamClient() instead.
 type DscCompilationJobStreamClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDscCompilationJobStreamClient creates a new instance of DscCompilationJobStreamClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDscCompilationJobStreamClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscCompilationJobStreamClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DscCompilationJobStreamClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DscCompilationJobStreamClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByJob - Retrieve all the job streams for the compilation Job.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DscCompilationJobStreamClient) ListByJob(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string, options *DscCompilationJobStreamListByJobOptions) (DscCompilationJobStreamListByJobResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobID - The job id.
+// options - DscCompilationJobStreamClientListByJobOptions contains the optional parameters for the DscCompilationJobStreamClient.ListByJob
+// method.
+func (client *DscCompilationJobStreamClient) ListByJob(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string, options *DscCompilationJobStreamClientListByJobOptions) (DscCompilationJobStreamClientListByJobResponse, error) {
 	req, err := client.listByJobCreateRequest(ctx, resourceGroupName, automationAccountName, jobID, options)
 	if err != nil {
-		return DscCompilationJobStreamListByJobResponse{}, err
+		return DscCompilationJobStreamClientListByJobResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DscCompilationJobStreamListByJobResponse{}, err
+		return DscCompilationJobStreamClientListByJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DscCompilationJobStreamListByJobResponse{}, client.listByJobHandleError(resp)
+		return DscCompilationJobStreamClientListByJobResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByJobHandleResponse(resp)
 }
 
 // listByJobCreateRequest creates the ListByJob request.
-func (client *DscCompilationJobStreamClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string, options *DscCompilationJobStreamListByJobOptions) (*policy.Request, error) {
+func (client *DscCompilationJobStreamClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string, options *DscCompilationJobStreamClientListByJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{jobId}/streams"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -75,7 +88,7 @@ func (client *DscCompilationJobStreamClient) listByJobCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,23 +100,10 @@ func (client *DscCompilationJobStreamClient) listByJobCreateRequest(ctx context.
 }
 
 // listByJobHandleResponse handles the ListByJob response.
-func (client *DscCompilationJobStreamClient) listByJobHandleResponse(resp *http.Response) (DscCompilationJobStreamListByJobResponse, error) {
-	result := DscCompilationJobStreamListByJobResponse{RawResponse: resp}
+func (client *DscCompilationJobStreamClient) listByJobHandleResponse(resp *http.Response) (DscCompilationJobStreamClientListByJobResponse, error) {
+	result := DscCompilationJobStreamClientListByJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStreamListResult); err != nil {
-		return DscCompilationJobStreamListByJobResponse{}, runtime.NewResponseError(err, resp)
+		return DscCompilationJobStreamClientListByJobResponse{}, err
 	}
 	return result, nil
-}
-
-// listByJobHandleError handles the ListByJob error response.
-func (client *DscCompilationJobStreamClient) listByJobHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

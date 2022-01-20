@@ -104,7 +104,7 @@ func ExampleRoleInstancesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RoleInstance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RoleInstancesClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/RoleInstanceListByVendorNetworkFunction.json
@@ -119,12 +119,16 @@ func ExampleRoleInstancesClient_List() {
 		"<vendor-name>",
 		"<service-key>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RoleInstance.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

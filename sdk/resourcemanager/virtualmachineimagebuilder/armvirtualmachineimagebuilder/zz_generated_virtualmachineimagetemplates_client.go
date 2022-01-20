@@ -11,7 +11,6 @@ package armvirtualmachineimagebuilder
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // VirtualMachineImageTemplatesClient contains the methods for the VirtualMachineImageTemplates group.
 // Don't use this type directly, use NewVirtualMachineImageTemplatesClient() instead.
 type VirtualMachineImageTemplatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineImageTemplatesClient creates a new instance of VirtualMachineImageTemplatesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription Id forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineImageTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineImageTemplatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VirtualMachineImageTemplatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineImageTemplatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCancel - Cancel the long running image build based on the image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) BeginCancel(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginCancelOptions) (VirtualMachineImageTemplatesCancelPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// imageTemplateName - The name of the image Template
+// options - VirtualMachineImageTemplatesClientBeginCancelOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCancel
+// method.
+func (client *VirtualMachineImageTemplatesClient) BeginCancel(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginCancelOptions) (VirtualMachineImageTemplatesClientCancelPollerResponse, error) {
 	resp, err := client.cancel(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
-		return VirtualMachineImageTemplatesCancelPollerResponse{}, err
+		return VirtualMachineImageTemplatesClientCancelPollerResponse{}, err
 	}
-	result := VirtualMachineImageTemplatesCancelPollerResponse{
+	result := VirtualMachineImageTemplatesClientCancelPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.Cancel", "azure-async-operation", resp, client.pl, client.cancelHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.Cancel", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualMachineImageTemplatesCancelPollerResponse{}, err
+		return VirtualMachineImageTemplatesClientCancelPollerResponse{}, err
 	}
-	result.Poller = &VirtualMachineImageTemplatesCancelPoller{
+	result.Poller = &VirtualMachineImageTemplatesClientCancelPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Cancel - Cancel the long running image build based on the image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) cancel(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginCancelOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineImageTemplatesClient) cancel(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginCancelOptions) (*http.Response, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *VirtualMachineImageTemplatesClient) cancel(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.cancelHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginCancelOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx contex
 		return nil, errors.New("parameter imageTemplateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,34 @@ func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx contex
 	return req, nil
 }
 
-// cancelHandleError handles the Cancel error response.
-func (client *VirtualMachineImageTemplatesClient) cancelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Create or update a virtual machine image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesBeginCreateOrUpdateOptions) (VirtualMachineImageTemplatesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// imageTemplateName - The name of the image Template
+// parameters - Parameters supplied to the CreateImageTemplate operation
+// options - VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCreateOrUpdate
+// method.
+func (client *VirtualMachineImageTemplatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, imageTemplateName, parameters, options)
 	if err != nil {
-		return VirtualMachineImageTemplatesCreateOrUpdatePollerResponse{}, err
+		return VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineImageTemplatesCreateOrUpdatePollerResponse{
+	result := VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualMachineImageTemplatesCreateOrUpdatePollerResponse{}, err
+		return VirtualMachineImageTemplatesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &VirtualMachineImageTemplatesCreateOrUpdatePoller{
+	result.Poller = &VirtualMachineImageTemplatesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a virtual machine image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineImageTemplatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, imageTemplateName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +154,13 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdate(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +174,7 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter imageTemplateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,42 +185,33 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ct
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualMachineImageTemplatesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a virtual machine image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginDeleteOptions) (VirtualMachineImageTemplatesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// imageTemplateName - The name of the image Template
+// options - VirtualMachineImageTemplatesClientBeginDeleteOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginDelete
+// method.
+func (client *VirtualMachineImageTemplatesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginDeleteOptions) (VirtualMachineImageTemplatesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
-		return VirtualMachineImageTemplatesDeletePollerResponse{}, err
+		return VirtualMachineImageTemplatesClientDeletePollerResponse{}, err
 	}
-	result := VirtualMachineImageTemplatesDeletePollerResponse{
+	result := VirtualMachineImageTemplatesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualMachineImageTemplatesDeletePollerResponse{}, err
+		return VirtualMachineImageTemplatesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &VirtualMachineImageTemplatesDeletePoller{
+	result.Poller = &VirtualMachineImageTemplatesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a virtual machine image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) deleteOperation(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineImageTemplatesClient) deleteOperation(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
 		return nil, err
@@ -226,13 +221,13 @@ func (client *VirtualMachineImageTemplatesClient) deleteOperation(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginDeleteOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -246,7 +241,7 @@ func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx contex
 		return nil, errors.New("parameter imageTemplateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,38 +252,29 @@ func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx contex
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VirtualMachineImageTemplatesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get information about a virtual machine image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) Get(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesGetOptions) (VirtualMachineImageTemplatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// imageTemplateName - The name of the image Template
+// options - VirtualMachineImageTemplatesClientGetOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.Get
+// method.
+func (client *VirtualMachineImageTemplatesClient) Get(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientGetOptions) (VirtualMachineImageTemplatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
-		return VirtualMachineImageTemplatesGetResponse{}, err
+		return VirtualMachineImageTemplatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineImageTemplatesGetResponse{}, err
+		return VirtualMachineImageTemplatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualMachineImageTemplatesGetResponse{}, client.getHandleError(resp)
+		return VirtualMachineImageTemplatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesGetOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -302,7 +288,7 @@ func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter imageTemplateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -314,46 +300,38 @@ func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineImageTemplatesClient) getHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesGetResponse, error) {
-	result := VirtualMachineImageTemplatesGetResponse{RawResponse: resp}
+func (client *VirtualMachineImageTemplatesClient) getHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientGetResponse, error) {
+	result := VirtualMachineImageTemplatesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageTemplate); err != nil {
-		return VirtualMachineImageTemplatesGetResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineImageTemplatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VirtualMachineImageTemplatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetRunOutput - Get the specified run output for the specified image template resource
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) GetRunOutput(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string, options *VirtualMachineImageTemplatesGetRunOutputOptions) (VirtualMachineImageTemplatesGetRunOutputResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// imageTemplateName - The name of the image Template
+// runOutputName - The name of the run output
+// options - VirtualMachineImageTemplatesClientGetRunOutputOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.GetRunOutput
+// method.
+func (client *VirtualMachineImageTemplatesClient) GetRunOutput(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string, options *VirtualMachineImageTemplatesClientGetRunOutputOptions) (VirtualMachineImageTemplatesClientGetRunOutputResponse, error) {
 	req, err := client.getRunOutputCreateRequest(ctx, resourceGroupName, imageTemplateName, runOutputName, options)
 	if err != nil {
-		return VirtualMachineImageTemplatesGetRunOutputResponse{}, err
+		return VirtualMachineImageTemplatesClientGetRunOutputResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineImageTemplatesGetRunOutputResponse{}, err
+		return VirtualMachineImageTemplatesClientGetRunOutputResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualMachineImageTemplatesGetRunOutputResponse{}, client.getRunOutputHandleError(resp)
+		return VirtualMachineImageTemplatesClientGetRunOutputResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getRunOutputHandleResponse(resp)
 }
 
 // getRunOutputCreateRequest creates the GetRunOutput request.
-func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string, options *VirtualMachineImageTemplatesGetRunOutputOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string, options *VirtualMachineImageTemplatesClientGetRunOutputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs/{runOutputName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -371,7 +349,7 @@ func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx 
 		return nil, errors.New("parameter runOutputName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runOutputName}", url.PathEscape(runOutputName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -383,49 +361,38 @@ func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx 
 }
 
 // getRunOutputHandleResponse handles the GetRunOutput response.
-func (client *VirtualMachineImageTemplatesClient) getRunOutputHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesGetRunOutputResponse, error) {
-	result := VirtualMachineImageTemplatesGetRunOutputResponse{RawResponse: resp}
+func (client *VirtualMachineImageTemplatesClient) getRunOutputHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientGetRunOutputResponse, error) {
+	result := VirtualMachineImageTemplatesClientGetRunOutputResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunOutput); err != nil {
-		return VirtualMachineImageTemplatesGetRunOutputResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineImageTemplatesClientGetRunOutputResponse{}, err
 	}
 	return result, nil
 }
 
-// getRunOutputHandleError handles the GetRunOutput error response.
-func (client *VirtualMachineImageTemplatesClient) getRunOutputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets information about the VM image templates associated with the subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) List(options *VirtualMachineImageTemplatesListOptions) *VirtualMachineImageTemplatesListPager {
-	return &VirtualMachineImageTemplatesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - VirtualMachineImageTemplatesClientListOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.List
+// method.
+func (client *VirtualMachineImageTemplatesClient) List(options *VirtualMachineImageTemplatesClientListOptions) *VirtualMachineImageTemplatesClientListPager {
+	return &VirtualMachineImageTemplatesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualMachineImageTemplatesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualMachineImageTemplatesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ImageTemplateListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.Context, options *VirtualMachineImageTemplatesListOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.Context, options *VirtualMachineImageTemplatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -437,43 +404,33 @@ func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineImageTemplatesClient) listHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesListResponse, error) {
-	result := VirtualMachineImageTemplatesListResponse{RawResponse: resp}
+func (client *VirtualMachineImageTemplatesClient) listHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientListResponse, error) {
+	result := VirtualMachineImageTemplatesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageTemplateListResult); err != nil {
-		return VirtualMachineImageTemplatesListResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineImageTemplatesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *VirtualMachineImageTemplatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Gets information about the VM image templates associated with the specified resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) ListByResourceGroup(resourceGroupName string, options *VirtualMachineImageTemplatesListByResourceGroupOptions) *VirtualMachineImageTemplatesListByResourceGroupPager {
-	return &VirtualMachineImageTemplatesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - VirtualMachineImageTemplatesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.ListByResourceGroup
+// method.
+func (client *VirtualMachineImageTemplatesClient) ListByResourceGroup(resourceGroupName string, options *VirtualMachineImageTemplatesClientListByResourceGroupOptions) *VirtualMachineImageTemplatesClientListByResourceGroupPager {
+	return &VirtualMachineImageTemplatesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualMachineImageTemplatesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualMachineImageTemplatesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ImageTemplateListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualMachineImageTemplatesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualMachineImageTemplatesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -483,7 +440,7 @@ func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -495,43 +452,34 @@ func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateReque
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *VirtualMachineImageTemplatesClient) listByResourceGroupHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesListByResourceGroupResponse, error) {
-	result := VirtualMachineImageTemplatesListByResourceGroupResponse{RawResponse: resp}
+func (client *VirtualMachineImageTemplatesClient) listByResourceGroupHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientListByResourceGroupResponse, error) {
+	result := VirtualMachineImageTemplatesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageTemplateListResult); err != nil {
-		return VirtualMachineImageTemplatesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineImageTemplatesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *VirtualMachineImageTemplatesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListRunOutputs - List all run outputs for the specified Image Template resource
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) ListRunOutputs(resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesListRunOutputsOptions) *VirtualMachineImageTemplatesListRunOutputsPager {
-	return &VirtualMachineImageTemplatesListRunOutputsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// imageTemplateName - The name of the image Template
+// options - VirtualMachineImageTemplatesClientListRunOutputsOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.ListRunOutputs
+// method.
+func (client *VirtualMachineImageTemplatesClient) ListRunOutputs(resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientListRunOutputsOptions) *VirtualMachineImageTemplatesClientListRunOutputsPager {
+	return &VirtualMachineImageTemplatesClientListRunOutputsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listRunOutputsCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualMachineImageTemplatesListRunOutputsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualMachineImageTemplatesClientListRunOutputsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RunOutputCollection.NextLink)
 		},
 	}
 }
 
 // listRunOutputsCreateRequest creates the ListRunOutputs request.
-func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesListRunOutputsOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientListRunOutputsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -545,7 +493,7 @@ func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ct
 		return nil, errors.New("parameter imageTemplateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -557,50 +505,41 @@ func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ct
 }
 
 // listRunOutputsHandleResponse handles the ListRunOutputs response.
-func (client *VirtualMachineImageTemplatesClient) listRunOutputsHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesListRunOutputsResponse, error) {
-	result := VirtualMachineImageTemplatesListRunOutputsResponse{RawResponse: resp}
+func (client *VirtualMachineImageTemplatesClient) listRunOutputsHandleResponse(resp *http.Response) (VirtualMachineImageTemplatesClientListRunOutputsResponse, error) {
+	result := VirtualMachineImageTemplatesClientListRunOutputsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunOutputCollection); err != nil {
-		return VirtualMachineImageTemplatesListRunOutputsResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineImageTemplatesClientListRunOutputsResponse{}, err
 	}
 	return result, nil
 }
 
-// listRunOutputsHandleError handles the ListRunOutputs error response.
-func (client *VirtualMachineImageTemplatesClient) listRunOutputsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRun - Create artifacts from a existing image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) BeginRun(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginRunOptions) (VirtualMachineImageTemplatesRunPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// imageTemplateName - The name of the image Template
+// options - VirtualMachineImageTemplatesClientBeginRunOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginRun
+// method.
+func (client *VirtualMachineImageTemplatesClient) BeginRun(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginRunOptions) (VirtualMachineImageTemplatesClientRunPollerResponse, error) {
 	resp, err := client.run(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
-		return VirtualMachineImageTemplatesRunPollerResponse{}, err
+		return VirtualMachineImageTemplatesClientRunPollerResponse{}, err
 	}
-	result := VirtualMachineImageTemplatesRunPollerResponse{
+	result := VirtualMachineImageTemplatesClientRunPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.Run", "azure-async-operation", resp, client.pl, client.runHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.Run", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualMachineImageTemplatesRunPollerResponse{}, err
+		return VirtualMachineImageTemplatesClientRunPollerResponse{}, err
 	}
-	result.Poller = &VirtualMachineImageTemplatesRunPoller{
+	result.Poller = &VirtualMachineImageTemplatesClientRunPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Run - Create artifacts from a existing image template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) run(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginRunOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineImageTemplatesClient) run(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginRunOptions) (*http.Response, error) {
 	req, err := client.runCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
 		return nil, err
@@ -610,13 +549,13 @@ func (client *VirtualMachineImageTemplatesClient) run(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.runHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // runCreateRequest creates the Run request.
-func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesBeginRunOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/run"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -630,7 +569,7 @@ func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.C
 		return nil, errors.New("parameter imageTemplateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -641,42 +580,34 @@ func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.C
 	return req, nil
 }
 
-// runHandleError handles the Run error response.
-func (client *VirtualMachineImageTemplatesClient) runHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update the tags for this Virtual Machine Image Template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesBeginUpdateOptions) (VirtualMachineImageTemplatesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// imageTemplateName - The name of the image Template
+// parameters - Additional parameters for Image Template update.
+// options - VirtualMachineImageTemplatesClientBeginUpdateOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginUpdate
+// method.
+func (client *VirtualMachineImageTemplatesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesClientBeginUpdateOptions) (VirtualMachineImageTemplatesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, imageTemplateName, parameters, options)
 	if err != nil {
-		return VirtualMachineImageTemplatesUpdatePollerResponse{}, err
+		return VirtualMachineImageTemplatesClientUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineImageTemplatesUpdatePollerResponse{
+	result := VirtualMachineImageTemplatesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("VirtualMachineImageTemplatesClient.Update", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualMachineImageTemplatesUpdatePollerResponse{}, err
+		return VirtualMachineImageTemplatesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &VirtualMachineImageTemplatesUpdatePoller{
+	result.Poller = &VirtualMachineImageTemplatesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update the tags for this Virtual Machine Image Template
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineImageTemplatesClient) update(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineImageTemplatesClient) update(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, imageTemplateName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -686,13 +617,13 @@ func (client *VirtualMachineImageTemplatesClient) update(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesBeginUpdateOptions) (*policy.Request, error) {
+func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -706,7 +637,7 @@ func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx contex
 		return nil, errors.New("parameter imageTemplateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -715,17 +646,4 @@ func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx contex
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *VirtualMachineImageTemplatesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

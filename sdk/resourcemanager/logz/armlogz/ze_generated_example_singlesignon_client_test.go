@@ -29,12 +29,16 @@ func ExampleSingleSignOnClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LogzSingleSignOnResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,7 +55,7 @@ func ExampleSingleSignOnClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<monitor-name>",
 		"<configuration-name>",
-		&armlogz.SingleSignOnBeginCreateOrUpdateOptions{Body: nil})
+		&armlogz.SingleSignOnClientBeginCreateOrUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,7 +63,7 @@ func ExampleSingleSignOnClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogzSingleSignOnResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SingleSignOnClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SingleSignOnConfigurations_Get.json
@@ -78,5 +82,5 @@ func ExampleSingleSignOnClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogzSingleSignOnResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SingleSignOnClientGetResult)
 }

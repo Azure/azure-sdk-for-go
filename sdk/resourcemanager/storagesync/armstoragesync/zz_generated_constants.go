@@ -9,8 +9,8 @@
 package armstoragesync
 
 const (
-	module  = "armstoragesync"
-	version = "v0.1.0"
+	moduleName    = "armstoragesync"
+	moduleVersion = "v0.2.0"
 )
 
 // ChangeDetectionMode - Change Detection Mode. Applies to a directory specified in directoryPath parameter.
@@ -162,7 +162,8 @@ func (c InitialUploadPolicy) ToPtr() *InitialUploadPolicy {
 	return &c
 }
 
-// LocalCacheMode - Policy for enabling follow-the-sun business models: link local cache to cloud behavior to pre-populate before local access.
+// LocalCacheMode - Policy for enabling follow-the-sun business models: link local cache to cloud behavior to pre-populate
+// before local access.
 type LocalCacheMode string
 
 const (
@@ -183,8 +184,8 @@ func (c LocalCacheMode) ToPtr() *LocalCacheMode {
 	return &c
 }
 
-// NameAvailabilityReason - Gets the reason that a Storage Sync Service name could not be used. The Reason element is only returned if NameAvailable is
-// false.
+// NameAvailabilityReason - Gets the reason that a Storage Sync Service name could not be used. The Reason element is only
+// returned if NameAvailable is false.
 type NameAvailabilityReason string
 
 const (

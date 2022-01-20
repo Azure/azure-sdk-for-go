@@ -24,13 +24,14 @@ func ExampleWorkflowsClient_ListByStorageSyncService() {
 	}
 	ctx := context.Background()
 	client := armstoragesync.NewWorkflowsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByStorageSyncService(ctx,
+	res, err := client.ListByStorageSyncService(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkflowsClientListByStorageSyncServiceResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/Workflows_Get.json
@@ -49,7 +50,7 @@ func ExampleWorkflowsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workflow.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkflowsClientGetResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/Workflows_Abort.json

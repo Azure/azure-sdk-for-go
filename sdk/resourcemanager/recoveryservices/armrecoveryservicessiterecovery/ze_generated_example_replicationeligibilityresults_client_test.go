@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationEligibilityResults_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationEligibilityResults_List.json
 func ExampleReplicationEligibilityResultsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,15 +25,16 @@ func ExampleReplicationEligibilityResultsClient_List() {
 	ctx := context.Background()
 	client := armrecoveryservicessiterecovery.NewReplicationEligibilityResultsClient("<resource-group-name>",
 		"<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<virtual-machine-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ReplicationEligibilityResultsClientListResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationEligibilityResults_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationEligibilityResults_Get.json
 func ExampleReplicationEligibilityResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,5 +49,5 @@ func ExampleReplicationEligibilityResultsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationEligibilityResults.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationEligibilityResultsClientGetResult)
 }

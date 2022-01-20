@@ -17,16 +17,40 @@ import (
 
 // AzureStackEdgeFormat - The reference to the Azure stack edge device.
 type AzureStackEdgeFormat struct {
-	DevicePropertiesFormat
 	// REQUIRED; The reference to the Azure stack edge device.
 	AzureStackEdge *SubResource `json:"azureStackEdge,omitempty"`
+
+	// REQUIRED; The type of the device.
+	DeviceType *DeviceType `json:"deviceType,omitempty"`
+
+	// READ-ONLY; The list of network functions deployed on the device.
+	NetworkFunctions []*SubResource `json:"networkFunctions,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the device resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current device status.
+	Status *Status `json:"status,omitempty" azure:"ro"`
+}
+
+// GetDevicePropertiesFormat implements the DevicePropertiesFormatClassification interface for type AzureStackEdgeFormat.
+func (a *AzureStackEdgeFormat) GetDevicePropertiesFormat() *DevicePropertiesFormat {
+	return &DevicePropertiesFormat{
+		Status:            a.Status,
+		ProvisioningState: a.ProvisioningState,
+		DeviceType:        a.DeviceType,
+		NetworkFunctions:  a.NetworkFunctions,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureStackEdgeFormat.
 func (a AzureStackEdgeFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.DevicePropertiesFormat.marshalInternal(objectMap, DeviceTypeAzureStackEdge)
 	populate(objectMap, "azureStackEdge", a.AzureStackEdge)
+	objectMap["deviceType"] = DeviceTypeAzureStackEdge
+	populate(objectMap, "networkFunctions", a.NetworkFunctions)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "status", a.Status)
 	return json.Marshal(objectMap)
 }
 
@@ -42,13 +66,22 @@ func (a *AzureStackEdgeFormat) UnmarshalJSON(data []byte) error {
 		case "azureStackEdge":
 			err = unpopulate(val, &a.AzureStackEdge)
 			delete(rawMsg, key)
+		case "deviceType":
+			err = unpopulate(val, &a.DeviceType)
+			delete(rawMsg, key)
+		case "networkFunctions":
+			err = unpopulate(val, &a.NetworkFunctions)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &a.Status)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.DevicePropertiesFormat.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -66,7 +99,8 @@ type DataDisk struct {
 	// Specifies how the virtual machine should be created.
 	CreateOption *DiskCreateOptionTypes `json:"createOption,omitempty"`
 
-	// Specifies the size of an empty disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image.
+	// Specifies the size of an empty disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual
+	// machine image.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
 	// The name of data disk.
@@ -75,20 +109,38 @@ type DataDisk struct {
 
 // Device resource.
 type Device struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Device properties.
 	Properties DevicePropertiesFormatClassification `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Device.
 func (d Device) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -101,19 +153,31 @@ func (d *Device) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &d.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &d.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &d.Name)
+			delete(rawMsg, key)
 		case "properties":
 			d.Properties, err = unmarshalDevicePropertiesFormatClassification(val)
 			delete(rawMsg, key)
 		case "systemData":
 			err = unpopulate(val, &d.SystemData)
 			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &d.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &d.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.TrackedResource.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -162,45 +226,14 @@ type DevicePropertiesFormat struct {
 // GetDevicePropertiesFormat implements the DevicePropertiesFormatClassification interface for type DevicePropertiesFormat.
 func (d *DevicePropertiesFormat) GetDevicePropertiesFormat() *DevicePropertiesFormat { return d }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DevicePropertiesFormat.
-func (d *DevicePropertiesFormat) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DevicePropertiesFormat) marshalInternal(objectMap map[string]interface{}, discValue DeviceType) {
-	d.DeviceType = &discValue
+// MarshalJSON implements the json.Marshaller interface for type DevicePropertiesFormat.
+func (d DevicePropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	objectMap["deviceType"] = d.DeviceType
 	populate(objectMap, "networkFunctions", d.NetworkFunctions)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "status", d.Status)
-}
-
-func (d *DevicePropertiesFormat) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "deviceType":
-			err = unpopulate(val, &d.DeviceType)
-			delete(rawMsg, key)
-		case "networkFunctions":
-			err = unpopulate(val, &d.NetworkFunctions)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &d.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return json.Marshal(objectMap)
 }
 
 // DeviceRegistrationKey - The device registration key.
@@ -209,38 +242,38 @@ type DeviceRegistrationKey struct {
 	RegistrationKey *string `json:"registrationKey,omitempty" azure:"ro"`
 }
 
-// DevicesBeginCreateOrUpdateOptions contains the optional parameters for the Devices.BeginCreateOrUpdate method.
-type DevicesBeginCreateOrUpdateOptions struct {
+// DevicesClientBeginCreateOrUpdateOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdate method.
+type DevicesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesBeginDeleteOptions contains the optional parameters for the Devices.BeginDelete method.
-type DevicesBeginDeleteOptions struct {
+// DevicesClientBeginDeleteOptions contains the optional parameters for the DevicesClient.BeginDelete method.
+type DevicesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesGetOptions contains the optional parameters for the Devices.Get method.
-type DevicesGetOptions struct {
+// DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
+type DevicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesListByResourceGroupOptions contains the optional parameters for the Devices.ListByResourceGroup method.
-type DevicesListByResourceGroupOptions struct {
+// DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup method.
+type DevicesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesListBySubscriptionOptions contains the optional parameters for the Devices.ListBySubscription method.
-type DevicesListBySubscriptionOptions struct {
+// DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription method.
+type DevicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesListRegistrationKeyOptions contains the optional parameters for the Devices.ListRegistrationKey method.
-type DevicesListRegistrationKeyOptions struct {
+// DevicesClientListRegistrationKeyOptions contains the optional parameters for the DevicesClient.ListRegistrationKey method.
+type DevicesClientListRegistrationKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesUpdateTagsOptions contains the optional parameters for the Devices.UpdateTags method.
-type DevicesUpdateTagsOptions struct {
+// DevicesClientUpdateTagsOptions contains the optional parameters for the DevicesClient.UpdateTags method.
+type DevicesClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -282,19 +315,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ImageReference - The image reference properties.
@@ -311,10 +336,10 @@ type ImageReference struct {
 	// The image SKU.
 	SKU *string `json:"sku,omitempty"`
 
-	// Specifies the version of the image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build
-	// are decimal numbers. Specify 'latest' to use the
-	// latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time even if a
-	// new version becomes available.
+	// Specifies the version of the image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'.
+	// Major, Minor, and Build are decimal numbers. Specify 'latest' to use the
+	// latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update
+	// after deploy time even if a new version becomes available.
 	Version *string `json:"version,omitempty"`
 }
 
@@ -326,54 +351,43 @@ type LinuxConfiguration struct {
 
 // NetworkFunction - Network function resource response.
 type NetworkFunction struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 
 	// Network function properties.
 	Properties *NetworkFunctionPropertiesFormat `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NetworkFunction.
 func (n NetworkFunction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", n.Etag)
+	populate(objectMap, "id", n.ID)
+	populate(objectMap, "location", n.Location)
+	populate(objectMap, "name", n.Name)
 	populate(objectMap, "properties", n.Properties)
 	populate(objectMap, "systemData", n.SystemData)
+	populate(objectMap, "tags", n.Tags)
+	populate(objectMap, "type", n.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkFunction.
-func (n *NetworkFunction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &n.Etag)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &n.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &n.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := n.TrackedResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // NetworkFunctionListResult - Response for network function API service call.
@@ -454,7 +468,8 @@ type NetworkFunctionRoleConfiguration struct {
 	// The network interface configurations.
 	NetworkInterfaces []*NetworkInterface `json:"networkInterfaces,omitempty"`
 
-	// Specifies the operating system settings for the role instance. This value can be updated during the deployment of network function.
+	// Specifies the operating system settings for the role instance. This value can be updated during the deployment of network
+	// function.
 	OSProfile *OsProfile `json:"osProfile,omitempty"`
 
 	// The name of the network function role.
@@ -611,8 +626,8 @@ func (n NetworkFunctionUserConfiguration) MarshalJSON() ([]byte, error) {
 
 // NetworkFunctionUserConfigurationOsProfile - Specifies the operating system settings for the role instance.
 type NetworkFunctionUserConfigurationOsProfile struct {
-	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved as a file on the virtual machine.
-	// The maximum length of the binary array is
+	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved
+	// as a file on the virtual machine. The maximum length of the binary array is
 	// 65535 bytes.
 	// Note: Do not pass any secrets or passwords in customData property
 	// This property cannot be updated after the VM is created.
@@ -670,48 +685,53 @@ func (n NetworkFunctionVendorListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// NetworkFunctionVendorSKUsListBySKUOptions contains the optional parameters for the NetworkFunctionVendorSKUs.ListBySKU method.
-type NetworkFunctionVendorSKUsListBySKUOptions struct {
+// NetworkFunctionVendorSKUsClientListBySKUOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.ListBySKU
+// method.
+type NetworkFunctionVendorSKUsClientListBySKUOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFunctionVendorSKUsListByVendorOptions contains the optional parameters for the NetworkFunctionVendorSKUs.ListByVendor method.
-type NetworkFunctionVendorSKUsListByVendorOptions struct {
+// NetworkFunctionVendorSKUsClientListByVendorOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.ListByVendor
+// method.
+type NetworkFunctionVendorSKUsClientListByVendorOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFunctionVendorsListOptions contains the optional parameters for the NetworkFunctionVendors.List method.
-type NetworkFunctionVendorsListOptions struct {
+// NetworkFunctionVendorsClientListOptions contains the optional parameters for the NetworkFunctionVendorsClient.List method.
+type NetworkFunctionVendorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFunctionsBeginCreateOrUpdateOptions contains the optional parameters for the NetworkFunctions.BeginCreateOrUpdate method.
-type NetworkFunctionsBeginCreateOrUpdateOptions struct {
+// NetworkFunctionsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkFunctionsClient.BeginCreateOrUpdate
+// method.
+type NetworkFunctionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFunctionsBeginDeleteOptions contains the optional parameters for the NetworkFunctions.BeginDelete method.
-type NetworkFunctionsBeginDeleteOptions struct {
+// NetworkFunctionsClientBeginDeleteOptions contains the optional parameters for the NetworkFunctionsClient.BeginDelete method.
+type NetworkFunctionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFunctionsGetOptions contains the optional parameters for the NetworkFunctions.Get method.
-type NetworkFunctionsGetOptions struct {
+// NetworkFunctionsClientGetOptions contains the optional parameters for the NetworkFunctionsClient.Get method.
+type NetworkFunctionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFunctionsListByResourceGroupOptions contains the optional parameters for the NetworkFunctions.ListByResourceGroup method.
-type NetworkFunctionsListByResourceGroupOptions struct {
+// NetworkFunctionsClientListByResourceGroupOptions contains the optional parameters for the NetworkFunctionsClient.ListByResourceGroup
+// method.
+type NetworkFunctionsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFunctionsListBySubscriptionOptions contains the optional parameters for the NetworkFunctions.ListBySubscription method.
-type NetworkFunctionsListBySubscriptionOptions struct {
+// NetworkFunctionsClientListBySubscriptionOptions contains the optional parameters for the NetworkFunctionsClient.ListBySubscription
+// method.
+type NetworkFunctionsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFunctionsUpdateTagsOptions contains the optional parameters for the NetworkFunctions.UpdateTags method.
-type NetworkFunctionsUpdateTagsOptions struct {
+// NetworkFunctionsClientUpdateTagsOptions contains the optional parameters for the NetworkFunctionsClient.UpdateTags method.
+type NetworkFunctionsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -814,8 +834,8 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -823,8 +843,8 @@ type OperationsListOptions struct {
 // For more information about disks, see About disks and VHDs for Azure virtual machines
 // [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json].
 type OsDisk struct {
-	// Specifies the size of os disk in gigabytes. This is the fully expanded disk size needed of the VHD image on the ASE. This disk size should be greater
-	// than the size of the VHD provided in vhdUri.
+	// Specifies the size of os disk in gigabytes. This is the fully expanded disk size needed of the VHD image on the ASE. This
+	// disk size should be greater than the size of the VHD provided in vhdUri.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
 	// The VHD name.
@@ -841,20 +861,21 @@ type OsDisk struct {
 type OsProfile struct {
 	// Specifies the name of the administrator account.
 	// Windows-only restriction: Cannot end in "."
-	// Disallowed values: "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2",
-	// "aspnet", "backup", "console", "david", "guest",
+	// Disallowed values: "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123",
+	// "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest",
 	// "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
 	// Minimum-length (Linux): 1 character
 	// Max-length (Linux): 64 characters
 	// Max-length (Windows): 20 characters
 	// For root access to the Linux VM, see Using root privileges on Linux virtual machines in Azure
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-use-root-privileges?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json]
-	// For a list of built-in system users on Linux that should not be used in this field, see Selecting User Names for Linux on Azure
+	// For a list of built-in system users on Linux that should not be used in this field, see Selecting User Names for Linux
+	// on Azure
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-usernames?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json].
 	AdminUsername *string `json:"adminUsername,omitempty"`
 
-	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved as a file on the virtual machine.
-	// The maximum length of the binary array is
+	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved
+	// as a file on the virtual machine. The maximum length of the binary array is
 	// 65535 bytes.
 	// Note: Do not pass any secrets or passwords in customData property
 	// This property cannot be updated after the VM is created.
@@ -915,20 +936,17 @@ func (p PreviewSubscriptionsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
-}
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
 
-func (p *ProxyResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -941,49 +959,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RoleInstance - The role instance sub resource.
@@ -1013,28 +988,28 @@ type RoleInstanceProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// RoleInstancesBeginRestartOptions contains the optional parameters for the RoleInstances.BeginRestart method.
-type RoleInstancesBeginRestartOptions struct {
+// RoleInstancesClientBeginRestartOptions contains the optional parameters for the RoleInstancesClient.BeginRestart method.
+type RoleInstancesClientBeginRestartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleInstancesBeginStartOptions contains the optional parameters for the RoleInstances.BeginStart method.
-type RoleInstancesBeginStartOptions struct {
+// RoleInstancesClientBeginStartOptions contains the optional parameters for the RoleInstancesClient.BeginStart method.
+type RoleInstancesClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleInstancesBeginStopOptions contains the optional parameters for the RoleInstances.BeginStop method.
-type RoleInstancesBeginStopOptions struct {
+// RoleInstancesClientBeginStopOptions contains the optional parameters for the RoleInstancesClient.BeginStop method.
+type RoleInstancesClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleInstancesGetOptions contains the optional parameters for the RoleInstances.Get method.
-type RoleInstancesGetOptions struct {
+// RoleInstancesClientGetOptions contains the optional parameters for the RoleInstancesClient.Get method.
+type RoleInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleInstancesListOptions contains the optional parameters for the RoleInstances.List method.
-type RoleInstancesListOptions struct {
+// RoleInstancesClientListOptions contains the optional parameters for the RoleInstancesClient.List method.
+type RoleInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1060,15 +1035,17 @@ func (s SSHConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SSHPublicKey - Contains information about SSH certificate public key and the path on the Linux VM where the public key is placed.
+// SSHPublicKey - Contains information about SSH certificate public key and the path on the Linux VM where the public key
+// is placed.
 type SSHPublicKey struct {
-	// SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa format.
+	// SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa
+	// format.
 	// For creating ssh keys, see Create SSH keys on Linux and Mac for Linux VMs in Azure
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json].
 	KeyData *string `json:"keyData,omitempty"`
 
-	// Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key is appended to the file. Example:
-	// /home/user/.ssh/authorized_keys
+	// Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key
+	// is appended to the file. Example: /home/user/.ssh/authorized_keys
 	Path *string `json:"path,omitempty"`
 }
 
@@ -1180,102 +1157,52 @@ func (t TagsObject) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TrackedResource.
-func (t *TrackedResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return t.unmarshalInternal(rawMsg)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
-}
-
-func (t *TrackedResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "location":
-			err = unpopulate(val, &t.Location)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &t.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // Vendor resource.
 type Vendor struct {
-	ProxyResource
 	// Vendor properties.
 	Properties *VendorPropertiesFormat `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Vendor.
-func (v Vendor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "systemData", v.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Vendor.
-func (v *Vendor) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &v.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &v.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := v.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VendorDetails - The network function vendor details.
@@ -1314,47 +1241,20 @@ func (v VendorListResult) MarshalJSON() ([]byte, error) {
 
 // VendorNetworkFunction - Vendor network function sub resource.
 type VendorNetworkFunction struct {
-	ProxyResource
 	// Network function details.
 	Properties *VendorNetworkFunctionPropertiesFormat `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type VendorNetworkFunction.
-func (v VendorNetworkFunction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "systemData", v.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VendorNetworkFunction.
-func (v *VendorNetworkFunction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &v.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &v.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := v.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VendorNetworkFunctionListResult - Response for vendors API service call.
@@ -1403,18 +1303,19 @@ func (v VendorNetworkFunctionPropertiesFormat) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VendorNetworkFunctionsBeginCreateOrUpdateOptions contains the optional parameters for the VendorNetworkFunctions.BeginCreateOrUpdate method.
-type VendorNetworkFunctionsBeginCreateOrUpdateOptions struct {
+// VendorNetworkFunctionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorNetworkFunctionsClient.BeginCreateOrUpdate
+// method.
+type VendorNetworkFunctionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorNetworkFunctionsGetOptions contains the optional parameters for the VendorNetworkFunctions.Get method.
-type VendorNetworkFunctionsGetOptions struct {
+// VendorNetworkFunctionsClientGetOptions contains the optional parameters for the VendorNetworkFunctionsClient.Get method.
+type VendorNetworkFunctionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorNetworkFunctionsListOptions contains the optional parameters for the VendorNetworkFunctions.List method.
-type VendorNetworkFunctionsListOptions struct {
+// VendorNetworkFunctionsClientListOptions contains the optional parameters for the VendorNetworkFunctionsClient.List method.
+type VendorNetworkFunctionsClientListOptions struct {
 	// The filter to apply on the operation. The properties you can use for eq (equals) are: skuType, skuName and vendorProvisioningState.
 	Filter *string
 }
@@ -1438,47 +1339,20 @@ func (v VendorPropertiesFormat) MarshalJSON() ([]byte, error) {
 
 // VendorSKU - Sku sub resource.
 type VendorSKU struct {
-	ProxyResource
 	// Vendor sku details.
 	Properties *VendorSKUPropertiesFormat `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type VendorSKU.
-func (v VendorSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "systemData", v.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VendorSKU.
-func (v *VendorSKU) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &v.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &v.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := v.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VendorSKUListResult - Response for list vendor sku API service call.
@@ -1498,23 +1372,24 @@ func (v VendorSKUListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VendorSKUPreviewBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUPreview.BeginCreateOrUpdate method.
-type VendorSKUPreviewBeginCreateOrUpdateOptions struct {
+// VendorSKUPreviewClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUPreviewClient.BeginCreateOrUpdate
+// method.
+type VendorSKUPreviewClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorSKUPreviewBeginDeleteOptions contains the optional parameters for the VendorSKUPreview.BeginDelete method.
-type VendorSKUPreviewBeginDeleteOptions struct {
+// VendorSKUPreviewClientBeginDeleteOptions contains the optional parameters for the VendorSKUPreviewClient.BeginDelete method.
+type VendorSKUPreviewClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorSKUPreviewGetOptions contains the optional parameters for the VendorSKUPreview.Get method.
-type VendorSKUPreviewGetOptions struct {
+// VendorSKUPreviewClientGetOptions contains the optional parameters for the VendorSKUPreviewClient.Get method.
+type VendorSKUPreviewClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorSKUPreviewListOptions contains the optional parameters for the VendorSKUPreview.List method.
-type VendorSKUPreviewListOptions struct {
+// VendorSKUPreviewClientListOptions contains the optional parameters for the VendorSKUPreviewClient.List method.
+type VendorSKUPreviewClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1545,44 +1420,45 @@ type VendorSKUPropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// VendorSKUsBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUs.BeginCreateOrUpdate method.
-type VendorSKUsBeginCreateOrUpdateOptions struct {
+// VendorSKUsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUsClient.BeginCreateOrUpdate
+// method.
+type VendorSKUsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorSKUsBeginDeleteOptions contains the optional parameters for the VendorSKUs.BeginDelete method.
-type VendorSKUsBeginDeleteOptions struct {
+// VendorSKUsClientBeginDeleteOptions contains the optional parameters for the VendorSKUsClient.BeginDelete method.
+type VendorSKUsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorSKUsGetOptions contains the optional parameters for the VendorSKUs.Get method.
-type VendorSKUsGetOptions struct {
+// VendorSKUsClientGetOptions contains the optional parameters for the VendorSKUsClient.Get method.
+type VendorSKUsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorSKUsListOptions contains the optional parameters for the VendorSKUs.List method.
-type VendorSKUsListOptions struct {
+// VendorSKUsClientListOptions contains the optional parameters for the VendorSKUsClient.List method.
+type VendorSKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorsBeginCreateOrUpdateOptions contains the optional parameters for the Vendors.BeginCreateOrUpdate method.
-type VendorsBeginCreateOrUpdateOptions struct {
+// VendorsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorsClient.BeginCreateOrUpdate method.
+type VendorsClientBeginCreateOrUpdateOptions struct {
 	// Parameters supplied to the create vendor operation.
 	Parameters *Vendor
 }
 
-// VendorsBeginDeleteOptions contains the optional parameters for the Vendors.BeginDelete method.
-type VendorsBeginDeleteOptions struct {
+// VendorsClientBeginDeleteOptions contains the optional parameters for the VendorsClient.BeginDelete method.
+type VendorsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorsGetOptions contains the optional parameters for the Vendors.Get method.
-type VendorsGetOptions struct {
+// VendorsClientGetOptions contains the optional parameters for the VendorsClient.Get method.
+type VendorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VendorsListBySubscriptionOptions contains the optional parameters for the Vendors.ListBySubscription method.
-type VendorsListBySubscriptionOptions struct {
+// VendorsClientListBySubscriptionOptions contains the optional parameters for the VendorsClient.ListBySubscription method.
+type VendorsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

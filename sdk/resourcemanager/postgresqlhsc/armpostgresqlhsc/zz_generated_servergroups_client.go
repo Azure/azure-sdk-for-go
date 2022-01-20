@@ -11,7 +11,6 @@ package armpostgresqlhsc
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,59 @@ import (
 // ServerGroupsClient contains the methods for the ServerGroups group.
 // Don't use this type directly, use NewServerGroupsClient() instead.
 type ServerGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerGroupsClient creates a new instance of ServerGroupsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Check the availability of name for resource
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) CheckNameAvailability(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *ServerGroupsCheckNameAvailabilityOptions) (ServerGroupsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// nameAvailabilityRequest - The required parameters for checking if resource name is available.
+// options - ServerGroupsClientCheckNameAvailabilityOptions contains the optional parameters for the ServerGroupsClient.CheckNameAvailability
+// method.
+func (client *ServerGroupsClient) CheckNameAvailability(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *ServerGroupsClientCheckNameAvailabilityOptions) (ServerGroupsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, nameAvailabilityRequest, options)
 	if err != nil {
-		return ServerGroupsCheckNameAvailabilityResponse{}, err
+		return ServerGroupsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerGroupsCheckNameAvailabilityResponse{}, err
+		return ServerGroupsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerGroupsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return ServerGroupsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ServerGroupsClient) checkNameAvailabilityCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *ServerGroupsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) checkNameAvailabilityCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *ServerGroupsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,50 +88,42 @@ func (client *ServerGroupsClient) checkNameAvailabilityCreateRequest(ctx context
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ServerGroupsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServerGroupsCheckNameAvailabilityResponse, error) {
-	result := ServerGroupsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *ServerGroupsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServerGroupsClientCheckNameAvailabilityResponse, error) {
+	result := ServerGroupsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
-		return ServerGroupsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return ServerGroupsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *ServerGroupsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Creates a new server group with servers.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroup, options *ServerGroupsBeginCreateOrUpdateOptions) (ServerGroupsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// parameters - The required parameters for creating or updating a server group.
+// options - ServerGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerGroupsClient.BeginCreateOrUpdate
+// method.
+func (client *ServerGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroup, options *ServerGroupsClientBeginCreateOrUpdateOptions) (ServerGroupsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverGroupName, parameters, options)
 	if err != nil {
-		return ServerGroupsCreateOrUpdatePollerResponse{}, err
+		return ServerGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ServerGroupsCreateOrUpdatePollerResponse{
+	result := ServerGroupsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerGroupsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerGroupsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ServerGroupsCreateOrUpdatePollerResponse{}, err
+		return ServerGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServerGroupsCreateOrUpdatePoller{
+	result.Poller = &ServerGroupsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a new server group with servers.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroup, options *ServerGroupsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroup, options *ServerGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -131,13 +133,13 @@ func (client *ServerGroupsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroup, options *ServerGroupsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroup, options *ServerGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -151,7 +153,7 @@ func (client *ServerGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,42 +164,33 @@ func (client *ServerGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServerGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a server group together with servers in it.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginDeleteOptions) (ServerGroupsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// options - ServerGroupsClientBeginDeleteOptions contains the optional parameters for the ServerGroupsClient.BeginDelete
+// method.
+func (client *ServerGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginDeleteOptions) (ServerGroupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
-		return ServerGroupsDeletePollerResponse{}, err
+		return ServerGroupsClientDeletePollerResponse{}, err
 	}
-	result := ServerGroupsDeletePollerResponse{
+	result := ServerGroupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServerGroupsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ServerGroupsDeletePollerResponse{}, err
+		return ServerGroupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ServerGroupsDeletePoller{
+	result.Poller = &ServerGroupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a server group together with servers in it.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -207,13 +200,13 @@ func (client *ServerGroupsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,7 +220,7 @@ func (client *ServerGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,38 +231,28 @@ func (client *ServerGroupsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServerGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about a server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) Get(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsGetOptions) (ServerGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// options - ServerGroupsClientGetOptions contains the optional parameters for the ServerGroupsClient.Get method.
+func (client *ServerGroupsClient) Get(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientGetOptions) (ServerGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
-		return ServerGroupsGetResponse{}, err
+		return ServerGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerGroupsGetResponse{}, err
+		return ServerGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerGroupsGetResponse{}, client.getHandleError(resp)
+		return ServerGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsGetOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -283,7 +266,7 @@ func (client *ServerGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -295,49 +278,37 @@ func (client *ServerGroupsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerGroupsClient) getHandleResponse(resp *http.Response) (ServerGroupsGetResponse, error) {
-	result := ServerGroupsGetResponse{RawResponse: resp}
+func (client *ServerGroupsClient) getHandleResponse(resp *http.Response) (ServerGroupsClientGetResponse, error) {
+	result := ServerGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroup); err != nil {
-		return ServerGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List all the server groups in a given subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) List(options *ServerGroupsListOptions) *ServerGroupsListPager {
-	return &ServerGroupsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ServerGroupsClientListOptions contains the optional parameters for the ServerGroupsClient.List method.
+func (client *ServerGroupsClient) List(options *ServerGroupsClientListOptions) *ServerGroupsClientListPager {
+	return &ServerGroupsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ServerGroupsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServerGroupsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerGroupListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ServerGroupsClient) listCreateRequest(ctx context.Context, options *ServerGroupsListOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) listCreateRequest(ctx context.Context, options *ServerGroupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/serverGroupsv2"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -349,43 +320,33 @@ func (client *ServerGroupsClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *ServerGroupsClient) listHandleResponse(resp *http.Response) (ServerGroupsListResponse, error) {
-	result := ServerGroupsListResponse{RawResponse: resp}
+func (client *ServerGroupsClient) listHandleResponse(resp *http.Response) (ServerGroupsClientListResponse, error) {
+	result := ServerGroupsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroupListResult); err != nil {
-		return ServerGroupsListResponse{}, runtime.NewResponseError(err, resp)
+		return ServerGroupsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ServerGroupsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - List all the server groups in a given resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) ListByResourceGroup(resourceGroupName string, options *ServerGroupsListByResourceGroupOptions) *ServerGroupsListByResourceGroupPager {
-	return &ServerGroupsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ServerGroupsClientListByResourceGroupOptions contains the optional parameters for the ServerGroupsClient.ListByResourceGroup
+// method.
+func (client *ServerGroupsClient) ListByResourceGroup(resourceGroupName string, options *ServerGroupsClientListByResourceGroupOptions) *ServerGroupsClientListByResourceGroupPager {
+	return &ServerGroupsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ServerGroupsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServerGroupsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ServerGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ServerGroupsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ServerGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -395,7 +356,7 @@ func (client *ServerGroupsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -407,50 +368,41 @@ func (client *ServerGroupsClient) listByResourceGroupCreateRequest(ctx context.C
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ServerGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ServerGroupsListByResourceGroupResponse, error) {
-	result := ServerGroupsListByResourceGroupResponse{RawResponse: resp}
+func (client *ServerGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ServerGroupsClientListByResourceGroupResponse, error) {
+	result := ServerGroupsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroupListResult); err != nil {
-		return ServerGroupsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ServerGroupsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ServerGroupsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRestart - Restarts the server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginRestartOptions) (ServerGroupsRestartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// options - ServerGroupsClientBeginRestartOptions contains the optional parameters for the ServerGroupsClient.BeginRestart
+// method.
+func (client *ServerGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginRestartOptions) (ServerGroupsClientRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
-		return ServerGroupsRestartPollerResponse{}, err
+		return ServerGroupsClientRestartPollerResponse{}, err
 	}
-	result := ServerGroupsRestartPollerResponse{
+	result := ServerGroupsClientRestartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerGroupsClient.Restart", "", resp, client.pl, client.restartHandleError)
+	pt, err := armruntime.NewPoller("ServerGroupsClient.Restart", "", resp, client.pl)
 	if err != nil {
-		return ServerGroupsRestartPollerResponse{}, err
+		return ServerGroupsClientRestartPollerResponse{}, err
 	}
-	result.Poller = &ServerGroupsRestartPoller{
+	result.Poller = &ServerGroupsClientRestartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Restart - Restarts the server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) restart(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginRestartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerGroupsClient) restart(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -460,13 +412,13 @@ func (client *ServerGroupsClient) restart(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.restartHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *ServerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginRestartOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -480,7 +432,7 @@ func (client *ServerGroupsClient) restartCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -491,42 +443,32 @@ func (client *ServerGroupsClient) restartCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// restartHandleError handles the Restart error response.
-func (client *ServerGroupsClient) restartHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Starts the server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginStartOptions) (ServerGroupsStartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// options - ServerGroupsClientBeginStartOptions contains the optional parameters for the ServerGroupsClient.BeginStart method.
+func (client *ServerGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginStartOptions) (ServerGroupsClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
-		return ServerGroupsStartPollerResponse{}, err
+		return ServerGroupsClientStartPollerResponse{}, err
 	}
-	result := ServerGroupsStartPollerResponse{
+	result := ServerGroupsClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerGroupsClient.Start", "", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("ServerGroupsClient.Start", "", resp, client.pl)
 	if err != nil {
-		return ServerGroupsStartPollerResponse{}, err
+		return ServerGroupsClientStartPollerResponse{}, err
 	}
-	result.Poller = &ServerGroupsStartPoller{
+	result.Poller = &ServerGroupsClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Starts the server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) start(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerGroupsClient) start(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -536,13 +478,13 @@ func (client *ServerGroupsClient) start(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *ServerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginStartOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -556,7 +498,7 @@ func (client *ServerGroupsClient) startCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -567,42 +509,32 @@ func (client *ServerGroupsClient) startCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *ServerGroupsClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStop - Stops the server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) BeginStop(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginStopOptions) (ServerGroupsStopPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// options - ServerGroupsClientBeginStopOptions contains the optional parameters for the ServerGroupsClient.BeginStop method.
+func (client *ServerGroupsClient) BeginStop(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginStopOptions) (ServerGroupsClientStopPollerResponse, error) {
 	resp, err := client.stop(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
-		return ServerGroupsStopPollerResponse{}, err
+		return ServerGroupsClientStopPollerResponse{}, err
 	}
-	result := ServerGroupsStopPollerResponse{
+	result := ServerGroupsClientStopPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerGroupsClient.Stop", "", resp, client.pl, client.stopHandleError)
+	pt, err := armruntime.NewPoller("ServerGroupsClient.Stop", "", resp, client.pl)
 	if err != nil {
-		return ServerGroupsStopPollerResponse{}, err
+		return ServerGroupsClientStopPollerResponse{}, err
 	}
-	result.Poller = &ServerGroupsStopPoller{
+	result.Poller = &ServerGroupsClientStopPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Stop - Stops the server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) stop(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginStopOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerGroupsClient) stop(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -612,13 +544,13 @@ func (client *ServerGroupsClient) stop(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.stopHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ServerGroupsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsBeginStopOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServerGroupsClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -632,7 +564,7 @@ func (client *ServerGroupsClient) stopCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -643,42 +575,36 @@ func (client *ServerGroupsClient) stopCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *ServerGroupsClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginUpdate - Updates an existing server group. The request body can contain one to many of the properties present in the normal server group definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroupForUpdate, options *ServerGroupsBeginUpdateOptions) (ServerGroupsUpdatePollerResponse, error) {
+// BeginUpdate - Updates an existing server group. The request body can contain one to many of the properties present in the
+// normal server group definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// parameters - The parameters for updating a server group.
+// options - ServerGroupsClientBeginUpdateOptions contains the optional parameters for the ServerGroupsClient.BeginUpdate
+// method.
+func (client *ServerGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroupForUpdate, options *ServerGroupsClientBeginUpdateOptions) (ServerGroupsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, serverGroupName, parameters, options)
 	if err != nil {
-		return ServerGroupsUpdatePollerResponse{}, err
+		return ServerGroupsClientUpdatePollerResponse{}, err
 	}
-	result := ServerGroupsUpdatePollerResponse{
+	result := ServerGroupsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerGroupsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ServerGroupsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ServerGroupsUpdatePollerResponse{}, err
+		return ServerGroupsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServerGroupsUpdatePoller{
+	result.Poller = &ServerGroupsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Update - Updates an existing server group. The request body can contain one to many of the properties present in the normal server group definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerGroupsClient) update(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroupForUpdate, options *ServerGroupsBeginUpdateOptions) (*http.Response, error) {
+// Update - Updates an existing server group. The request body can contain one to many of the properties present in the normal
+// server group definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerGroupsClient) update(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroupForUpdate, options *ServerGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -688,13 +614,13 @@ func (client *ServerGroupsClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServerGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroupForUpdate, options *ServerGroupsBeginUpdateOptions) (*policy.Request, error) {
+func (client *ServerGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, parameters ServerGroupForUpdate, options *ServerGroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -708,7 +634,7 @@ func (client *ServerGroupsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -717,17 +643,4 @@ func (client *ServerGroupsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ServerGroupsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

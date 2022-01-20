@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // KustoPoolDataConnectionsClient contains the methods for the KustoPoolDataConnections group.
 // Don't use this type directly, use NewKustoPoolDataConnectionsClient() instead.
 type KustoPoolDataConnectionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewKustoPoolDataConnectionsClient creates a new instance of KustoPoolDataConnectionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKustoPoolDataConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KustoPoolDataConnectionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KustoPoolDataConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KustoPoolDataConnectionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Checks that the data connection name is valid and is not already in use.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest, options *KustoPoolDataConnectionsCheckNameAvailabilityOptions) (KustoPoolDataConnectionsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// dataConnectionName - The name of the data connection.
+// options - KustoPoolDataConnectionsClientCheckNameAvailabilityOptions contains the optional parameters for the KustoPoolDataConnectionsClient.CheckNameAvailability
+// method.
+func (client *KustoPoolDataConnectionsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest, options *KustoPoolDataConnectionsClientCheckNameAvailabilityOptions) (KustoPoolDataConnectionsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, options)
 	if err != nil {
-		return KustoPoolDataConnectionsCheckNameAvailabilityResponse{}, err
+		return KustoPoolDataConnectionsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolDataConnectionsCheckNameAvailabilityResponse{}, err
+		return KustoPoolDataConnectionsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolDataConnectionsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return KustoPoolDataConnectionsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest, options *KustoPoolDataConnectionsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest, options *KustoPoolDataConnectionsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +96,7 @@ func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityCreateRequest
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,50 +108,45 @@ func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityCreateRequest
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolDataConnectionsCheckNameAvailabilityResponse, error) {
-	result := KustoPoolDataConnectionsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolDataConnectionsClientCheckNameAvailabilityResponse, error) {
+	result := KustoPoolDataConnectionsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
-		return KustoPoolDataConnectionsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolDataConnectionsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *KustoPoolDataConnectionsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Creates or updates a data connection.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsBeginCreateOrUpdateOptions) (KustoPoolDataConnectionsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// dataConnectionName - The name of the data connection.
+// parameters - The data connection parameters supplied to the CreateOrUpdate operation.
+// options - KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the KustoPoolDataConnectionsClient.BeginCreateOrUpdate
+// method.
+func (client *KustoPoolDataConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions) (KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters, options)
 	if err != nil {
-		return KustoPoolDataConnectionsCreateOrUpdatePollerResponse{}, err
+		return KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := KustoPoolDataConnectionsCreateOrUpdatePollerResponse{
+	result := KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return KustoPoolDataConnectionsCreateOrUpdatePollerResponse{}, err
+		return KustoPoolDataConnectionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &KustoPoolDataConnectionsCreateOrUpdatePoller{
+	result.Poller = &KustoPoolDataConnectionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a data connection.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KustoPoolDataConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -147,13 +156,13 @@ func (client *KustoPoolDataConnectionsClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *KustoPoolDataConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *KustoPoolDataConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections/{dataConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -179,7 +188,7 @@ func (client *KustoPoolDataConnectionsClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter dataConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataConnectionName}", url.PathEscape(dataConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -190,42 +199,36 @@ func (client *KustoPoolDataConnectionsClient) createOrUpdateCreateRequest(ctx co
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *KustoPoolDataConnectionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDataConnectionValidation - Checks that the data connection parameters are valid.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) BeginDataConnectionValidation(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, parameters DataConnectionValidation, options *KustoPoolDataConnectionsBeginDataConnectionValidationOptions) (KustoPoolDataConnectionsDataConnectionValidationPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// parameters - The data connection parameters supplied to the CreateOrUpdate operation.
+// options - KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions contains the optional parameters for the KustoPoolDataConnectionsClient.BeginDataConnectionValidation
+// method.
+func (client *KustoPoolDataConnectionsClient) BeginDataConnectionValidation(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, parameters DataConnectionValidation, options *KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions) (KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse, error) {
 	resp, err := client.dataConnectionValidation(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, options)
 	if err != nil {
-		return KustoPoolDataConnectionsDataConnectionValidationPollerResponse{}, err
+		return KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse{}, err
 	}
-	result := KustoPoolDataConnectionsDataConnectionValidationPollerResponse{
+	result := KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.DataConnectionValidation", "location", resp, client.pl, client.dataConnectionValidationHandleError)
+	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.DataConnectionValidation", "location", resp, client.pl)
 	if err != nil {
-		return KustoPoolDataConnectionsDataConnectionValidationPollerResponse{}, err
+		return KustoPoolDataConnectionsClientDataConnectionValidationPollerResponse{}, err
 	}
-	result.Poller = &KustoPoolDataConnectionsDataConnectionValidationPoller{
+	result.Poller = &KustoPoolDataConnectionsClientDataConnectionValidationPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DataConnectionValidation - Checks that the data connection parameters are valid.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) dataConnectionValidation(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, parameters DataConnectionValidation, options *KustoPoolDataConnectionsBeginDataConnectionValidationOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KustoPoolDataConnectionsClient) dataConnectionValidation(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, parameters DataConnectionValidation, options *KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions) (*http.Response, error) {
 	req, err := client.dataConnectionValidationCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -235,13 +238,13 @@ func (client *KustoPoolDataConnectionsClient) dataConnectionValidation(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.dataConnectionValidationHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // dataConnectionValidationCreateRequest creates the DataConnectionValidation request.
-func (client *KustoPoolDataConnectionsClient) dataConnectionValidationCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, parameters DataConnectionValidation, options *KustoPoolDataConnectionsBeginDataConnectionValidationOptions) (*policy.Request, error) {
+func (client *KustoPoolDataConnectionsClient) dataConnectionValidationCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, parameters DataConnectionValidation, options *KustoPoolDataConnectionsClientBeginDataConnectionValidationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnectionValidation"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -263,7 +266,7 @@ func (client *KustoPoolDataConnectionsClient) dataConnectionValidationCreateRequ
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,42 +277,36 @@ func (client *KustoPoolDataConnectionsClient) dataConnectionValidationCreateRequ
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// dataConnectionValidationHandleError handles the DataConnectionValidation error response.
-func (client *KustoPoolDataConnectionsClient) dataConnectionValidationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the data connection with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsBeginDeleteOptions) (KustoPoolDataConnectionsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// dataConnectionName - The name of the data connection.
+// options - KustoPoolDataConnectionsClientBeginDeleteOptions contains the optional parameters for the KustoPoolDataConnectionsClient.BeginDelete
+// method.
+func (client *KustoPoolDataConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsClientBeginDeleteOptions) (KustoPoolDataConnectionsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, options)
 	if err != nil {
-		return KustoPoolDataConnectionsDeletePollerResponse{}, err
+		return KustoPoolDataConnectionsClientDeletePollerResponse{}, err
 	}
-	result := KustoPoolDataConnectionsDeletePollerResponse{
+	result := KustoPoolDataConnectionsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return KustoPoolDataConnectionsDeletePollerResponse{}, err
+		return KustoPoolDataConnectionsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &KustoPoolDataConnectionsDeletePoller{
+	result.Poller = &KustoPoolDataConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the data connection with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KustoPoolDataConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -319,13 +316,13 @@ func (client *KustoPoolDataConnectionsClient) deleteOperation(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *KustoPoolDataConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsBeginDeleteOptions) (*policy.Request, error) {
+func (client *KustoPoolDataConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections/{dataConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -351,7 +348,7 @@ func (client *KustoPoolDataConnectionsClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter dataConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataConnectionName}", url.PathEscape(dataConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -362,38 +359,32 @@ func (client *KustoPoolDataConnectionsClient) deleteCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *KustoPoolDataConnectionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns a data connection.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsGetOptions) (KustoPoolDataConnectionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// dataConnectionName - The name of the data connection.
+// options - KustoPoolDataConnectionsClientGetOptions contains the optional parameters for the KustoPoolDataConnectionsClient.Get
+// method.
+func (client *KustoPoolDataConnectionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsClientGetOptions) (KustoPoolDataConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, options)
 	if err != nil {
-		return KustoPoolDataConnectionsGetResponse{}, err
+		return KustoPoolDataConnectionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolDataConnectionsGetResponse{}, err
+		return KustoPoolDataConnectionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolDataConnectionsGetResponse{}, client.getHandleError(resp)
+		return KustoPoolDataConnectionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *KustoPoolDataConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsGetOptions) (*policy.Request, error) {
+func (client *KustoPoolDataConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, options *KustoPoolDataConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections/{dataConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -419,7 +410,7 @@ func (client *KustoPoolDataConnectionsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter dataConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataConnectionName}", url.PathEscape(dataConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -431,46 +422,39 @@ func (client *KustoPoolDataConnectionsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *KustoPoolDataConnectionsClient) getHandleResponse(resp *http.Response) (KustoPoolDataConnectionsGetResponse, error) {
-	result := KustoPoolDataConnectionsGetResponse{RawResponse: resp}
+func (client *KustoPoolDataConnectionsClient) getHandleResponse(resp *http.Response) (KustoPoolDataConnectionsClientGetResponse, error) {
+	result := KustoPoolDataConnectionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return KustoPoolDataConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolDataConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *KustoPoolDataConnectionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByDatabase - Returns the list of data connections of the given Kusto pool database.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) ListByDatabase(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, options *KustoPoolDataConnectionsListByDatabaseOptions) (KustoPoolDataConnectionsListByDatabaseResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// options - KustoPoolDataConnectionsClientListByDatabaseOptions contains the optional parameters for the KustoPoolDataConnectionsClient.ListByDatabase
+// method.
+func (client *KustoPoolDataConnectionsClient) ListByDatabase(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, options *KustoPoolDataConnectionsClientListByDatabaseOptions) (KustoPoolDataConnectionsClientListByDatabaseResponse, error) {
 	req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, options)
 	if err != nil {
-		return KustoPoolDataConnectionsListByDatabaseResponse{}, err
+		return KustoPoolDataConnectionsClientListByDatabaseResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolDataConnectionsListByDatabaseResponse{}, err
+		return KustoPoolDataConnectionsClientListByDatabaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolDataConnectionsListByDatabaseResponse{}, client.listByDatabaseHandleError(resp)
+		return KustoPoolDataConnectionsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByDatabaseHandleResponse(resp)
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *KustoPoolDataConnectionsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, options *KustoPoolDataConnectionsListByDatabaseOptions) (*policy.Request, error) {
+func (client *KustoPoolDataConnectionsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, options *KustoPoolDataConnectionsClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -492,7 +476,7 @@ func (client *KustoPoolDataConnectionsClient) listByDatabaseCreateRequest(ctx co
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -504,50 +488,45 @@ func (client *KustoPoolDataConnectionsClient) listByDatabaseCreateRequest(ctx co
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *KustoPoolDataConnectionsClient) listByDatabaseHandleResponse(resp *http.Response) (KustoPoolDataConnectionsListByDatabaseResponse, error) {
-	result := KustoPoolDataConnectionsListByDatabaseResponse{RawResponse: resp}
+func (client *KustoPoolDataConnectionsClient) listByDatabaseHandleResponse(resp *http.Response) (KustoPoolDataConnectionsClientListByDatabaseResponse, error) {
+	result := KustoPoolDataConnectionsClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataConnectionListResult); err != nil {
-		return KustoPoolDataConnectionsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolDataConnectionsClientListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *KustoPoolDataConnectionsClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates a data connection.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsBeginUpdateOptions) (KustoPoolDataConnectionsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// dataConnectionName - The name of the data connection.
+// parameters - The data connection parameters supplied to the Update operation.
+// options - KustoPoolDataConnectionsClientBeginUpdateOptions contains the optional parameters for the KustoPoolDataConnectionsClient.BeginUpdate
+// method.
+func (client *KustoPoolDataConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginUpdateOptions) (KustoPoolDataConnectionsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters, options)
 	if err != nil {
-		return KustoPoolDataConnectionsUpdatePollerResponse{}, err
+		return KustoPoolDataConnectionsClientUpdatePollerResponse{}, err
 	}
-	result := KustoPoolDataConnectionsUpdatePollerResponse{
+	result := KustoPoolDataConnectionsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("KustoPoolDataConnectionsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return KustoPoolDataConnectionsUpdatePollerResponse{}, err
+		return KustoPoolDataConnectionsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &KustoPoolDataConnectionsUpdatePoller{
+	result.Poller = &KustoPoolDataConnectionsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a data connection.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDataConnectionsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KustoPoolDataConnectionsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -557,13 +536,13 @@ func (client *KustoPoolDataConnectionsClient) update(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *KustoPoolDataConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsBeginUpdateOptions) (*policy.Request, error) {
+func (client *KustoPoolDataConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, kustoPoolName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *KustoPoolDataConnectionsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections/{dataConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -589,7 +568,7 @@ func (client *KustoPoolDataConnectionsClient) updateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter dataConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataConnectionName}", url.PathEscape(dataConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -598,17 +577,4 @@ func (client *KustoPoolDataConnectionsClient) updateCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *KustoPoolDataConnectionsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

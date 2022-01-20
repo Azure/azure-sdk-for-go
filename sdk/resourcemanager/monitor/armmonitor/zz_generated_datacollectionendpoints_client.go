@@ -11,7 +11,6 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // DataCollectionEndpointsClient contains the methods for the DataCollectionEndpoints group.
 // Don't use this type directly, use NewDataCollectionEndpointsClient() instead.
 type DataCollectionEndpointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataCollectionEndpointsClient creates a new instance of DataCollectionEndpointsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataCollectionEndpointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataCollectionEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataCollectionEndpointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Creates or updates a data collection endpoint.
-// If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionEndpointsClient) Create(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsCreateOptions) (DataCollectionEndpointsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+// options - DataCollectionEndpointsClientCreateOptions contains the optional parameters for the DataCollectionEndpointsClient.Create
+// method.
+func (client *DataCollectionEndpointsClient) Create(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientCreateOptions) (DataCollectionEndpointsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
 	if err != nil {
-		return DataCollectionEndpointsCreateResponse{}, err
+		return DataCollectionEndpointsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataCollectionEndpointsCreateResponse{}, err
+		return DataCollectionEndpointsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DataCollectionEndpointsCreateResponse{}, client.createHandleError(resp)
+		return DataCollectionEndpointsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsCreateOptions) (*policy.Request, error) {
+func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,46 +100,37 @@ func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Con
 }
 
 // createHandleResponse handles the Create response.
-func (client *DataCollectionEndpointsClient) createHandleResponse(resp *http.Response) (DataCollectionEndpointsCreateResponse, error) {
-	result := DataCollectionEndpointsCreateResponse{RawResponse: resp}
+func (client *DataCollectionEndpointsClient) createHandleResponse(resp *http.Response) (DataCollectionEndpointsClientCreateResponse, error) {
+	result := DataCollectionEndpointsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
-		return DataCollectionEndpointsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return DataCollectionEndpointsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *DataCollectionEndpointsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a data collection endpoint.
-// If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionEndpointsClient) Delete(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsDeleteOptions) (DataCollectionEndpointsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+// options - DataCollectionEndpointsClientDeleteOptions contains the optional parameters for the DataCollectionEndpointsClient.Delete
+// method.
+func (client *DataCollectionEndpointsClient) Delete(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientDeleteOptions) (DataCollectionEndpointsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
 	if err != nil {
-		return DataCollectionEndpointsDeleteResponse{}, err
+		return DataCollectionEndpointsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataCollectionEndpointsDeleteResponse{}, err
+		return DataCollectionEndpointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DataCollectionEndpointsDeleteResponse{}, client.deleteHandleError(resp)
+		return DataCollectionEndpointsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataCollectionEndpointsDeleteResponse{RawResponse: resp}, nil
+	return DataCollectionEndpointsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsDeleteOptions) (*policy.Request, error) {
+func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -142,7 +144,7 @@ func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,38 +155,29 @@ func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DataCollectionEndpointsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns the specified data collection endpoint.
-// If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionEndpointsClient) Get(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsGetOptions) (DataCollectionEndpointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+// options - DataCollectionEndpointsClientGetOptions contains the optional parameters for the DataCollectionEndpointsClient.Get
+// method.
+func (client *DataCollectionEndpointsClient) Get(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientGetOptions) (DataCollectionEndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
 	if err != nil {
-		return DataCollectionEndpointsGetResponse{}, err
+		return DataCollectionEndpointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataCollectionEndpointsGetResponse{}, err
+		return DataCollectionEndpointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataCollectionEndpointsGetResponse{}, client.getHandleError(resp)
+		return DataCollectionEndpointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsGetOptions) (*policy.Request, error) {
+func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -198,7 +191,7 @@ func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -210,43 +203,33 @@ func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Response) (DataCollectionEndpointsGetResponse, error) {
-	result := DataCollectionEndpointsGetResponse{RawResponse: resp}
+func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Response) (DataCollectionEndpointsClientGetResponse, error) {
+	result := DataCollectionEndpointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
-		return DataCollectionEndpointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataCollectionEndpointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataCollectionEndpointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists all data collection endpoints in the specified resource group.
-// If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionEndpointsClient) ListByResourceGroup(resourceGroupName string, options *DataCollectionEndpointsListByResourceGroupOptions) *DataCollectionEndpointsListByResourceGroupPager {
-	return &DataCollectionEndpointsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - DataCollectionEndpointsClientListByResourceGroupOptions contains the optional parameters for the DataCollectionEndpointsClient.ListByResourceGroup
+// method.
+func (client *DataCollectionEndpointsClient) ListByResourceGroup(resourceGroupName string, options *DataCollectionEndpointsClientListByResourceGroupOptions) *DataCollectionEndpointsClientListByResourceGroupPager {
+	return &DataCollectionEndpointsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DataCollectionEndpointsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DataCollectionEndpointsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataCollectionEndpointResourceListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DataCollectionEndpointsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DataCollectionEndpointsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -256,7 +239,7 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ct
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,49 +251,38 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ct
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(resp *http.Response) (DataCollectionEndpointsListByResourceGroupResponse, error) {
-	result := DataCollectionEndpointsListByResourceGroupResponse{RawResponse: resp}
+func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(resp *http.Response) (DataCollectionEndpointsClientListByResourceGroupResponse, error) {
+	result := DataCollectionEndpointsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResourceListResult); err != nil {
-		return DataCollectionEndpointsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DataCollectionEndpointsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DataCollectionEndpointsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists all data collection endpoints in the specified subscription
-// If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionEndpointsClient) ListBySubscription(options *DataCollectionEndpointsListBySubscriptionOptions) *DataCollectionEndpointsListBySubscriptionPager {
-	return &DataCollectionEndpointsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DataCollectionEndpointsClientListBySubscriptionOptions contains the optional parameters for the DataCollectionEndpointsClient.ListBySubscription
+// method.
+func (client *DataCollectionEndpointsClient) ListBySubscription(options *DataCollectionEndpointsClientListBySubscriptionOptions) *DataCollectionEndpointsClientListBySubscriptionPager {
+	return &DataCollectionEndpointsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DataCollectionEndpointsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DataCollectionEndpointsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataCollectionEndpointResourceListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DataCollectionEndpointsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DataCollectionEndpointsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DataCollectionEndpointsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DataCollectionEndpointsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/dataCollectionEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -322,46 +294,37 @@ func (client *DataCollectionEndpointsClient) listBySubscriptionCreateRequest(ctx
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DataCollectionEndpointsClient) listBySubscriptionHandleResponse(resp *http.Response) (DataCollectionEndpointsListBySubscriptionResponse, error) {
-	result := DataCollectionEndpointsListBySubscriptionResponse{RawResponse: resp}
+func (client *DataCollectionEndpointsClient) listBySubscriptionHandleResponse(resp *http.Response) (DataCollectionEndpointsClientListBySubscriptionResponse, error) {
+	result := DataCollectionEndpointsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResourceListResult); err != nil {
-		return DataCollectionEndpointsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return DataCollectionEndpointsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *DataCollectionEndpointsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates part of a data collection endpoint.
-// If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionEndpointsClient) Update(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsUpdateOptions) (DataCollectionEndpointsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+// options - DataCollectionEndpointsClientUpdateOptions contains the optional parameters for the DataCollectionEndpointsClient.Update
+// method.
+func (client *DataCollectionEndpointsClient) Update(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientUpdateOptions) (DataCollectionEndpointsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
 	if err != nil {
-		return DataCollectionEndpointsUpdateResponse{}, err
+		return DataCollectionEndpointsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataCollectionEndpointsUpdateResponse{}, err
+		return DataCollectionEndpointsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataCollectionEndpointsUpdateResponse{}, client.updateHandleError(resp)
+		return DataCollectionEndpointsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsUpdateOptions) (*policy.Request, error) {
+func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -375,7 +338,7 @@ func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -390,23 +353,10 @@ func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DataCollectionEndpointsClient) updateHandleResponse(resp *http.Response) (DataCollectionEndpointsUpdateResponse, error) {
-	result := DataCollectionEndpointsUpdateResponse{RawResponse: resp}
+func (client *DataCollectionEndpointsClient) updateHandleResponse(resp *http.Response) (DataCollectionEndpointsClientUpdateResponse, error) {
+	result := DataCollectionEndpointsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
-		return DataCollectionEndpointsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DataCollectionEndpointsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DataCollectionEndpointsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

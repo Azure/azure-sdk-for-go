@@ -34,7 +34,7 @@ func ExampleServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServicesDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceCreate.json
@@ -49,14 +49,12 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<resource-name>",
 		armhealthcareapis.ServicesDescription{
-			ServicesResource: armhealthcareapis.ServicesResource{
-				Identity: &armhealthcareapis.ServicesResourceIdentity{
-					Type: armhealthcareapis.ManagedServiceIdentityTypeSystemAssigned.ToPtr(),
-				},
-				Kind:     armhealthcareapis.KindFhirR4.ToPtr(),
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
+			Identity: &armhealthcareapis.ServicesResourceIdentity{
+				Type: armhealthcareapis.ManagedServiceIdentityType("SystemAssigned").ToPtr(),
 			},
+			Kind:     armhealthcareapis.KindFhirR4.ToPtr(),
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armhealthcareapis.ServicesProperties{
 				AccessPolicies: []*armhealthcareapis.ServiceAccessPolicyEntry{
 					{
@@ -93,7 +91,7 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 					StorageAccountName: to.StringPtr("<storage-account-name>"),
 				},
 				PrivateEndpointConnections: []*armhealthcareapis.PrivateEndpointConnection{},
-				PublicNetworkAccess:        armhealthcareapis.PublicNetworkAccessDisabled.ToPtr(),
+				PublicNetworkAccess:        armhealthcareapis.PublicNetworkAccess("Disabled").ToPtr(),
 			},
 		},
 		nil)
@@ -104,7 +102,7 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServicesDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServicePatch.json
@@ -132,7 +130,7 @@ func ExampleServicesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServicesDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceDelete.json
@@ -165,12 +163,16 @@ func ExampleServicesClient_List() {
 	ctx := context.Background()
 	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServicesDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -185,12 +187,16 @@ func ExampleServicesClient_ListByResourceGroup() {
 	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServicesDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -203,7 +209,7 @@ func ExampleServicesClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		armhealthcareapis.CheckNameAvailabilityParameters{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -212,4 +218,5 @@ func ExampleServicesClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServicesClientCheckNameAvailabilityResult)
 }

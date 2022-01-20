@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"reflect"
 	"testing"
 
@@ -77,17 +78,17 @@ func TestErrNotFound_Error(t *testing.T) {
 }
 
 func Test_isPermanentNetError(t *testing.T) {
-	require.False(t, isPermanentNetError(&permanentNetError{
+	require.False(t, isPermanentNetError(&fakeNetError{
 		temp: true,
 	}))
 
-	require.False(t, isPermanentNetError(&permanentNetError{
+	require.False(t, isPermanentNetError(&fakeNetError{
 		timeout: true,
 	}))
 
 	require.False(t, isPermanentNetError(errors.New("not a net error")))
 
-	require.True(t, isPermanentNetError(&permanentNetError{}))
+	require.True(t, isPermanentNetError(&fakeNetError{}))
 }
 
 func Test_isRetryableAMQPError(t *testing.T) {
@@ -137,8 +138,8 @@ func Test_shouldRecreateConnection(t *testing.T) {
 	ctx := context.Background()
 
 	require.False(t, shouldRecreateConnection(ctx, nil))
-	require.True(t, shouldRecreateConnection(ctx, &permanentNetError{}))
-	require.True(t, shouldRecreateConnection(ctx, fmt.Errorf("%w", &permanentNetError{})))
+	require.True(t, shouldRecreateConnection(ctx, &fakeNetError{}))
+	require.True(t, shouldRecreateConnection(ctx, fmt.Errorf("%w", &fakeNetError{})))
 
 	require.False(t, shouldRecreateLink(amqp.ErrLinkClosed))
 	require.False(t, shouldRecreateLink(fmt.Errorf("wrapped: %w", amqp.ErrLinkClosed)))
@@ -166,4 +167,70 @@ func Test_IsCancelError(t *testing.T) {
 	require.True(t, IsCancelError(context.DeadlineExceeded))
 	require.True(t, IsCancelError(fmt.Errorf("wrapped: %w", context.Canceled)))
 	require.True(t, IsCancelError(fmt.Errorf("wrapped: %w", context.DeadlineExceeded)))
+}
+
+func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
+	var tempErrors = []error{
+		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:server-busy")},
+		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:timeout")},
+		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:operation-cancelled")},
+		errors.New("link is currently draining"), // not yet exposed from go-amqp
+		fakeNetError{temp: true},
+		fakeNetError{timeout: true},
+		fakeNetError{temp: false, timeout: false},
+	}
+
+	for i, err := range tempErrors {
+		rk := ToSBE(context.Background(), err).RecoveryKind
+		require.EqualValues(t, RecoveryKindNone, rk, fmt.Sprintf("[%d] %v", i, err))
+	}
+}
+
+func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
+	var connErrors = []error{
+		&amqp.Error{Condition: amqp.ErrorConnectionForced},
+		amqp.ErrConnClosed,
+		io.EOF,
+	}
+
+	for i, err := range connErrors {
+		rk := ToSBE(context.Background(), err).RecoveryKind
+		require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("[%d] %v", i, err))
+	}
+}
+
+func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
+	var linkErrors = []error{
+		amqp.ErrSessionClosed,
+		amqp.ErrLinkClosed,
+		&amqp.DetachError{},
+		&amqp.Error{Condition: amqp.ErrorDetachForced},
+	}
+
+	for i, err := range linkErrors {
+		rk := ToSBE(context.Background(), err).RecoveryKind
+		require.EqualValues(t, RecoveryKindLink, rk, fmt.Sprintf("[%d] %v", i, err))
+	}
+}
+
+func Test_ServiceBusError_Fatal(t *testing.T) {
+	var fatalConditions = []amqp.ErrorCondition{
+		amqp.ErrorMessageSizeExceeded,
+		amqp.ErrorUnauthorizedAccess,
+		amqp.ErrorNotFound,
+		amqp.ErrorNotAllowed,
+		amqp.ErrorInternalError,
+		amqp.ErrorCondition("com.microsoft:entity-disabled"),
+		amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"),
+		amqp.ErrorCondition("com.microsoft:message-lock-lost"),
+	}
+
+	for i, cond := range fatalConditions {
+		rk := ToSBE(context.Background(), &amqp.Error{Condition: cond}).RecoveryKind
+		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
+	}
+
+	// unknown errors are also considered fatal
+	rk := ToSBE(context.Background(), errors.New("Some unknown error")).RecoveryKind
+	require.EqualValues(t, RecoveryKindFatal, rk, "some unknown error")
 }

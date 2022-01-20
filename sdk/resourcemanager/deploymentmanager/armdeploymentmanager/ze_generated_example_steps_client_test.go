@@ -25,25 +25,19 @@ func ExampleStepsClient_CreateOrUpdate() {
 	}
 	ctx := context.Background()
 	client := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	_, err = client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<step-name>",
-		&armdeploymentmanager.StepsCreateOrUpdateOptions{StepInfo: &armdeploymentmanager.StepResource{
-			TrackedResource: armdeploymentmanager.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+		&armdeploymentmanager.StepsClientCreateOrUpdateOptions{StepInfo: &armdeploymentmanager.StepResource{
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.HealthCheckStepProperties{
-				StepProperties: armdeploymentmanager.StepProperties{
-					StepType: armdeploymentmanager.StepTypeHealthCheck.ToPtr(),
-				},
+				StepType: armdeploymentmanager.StepTypeHealthCheck.ToPtr(),
 				Attributes: &armdeploymentmanager.RestHealthCheckStepAttributes{
-					HealthCheckStepAttributes: armdeploymentmanager.HealthCheckStepAttributes{
-						Type:                 to.StringPtr("<type>"),
-						HealthyStateDuration: to.StringPtr("<healthy-state-duration>"),
-						MaxElasticDuration:   to.StringPtr("<max-elastic-duration>"),
-						WaitDuration:         to.StringPtr("<wait-duration>"),
-					},
+					Type:                 to.StringPtr("<type>"),
+					HealthyStateDuration: to.StringPtr("<healthy-state-duration>"),
+					MaxElasticDuration:   to.StringPtr("<max-elastic-duration>"),
+					WaitDuration:         to.StringPtr("<wait-duration>"),
 					Properties: &armdeploymentmanager.RestParameters{
 						HealthChecks: []*armdeploymentmanager.RestHealthCheck{
 							{
@@ -62,9 +56,7 @@ func ExampleStepsClient_CreateOrUpdate() {
 								Request: &armdeploymentmanager.RestRequest{
 									Method: armdeploymentmanager.RestRequestMethodGET.ToPtr(),
 									Authentication: &armdeploymentmanager.APIKeyAuthentication{
-										RestRequestAuthentication: armdeploymentmanager.RestRequestAuthentication{
-											Type: armdeploymentmanager.RestAuthTypeAPIKey.ToPtr(),
-										},
+										Type:  armdeploymentmanager.RestAuthTypeAPIKey.ToPtr(),
 										Name:  to.StringPtr("<name>"),
 										In:    armdeploymentmanager.RestAuthLocationQuery.ToPtr(),
 										Value: to.StringPtr("<value>"),
@@ -87,9 +79,7 @@ func ExampleStepsClient_CreateOrUpdate() {
 								Request: &armdeploymentmanager.RestRequest{
 									Method: armdeploymentmanager.RestRequestMethodGET.ToPtr(),
 									Authentication: &armdeploymentmanager.APIKeyAuthentication{
-										RestRequestAuthentication: armdeploymentmanager.RestRequestAuthentication{
-											Type: armdeploymentmanager.RestAuthTypeAPIKey.ToPtr(),
-										},
+										Type:  armdeploymentmanager.RestAuthTypeAPIKey.ToPtr(),
 										Name:  to.StringPtr("<name>"),
 										In:    armdeploymentmanager.RestAuthLocationHeader.ToPtr(),
 										Value: to.StringPtr("<value>"),
@@ -105,7 +95,6 @@ func ExampleStepsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StepResource.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/step_get.json
@@ -123,7 +112,7 @@ func ExampleStepsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StepResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StepsClientGetResult)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/step_delete.json
@@ -151,10 +140,11 @@ func ExampleStepsClient_List() {
 	}
 	ctx := context.Background()
 	client := armdeploymentmanager.NewStepsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.StepsClientListResult)
 }

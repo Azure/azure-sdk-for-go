@@ -98,8 +98,30 @@ func TestHasStatusCode(t *testing.T) {
 }
 
 func TestEndpointToScope(t *testing.T) {
-	if s := EndpointToScope("https://management.usgovcloudapi.net"); s != "https://management.usgovcloudapi.net//.default" {
-		t.Fatalf("unexpected scope %s", s)
+	knownClouds := map[string][]string{
+		chinaCloudARMScope:  {"https://foo.management.chinacloudapi.cn", "https://management.chinacloudapi.cn"},
+		publicCloudARMScope: {"https://centraluseuap.management.azure.com", "https://management.azure.com"},
+		usGovCloudARMScope:  {"https://foo.management.usgovcloudapi.net", "https://management.usgovcloudapi.net"},
+	}
+	for expected, endpoints := range knownClouds {
+		for _, endpoint := range endpoints {
+			if actual := EndpointToScope(endpoint); actual != expected {
+				t.Fatalf(`unexpected scope "%s" for endpoint "%s"`, actual, endpoint)
+			}
+			if actual := EndpointToScope(endpoint + "/"); actual != expected {
+				t.Fatalf(`unexpected scope "%s" for endpoint "%s"/`, actual, endpoint)
+			}
+		}
+	}
+
+	// legacy behavior for unknown clouds: add "//.default" suffix to endpoint
+	for _, endpoint := range []string{"localhost", "http://foo.bar"} {
+		if actual := EndpointToScope(endpoint); actual != endpoint+"//.default" {
+			t.Fatalf(`unexpected scope "%s" for endpoint "%s"`, actual, endpoint)
+		}
+		if actual := EndpointToScope(endpoint + "/"); actual != endpoint+"//.default" {
+			t.Fatalf(`unexpected scope "%s" for endpoint "%s"/`, actual, endpoint)
+		}
 	}
 }
 

@@ -45,7 +45,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Database.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatabasesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/DatabaseDelete.json
@@ -86,7 +86,7 @@ func ExampleDatabasesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Database.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatabasesClientGetResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/DatabaseListByServer.json
@@ -97,11 +97,12 @@ func ExampleDatabasesClient_ListByServer() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByServer(ctx,
+	res, err := client.ListByServer(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DatabasesClientListByServerResult)
 }

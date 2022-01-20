@@ -18,13 +18,13 @@ import (
 )
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/GetPeeringServicePrefix.json
-func ExamplePeeringServicePrefixesClient_Get() {
+func ExampleServicePrefixesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicePrefixesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicePrefixesClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<peering-service-name>",
@@ -33,23 +33,23 @@ func ExamplePeeringServicePrefixesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PeeringServicePrefix.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicePrefixesClientGetResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreatePeeringServicePrefix.json
-func ExamplePeeringServicePrefixesClient_CreateOrUpdate() {
+func ExampleServicePrefixesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicePrefixesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicePrefixesClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<peering-service-name>",
 		"<prefix-name>",
-		armpeering.PeeringServicePrefix{
-			Properties: &armpeering.PeeringServicePrefixProperties{
+		armpeering.ServicePrefix{
+			Properties: &armpeering.ServicePrefixProperties{
 				Prefix: to.StringPtr("<prefix>"),
 			},
 		},
@@ -57,17 +57,17 @@ func ExamplePeeringServicePrefixesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PeeringServicePrefix.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicePrefixesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeeringServicePrefix.json
-func ExamplePeeringServicePrefixesClient_Delete() {
+func ExampleServicePrefixesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicePrefixesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicePrefixesClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<peering-service-name>",

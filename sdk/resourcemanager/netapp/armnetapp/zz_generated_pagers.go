@@ -16,27 +16,27 @@ import (
 	"reflect"
 )
 
-// AccountsListBySubscriptionPager provides operations for iterating over paged responses.
-type AccountsListBySubscriptionPager struct {
+// AccountsClientListBySubscriptionPager provides operations for iterating over paged responses.
+type AccountsClientListBySubscriptionPager struct {
 	client    *AccountsClient
-	current   AccountsListBySubscriptionResponse
+	current   AccountsClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AccountsListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, AccountsClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AccountsListBySubscriptionPager) Err() error {
+func (p *AccountsClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *AccountsClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.NetAppAccountList.NextLink == nil || len(*p.current.NetAppAccountList.NextLink) == 0 {
+		if p.current.AccountList.NextLink == nil || len(*p.current.AccountList.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -53,7 +53,7 @@ func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -65,32 +65,32 @@ func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AccountsListBySubscriptionResponse page.
-func (p *AccountsListBySubscriptionPager) PageResponse() AccountsListBySubscriptionResponse {
+// PageResponse returns the current AccountsClientListBySubscriptionResponse page.
+func (p *AccountsClientListBySubscriptionPager) PageResponse() AccountsClientListBySubscriptionResponse {
 	return p.current
 }
 
-// AccountsListPager provides operations for iterating over paged responses.
-type AccountsListPager struct {
+// AccountsClientListPager provides operations for iterating over paged responses.
+type AccountsClientListPager struct {
 	client    *AccountsClient
-	current   AccountsListResponse
+	current   AccountsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AccountsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, AccountsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AccountsListPager) Err() error {
+func (p *AccountsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AccountsListPager) NextPage(ctx context.Context) bool {
+func (p *AccountsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.NetAppAccountList.NextLink == nil || len(*p.current.NetAppAccountList.NextLink) == 0 {
+		if p.current.AccountList.NextLink == nil || len(*p.current.AccountList.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -107,7 +107,7 @@ func (p *AccountsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *AccountsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AccountsListResponse page.
-func (p *AccountsListPager) PageResponse() AccountsListResponse {
+// PageResponse returns the current AccountsClientListResponse page.
+func (p *AccountsClientListPager) PageResponse() AccountsClientListResponse {
 	return p.current
 }
 
-// PoolsListPager provides operations for iterating over paged responses.
-type PoolsListPager struct {
+// PoolsClientListPager provides operations for iterating over paged responses.
+type PoolsClientListPager struct {
 	client    *PoolsClient
-	current   PoolsListResponse
+	current   PoolsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PoolsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, PoolsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PoolsListPager) Err() error {
+func (p *PoolsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PoolsListPager) NextPage(ctx context.Context) bool {
+func (p *PoolsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *PoolsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *PoolsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current PoolsListResponse page.
-func (p *PoolsListPager) PageResponse() PoolsListResponse {
+// PageResponse returns the current PoolsClientListResponse page.
+func (p *PoolsClientListPager) PageResponse() PoolsClientListResponse {
 	return p.current
 }
 
-// VolumesListPager provides operations for iterating over paged responses.
-type VolumesListPager struct {
+// VolumesClientListPager provides operations for iterating over paged responses.
+type VolumesClientListPager struct {
 	client    *VolumesClient
-	current   VolumesListResponse
+	current   VolumesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VolumesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, VolumesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VolumesListPager) Err() error {
+func (p *VolumesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VolumesListPager) NextPage(ctx context.Context) bool {
+func (p *VolumesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *VolumesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -227,7 +227,7 @@ func (p *VolumesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current VolumesListResponse page.
-func (p *VolumesListPager) PageResponse() VolumesListResponse {
+// PageResponse returns the current VolumesClientListResponse page.
+func (p *VolumesClientListPager) PageResponse() VolumesClientListResponse {
 	return p.current
 }

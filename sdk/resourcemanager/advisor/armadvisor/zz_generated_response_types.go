@@ -10,99 +10,99 @@ package armadvisor
 
 import "net/http"
 
-// ConfigurationsCreateInResourceGroupResponse contains the response from method Configurations.CreateInResourceGroup.
-type ConfigurationsCreateInResourceGroupResponse struct {
-	ConfigurationsCreateInResourceGroupResult
+// ConfigurationsClientCreateInResourceGroupResponse contains the response from method ConfigurationsClient.CreateInResourceGroup.
+type ConfigurationsClientCreateInResourceGroupResponse struct {
+	ConfigurationsClientCreateInResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationsCreateInResourceGroupResult contains the result from method Configurations.CreateInResourceGroup.
-type ConfigurationsCreateInResourceGroupResult struct {
+// ConfigurationsClientCreateInResourceGroupResult contains the result from method ConfigurationsClient.CreateInResourceGroup.
+type ConfigurationsClientCreateInResourceGroupResult struct {
 	ConfigData
 }
 
-// ConfigurationsCreateInSubscriptionResponse contains the response from method Configurations.CreateInSubscription.
-type ConfigurationsCreateInSubscriptionResponse struct {
-	ConfigurationsCreateInSubscriptionResult
+// ConfigurationsClientCreateInSubscriptionResponse contains the response from method ConfigurationsClient.CreateInSubscription.
+type ConfigurationsClientCreateInSubscriptionResponse struct {
+	ConfigurationsClientCreateInSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationsCreateInSubscriptionResult contains the result from method Configurations.CreateInSubscription.
-type ConfigurationsCreateInSubscriptionResult struct {
+// ConfigurationsClientCreateInSubscriptionResult contains the result from method ConfigurationsClient.CreateInSubscription.
+type ConfigurationsClientCreateInSubscriptionResult struct {
 	ConfigData
 }
 
-// ConfigurationsListByResourceGroupResponse contains the response from method Configurations.ListByResourceGroup.
-type ConfigurationsListByResourceGroupResponse struct {
-	ConfigurationsListByResourceGroupResult
+// ConfigurationsClientListByResourceGroupResponse contains the response from method ConfigurationsClient.ListByResourceGroup.
+type ConfigurationsClientListByResourceGroupResponse struct {
+	ConfigurationsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationsListByResourceGroupResult contains the result from method Configurations.ListByResourceGroup.
-type ConfigurationsListByResourceGroupResult struct {
+// ConfigurationsClientListByResourceGroupResult contains the result from method ConfigurationsClient.ListByResourceGroup.
+type ConfigurationsClientListByResourceGroupResult struct {
 	ConfigurationListResult
 }
 
-// ConfigurationsListBySubscriptionResponse contains the response from method Configurations.ListBySubscription.
-type ConfigurationsListBySubscriptionResponse struct {
-	ConfigurationsListBySubscriptionResult
+// ConfigurationsClientListBySubscriptionResponse contains the response from method ConfigurationsClient.ListBySubscription.
+type ConfigurationsClientListBySubscriptionResponse struct {
+	ConfigurationsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationsListBySubscriptionResult contains the result from method Configurations.ListBySubscription.
-type ConfigurationsListBySubscriptionResult struct {
+// ConfigurationsClientListBySubscriptionResult contains the result from method ConfigurationsClient.ListBySubscription.
+type ConfigurationsClientListBySubscriptionResult struct {
 	ConfigurationListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationEntityListResult
 }
 
-// RecommendationMetadataGetResponse contains the response from method RecommendationMetadata.Get.
-type RecommendationMetadataGetResponse struct {
-	RecommendationMetadataGetResult
+// RecommendationMetadataClientGetResponse contains the response from method RecommendationMetadataClient.Get.
+type RecommendationMetadataClientGetResponse struct {
+	RecommendationMetadataClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecommendationMetadataGetResult contains the result from method RecommendationMetadata.Get.
-type RecommendationMetadataGetResult struct {
+// RecommendationMetadataClientGetResult contains the result from method RecommendationMetadataClient.Get.
+type RecommendationMetadataClientGetResult struct {
 	MetadataEntity
 }
 
-// RecommendationMetadataListResponse contains the response from method RecommendationMetadata.List.
-type RecommendationMetadataListResponse struct {
-	RecommendationMetadataListResult
+// RecommendationMetadataClientListResponse contains the response from method RecommendationMetadataClient.List.
+type RecommendationMetadataClientListResponse struct {
+	RecommendationMetadataClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecommendationMetadataListResult contains the result from method RecommendationMetadata.List.
-type RecommendationMetadataListResult struct {
+// RecommendationMetadataClientListResult contains the result from method RecommendationMetadataClient.List.
+type RecommendationMetadataClientListResult struct {
 	MetadataEntityListResult
 }
 
-// RecommendationsGenerateResponse contains the response from method Recommendations.Generate.
-type RecommendationsGenerateResponse struct {
-	RecommendationsGenerateResult
+// RecommendationsClientGenerateResponse contains the response from method RecommendationsClient.Generate.
+type RecommendationsClientGenerateResponse struct {
+	RecommendationsClientGenerateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecommendationsGenerateResult contains the result from method Recommendations.Generate.
-type RecommendationsGenerateResult struct {
+// RecommendationsClientGenerateResult contains the result from method RecommendationsClient.Generate.
+type RecommendationsClientGenerateResult struct {
 	// Location contains the information returned from the Location header response.
 	Location *string
 
@@ -110,74 +110,74 @@ type RecommendationsGenerateResult struct {
 	RetryAfter *string
 }
 
-// RecommendationsGetGenerateStatusResponse contains the response from method Recommendations.GetGenerateStatus.
-type RecommendationsGetGenerateStatusResponse struct {
+// RecommendationsClientGetGenerateStatusResponse contains the response from method RecommendationsClient.GetGenerateStatus.
+type RecommendationsClientGetGenerateStatusResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecommendationsGetResponse contains the response from method Recommendations.Get.
-type RecommendationsGetResponse struct {
-	RecommendationsGetResult
+// RecommendationsClientGetResponse contains the response from method RecommendationsClient.Get.
+type RecommendationsClientGetResponse struct {
+	RecommendationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecommendationsGetResult contains the result from method Recommendations.Get.
-type RecommendationsGetResult struct {
+// RecommendationsClientGetResult contains the result from method RecommendationsClient.Get.
+type RecommendationsClientGetResult struct {
 	ResourceRecommendationBase
 }
 
-// RecommendationsListResponse contains the response from method Recommendations.List.
-type RecommendationsListResponse struct {
-	RecommendationsListResult
+// RecommendationsClientListResponse contains the response from method RecommendationsClient.List.
+type RecommendationsClientListResponse struct {
+	RecommendationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecommendationsListResult contains the result from method Recommendations.List.
-type RecommendationsListResult struct {
+// RecommendationsClientListResult contains the result from method RecommendationsClient.List.
+type RecommendationsClientListResult struct {
 	ResourceRecommendationBaseListResult
 }
 
-// SuppressionsCreateResponse contains the response from method Suppressions.Create.
-type SuppressionsCreateResponse struct {
-	SuppressionsCreateResult
+// SuppressionsClientCreateResponse contains the response from method SuppressionsClient.Create.
+type SuppressionsClientCreateResponse struct {
+	SuppressionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SuppressionsCreateResult contains the result from method Suppressions.Create.
-type SuppressionsCreateResult struct {
+// SuppressionsClientCreateResult contains the result from method SuppressionsClient.Create.
+type SuppressionsClientCreateResult struct {
 	SuppressionContract
 }
 
-// SuppressionsDeleteResponse contains the response from method Suppressions.Delete.
-type SuppressionsDeleteResponse struct {
+// SuppressionsClientDeleteResponse contains the response from method SuppressionsClient.Delete.
+type SuppressionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SuppressionsGetResponse contains the response from method Suppressions.Get.
-type SuppressionsGetResponse struct {
-	SuppressionsGetResult
+// SuppressionsClientGetResponse contains the response from method SuppressionsClient.Get.
+type SuppressionsClientGetResponse struct {
+	SuppressionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SuppressionsGetResult contains the result from method Suppressions.Get.
-type SuppressionsGetResult struct {
+// SuppressionsClientGetResult contains the result from method SuppressionsClient.Get.
+type SuppressionsClientGetResult struct {
 	SuppressionContract
 }
 
-// SuppressionsListResponse contains the response from method Suppressions.List.
-type SuppressionsListResponse struct {
-	SuppressionsListResult
+// SuppressionsClientListResponse contains the response from method SuppressionsClient.List.
+type SuppressionsClientListResponse struct {
+	SuppressionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SuppressionsListResult contains the result from method Suppressions.List.
-type SuppressionsListResult struct {
+// SuppressionsClientListResult contains the result from method SuppressionsClient.List.
+type SuppressionsClientListResult struct {
 	SuppressionContractListResult
 }

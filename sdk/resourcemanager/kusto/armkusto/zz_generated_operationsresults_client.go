@@ -11,7 +11,6 @@ package armkusto
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // OperationsResultsClient contains the methods for the OperationsResults group.
 // Don't use this type directly, use NewOperationsResultsClient() instead.
 type OperationsResultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOperationsResultsClient creates a new instance of OperationsResultsClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsResultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OperationsResultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OperationsResultsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns operation results.
-// If the operation fails it returns the *CloudError error type.
-func (client *OperationsResultsClient) Get(ctx context.Context, location string, operationID string, options *OperationsResultsGetOptions) (OperationsResultsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Azure location (region) name.
+// operationID - The Guid of the operation ID
+// options - OperationsResultsClientGetOptions contains the optional parameters for the OperationsResultsClient.Get method.
+func (client *OperationsResultsClient) Get(ctx context.Context, location string, operationID string, options *OperationsResultsClientGetOptions) (OperationsResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
-		return OperationsResultsGetResponse{}, err
+		return OperationsResultsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OperationsResultsGetResponse{}, err
+		return OperationsResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OperationsResultsGetResponse{}, client.getHandleError(resp)
+		return OperationsResultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, location string, operationID string, options *OperationsResultsGetOptions) (*policy.Request, error) {
+func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, location string, operationID string, options *OperationsResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationresults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, loc
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +97,10 @@ func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, loc
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationsResultsClient) getHandleResponse(resp *http.Response) (OperationsResultsGetResponse, error) {
-	result := OperationsResultsGetResponse{RawResponse: resp}
+func (client *OperationsResultsClient) getHandleResponse(resp *http.Response) (OperationsResultsClientGetResponse, error) {
+	result := OperationsResultsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationResult); err != nil {
-		return OperationsResultsGetResponse{}, runtime.NewResponseError(err, resp)
+		return OperationsResultsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *OperationsResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

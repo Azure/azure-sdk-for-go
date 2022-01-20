@@ -20,13 +20,13 @@ import (
 )
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_Get.json
-func ExampleBlockchainMembersClient_Get() {
+func ExampleMembersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
+	client := armblockchain.NewMembersClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<blockchain-member-name>",
 		"<resource-group-name>",
@@ -34,32 +34,30 @@ func ExampleBlockchainMembersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BlockchainMember.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MembersClientGetResult)
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_Create.json
-func ExampleBlockchainMembersClient_BeginCreate() {
+func ExampleMembersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
+	client := armblockchain.NewMembersClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<blockchain-member-name>",
 		"<resource-group-name>",
-		&armblockchain.BlockchainMembersBeginCreateOptions{BlockchainMember: &armblockchain.BlockchainMember{
-			TrackedResource: armblockchain.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
-			Properties: &armblockchain.BlockchainMemberProperties{
+		&armblockchain.MembersClientBeginCreateOptions{BlockchainMember: &armblockchain.Member{
+			Location: to.StringPtr("<location>"),
+			Properties: &armblockchain.MemberProperties{
 				Consortium:                          to.StringPtr("<consortium>"),
 				ConsortiumManagementAccountPassword: to.StringPtr("<consortium-management-account-password>"),
 				Password:                            to.StringPtr("<password>"),
-				ValidatorNodesSKU: &armblockchain.BlockchainMemberNodesSKU{
+				ValidatorNodesSKU: &armblockchain.MemberNodesSKU{
 					Capacity: to.Int32Ptr(2),
 				},
-				Protocol: armblockchain.BlockchainProtocolQuorum.ToPtr(),
+				Protocol: armblockchain.BlockchainProtocol("Quorum").ToPtr(),
 			},
 		},
 		})
@@ -70,17 +68,17 @@ func ExampleBlockchainMembersClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BlockchainMember.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MembersClientCreateResult)
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_Delete.json
-func ExampleBlockchainMembersClient_BeginDelete() {
+func ExampleMembersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
+	client := armblockchain.NewMembersClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<blockchain-member-name>",
 		"<resource-group-name>",
@@ -95,123 +93,97 @@ func ExampleBlockchainMembersClient_BeginDelete() {
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_Update.json
-func ExampleBlockchainMembersClient_Update() {
+func ExampleMembersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
+	client := armblockchain.NewMembersClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<blockchain-member-name>",
 		"<resource-group-name>",
-		&armblockchain.BlockchainMembersUpdateOptions{BlockchainMember: &armblockchain.BlockchainMemberUpdate{
-			Properties: &armblockchain.BlockchainMemberPropertiesUpdate{
-				TransactionNodePropertiesUpdate: armblockchain.TransactionNodePropertiesUpdate{
-					FirewallRules: []*armblockchain.FirewallRule{},
-					Password:      to.StringPtr("<password>"),
-				},
+		&armblockchain.MembersClientUpdateOptions{BlockchainMember: &armblockchain.MemberUpdate{
+			Properties: &armblockchain.MemberPropertiesUpdate{
+				Password:                            to.StringPtr("<password>"),
 				ConsortiumManagementAccountPassword: to.StringPtr("<consortium-management-account-password>"),
 			},
-			Tags: map[string]*string{},
 		},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BlockchainMember.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MembersClientUpdateResult)
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_List.json
-func ExampleBlockchainMembersClient_List() {
+func ExampleMembersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
+	client := armblockchain.NewMembersClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BlockchainMember.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_ListAll.json
-func ExampleBlockchainMembersClient_ListAll() {
+func ExampleMembersClient_ListAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
+	client := armblockchain.NewMembersClient("<subscription-id>", cred, nil)
 	pager := client.ListAll(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BlockchainMember.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_ListConsortiumMembers.json
-func ExampleBlockchainMembersClient_ListConsortiumMembers() {
+func ExampleMembersClient_ListConsortiumMembers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
+	client := armblockchain.NewMembersClient("<subscription-id>", cred, nil)
 	pager := client.ListConsortiumMembers("<blockchain-member-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-	}
-}
-
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_ListApiKeys.json
-func ExampleBlockchainMembersClient_ListAPIKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
-	_, err = client.ListAPIKeys(ctx,
-		"<blockchain-member-name>",
-		"<resource-group-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/BlockchainMembers_ListRegenerateApiKeys.json
-func ExampleBlockchainMembersClient_ListRegenerateAPIKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armblockchain.NewBlockchainMembersClient("<subscription-id>", cred, nil)
-	_, err = client.ListRegenerateAPIKeys(ctx,
-		"<blockchain-member-name>",
-		"<resource-group-name>",
-		&armblockchain.BlockchainMembersListRegenerateAPIKeysOptions{APIKey: &armblockchain.APIKey{
-			KeyName: to.StringPtr("<key-name>"),
-		},
-		})
-	if err != nil {
-		log.Fatal(err)
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
 	}
 }

@@ -18,13 +18,13 @@ import (
 )
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecsCreate.json
-func ExampleTemplateSpecsClient_CreateOrUpdate() {
+func ExampleClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtemplatespecs.NewTemplateSpecsClient("<subscription-id>", cred, nil)
+	client := armtemplatespecs.NewClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<template-spec-name>",
@@ -38,21 +38,21 @@ func ExampleTemplateSpecsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TemplateSpec.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecsPatch.json
-func ExampleTemplateSpecsClient_Update() {
+func ExampleClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtemplatespecs.NewTemplateSpecsClient("<subscription-id>", cred, nil)
+	client := armtemplatespecs.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<template-spec-name>",
-		&armtemplatespecs.TemplateSpecsUpdateOptions{TemplateSpec: &armtemplatespecs.TemplateSpecUpdateModel{
+		&armtemplatespecs.ClientUpdateOptions{TemplateSpec: &armtemplatespecs.TemplateSpecUpdateModel{
 			Tags: map[string]*string{
 				"myTag": to.StringPtr("My Value"),
 			},
@@ -61,35 +61,35 @@ func ExampleTemplateSpecsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TemplateSpec.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecsGet.json
-func ExampleTemplateSpecsClient_Get() {
+func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtemplatespecs.NewTemplateSpecsClient("<subscription-id>", cred, nil)
+	client := armtemplatespecs.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<template-spec-name>",
-		&armtemplatespecs.TemplateSpecsGetOptions{Expand: nil})
+		&armtemplatespecs.ClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TemplateSpec.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecsDelete.json
-func ExampleTemplateSpecsClient_Delete() {
+func ExampleClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtemplatespecs.NewTemplateSpecsClient("<subscription-id>", cred, nil)
+	client := armtemplatespecs.NewClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<template-spec-name>",
@@ -100,40 +100,48 @@ func ExampleTemplateSpecsClient_Delete() {
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecsListBySubscription.json
-func ExampleTemplateSpecsClient_ListBySubscription() {
+func ExampleClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtemplatespecs.NewTemplateSpecsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armtemplatespecs.TemplateSpecsListBySubscriptionOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+	client := armtemplatespecs.NewClient("<subscription-id>", cred, nil)
+	pager := client.ListBySubscription(&armtemplatespecs.ClientListBySubscriptionOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TemplateSpec.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-05-01/examples/TemplateSpecsListByResourceGroup.json
-func ExampleTemplateSpecsClient_ListByResourceGroup() {
+func ExampleClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtemplatespecs.NewTemplateSpecsClient("<subscription-id>", cred, nil)
+	client := armtemplatespecs.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armtemplatespecs.TemplateSpecsListByResourceGroupOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+		&armtemplatespecs.ClientListByResourceGroupOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TemplateSpec.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

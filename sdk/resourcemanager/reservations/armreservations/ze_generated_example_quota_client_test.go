@@ -27,7 +27,7 @@ func ExampleQuotaClient_Get() {
 	}
 	ctx := context.Background()
 	client := armreservations.NewQuotaClient(cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<subscription-id>",
 		"<provider-id>",
 		"<location>",
@@ -36,6 +36,7 @@ func ExampleQuotaClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.QuotaClientGetResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/putComputeOneSkuQuotaRequest.json
@@ -68,7 +69,7 @@ func ExampleQuotaClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QuotaRequestOneResourceSubmitResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.QuotaClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/patchComputeQuotaRequest.json
@@ -101,7 +102,7 @@ func ExampleQuotaClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QuotaRequestOneResourceSubmitResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.QuotaClientUpdateResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getComputeUsages.json
@@ -116,9 +117,16 @@ func ExampleQuotaClient_List() {
 		"<provider-id>",
 		"<location>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

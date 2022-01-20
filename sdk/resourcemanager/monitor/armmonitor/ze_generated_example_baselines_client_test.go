@@ -25,9 +25,9 @@ func ExampleBaselinesClient_List() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewBaselinesClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-uri>",
-		&armmonitor.BaselinesListOptions{Metricnames: nil,
+		&armmonitor.BaselinesClientListOptions{Metricnames: nil,
 			Metricnamespace: nil,
 			Timespan:        to.StringPtr("<timespan>"),
 			Interval:        to.StringPtr("<interval>"),
@@ -39,4 +39,5 @@ func ExampleBaselinesClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BaselinesClientListResult)
 }

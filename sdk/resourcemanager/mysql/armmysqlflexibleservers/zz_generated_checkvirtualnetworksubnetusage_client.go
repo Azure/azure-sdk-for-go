@@ -11,7 +11,6 @@ package armmysqlflexibleservers
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // CheckVirtualNetworkSubnetUsageClient contains the methods for the CheckVirtualNetworkSubnetUsage group.
 // Don't use this type directly, use NewCheckVirtualNetworkSubnetUsageClient() instead.
 type CheckVirtualNetworkSubnetUsageClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCheckVirtualNetworkSubnetUsageClient creates a new instance of CheckVirtualNetworkSubnetUsageClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CheckVirtualNetworkSubnetUsageClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CheckVirtualNetworkSubnetUsageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CheckVirtualNetworkSubnetUsageClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Execute - Get virtual network subnet usage for a given vNet resource id.
-// If the operation fails it returns the *CloudError error type.
-func (client *CheckVirtualNetworkSubnetUsageClient) Execute(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *CheckVirtualNetworkSubnetUsageExecuteOptions) (CheckVirtualNetworkSubnetUsageExecuteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The name of the location.
+// parameters - The required parameters for creating or updating a server.
+// options - CheckVirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the CheckVirtualNetworkSubnetUsageClient.Execute
+// method.
+func (client *CheckVirtualNetworkSubnetUsageClient) Execute(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *CheckVirtualNetworkSubnetUsageClientExecuteOptions) (CheckVirtualNetworkSubnetUsageClientExecuteResponse, error) {
 	req, err := client.executeCreateRequest(ctx, locationName, parameters, options)
 	if err != nil {
-		return CheckVirtualNetworkSubnetUsageExecuteResponse{}, err
+		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CheckVirtualNetworkSubnetUsageExecuteResponse{}, err
+		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CheckVirtualNetworkSubnetUsageExecuteResponse{}, client.executeHandleError(resp)
+		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeHandleResponse(resp)
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *CheckVirtualNetworkSubnetUsageExecuteOptions) (*policy.Request, error) {
+func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *CheckVirtualNetworkSubnetUsageClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/checkVirtualNetworkSubnetUsage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx con
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,23 +93,10 @@ func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx con
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (CheckVirtualNetworkSubnetUsageExecuteResponse, error) {
-	result := CheckVirtualNetworkSubnetUsageExecuteResponse{RawResponse: resp}
+func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (CheckVirtualNetworkSubnetUsageClientExecuteResponse, error) {
+	result := CheckVirtualNetworkSubnetUsageClientExecuteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageResult); err != nil {
-		return CheckVirtualNetworkSubnetUsageExecuteResponse{}, runtime.NewResponseError(err, resp)
+		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
 	return result, nil
-}
-
-// executeHandleError handles the Execute error response.
-func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

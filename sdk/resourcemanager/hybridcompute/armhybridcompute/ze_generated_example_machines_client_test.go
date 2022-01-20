@@ -29,9 +29,7 @@ func ExampleMachinesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<machine-name>",
 		armhybridcompute.Machine{
-			TrackedResource: armhybridcompute.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armhybridcompute.Identity{
 				Type: to.StringPtr("<type>"),
 			},
@@ -49,7 +47,7 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Machine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MachinesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-06-10-preview/examples/Machines_Update.json
@@ -91,7 +89,7 @@ func ExampleMachinesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Machine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MachinesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-06-10-preview/examples/Machines_Delete.json
@@ -122,11 +120,11 @@ func ExampleMachinesClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<machine-name>",
-		&armhybridcompute.MachinesGetOptions{Expand: nil})
+		&armhybridcompute.MachinesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Machine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MachinesClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-06-10-preview/examples/Machines_ListByResourceGroup.json
@@ -139,12 +137,16 @@ func ExampleMachinesClient_ListByResourceGroup() {
 	client := armhybridcompute.NewMachinesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Machine.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -158,12 +160,16 @@ func ExampleMachinesClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armhybridcompute.NewMachinesClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Machine.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

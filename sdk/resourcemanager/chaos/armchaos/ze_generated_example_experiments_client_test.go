@@ -27,15 +27,19 @@ func ExampleExperimentsClient_ListAll() {
 	}
 	ctx := context.Background()
 	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
-	pager := client.ListAll(&armchaos.ExperimentsListAllOptions{Running: nil,
+	pager := client.ListAll(&armchaos.ExperimentsClientListAllOptions{Running: nil,
 		ContinuationToken: to.StringPtr("<continuation-token>"),
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Experiment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -49,15 +53,19 @@ func ExampleExperimentsClient_List() {
 	ctx := context.Background()
 	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		&armchaos.ExperimentsListOptions{Running: nil,
+		&armchaos.ExperimentsClientListOptions{Running: nil,
 			ContinuationToken: to.StringPtr("<continuation-token>"),
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Experiment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -94,7 +102,7 @@ func ExampleExperimentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Experiment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExperimentsClientGetResult)
 }
 
 // x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/CreateOrUpdateAExperiment.json
@@ -109,9 +117,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<experiment-name>",
 		armchaos.Experiment{
-			TrackedResource: armchaos.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armchaos.ResourceIdentity{
 				Type: armchaos.ResourceIdentityTypeSystemAssigned.ToPtr(),
 			},
@@ -149,7 +155,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Experiment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExperimentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/CancelAExperiment.json
@@ -201,12 +207,16 @@ func ExampleExperimentsClient_ListAllStatuses() {
 	pager := client.ListAllStatuses("<resource-group-name>",
 		"<experiment-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ExperimentStatus.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -227,7 +237,7 @@ func ExampleExperimentsClient_GetStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExperimentStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExperimentsClientGetStatusResult)
 }
 
 // x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentExecutionsDetails.json
@@ -241,12 +251,16 @@ func ExampleExperimentsClient_ListExecutionDetails() {
 	pager := client.ListExecutionDetails("<resource-group-name>",
 		"<experiment-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ExperimentExecutionDetails.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -267,5 +281,5 @@ func ExampleExperimentsClient_GetExecutionDetails() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExperimentExecutionDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExperimentsClientGetExecutionDetailsResult)
 }

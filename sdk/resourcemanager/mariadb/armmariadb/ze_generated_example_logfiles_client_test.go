@@ -24,11 +24,12 @@ func ExampleLogFilesClient_ListByServer() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewLogFilesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByServer(ctx,
+	res, err := client.ListByServer(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LogFilesClientListByServerResult)
 }

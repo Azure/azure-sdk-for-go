@@ -24,42 +24,55 @@ import (
 // ManagedInstanceOperationsClient contains the methods for the ManagedInstanceOperations group.
 // Don't use this type directly, use NewManagedInstanceOperationsClient() instead.
 type ManagedInstanceOperationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedInstanceOperationsClient creates a new instance of ManagedInstanceOperationsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedInstanceOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedInstanceOperationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Cancel - Cancels the asynchronous operation on the managed instance.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceOperationsClient) Cancel(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsCancelOptions) (ManagedInstanceOperationsCancelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedInstanceOperationsClientCancelOptions contains the optional parameters for the ManagedInstanceOperationsClient.Cancel
+// method.
+func (client *ManagedInstanceOperationsClient) Cancel(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsClientCancelOptions) (ManagedInstanceOperationsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, managedInstanceName, operationID, options)
 	if err != nil {
-		return ManagedInstanceOperationsCancelResponse{}, err
+		return ManagedInstanceOperationsClientCancelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedInstanceOperationsCancelResponse{}, err
+		return ManagedInstanceOperationsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedInstanceOperationsCancelResponse{}, client.cancelHandleError(resp)
+		return ManagedInstanceOperationsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagedInstanceOperationsCancelResponse{RawResponse: resp}, nil
+	return ManagedInstanceOperationsClientCancelResponse{RawResponse: resp}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsCancelOptions) (*policy.Request, error) {
+func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/operations/{operationId}/cancel"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +87,7 @@ func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -84,37 +97,30 @@ func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.C
 	return req, nil
 }
 
-// cancelHandleError handles the Cancel error response.
-func (client *ManagedInstanceOperationsClient) cancelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a management operation on a managed instance.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceOperationsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsGetOptions) (ManagedInstanceOperationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedInstanceOperationsClientGetOptions contains the optional parameters for the ManagedInstanceOperationsClient.Get
+// method.
+func (client *ManagedInstanceOperationsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsClientGetOptions) (ManagedInstanceOperationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, operationID, options)
 	if err != nil {
-		return ManagedInstanceOperationsGetResponse{}, err
+		return ManagedInstanceOperationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedInstanceOperationsGetResponse{}, err
+		return ManagedInstanceOperationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedInstanceOperationsGetResponse{}, client.getHandleError(resp)
+		return ManagedInstanceOperationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsGetOptions) (*policy.Request, error) {
+func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/operations/{operationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -129,7 +135,7 @@ func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -141,42 +147,35 @@ func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Response) (ManagedInstanceOperationsGetResponse, error) {
-	result := ManagedInstanceOperationsGetResponse{RawResponse: resp}
+func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Response) (ManagedInstanceOperationsClientGetResponse, error) {
+	result := ManagedInstanceOperationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceOperation); err != nil {
-		return ManagedInstanceOperationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedInstanceOperationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedInstanceOperationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByManagedInstance - Gets a list of operations performed on the managed instance.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceOperationsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsListByManagedInstanceOptions) *ManagedInstanceOperationsListByManagedInstancePager {
-	return &ManagedInstanceOperationsListByManagedInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedInstanceOperationsClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstanceOperationsClient.ListByManagedInstance
+// method.
+func (client *ManagedInstanceOperationsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) *ManagedInstanceOperationsClientListByManagedInstancePager {
+	return &ManagedInstanceOperationsClientListByManagedInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedInstanceOperationsListByManagedInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedInstanceOperationsClientListByManagedInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceOperationListResult.NextLink)
 		},
 	}
 }
 
 // listByManagedInstanceCreateRequest creates the ListByManagedInstance request.
-func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsListByManagedInstanceOptions) (*policy.Request, error) {
+func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/operations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -190,7 +189,7 @@ func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,22 +201,10 @@ func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateReques
 }
 
 // listByManagedInstanceHandleResponse handles the ListByManagedInstance response.
-func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstanceOperationsListByManagedInstanceResponse, error) {
-	result := ManagedInstanceOperationsListByManagedInstanceResponse{RawResponse: resp}
+func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstanceOperationsClientListByManagedInstanceResponse, error) {
+	result := ManagedInstanceOperationsClientListByManagedInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceOperationListResult); err != nil {
-		return ManagedInstanceOperationsListByManagedInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedInstanceOperationsClientListByManagedInstanceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByManagedInstanceHandleError handles the ListByManagedInstance error response.
-func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

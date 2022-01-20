@@ -50,22 +50,3 @@ func unmarshalArtifactClassificationArray(rawMsg json.RawMessage) ([]ArtifactCla
 	}
 	return fArray, nil
 }
-
-func unmarshalArtifactClassificationMap(rawMsg json.RawMessage) (map[string]ArtifactClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ArtifactClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalArtifactClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}

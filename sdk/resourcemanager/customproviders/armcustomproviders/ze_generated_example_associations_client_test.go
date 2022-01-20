@@ -43,7 +43,7 @@ func ExampleAssociationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Association.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssociationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/customproviders/resource-manager/Microsoft.CustomProviders/preview/2018-09-01-preview/examples/deleteAssociation.json
@@ -82,7 +82,7 @@ func ExampleAssociationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Association.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssociationsClientGetResult)
 }
 
 // x-ms-original-file: specification/customproviders/resource-manager/Microsoft.CustomProviders/preview/2018-09-01-preview/examples/getAllAssociations.json
@@ -95,12 +95,16 @@ func ExampleAssociationsClient_ListAll() {
 	client := armcustomproviders.NewAssociationsClient(cred, nil)
 	pager := client.ListAll("<scope>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Association.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

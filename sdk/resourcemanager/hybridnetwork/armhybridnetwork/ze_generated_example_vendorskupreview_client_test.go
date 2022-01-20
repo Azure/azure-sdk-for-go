@@ -29,12 +29,16 @@ func ExampleVendorSKUPreviewClient_List() {
 	pager := client.List("<vendor-name>",
 		"<sku-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PreviewSubscription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -60,7 +64,7 @@ func ExampleVendorSKUPreviewClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PreviewSubscription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VendorSKUPreviewClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorSkuPreviewGet.json
@@ -79,7 +83,7 @@ func ExampleVendorSKUPreviewClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PreviewSubscription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VendorSKUPreviewClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorSkuPreviewDelete.json

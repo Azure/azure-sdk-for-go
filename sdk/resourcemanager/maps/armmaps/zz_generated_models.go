@@ -15,19 +15,116 @@ import (
 	"time"
 )
 
-// AccountSasParameters - Parameters used to create an account Shared Access Signature (SAS) token. The REST API access control is provided by Azure Maps
-// Role Based Access (RBAC) identity and access.
+// Account - An Azure resource which represents access to a suite of Maps REST APIs.
+type Account struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; The SKU of this account.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Sets the identity property for maps account.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Get or Set Kind property.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// The map account properties.
+	Properties *AccountProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Account.
+func (a Account) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "kind", a.Kind)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AccountKeys - The set of keys which can be used to access the Maps REST APIs. Two keys are provided for key rotation without
+// interruption.
+type AccountKeys struct {
+	// READ-ONLY; The primary key for accessing the Maps REST APIs.
+	PrimaryKey *string `json:"primaryKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; The last updated date and time of the primary key.
+	PrimaryKeyLastUpdated *string `json:"primaryKeyLastUpdated,omitempty" azure:"ro"`
+
+	// READ-ONLY; The secondary key for accessing the Maps REST APIs.
+	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; The last updated date and time of the secondary key.
+	SecondaryKeyLastUpdated *string `json:"secondaryKeyLastUpdated,omitempty" azure:"ro"`
+}
+
+// AccountProperties - Additional Map account properties
+type AccountProperties struct {
+	// Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule
+	// elements are included in the request body, all CORS rules will be deleted, and
+	// CORS will be disabled for the Blob service.
+	Cors *CorsRules `json:"cors,omitempty"`
+
+	// Allows toggle functionality on Azure Policy to disable Azure Maps local authentication support. This will disable Shared
+	// Keys authentication from any usage.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// Sets the resources to be used for Managed Identities based operations for the Map account resource.
+	LinkedResources []*LinkedResource `json:"linkedResources,omitempty"`
+
+	// READ-ONLY; The provisioning state of the Map account resource.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; A unique identifier for the maps account
+	UniqueID *string `json:"uniqueId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
+func (a AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "cors", a.Cors)
+	populate(objectMap, "disableLocalAuth", a.DisableLocalAuth)
+	populate(objectMap, "linkedResources", a.LinkedResources)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "uniqueId", a.UniqueID)
+	return json.Marshal(objectMap)
+}
+
+// AccountSasParameters - Parameters used to create an account Shared Access Signature (SAS) token. The REST API access control
+// is provided by Azure Maps Role Based Access (RBAC) identity and access.
 type AccountSasParameters struct {
 	// REQUIRED; The date time offset of when the token validity expires. For example "2017-05-24T10:42:03.1567373Z"
 	Expiry *string `json:"expiry,omitempty"`
 
-	// REQUIRED; Required parameter which represents the desired maximum request per second to allowed for the given SAS token. This does not guarantee perfect
-	// accuracy in measurements but provides application safe
+	// REQUIRED; Required parameter which represents the desired maximum request per second to allowed for the given SAS token.
+	// This does not guarantee perfect accuracy in measurements but provides application safe
 	// guards of abuse with eventual enforcement.
 	MaxRatePerSecond *int32 `json:"maxRatePerSecond,omitempty"`
 
-	// REQUIRED; The principal Id also known as the object Id of a User Assigned Managed Identity currently assigned to the Map Account. To assign a Managed
-	// Identity of the account, use operation Create or Update an
+	// REQUIRED; The principal Id also known as the object Id of a User Assigned Managed Identity currently assigned to the Map
+	// Account. To assign a Managed Identity of the account, use operation Create or Update an
 	// assign a User Assigned Identity resource Id.
 	PrincipalID *string `json:"principalId,omitempty"`
 
@@ -37,8 +134,8 @@ type AccountSasParameters struct {
 	// REQUIRED; The date time offset of when the token validity begins. For example "2017-05-24T10:42:03.1567373Z".
 	Start *string `json:"start,omitempty"`
 
-	// Optional, allows control of which region locations are permitted access to Azure Maps REST APIs with the SAS token. Example: "eastus", "westus2". Omitting
-	// this parameter will allow all region
+	// Optional, allows control of which region locations are permitted access to Azure Maps REST APIs with the SAS token. Example:
+	// "eastus", "westus2". Omitting this parameter will allow all region
 	// locations to be accessible.
 	Regions []*string `json:"regions,omitempty"`
 }
@@ -55,48 +152,113 @@ func (a AccountSasParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AccountsCreateOrUpdateOptions contains the optional parameters for the Accounts.CreateOrUpdate method.
-type AccountsCreateOrUpdateOptions struct {
+// AccountSasToken - A new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
+// identity permissions on Azure (IAM) Role Based Access Control.
+type AccountSasToken struct {
+	// READ-ONLY; The shared access signature access token.
+	AccountSasToken *string `json:"accountSasToken,omitempty" azure:"ro"`
+}
+
+// AccountUpdateParameters - Parameters used to update an existing Maps Account.
+type AccountUpdateParameters struct {
+	// Sets the identity property for maps account.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Get or Set Kind property.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// The map account properties.
+	Properties *AccountProperties `json:"properties,omitempty"`
+
+	// The SKU of this account.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this
+	// resource (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountUpdateParameters.
+func (a AccountUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "kind", a.Kind)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "tags", a.Tags)
+	return json.Marshal(objectMap)
+}
+
+// Accounts - A list of Maps Accounts.
+type Accounts struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; a Maps Account.
+	Value []*Account `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Accounts.
+func (a Accounts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountsClientCreateOrUpdateOptions contains the optional parameters for the AccountsClient.CreateOrUpdate method.
+type AccountsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsDeleteOptions contains the optional parameters for the Accounts.Delete method.
-type AccountsDeleteOptions struct {
+// AccountsClientDeleteOptions contains the optional parameters for the AccountsClient.Delete method.
+type AccountsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsGetOptions contains the optional parameters for the Accounts.Get method.
-type AccountsGetOptions struct {
+// AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListByResourceGroupOptions contains the optional parameters for the Accounts.ListByResourceGroup method.
-type AccountsListByResourceGroupOptions struct {
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+type AccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListBySubscriptionOptions contains the optional parameters for the Accounts.ListBySubscription method.
-type AccountsListBySubscriptionOptions struct {
+// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription method.
+type AccountsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListKeysOptions contains the optional parameters for the Accounts.ListKeys method.
-type AccountsListKeysOptions struct {
+// AccountsClientListKeysOptions contains the optional parameters for the AccountsClient.ListKeys method.
+type AccountsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListSasOptions contains the optional parameters for the Accounts.ListSas method.
-type AccountsListSasOptions struct {
+// AccountsClientListSasOptions contains the optional parameters for the AccountsClient.ListSas method.
+type AccountsClientListSasOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsRegenerateKeysOptions contains the optional parameters for the Accounts.RegenerateKeys method.
-type AccountsRegenerateKeysOptions struct {
+// AccountsClientRegenerateKeysOptions contains the optional parameters for the AccountsClient.RegenerateKeys method.
+type AccountsClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsUpdateOptions contains the optional parameters for the Accounts.Update method.
-type AccountsUpdateOptions struct {
+// AccountsClientUpdateOptions contains the optional parameters for the AccountsClient.Update method.
+type AccountsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListOperationsOptions contains the optional parameters for the Client.ListOperations method.
+type ClientListOperationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListSubscriptionOperationsOptions contains the optional parameters for the Client.ListSubscriptionOperations method.
+type ClientListSubscriptionOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -110,7 +272,8 @@ type Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentit
 
 // CorsRule - Specifies a CORS rule for the Map Account.
 type CorsRule struct {
-	// REQUIRED; Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow all domains
+	// REQUIRED; Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow
+	// all domains
 	AllowedOrigins []*string `json:"allowedOrigins,omitempty"`
 }
 
@@ -136,20 +299,38 @@ func (c CorsRules) MarshalJSON() ([]byte, error) {
 
 // Creator - An Azure resource which represents Maps Creator product and provides ability to manage private location data.
 type Creator struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; The Creator resource properties.
 	Properties *CreatorProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Creator.
 func (c Creator) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -184,8 +365,8 @@ type CreatorUpdateParameters struct {
 	// Creator resource properties.
 	Properties *CreatorProperties `json:"properties,omitempty"`
 
-	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
-	// A maximum of 15 tags can be provided for a
+	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this
+	// resource (across resource groups). A maximum of 15 tags can be provided for a
 	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
@@ -198,28 +379,28 @@ func (c CreatorUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CreatorsCreateOrUpdateOptions contains the optional parameters for the Creators.CreateOrUpdate method.
-type CreatorsCreateOrUpdateOptions struct {
+// CreatorsClientCreateOrUpdateOptions contains the optional parameters for the CreatorsClient.CreateOrUpdate method.
+type CreatorsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CreatorsDeleteOptions contains the optional parameters for the Creators.Delete method.
-type CreatorsDeleteOptions struct {
+// CreatorsClientDeleteOptions contains the optional parameters for the CreatorsClient.Delete method.
+type CreatorsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CreatorsGetOptions contains the optional parameters for the Creators.Get method.
-type CreatorsGetOptions struct {
+// CreatorsClientGetOptions contains the optional parameters for the CreatorsClient.Get method.
+type CreatorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CreatorsListByAccountOptions contains the optional parameters for the Creators.ListByAccount method.
-type CreatorsListByAccountOptions struct {
+// CreatorsClientListByAccountOptions contains the optional parameters for the CreatorsClient.ListByAccount method.
+type CreatorsClientListByAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CreatorsUpdateOptions contains the optional parameters for the Creators.Update method.
-type CreatorsUpdateOptions struct {
+// CreatorsClientUpdateOptions contains the optional parameters for the CreatorsClient.Update method.
+type CreatorsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -282,23 +463,21 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+// KeySpecification - Whether the operation refers to the primary or secondary key.
+type KeySpecification struct {
+	// REQUIRED; Whether the operation refers to the primary or secondary key.
+	KeyType *KeyType `json:"keyType,omitempty"`
 }
 
-// LinkedResource - Linked resource is reference to a resource deployed in an Azure subscription, add the linked resource uniqueName value as an optional
-// parameter for operations on Azure Maps Geospatial REST APIs.
+// LinkedResource - Linked resource is reference to a resource deployed in an Azure subscription, add the linked resource
+// uniqueName value as an optional parameter for operations on Azure Maps Geospatial REST APIs.
 type LinkedResource struct {
 	// REQUIRED; ARM resource id in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/accounts/{storageName}'.
 	ID *string `json:"id,omitempty"`
@@ -312,7 +491,8 @@ type ManagedServiceIdentity struct {
 	// The identity type.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
 
@@ -330,172 +510,6 @@ func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "tenantId", m.TenantID)
 	populate(objectMap, "type", m.Type)
 	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
-// MapsAccount - An Azure resource which represents access to a suite of Maps REST APIs.
-type MapsAccount struct {
-	TrackedResource
-	// REQUIRED; The SKU of this account.
-	SKU *SKU `json:"sku,omitempty"`
-
-	// Sets the identity property for maps account.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
-
-	// Get or Set Kind property.
-	Kind *Kind `json:"kind,omitempty"`
-
-	// The map account properties.
-	Properties *MapsAccountProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MapsAccount.
-func (m MapsAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", m.Identity)
-	populate(objectMap, "kind", m.Kind)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "sku", m.SKU)
-	populate(objectMap, "systemData", m.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// MapsAccountKeys - The set of keys which can be used to access the Maps REST APIs. Two keys are provided for key rotation without interruption.
-type MapsAccountKeys struct {
-	// READ-ONLY; The primary key for accessing the Maps REST APIs.
-	PrimaryKey *string `json:"primaryKey,omitempty" azure:"ro"`
-
-	// READ-ONLY; The last updated date and time of the primary key.
-	PrimaryKeyLastUpdated *string `json:"primaryKeyLastUpdated,omitempty" azure:"ro"`
-
-	// READ-ONLY; The secondary key for accessing the Maps REST APIs.
-	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
-
-	// READ-ONLY; The last updated date and time of the secondary key.
-	SecondaryKeyLastUpdated *string `json:"secondaryKeyLastUpdated,omitempty" azure:"ro"`
-}
-
-// MapsAccountProperties - Additional Map account properties
-type MapsAccountProperties struct {
-	// Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request
-	// body, all CORS rules will be deleted, and
-	// CORS will be disabled for the Blob service.
-	Cors *CorsRules `json:"cors,omitempty"`
-
-	// Allows toggle functionality on Azure Policy to disable Azure Maps local authentication support. This will disable Shared Keys authentication from any
-	// usage.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// Sets the resources to be used for Managed Identities based operations for the Map account resource.
-	LinkedResources []*LinkedResource `json:"linkedResources,omitempty"`
-
-	// READ-ONLY; The provisioning state of the Map account resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; A unique identifier for the maps account
-	UniqueID *string `json:"uniqueId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MapsAccountProperties.
-func (m MapsAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cors", m.Cors)
-	populate(objectMap, "disableLocalAuth", m.DisableLocalAuth)
-	populate(objectMap, "linkedResources", m.LinkedResources)
-	populate(objectMap, "provisioningState", m.ProvisioningState)
-	populate(objectMap, "uniqueId", m.UniqueID)
-	return json.Marshal(objectMap)
-}
-
-// MapsAccountSasToken - A new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed identity permissions
-// on Azure (IAM) Role Based Access Control.
-type MapsAccountSasToken struct {
-	// READ-ONLY; The shared access signature access token.
-	AccountSasToken *string `json:"accountSasToken,omitempty" azure:"ro"`
-}
-
-// MapsAccountUpdateParameters - Parameters used to update an existing Maps Account.
-type MapsAccountUpdateParameters struct {
-	// Sets the identity property for maps account.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
-
-	// Get or Set Kind property.
-	Kind *Kind `json:"kind,omitempty"`
-
-	// The map account properties.
-	Properties *MapsAccountProperties `json:"properties,omitempty"`
-
-	// The SKU of this account.
-	SKU *SKU `json:"sku,omitempty"`
-
-	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
-	// A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MapsAccountUpdateParameters.
-func (m MapsAccountUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", m.Identity)
-	populate(objectMap, "kind", m.Kind)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "sku", m.SKU)
-	populate(objectMap, "tags", m.Tags)
-	return json.Marshal(objectMap)
-}
-
-// MapsAccounts - A list of Maps Accounts.
-type MapsAccounts struct {
-	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// READ-ONLY; a Maps Account.
-	Value []*MapsAccount `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MapsAccounts.
-func (m MapsAccounts) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
-// MapsKeySpecification - Whether the operation refers to the primary or secondary key.
-type MapsKeySpecification struct {
-	// REQUIRED; Whether the operation refers to the primary or secondary key.
-	KeyType *KeyType `json:"keyType,omitempty"`
-}
-
-// MapsListOperationsOptions contains the optional parameters for the Maps.ListOperations method.
-type MapsListOperationsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MapsListSubscriptionOperationsOptions contains the optional parameters for the Maps.ListSubscriptionOperations method.
-type MapsListSubscriptionOperationsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MapsOperations - The set of operations available for Maps.
-type MapsOperations struct {
-	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// READ-ONLY; An operation available for Maps.
-	Value []*OperationDetail `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MapsOperations.
-func (m MapsOperations) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -591,6 +605,23 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
+// Operations - The set of operations available for Maps.
+type Operations struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; An operation available for Maps.
+	Value []*OperationDetail `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Operations.
+func (o Operations) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", o.NextLink)
+	populate(objectMap, "value", o.Value)
+	return json.Marshal(objectMap)
+}
+
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -601,19 +632,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SKU - The SKU of the Maps Account.
@@ -706,27 +724,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // UserConfirmationPasswordClient contains the methods for the UserConfirmationPassword group.
 // Don't use this type directly, use NewUserConfirmationPasswordClient() instead.
 type UserConfirmationPasswordClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUserConfirmationPasswordClient creates a new instance of UserConfirmationPasswordClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUserConfirmationPasswordClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserConfirmationPasswordClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UserConfirmationPasswordClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UserConfirmationPasswordClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Send - Sends confirmation
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserConfirmationPasswordClient) Send(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserConfirmationPasswordSendOptions) (UserConfirmationPasswordSendResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// options - UserConfirmationPasswordClientSendOptions contains the optional parameters for the UserConfirmationPasswordClient.Send
+// method.
+func (client *UserConfirmationPasswordClient) Send(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserConfirmationPasswordClientSendOptions) (UserConfirmationPasswordClientSendResponse, error) {
 	req, err := client.sendCreateRequest(ctx, resourceGroupName, serviceName, userID, options)
 	if err != nil {
-		return UserConfirmationPasswordSendResponse{}, err
+		return UserConfirmationPasswordClientSendResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserConfirmationPasswordSendResponse{}, err
+		return UserConfirmationPasswordClientSendResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return UserConfirmationPasswordSendResponse{}, client.sendHandleError(resp)
+		return UserConfirmationPasswordClientSendResponse{}, runtime.NewResponseError(resp)
 	}
-	return UserConfirmationPasswordSendResponse{RawResponse: resp}, nil
+	return UserConfirmationPasswordClientSendResponse{RawResponse: resp}, nil
 }
 
 // sendCreateRequest creates the Send request.
-func (client *UserConfirmationPasswordClient) sendCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserConfirmationPasswordSendOptions) (*policy.Request, error) {
+func (client *UserConfirmationPasswordClient) sendCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserConfirmationPasswordClientSendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/confirmations/password/send"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +91,7 @@ func (client *UserConfirmationPasswordClient) sendCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,17 +103,4 @@ func (client *UserConfirmationPasswordClient) sendCreateRequest(ctx context.Cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// sendHandleError handles the Send error response.
-func (client *UserConfirmationPasswordClient) sendHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

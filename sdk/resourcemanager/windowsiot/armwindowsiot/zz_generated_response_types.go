@@ -10,98 +10,98 @@ package armwindowsiot
 
 import "net/http"
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// ServicesCheckDeviceServiceNameAvailabilityResponse contains the response from method Services.CheckDeviceServiceNameAvailability.
-type ServicesCheckDeviceServiceNameAvailabilityResponse struct {
-	ServicesCheckDeviceServiceNameAvailabilityResult
+// ServicesClientCheckDeviceServiceNameAvailabilityResponse contains the response from method ServicesClient.CheckDeviceServiceNameAvailability.
+type ServicesClientCheckDeviceServiceNameAvailabilityResponse struct {
+	ServicesClientCheckDeviceServiceNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesCheckDeviceServiceNameAvailabilityResult contains the result from method Services.CheckDeviceServiceNameAvailability.
-type ServicesCheckDeviceServiceNameAvailabilityResult struct {
+// ServicesClientCheckDeviceServiceNameAvailabilityResult contains the result from method ServicesClient.CheckDeviceServiceNameAvailability.
+type ServicesClientCheckDeviceServiceNameAvailabilityResult struct {
 	DeviceServiceNameAvailabilityInfo
 }
 
-// ServicesCreateOrUpdateResponse contains the response from method Services.CreateOrUpdate.
-type ServicesCreateOrUpdateResponse struct {
-	ServicesCreateOrUpdateResult
+// ServicesClientCreateOrUpdateResponse contains the response from method ServicesClient.CreateOrUpdate.
+type ServicesClientCreateOrUpdateResponse struct {
+	ServicesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesCreateOrUpdateResult contains the result from method Services.CreateOrUpdate.
-type ServicesCreateOrUpdateResult struct {
+// ServicesClientCreateOrUpdateResult contains the result from method ServicesClient.CreateOrUpdate.
+type ServicesClientCreateOrUpdateResult struct {
 	DeviceService
 }
 
-// ServicesDeleteResponse contains the response from method Services.Delete.
-type ServicesDeleteResponse struct {
-	ServicesDeleteResult
+// ServicesClientDeleteResponse contains the response from method ServicesClient.Delete.
+type ServicesClientDeleteResponse struct {
+	ServicesClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesDeleteResult contains the result from method Services.Delete.
-type ServicesDeleteResult struct {
+// ServicesClientDeleteResult contains the result from method ServicesClient.Delete.
+type ServicesClientDeleteResult struct {
 	DeviceService
 }
 
-// ServicesGetResponse contains the response from method Services.Get.
-type ServicesGetResponse struct {
-	ServicesGetResult
+// ServicesClientGetResponse contains the response from method ServicesClient.Get.
+type ServicesClientGetResponse struct {
+	ServicesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesGetResult contains the result from method Services.Get.
-type ServicesGetResult struct {
+// ServicesClientGetResult contains the result from method ServicesClient.Get.
+type ServicesClientGetResult struct {
 	DeviceService
 }
 
-// ServicesListByResourceGroupResponse contains the response from method Services.ListByResourceGroup.
-type ServicesListByResourceGroupResponse struct {
-	ServicesListByResourceGroupResult
+// ServicesClientListByResourceGroupResponse contains the response from method ServicesClient.ListByResourceGroup.
+type ServicesClientListByResourceGroupResponse struct {
+	ServicesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesListByResourceGroupResult contains the result from method Services.ListByResourceGroup.
-type ServicesListByResourceGroupResult struct {
+// ServicesClientListByResourceGroupResult contains the result from method ServicesClient.ListByResourceGroup.
+type ServicesClientListByResourceGroupResult struct {
 	DeviceServiceDescriptionListResult
 }
 
-// ServicesListResponse contains the response from method Services.List.
-type ServicesListResponse struct {
-	ServicesListResult
+// ServicesClientListResponse contains the response from method ServicesClient.List.
+type ServicesClientListResponse struct {
+	ServicesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesListResult contains the result from method Services.List.
-type ServicesListResult struct {
+// ServicesClientListResult contains the result from method ServicesClient.List.
+type ServicesClientListResult struct {
 	DeviceServiceDescriptionListResult
 }
 
-// ServicesUpdateResponse contains the response from method Services.Update.
-type ServicesUpdateResponse struct {
-	ServicesUpdateResult
+// ServicesClientUpdateResponse contains the response from method ServicesClient.Update.
+type ServicesClientUpdateResponse struct {
+	ServicesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesUpdateResult contains the result from method Services.Update.
-type ServicesUpdateResult struct {
+// ServicesClientUpdateResult contains the result from method ServicesClient.Update.
+type ServicesClientUpdateResult struct {
 	DeviceService
 }

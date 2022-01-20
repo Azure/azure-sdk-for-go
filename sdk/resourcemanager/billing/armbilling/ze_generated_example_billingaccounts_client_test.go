@@ -20,53 +20,57 @@ import (
 )
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountsList.json
-func ExampleBillingAccountsClient_List() {
+func ExampleAccountsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingAccountsClient(cred, nil)
-	pager := client.List(&armbilling.BillingAccountsListOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+	client := armbilling.NewAccountsClient(cred, nil)
+	pager := client.List(&armbilling.AccountsClientListOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BillingAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountWithExpand.json
-func ExampleBillingAccountsClient_Get() {
+func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingAccountsClient(cred, nil)
+	client := armbilling.NewAccountsClient(cred, nil)
 	res, err := client.Get(ctx,
 		"<billing-account-name>",
-		&armbilling.BillingAccountsGetOptions{Expand: to.StringPtr("<expand>")})
+		&armbilling.AccountsClientGetOptions{Expand: to.StringPtr("<expand>")})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateBillingAccount.json
-func ExampleBillingAccountsClient_BeginUpdate() {
+func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingAccountsClient(cred, nil)
+	client := armbilling.NewAccountsClient(cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<billing-account-name>",
-		armbilling.BillingAccountUpdateRequest{
-			Properties: &armbilling.BillingAccountProperties{
+		armbilling.AccountUpdateRequest{
+			Properties: &armbilling.AccountProperties{
 				DisplayName: to.StringPtr("<display-name>"),
 				SoldTo: &armbilling.AddressDetails{
 					AddressLine1: to.StringPtr("<address-line1>"),
@@ -88,22 +92,29 @@ func ExampleBillingAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionsListWithCreateSubPermission.json
-func ExampleBillingAccountsClient_ListInvoiceSectionsByCreateSubscriptionPermission() {
+func ExampleAccountsClient_ListInvoiceSectionsByCreateSubscriptionPermission() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingAccountsClient(cred, nil)
+	client := armbilling.NewAccountsClient(cred, nil)
 	pager := client.ListInvoiceSectionsByCreateSubscriptionPermission("<billing-account-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -18,16 +18,16 @@ import (
 )
 
 // x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetDnsResourceReference.json
-func ExampleDNSResourceReferenceClient_GetByTargetResources() {
+func ExampleResourceReferenceClient_GetByTargetResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdns.NewDNSResourceReferenceClient("<subscription-id>", cred, nil)
-	_, err = client.GetByTargetResources(ctx,
-		armdns.DNSResourceReferenceRequest{
-			Properties: &armdns.DNSResourceReferenceRequestProperties{
+	client := armdns.NewResourceReferenceClient("<subscription-id>", cred, nil)
+	res, err := client.GetByTargetResources(ctx,
+		armdns.ResourceReferenceRequest{
+			Properties: &armdns.ResourceReferenceRequestProperties{
 				TargetResources: []*armdns.SubResource{
 					{
 						ID: to.StringPtr("<id>"),
@@ -38,4 +38,5 @@ func ExampleDNSResourceReferenceClient_GetByTargetResources() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ResourceReferenceClientGetByTargetResourcesResult)
 }

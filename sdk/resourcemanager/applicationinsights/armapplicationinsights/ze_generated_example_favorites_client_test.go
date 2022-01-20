@@ -25,10 +25,10 @@ func ExampleFavoritesClient_List() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		&armapplicationinsights.FavoritesListOptions{FavoriteType: nil,
+		&armapplicationinsights.FavoritesClientListOptions{FavoriteType: nil,
 			SourceType:      nil,
 			CanFetchContent: nil,
 			Tags:            []string{},
@@ -36,6 +36,7 @@ func ExampleFavoritesClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.FavoritesClientListResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteGet.json
@@ -46,7 +47,7 @@ func ExampleFavoritesClient_Get() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<favorite-id>",
@@ -54,6 +55,7 @@ func ExampleFavoritesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.FavoritesClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteAdd.json
@@ -64,28 +66,26 @@ func ExampleFavoritesClient_Add() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
-	_, err = client.Add(ctx,
+	res, err := client.Add(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<favorite-id>",
-		armapplicationinsights.ApplicationInsightsComponentFavorite{
-			Category:                to.StringPtr("<category>"),
+		armapplicationinsights.ComponentFavorite{
 			Config:                  to.StringPtr("<config>"),
 			FavoriteID:              to.StringPtr("<favorite-id>"),
 			FavoriteType:            armapplicationinsights.FavoriteTypeShared.ToPtr(),
 			IsGeneratedFromTemplate: to.BoolPtr(false),
 			Name:                    to.StringPtr("<name>"),
-			SourceType:              to.StringPtr("<source-type>"),
 			Tags: []*string{
 				to.StringPtr("TagSample01"),
 				to.StringPtr("TagSample02")},
-			TimeModified: to.StringPtr("<time-modified>"),
-			Version:      to.StringPtr("<version>"),
+			Version: to.StringPtr("<version>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.FavoritesClientAddResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteUpdate.json
@@ -96,18 +96,16 @@ func ExampleFavoritesClient_Update() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewFavoritesClient("<subscription-id>", cred, nil)
-	_, err = client.Update(ctx,
+	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<favorite-id>",
-		armapplicationinsights.ApplicationInsightsComponentFavorite{
-			Category:                to.StringPtr("<category>"),
+		armapplicationinsights.ComponentFavorite{
 			Config:                  to.StringPtr("<config>"),
 			FavoriteID:              to.StringPtr("<favorite-id>"),
 			FavoriteType:            armapplicationinsights.FavoriteTypeShared.ToPtr(),
 			IsGeneratedFromTemplate: to.BoolPtr(false),
 			Name:                    to.StringPtr("<name>"),
-			SourceType:              to.StringPtr("<source-type>"),
 			Tags: []*string{
 				to.StringPtr("TagSample01"),
 				to.StringPtr("TagSample02"),
@@ -119,6 +117,7 @@ func ExampleFavoritesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.FavoritesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteDelete.json

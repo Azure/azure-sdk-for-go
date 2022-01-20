@@ -25,13 +25,14 @@ func ExampleExtensionsClient_ListByAccount() {
 	}
 	ctx := context.Background()
 	client := armvisualstudio.NewExtensionsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByAccount(ctx,
+	res, err := client.ListByAccount(ctx,
 		"<resource-group-name>",
 		"<account-resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExtensionsClientListByAccountResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/CreateExtensionResource.json
@@ -62,7 +63,7 @@ func ExampleExtensionsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExtensionResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExtensionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/DeleteExtensionResource.json
@@ -99,7 +100,7 @@ func ExampleExtensionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExtensionResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExtensionsClientGetResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/UpdateExtensionResource.json
@@ -130,5 +131,5 @@ func ExampleExtensionsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExtensionResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExtensionsClientUpdateResult)
 }

@@ -16,8 +16,8 @@ import (
 )
 
 type ArmIdentity struct {
-	// The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned
-	// identities. The type 'None' will remove any
+	// The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created
+	// identity and a set of user assigned identities. The type 'None' will remove any
 	// identities from the service.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
@@ -47,6 +47,21 @@ type ArmUserIdentity struct {
 
 	// READ-ONLY
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+}
+
+// Capacity - IoT Hub capacity information.
+type Capacity struct {
+	// READ-ONLY; The default number of units.
+	Default *int64 `json:"default,omitempty" azure:"ro"`
+
+	// READ-ONLY; The maximum number of units.
+	Maximum *int64 `json:"maximum,omitempty" azure:"ro"`
+
+	// READ-ONLY; The minimum number of units.
+	Minimum *int64 `json:"minimum,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the scaling enabled.
+	ScaleType *IotHubScaleType `json:"scaleType,omitempty" azure:"ro"`
 }
 
 // CertificateBodyDescription - The JSON-serialized X509 Certificate.
@@ -164,7 +179,8 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CertificatePropertiesWithNonce - The description of an X509 CA Certificate including the challenge nonce issued for the Proof-Of-Possession flow.
+// CertificatePropertiesWithNonce - The description of an X509 CA Certificate including the challenge nonce issued for the
+// Proof-Of-Possession flow.
 type CertificatePropertiesWithNonce struct {
 	// READ-ONLY; The certificate content
 	Certificate *string `json:"certificate,omitempty" azure:"ro"`
@@ -270,34 +286,40 @@ type CertificateWithNonceDescription struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// CertificatesCreateOrUpdateOptions contains the optional parameters for the Certificates.CreateOrUpdate method.
-type CertificatesCreateOrUpdateOptions struct {
+// CertificatesClientCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.CreateOrUpdate method.
+type CertificatesClientCreateOrUpdateOptions struct {
 	// ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate.
 	IfMatch *string
 }
 
-// CertificatesDeleteOptions contains the optional parameters for the Certificates.Delete method.
-type CertificatesDeleteOptions struct {
+// CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
+type CertificatesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesGenerateVerificationCodeOptions contains the optional parameters for the Certificates.GenerateVerificationCode method.
-type CertificatesGenerateVerificationCodeOptions struct {
+// CertificatesClientGenerateVerificationCodeOptions contains the optional parameters for the CertificatesClient.GenerateVerificationCode
+// method.
+type CertificatesClientGenerateVerificationCodeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesGetOptions contains the optional parameters for the Certificates.Get method.
-type CertificatesGetOptions struct {
+// CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
+type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesListByIotHubOptions contains the optional parameters for the Certificates.ListByIotHub method.
-type CertificatesListByIotHubOptions struct {
+// CertificatesClientListByIotHubOptions contains the optional parameters for the CertificatesClient.ListByIotHub method.
+type CertificatesClientListByIotHubOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesVerifyOptions contains the optional parameters for the Certificates.Verify method.
-type CertificatesVerifyOptions struct {
+// CertificatesClientVerifyOptions contains the optional parameters for the CertificatesClient.Verify method.
+type CertificatesClientVerifyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginManualFailoverOptions contains the optional parameters for the Client.BeginManualFailover method.
+type ClientBeginManualFailoverOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -313,19 +335,99 @@ type CloudToDeviceProperties struct {
 	MaxDeliveryCount *int32 `json:"maxDeliveryCount,omitempty"`
 }
 
+// Description - The description of the IoT hub.
+type Description struct {
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; IotHub SKU info
+	SKU *SKUInfo `json:"sku,omitempty"`
+
+	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal
+	// ETag convention.
+	Etag *string `json:"etag,omitempty"`
+
+	// The managed identities for the IotHub.
+	Identity *ArmIdentity `json:"identity,omitempty"`
+
+	// IotHub properties
+	Properties *Properties `json:"properties,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Description.
+func (d Description) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "identity", d.Identity)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
+	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "sku", d.SKU)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
+	return json.Marshal(objectMap)
+}
+
+// DescriptionListResult - The JSON-serialized array of IotHubDescription objects with a next link.
+type DescriptionListResult struct {
+	// The array of IotHubDescription objects.
+	Value []*Description `json:"value,omitempty"`
+
+	// READ-ONLY; The next link.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DescriptionListResult.
+func (d DescriptionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", d.NextLink)
+	populate(objectMap, "value", d.Value)
+	return json.Marshal(objectMap)
+}
+
+// EncryptionPropertiesDescription - The encryption properties for the IoT hub.
+type EncryptionPropertiesDescription struct {
+	// The source of the key.
+	KeySource *string `json:"keySource,omitempty"`
+
+	// The properties of the KeyVault key.
+	KeyVaultProperties []*KeyVaultKeyProperties `json:"keyVaultProperties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EncryptionPropertiesDescription.
+func (e EncryptionPropertiesDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "keySource", e.KeySource)
+	populate(objectMap, "keyVaultProperties", e.KeyVaultProperties)
+	return json.Marshal(objectMap)
+}
+
 // EndpointHealthData - The health data for an endpoint
 type EndpointHealthData struct {
 	// Id of the endpoint
 	EndpointID *string `json:"endpointId,omitempty"`
 
-	// Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting messages as expected. The 'unhealthy' status shows
-	// that the endpoint is not accepting messages as
-	// expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to healthy when IoT Hub has established
-	// an eventually consistent state of health.
-	// The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial period. See IoT Hub metrics
-	// to identify errors and monitor issues with
-	// endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages have been delivered to or rejected
-	// from this endpoint
+	// Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting messages as expected.
+	// The 'unhealthy' status shows that the endpoint is not accepting messages as
+	// expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to
+	// healthy when IoT Hub has established an eventually consistent state of health.
+	// The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial
+	// period. See IoT Hub metrics to identify errors and monitor issues with
+	// endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages
+	// have been delivered to or rejected from this endpoint
 	HealthStatus *EndpointHealthStatus `json:"healthStatus,omitempty"`
 
 	// Last error obtained when a message failed to be delivered to iot hub
@@ -427,9 +529,7 @@ func (e EnrichmentProperties) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorDetails - Error details.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorDetails struct {
-	raw string
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
@@ -441,12 +541,6 @@ type ErrorDetails struct {
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
-// Error implements the error interface for type ErrorDetails.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorDetails) Error() string {
-	return e.raw
 }
 
 // EventHubConsumerGroupBodyDescription - The EventHub consumer group.
@@ -547,11 +641,12 @@ type ExportDevicesRequest struct {
 	// Specifies authentication type being used for connecting to the storage account.
 	AuthenticationType *AuthenticationType `json:"authenticationType,omitempty"`
 
-	// The name of the blob that will be created in the provided output blob container. This blob will contain the exported configurations for the Iot Hub.
+	// The name of the blob that will be created in the provided output blob container. This blob will contain the exported configurations
+	// for the Iot Hub.
 	ConfigurationsBlobName *string `json:"configurationsBlobName,omitempty"`
 
-	// The name of the blob that will be created in the provided output blob container. This blob will contain the exported device registry information for
-	// the IoT Hub.
+	// The name of the blob that will be created in the provided output blob container. This blob will contain the exported device
+	// registry information for the IoT Hub.
 	ExportBlobName *string `json:"exportBlobName,omitempty"`
 
 	// Managed identity properties of storage endpoint for export devices.
@@ -567,9 +662,11 @@ type FailoverInput struct {
 	FailoverRegion *string `json:"failoverRegion,omitempty"`
 }
 
-// FallbackRouteProperties - The properties of the fallback route. IoT Hub uses these properties when it routes messages to the fallback endpoint.
+// FallbackRouteProperties - The properties of the fallback route. IoT Hub uses these properties when it routes messages to
+// the fallback endpoint.
 type FallbackRouteProperties struct {
-	// REQUIRED; The list of endpoints to which the messages that satisfy the condition are routed to. Currently only 1 endpoint is allowed.
+	// REQUIRED; The list of endpoints to which the messages that satisfy the condition are routed to. Currently only 1 endpoint
+	// is allowed.
 	EndpointNames []*string `json:"endpointNames,omitempty"`
 
 	// REQUIRED; Used to specify whether the fallback route is enabled.
@@ -578,13 +675,13 @@ type FallbackRouteProperties struct {
 	// REQUIRED; The source to which the routing rule is to be applied to. For example, DeviceMessages
 	Source *RoutingSource `json:"source,omitempty"`
 
-	// The condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate to true by default. For grammar,
-	// See:
+	// The condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate
+	// to true by default. For grammar, See:
 	// https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
 	Condition *string `json:"condition,omitempty"`
 
-	// The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must
-	// be unique.
+	// The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum
+	// length of 64 characters, and must be unique.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -686,384 +783,6 @@ type ImportDevicesRequest struct {
 	OutputBlobName *string `json:"outputBlobName,omitempty"`
 }
 
-// IotHubBeginManualFailoverOptions contains the optional parameters for the IotHub.BeginManualFailover method.
-type IotHubBeginManualFailoverOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubCapacity - IoT Hub capacity information.
-type IotHubCapacity struct {
-	// READ-ONLY; The default number of units.
-	Default *int64 `json:"default,omitempty" azure:"ro"`
-
-	// READ-ONLY; The maximum number of units.
-	Maximum *int64 `json:"maximum,omitempty" azure:"ro"`
-
-	// READ-ONLY; The minimum number of units.
-	Minimum *int64 `json:"minimum,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the scaling enabled.
-	ScaleType *IotHubScaleType `json:"scaleType,omitempty" azure:"ro"`
-}
-
-// IotHubDescription - The description of the IoT hub.
-type IotHubDescription struct {
-	Resource
-	// REQUIRED; IotHub SKU info
-	SKU *IotHubSKUInfo `json:"sku,omitempty"`
-
-	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
-	Etag *string `json:"etag,omitempty"`
-
-	// The managed identities for the IotHub.
-	Identity *ArmIdentity `json:"identity,omitempty"`
-
-	// IotHub properties
-	Properties *IotHubProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IotHubDescription.
-func (i IotHubDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "etag", i.Etag)
-	populate(objectMap, "identity", i.Identity)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "sku", i.SKU)
-	return json.Marshal(objectMap)
-}
-
-// IotHubDescriptionListResult - The JSON-serialized array of IotHubDescription objects with a next link.
-type IotHubDescriptionListResult struct {
-	// The array of IotHubDescription objects.
-	Value []*IotHubDescription `json:"value,omitempty"`
-
-	// READ-ONLY; The next link.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IotHubDescriptionListResult.
-func (i IotHubDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
-// IotHubLocationDescription - Public representation of one of the locations where a resource is provisioned.
-type IotHubLocationDescription struct {
-	// The name of the Azure region
-	Location *string `json:"location,omitempty"`
-
-	// The role of the region, can be either primary or secondary. The primary region is where the IoT hub is currently provisioned. The secondary region is
-	// the Azure disaster recovery (DR) paired region and
-	// also the region where the IoT hub can failover to.
-	Role *IotHubReplicaRoleType `json:"role,omitempty"`
-}
-
-// IotHubNameAvailabilityInfo - The properties indicating whether a given IoT hub name is available.
-type IotHubNameAvailabilityInfo struct {
-	// The detailed reason message.
-	Message *string `json:"message,omitempty"`
-
-	// READ-ONLY; The value which indicates whether the provided name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
-
-	// READ-ONLY; The reason for unavailability.
-	Reason *IotHubNameUnavailabilityReason `json:"reason,omitempty" azure:"ro"`
-}
-
-// IotHubProperties - The properties of an IoT hub.
-type IotHubProperties struct {
-	// List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot Hub.
-	AllowedFqdnList []*string `json:"allowedFqdnList,omitempty"`
-
-	// The shared access policies you can use to secure a connection to the IoT hub.
-	AuthorizationPolicies []*SharedAccessSignatureAuthorizationRule `json:"authorizationPolicies,omitempty"`
-
-	// The IoT hub cloud-to-device messaging properties.
-	CloudToDevice *CloudToDeviceProperties `json:"cloudToDevice,omitempty"`
-
-	// IoT hub comments.
-	Comments *string `json:"comments,omitempty"`
-
-	// If true, all device(including Edge devices but excluding modules) scoped SAS keys cannot be used for authentication.
-	DisableDeviceSAS *bool `json:"disableDeviceSAS,omitempty"`
-
-	// If true, SAS tokens with Iot hub scoped SAS keys cannot be used for authentication.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// If true, all module scoped SAS keys cannot be used for authentication.
-	DisableModuleSAS *bool `json:"disableModuleSAS,omitempty"`
-
-	// If True, file upload notifications are enabled.
-	EnableFileUploadNotifications *bool `json:"enableFileUploadNotifications,omitempty"`
-
-	// The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present in the dictionary while
-	// making create or update calls for the IoT hub.
-	EventHubEndpoints map[string]*EventHubProperties `json:"eventHubEndpoints,omitempty"`
-
-	// The capabilities and features enabled for the IoT hub.
-	Features *Capabilities `json:"features,omitempty"`
-
-	// The IP filter rules.
-	IPFilterRules []*IPFilterRule `json:"ipFilterRules,omitempty"`
-
-	// The messaging endpoint properties for the file upload notification queue.
-	MessagingEndpoints map[string]*MessagingEndpointProperties `json:"messagingEndpoints,omitempty"`
-
-	// Specifies the minimum TLS version to support for this hub. Can be set to "1.2" to have clients that use a TLS version below 1.2 to be rejected.
-	MinTLSVersion *string `json:"minTlsVersion,omitempty"`
-
-	// Network Rule Set Properties of IotHub
-	NetworkRuleSets *NetworkRuleSetProperties `json:"networkRuleSets,omitempty"`
-
-	// Private endpoint connections created on this IotHub
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
-
-	// Whether requests from Public Network are allowed
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// If true, egress from IotHub will be restricted to only the allowed FQDNs that are configured via allowedFqdnList.
-	RestrictOutboundNetworkAccess *bool `json:"restrictOutboundNetworkAccess,omitempty"`
-
-	// The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
-	Routing *RoutingProperties `json:"routing,omitempty"`
-
-	// The list of Azure Storage endpoints where you can upload files. Currently you can configure only one Azure Storage account and that MUST have its key
-	// as $default. Specifying more than one storage
-	// account causes an error to be thrown. Not specifying a value for this property when the enableFileUploadNotifications property is set to True, causes
-	// an error to be thrown.
-	StorageEndpoints map[string]*StorageEndpointProperties `json:"storageEndpoints,omitempty"`
-
-	// READ-ONLY; The name of the host.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Primary and secondary location for iot hub
-	Locations []*IotHubLocationDescription `json:"locations,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioning state.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The hub state.
-	State *string `json:"state,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IotHubProperties.
-func (i IotHubProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedFqdnList", i.AllowedFqdnList)
-	populate(objectMap, "authorizationPolicies", i.AuthorizationPolicies)
-	populate(objectMap, "cloudToDevice", i.CloudToDevice)
-	populate(objectMap, "comments", i.Comments)
-	populate(objectMap, "disableDeviceSAS", i.DisableDeviceSAS)
-	populate(objectMap, "disableLocalAuth", i.DisableLocalAuth)
-	populate(objectMap, "disableModuleSAS", i.DisableModuleSAS)
-	populate(objectMap, "enableFileUploadNotifications", i.EnableFileUploadNotifications)
-	populate(objectMap, "eventHubEndpoints", i.EventHubEndpoints)
-	populate(objectMap, "features", i.Features)
-	populate(objectMap, "hostName", i.HostName)
-	populate(objectMap, "ipFilterRules", i.IPFilterRules)
-	populate(objectMap, "locations", i.Locations)
-	populate(objectMap, "messagingEndpoints", i.MessagingEndpoints)
-	populate(objectMap, "minTlsVersion", i.MinTLSVersion)
-	populate(objectMap, "networkRuleSets", i.NetworkRuleSets)
-	populate(objectMap, "privateEndpointConnections", i.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", i.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", i.PublicNetworkAccess)
-	populate(objectMap, "restrictOutboundNetworkAccess", i.RestrictOutboundNetworkAccess)
-	populate(objectMap, "routing", i.Routing)
-	populate(objectMap, "state", i.State)
-	populate(objectMap, "storageEndpoints", i.StorageEndpoints)
-	return json.Marshal(objectMap)
-}
-
-// IotHubQuotaMetricInfo - Quota metrics properties.
-type IotHubQuotaMetricInfo struct {
-	// READ-ONLY; The current value for the quota metric.
-	CurrentValue *int64 `json:"currentValue,omitempty" azure:"ro"`
-
-	// READ-ONLY; The maximum value of the quota metric.
-	MaxValue *int64 `json:"maxValue,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the quota metric.
-	Name *string `json:"name,omitempty" azure:"ro"`
-}
-
-// IotHubQuotaMetricInfoListResult - The JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
-type IotHubQuotaMetricInfoListResult struct {
-	// The array of quota metrics objects.
-	Value []*IotHubQuotaMetricInfo `json:"value,omitempty"`
-
-	// READ-ONLY; The next link.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IotHubQuotaMetricInfoListResult.
-func (i IotHubQuotaMetricInfoListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
-// IotHubResourceBeginCreateOrUpdateOptions contains the optional parameters for the IotHubResource.BeginCreateOrUpdate method.
-type IotHubResourceBeginCreateOrUpdateOptions struct {
-	// ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
-	IfMatch *string
-}
-
-// IotHubResourceBeginDeleteOptions contains the optional parameters for the IotHubResource.BeginDelete method.
-type IotHubResourceBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceBeginUpdateOptions contains the optional parameters for the IotHubResource.BeginUpdate method.
-type IotHubResourceBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceCheckNameAvailabilityOptions contains the optional parameters for the IotHubResource.CheckNameAvailability method.
-type IotHubResourceCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceCreateEventHubConsumerGroupOptions contains the optional parameters for the IotHubResource.CreateEventHubConsumerGroup method.
-type IotHubResourceCreateEventHubConsumerGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceDeleteEventHubConsumerGroupOptions contains the optional parameters for the IotHubResource.DeleteEventHubConsumerGroup method.
-type IotHubResourceDeleteEventHubConsumerGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceExportDevicesOptions contains the optional parameters for the IotHubResource.ExportDevices method.
-type IotHubResourceExportDevicesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceGetEndpointHealthOptions contains the optional parameters for the IotHubResource.GetEndpointHealth method.
-type IotHubResourceGetEndpointHealthOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceGetEventHubConsumerGroupOptions contains the optional parameters for the IotHubResource.GetEventHubConsumerGroup method.
-type IotHubResourceGetEventHubConsumerGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceGetJobOptions contains the optional parameters for the IotHubResource.GetJob method.
-type IotHubResourceGetJobOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceGetKeysForKeyNameOptions contains the optional parameters for the IotHubResource.GetKeysForKeyName method.
-type IotHubResourceGetKeysForKeyNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceGetOptions contains the optional parameters for the IotHubResource.Get method.
-type IotHubResourceGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceGetQuotaMetricsOptions contains the optional parameters for the IotHubResource.GetQuotaMetrics method.
-type IotHubResourceGetQuotaMetricsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceGetStatsOptions contains the optional parameters for the IotHubResource.GetStats method.
-type IotHubResourceGetStatsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceGetValidSKUsOptions contains the optional parameters for the IotHubResource.GetValidSKUs method.
-type IotHubResourceGetValidSKUsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceImportDevicesOptions contains the optional parameters for the IotHubResource.ImportDevices method.
-type IotHubResourceImportDevicesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceListByResourceGroupOptions contains the optional parameters for the IotHubResource.ListByResourceGroup method.
-type IotHubResourceListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceListBySubscriptionOptions contains the optional parameters for the IotHubResource.ListBySubscription method.
-type IotHubResourceListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceListEventHubConsumerGroupsOptions contains the optional parameters for the IotHubResource.ListEventHubConsumerGroups method.
-type IotHubResourceListEventHubConsumerGroupsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceListJobsOptions contains the optional parameters for the IotHubResource.ListJobs method.
-type IotHubResourceListJobsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceListKeysOptions contains the optional parameters for the IotHubResource.ListKeys method.
-type IotHubResourceListKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceTestAllRoutesOptions contains the optional parameters for the IotHubResource.TestAllRoutes method.
-type IotHubResourceTestAllRoutesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubResourceTestRouteOptions contains the optional parameters for the IotHubResource.TestRoute method.
-type IotHubResourceTestRouteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotHubSKUDescription - SKU properties.
-type IotHubSKUDescription struct {
-	// REQUIRED; IotHub capacity
-	Capacity *IotHubCapacity `json:"capacity,omitempty"`
-
-	// REQUIRED; The type of the resource.
-	SKU *IotHubSKUInfo `json:"sku,omitempty"`
-
-	// READ-ONLY; The type of the resource.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
-}
-
-// IotHubSKUDescriptionListResult - The JSON-serialized array of IotHubSkuDescription objects with a next link.
-type IotHubSKUDescriptionListResult struct {
-	// The array of IotHubSkuDescription.
-	Value []*IotHubSKUDescription `json:"value,omitempty"`
-
-	// READ-ONLY; The next link.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IotHubSKUDescriptionListResult.
-func (i IotHubSKUDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
-// IotHubSKUInfo - Information about the SKU of the IoT hub.
-type IotHubSKUInfo struct {
-	// REQUIRED; The name of the SKU.
-	Name *IotHubSKU `json:"name,omitempty"`
-
-	// The number of provisioned IoT Hub units. See: https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
-	Capacity *int64 `json:"capacity,omitempty"`
-
-	// READ-ONLY; The billing tier for the IoT hub.
-	Tier *IotHubSKUTier `json:"tier,omitempty" azure:"ro"`
-}
-
 // JobResponse - The properties of the Job Response object.
 type JobResponse struct {
 	// READ-ONLY; The time the job stopped processing.
@@ -1163,6 +882,26 @@ func (j JobResponseListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// KeyVaultKeyProperties - The properties of the KeyVault key.
+type KeyVaultKeyProperties struct {
+	// Managed identity properties of KeyVault Key.
+	Identity *ManagedIdentity `json:"identity,omitempty"`
+
+	// The identifier of the key.
+	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+}
+
+// LocationDescription - Public representation of one of the locations where a resource is provisioned.
+type LocationDescription struct {
+	// The name of the Azure region
+	Location *string `json:"location,omitempty"`
+
+	// The role of the region, can be either primary or secondary. The primary region is where the IoT hub is currently provisioned.
+	// The secondary region is the Azure disaster recovery (DR) paired region and
+	// also the region where the IoT hub can failover to.
+	Role *IotHubReplicaRoleType `json:"role,omitempty"`
+}
+
 // ManagedIdentity - The properties of the Managed identity.
 type ManagedIdentity struct {
 	// The user assigned identity.
@@ -1194,6 +933,18 @@ type Name struct {
 
 	// IotHub type
 	Value *string `json:"value,omitempty"`
+}
+
+// NameAvailabilityInfo - The properties indicating whether a given IoT hub name is available.
+type NameAvailabilityInfo struct {
+	// The detailed reason message.
+	Message *string `json:"message,omitempty"`
+
+	// READ-ONLY; The value which indicates whether the provided name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
+
+	// READ-ONLY; The reason for unavailability.
+	Reason *IotHubNameUnavailabilityReason `json:"reason,omitempty" azure:"ro"`
 }
 
 // NetworkRuleSetIPRule - IP Rule to be applied as part of Network Rule Set
@@ -1259,7 +1010,8 @@ type OperationInputs struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationListResult - Result of the request to list IoT Hub operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list IoT Hub operations. It contains a list of operations and a URL link
+// to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1276,8 +1028,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1311,23 +1063,27 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginUpdate method.
-type PrivateEndpointConnectionsBeginUpdateOptions struct {
+// PrivateEndpointConnectionsClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1344,13 +1100,13 @@ func (p PrivateLinkResources) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListOptions contains the optional parameters for the PrivateLinkResources.List method.
-type PrivateLinkResourcesListOptions struct {
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1364,6 +1120,162 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Actions required for a private endpoint connection
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// Properties - The properties of an IoT hub.
+type Properties struct {
+	// List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot Hub.
+	AllowedFqdnList []*string `json:"allowedFqdnList,omitempty"`
+
+	// The shared access policies you can use to secure a connection to the IoT hub.
+	AuthorizationPolicies []*SharedAccessSignatureAuthorizationRule `json:"authorizationPolicies,omitempty"`
+
+	// The IoT hub cloud-to-device messaging properties.
+	CloudToDevice *CloudToDeviceProperties `json:"cloudToDevice,omitempty"`
+
+	// IoT hub comments.
+	Comments *string `json:"comments,omitempty"`
+
+	// The device streams properties of iothub.
+	DeviceStreams *PropertiesDeviceStreams `json:"deviceStreams,omitempty"`
+
+	// If true, all device(including Edge devices but excluding modules) scoped SAS keys cannot be used for authentication.
+	DisableDeviceSAS *bool `json:"disableDeviceSAS,omitempty"`
+
+	// If true, SAS tokens with Iot hub scoped SAS keys cannot be used for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// If true, all module scoped SAS keys cannot be used for authentication.
+	DisableModuleSAS *bool `json:"disableModuleSAS,omitempty"`
+
+	// If True, file upload notifications are enabled.
+	EnableFileUploadNotifications *bool `json:"enableFileUploadNotifications,omitempty"`
+
+	// The encryption properties for the IoT hub.
+	Encryption *EncryptionPropertiesDescription `json:"encryption,omitempty"`
+
+	// The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present
+	// in the dictionary while making create or update calls for the IoT hub.
+	EventHubEndpoints map[string]*EventHubProperties `json:"eventHubEndpoints,omitempty"`
+
+	// The capabilities and features enabled for the IoT hub.
+	Features *Capabilities `json:"features,omitempty"`
+
+	// The IP filter rules.
+	IPFilterRules []*IPFilterRule `json:"ipFilterRules,omitempty"`
+
+	// The messaging endpoint properties for the file upload notification queue.
+	MessagingEndpoints map[string]*MessagingEndpointProperties `json:"messagingEndpoints,omitempty"`
+
+	// Specifies the minimum TLS version to support for this hub. Can be set to "1.2" to have clients that use a TLS version below
+	// 1.2 to be rejected.
+	MinTLSVersion *string `json:"minTlsVersion,omitempty"`
+
+	// Network Rule Set Properties of IotHub
+	NetworkRuleSets *NetworkRuleSetProperties `json:"networkRuleSets,omitempty"`
+
+	// Private endpoint connections created on this IotHub
+	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+
+	// Whether requests from Public Network are allowed
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
+	// If true, egress from IotHub will be restricted to only the allowed FQDNs that are configured via allowedFqdnList.
+	RestrictOutboundNetworkAccess *bool `json:"restrictOutboundNetworkAccess,omitempty"`
+
+	// The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
+	Routing *RoutingProperties `json:"routing,omitempty"`
+
+	// The list of Azure Storage endpoints where you can upload files. Currently you can configure only one Azure Storage account
+	// and that MUST have its key as $default. Specifying more than one storage
+	// account causes an error to be thrown. Not specifying a value for this property when the enableFileUploadNotifications property
+	// is set to True, causes an error to be thrown.
+	StorageEndpoints map[string]*StorageEndpointProperties `json:"storageEndpoints,omitempty"`
+
+	// READ-ONLY; The name of the host.
+	HostName *string `json:"hostName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Primary and secondary location for iot hub
+	Locations []*LocationDescription `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hub state.
+	State *string `json:"state,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "allowedFqdnList", p.AllowedFqdnList)
+	populate(objectMap, "authorizationPolicies", p.AuthorizationPolicies)
+	populate(objectMap, "cloudToDevice", p.CloudToDevice)
+	populate(objectMap, "comments", p.Comments)
+	populate(objectMap, "deviceStreams", p.DeviceStreams)
+	populate(objectMap, "disableDeviceSAS", p.DisableDeviceSAS)
+	populate(objectMap, "disableLocalAuth", p.DisableLocalAuth)
+	populate(objectMap, "disableModuleSAS", p.DisableModuleSAS)
+	populate(objectMap, "enableFileUploadNotifications", p.EnableFileUploadNotifications)
+	populate(objectMap, "encryption", p.Encryption)
+	populate(objectMap, "eventHubEndpoints", p.EventHubEndpoints)
+	populate(objectMap, "features", p.Features)
+	populate(objectMap, "hostName", p.HostName)
+	populate(objectMap, "ipFilterRules", p.IPFilterRules)
+	populate(objectMap, "locations", p.Locations)
+	populate(objectMap, "messagingEndpoints", p.MessagingEndpoints)
+	populate(objectMap, "minTlsVersion", p.MinTLSVersion)
+	populate(objectMap, "networkRuleSets", p.NetworkRuleSets)
+	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
+	populate(objectMap, "provisioningState", p.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
+	populate(objectMap, "restrictOutboundNetworkAccess", p.RestrictOutboundNetworkAccess)
+	populate(objectMap, "routing", p.Routing)
+	populate(objectMap, "state", p.State)
+	populate(objectMap, "storageEndpoints", p.StorageEndpoints)
+	return json.Marshal(objectMap)
+}
+
+// PropertiesDeviceStreams - The device streams properties of iothub.
+type PropertiesDeviceStreams struct {
+	// List of Device Streams Endpoints.
+	StreamingEndpoints []*string `json:"streamingEndpoints,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PropertiesDeviceStreams.
+func (p PropertiesDeviceStreams) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "streamingEndpoints", p.StreamingEndpoints)
+	return json.Marshal(objectMap)
+}
+
+// QuotaMetricInfo - Quota metrics properties.
+type QuotaMetricInfo struct {
+	// READ-ONLY; The current value for the quota metric.
+	CurrentValue *int64 `json:"currentValue,omitempty" azure:"ro"`
+
+	// READ-ONLY; The maximum value of the quota metric.
+	MaxValue *int64 `json:"maxValue,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the quota metric.
+	Name *string `json:"name,omitempty" azure:"ro"`
+}
+
+// QuotaMetricInfoListResult - The JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
+type QuotaMetricInfoListResult struct {
+	// The array of quota metrics objects.
+	Value []*QuotaMetricInfo `json:"value,omitempty"`
+
+	// READ-ONLY; The next link.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type QuotaMetricInfoListResult.
+func (q QuotaMetricInfoListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", q.NextLink)
+	populate(objectMap, "value", q.Value)
+	return json.Marshal(objectMap)
 }
 
 // RegistryStatistics - Identity registry statistics.
@@ -1399,20 +1311,138 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
-// ResourceProviderCommonGetSubscriptionQuotaOptions contains the optional parameters for the ResourceProviderCommon.GetSubscriptionQuota method.
-type ResourceProviderCommonGetSubscriptionQuotaOptions struct {
+// ResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceClient.BeginCreateOrUpdate method.
+type ResourceClientBeginCreateOrUpdateOptions struct {
+	// ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+	IfMatch *string
+}
+
+// ResourceClientBeginDeleteOptions contains the optional parameters for the ResourceClient.BeginDelete method.
+type ResourceClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientBeginUpdateOptions contains the optional parameters for the ResourceClient.BeginUpdate method.
+type ResourceClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
+// method.
+type ResourceClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientCreateEventHubConsumerGroupOptions contains the optional parameters for the ResourceClient.CreateEventHubConsumerGroup
+// method.
+type ResourceClientCreateEventHubConsumerGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientDeleteEventHubConsumerGroupOptions contains the optional parameters for the ResourceClient.DeleteEventHubConsumerGroup
+// method.
+type ResourceClientDeleteEventHubConsumerGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientExportDevicesOptions contains the optional parameters for the ResourceClient.ExportDevices method.
+type ResourceClientExportDevicesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientGetEndpointHealthOptions contains the optional parameters for the ResourceClient.GetEndpointHealth method.
+type ResourceClientGetEndpointHealthOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientGetEventHubConsumerGroupOptions contains the optional parameters for the ResourceClient.GetEventHubConsumerGroup
+// method.
+type ResourceClientGetEventHubConsumerGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientGetJobOptions contains the optional parameters for the ResourceClient.GetJob method.
+type ResourceClientGetJobOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientGetKeysForKeyNameOptions contains the optional parameters for the ResourceClient.GetKeysForKeyName method.
+type ResourceClientGetKeysForKeyNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientGetOptions contains the optional parameters for the ResourceClient.Get method.
+type ResourceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientGetQuotaMetricsOptions contains the optional parameters for the ResourceClient.GetQuotaMetrics method.
+type ResourceClientGetQuotaMetricsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientGetStatsOptions contains the optional parameters for the ResourceClient.GetStats method.
+type ResourceClientGetStatsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientGetValidSKUsOptions contains the optional parameters for the ResourceClient.GetValidSKUs method.
+type ResourceClientGetValidSKUsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientImportDevicesOptions contains the optional parameters for the ResourceClient.ImportDevices method.
+type ResourceClientImportDevicesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientListByResourceGroupOptions contains the optional parameters for the ResourceClient.ListByResourceGroup method.
+type ResourceClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientListBySubscriptionOptions contains the optional parameters for the ResourceClient.ListBySubscription method.
+type ResourceClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientListEventHubConsumerGroupsOptions contains the optional parameters for the ResourceClient.ListEventHubConsumerGroups
+// method.
+type ResourceClientListEventHubConsumerGroupsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientListJobsOptions contains the optional parameters for the ResourceClient.ListJobs method.
+type ResourceClientListJobsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientListKeysOptions contains the optional parameters for the ResourceClient.ListKeys method.
+type ResourceClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientTestAllRoutesOptions contains the optional parameters for the ResourceClient.TestAllRoutes method.
+type ResourceClientTestAllRoutesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientTestRouteOptions contains the optional parameters for the ResourceClient.TestRoute method.
+type ResourceClientTestRouteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceProviderCommonClientGetSubscriptionQuotaOptions contains the optional parameters for the ResourceProviderCommonClient.GetSubscriptionQuota
+// method.
+type ResourceProviderCommonClientGetSubscriptionQuotaOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1448,20 +1478,22 @@ type RouteErrorRange struct {
 
 // RouteProperties - The properties of a routing rule that your IoT hub uses to route messages to endpoints.
 type RouteProperties struct {
-	// REQUIRED; The list of endpoints to which messages that satisfy the condition are routed. Currently only one endpoint is allowed.
+	// REQUIRED; The list of endpoints to which messages that satisfy the condition are routed. Currently only one endpoint is
+	// allowed.
 	EndpointNames []*string `json:"endpointNames,omitempty"`
 
 	// REQUIRED; Used to specify whether a route is enabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 
-	// REQUIRED; The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters,
-	// and must be unique.
+	// REQUIRED; The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has
+	// a maximum length of 64 characters, and must be unique.
 	Name *string `json:"name,omitempty"`
 
 	// REQUIRED; The source that the routing rule is to be applied to, such as DeviceMessages.
 	Source *RoutingSource `json:"source,omitempty"`
 
-	// The condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default. For grammar, see:
+	// The condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default.
+	// For grammar, see:
 	// https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
 	Condition *string `json:"condition,omitempty"`
 }
@@ -1477,11 +1509,12 @@ func (r RouteProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RoutingEndpoints - The properties related to the custom endpoints to which your IoT hub routes messages based on the routing rules. A maximum of 10 custom
-// endpoints are allowed across all endpoint types for paid hubs
+// RoutingEndpoints - The properties related to the custom endpoints to which your IoT hub routes messages based on the routing
+// rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs
 // and only 1 custom endpoint is allowed across all endpoint types for free hubs.
 type RoutingEndpoints struct {
-	// The list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not include the built-in Event Hubs endpoint.
+	// The list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not include
+	// the built-in Event Hubs endpoint.
 	EventHubs []*RoutingEventHubProperties `json:"eventHubs,omitempty"`
 
 	// The list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules.
@@ -1506,8 +1539,8 @@ func (r RoutingEndpoints) MarshalJSON() ([]byte, error) {
 
 // RoutingEventHubProperties - The properties related to an event hub endpoint.
 type RoutingEventHubProperties struct {
-	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum
-	// length of 64 characters. The following names are reserved:
+	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
+	// hyphens and has a maximum length of 64 characters. The following names are reserved:
 	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
 	Name *string `json:"name,omitempty"`
 
@@ -1559,21 +1592,23 @@ func (r RoutingMessage) MarshalJSON() ([]byte, error) {
 
 // RoutingProperties - The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
 type RoutingProperties struct {
-	// The properties related to the custom endpoints to which your IoT hub routes messages based on the routing rules. A maximum of 10 custom endpoints are
-	// allowed across all endpoint types for paid hubs
+	// The properties related to the custom endpoints to which your IoT hub routes messages based on the routing rules. A maximum
+	// of 10 custom endpoints are allowed across all endpoint types for paid hubs
 	// and only 1 custom endpoint is allowed across all endpoint types for free hubs.
 	Endpoints *RoutingEndpoints `json:"endpoints,omitempty"`
 
-	// The list of user-provided enrichments that the IoT hub applies to messages to be delivered to built-in and custom endpoints. See: https://aka.ms/telemetryoneventgrid
+	// The list of user-provided enrichments that the IoT hub applies to messages to be delivered to built-in and custom endpoints.
+	// See: https://aka.ms/telemetryoneventgrid
 	Enrichments []*EnrichmentProperties `json:"enrichments,omitempty"`
 
-	// The properties of the route that is used as a fall-back route when none of the conditions specified in the 'routes' section are met. This is an optional
-	// parameter. When this property is not set, the
-	// messages which do not meet any of the conditions specified in the 'routes' section get routed to the built-in eventhub endpoint.
+	// The properties of the route that is used as a fall-back route when none of the conditions specified in the 'routes' section
+	// are met. This is an optional parameter. When this property is not set, the
+	// messages which do not meet any of the conditions specified in the 'routes' section get routed to the built-in eventhub
+	// endpoint.
 	FallbackRoute *FallbackRouteProperties `json:"fallbackRoute,omitempty"`
 
-	// The list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom endpoints. A maximum of 100 routing rules are
-	// allowed for paid hubs and a maximum of 5 routing
+	// The list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom endpoints. A maximum
+	// of 100 routing rules are allowed for paid hubs and a maximum of 5 routing
 	// rules are allowed for free hubs.
 	Routes []*RouteProperties `json:"routes,omitempty"`
 }
@@ -1590,9 +1625,10 @@ func (r RoutingProperties) MarshalJSON() ([]byte, error) {
 
 // RoutingServiceBusQueueEndpointProperties - The properties related to service bus queue endpoint types.
 type RoutingServiceBusQueueEndpointProperties struct {
-	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum
-	// length of 64 characters. The following names are reserved:
-	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same as the actual queue name.
+	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
+	// hyphens and has a maximum length of 64 characters. The following names are reserved:
+	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same
+	// as the actual queue name.
 	Name *string `json:"name,omitempty"`
 
 	// Method used to authenticate against the service bus queue endpoint
@@ -1622,9 +1658,10 @@ type RoutingServiceBusQueueEndpointProperties struct {
 
 // RoutingServiceBusTopicEndpointProperties - The properties related to service bus topic endpoint types.
 type RoutingServiceBusTopicEndpointProperties struct {
-	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum
-	// length of 64 characters. The following names are reserved:
-	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same as the actual topic name.
+	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
+	// hyphens and has a maximum length of 64 characters. The following names are reserved:
+	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same
+	// as the actual topic name.
 	Name *string `json:"name,omitempty"`
 
 	// Method used to authenticate against the service bus topic endpoint
@@ -1657,8 +1694,8 @@ type RoutingStorageContainerProperties struct {
 	// REQUIRED; The name of storage container in the storage account.
 	ContainerName *string `json:"containerName,omitempty"`
 
-	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum
-	// length of 64 characters. The following names are reserved:
+	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
+	// hyphens and has a maximum length of 64 characters. The following names are reserved:
 	// events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
 	Name *string `json:"name,omitempty"`
 
@@ -1671,13 +1708,15 @@ type RoutingStorageContainerProperties struct {
 	// The connection string of the storage account.
 	ConnectionString *string `json:"connectionString,omitempty"`
 
-	// Encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'. Default value is 'avro'.
+	// Encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'. Default value
+	// is 'avro'.
 	Encoding *RoutingStorageContainerPropertiesEncoding `json:"encoding,omitempty"`
 
 	// The url of the storage endpoint. It must include the protocol https://
 	EndpointURI *string `json:"endpointUri,omitempty"`
 
-	// File name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered.
+	// File name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory
+	// but can be reordered.
 	FileNameFormat *string `json:"fileNameFormat,omitempty"`
 
 	// Id of the storage container endpoint
@@ -1686,7 +1725,8 @@ type RoutingStorageContainerProperties struct {
 	// Managed identity properties of routing storage endpoint.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
 
-	// Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
+	// Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB).
+	// Default value is 314572800(300MB).
 	MaxChunkSizeInBytes *int32 `json:"maxChunkSizeInBytes,omitempty"`
 
 	// The name of the resource group of the storage account.
@@ -1710,6 +1750,47 @@ type RoutingTwinProperties struct {
 
 	// Twin desired properties
 	Reported map[string]interface{} `json:"reported,omitempty"`
+}
+
+// SKUDescription - SKU properties.
+type SKUDescription struct {
+	// REQUIRED; IotHub capacity
+	Capacity *Capacity `json:"capacity,omitempty"`
+
+	// REQUIRED; The type of the resource.
+	SKU *SKUInfo `json:"sku,omitempty"`
+
+	// READ-ONLY; The type of the resource.
+	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+}
+
+// SKUDescriptionListResult - The JSON-serialized array of IotHubSkuDescription objects with a next link.
+type SKUDescriptionListResult struct {
+	// The array of IotHubSkuDescription.
+	Value []*SKUDescription `json:"value,omitempty"`
+
+	// READ-ONLY; The next link.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKUDescriptionListResult.
+func (s SKUDescriptionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// SKUInfo - Information about the SKU of the IoT hub.
+type SKUInfo struct {
+	// REQUIRED; The name of the SKU.
+	Name *IotHubSKU `json:"name,omitempty"`
+
+	// The number of provisioned IoT Hub units. See: https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
+	Capacity *int64 `json:"capacity,omitempty"`
+
+	// READ-ONLY; The billing tier for the IoT hub.
+	Tier *IotHubSKUTier `json:"tier,omitempty" azure:"ro"`
 }
 
 // SharedAccessSignatureAuthorizationRule - The properties of an IoT hub shared access policy.
@@ -1749,7 +1830,8 @@ type StorageEndpointProperties struct {
 	// REQUIRED; The connection string for the Azure Storage account to which files are uploaded.
 	ConnectionString *string `json:"connectionString,omitempty"`
 
-	// REQUIRED; The name of the root container where you upload files. The container need not exist but should be creatable using the connectionString specified.
+	// REQUIRED; The name of the root container where you upload files. The container need not exist but should be creatable using
+	// the connectionString specified.
 	ContainerName *string `json:"containerName,omitempty"`
 
 	// Specifies authentication type being used for connecting to the storage account.

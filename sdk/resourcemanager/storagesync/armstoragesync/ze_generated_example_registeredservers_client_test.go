@@ -27,13 +27,14 @@ func ExampleRegisteredServersClient_ListByStorageSyncService() {
 	}
 	ctx := context.Background()
 	client := armstoragesync.NewRegisteredServersClient("<subscription-id>", cred, nil)
-	_, err = client.ListByStorageSyncService(ctx,
+	res, err := client.ListByStorageSyncService(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.RegisteredServersClientListByStorageSyncServiceResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/RegisteredServers_Get.json
@@ -52,7 +53,7 @@ func ExampleRegisteredServersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RegisteredServer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RegisteredServersClientGetResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/RegisteredServers_Create.json
@@ -85,7 +86,7 @@ func ExampleRegisteredServersClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RegisteredServer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RegisteredServersClientCreateResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/RegisteredServers_Delete.json

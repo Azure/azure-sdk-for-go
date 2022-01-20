@@ -103,7 +103,7 @@ serviceClient, err := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://
 handle(err)
 // Provide the convenience function with relevant info (services, resource types, permissions, and duration)
 // The SAS token will be valid from this moment onwards.
-accountSAS, err := serviceClient.GetAccountSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
+accountSAS, err := serviceClient.GetSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
 AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
 handle(err)
 urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
@@ -164,7 +164,7 @@ Three different clients are provided to interact with the various components of 
 	// ===== 1. Creating a container =====
 
 	// First, branch off of the service client and create a container client.
-	container := service.NewContainerClient("myContainer")
+	container := service.NewContainerClient("mycontainer")
 	// Then, fire off a create operation on the container client.
 	// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
 	// Specifying nil omits all options.

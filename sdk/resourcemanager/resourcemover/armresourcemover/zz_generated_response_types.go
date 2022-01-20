@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// MoveCollectionsBulkRemovePollerResponse contains the response from method MoveCollections.BulkRemove.
-type MoveCollectionsBulkRemovePollerResponse struct {
+// MoveCollectionsClientBulkRemovePollerResponse contains the response from method MoveCollectionsClient.BulkRemove.
+type MoveCollectionsClientBulkRemovePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveCollectionsBulkRemovePoller
+	Poller *MoveCollectionsClientBulkRemovePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type MoveCollectionsBulkRemovePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveCollectionsBulkRemovePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsBulkRemoveResponse, error) {
-	respType := MoveCollectionsBulkRemoveResponse{}
+func (l MoveCollectionsClientBulkRemovePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsClientBulkRemoveResponse, error) {
+	respType := MoveCollectionsClientBulkRemoveResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationStatus)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l MoveCollectionsBulkRemovePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a MoveCollectionsBulkRemovePollerResponse from the provided client and resume token.
-func (l *MoveCollectionsBulkRemovePollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.BulkRemove", token, client.pl, client.bulkRemoveHandleError)
+// Resume rehydrates a MoveCollectionsClientBulkRemovePollerResponse from the provided client and resume token.
+func (l *MoveCollectionsClientBulkRemovePollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.BulkRemove", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveCollectionsBulkRemovePoller{
+	poller := &MoveCollectionsClientBulkRemovePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *MoveCollectionsBulkRemovePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// MoveCollectionsBulkRemoveResponse contains the response from method MoveCollections.BulkRemove.
-type MoveCollectionsBulkRemoveResponse struct {
-	MoveCollectionsBulkRemoveResult
+// MoveCollectionsClientBulkRemoveResponse contains the response from method MoveCollectionsClient.BulkRemove.
+type MoveCollectionsClientBulkRemoveResponse struct {
+	MoveCollectionsClientBulkRemoveResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsBulkRemoveResult contains the result from method MoveCollections.BulkRemove.
-type MoveCollectionsBulkRemoveResult struct {
+// MoveCollectionsClientBulkRemoveResult contains the result from method MoveCollectionsClient.BulkRemove.
+type MoveCollectionsClientBulkRemoveResult struct {
 	OperationStatus
 }
 
-// MoveCollectionsCommitPollerResponse contains the response from method MoveCollections.Commit.
-type MoveCollectionsCommitPollerResponse struct {
+// MoveCollectionsClientCommitPollerResponse contains the response from method MoveCollectionsClient.Commit.
+type MoveCollectionsClientCommitPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveCollectionsCommitPoller
+	Poller *MoveCollectionsClientCommitPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type MoveCollectionsCommitPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveCollectionsCommitPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsCommitResponse, error) {
-	respType := MoveCollectionsCommitResponse{}
+func (l MoveCollectionsClientCommitPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsClientCommitResponse, error) {
+	respType := MoveCollectionsClientCommitResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationStatus)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l MoveCollectionsCommitPollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a MoveCollectionsCommitPollerResponse from the provided client and resume token.
-func (l *MoveCollectionsCommitPollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.Commit", token, client.pl, client.commitHandleError)
+// Resume rehydrates a MoveCollectionsClientCommitPollerResponse from the provided client and resume token.
+func (l *MoveCollectionsClientCommitPollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.Commit", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveCollectionsCommitPoller{
+	poller := &MoveCollectionsClientCommitPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,34 +107,34 @@ func (l *MoveCollectionsCommitPollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// MoveCollectionsCommitResponse contains the response from method MoveCollections.Commit.
-type MoveCollectionsCommitResponse struct {
-	MoveCollectionsCommitResult
+// MoveCollectionsClientCommitResponse contains the response from method MoveCollectionsClient.Commit.
+type MoveCollectionsClientCommitResponse struct {
+	MoveCollectionsClientCommitResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsCommitResult contains the result from method MoveCollections.Commit.
-type MoveCollectionsCommitResult struct {
+// MoveCollectionsClientCommitResult contains the result from method MoveCollectionsClient.Commit.
+type MoveCollectionsClientCommitResult struct {
 	OperationStatus
 }
 
-// MoveCollectionsCreateResponse contains the response from method MoveCollections.Create.
-type MoveCollectionsCreateResponse struct {
-	MoveCollectionsCreateResult
+// MoveCollectionsClientCreateResponse contains the response from method MoveCollectionsClient.Create.
+type MoveCollectionsClientCreateResponse struct {
+	MoveCollectionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsCreateResult contains the result from method MoveCollections.Create.
-type MoveCollectionsCreateResult struct {
+// MoveCollectionsClientCreateResult contains the result from method MoveCollectionsClient.Create.
+type MoveCollectionsClientCreateResult struct {
 	MoveCollection
 }
 
-// MoveCollectionsDeletePollerResponse contains the response from method MoveCollections.Delete.
-type MoveCollectionsDeletePollerResponse struct {
+// MoveCollectionsClientDeletePollerResponse contains the response from method MoveCollectionsClient.Delete.
+type MoveCollectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveCollectionsDeletePoller
+	Poller *MoveCollectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -143,8 +143,8 @@ type MoveCollectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveCollectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsDeleteResponse, error) {
-	respType := MoveCollectionsDeleteResponse{}
+func (l MoveCollectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsClientDeleteResponse, error) {
+	respType := MoveCollectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationStatus)
 	if err != nil {
 		return respType, err
@@ -153,13 +153,13 @@ func (l MoveCollectionsDeletePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a MoveCollectionsDeletePollerResponse from the provided client and resume token.
-func (l *MoveCollectionsDeletePollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a MoveCollectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *MoveCollectionsClientDeletePollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveCollectionsDeletePoller{
+	poller := &MoveCollectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -171,22 +171,22 @@ func (l *MoveCollectionsDeletePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// MoveCollectionsDeleteResponse contains the response from method MoveCollections.Delete.
-type MoveCollectionsDeleteResponse struct {
-	MoveCollectionsDeleteResult
+// MoveCollectionsClientDeleteResponse contains the response from method MoveCollectionsClient.Delete.
+type MoveCollectionsClientDeleteResponse struct {
+	MoveCollectionsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsDeleteResult contains the result from method MoveCollections.Delete.
-type MoveCollectionsDeleteResult struct {
+// MoveCollectionsClientDeleteResult contains the result from method MoveCollectionsClient.Delete.
+type MoveCollectionsClientDeleteResult struct {
 	OperationStatus
 }
 
-// MoveCollectionsDiscardPollerResponse contains the response from method MoveCollections.Discard.
-type MoveCollectionsDiscardPollerResponse struct {
+// MoveCollectionsClientDiscardPollerResponse contains the response from method MoveCollectionsClient.Discard.
+type MoveCollectionsClientDiscardPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveCollectionsDiscardPoller
+	Poller *MoveCollectionsClientDiscardPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -195,8 +195,8 @@ type MoveCollectionsDiscardPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveCollectionsDiscardPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsDiscardResponse, error) {
-	respType := MoveCollectionsDiscardResponse{}
+func (l MoveCollectionsClientDiscardPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsClientDiscardResponse, error) {
+	respType := MoveCollectionsClientDiscardResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationStatus)
 	if err != nil {
 		return respType, err
@@ -205,13 +205,13 @@ func (l MoveCollectionsDiscardPollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a MoveCollectionsDiscardPollerResponse from the provided client and resume token.
-func (l *MoveCollectionsDiscardPollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.Discard", token, client.pl, client.discardHandleError)
+// Resume rehydrates a MoveCollectionsClientDiscardPollerResponse from the provided client and resume token.
+func (l *MoveCollectionsClientDiscardPollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.Discard", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveCollectionsDiscardPoller{
+	poller := &MoveCollectionsClientDiscardPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -223,34 +223,34 @@ func (l *MoveCollectionsDiscardPollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// MoveCollectionsDiscardResponse contains the response from method MoveCollections.Discard.
-type MoveCollectionsDiscardResponse struct {
-	MoveCollectionsDiscardResult
+// MoveCollectionsClientDiscardResponse contains the response from method MoveCollectionsClient.Discard.
+type MoveCollectionsClientDiscardResponse struct {
+	MoveCollectionsClientDiscardResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsDiscardResult contains the result from method MoveCollections.Discard.
-type MoveCollectionsDiscardResult struct {
+// MoveCollectionsClientDiscardResult contains the result from method MoveCollectionsClient.Discard.
+type MoveCollectionsClientDiscardResult struct {
 	OperationStatus
 }
 
-// MoveCollectionsGetResponse contains the response from method MoveCollections.Get.
-type MoveCollectionsGetResponse struct {
-	MoveCollectionsGetResult
+// MoveCollectionsClientGetResponse contains the response from method MoveCollectionsClient.Get.
+type MoveCollectionsClientGetResponse struct {
+	MoveCollectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsGetResult contains the result from method MoveCollections.Get.
-type MoveCollectionsGetResult struct {
+// MoveCollectionsClientGetResult contains the result from method MoveCollectionsClient.Get.
+type MoveCollectionsClientGetResult struct {
 	MoveCollection
 }
 
-// MoveCollectionsInitiateMovePollerResponse contains the response from method MoveCollections.InitiateMove.
-type MoveCollectionsInitiateMovePollerResponse struct {
+// MoveCollectionsClientInitiateMovePollerResponse contains the response from method MoveCollectionsClient.InitiateMove.
+type MoveCollectionsClientInitiateMovePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveCollectionsInitiateMovePoller
+	Poller *MoveCollectionsClientInitiateMovePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -259,8 +259,8 @@ type MoveCollectionsInitiateMovePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveCollectionsInitiateMovePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsInitiateMoveResponse, error) {
-	respType := MoveCollectionsInitiateMoveResponse{}
+func (l MoveCollectionsClientInitiateMovePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsClientInitiateMoveResponse, error) {
+	respType := MoveCollectionsClientInitiateMoveResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationStatus)
 	if err != nil {
 		return respType, err
@@ -269,13 +269,13 @@ func (l MoveCollectionsInitiateMovePollerResponse) PollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// Resume rehydrates a MoveCollectionsInitiateMovePollerResponse from the provided client and resume token.
-func (l *MoveCollectionsInitiateMovePollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.InitiateMove", token, client.pl, client.initiateMoveHandleError)
+// Resume rehydrates a MoveCollectionsClientInitiateMovePollerResponse from the provided client and resume token.
+func (l *MoveCollectionsClientInitiateMovePollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.InitiateMove", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveCollectionsInitiateMovePoller{
+	poller := &MoveCollectionsClientInitiateMovePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -287,58 +287,58 @@ func (l *MoveCollectionsInitiateMovePollerResponse) Resume(ctx context.Context, 
 	return nil
 }
 
-// MoveCollectionsInitiateMoveResponse contains the response from method MoveCollections.InitiateMove.
-type MoveCollectionsInitiateMoveResponse struct {
-	MoveCollectionsInitiateMoveResult
+// MoveCollectionsClientInitiateMoveResponse contains the response from method MoveCollectionsClient.InitiateMove.
+type MoveCollectionsClientInitiateMoveResponse struct {
+	MoveCollectionsClientInitiateMoveResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsInitiateMoveResult contains the result from method MoveCollections.InitiateMove.
-type MoveCollectionsInitiateMoveResult struct {
+// MoveCollectionsClientInitiateMoveResult contains the result from method MoveCollectionsClient.InitiateMove.
+type MoveCollectionsClientInitiateMoveResult struct {
 	OperationStatus
 }
 
-// MoveCollectionsListMoveCollectionsByResourceGroupResponse contains the response from method MoveCollections.ListMoveCollectionsByResourceGroup.
-type MoveCollectionsListMoveCollectionsByResourceGroupResponse struct {
-	MoveCollectionsListMoveCollectionsByResourceGroupResult
+// MoveCollectionsClientListMoveCollectionsByResourceGroupResponse contains the response from method MoveCollectionsClient.ListMoveCollectionsByResourceGroup.
+type MoveCollectionsClientListMoveCollectionsByResourceGroupResponse struct {
+	MoveCollectionsClientListMoveCollectionsByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsListMoveCollectionsByResourceGroupResult contains the result from method MoveCollections.ListMoveCollectionsByResourceGroup.
-type MoveCollectionsListMoveCollectionsByResourceGroupResult struct {
+// MoveCollectionsClientListMoveCollectionsByResourceGroupResult contains the result from method MoveCollectionsClient.ListMoveCollectionsByResourceGroup.
+type MoveCollectionsClientListMoveCollectionsByResourceGroupResult struct {
 	MoveCollectionResultList
 }
 
-// MoveCollectionsListMoveCollectionsBySubscriptionResponse contains the response from method MoveCollections.ListMoveCollectionsBySubscription.
-type MoveCollectionsListMoveCollectionsBySubscriptionResponse struct {
-	MoveCollectionsListMoveCollectionsBySubscriptionResult
+// MoveCollectionsClientListMoveCollectionsBySubscriptionResponse contains the response from method MoveCollectionsClient.ListMoveCollectionsBySubscription.
+type MoveCollectionsClientListMoveCollectionsBySubscriptionResponse struct {
+	MoveCollectionsClientListMoveCollectionsBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsListMoveCollectionsBySubscriptionResult contains the result from method MoveCollections.ListMoveCollectionsBySubscription.
-type MoveCollectionsListMoveCollectionsBySubscriptionResult struct {
+// MoveCollectionsClientListMoveCollectionsBySubscriptionResult contains the result from method MoveCollectionsClient.ListMoveCollectionsBySubscription.
+type MoveCollectionsClientListMoveCollectionsBySubscriptionResult struct {
 	MoveCollectionResultList
 }
 
-// MoveCollectionsListRequiredForResponse contains the response from method MoveCollections.ListRequiredFor.
-type MoveCollectionsListRequiredForResponse struct {
-	MoveCollectionsListRequiredForResult
+// MoveCollectionsClientListRequiredForResponse contains the response from method MoveCollectionsClient.ListRequiredFor.
+type MoveCollectionsClientListRequiredForResponse struct {
+	MoveCollectionsClientListRequiredForResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsListRequiredForResult contains the result from method MoveCollections.ListRequiredFor.
-type MoveCollectionsListRequiredForResult struct {
+// MoveCollectionsClientListRequiredForResult contains the result from method MoveCollectionsClient.ListRequiredFor.
+type MoveCollectionsClientListRequiredForResult struct {
 	RequiredForResourcesCollection
 }
 
-// MoveCollectionsPreparePollerResponse contains the response from method MoveCollections.Prepare.
-type MoveCollectionsPreparePollerResponse struct {
+// MoveCollectionsClientPreparePollerResponse contains the response from method MoveCollectionsClient.Prepare.
+type MoveCollectionsClientPreparePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveCollectionsPreparePoller
+	Poller *MoveCollectionsClientPreparePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -347,8 +347,8 @@ type MoveCollectionsPreparePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveCollectionsPreparePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsPrepareResponse, error) {
-	respType := MoveCollectionsPrepareResponse{}
+func (l MoveCollectionsClientPreparePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsClientPrepareResponse, error) {
+	respType := MoveCollectionsClientPrepareResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationStatus)
 	if err != nil {
 		return respType, err
@@ -357,13 +357,13 @@ func (l MoveCollectionsPreparePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a MoveCollectionsPreparePollerResponse from the provided client and resume token.
-func (l *MoveCollectionsPreparePollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.Prepare", token, client.pl, client.prepareHandleError)
+// Resume rehydrates a MoveCollectionsClientPreparePollerResponse from the provided client and resume token.
+func (l *MoveCollectionsClientPreparePollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.Prepare", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveCollectionsPreparePoller{
+	poller := &MoveCollectionsClientPreparePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -375,22 +375,22 @@ func (l *MoveCollectionsPreparePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// MoveCollectionsPrepareResponse contains the response from method MoveCollections.Prepare.
-type MoveCollectionsPrepareResponse struct {
-	MoveCollectionsPrepareResult
+// MoveCollectionsClientPrepareResponse contains the response from method MoveCollectionsClient.Prepare.
+type MoveCollectionsClientPrepareResponse struct {
+	MoveCollectionsClientPrepareResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsPrepareResult contains the result from method MoveCollections.Prepare.
-type MoveCollectionsPrepareResult struct {
+// MoveCollectionsClientPrepareResult contains the result from method MoveCollectionsClient.Prepare.
+type MoveCollectionsClientPrepareResult struct {
 	OperationStatus
 }
 
-// MoveCollectionsResolveDependenciesPollerResponse contains the response from method MoveCollections.ResolveDependencies.
-type MoveCollectionsResolveDependenciesPollerResponse struct {
+// MoveCollectionsClientResolveDependenciesPollerResponse contains the response from method MoveCollectionsClient.ResolveDependencies.
+type MoveCollectionsClientResolveDependenciesPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveCollectionsResolveDependenciesPoller
+	Poller *MoveCollectionsClientResolveDependenciesPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -399,8 +399,8 @@ type MoveCollectionsResolveDependenciesPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveCollectionsResolveDependenciesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsResolveDependenciesResponse, error) {
-	respType := MoveCollectionsResolveDependenciesResponse{}
+func (l MoveCollectionsClientResolveDependenciesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveCollectionsClientResolveDependenciesResponse, error) {
+	respType := MoveCollectionsClientResolveDependenciesResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationStatus)
 	if err != nil {
 		return respType, err
@@ -409,13 +409,13 @@ func (l MoveCollectionsResolveDependenciesPollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a MoveCollectionsResolveDependenciesPollerResponse from the provided client and resume token.
-func (l *MoveCollectionsResolveDependenciesPollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.ResolveDependencies", token, client.pl, client.resolveDependenciesHandleError)
+// Resume rehydrates a MoveCollectionsClientResolveDependenciesPollerResponse from the provided client and resume token.
+func (l *MoveCollectionsClientResolveDependenciesPollerResponse) Resume(ctx context.Context, client *MoveCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveCollectionsClient.ResolveDependencies", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveCollectionsResolveDependenciesPoller{
+	poller := &MoveCollectionsClientResolveDependenciesPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -427,34 +427,34 @@ func (l *MoveCollectionsResolveDependenciesPollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// MoveCollectionsResolveDependenciesResponse contains the response from method MoveCollections.ResolveDependencies.
-type MoveCollectionsResolveDependenciesResponse struct {
-	MoveCollectionsResolveDependenciesResult
+// MoveCollectionsClientResolveDependenciesResponse contains the response from method MoveCollectionsClient.ResolveDependencies.
+type MoveCollectionsClientResolveDependenciesResponse struct {
+	MoveCollectionsClientResolveDependenciesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsResolveDependenciesResult contains the result from method MoveCollections.ResolveDependencies.
-type MoveCollectionsResolveDependenciesResult struct {
+// MoveCollectionsClientResolveDependenciesResult contains the result from method MoveCollectionsClient.ResolveDependencies.
+type MoveCollectionsClientResolveDependenciesResult struct {
 	OperationStatus
 }
 
-// MoveCollectionsUpdateResponse contains the response from method MoveCollections.Update.
-type MoveCollectionsUpdateResponse struct {
-	MoveCollectionsUpdateResult
+// MoveCollectionsClientUpdateResponse contains the response from method MoveCollectionsClient.Update.
+type MoveCollectionsClientUpdateResponse struct {
+	MoveCollectionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveCollectionsUpdateResult contains the result from method MoveCollections.Update.
-type MoveCollectionsUpdateResult struct {
+// MoveCollectionsClientUpdateResult contains the result from method MoveCollectionsClient.Update.
+type MoveCollectionsClientUpdateResult struct {
 	MoveCollection
 }
 
-// MoveResourcesCreatePollerResponse contains the response from method MoveResources.Create.
-type MoveResourcesCreatePollerResponse struct {
+// MoveResourcesClientCreatePollerResponse contains the response from method MoveResourcesClient.Create.
+type MoveResourcesClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveResourcesCreatePoller
+	Poller *MoveResourcesClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -463,8 +463,8 @@ type MoveResourcesCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveResourcesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveResourcesCreateResponse, error) {
-	respType := MoveResourcesCreateResponse{}
+func (l MoveResourcesClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveResourcesClientCreateResponse, error) {
+	respType := MoveResourcesClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MoveResource)
 	if err != nil {
 		return respType, err
@@ -473,13 +473,13 @@ func (l MoveResourcesCreatePollerResponse) PollUntilDone(ctx context.Context, fr
 	return respType, nil
 }
 
-// Resume rehydrates a MoveResourcesCreatePollerResponse from the provided client and resume token.
-func (l *MoveResourcesCreatePollerResponse) Resume(ctx context.Context, client *MoveResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveResourcesClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a MoveResourcesClientCreatePollerResponse from the provided client and resume token.
+func (l *MoveResourcesClientCreatePollerResponse) Resume(ctx context.Context, client *MoveResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveResourcesClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveResourcesCreatePoller{
+	poller := &MoveResourcesClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -491,22 +491,22 @@ func (l *MoveResourcesCreatePollerResponse) Resume(ctx context.Context, client *
 	return nil
 }
 
-// MoveResourcesCreateResponse contains the response from method MoveResources.Create.
-type MoveResourcesCreateResponse struct {
-	MoveResourcesCreateResult
+// MoveResourcesClientCreateResponse contains the response from method MoveResourcesClient.Create.
+type MoveResourcesClientCreateResponse struct {
+	MoveResourcesClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveResourcesCreateResult contains the result from method MoveResources.Create.
-type MoveResourcesCreateResult struct {
+// MoveResourcesClientCreateResult contains the result from method MoveResourcesClient.Create.
+type MoveResourcesClientCreateResult struct {
 	MoveResource
 }
 
-// MoveResourcesDeletePollerResponse contains the response from method MoveResources.Delete.
-type MoveResourcesDeletePollerResponse struct {
+// MoveResourcesClientDeletePollerResponse contains the response from method MoveResourcesClient.Delete.
+type MoveResourcesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MoveResourcesDeletePoller
+	Poller *MoveResourcesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -515,8 +515,8 @@ type MoveResourcesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MoveResourcesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveResourcesDeleteResponse, error) {
-	respType := MoveResourcesDeleteResponse{}
+func (l MoveResourcesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MoveResourcesClientDeleteResponse, error) {
+	respType := MoveResourcesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationStatus)
 	if err != nil {
 		return respType, err
@@ -525,13 +525,13 @@ func (l MoveResourcesDeletePollerResponse) PollUntilDone(ctx context.Context, fr
 	return respType, nil
 }
 
-// Resume rehydrates a MoveResourcesDeletePollerResponse from the provided client and resume token.
-func (l *MoveResourcesDeletePollerResponse) Resume(ctx context.Context, client *MoveResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MoveResourcesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a MoveResourcesClientDeletePollerResponse from the provided client and resume token.
+func (l *MoveResourcesClientDeletePollerResponse) Resume(ctx context.Context, client *MoveResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MoveResourcesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MoveResourcesDeletePoller{
+	poller := &MoveResourcesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -543,62 +543,62 @@ func (l *MoveResourcesDeletePollerResponse) Resume(ctx context.Context, client *
 	return nil
 }
 
-// MoveResourcesDeleteResponse contains the response from method MoveResources.Delete.
-type MoveResourcesDeleteResponse struct {
-	MoveResourcesDeleteResult
+// MoveResourcesClientDeleteResponse contains the response from method MoveResourcesClient.Delete.
+type MoveResourcesClientDeleteResponse struct {
+	MoveResourcesClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveResourcesDeleteResult contains the result from method MoveResources.Delete.
-type MoveResourcesDeleteResult struct {
+// MoveResourcesClientDeleteResult contains the result from method MoveResourcesClient.Delete.
+type MoveResourcesClientDeleteResult struct {
 	OperationStatus
 }
 
-// MoveResourcesGetResponse contains the response from method MoveResources.Get.
-type MoveResourcesGetResponse struct {
-	MoveResourcesGetResult
+// MoveResourcesClientGetResponse contains the response from method MoveResourcesClient.Get.
+type MoveResourcesClientGetResponse struct {
+	MoveResourcesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveResourcesGetResult contains the result from method MoveResources.Get.
-type MoveResourcesGetResult struct {
+// MoveResourcesClientGetResult contains the result from method MoveResourcesClient.Get.
+type MoveResourcesClientGetResult struct {
 	MoveResource
 }
 
-// MoveResourcesListResponse contains the response from method MoveResources.List.
-type MoveResourcesListResponse struct {
-	MoveResourcesListResult
+// MoveResourcesClientListResponse contains the response from method MoveResourcesClient.List.
+type MoveResourcesClientListResponse struct {
+	MoveResourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MoveResourcesListResult contains the result from method MoveResources.List.
-type MoveResourcesListResult struct {
+// MoveResourcesClientListResult contains the result from method MoveResourcesClient.List.
+type MoveResourcesClientListResult struct {
 	MoveResourceCollection
 }
 
-// OperationsDiscoveryGetResponse contains the response from method OperationsDiscovery.Get.
-type OperationsDiscoveryGetResponse struct {
-	OperationsDiscoveryGetResult
+// OperationsDiscoveryClientGetResponse contains the response from method OperationsDiscoveryClient.Get.
+type OperationsDiscoveryClientGetResponse struct {
+	OperationsDiscoveryClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsDiscoveryGetResult contains the result from method OperationsDiscovery.Get.
-type OperationsDiscoveryGetResult struct {
+// OperationsDiscoveryClientGetResult contains the result from method OperationsDiscoveryClient.Get.
+type OperationsDiscoveryClientGetResult struct {
 	OperationsDiscoveryCollection
 }
 
-// UnresolvedDependenciesGetResponse contains the response from method UnresolvedDependencies.Get.
-type UnresolvedDependenciesGetResponse struct {
-	UnresolvedDependenciesGetResult
+// UnresolvedDependenciesClientGetResponse contains the response from method UnresolvedDependenciesClient.Get.
+type UnresolvedDependenciesClientGetResponse struct {
+	UnresolvedDependenciesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UnresolvedDependenciesGetResult contains the result from method UnresolvedDependencies.Get.
-type UnresolvedDependenciesGetResult struct {
+// UnresolvedDependenciesClientGetResult contains the result from method UnresolvedDependenciesClient.Get.
+type UnresolvedDependenciesClientGetResult struct {
 	UnresolvedDependencyCollection
 }

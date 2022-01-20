@@ -11,7 +11,6 @@ package armchaos
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // TargetTypesClient contains the methods for the TargetTypes group.
 // Don't use this type directly, use NewTargetTypesClient() instead.
 type TargetTypesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTargetTypesClient creates a new instance of TargetTypesClient with the specified values.
+// subscriptionID - GUID that represents an Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TargetTypesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TargetTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TargetTypesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get a Target Type resources for given location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TargetTypesClient) Get(ctx context.Context, locationName string, targetTypeName string, options *TargetTypesGetOptions) (TargetTypesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - String that represents a Location resource name.
+// targetTypeName - String that represents a Target Type resource name.
+// options - TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
+func (client *TargetTypesClient) Get(ctx context.Context, locationName string, targetTypeName string, options *TargetTypesClientGetOptions) (TargetTypesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, targetTypeName, options)
 	if err != nil {
-		return TargetTypesGetResponse{}, err
+		return TargetTypesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TargetTypesGetResponse{}, err
+		return TargetTypesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TargetTypesGetResponse{}, client.getHandleError(resp)
+		return TargetTypesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TargetTypesClient) getCreateRequest(ctx context.Context, locationName string, targetTypeName string, options *TargetTypesGetOptions) (*policy.Request, error) {
+func (client *TargetTypesClient) getCreateRequest(ctx context.Context, locationName string, targetTypeName string, options *TargetTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes/{targetTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +84,7 @@ func (client *TargetTypesClient) getCreateRequest(ctx context.Context, locationN
 		return nil, errors.New("parameter targetTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{targetTypeName}", url.PathEscape(targetTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,43 +96,32 @@ func (client *TargetTypesClient) getCreateRequest(ctx context.Context, locationN
 }
 
 // getHandleResponse handles the Get response.
-func (client *TargetTypesClient) getHandleResponse(resp *http.Response) (TargetTypesGetResponse, error) {
-	result := TargetTypesGetResponse{RawResponse: resp}
+func (client *TargetTypesClient) getHandleResponse(resp *http.Response) (TargetTypesClientGetResponse, error) {
+	result := TargetTypesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetType); err != nil {
-		return TargetTypesGetResponse{}, runtime.NewResponseError(err, resp)
+		return TargetTypesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TargetTypesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get a list of Target Type resources for given location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TargetTypesClient) List(locationName string, options *TargetTypesListOptions) *TargetTypesListPager {
-	return &TargetTypesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - String that represents a Location resource name.
+// options - TargetTypesClientListOptions contains the optional parameters for the TargetTypesClient.List method.
+func (client *TargetTypesClient) List(locationName string, options *TargetTypesClientListOptions) *TargetTypesClientListPager {
+	return &TargetTypesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp TargetTypesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TargetTypesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TargetTypeListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TargetTypesClient) listCreateRequest(ctx context.Context, locationName string, options *TargetTypesListOptions) (*policy.Request, error) {
+func (client *TargetTypesClient) listCreateRequest(ctx context.Context, locationName string, options *TargetTypesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -132,7 +131,7 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,23 +146,10 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 }
 
 // listHandleResponse handles the List response.
-func (client *TargetTypesClient) listHandleResponse(resp *http.Response) (TargetTypesListResponse, error) {
-	result := TargetTypesListResponse{RawResponse: resp}
+func (client *TargetTypesClient) listHandleResponse(resp *http.Response) (TargetTypesClientListResponse, error) {
+	result := TargetTypesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetTypeListResult); err != nil {
-		return TargetTypesListResponse{}, runtime.NewResponseError(err, resp)
+		return TargetTypesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *TargetTypesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

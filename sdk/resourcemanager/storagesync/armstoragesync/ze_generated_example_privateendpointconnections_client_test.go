@@ -35,7 +35,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/PrivateEndpointConnections_Create.json
@@ -54,7 +54,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 			Properties: &armstoragesync.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armstoragesync.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armstoragesync.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Status:      armstoragesync.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -66,7 +66,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/PrivateEndpointConnections_Delete.json
@@ -99,11 +99,12 @@ func ExamplePrivateEndpointConnectionsClient_ListByStorageSyncService() {
 	}
 	ctx := context.Background()
 	client := armstoragesync.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByStorageSyncService(ctx,
+	res, err := client.ListByStorageSyncService(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientListByStorageSyncServiceResult)
 }

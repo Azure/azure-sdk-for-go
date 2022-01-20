@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// ADCCatalogsCreateOrUpdateResponse contains the response from method ADCCatalogs.CreateOrUpdate.
-type ADCCatalogsCreateOrUpdateResponse struct {
-	ADCCatalogsCreateOrUpdateResult
+// ADCCatalogsClientCreateOrUpdateResponse contains the response from method ADCCatalogsClient.CreateOrUpdate.
+type ADCCatalogsClientCreateOrUpdateResponse struct {
+	ADCCatalogsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ADCCatalogsCreateOrUpdateResult contains the result from method ADCCatalogs.CreateOrUpdate.
-type ADCCatalogsCreateOrUpdateResult struct {
+// ADCCatalogsClientCreateOrUpdateResult contains the result from method ADCCatalogsClient.CreateOrUpdate.
+type ADCCatalogsClientCreateOrUpdateResult struct {
 	ADCCatalog
 }
 
-// ADCCatalogsDeletePollerResponse contains the response from method ADCCatalogs.Delete.
-type ADCCatalogsDeletePollerResponse struct {
+// ADCCatalogsClientDeletePollerResponse contains the response from method ADCCatalogsClient.Delete.
+type ADCCatalogsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ADCCatalogsDeletePoller
+	Poller *ADCCatalogsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,8 +39,8 @@ type ADCCatalogsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ADCCatalogsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ADCCatalogsDeleteResponse, error) {
-	respType := ADCCatalogsDeleteResponse{}
+func (l ADCCatalogsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ADCCatalogsClientDeleteResponse, error) {
+	respType := ADCCatalogsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -49,13 +49,13 @@ func (l ADCCatalogsDeletePollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a ADCCatalogsDeletePollerResponse from the provided client and resume token.
-func (l *ADCCatalogsDeletePollerResponse) Resume(ctx context.Context, client *ADCCatalogsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ADCCatalogsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ADCCatalogsClientDeletePollerResponse from the provided client and resume token.
+func (l *ADCCatalogsClientDeletePollerResponse) Resume(ctx context.Context, client *ADCCatalogsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ADCCatalogsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ADCCatalogsDeletePoller{
+	poller := &ADCCatalogsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,56 +67,56 @@ func (l *ADCCatalogsDeletePollerResponse) Resume(ctx context.Context, client *AD
 	return nil
 }
 
-// ADCCatalogsDeleteResponse contains the response from method ADCCatalogs.Delete.
-type ADCCatalogsDeleteResponse struct {
+// ADCCatalogsClientDeleteResponse contains the response from method ADCCatalogsClient.Delete.
+type ADCCatalogsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ADCCatalogsGetResponse contains the response from method ADCCatalogs.Get.
-type ADCCatalogsGetResponse struct {
-	ADCCatalogsGetResult
+// ADCCatalogsClientGetResponse contains the response from method ADCCatalogsClient.Get.
+type ADCCatalogsClientGetResponse struct {
+	ADCCatalogsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ADCCatalogsGetResult contains the result from method ADCCatalogs.Get.
-type ADCCatalogsGetResult struct {
+// ADCCatalogsClientGetResult contains the result from method ADCCatalogsClient.Get.
+type ADCCatalogsClientGetResult struct {
 	ADCCatalog
 }
 
-// ADCCatalogsListtByResourceGroupResponse contains the response from method ADCCatalogs.ListtByResourceGroup.
-type ADCCatalogsListtByResourceGroupResponse struct {
-	ADCCatalogsListtByResourceGroupResult
+// ADCCatalogsClientListtByResourceGroupResponse contains the response from method ADCCatalogsClient.ListtByResourceGroup.
+type ADCCatalogsClientListtByResourceGroupResponse struct {
+	ADCCatalogsClientListtByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ADCCatalogsListtByResourceGroupResult contains the result from method ADCCatalogs.ListtByResourceGroup.
-type ADCCatalogsListtByResourceGroupResult struct {
+// ADCCatalogsClientListtByResourceGroupResult contains the result from method ADCCatalogsClient.ListtByResourceGroup.
+type ADCCatalogsClientListtByResourceGroupResult struct {
 	ADCCatalogsListResult
 }
 
-// ADCCatalogsUpdateResponse contains the response from method ADCCatalogs.Update.
-type ADCCatalogsUpdateResponse struct {
-	ADCCatalogsUpdateResult
+// ADCCatalogsClientUpdateResponse contains the response from method ADCCatalogsClient.Update.
+type ADCCatalogsClientUpdateResponse struct {
+	ADCCatalogsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ADCCatalogsUpdateResult contains the result from method ADCCatalogs.Update.
-type ADCCatalogsUpdateResult struct {
+// ADCCatalogsClientUpdateResult contains the result from method ADCCatalogsClient.Update.
+type ADCCatalogsClientUpdateResult struct {
 	ADCCatalog
 }
 
-// ADCOperationsListResponse contains the response from method ADCOperations.List.
-type ADCOperationsListResponse struct {
-	ADCOperationsListResult
+// ADCOperationsClientListResponse contains the response from method ADCOperationsClient.List.
+type ADCOperationsClientListResponse struct {
+	ADCOperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ADCOperationsListResult contains the result from method ADCOperations.List.
-type ADCOperationsListResult struct {
+// ADCOperationsClientListResult contains the result from method ADCOperationsClient.List.
+type ADCOperationsClientListResult struct {
 	OperationEntityListResult
 }

@@ -11,7 +11,6 @@ package armappconfiguration
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
+// subscriptionID - The Microsoft Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a private link resource that need to be created for a configuration store.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, configStoreName string, groupName string, options *PrivateLinkResourcesGetOptions) (PrivateLinkResourcesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// configStoreName - The name of the configuration store.
+// groupName - The name of the private link resource group.
+// options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
+// method.
+func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, configStoreName string, groupName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, configStoreName, groupName, options)
 	if err != nil {
-		return PrivateLinkResourcesGetResponse{}, err
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesGetResponse{}, err
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkResourcesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, groupName string, options *PrivateLinkResourcesGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, groupName string, options *PrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateLinkResources/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter groupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +102,34 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesGetResponse, error) {
-	result := PrivateLinkResourcesGetResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesClientGetResponse, error) {
+	result := PrivateLinkResourcesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
-		return PrivateLinkResourcesGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateLinkResourcesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByConfigurationStore - Gets the private link resources that need to be created for a configuration store.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateLinkResourcesClient) ListByConfigurationStore(resourceGroupName string, configStoreName string, options *PrivateLinkResourcesListByConfigurationStoreOptions) *PrivateLinkResourcesListByConfigurationStorePager {
-	return &PrivateLinkResourcesListByConfigurationStorePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// configStoreName - The name of the configuration store.
+// options - PrivateLinkResourcesClientListByConfigurationStoreOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByConfigurationStore
+// method.
+func (client *PrivateLinkResourcesClient) ListByConfigurationStore(resourceGroupName string, configStoreName string, options *PrivateLinkResourcesClientListByConfigurationStoreOptions) *PrivateLinkResourcesClientListByConfigurationStorePager {
+	return &PrivateLinkResourcesClientListByConfigurationStorePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByConfigurationStoreCreateRequest(ctx, resourceGroupName, configStoreName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkResourcesListByConfigurationStoreResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateLinkResourcesClientListByConfigurationStoreResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourceListResult.NextLink)
 		},
 	}
 }
 
 // listByConfigurationStoreCreateRequest creates the ListByConfigurationStore request.
-func (client *PrivateLinkResourcesClient) listByConfigurationStoreCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *PrivateLinkResourcesListByConfigurationStoreOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listByConfigurationStoreCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *PrivateLinkResourcesClientListByConfigurationStoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +143,7 @@ func (client *PrivateLinkResourcesClient) listByConfigurationStoreCreateRequest(
 		return nil, errors.New("parameter configStoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +155,10 @@ func (client *PrivateLinkResourcesClient) listByConfigurationStoreCreateRequest(
 }
 
 // listByConfigurationStoreHandleResponse handles the ListByConfigurationStore response.
-func (client *PrivateLinkResourcesClient) listByConfigurationStoreHandleResponse(resp *http.Response) (PrivateLinkResourcesListByConfigurationStoreResponse, error) {
-	result := PrivateLinkResourcesListByConfigurationStoreResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesClient) listByConfigurationStoreHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByConfigurationStoreResponse, error) {
+	result := PrivateLinkResourcesClientListByConfigurationStoreResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinkResourcesListByConfigurationStoreResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesClientListByConfigurationStoreResponse{}, err
 	}
 	return result, nil
-}
-
-// listByConfigurationStoreHandleError handles the ListByConfigurationStore error response.
-func (client *PrivateLinkResourcesClient) listByConfigurationStoreHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

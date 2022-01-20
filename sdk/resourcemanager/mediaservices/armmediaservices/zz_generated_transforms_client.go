@@ -11,7 +11,6 @@ package armmediaservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // TransformsClient contains the methods for the Transforms group.
 // Don't use this type directly, use NewTransformsClient() instead.
 type TransformsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTransformsClient creates a new instance of TransformsClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTransformsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TransformsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TransformsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TransformsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a new Transform.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TransformsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsCreateOrUpdateOptions) (TransformsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// transformName - The Transform name.
+// parameters - The request parameters
+// options - TransformsClientCreateOrUpdateOptions contains the optional parameters for the TransformsClient.CreateOrUpdate
+// method.
+func (client *TransformsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsClientCreateOrUpdateOptions) (TransformsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, transformName, parameters, options)
 	if err != nil {
-		return TransformsCreateOrUpdateResponse{}, err
+		return TransformsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransformsCreateOrUpdateResponse{}, err
+		return TransformsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TransformsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return TransformsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TransformsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TransformsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *TransformsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter transformName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformName}", url.PathEscape(transformName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,37 @@ func (client *TransformsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TransformsClient) createOrUpdateHandleResponse(resp *http.Response) (TransformsCreateOrUpdateResponse, error) {
-	result := TransformsCreateOrUpdateResponse{RawResponse: resp}
+func (client *TransformsClient) createOrUpdateHandleResponse(resp *http.Response) (TransformsClientCreateOrUpdateResponse, error) {
+	result := TransformsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
-		return TransformsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TransformsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TransformsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a Transform.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TransformsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsDeleteOptions) (TransformsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// transformName - The Transform name.
+// options - TransformsClientDeleteOptions contains the optional parameters for the TransformsClient.Delete method.
+func (client *TransformsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsClientDeleteOptions) (TransformsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, transformName, options)
 	if err != nil {
-		return TransformsDeleteResponse{}, err
+		return TransformsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransformsDeleteResponse{}, err
+		return TransformsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TransformsDeleteResponse{}, client.deleteHandleError(resp)
+		return TransformsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TransformsDeleteResponse{RawResponse: resp}, nil
+	return TransformsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TransformsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsDeleteOptions) (*policy.Request, error) {
+func (client *TransformsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +151,7 @@ func (client *TransformsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter transformName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformName}", url.PathEscape(transformName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +162,29 @@ func (client *TransformsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *TransformsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a Transform.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TransformsClient) Get(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsGetOptions) (TransformsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// transformName - The Transform name.
+// options - TransformsClientGetOptions contains the optional parameters for the TransformsClient.Get method.
+func (client *TransformsClient) Get(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsClientGetOptions) (TransformsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, transformName, options)
 	if err != nil {
-		return TransformsGetResponse{}, err
+		return TransformsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransformsGetResponse{}, err
+		return TransformsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TransformsGetResponse{}, client.getHandleError(resp)
+		return TransformsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TransformsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsGetOptions) (*policy.Request, error) {
+func (client *TransformsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,7 +202,7 @@ func (client *TransformsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter transformName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformName}", url.PathEscape(transformName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +214,33 @@ func (client *TransformsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *TransformsClient) getHandleResponse(resp *http.Response) (TransformsGetResponse, error) {
-	result := TransformsGetResponse{RawResponse: resp}
+func (client *TransformsClient) getHandleResponse(resp *http.Response) (TransformsClientGetResponse, error) {
+	result := TransformsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
-		return TransformsGetResponse{}, runtime.NewResponseError(err, resp)
+		return TransformsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TransformsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the Transforms in the account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TransformsClient) List(resourceGroupName string, accountName string, options *TransformsListOptions) *TransformsListPager {
-	return &TransformsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// options - TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
+func (client *TransformsClient) List(resourceGroupName string, accountName string, options *TransformsClientListOptions) *TransformsClientListPager {
+	return &TransformsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp TransformsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TransformsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TransformCollection.ODataNextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TransformsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TransformsListOptions) (*policy.Request, error) {
+func (client *TransformsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TransformsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,7 +254,7 @@ func (client *TransformsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,46 +272,38 @@ func (client *TransformsClient) listCreateRequest(ctx context.Context, resourceG
 }
 
 // listHandleResponse handles the List response.
-func (client *TransformsClient) listHandleResponse(resp *http.Response) (TransformsListResponse, error) {
-	result := TransformsListResponse{RawResponse: resp}
+func (client *TransformsClient) listHandleResponse(resp *http.Response) (TransformsClientListResponse, error) {
+	result := TransformsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransformCollection); err != nil {
-		return TransformsListResponse{}, runtime.NewResponseError(err, resp)
+		return TransformsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *TransformsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates a Transform.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TransformsClient) Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsUpdateOptions) (TransformsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// transformName - The Transform name.
+// parameters - The request parameters
+// options - TransformsClientUpdateOptions contains the optional parameters for the TransformsClient.Update method.
+func (client *TransformsClient) Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsClientUpdateOptions) (TransformsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, transformName, parameters, options)
 	if err != nil {
-		return TransformsUpdateResponse{}, err
+		return TransformsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransformsUpdateResponse{}, err
+		return TransformsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TransformsUpdateResponse{}, client.updateHandleError(resp)
+		return TransformsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TransformsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsUpdateOptions) (*policy.Request, error) {
+func (client *TransformsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -344,7 +321,7 @@ func (client *TransformsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter transformName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformName}", url.PathEscape(transformName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,23 +333,10 @@ func (client *TransformsClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TransformsClient) updateHandleResponse(resp *http.Response) (TransformsUpdateResponse, error) {
-	result := TransformsUpdateResponse{RawResponse: resp}
+func (client *TransformsClient) updateHandleResponse(resp *http.Response) (TransformsClientUpdateResponse, error) {
+	result := TransformsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
-		return TransformsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TransformsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *TransformsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

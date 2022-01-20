@@ -25,12 +25,16 @@ func ExampleMarketplaceAgreementsClient_List() {
 	ctx := context.Background()
 	client := armdatadog.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DatadogAgreementResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -44,9 +48,9 @@ func ExampleMarketplaceAgreementsClient_CreateOrUpdate() {
 	ctx := context.Background()
 	client := armdatadog.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
-		&armdatadog.MarketplaceAgreementsCreateOrUpdateOptions{Body: nil})
+		&armdatadog.MarketplaceAgreementsClientCreateOrUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatadogAgreementResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientCreateOrUpdateResult)
 }

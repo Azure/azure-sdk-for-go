@@ -1,14 +1,526 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PrivateLinkResourcesClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(PrivateLinkResourcesListResponse, error)` to `(PrivateLinkResourcesClientListResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*CertificatesClient.GenerateVerificationCode` parameter(s) have been changed from `(context.Context, string, string, string, string, *CertificatesGenerateVerificationCodeOptions)` to `(context.Context, string, string, string, string, *CertificatesClientGenerateVerificationCodeOptions)`
+- Function `*CertificatesClient.GenerateVerificationCode` return value(s) have been changed from `(CertificatesGenerateVerificationCodeResponse, error)` to `(CertificatesClientGenerateVerificationCodeResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListResponse, error)` to `(PrivateEndpointConnectionsClientListResponse, error)`
+- Function `*CertificatesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *CertificatesDeleteOptions)` to `(context.Context, string, string, string, string, *CertificatesClientDeleteOptions)`
+- Function `*CertificatesClient.Delete` return value(s) have been changed from `(CertificatesDeleteResponse, error)` to `(CertificatesClientDeleteResponse, error)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsUpdatePollerResponse, error)` to `(PrivateEndpointConnectionsClientUpdatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*ResourceProviderCommonClient.GetSubscriptionQuota` parameter(s) have been changed from `(context.Context, *ResourceProviderCommonGetSubscriptionQuotaOptions)` to `(context.Context, *ResourceProviderCommonClientGetSubscriptionQuotaOptions)`
+- Function `*ResourceProviderCommonClient.GetSubscriptionQuota` return value(s) have been changed from `(ResourceProviderCommonGetSubscriptionQuotaResponse, error)` to `(ResourceProviderCommonClientGetSubscriptionQuotaResponse, error)`
+- Function `*CertificatesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CertificatesGetOptions)` to `(context.Context, string, string, string, *CertificatesClientGetOptions)`
+- Function `*CertificatesClient.Get` return value(s) have been changed from `(CertificatesGetResponse, error)` to `(CertificatesClientGetResponse, error)`
+- Function `*CertificatesClient.ListByIotHub` parameter(s) have been changed from `(context.Context, string, string, *CertificatesListByIotHubOptions)` to `(context.Context, string, string, *CertificatesClientListByIotHubOptions)`
+- Function `*CertificatesClient.ListByIotHub` return value(s) have been changed from `(CertificatesListByIotHubResponse, error)` to `(CertificatesClientListByIotHubResponse, error)`
+- Function `*CertificatesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CertificateDescription, *CertificatesCreateOrUpdateOptions)` to `(context.Context, string, string, string, CertificateDescription, *CertificatesClientCreateOrUpdateOptions)`
+- Function `*CertificatesClient.CreateOrUpdate` return value(s) have been changed from `(CertificatesCreateOrUpdateResponse, error)` to `(CertificatesClientCreateOrUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*CertificatesClient.Verify` parameter(s) have been changed from `(context.Context, string, string, string, string, CertificateVerificationDescription, *CertificatesVerifyOptions)` to `(context.Context, string, string, string, string, CertificateVerificationDescription, *CertificatesClientVerifyOptions)`
+- Function `*CertificatesClient.Verify` return value(s) have been changed from `(CertificatesVerifyResponse, error)` to `(CertificatesClientVerifyResponse, error)`
+- Function `*IotHubResourceClient.GetStats` has been removed
+- Function `IotHubQuotaMetricInfoListResult.MarshalJSON` has been removed
+- Function `*IotHubResourceGetQuotaMetricsPager.PageResponse` has been removed
+- Function `*IotHubResourceListEventHubConsumerGroupsPager.PageResponse` has been removed
+- Function `IotHubSKUDescriptionListResult.MarshalJSON` has been removed
+- Function `*IotHubResourceGetEndpointHealthPager.PageResponse` has been removed
+- Function `IotHubResourceCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IotHubResourceListBySubscriptionPager.Err` has been removed
+- Function `*IotHubResourceListEventHubConsumerGroupsPager.Err` has been removed
+- Function `*IotHubResourceClient.BeginUpdate` has been removed
+- Function `*IotHubResourceClient.DeleteEventHubConsumerGroup` has been removed
+- Function `*IotHubResourceClient.GetKeysForKeyName` has been removed
+- Function `*IotHubResourceListByResourceGroupPager.PageResponse` has been removed
+- Function `*IotHubResourceUpdatePoller.ResumeToken` has been removed
+- Function `NewIotHubClient` has been removed
+- Function `*IotHubManualFailoverPoller.Poll` has been removed
+- Function `*IotHubResourceUpdatePollerResponse.Resume` has been removed
+- Function `*IotHubManualFailoverPollerResponse.Resume` has been removed
+- Function `*IotHubResourceUpdatePoller.Done` has been removed
+- Function `*IotHubResourceListJobsPager.NextPage` has been removed
+- Function `*IotHubResourceCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*IotHubResourceClient.ListKeys` has been removed
+- Function `*IotHubResourceClient.BeginDelete` has been removed
+- Function `*IotHubResourceClient.TestRoute` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*IotHubResourceGetValidSKUsPager.PageResponse` has been removed
+- Function `*IotHubResourceListJobsPager.Err` has been removed
+- Function `*IotHubResourceListEventHubConsumerGroupsPager.NextPage` has been removed
+- Function `*IotHubResourceCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*IotHubResourceListKeysPager.NextPage` has been removed
+- Function `*IotHubResourceListByResourceGroupPager.Err` has been removed
+- Function `*IotHubResourceClient.GetQuotaMetrics` has been removed
+- Function `*IotHubResourceClient.GetJob` has been removed
+- Function `IotHubDescriptionListResult.MarshalJSON` has been removed
+- Function `*IotHubResourceClient.ListByResourceGroup` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*IotHubResourceClient.Get` has been removed
+- Function `*IotHubResourceListJobsPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*IotHubResourceClient.BeginCreateOrUpdate` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePollerResponse.Resume` has been removed
+- Function `*IotHubManualFailoverPoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePoller.ResumeToken` has been removed
+- Function `*IotHubResourceCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `ErrorDetails.Error` has been removed
+- Function `*IotHubResourceClient.ImportDevices` has been removed
+- Function `*IotHubResourceClient.CheckNameAvailability` has been removed
+- Function `IotHubManualFailoverPollerResponse.PollUntilDone` has been removed
+- Function `*IotHubResourceListKeysPager.PageResponse` has been removed
+- Function `*IotHubResourceGetEndpointHealthPager.Err` has been removed
+- Function `IotHubDescription.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*IotHubResourceListKeysPager.Err` has been removed
+- Function `*IotHubResourceGetQuotaMetricsPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*IotHubClient.BeginManualFailover` has been removed
+- Function `*IotHubResourceClient.GetEndpointHealth` has been removed
+- Function `*IotHubResourceListBySubscriptionPager.PageResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*IotHubResourceUpdatePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IotHubResourceClient.ListEventHubConsumerGroups` has been removed
+- Function `*IotHubResourceGetQuotaMetricsPager.Err` has been removed
+- Function `*IotHubResourceCreateOrUpdatePoller.Done` has been removed
+- Function `*IotHubResourceGetEndpointHealthPager.NextPage` has been removed
+- Function `*IotHubResourceDeletePoller.Poll` has been removed
+- Function `*IotHubResourceGetValidSKUsPager.NextPage` has been removed
+- Function `*IotHubResourceUpdatePoller.Poll` has been removed
+- Function `NewIotHubResourceClient` has been removed
+- Function `*IotHubResourceCreateOrUpdatePoller.Poll` has been removed
+- Function `*IotHubResourceDeletePollerResponse.Resume` has been removed
+- Function `*IotHubResourceClient.ListBySubscription` has been removed
+- Function `IotHubResourceDeletePollerResponse.PollUntilDone` has been removed
+- Function `*IotHubResourceDeletePoller.ResumeToken` has been removed
+- Function `*IotHubResourceListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePoller.Poll` has been removed
+- Function `IotHubProperties.MarshalJSON` has been removed
+- Function `*IotHubResourceListByResourceGroupPager.NextPage` has been removed
+- Function `IotHubResourceUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*IotHubResourceClient.ListJobs` has been removed
+- Function `*IotHubResourceClient.GetValidSKUs` has been removed
+- Function `*IotHubResourceDeletePoller.Done` has been removed
+- Function `*IotHubResourceClient.GetEventHubConsumerGroup` has been removed
+- Function `*IotHubResourceGetValidSKUsPager.Err` has been removed
+- Function `*IotHubManualFailoverPoller.Done` has been removed
+- Function `*IotHubManualFailoverPoller.ResumeToken` has been removed
+- Function `*IotHubResourceClient.TestAllRoutes` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*IotHubResourceClient.CreateEventHubConsumerGroup` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePoller.FinalResponse` has been removed
+- Function `*IotHubResourceDeletePoller.FinalResponse` has been removed
+- Function `*IotHubResourceClient.ExportDevices` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Struct `CertificatesCreateOrUpdateOptions` has been removed
+- Struct `CertificatesCreateOrUpdateResponse` has been removed
+- Struct `CertificatesCreateOrUpdateResult` has been removed
+- Struct `CertificatesDeleteOptions` has been removed
+- Struct `CertificatesDeleteResponse` has been removed
+- Struct `CertificatesGenerateVerificationCodeOptions` has been removed
+- Struct `CertificatesGenerateVerificationCodeResponse` has been removed
+- Struct `CertificatesGenerateVerificationCodeResult` has been removed
+- Struct `CertificatesGetOptions` has been removed
+- Struct `CertificatesGetResponse` has been removed
+- Struct `CertificatesGetResult` has been removed
+- Struct `CertificatesListByIotHubOptions` has been removed
+- Struct `CertificatesListByIotHubResponse` has been removed
+- Struct `CertificatesListByIotHubResult` has been removed
+- Struct `CertificatesVerifyOptions` has been removed
+- Struct `CertificatesVerifyResponse` has been removed
+- Struct `CertificatesVerifyResult` has been removed
+- Struct `IotHubBeginManualFailoverOptions` has been removed
+- Struct `IotHubCapacity` has been removed
+- Struct `IotHubClient` has been removed
+- Struct `IotHubDescription` has been removed
+- Struct `IotHubDescriptionListResult` has been removed
+- Struct `IotHubLocationDescription` has been removed
+- Struct `IotHubManualFailoverPoller` has been removed
+- Struct `IotHubManualFailoverPollerResponse` has been removed
+- Struct `IotHubManualFailoverResponse` has been removed
+- Struct `IotHubNameAvailabilityInfo` has been removed
+- Struct `IotHubProperties` has been removed
+- Struct `IotHubQuotaMetricInfo` has been removed
+- Struct `IotHubQuotaMetricInfoListResult` has been removed
+- Struct `IotHubResourceBeginCreateOrUpdateOptions` has been removed
+- Struct `IotHubResourceBeginDeleteOptions` has been removed
+- Struct `IotHubResourceBeginUpdateOptions` has been removed
+- Struct `IotHubResourceCheckNameAvailabilityOptions` has been removed
+- Struct `IotHubResourceCheckNameAvailabilityResponse` has been removed
+- Struct `IotHubResourceCheckNameAvailabilityResult` has been removed
+- Struct `IotHubResourceClient` has been removed
+- Struct `IotHubResourceCreateEventHubConsumerGroupOptions` has been removed
+- Struct `IotHubResourceCreateEventHubConsumerGroupResponse` has been removed
+- Struct `IotHubResourceCreateEventHubConsumerGroupResult` has been removed
+- Struct `IotHubResourceCreateOrUpdatePoller` has been removed
+- Struct `IotHubResourceCreateOrUpdatePollerResponse` has been removed
+- Struct `IotHubResourceCreateOrUpdateResponse` has been removed
+- Struct `IotHubResourceCreateOrUpdateResult` has been removed
+- Struct `IotHubResourceDeleteEventHubConsumerGroupOptions` has been removed
+- Struct `IotHubResourceDeleteEventHubConsumerGroupResponse` has been removed
+- Struct `IotHubResourceDeletePoller` has been removed
+- Struct `IotHubResourceDeletePollerResponse` has been removed
+- Struct `IotHubResourceDeleteResponse` has been removed
+- Struct `IotHubResourceDeleteResult` has been removed
+- Struct `IotHubResourceExportDevicesOptions` has been removed
+- Struct `IotHubResourceExportDevicesResponse` has been removed
+- Struct `IotHubResourceExportDevicesResult` has been removed
+- Struct `IotHubResourceGetEndpointHealthOptions` has been removed
+- Struct `IotHubResourceGetEndpointHealthPager` has been removed
+- Struct `IotHubResourceGetEndpointHealthResponse` has been removed
+- Struct `IotHubResourceGetEndpointHealthResult` has been removed
+- Struct `IotHubResourceGetEventHubConsumerGroupOptions` has been removed
+- Struct `IotHubResourceGetEventHubConsumerGroupResponse` has been removed
+- Struct `IotHubResourceGetEventHubConsumerGroupResult` has been removed
+- Struct `IotHubResourceGetJobOptions` has been removed
+- Struct `IotHubResourceGetJobResponse` has been removed
+- Struct `IotHubResourceGetJobResult` has been removed
+- Struct `IotHubResourceGetKeysForKeyNameOptions` has been removed
+- Struct `IotHubResourceGetKeysForKeyNameResponse` has been removed
+- Struct `IotHubResourceGetKeysForKeyNameResult` has been removed
+- Struct `IotHubResourceGetOptions` has been removed
+- Struct `IotHubResourceGetQuotaMetricsOptions` has been removed
+- Struct `IotHubResourceGetQuotaMetricsPager` has been removed
+- Struct `IotHubResourceGetQuotaMetricsResponse` has been removed
+- Struct `IotHubResourceGetQuotaMetricsResult` has been removed
+- Struct `IotHubResourceGetResponse` has been removed
+- Struct `IotHubResourceGetResult` has been removed
+- Struct `IotHubResourceGetStatsOptions` has been removed
+- Struct `IotHubResourceGetStatsResponse` has been removed
+- Struct `IotHubResourceGetStatsResult` has been removed
+- Struct `IotHubResourceGetValidSKUsOptions` has been removed
+- Struct `IotHubResourceGetValidSKUsPager` has been removed
+- Struct `IotHubResourceGetValidSKUsResponse` has been removed
+- Struct `IotHubResourceGetValidSKUsResult` has been removed
+- Struct `IotHubResourceImportDevicesOptions` has been removed
+- Struct `IotHubResourceImportDevicesResponse` has been removed
+- Struct `IotHubResourceImportDevicesResult` has been removed
+- Struct `IotHubResourceListByResourceGroupOptions` has been removed
+- Struct `IotHubResourceListByResourceGroupPager` has been removed
+- Struct `IotHubResourceListByResourceGroupResponse` has been removed
+- Struct `IotHubResourceListByResourceGroupResult` has been removed
+- Struct `IotHubResourceListBySubscriptionOptions` has been removed
+- Struct `IotHubResourceListBySubscriptionPager` has been removed
+- Struct `IotHubResourceListBySubscriptionResponse` has been removed
+- Struct `IotHubResourceListBySubscriptionResult` has been removed
+- Struct `IotHubResourceListEventHubConsumerGroupsOptions` has been removed
+- Struct `IotHubResourceListEventHubConsumerGroupsPager` has been removed
+- Struct `IotHubResourceListEventHubConsumerGroupsResponse` has been removed
+- Struct `IotHubResourceListEventHubConsumerGroupsResult` has been removed
+- Struct `IotHubResourceListJobsOptions` has been removed
+- Struct `IotHubResourceListJobsPager` has been removed
+- Struct `IotHubResourceListJobsResponse` has been removed
+- Struct `IotHubResourceListJobsResult` has been removed
+- Struct `IotHubResourceListKeysOptions` has been removed
+- Struct `IotHubResourceListKeysPager` has been removed
+- Struct `IotHubResourceListKeysResponse` has been removed
+- Struct `IotHubResourceListKeysResult` has been removed
+- Struct `IotHubResourceTestAllRoutesOptions` has been removed
+- Struct `IotHubResourceTestAllRoutesResponse` has been removed
+- Struct `IotHubResourceTestAllRoutesResult` has been removed
+- Struct `IotHubResourceTestRouteOptions` has been removed
+- Struct `IotHubResourceTestRouteResponse` has been removed
+- Struct `IotHubResourceTestRouteResult` has been removed
+- Struct `IotHubResourceUpdatePoller` has been removed
+- Struct `IotHubResourceUpdatePollerResponse` has been removed
+- Struct `IotHubResourceUpdateResponse` has been removed
+- Struct `IotHubResourceUpdateResult` has been removed
+- Struct `IotHubSKUDescription` has been removed
+- Struct `IotHubSKUDescriptionListResult` has been removed
+- Struct `IotHubSKUInfo` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResult` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateEndpointConnectionsUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsUpdateResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Struct `ResourceProviderCommonGetSubscriptionQuotaOptions` has been removed
+- Struct `ResourceProviderCommonGetSubscriptionQuotaResponse` has been removed
+- Struct `ResourceProviderCommonGetSubscriptionQuotaResult` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `RoutingSourceMqttBrokerMessages`
+- New const `RoutingSourceDigitalTwinChangeEvents`
+- New function `*ResourceClient.ListKeys(string, string, *ResourceClientListKeysOptions) *ResourceClientListKeysPager`
+- New function `*ResourceClient.BeginCreateOrUpdate(context.Context, string, string, Description, *ResourceClientBeginCreateOrUpdateOptions) (ResourceClientCreateOrUpdatePollerResponse, error)`
+- New function `*ResourceClientGetValidSKUsPager.Err() error`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*ClientManualFailoverPoller.FinalResponse(context.Context) (ClientManualFailoverResponse, error)`
+- New function `*ResourceClientListEventHubConsumerGroupsPager.Err() error`
+- New function `*ClientManualFailoverPoller.ResumeToken() (string, error)`
+- New function `Description.MarshalJSON() ([]byte, error)`
+- New function `*ResourceClient.GetKeysForKeyName(context.Context, string, string, string, *ResourceClientGetKeysForKeyNameOptions) (ResourceClientGetKeysForKeyNameResponse, error)`
+- New function `*ResourceClientListBySubscriptionPager.Err() error`
+- New function `*ResourceClientCreateOrUpdatePoller.FinalResponse(context.Context) (ResourceClientCreateOrUpdateResponse, error)`
+- New function `*ResourceClientGetEndpointHealthPager.NextPage(context.Context) bool`
+- New function `*ResourceClientCreateOrUpdatePollerResponse.Resume(context.Context, *ResourceClient, string) error`
+- New function `*ResourceClientDeletePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceClientListEventHubConsumerGroupsPager.PageResponse() ResourceClientListEventHubConsumerGroupsResponse`
+- New function `PrivateEndpointConnectionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientUpdateResponse, error)`
+- New function `*ResourceClient.CheckNameAvailability(context.Context, OperationInputs, *ResourceClientCheckNameAvailabilityOptions) (ResourceClientCheckNameAvailabilityResponse, error)`
+- New function `NewResourceClient(string, azcore.TokenCredential, *arm.ClientOptions) *ResourceClient`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*ResourceClient.GetEventHubConsumerGroup(context.Context, string, string, string, string, *ResourceClientGetEventHubConsumerGroupOptions) (ResourceClientGetEventHubConsumerGroupResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientUpdateResponse, error)`
+- New function `QuotaMetricInfoListResult.MarshalJSON() ([]byte, error)`
+- New function `*ResourceClientDeletePoller.FinalResponse(context.Context) (ResourceClientDeleteResponse, error)`
+- New function `*ResourceClientGetEndpointHealthPager.PageResponse() ResourceClientGetEndpointHealthResponse`
+- New function `*ResourceClient.TestAllRoutes(context.Context, string, string, TestAllRoutesInput, *ResourceClientTestAllRoutesOptions) (ResourceClientTestAllRoutesResponse, error)`
+- New function `*ResourceClientListJobsPager.PageResponse() ResourceClientListJobsResponse`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceClientListKeysPager.NextPage(context.Context) bool`
+- New function `*ResourceClientDeletePollerResponse.Resume(context.Context, *ResourceClient, string) error`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*ResourceClient.TestRoute(context.Context, string, string, TestRouteInput, *ResourceClientTestRouteOptions) (ResourceClientTestRouteResponse, error)`
+- New function `*ResourceClientListKeysPager.Err() error`
+- New function `*ClientManualFailoverPollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*ResourceClientGetEndpointHealthPager.Err() error`
+- New function `Properties.MarshalJSON() ([]byte, error)`
+- New function `*ResourceClientListBySubscriptionPager.PageResponse() ResourceClientListBySubscriptionResponse`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ResourceClientListJobsPager.Err() error`
+- New function `*ResourceClient.ListByResourceGroup(string, *ResourceClientListByResourceGroupOptions) *ResourceClientListByResourceGroupPager`
+- New function `ResourceClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ResourceClientCreateOrUpdateResponse, error)`
+- New function `*ResourceClientGetQuotaMetricsPager.Err() error`
+- New function `ResourceClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ResourceClientDeleteResponse, error)`
+- New function `*ResourceClientListEventHubConsumerGroupsPager.NextPage(context.Context) bool`
+- New function `*ResourceClient.Get(context.Context, string, string, *ResourceClientGetOptions) (ResourceClientGetResponse, error)`
+- New function `*ClientManualFailoverPoller.Done() bool`
+- New function `*ResourceClient.ExportDevices(context.Context, string, string, ExportDevicesRequest, *ResourceClientExportDevicesOptions) (ResourceClientExportDevicesResponse, error)`
+- New function `*ResourceClient.ListEventHubConsumerGroups(string, string, string, *ResourceClientListEventHubConsumerGroupsOptions) *ResourceClientListEventHubConsumerGroupsPager`
+- New function `*ResourceClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ResourceClient.GetEndpointHealth(string, string, *ResourceClientGetEndpointHealthOptions) *ResourceClientGetEndpointHealthPager`
+- New function `*ResourceClient.GetQuotaMetrics(string, string, *ResourceClientGetQuotaMetricsOptions) *ResourceClientGetQuotaMetricsPager`
+- New function `*ResourceClientUpdatePoller.Done() bool`
+- New function `*ResourceClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceClientUpdatePoller.FinalResponse(context.Context) (ResourceClientUpdateResponse, error)`
+- New function `*ResourceClient.BeginDelete(context.Context, string, string, *ResourceClientBeginDeleteOptions) (ResourceClientDeletePollerResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `EncryptionPropertiesDescription.MarshalJSON() ([]byte, error)`
+- New function `*ResourceClientListKeysPager.PageResponse() ResourceClientListKeysResponse`
+- New function `*ResourceClient.ListJobs(string, string, *ResourceClientListJobsOptions) *ResourceClientListJobsPager`
+- New function `*ClientManualFailoverPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceClientListJobsPager.NextPage(context.Context) bool`
+- New function `*ResourceClient.ListBySubscription(*ResourceClientListBySubscriptionOptions) *ResourceClientListBySubscriptionPager`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ResourceClientCreateOrUpdatePoller.Done() bool`
+- New function `*ResourceClient.DeleteEventHubConsumerGroup(context.Context, string, string, string, string, *ResourceClientDeleteEventHubConsumerGroupOptions) (ResourceClientDeleteEventHubConsumerGroupResponse, error)`
+- New function `*ResourceClient.GetValidSKUs(string, string, *ResourceClientGetValidSKUsOptions) *ResourceClientGetValidSKUsPager`
+- New function `*ResourceClient.CreateEventHubConsumerGroup(context.Context, string, string, string, string, EventHubConsumerGroupBodyDescription, *ResourceClientCreateEventHubConsumerGroupOptions) (ResourceClientCreateEventHubConsumerGroupResponse, error)`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*ResourceClient.ImportDevices(context.Context, string, string, ImportDevicesRequest, *ResourceClientImportDevicesOptions) (ResourceClientImportDevicesResponse, error)`
+- New function `*ResourceClientGetQuotaMetricsPager.PageResponse() ResourceClientGetQuotaMetricsResponse`
+- New function `*ResourceClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientUpdatePoller.Done() bool`
+- New function `*ResourceClient.BeginUpdate(context.Context, string, string, TagsResource, *ResourceClientBeginUpdateOptions) (ResourceClientUpdatePollerResponse, error)`
+- New function `*ResourceClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `ResourceClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ResourceClientUpdateResponse, error)`
+- New function `*Client.BeginManualFailover(context.Context, string, string, FailoverInput, *ClientBeginManualFailoverOptions) (ClientManualFailoverPollerResponse, error)`
+- New function `*ResourceClient.GetJob(context.Context, string, string, string, *ResourceClientGetJobOptions) (ResourceClientGetJobResponse, error)`
+- New function `*ResourceClientUpdatePollerResponse.Resume(context.Context, *ResourceClient, string) error`
+- New function `*ResourceClientGetValidSKUsPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ResourceClientListByResourceGroupPager.PageResponse() ResourceClientListByResourceGroupResponse`
+- New function `SKUDescriptionListResult.MarshalJSON() ([]byte, error)`
+- New function `*ResourceClientDeletePoller.ResumeToken() (string, error)`
+- New function `DescriptionListResult.MarshalJSON() ([]byte, error)`
+- New function `*ResourceClientGetValidSKUsPager.PageResponse() ResourceClientGetValidSKUsResponse`
+- New function `*ResourceClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ResourceClientListByResourceGroupPager.Err() error`
+- New function `*ResourceClient.GetStats(context.Context, string, string, *ResourceClientGetStatsOptions) (ResourceClientGetStatsResponse, error)`
+- New function `ClientManualFailoverPollerResponse.PollUntilDone(context.Context, time.Duration) (ClientManualFailoverResponse, error)`
+- New function `PropertiesDeviceStreams.MarshalJSON() ([]byte, error)`
+- New function `*ResourceClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ResourceClientGetQuotaMetricsPager.NextPage(context.Context) bool`
+- New struct `Capacity`
+- New struct `CertificatesClientCreateOrUpdateOptions`
+- New struct `CertificatesClientCreateOrUpdateResponse`
+- New struct `CertificatesClientCreateOrUpdateResult`
+- New struct `CertificatesClientDeleteOptions`
+- New struct `CertificatesClientDeleteResponse`
+- New struct `CertificatesClientGenerateVerificationCodeOptions`
+- New struct `CertificatesClientGenerateVerificationCodeResponse`
+- New struct `CertificatesClientGenerateVerificationCodeResult`
+- New struct `CertificatesClientGetOptions`
+- New struct `CertificatesClientGetResponse`
+- New struct `CertificatesClientGetResult`
+- New struct `CertificatesClientListByIotHubOptions`
+- New struct `CertificatesClientListByIotHubResponse`
+- New struct `CertificatesClientListByIotHubResult`
+- New struct `CertificatesClientVerifyOptions`
+- New struct `CertificatesClientVerifyResponse`
+- New struct `CertificatesClientVerifyResult`
+- New struct `Client`
+- New struct `ClientBeginManualFailoverOptions`
+- New struct `ClientManualFailoverPoller`
+- New struct `ClientManualFailoverPollerResponse`
+- New struct `ClientManualFailoverResponse`
+- New struct `Description`
+- New struct `DescriptionListResult`
+- New struct `EncryptionPropertiesDescription`
+- New struct `KeyVaultKeyProperties`
+- New struct `LocationDescription`
+- New struct `NameAvailabilityInfo`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientBeginUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResult`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateEndpointConnectionsClientUpdatePoller`
+- New struct `PrivateEndpointConnectionsClientUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientUpdateResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `Properties`
+- New struct `PropertiesDeviceStreams`
+- New struct `QuotaMetricInfo`
+- New struct `QuotaMetricInfoListResult`
+- New struct `ResourceClient`
+- New struct `ResourceClientBeginCreateOrUpdateOptions`
+- New struct `ResourceClientBeginDeleteOptions`
+- New struct `ResourceClientBeginUpdateOptions`
+- New struct `ResourceClientCheckNameAvailabilityOptions`
+- New struct `ResourceClientCheckNameAvailabilityResponse`
+- New struct `ResourceClientCheckNameAvailabilityResult`
+- New struct `ResourceClientCreateEventHubConsumerGroupOptions`
+- New struct `ResourceClientCreateEventHubConsumerGroupResponse`
+- New struct `ResourceClientCreateEventHubConsumerGroupResult`
+- New struct `ResourceClientCreateOrUpdatePoller`
+- New struct `ResourceClientCreateOrUpdatePollerResponse`
+- New struct `ResourceClientCreateOrUpdateResponse`
+- New struct `ResourceClientCreateOrUpdateResult`
+- New struct `ResourceClientDeleteEventHubConsumerGroupOptions`
+- New struct `ResourceClientDeleteEventHubConsumerGroupResponse`
+- New struct `ResourceClientDeletePoller`
+- New struct `ResourceClientDeletePollerResponse`
+- New struct `ResourceClientDeleteResponse`
+- New struct `ResourceClientDeleteResult`
+- New struct `ResourceClientExportDevicesOptions`
+- New struct `ResourceClientExportDevicesResponse`
+- New struct `ResourceClientExportDevicesResult`
+- New struct `ResourceClientGetEndpointHealthOptions`
+- New struct `ResourceClientGetEndpointHealthPager`
+- New struct `ResourceClientGetEndpointHealthResponse`
+- New struct `ResourceClientGetEndpointHealthResult`
+- New struct `ResourceClientGetEventHubConsumerGroupOptions`
+- New struct `ResourceClientGetEventHubConsumerGroupResponse`
+- New struct `ResourceClientGetEventHubConsumerGroupResult`
+- New struct `ResourceClientGetJobOptions`
+- New struct `ResourceClientGetJobResponse`
+- New struct `ResourceClientGetJobResult`
+- New struct `ResourceClientGetKeysForKeyNameOptions`
+- New struct `ResourceClientGetKeysForKeyNameResponse`
+- New struct `ResourceClientGetKeysForKeyNameResult`
+- New struct `ResourceClientGetOptions`
+- New struct `ResourceClientGetQuotaMetricsOptions`
+- New struct `ResourceClientGetQuotaMetricsPager`
+- New struct `ResourceClientGetQuotaMetricsResponse`
+- New struct `ResourceClientGetQuotaMetricsResult`
+- New struct `ResourceClientGetResponse`
+- New struct `ResourceClientGetResult`
+- New struct `ResourceClientGetStatsOptions`
+- New struct `ResourceClientGetStatsResponse`
+- New struct `ResourceClientGetStatsResult`
+- New struct `ResourceClientGetValidSKUsOptions`
+- New struct `ResourceClientGetValidSKUsPager`
+- New struct `ResourceClientGetValidSKUsResponse`
+- New struct `ResourceClientGetValidSKUsResult`
+- New struct `ResourceClientImportDevicesOptions`
+- New struct `ResourceClientImportDevicesResponse`
+- New struct `ResourceClientImportDevicesResult`
+- New struct `ResourceClientListByResourceGroupOptions`
+- New struct `ResourceClientListByResourceGroupPager`
+- New struct `ResourceClientListByResourceGroupResponse`
+- New struct `ResourceClientListByResourceGroupResult`
+- New struct `ResourceClientListBySubscriptionOptions`
+- New struct `ResourceClientListBySubscriptionPager`
+- New struct `ResourceClientListBySubscriptionResponse`
+- New struct `ResourceClientListBySubscriptionResult`
+- New struct `ResourceClientListEventHubConsumerGroupsOptions`
+- New struct `ResourceClientListEventHubConsumerGroupsPager`
+- New struct `ResourceClientListEventHubConsumerGroupsResponse`
+- New struct `ResourceClientListEventHubConsumerGroupsResult`
+- New struct `ResourceClientListJobsOptions`
+- New struct `ResourceClientListJobsPager`
+- New struct `ResourceClientListJobsResponse`
+- New struct `ResourceClientListJobsResult`
+- New struct `ResourceClientListKeysOptions`
+- New struct `ResourceClientListKeysPager`
+- New struct `ResourceClientListKeysResponse`
+- New struct `ResourceClientListKeysResult`
+- New struct `ResourceClientTestAllRoutesOptions`
+- New struct `ResourceClientTestAllRoutesResponse`
+- New struct `ResourceClientTestAllRoutesResult`
+- New struct `ResourceClientTestRouteOptions`
+- New struct `ResourceClientTestRouteResponse`
+- New struct `ResourceClientTestRouteResult`
+- New struct `ResourceClientUpdatePoller`
+- New struct `ResourceClientUpdatePollerResponse`
+- New struct `ResourceClientUpdateResponse`
+- New struct `ResourceClientUpdateResult`
+- New struct `ResourceProviderCommonClientGetSubscriptionQuotaOptions`
+- New struct `ResourceProviderCommonClientGetSubscriptionQuotaResponse`
+- New struct `ResourceProviderCommonClientGetSubscriptionQuotaResult`
+- New struct `SKUDescription`
+- New struct `SKUDescriptionListResult`
+- New struct `SKUInfo`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

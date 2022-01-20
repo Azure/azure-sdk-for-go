@@ -9,51 +9,28 @@
 package armalertsmanagement
 
 const (
-	module  = "armalertsmanagement"
-	version = "v0.2.1"
+	moduleName    = "armalertsmanagement"
+	moduleVersion = "v0.3.0"
 )
 
-// ActionRuleStatus - Indicates if the given action rule is enabled or disabled
-type ActionRuleStatus string
+// ActionType - Action that should be applied.
+type ActionType string
 
 const (
-	ActionRuleStatusDisabled ActionRuleStatus = "Disabled"
-	ActionRuleStatusEnabled  ActionRuleStatus = "Enabled"
+	ActionTypeAddActionGroups       ActionType = "AddActionGroups"
+	ActionTypeRemoveAllActionGroups ActionType = "RemoveAllActionGroups"
 )
 
-// PossibleActionRuleStatusValues returns the possible values for the ActionRuleStatus const type.
-func PossibleActionRuleStatusValues() []ActionRuleStatus {
-	return []ActionRuleStatus{
-		ActionRuleStatusDisabled,
-		ActionRuleStatusEnabled,
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeAddActionGroups,
+		ActionTypeRemoveAllActionGroups,
 	}
 }
 
-// ToPtr returns a *ActionRuleStatus pointing to the current value.
-func (c ActionRuleStatus) ToPtr() *ActionRuleStatus {
-	return &c
-}
-
-// ActionRuleType - Indicates type of action rule
-type ActionRuleType string
-
-const (
-	ActionRuleTypeActionGroup ActionRuleType = "ActionGroup"
-	ActionRuleTypeDiagnostics ActionRuleType = "Diagnostics"
-	ActionRuleTypeSuppression ActionRuleType = "Suppression"
-)
-
-// PossibleActionRuleTypeValues returns the possible values for the ActionRuleType const type.
-func PossibleActionRuleTypeValues() []ActionRuleType {
-	return []ActionRuleType{
-		ActionRuleTypeActionGroup,
-		ActionRuleTypeDiagnostics,
-		ActionRuleTypeSuppression,
-	}
-}
-
-// ToPtr returns a *ActionRuleType pointing to the current value.
-func (c ActionRuleType) ToPtr() *ActionRuleType {
+// ToPtr returns a *ActionType pointing to the current value.
+func (c ActionType) ToPtr() *ActionType {
 	return &c
 }
 
@@ -89,27 +66,6 @@ func PossibleAlertModificationEventValues() []AlertModificationEvent {
 
 // ToPtr returns a *AlertModificationEvent pointing to the current value.
 func (c AlertModificationEvent) ToPtr() *AlertModificationEvent {
-	return &c
-}
-
-// AlertRuleState - The alert rule state.
-type AlertRuleState string
-
-const (
-	AlertRuleStateDisabled AlertRuleState = "Disabled"
-	AlertRuleStateEnabled  AlertRuleState = "Enabled"
-)
-
-// PossibleAlertRuleStateValues returns the possible values for the AlertRuleState const type.
-func PossibleAlertRuleStateValues() []AlertRuleState {
-	return []AlertRuleState{
-		AlertRuleStateDisabled,
-		AlertRuleStateEnabled,
-	}
-}
-
-// ToPtr returns a *AlertRuleState pointing to the current value.
-func (c AlertRuleState) ToPtr() *AlertRuleState {
 	return &c
 }
 
@@ -199,23 +155,98 @@ func (c AlertsSummaryGroupByFields) ToPtr() *AlertsSummaryGroupByFields {
 	return &c
 }
 
-type Enum11 string
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
 
 const (
-	Enum11Asc  Enum11 = "asc"
-	Enum11Desc Enum11 = "desc"
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
 )
 
-// PossibleEnum11Values returns the possible values for the Enum11 const type.
-func PossibleEnum11Values() []Enum11 {
-	return []Enum11{
-		Enum11Asc,
-		Enum11Desc,
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 
-// ToPtr returns a *Enum11 pointing to the current value.
-func (c Enum11) ToPtr() *Enum11 {
+// ToPtr returns a *CreatedByType pointing to the current value.
+func (c CreatedByType) ToPtr() *CreatedByType {
+	return &c
+}
+
+// DaysOfWeek - Days of week.
+type DaysOfWeek string
+
+const (
+	DaysOfWeekFriday    DaysOfWeek = "Friday"
+	DaysOfWeekMonday    DaysOfWeek = "Monday"
+	DaysOfWeekSaturday  DaysOfWeek = "Saturday"
+	DaysOfWeekSunday    DaysOfWeek = "Sunday"
+	DaysOfWeekThursday  DaysOfWeek = "Thursday"
+	DaysOfWeekTuesday   DaysOfWeek = "Tuesday"
+	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
+)
+
+// PossibleDaysOfWeekValues returns the possible values for the DaysOfWeek const type.
+func PossibleDaysOfWeekValues() []DaysOfWeek {
+	return []DaysOfWeek{
+		DaysOfWeekFriday,
+		DaysOfWeekMonday,
+		DaysOfWeekSaturday,
+		DaysOfWeekSunday,
+		DaysOfWeekThursday,
+		DaysOfWeekTuesday,
+		DaysOfWeekWednesday,
+	}
+}
+
+// ToPtr returns a *DaysOfWeek pointing to the current value.
+func (c DaysOfWeek) ToPtr() *DaysOfWeek {
+	return &c
+}
+
+// Field - Field for a given condition.
+type Field string
+
+const (
+	FieldAlertContext        Field = "AlertContext"
+	FieldAlertRuleID         Field = "AlertRuleId"
+	FieldAlertRuleName       Field = "AlertRuleName"
+	FieldDescription         Field = "Description"
+	FieldMonitorCondition    Field = "MonitorCondition"
+	FieldMonitorService      Field = "MonitorService"
+	FieldSeverity            Field = "Severity"
+	FieldSignalType          Field = "SignalType"
+	FieldTargetResource      Field = "TargetResource"
+	FieldTargetResourceGroup Field = "TargetResourceGroup"
+	FieldTargetResourceType  Field = "TargetResourceType"
+)
+
+// PossibleFieldValues returns the possible values for the Field const type.
+func PossibleFieldValues() []Field {
+	return []Field{
+		FieldAlertContext,
+		FieldAlertRuleID,
+		FieldAlertRuleName,
+		FieldDescription,
+		FieldMonitorCondition,
+		FieldMonitorService,
+		FieldSeverity,
+		FieldSignalType,
+		FieldTargetResource,
+		FieldTargetResourceGroup,
+		FieldTargetResourceType,
+	}
+}
+
+// ToPtr returns a *Field pointing to the current value.
+func (c Field) ToPtr() *Field {
 	return &c
 }
 
@@ -320,7 +351,7 @@ func (c MonitorService) ToPtr() *MonitorService {
 	return &c
 }
 
-// Operator - operator for a given condition
+// Operator - Operator for a given condition.
 type Operator string
 
 const (
@@ -345,26 +376,26 @@ func (c Operator) ToPtr() *Operator {
 	return &c
 }
 
-// ScopeType - type of target scope
-type ScopeType string
+// RecurrenceType - Specifies when the recurrence should be applied.
+type RecurrenceType string
 
 const (
-	ScopeTypeResource      ScopeType = "Resource"
-	ScopeTypeResourceGroup ScopeType = "ResourceGroup"
-	ScopeTypeSubscription  ScopeType = "Subscription"
+	RecurrenceTypeDaily   RecurrenceType = "Daily"
+	RecurrenceTypeMonthly RecurrenceType = "Monthly"
+	RecurrenceTypeWeekly  RecurrenceType = "Weekly"
 )
 
-// PossibleScopeTypeValues returns the possible values for the ScopeType const type.
-func PossibleScopeTypeValues() []ScopeType {
-	return []ScopeType{
-		ScopeTypeResource,
-		ScopeTypeResourceGroup,
-		ScopeTypeSubscription,
+// PossibleRecurrenceTypeValues returns the possible values for the RecurrenceType const type.
+func PossibleRecurrenceTypeValues() []RecurrenceType {
+	return []RecurrenceType{
+		RecurrenceTypeDaily,
+		RecurrenceTypeMonthly,
+		RecurrenceTypeWeekly,
 	}
 }
 
-// ToPtr returns a *ScopeType pointing to the current value.
-func (c ScopeType) ToPtr() *ScopeType {
+// ToPtr returns a *RecurrenceType pointing to the current value.
+func (c RecurrenceType) ToPtr() *RecurrenceType {
 	return &c
 }
 
@@ -468,6 +499,26 @@ func (c SmartGroupsSortByFields) ToPtr() *SmartGroupsSortByFields {
 	return &c
 }
 
+type SortOrder string
+
+const (
+	SortOrderAsc  SortOrder = "asc"
+	SortOrderDesc SortOrder = "desc"
+)
+
+// PossibleSortOrderValues returns the possible values for the SortOrder const type.
+func PossibleSortOrderValues() []SortOrder {
+	return []SortOrder{
+		SortOrderAsc,
+		SortOrderDesc,
+	}
+}
+
+// ToPtr returns a *SortOrder pointing to the current value.
+func (c SortOrder) ToPtr() *SortOrder {
+	return &c
+}
+
 // State - Smart group state
 type State string
 
@@ -488,33 +539,6 @@ func PossibleStateValues() []State {
 
 // ToPtr returns a *State pointing to the current value.
 func (c State) ToPtr() *State {
-	return &c
-}
-
-// SuppressionType - Specifies when the suppression should be applied
-type SuppressionType string
-
-const (
-	SuppressionTypeAlways  SuppressionType = "Always"
-	SuppressionTypeDaily   SuppressionType = "Daily"
-	SuppressionTypeMonthly SuppressionType = "Monthly"
-	SuppressionTypeOnce    SuppressionType = "Once"
-	SuppressionTypeWeekly  SuppressionType = "Weekly"
-)
-
-// PossibleSuppressionTypeValues returns the possible values for the SuppressionType const type.
-func PossibleSuppressionTypeValues() []SuppressionType {
-	return []SuppressionType{
-		SuppressionTypeAlways,
-		SuppressionTypeDaily,
-		SuppressionTypeMonthly,
-		SuppressionTypeOnce,
-		SuppressionTypeWeekly,
-	}
-}
-
-// ToPtr returns a *SuppressionType pointing to the current value.
-func (c SuppressionType) ToPtr() *SuppressionType {
 	return &c
 }
 

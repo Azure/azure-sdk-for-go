@@ -30,12 +30,16 @@ func ExampleBackupPoliciesClient_List() {
 	pager := client.List("<vault-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BaseBackupPolicyResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleBackupPoliciesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BaseBackupPolicyResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupPoliciesClientGetResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/CreateOrUpdateBackupPolicy.json
@@ -73,31 +77,23 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 		"<backup-policy-name>",
 		armdataprotection.BaseBackupPolicyResource{
 			Properties: &armdataprotection.BackupPolicy{
-				BaseBackupPolicy: armdataprotection.BaseBackupPolicy{
-					DatasourceTypes: []*string{
-						to.StringPtr("OssDB")},
-					ObjectType: to.StringPtr("<object-type>"),
-				},
+				DatasourceTypes: []*string{
+					to.StringPtr("OssDB")},
+				ObjectType: to.StringPtr("<object-type>"),
 				PolicyRules: []armdataprotection.BasePolicyRuleClassification{
 					&armdataprotection.AzureBackupRule{
-						BasePolicyRule: armdataprotection.BasePolicyRule{
-							Name:       to.StringPtr("<name>"),
-							ObjectType: to.StringPtr("<object-type>"),
-						},
+						Name:       to.StringPtr("<name>"),
+						ObjectType: to.StringPtr("<object-type>"),
 						BackupParameters: &armdataprotection.AzureBackupParams{
-							BackupParameters: armdataprotection.BackupParameters{
-								ObjectType: to.StringPtr("<object-type>"),
-							},
+							ObjectType: to.StringPtr("<object-type>"),
 							BackupType: to.StringPtr("<backup-type>"),
 						},
 						DataStore: &armdataprotection.DataStoreInfoBase{
-							DataStoreType: armdataprotection.DataStoreTypesVaultStore.ToPtr(),
+							DataStoreType: armdataprotection.DataStoreTypes("VaultStore").ToPtr(),
 							ObjectType:    to.StringPtr("<object-type>"),
 						},
 						Trigger: &armdataprotection.ScheduleBasedTriggerContext{
-							TriggerContext: armdataprotection.TriggerContext{
-								ObjectType: to.StringPtr("<object-type>"),
-							},
+							ObjectType: to.StringPtr("<object-type>"),
 							Schedule: &armdataprotection.BackupSchedule{
 								RepeatingTimeIntervals: []*string{
 									to.StringPtr("R/2019-11-20T08:00:00-08:00/P1W")},
@@ -113,11 +109,9 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 								{
 									Criteria: []armdataprotection.BackupCriteriaClassification{
 										&armdataprotection.ScheduleBasedBackupCriteria{
-											BackupCriteria: armdataprotection.BackupCriteria{
-												ObjectType: to.StringPtr("<object-type>"),
-											},
+											ObjectType: to.StringPtr("<object-type>"),
 											DaysOfTheWeek: []*armdataprotection.DayOfWeek{
-												armdataprotection.DayOfWeekSunday.ToPtr()},
+												armdataprotection.DayOfWeek("Sunday").ToPtr()},
 											ScheduleTimes: []*time.Time{
 												to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t }())},
 										}},
@@ -130,41 +124,33 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 						},
 					},
 					&armdataprotection.AzureRetentionRule{
-						BasePolicyRule: armdataprotection.BasePolicyRule{
-							Name:       to.StringPtr("<name>"),
-							ObjectType: to.StringPtr("<object-type>"),
-						},
-						IsDefault: to.BoolPtr(true),
+						Name:       to.StringPtr("<name>"),
+						ObjectType: to.StringPtr("<object-type>"),
+						IsDefault:  to.BoolPtr(true),
 						Lifecycles: []*armdataprotection.SourceLifeCycle{
 							{
 								DeleteAfter: &armdataprotection.AbsoluteDeleteOption{
-									DeleteOption: armdataprotection.DeleteOption{
-										Duration:   to.StringPtr("<duration>"),
-										ObjectType: to.StringPtr("<object-type>"),
-									},
+									Duration:   to.StringPtr("<duration>"),
+									ObjectType: to.StringPtr("<object-type>"),
 								},
 								SourceDataStore: &armdataprotection.DataStoreInfoBase{
-									DataStoreType: armdataprotection.DataStoreTypesVaultStore.ToPtr(),
+									DataStoreType: armdataprotection.DataStoreTypes("VaultStore").ToPtr(),
 									ObjectType:    to.StringPtr("<object-type>"),
 								},
 							}},
 					},
 					&armdataprotection.AzureRetentionRule{
-						BasePolicyRule: armdataprotection.BasePolicyRule{
-							Name:       to.StringPtr("<name>"),
-							ObjectType: to.StringPtr("<object-type>"),
-						},
-						IsDefault: to.BoolPtr(false),
+						Name:       to.StringPtr("<name>"),
+						ObjectType: to.StringPtr("<object-type>"),
+						IsDefault:  to.BoolPtr(false),
 						Lifecycles: []*armdataprotection.SourceLifeCycle{
 							{
 								DeleteAfter: &armdataprotection.AbsoluteDeleteOption{
-									DeleteOption: armdataprotection.DeleteOption{
-										Duration:   to.StringPtr("<duration>"),
-										ObjectType: to.StringPtr("<object-type>"),
-									},
+									Duration:   to.StringPtr("<duration>"),
+									ObjectType: to.StringPtr("<object-type>"),
 								},
 								SourceDataStore: &armdataprotection.DataStoreInfoBase{
-									DataStoreType: armdataprotection.DataStoreTypesVaultStore.ToPtr(),
+									DataStoreType: armdataprotection.DataStoreTypes("VaultStore").ToPtr(),
 									ObjectType:    to.StringPtr("<object-type>"),
 								},
 							}},
@@ -175,7 +161,7 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BaseBackupPolicyResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupPoliciesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/DeleteBackupPolicy.json

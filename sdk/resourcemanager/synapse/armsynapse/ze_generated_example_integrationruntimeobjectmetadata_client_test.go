@@ -27,17 +27,18 @@ func ExampleIntegrationRuntimeObjectMetadataClient_List() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimeObjectMetadataClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
-		&armsynapse.IntegrationRuntimeObjectMetadataListOptions{GetMetadataRequest: &armsynapse.GetSsisObjectMetadataRequest{
+		&armsynapse.IntegrationRuntimeObjectMetadataClientListOptions{GetMetadataRequest: &armsynapse.GetSsisObjectMetadataRequest{
 			MetadataPath: to.StringPtr("<metadata-path>"),
 		},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeObjectMetadataClientListResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimeObjectMetadata_Refresh.json
@@ -56,8 +57,9 @@ func ExampleIntegrationRuntimeObjectMetadataClient_BeginRefresh() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeObjectMetadataClientRefreshResult)
 }

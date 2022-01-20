@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsight/armsecurityinsight"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/alertRules/GetAllAlertRules.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/alertRules/GetAllAlertRules.json
 func ExampleAlertRulesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,17 +28,21 @@ func ExampleAlertRulesClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AlertRuleClassification.GetAlertRule().ID: %s\n", *v.GetAlertRule().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/alertRules/GetFusionAlertRule.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/alertRules/GetFusionAlertRule.json
 func ExampleAlertRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,10 +58,10 @@ func ExampleAlertRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertRuleClassification.GetAlertRule().ID: %s\n", *res.GetAlertRule().ID)
+	log.Printf("Response result: %#v\n", res.AlertRulesClientGetResult)
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/alertRules/CreateFusionAlertRule.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/alertRules/CreateFusionAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,12 +74,8 @@ func ExampleAlertRulesClient_CreateOrUpdate() {
 		"<workspace-name>",
 		"<rule-id>",
 		&armsecurityinsight.FusionAlertRule{
-			AlertRule: armsecurityinsight.AlertRule{
-				ResourceWithEtag: armsecurityinsight.ResourceWithEtag{
-					Etag: to.StringPtr("<etag>"),
-				},
-				Kind: armsecurityinsight.AlertRuleKindFusion.ToPtr(),
-			},
+			Etag: to.StringPtr("<etag>"),
+			Kind: armsecurityinsight.AlertRuleKind("Fusion").ToPtr(),
 			Properties: &armsecurityinsight.FusionAlertRuleProperties{
 				AlertRuleTemplateName: to.StringPtr("<alert-rule-template-name>"),
 				Enabled:               to.BoolPtr(true),
@@ -85,10 +85,10 @@ func ExampleAlertRulesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertRuleClassification.GetAlertRule().ID: %s\n", *res.GetAlertRule().ID)
+	log.Printf("Response result: %#v\n", res.AlertRulesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/alertRules/DeleteAlertRule.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/alertRules/DeleteAlertRule.json
 func ExampleAlertRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

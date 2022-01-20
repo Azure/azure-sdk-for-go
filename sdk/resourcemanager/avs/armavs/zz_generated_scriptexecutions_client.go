@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // ScriptExecutionsClient contains the methods for the ScriptExecutions group.
 // Don't use this type directly, use NewScriptExecutionsClient() instead.
 type ScriptExecutionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewScriptExecutionsClient creates a new instance of ScriptExecutionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewScriptExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScriptExecutionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ScriptExecutionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ScriptExecutionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a script execution in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptExecutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsBeginCreateOrUpdateOptions) (ScriptExecutionsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - The name of the private cloud.
+// scriptExecutionName - Name of the user-invoked script execution resource
+// scriptExecution - A script running in the private cloud
+// options - ScriptExecutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScriptExecutionsClient.BeginCreateOrUpdate
+// method.
+func (client *ScriptExecutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsClientBeginCreateOrUpdateOptions) (ScriptExecutionsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution, options)
 	if err != nil {
-		return ScriptExecutionsCreateOrUpdatePollerResponse{}, err
+		return ScriptExecutionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ScriptExecutionsCreateOrUpdatePollerResponse{
+	result := ScriptExecutionsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ScriptExecutionsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ScriptExecutionsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ScriptExecutionsCreateOrUpdatePollerResponse{}, err
+		return ScriptExecutionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ScriptExecutionsCreateOrUpdatePoller{
+	result.Poller = &ScriptExecutionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a script execution in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScriptExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *ScriptExecutionsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter scriptExecutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionName}", url.PathEscape(scriptExecutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,34 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, runtime.MarshalAsJSON(req, scriptExecution)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ScriptExecutionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Cancel a ScriptExecution in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptExecutionsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsBeginDeleteOptions) (ScriptExecutionsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// scriptExecutionName - Name of the user-invoked script execution resource
+// options - ScriptExecutionsClientBeginDeleteOptions contains the optional parameters for the ScriptExecutionsClient.BeginDelete
+// method.
+func (client *ScriptExecutionsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientBeginDeleteOptions) (ScriptExecutionsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, scriptExecutionName, options)
 	if err != nil {
-		return ScriptExecutionsDeletePollerResponse{}, err
+		return ScriptExecutionsClientDeletePollerResponse{}, err
 	}
-	result := ScriptExecutionsDeletePollerResponse{
+	result := ScriptExecutionsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ScriptExecutionsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ScriptExecutionsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ScriptExecutionsDeletePollerResponse{}, err
+		return ScriptExecutionsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ScriptExecutionsDeletePoller{
+	result.Poller = &ScriptExecutionsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Cancel a ScriptExecution in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptExecutionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScriptExecutionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, scriptExecutionName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *ScriptExecutionsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ScriptExecutionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ScriptExecutionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +183,7 @@ func (client *ScriptExecutionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter scriptExecutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionName}", url.PathEscape(scriptExecutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +194,29 @@ func (client *ScriptExecutionsClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ScriptExecutionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get an script execution by name in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptExecutionsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsGetOptions) (ScriptExecutionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// scriptExecutionName - Name of the user-invoked script execution resource
+// options - ScriptExecutionsClientGetOptions contains the optional parameters for the ScriptExecutionsClient.Get method.
+func (client *ScriptExecutionsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientGetOptions) (ScriptExecutionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, scriptExecutionName, options)
 	if err != nil {
-		return ScriptExecutionsGetResponse{}, err
+		return ScriptExecutionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScriptExecutionsGetResponse{}, err
+		return ScriptExecutionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScriptExecutionsGetResponse{}, client.getHandleError(resp)
+		return ScriptExecutionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScriptExecutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsGetOptions) (*policy.Request, error) {
+func (client *ScriptExecutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +234,7 @@ func (client *ScriptExecutionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter scriptExecutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionName}", url.PathEscape(scriptExecutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,46 +246,38 @@ func (client *ScriptExecutionsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScriptExecutionsClient) getHandleResponse(resp *http.Response) (ScriptExecutionsGetResponse, error) {
-	result := ScriptExecutionsGetResponse{RawResponse: resp}
+func (client *ScriptExecutionsClient) getHandleResponse(resp *http.Response) (ScriptExecutionsClientGetResponse, error) {
+	result := ScriptExecutionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptExecution); err != nil {
-		return ScriptExecutionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptExecutionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ScriptExecutionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetExecutionLogs - Return the logs for a script execution resource
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptExecutionsClient) GetExecutionLogs(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsGetExecutionLogsOptions) (ScriptExecutionsGetExecutionLogsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// scriptExecutionName - Name of the user-invoked script execution resource
+// options - ScriptExecutionsClientGetExecutionLogsOptions contains the optional parameters for the ScriptExecutionsClient.GetExecutionLogs
+// method.
+func (client *ScriptExecutionsClient) GetExecutionLogs(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientGetExecutionLogsOptions) (ScriptExecutionsClientGetExecutionLogsResponse, error) {
 	req, err := client.getExecutionLogsCreateRequest(ctx, resourceGroupName, privateCloudName, scriptExecutionName, options)
 	if err != nil {
-		return ScriptExecutionsGetExecutionLogsResponse{}, err
+		return ScriptExecutionsClientGetExecutionLogsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScriptExecutionsGetExecutionLogsResponse{}, err
+		return ScriptExecutionsClientGetExecutionLogsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScriptExecutionsGetExecutionLogsResponse{}, client.getExecutionLogsHandleError(resp)
+		return ScriptExecutionsClientGetExecutionLogsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getExecutionLogsHandleResponse(resp)
 }
 
 // getExecutionLogsCreateRequest creates the GetExecutionLogs request.
-func (client *ScriptExecutionsClient) getExecutionLogsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsGetExecutionLogsOptions) (*policy.Request, error) {
+func (client *ScriptExecutionsClient) getExecutionLogsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientGetExecutionLogsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}/getExecutionLogs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -307,7 +295,7 @@ func (client *ScriptExecutionsClient) getExecutionLogsCreateRequest(ctx context.
 		return nil, errors.New("parameter scriptExecutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionName}", url.PathEscape(scriptExecutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -322,43 +310,33 @@ func (client *ScriptExecutionsClient) getExecutionLogsCreateRequest(ctx context.
 }
 
 // getExecutionLogsHandleResponse handles the GetExecutionLogs response.
-func (client *ScriptExecutionsClient) getExecutionLogsHandleResponse(resp *http.Response) (ScriptExecutionsGetExecutionLogsResponse, error) {
-	result := ScriptExecutionsGetExecutionLogsResponse{RawResponse: resp}
+func (client *ScriptExecutionsClient) getExecutionLogsHandleResponse(resp *http.Response) (ScriptExecutionsClientGetExecutionLogsResponse, error) {
+	result := ScriptExecutionsClientGetExecutionLogsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptExecution); err != nil {
-		return ScriptExecutionsGetExecutionLogsResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptExecutionsClientGetExecutionLogsResponse{}, err
 	}
 	return result, nil
 }
 
-// getExecutionLogsHandleError handles the GetExecutionLogs error response.
-func (client *ScriptExecutionsClient) getExecutionLogsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List script executions in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptExecutionsClient) List(resourceGroupName string, privateCloudName string, options *ScriptExecutionsListOptions) *ScriptExecutionsListPager {
-	return &ScriptExecutionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.List method.
+func (client *ScriptExecutionsClient) List(resourceGroupName string, privateCloudName string, options *ScriptExecutionsClientListOptions) *ScriptExecutionsClientListPager {
+	return &ScriptExecutionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 		},
-		advancer: func(ctx context.Context, resp ScriptExecutionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ScriptExecutionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScriptExecutionsList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ScriptExecutionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *ScriptExecutionsListOptions) (*policy.Request, error) {
+func (client *ScriptExecutionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *ScriptExecutionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -372,7 +350,7 @@ func (client *ScriptExecutionsClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -384,23 +362,10 @@ func (client *ScriptExecutionsClient) listCreateRequest(ctx context.Context, res
 }
 
 // listHandleResponse handles the List response.
-func (client *ScriptExecutionsClient) listHandleResponse(resp *http.Response) (ScriptExecutionsListResponse, error) {
-	result := ScriptExecutionsListResponse{RawResponse: resp}
+func (client *ScriptExecutionsClient) listHandleResponse(resp *http.Response) (ScriptExecutionsClientListResponse, error) {
+	result := ScriptExecutionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptExecutionsList); err != nil {
-		return ScriptExecutionsListResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptExecutionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ScriptExecutionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -16,16 +16,38 @@ import (
 
 // ADCCatalog - Azure Data Catalog.
 type ADCCatalog struct {
-	Resource
+	// Resource etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Azure Data Catalog properties.
 	Properties *ADCCatalogProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ADCCatalog.
 func (a ADCCatalog) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", a.Etag)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -62,18 +84,29 @@ func (a ADCCatalogProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ADCCatalogsBeginDeleteOptions contains the optional parameters for the ADCCatalogs.BeginDelete method.
-type ADCCatalogsBeginDeleteOptions struct {
+// ADCCatalogsClientBeginDeleteOptions contains the optional parameters for the ADCCatalogsClient.BeginDelete method.
+type ADCCatalogsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ADCCatalogsCreateOrUpdateOptions contains the optional parameters for the ADCCatalogs.CreateOrUpdate method.
-type ADCCatalogsCreateOrUpdateOptions struct {
+// ADCCatalogsClientCreateOrUpdateOptions contains the optional parameters for the ADCCatalogsClient.CreateOrUpdate method.
+type ADCCatalogsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ADCCatalogsGetOptions contains the optional parameters for the ADCCatalogs.Get method.
-type ADCCatalogsGetOptions struct {
+// ADCCatalogsClientGetOptions contains the optional parameters for the ADCCatalogsClient.Get method.
+type ADCCatalogsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ADCCatalogsClientListtByResourceGroupOptions contains the optional parameters for the ADCCatalogsClient.ListtByResourceGroup
+// method.
+type ADCCatalogsClientListtByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ADCCatalogsClientUpdateOptions contains the optional parameters for the ADCCatalogsClient.Update method.
+type ADCCatalogsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -90,18 +123,8 @@ func (a ADCCatalogsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ADCCatalogsListtByResourceGroupOptions contains the optional parameters for the ADCCatalogs.ListtByResourceGroup method.
-type ADCCatalogsListtByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ADCCatalogsUpdateOptions contains the optional parameters for the ADCCatalogs.Update method.
-type ADCCatalogsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ADCOperationsListOptions contains the optional parameters for the ADCOperations.List method.
-type ADCOperationsListOptions struct {
+// ADCOperationsClientListOptions contains the optional parameters for the ADCOperationsClient.List method.
+type ADCOperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -175,17 +198,13 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "etag", r.Etag)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

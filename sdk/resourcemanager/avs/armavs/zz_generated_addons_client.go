@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // AddonsClient contains the methods for the Addons group.
 // Don't use this type directly, use NewAddonsClient() instead.
 type AddonsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAddonsClient creates a new instance of AddonsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAddonsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AddonsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AddonsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AddonsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a addon in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsBeginCreateOrUpdateOptions) (AddonsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - The name of the private cloud.
+// addonName - Name of the addon for the private cloud
+// addon - A addon in the private cloud
+// options - AddonsClientBeginCreateOrUpdateOptions contains the optional parameters for the AddonsClient.BeginCreateOrUpdate
+// method.
+func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsClientBeginCreateOrUpdateOptions) (AddonsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, addonName, addon, options)
 	if err != nil {
-		return AddonsCreateOrUpdatePollerResponse{}, err
+		return AddonsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := AddonsCreateOrUpdatePollerResponse{
+	result := AddonsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AddonsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("AddonsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return AddonsCreateOrUpdatePollerResponse{}, err
+		return AddonsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &AddonsCreateOrUpdatePoller{
+	result.Poller = &AddonsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a addon in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, addon, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter addonName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{addonName}", url.PathEscape(addonName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,33 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	return req, runtime.MarshalAsJSON(req, addon)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AddonsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a addon in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AddonsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsBeginDeleteOptions) (AddonsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// addonName - Name of the addon for the private cloud
+// options - AddonsClientBeginDeleteOptions contains the optional parameters for the AddonsClient.BeginDelete method.
+func (client *AddonsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientBeginDeleteOptions) (AddonsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, addonName, options)
 	if err != nil {
-		return AddonsDeletePollerResponse{}, err
+		return AddonsClientDeletePollerResponse{}, err
 	}
-	result := AddonsDeletePollerResponse{
+	result := AddonsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AddonsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AddonsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return AddonsDeletePollerResponse{}, err
+		return AddonsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AddonsDeletePoller{
+	result.Poller = &AddonsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a addon in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +158,13 @@ func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +182,7 @@ func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter addonName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{addonName}", url.PathEscape(addonName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +193,29 @@ func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AddonsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get an addon by name in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AddonsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsGetOptions) (AddonsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// addonName - Name of the addon for the private cloud
+// options - AddonsClientGetOptions contains the optional parameters for the AddonsClient.Get method.
+func (client *AddonsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientGetOptions) (AddonsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, options)
 	if err != nil {
-		return AddonsGetResponse{}, err
+		return AddonsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AddonsGetResponse{}, err
+		return AddonsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AddonsGetResponse{}, client.getHandleError(resp)
+		return AddonsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AddonsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsGetOptions) (*policy.Request, error) {
+func (client *AddonsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +233,7 @@ func (client *AddonsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter addonName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{addonName}", url.PathEscape(addonName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +245,33 @@ func (client *AddonsClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *AddonsClient) getHandleResponse(resp *http.Response) (AddonsGetResponse, error) {
-	result := AddonsGetResponse{RawResponse: resp}
+func (client *AddonsClient) getHandleResponse(resp *http.Response) (AddonsClientGetResponse, error) {
+	result := AddonsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Addon); err != nil {
-		return AddonsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AddonsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AddonsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List addons in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *AddonsClient) List(resourceGroupName string, privateCloudName string, options *AddonsListOptions) *AddonsListPager {
-	return &AddonsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - AddonsClientListOptions contains the optional parameters for the AddonsClient.List method.
+func (client *AddonsClient) List(resourceGroupName string, privateCloudName string, options *AddonsClientListOptions) *AddonsClientListPager {
+	return &AddonsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 		},
-		advancer: func(ctx context.Context, resp AddonsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AddonsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AddonList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AddonsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *AddonsListOptions) (*policy.Request, error) {
+func (client *AddonsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *AddonsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +285,7 @@ func (client *AddonsClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,23 +297,10 @@ func (client *AddonsClient) listCreateRequest(ctx context.Context, resourceGroup
 }
 
 // listHandleResponse handles the List response.
-func (client *AddonsClient) listHandleResponse(resp *http.Response) (AddonsListResponse, error) {
-	result := AddonsListResponse{RawResponse: resp}
+func (client *AddonsClient) listHandleResponse(resp *http.Response) (AddonsClientListResponse, error) {
+	result := AddonsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AddonList); err != nil {
-		return AddonsListResponse{}, runtime.NewResponseError(err, resp)
+		return AddonsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AddonsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

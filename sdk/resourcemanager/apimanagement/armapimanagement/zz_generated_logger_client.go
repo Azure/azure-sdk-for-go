@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // LoggerClient contains the methods for the Logger group.
 // Don't use this type directly, use NewLoggerClient() instead.
 type LoggerClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLoggerClient creates a new instance of LoggerClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLoggerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LoggerClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LoggerClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LoggerClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or Updates a logger.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerContract, options *LoggerCreateOrUpdateOptions) (LoggerCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// loggerID - Logger identifier. Must be unique in the API Management service instance.
+// parameters - Create parameters.
+// options - LoggerClientCreateOrUpdateOptions contains the optional parameters for the LoggerClient.CreateOrUpdate method.
+func (client *LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerContract, options *LoggerClientCreateOrUpdateOptions) (LoggerClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, loggerID, parameters, options)
 	if err != nil {
-		return LoggerCreateOrUpdateResponse{}, err
+		return LoggerClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LoggerCreateOrUpdateResponse{}, err
+		return LoggerClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return LoggerCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return LoggerClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LoggerClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerContract, options *LoggerCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LoggerClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerContract, options *LoggerClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +92,7 @@ func (client *LoggerClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,49 +107,42 @@ func (client *LoggerClient) createOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LoggerClient) createOrUpdateHandleResponse(resp *http.Response) (LoggerCreateOrUpdateResponse, error) {
-	result := LoggerCreateOrUpdateResponse{RawResponse: resp}
+func (client *LoggerClient) createOrUpdateHandleResponse(resp *http.Response) (LoggerClientCreateOrUpdateResponse, error) {
+	result := LoggerClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoggerContract); err != nil {
-		return LoggerCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return LoggerClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LoggerClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified logger.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoggerClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, options *LoggerDeleteOptions) (LoggerDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// loggerID - Logger identifier. Must be unique in the API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - LoggerClientDeleteOptions contains the optional parameters for the LoggerClient.Delete method.
+func (client *LoggerClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, options *LoggerClientDeleteOptions) (LoggerClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, loggerID, ifMatch, options)
 	if err != nil {
-		return LoggerDeleteResponse{}, err
+		return LoggerClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LoggerDeleteResponse{}, err
+		return LoggerClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return LoggerDeleteResponse{}, client.deleteHandleError(resp)
+		return LoggerClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return LoggerDeleteResponse{RawResponse: resp}, nil
+	return LoggerClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LoggerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, options *LoggerDeleteOptions) (*policy.Request, error) {
+func (client *LoggerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, options *LoggerClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -154,7 +160,7 @@ func (client *LoggerClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,38 +172,29 @@ func (client *LoggerClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LoggerClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the logger specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoggerClient) Get(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerGetOptions) (LoggerGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// loggerID - Logger identifier. Must be unique in the API Management service instance.
+// options - LoggerClientGetOptions contains the optional parameters for the LoggerClient.Get method.
+func (client *LoggerClient) Get(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerClientGetOptions) (LoggerClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, loggerID, options)
 	if err != nil {
-		return LoggerGetResponse{}, err
+		return LoggerClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LoggerGetResponse{}, err
+		return LoggerClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LoggerGetResponse{}, client.getHandleError(resp)
+		return LoggerClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LoggerClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerGetOptions) (*policy.Request, error) {
+func (client *LoggerClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -215,7 +212,7 @@ func (client *LoggerClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,46 +224,36 @@ func (client *LoggerClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *LoggerClient) getHandleResponse(resp *http.Response) (LoggerGetResponse, error) {
-	result := LoggerGetResponse{RawResponse: resp}
+func (client *LoggerClient) getHandleResponse(resp *http.Response) (LoggerClientGetResponse, error) {
+	result := LoggerClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoggerContract); err != nil {
-		return LoggerGetResponse{}, runtime.NewResponseError(err, resp)
+		return LoggerClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LoggerClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the logger specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerGetEntityTagOptions) (LoggerGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// loggerID - Logger identifier. Must be unique in the API Management service instance.
+// options - LoggerClientGetEntityTagOptions contains the optional parameters for the LoggerClient.GetEntityTag method.
+func (client *LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerClientGetEntityTagOptions) (LoggerClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, loggerID, options)
 	if err != nil {
-		return LoggerGetEntityTagResponse{}, err
+		return LoggerClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LoggerGetEntityTagResponse{}, err
+		return LoggerClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *LoggerClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerGetEntityTagOptions) (*policy.Request, error) {
+func (client *LoggerClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, options *LoggerClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +271,7 @@ func (client *LoggerClient) getEntityTagCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,8 +283,8 @@ func (client *LoggerClient) getEntityTagCreateRequest(ctx context.Context, resou
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *LoggerClient) getEntityTagHandleResponse(resp *http.Response) (LoggerGetEntityTagResponse, error) {
-	result := LoggerGetEntityTagResponse{RawResponse: resp}
+func (client *LoggerClient) getEntityTagHandleResponse(resp *http.Response) (LoggerClientGetEntityTagResponse, error) {
+	result := LoggerClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -308,21 +295,24 @@ func (client *LoggerClient) getEntityTagHandleResponse(resp *http.Response) (Log
 }
 
 // ListByService - Lists a collection of loggers in the specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoggerClient) ListByService(resourceGroupName string, serviceName string, options *LoggerListByServiceOptions) *LoggerListByServicePager {
-	return &LoggerListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - LoggerClientListByServiceOptions contains the optional parameters for the LoggerClient.ListByService method.
+func (client *LoggerClient) ListByService(resourceGroupName string, serviceName string, options *LoggerClientListByServiceOptions) *LoggerClientListByServicePager {
+	return &LoggerClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp LoggerListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LoggerClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LoggerCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *LoggerClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *LoggerListByServiceOptions) (*policy.Request, error) {
+func (client *LoggerClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *LoggerClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -336,7 +326,7 @@ func (client *LoggerClient) listByServiceCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,46 +347,40 @@ func (client *LoggerClient) listByServiceCreateRequest(ctx context.Context, reso
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *LoggerClient) listByServiceHandleResponse(resp *http.Response) (LoggerListByServiceResponse, error) {
-	result := LoggerListByServiceResponse{RawResponse: resp}
+func (client *LoggerClient) listByServiceHandleResponse(resp *http.Response) (LoggerClientListByServiceResponse, error) {
+	result := LoggerClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoggerCollection); err != nil {
-		return LoggerListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return LoggerClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *LoggerClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing logger.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoggerClient) Update(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, parameters LoggerUpdateContract, options *LoggerUpdateOptions) (LoggerUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// loggerID - Logger identifier. Must be unique in the API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - LoggerClientUpdateOptions contains the optional parameters for the LoggerClient.Update method.
+func (client *LoggerClient) Update(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, parameters LoggerUpdateContract, options *LoggerClientUpdateOptions) (LoggerClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, loggerID, ifMatch, parameters, options)
 	if err != nil {
-		return LoggerUpdateResponse{}, err
+		return LoggerClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LoggerUpdateResponse{}, err
+		return LoggerClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LoggerUpdateResponse{}, client.updateHandleError(resp)
+		return LoggerClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *LoggerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, parameters LoggerUpdateContract, options *LoggerUpdateOptions) (*policy.Request, error) {
+func (client *LoggerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, parameters LoggerUpdateContract, options *LoggerClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -414,7 +398,7 @@ func (client *LoggerClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -427,26 +411,13 @@ func (client *LoggerClient) updateCreateRequest(ctx context.Context, resourceGro
 }
 
 // updateHandleResponse handles the Update response.
-func (client *LoggerClient) updateHandleResponse(resp *http.Response) (LoggerUpdateResponse, error) {
-	result := LoggerUpdateResponse{RawResponse: resp}
+func (client *LoggerClient) updateHandleResponse(resp *http.Response) (LoggerClientUpdateResponse, error) {
+	result := LoggerClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoggerContract); err != nil {
-		return LoggerUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return LoggerClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *LoggerClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

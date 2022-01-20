@@ -1,5 +1,342 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*SQLServerInstancesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *SQLServerInstancesBeginDeleteOptions)` to `(context.Context, string, string, *SQLServerInstancesClientBeginDeleteOptions)`
+- Function `*SQLServerInstancesClient.BeginDelete` return value(s) have been changed from `(SQLServerInstancesDeletePollerResponse, error)` to `(SQLServerInstancesClientDeletePollerResponse, error)`
+- Function `*SQLManagedInstancesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, SQLManagedInstance, *SQLManagedInstancesBeginCreateOptions)` to `(context.Context, string, string, SQLManagedInstance, *SQLManagedInstancesClientBeginCreateOptions)`
+- Function `*SQLManagedInstancesClient.BeginCreate` return value(s) have been changed from `(SQLManagedInstancesCreatePollerResponse, error)` to `(SQLManagedInstancesClientCreatePollerResponse, error)`
+- Function `*SQLManagedInstancesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SQLManagedInstancesGetOptions)` to `(context.Context, string, string, *SQLManagedInstancesClientGetOptions)`
+- Function `*SQLManagedInstancesClient.Get` return value(s) have been changed from `(SQLManagedInstancesGetResponse, error)` to `(SQLManagedInstancesClientGetResponse, error)`
+- Function `*DataControllersClient.ListInSubscription` parameter(s) have been changed from `(*DataControllersListInSubscriptionOptions)` to `(*DataControllersClientListInSubscriptionOptions)`
+- Function `*DataControllersClient.ListInSubscription` return value(s) have been changed from `(*DataControllersListInSubscriptionPager)` to `(*DataControllersClientListInSubscriptionPager)`
+- Function `*DataControllersClient.BeginDeleteDataController` parameter(s) have been changed from `(context.Context, string, string, *DataControllersBeginDeleteDataControllerOptions)` to `(context.Context, string, string, *DataControllersClientBeginDeleteDataControllerOptions)`
+- Function `*DataControllersClient.BeginDeleteDataController` return value(s) have been changed from `(DataControllersDeleteDataControllerPollerResponse, error)` to `(DataControllersClientDeleteDataControllerPollerResponse, error)`
+- Function `*SQLManagedInstancesClient.List` parameter(s) have been changed from `(*SQLManagedInstancesListOptions)` to `(*SQLManagedInstancesClientListOptions)`
+- Function `*SQLManagedInstancesClient.List` return value(s) have been changed from `(*SQLManagedInstancesListPager)` to `(*SQLManagedInstancesClientListPager)`
+- Function `*SQLManagedInstancesClient.Update` parameter(s) have been changed from `(context.Context, string, string, SQLManagedInstanceUpdate, *SQLManagedInstancesUpdateOptions)` to `(context.Context, string, string, SQLManagedInstanceUpdate, *SQLManagedInstancesClientUpdateOptions)`
+- Function `*SQLManagedInstancesClient.Update` return value(s) have been changed from `(SQLManagedInstancesUpdateResponse, error)` to `(SQLManagedInstancesClientUpdateResponse, error)`
+- Function `*DataControllersClient.PatchDataController` parameter(s) have been changed from `(context.Context, string, string, DataControllerUpdate, *DataControllersPatchDataControllerOptions)` to `(context.Context, string, string, DataControllerUpdate, *DataControllersClientPatchDataControllerOptions)`
+- Function `*DataControllersClient.PatchDataController` return value(s) have been changed from `(DataControllersPatchDataControllerResponse, error)` to `(DataControllersClientPatchDataControllerResponse, error)`
+- Function `*SQLServerInstancesClient.Update` parameter(s) have been changed from `(context.Context, string, string, SQLServerInstanceUpdate, *SQLServerInstancesUpdateOptions)` to `(context.Context, string, string, SQLServerInstanceUpdate, *SQLServerInstancesClientUpdateOptions)`
+- Function `*SQLServerInstancesClient.Update` return value(s) have been changed from `(SQLServerInstancesUpdateResponse, error)` to `(SQLServerInstancesClientUpdateResponse, error)`
+- Function `*DataControllersClient.GetDataController` parameter(s) have been changed from `(context.Context, string, string, *DataControllersGetDataControllerOptions)` to `(context.Context, string, string, *DataControllersClientGetDataControllerOptions)`
+- Function `*DataControllersClient.GetDataController` return value(s) have been changed from `(DataControllersGetDataControllerResponse, error)` to `(DataControllersClientGetDataControllerResponse, error)`
+- Function `*SQLServerInstancesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, SQLServerInstance, *SQLServerInstancesBeginCreateOptions)` to `(context.Context, string, string, SQLServerInstance, *SQLServerInstancesClientBeginCreateOptions)`
+- Function `*SQLServerInstancesClient.BeginCreate` return value(s) have been changed from `(SQLServerInstancesCreatePollerResponse, error)` to `(SQLServerInstancesClientCreatePollerResponse, error)`
+- Function `*SQLServerInstancesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SQLServerInstancesGetOptions)` to `(context.Context, string, string, *SQLServerInstancesClientGetOptions)`
+- Function `*SQLServerInstancesClient.Get` return value(s) have been changed from `(SQLServerInstancesGetResponse, error)` to `(SQLServerInstancesClientGetResponse, error)`
+- Function `*SQLManagedInstancesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *SQLManagedInstancesBeginDeleteOptions)` to `(context.Context, string, string, *SQLManagedInstancesClientBeginDeleteOptions)`
+- Function `*SQLManagedInstancesClient.BeginDelete` return value(s) have been changed from `(SQLManagedInstancesDeletePollerResponse, error)` to `(SQLManagedInstancesClientDeletePollerResponse, error)`
+- Function `*DataControllersClient.ListInGroup` parameter(s) have been changed from `(string, *DataControllersListInGroupOptions)` to `(string, *DataControllersClientListInGroupOptions)`
+- Function `*DataControllersClient.ListInGroup` return value(s) have been changed from `(*DataControllersListInGroupPager)` to `(*DataControllersClientListInGroupPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*SQLServerInstancesClient.List` parameter(s) have been changed from `(*SQLServerInstancesListOptions)` to `(*SQLServerInstancesClientListOptions)`
+- Function `*SQLServerInstancesClient.List` return value(s) have been changed from `(*SQLServerInstancesListPager)` to `(*SQLServerInstancesClientListPager)`
+- Function `*SQLServerInstancesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *SQLServerInstancesListByResourceGroupOptions)` to `(string, *SQLServerInstancesClientListByResourceGroupOptions)`
+- Function `*SQLServerInstancesClient.ListByResourceGroup` return value(s) have been changed from `(*SQLServerInstancesListByResourceGroupPager)` to `(*SQLServerInstancesClientListByResourceGroupPager)`
+- Function `*SQLManagedInstancesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *SQLManagedInstancesListByResourceGroupOptions)` to `(string, *SQLManagedInstancesClientListByResourceGroupOptions)`
+- Function `*SQLManagedInstancesClient.ListByResourceGroup` return value(s) have been changed from `(*SQLManagedInstancesListByResourceGroupPager)` to `(*SQLManagedInstancesClientListByResourceGroupPager)`
+- Function `*DataControllersClient.BeginPutDataController` parameter(s) have been changed from `(context.Context, string, string, DataControllerResource, *DataControllersBeginPutDataControllerOptions)` to `(context.Context, string, string, DataControllerResource, *DataControllersClientBeginPutDataControllerOptions)`
+- Function `*DataControllersClient.BeginPutDataController` return value(s) have been changed from `(DataControllersPutDataControllerPollerResponse, error)` to `(DataControllersClientPutDataControllerPollerResponse, error)`
+- Function `*SQLServerInstancesListPager.Err` has been removed
+- Function `SQLManagedInstancesCreatePollerResponse.PollUntilDone` has been removed
+- Function `*SQLServerInstancesCreatePoller.ResumeToken` has been removed
+- Function `*SQLServerInstancesCreatePoller.FinalResponse` has been removed
+- Function `SQLManagedInstancesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*SQLServerInstancesCreatePollerResponse.Resume` has been removed
+- Function `*DataControllersListInGroupPager.Err` has been removed
+- Function `*SQLServerInstancesCreatePoller.Poll` has been removed
+- Function `*DataControllersListInGroupPager.NextPage` has been removed
+- Function `*DataControllersListInSubscriptionPager.Err` has been removed
+- Function `*DataControllersDeleteDataControllerPoller.Poll` has been removed
+- Function `*SQLManagedInstancesListByResourceGroupPager.NextPage` has been removed
+- Function `*SQLManagedInstancesCreatePoller.FinalResponse` has been removed
+- Function `*DataControllersDeleteDataControllerPoller.Done` has been removed
+- Function `*SQLManagedInstancesListPager.PageResponse` has been removed
+- Function `*SQLServerInstancesDeletePollerResponse.Resume` has been removed
+- Function `*DataControllersPutDataControllerPollerResponse.Resume` has been removed
+- Function `*SQLManagedInstancesCreatePoller.Done` has been removed
+- Function `*SQLManagedInstancesDeletePoller.Poll` has been removed
+- Function `*SQLManagedInstancesDeletePoller.ResumeToken` has been removed
+- Function `*SQLManagedInstancesDeletePoller.Done` has been removed
+- Function `*SQLManagedInstancesListByResourceGroupPager.Err` has been removed
+- Function `DataControllersDeleteDataControllerPollerResponse.PollUntilDone` has been removed
+- Function `*DataControllersListInSubscriptionPager.NextPage` has been removed
+- Function `*SQLServerInstancesListPager.NextPage` has been removed
+- Function `*SQLManagedInstancesCreatePoller.ResumeToken` has been removed
+- Function `*SQLManagedInstancesDeletePoller.FinalResponse` has been removed
+- Function `*SQLServerInstancesListByResourceGroupPager.PageResponse` has been removed
+- Function `*DataControllersDeleteDataControllerPoller.ResumeToken` has been removed
+- Function `*SQLServerInstancesListByResourceGroupPager.NextPage` has been removed
+- Function `*SQLServerInstancesDeletePoller.Done` has been removed
+- Function `*SQLServerInstancesDeletePoller.ResumeToken` has been removed
+- Function `*SQLManagedInstancesListPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `DataControllersPutDataControllerPollerResponse.PollUntilDone` has been removed
+- Function `*DataControllersPutDataControllerPoller.ResumeToken` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*DataControllersListInGroupPager.PageResponse` has been removed
+- Function `*SQLServerInstancesListByResourceGroupPager.Err` has been removed
+- Function `*SQLServerInstancesListPager.PageResponse` has been removed
+- Function `SQLServerInstancesCreatePollerResponse.PollUntilDone` has been removed
+- Function `SQLServerInstancesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SQLManagedInstancesDeletePollerResponse.Resume` has been removed
+- Function `*DataControllersPutDataControllerPoller.Done` has been removed
+- Function `*DataControllersDeleteDataControllerPollerResponse.Resume` has been removed
+- Function `*SQLManagedInstancesListPager.Err` has been removed
+- Function `*DataControllersPutDataControllerPoller.FinalResponse` has been removed
+- Function `*SQLManagedInstancesCreatePoller.Poll` has been removed
+- Function `*DataControllersListInSubscriptionPager.PageResponse` has been removed
+- Function `*DataControllersDeleteDataControllerPoller.FinalResponse` has been removed
+- Function `*SQLServerInstancesCreatePoller.Done` has been removed
+- Function `*SQLServerInstancesDeletePoller.FinalResponse` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*SQLManagedInstancesListByResourceGroupPager.PageResponse` has been removed
+- Function `*DataControllersPutDataControllerPoller.Poll` has been removed
+- Function `*SQLServerInstancesDeletePoller.Poll` has been removed
+- Function `*SQLManagedInstancesCreatePollerResponse.Resume` has been removed
+- Struct `DataControllersBeginDeleteDataControllerOptions` has been removed
+- Struct `DataControllersBeginPutDataControllerOptions` has been removed
+- Struct `DataControllersDeleteDataControllerPoller` has been removed
+- Struct `DataControllersDeleteDataControllerPollerResponse` has been removed
+- Struct `DataControllersDeleteDataControllerResponse` has been removed
+- Struct `DataControllersGetDataControllerOptions` has been removed
+- Struct `DataControllersGetDataControllerResponse` has been removed
+- Struct `DataControllersGetDataControllerResult` has been removed
+- Struct `DataControllersListInGroupOptions` has been removed
+- Struct `DataControllersListInGroupPager` has been removed
+- Struct `DataControllersListInGroupResponse` has been removed
+- Struct `DataControllersListInGroupResult` has been removed
+- Struct `DataControllersListInSubscriptionOptions` has been removed
+- Struct `DataControllersListInSubscriptionPager` has been removed
+- Struct `DataControllersListInSubscriptionResponse` has been removed
+- Struct `DataControllersListInSubscriptionResult` has been removed
+- Struct `DataControllersPatchDataControllerOptions` has been removed
+- Struct `DataControllersPatchDataControllerResponse` has been removed
+- Struct `DataControllersPatchDataControllerResult` has been removed
+- Struct `DataControllersPutDataControllerPoller` has been removed
+- Struct `DataControllersPutDataControllerPollerResponse` has been removed
+- Struct `DataControllersPutDataControllerResponse` has been removed
+- Struct `DataControllersPutDataControllerResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `SQLManagedInstancesBeginCreateOptions` has been removed
+- Struct `SQLManagedInstancesBeginDeleteOptions` has been removed
+- Struct `SQLManagedInstancesCreatePoller` has been removed
+- Struct `SQLManagedInstancesCreatePollerResponse` has been removed
+- Struct `SQLManagedInstancesCreateResponse` has been removed
+- Struct `SQLManagedInstancesCreateResult` has been removed
+- Struct `SQLManagedInstancesDeletePoller` has been removed
+- Struct `SQLManagedInstancesDeletePollerResponse` has been removed
+- Struct `SQLManagedInstancesDeleteResponse` has been removed
+- Struct `SQLManagedInstancesGetOptions` has been removed
+- Struct `SQLManagedInstancesGetResponse` has been removed
+- Struct `SQLManagedInstancesGetResult` has been removed
+- Struct `SQLManagedInstancesListByResourceGroupOptions` has been removed
+- Struct `SQLManagedInstancesListByResourceGroupPager` has been removed
+- Struct `SQLManagedInstancesListByResourceGroupResponse` has been removed
+- Struct `SQLManagedInstancesListByResourceGroupResult` has been removed
+- Struct `SQLManagedInstancesListOptions` has been removed
+- Struct `SQLManagedInstancesListPager` has been removed
+- Struct `SQLManagedInstancesListResponse` has been removed
+- Struct `SQLManagedInstancesListResult` has been removed
+- Struct `SQLManagedInstancesUpdateOptions` has been removed
+- Struct `SQLManagedInstancesUpdateResponse` has been removed
+- Struct `SQLManagedInstancesUpdateResult` has been removed
+- Struct `SQLServerInstancesBeginCreateOptions` has been removed
+- Struct `SQLServerInstancesBeginDeleteOptions` has been removed
+- Struct `SQLServerInstancesCreatePoller` has been removed
+- Struct `SQLServerInstancesCreatePollerResponse` has been removed
+- Struct `SQLServerInstancesCreateResponse` has been removed
+- Struct `SQLServerInstancesCreateResult` has been removed
+- Struct `SQLServerInstancesDeletePoller` has been removed
+- Struct `SQLServerInstancesDeletePollerResponse` has been removed
+- Struct `SQLServerInstancesDeleteResponse` has been removed
+- Struct `SQLServerInstancesGetOptions` has been removed
+- Struct `SQLServerInstancesGetResponse` has been removed
+- Struct `SQLServerInstancesGetResult` has been removed
+- Struct `SQLServerInstancesListByResourceGroupOptions` has been removed
+- Struct `SQLServerInstancesListByResourceGroupPager` has been removed
+- Struct `SQLServerInstancesListByResourceGroupResponse` has been removed
+- Struct `SQLServerInstancesListByResourceGroupResult` has been removed
+- Struct `SQLServerInstancesListOptions` has been removed
+- Struct `SQLServerInstancesListPager` has been removed
+- Struct `SQLServerInstancesListResponse` has been removed
+- Struct `SQLServerInstancesListResult` has been removed
+- Struct `SQLServerInstancesUpdateOptions` has been removed
+- Struct `SQLServerInstancesUpdateResponse` has been removed
+- Struct `SQLServerInstancesUpdateResult` has been removed
+- Field `TrackedResource` of struct `SQLManagedInstance` has been removed
+- Field `TrackedResource` of struct `SQLServerInstance` has been removed
+- Field `TrackedResource` of struct `DataControllerResource` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+
+### Features Added
+
+- New const `ArcSQLManagedInstanceLicenseTypeDisasterRecovery`
+- New function `DataControllersClientDeleteDataControllerPollerResponse.PollUntilDone(context.Context, time.Duration) (DataControllersClientDeleteDataControllerResponse, error)`
+- New function `*SQLServerInstancesClientDeletePollerResponse.Resume(context.Context, *SQLServerInstancesClient, string) error`
+- New function `*DataControllersClientPutDataControllerPollerResponse.Resume(context.Context, *DataControllersClient, string) error`
+- New function `*SQLServerInstancesClientListPager.Err() error`
+- New function `*SQLManagedInstancesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*DataControllersClientDeleteDataControllerPoller.Done() bool`
+- New function `*SQLManagedInstancesClientDeletePoller.FinalResponse(context.Context) (SQLManagedInstancesClientDeleteResponse, error)`
+- New function `*SQLServerInstancesClientCreatePollerResponse.Resume(context.Context, *SQLServerInstancesClient, string) error`
+- New function `*DataControllersClientPutDataControllerPoller.Done() bool`
+- New function `*SQLServerInstancesClientListByResourceGroupPager.PageResponse() SQLServerInstancesClientListByResourceGroupResponse`
+- New function `*DataControllersClientListInSubscriptionPager.NextPage(context.Context) bool`
+- New function `*DataControllersClientListInGroupPager.NextPage(context.Context) bool`
+- New function `*SQLManagedInstancesClientListPager.PageResponse() SQLManagedInstancesClientListResponse`
+- New function `*DataControllersClientListInGroupPager.PageResponse() DataControllersClientListInGroupResponse`
+- New function `*SQLServerInstancesClientListPager.PageResponse() SQLServerInstancesClientListResponse`
+- New function `SQLServerInstancesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLServerInstancesClientCreateResponse, error)`
+- New function `*SQLManagedInstancesClientDeletePoller.Done() bool`
+- New function `*DataControllersClientPutDataControllerPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DataControllersClientPutDataControllerPoller.ResumeToken() (string, error)`
+- New function `*DataControllersClientDeleteDataControllerPollerResponse.Resume(context.Context, *DataControllersClient, string) error`
+- New function `*SQLServerInstancesClientCreatePoller.FinalResponse(context.Context) (SQLServerInstancesClientCreateResponse, error)`
+- New function `*SQLServerInstancesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*SQLServerInstancesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DataControllersClientListInSubscriptionPager.PageResponse() DataControllersClientListInSubscriptionResponse`
+- New function `*SQLManagedInstancesClientDeletePollerResponse.Resume(context.Context, *SQLManagedInstancesClient, string) error`
+- New function `*SQLManagedInstancesClientListPager.NextPage(context.Context) bool`
+- New function `*DataControllersClientListInSubscriptionPager.Err() error`
+- New function `*SQLServerInstancesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLManagedInstancesClientCreatePollerResponse.Resume(context.Context, *SQLManagedInstancesClient, string) error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*SQLServerInstancesClientListByResourceGroupPager.Err() error`
+- New function `SQLManagedInstancesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLManagedInstancesClientCreateResponse, error)`
+- New function `*DataControllersClientPutDataControllerPoller.FinalResponse(context.Context) (DataControllersClientPutDataControllerResponse, error)`
+- New function `*SQLServerInstancesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLManagedInstancesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SQLServerInstancesClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*SQLManagedInstancesClientCreatePoller.Done() bool`
+- New function `SQLServerInstancesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLServerInstancesClientDeleteResponse, error)`
+- New function `*SQLManagedInstancesClientListByResourceGroupPager.Err() error`
+- New function `*SQLServerInstancesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `DataControllersClientPutDataControllerPollerResponse.PollUntilDone(context.Context, time.Duration) (DataControllersClientPutDataControllerResponse, error)`
+- New function `*SQLManagedInstancesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `SQLManagedInstancesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SQLManagedInstancesClientDeleteResponse, error)`
+- New function `*SQLManagedInstancesClientListPager.Err() error`
+- New function `*SQLServerInstancesClientCreatePoller.Done() bool`
+- New function `*SQLManagedInstancesClientCreatePoller.FinalResponse(context.Context) (SQLManagedInstancesClientCreateResponse, error)`
+- New function `*DataControllersClientDeleteDataControllerPoller.FinalResponse(context.Context) (DataControllersClientDeleteDataControllerResponse, error)`
+- New function `*SQLManagedInstancesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DataControllersClientDeleteDataControllerPoller.ResumeToken() (string, error)`
+- New function `*SQLServerInstancesClientDeletePoller.Done() bool`
+- New function `*DataControllersClientDeleteDataControllerPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SQLManagedInstancesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DataControllersClientListInGroupPager.Err() error`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*SQLServerInstancesClientDeletePoller.FinalResponse(context.Context) (SQLServerInstancesClientDeleteResponse, error)`
+- New function `*SQLManagedInstancesClientListByResourceGroupPager.PageResponse() SQLManagedInstancesClientListByResourceGroupResponse`
+- New struct `DataControllersClientBeginDeleteDataControllerOptions`
+- New struct `DataControllersClientBeginPutDataControllerOptions`
+- New struct `DataControllersClientDeleteDataControllerPoller`
+- New struct `DataControllersClientDeleteDataControllerPollerResponse`
+- New struct `DataControllersClientDeleteDataControllerResponse`
+- New struct `DataControllersClientGetDataControllerOptions`
+- New struct `DataControllersClientGetDataControllerResponse`
+- New struct `DataControllersClientGetDataControllerResult`
+- New struct `DataControllersClientListInGroupOptions`
+- New struct `DataControllersClientListInGroupPager`
+- New struct `DataControllersClientListInGroupResponse`
+- New struct `DataControllersClientListInGroupResult`
+- New struct `DataControllersClientListInSubscriptionOptions`
+- New struct `DataControllersClientListInSubscriptionPager`
+- New struct `DataControllersClientListInSubscriptionResponse`
+- New struct `DataControllersClientListInSubscriptionResult`
+- New struct `DataControllersClientPatchDataControllerOptions`
+- New struct `DataControllersClientPatchDataControllerResponse`
+- New struct `DataControllersClientPatchDataControllerResult`
+- New struct `DataControllersClientPutDataControllerPoller`
+- New struct `DataControllersClientPutDataControllerPollerResponse`
+- New struct `DataControllersClientPutDataControllerResponse`
+- New struct `DataControllersClientPutDataControllerResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `SQLManagedInstancesClientBeginCreateOptions`
+- New struct `SQLManagedInstancesClientBeginDeleteOptions`
+- New struct `SQLManagedInstancesClientCreatePoller`
+- New struct `SQLManagedInstancesClientCreatePollerResponse`
+- New struct `SQLManagedInstancesClientCreateResponse`
+- New struct `SQLManagedInstancesClientCreateResult`
+- New struct `SQLManagedInstancesClientDeletePoller`
+- New struct `SQLManagedInstancesClientDeletePollerResponse`
+- New struct `SQLManagedInstancesClientDeleteResponse`
+- New struct `SQLManagedInstancesClientGetOptions`
+- New struct `SQLManagedInstancesClientGetResponse`
+- New struct `SQLManagedInstancesClientGetResult`
+- New struct `SQLManagedInstancesClientListByResourceGroupOptions`
+- New struct `SQLManagedInstancesClientListByResourceGroupPager`
+- New struct `SQLManagedInstancesClientListByResourceGroupResponse`
+- New struct `SQLManagedInstancesClientListByResourceGroupResult`
+- New struct `SQLManagedInstancesClientListOptions`
+- New struct `SQLManagedInstancesClientListPager`
+- New struct `SQLManagedInstancesClientListResponse`
+- New struct `SQLManagedInstancesClientListResult`
+- New struct `SQLManagedInstancesClientUpdateOptions`
+- New struct `SQLManagedInstancesClientUpdateResponse`
+- New struct `SQLManagedInstancesClientUpdateResult`
+- New struct `SQLServerInstancesClientBeginCreateOptions`
+- New struct `SQLServerInstancesClientBeginDeleteOptions`
+- New struct `SQLServerInstancesClientCreatePoller`
+- New struct `SQLServerInstancesClientCreatePollerResponse`
+- New struct `SQLServerInstancesClientCreateResponse`
+- New struct `SQLServerInstancesClientCreateResult`
+- New struct `SQLServerInstancesClientDeletePoller`
+- New struct `SQLServerInstancesClientDeletePollerResponse`
+- New struct `SQLServerInstancesClientDeleteResponse`
+- New struct `SQLServerInstancesClientGetOptions`
+- New struct `SQLServerInstancesClientGetResponse`
+- New struct `SQLServerInstancesClientGetResult`
+- New struct `SQLServerInstancesClientListByResourceGroupOptions`
+- New struct `SQLServerInstancesClientListByResourceGroupPager`
+- New struct `SQLServerInstancesClientListByResourceGroupResponse`
+- New struct `SQLServerInstancesClientListByResourceGroupResult`
+- New struct `SQLServerInstancesClientListOptions`
+- New struct `SQLServerInstancesClientListPager`
+- New struct `SQLServerInstancesClientListResponse`
+- New struct `SQLServerInstancesClientListResult`
+- New struct `SQLServerInstancesClientUpdateOptions`
+- New struct `SQLServerInstancesClientUpdateResponse`
+- New struct `SQLServerInstancesClientUpdateResult`
+- New field `SystemData` in struct `SQLManagedInstance`
+- New field `Type` in struct `SQLManagedInstance`
+- New field `Location` in struct `SQLManagedInstance`
+- New field `Tags` in struct `SQLManagedInstance`
+- New field `ID` in struct `SQLManagedInstance`
+- New field `Name` in struct `SQLManagedInstance`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `SystemData` in struct `TrackedResource`
+- New field `Error` in struct `ErrorResponse`
+- New field `SystemData` in struct `DataControllerResource`
+- New field `Type` in struct `DataControllerResource`
+- New field `Location` in struct `DataControllerResource`
+- New field `Tags` in struct `DataControllerResource`
+- New field `ID` in struct `DataControllerResource`
+- New field `Name` in struct `DataControllerResource`
+- New field `SystemData` in struct `SQLServerInstance`
+- New field `Type` in struct `SQLServerInstance`
+- New field `Location` in struct `SQLServerInstance`
+- New field `Tags` in struct `SQLServerInstance`
+- New field `ID` in struct `SQLServerInstance`
+- New field `Name` in struct `SQLServerInstance`
+
+
 ## 0.1.0 (2021-12-01)
 
 - Initial preview release.

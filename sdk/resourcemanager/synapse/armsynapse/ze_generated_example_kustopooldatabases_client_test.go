@@ -27,7 +27,7 @@ func ExampleKustoPoolDatabasesClient_ListByKustoPool() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByKustoPool(ctx,
+	res, err := client.ListByKustoPool(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<kusto-pool-name>",
@@ -35,6 +35,7 @@ func ExampleKustoPoolDatabasesClient_ListByKustoPool() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolDatabasesClientListByKustoPoolResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasesGet.json
@@ -54,7 +55,7 @@ func ExampleKustoPoolDatabasesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolDatabasesClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasesCreateOrUpdate.json
@@ -71,10 +72,8 @@ func ExampleKustoPoolDatabasesClient_BeginCreateOrUpdate() {
 		"<kusto-pool-name>",
 		"<database-name>",
 		&armsynapse.ReadWriteDatabase{
-			Database: armsynapse.Database{
-				Kind:     armsynapse.KindReadWrite.ToPtr(),
-				Location: to.StringPtr("<location>"),
-			},
+			Kind:     armsynapse.Kind("ReadWrite").ToPtr(),
+			Location: to.StringPtr("<location>"),
 			Properties: &armsynapse.ReadWriteDatabaseProperties{
 				SoftDeletePeriod: to.StringPtr("<soft-delete-period>"),
 			},
@@ -87,7 +86,7 @@ func ExampleKustoPoolDatabasesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolDatabasesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasesUpdate.json
@@ -104,9 +103,7 @@ func ExampleKustoPoolDatabasesClient_BeginUpdate() {
 		"<kusto-pool-name>",
 		"<database-name>",
 		&armsynapse.ReadWriteDatabase{
-			Database: armsynapse.Database{
-				Kind: armsynapse.KindReadWrite.ToPtr(),
-			},
+			Kind: armsynapse.Kind("ReadWrite").ToPtr(),
 			Properties: &armsynapse.ReadWriteDatabaseProperties{
 				SoftDeletePeriod: to.StringPtr("<soft-delete-period>"),
 			},
@@ -119,7 +116,7 @@ func ExampleKustoPoolDatabasesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolDatabasesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasesDelete.json

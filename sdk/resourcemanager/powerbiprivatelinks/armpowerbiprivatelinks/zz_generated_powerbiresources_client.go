@@ -11,7 +11,6 @@ package armpowerbiprivatelinks
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,58 @@ import (
 // PowerBIResourcesClient contains the methods for the PowerBIResources group.
 // Don't use this type directly, use NewPowerBIResourcesClient() instead.
 type PowerBIResourcesClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	subscriptionID    string
 	resourceGroupName string
 	azureResourceName string
+	pl                runtime.Pipeline
 }
 
 // NewPowerBIResourcesClient creates a new instance of PowerBIResourcesClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// resourceGroupName - The name of the resource group.
+// azureResourceName - The name of the Azure resource.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPowerBIResourcesClient(subscriptionID string, resourceGroupName string, azureResourceName string, credential azcore.TokenCredential, options *arm.ClientOptions) *PowerBIResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PowerBIResourcesClient{subscriptionID: subscriptionID, resourceGroupName: resourceGroupName, azureResourceName: azureResourceName, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PowerBIResourcesClient{
+		subscriptionID:    subscriptionID,
+		resourceGroupName: resourceGroupName,
+		azureResourceName: azureResourceName,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Creates or updates a Private Link Service Resource for Power BI.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PowerBIResourcesClient) Create(ctx context.Context, body TenantResource, options *PowerBIResourcesCreateOptions) (PowerBIResourcesCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// body - Tenant resource to be created or updated.
+// options - PowerBIResourcesClientCreateOptions contains the optional parameters for the PowerBIResourcesClient.Create method.
+func (client *PowerBIResourcesClient) Create(ctx context.Context, body TenantResource, options *PowerBIResourcesClientCreateOptions) (PowerBIResourcesClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, body, options)
 	if err != nil {
-		return PowerBIResourcesCreateResponse{}, err
+		return PowerBIResourcesClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PowerBIResourcesCreateResponse{}, err
+		return PowerBIResourcesClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return PowerBIResourcesCreateResponse{}, client.createHandleError(resp)
+		return PowerBIResourcesClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *PowerBIResourcesClient) createCreateRequest(ctx context.Context, body TenantResource, options *PowerBIResourcesCreateOptions) (*policy.Request, error) {
+func (client *PowerBIResourcesClient) createCreateRequest(ctx context.Context, body TenantResource, options *PowerBIResourcesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI/{azureResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -76,7 +89,7 @@ func (client *PowerBIResourcesClient) createCreateRequest(ctx context.Context, b
 		return nil, errors.New("parameter client.azureResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureResourceName}", url.PathEscape(client.azureResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,34 @@ func (client *PowerBIResourcesClient) createCreateRequest(ctx context.Context, b
 }
 
 // createHandleResponse handles the Create response.
-func (client *PowerBIResourcesClient) createHandleResponse(resp *http.Response) (PowerBIResourcesCreateResponse, error) {
-	result := PowerBIResourcesCreateResponse{RawResponse: resp}
+func (client *PowerBIResourcesClient) createHandleResponse(resp *http.Response) (PowerBIResourcesClientCreateResponse, error) {
+	result := PowerBIResourcesClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantResource); err != nil {
-		return PowerBIResourcesCreateResponse{}, runtime.NewResponseError(err, resp)
+		return PowerBIResourcesClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *PowerBIResourcesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a Private Link Service Resource for Power BI.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PowerBIResourcesClient) Delete(ctx context.Context, options *PowerBIResourcesDeleteOptions) (PowerBIResourcesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PowerBIResourcesClientDeleteOptions contains the optional parameters for the PowerBIResourcesClient.Delete method.
+func (client *PowerBIResourcesClient) Delete(ctx context.Context, options *PowerBIResourcesClientDeleteOptions) (PowerBIResourcesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
-		return PowerBIResourcesDeleteResponse{}, err
+		return PowerBIResourcesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PowerBIResourcesDeleteResponse{}, err
+		return PowerBIResourcesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PowerBIResourcesDeleteResponse{}, client.deleteHandleError(resp)
+		return PowerBIResourcesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PowerBIResourcesDeleteResponse{RawResponse: resp}, nil
+	return PowerBIResourcesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PowerBIResourcesClient) deleteCreateRequest(ctx context.Context, options *PowerBIResourcesDeleteOptions) (*policy.Request, error) {
+func (client *PowerBIResourcesClient) deleteCreateRequest(ctx context.Context, options *PowerBIResourcesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI/{azureResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -144,7 +145,7 @@ func (client *PowerBIResourcesClient) deleteCreateRequest(ctx context.Context, o
 		return nil, errors.New("parameter client.azureResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureResourceName}", url.PathEscape(client.azureResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,38 +156,27 @@ func (client *PowerBIResourcesClient) deleteCreateRequest(ctx context.Context, o
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PowerBIResourcesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceName - Gets all the private link resources for the given Azure resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PowerBIResourcesClient) ListByResourceName(ctx context.Context, options *PowerBIResourcesListByResourceNameOptions) (PowerBIResourcesListByResourceNameResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PowerBIResourcesClientListByResourceNameOptions contains the optional parameters for the PowerBIResourcesClient.ListByResourceName
+// method.
+func (client *PowerBIResourcesClient) ListByResourceName(ctx context.Context, options *PowerBIResourcesClientListByResourceNameOptions) (PowerBIResourcesClientListByResourceNameResponse, error) {
 	req, err := client.listByResourceNameCreateRequest(ctx, options)
 	if err != nil {
-		return PowerBIResourcesListByResourceNameResponse{}, err
+		return PowerBIResourcesClientListByResourceNameResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PowerBIResourcesListByResourceNameResponse{}, err
+		return PowerBIResourcesClientListByResourceNameResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PowerBIResourcesListByResourceNameResponse{}, client.listByResourceNameHandleError(resp)
+		return PowerBIResourcesClientListByResourceNameResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceNameHandleResponse(resp)
 }
 
 // listByResourceNameCreateRequest creates the ListByResourceName request.
-func (client *PowerBIResourcesClient) listByResourceNameCreateRequest(ctx context.Context, options *PowerBIResourcesListByResourceNameOptions) (*policy.Request, error) {
+func (client *PowerBIResourcesClient) listByResourceNameCreateRequest(ctx context.Context, options *PowerBIResourcesClientListByResourceNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI/{azureResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +190,7 @@ func (client *PowerBIResourcesClient) listByResourceNameCreateRequest(ctx contex
 		return nil, errors.New("parameter client.azureResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureResourceName}", url.PathEscape(client.azureResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,46 +202,35 @@ func (client *PowerBIResourcesClient) listByResourceNameCreateRequest(ctx contex
 }
 
 // listByResourceNameHandleResponse handles the ListByResourceName response.
-func (client *PowerBIResourcesClient) listByResourceNameHandleResponse(resp *http.Response) (PowerBIResourcesListByResourceNameResponse, error) {
-	result := PowerBIResourcesListByResourceNameResponse{RawResponse: resp}
+func (client *PowerBIResourcesClient) listByResourceNameHandleResponse(resp *http.Response) (PowerBIResourcesClientListByResourceNameResponse, error) {
+	result := PowerBIResourcesClientListByResourceNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantResourceArray); err != nil {
-		return PowerBIResourcesListByResourceNameResponse{}, runtime.NewResponseError(err, resp)
+		return PowerBIResourcesClientListByResourceNameResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceNameHandleError handles the ListByResourceName error response.
-func (client *PowerBIResourcesClient) listByResourceNameHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Creates or updates a Private Link Service Resource for Power BI.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PowerBIResourcesClient) Update(ctx context.Context, body TenantResource, options *PowerBIResourcesUpdateOptions) (PowerBIResourcesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// body - Tenant resource to be created or updated.
+// options - PowerBIResourcesClientUpdateOptions contains the optional parameters for the PowerBIResourcesClient.Update method.
+func (client *PowerBIResourcesClient) Update(ctx context.Context, body TenantResource, options *PowerBIResourcesClientUpdateOptions) (PowerBIResourcesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, body, options)
 	if err != nil {
-		return PowerBIResourcesUpdateResponse{}, err
+		return PowerBIResourcesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PowerBIResourcesUpdateResponse{}, err
+		return PowerBIResourcesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return PowerBIResourcesUpdateResponse{}, client.updateHandleError(resp)
+		return PowerBIResourcesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PowerBIResourcesClient) updateCreateRequest(ctx context.Context, body TenantResource, options *PowerBIResourcesUpdateOptions) (*policy.Request, error) {
+func (client *PowerBIResourcesClient) updateCreateRequest(ctx context.Context, body TenantResource, options *PowerBIResourcesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI/{azureResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -265,7 +244,7 @@ func (client *PowerBIResourcesClient) updateCreateRequest(ctx context.Context, b
 		return nil, errors.New("parameter client.azureResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureResourceName}", url.PathEscape(client.azureResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -280,23 +259,10 @@ func (client *PowerBIResourcesClient) updateCreateRequest(ctx context.Context, b
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PowerBIResourcesClient) updateHandleResponse(resp *http.Response) (PowerBIResourcesUpdateResponse, error) {
-	result := PowerBIResourcesUpdateResponse{RawResponse: resp}
+func (client *PowerBIResourcesClient) updateHandleResponse(resp *http.Response) (PowerBIResourcesClientUpdateResponse, error) {
+	result := PowerBIResourcesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantResource); err != nil {
-		return PowerBIResourcesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PowerBIResourcesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *PowerBIResourcesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

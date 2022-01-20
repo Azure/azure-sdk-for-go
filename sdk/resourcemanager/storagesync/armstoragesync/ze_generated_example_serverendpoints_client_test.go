@@ -34,11 +34,11 @@ func ExampleServerEndpointsClient_BeginCreate() {
 		"<server-endpoint-name>",
 		armstoragesync.ServerEndpointCreateParameters{
 			Properties: &armstoragesync.ServerEndpointCreateParametersProperties{
-				CloudTiering:                 armstoragesync.FeatureStatusOff.ToPtr(),
-				InitialDownloadPolicy:        armstoragesync.InitialDownloadPolicyNamespaceThenModifiedFiles.ToPtr(),
-				InitialUploadPolicy:          armstoragesync.InitialUploadPolicyServerAuthoritative.ToPtr(),
-				LocalCacheMode:               armstoragesync.LocalCacheModeUpdateLocallyCachedFiles.ToPtr(),
-				OfflineDataTransfer:          armstoragesync.FeatureStatusOn.ToPtr(),
+				CloudTiering:                 armstoragesync.FeatureStatus("off").ToPtr(),
+				InitialDownloadPolicy:        armstoragesync.InitialDownloadPolicy("NamespaceThenModifiedFiles").ToPtr(),
+				InitialUploadPolicy:          armstoragesync.InitialUploadPolicy("ServerAuthoritative").ToPtr(),
+				LocalCacheMode:               armstoragesync.LocalCacheMode("UpdateLocallyCachedFiles").ToPtr(),
+				OfflineDataTransfer:          armstoragesync.FeatureStatus("on").ToPtr(),
 				OfflineDataTransferShareName: to.StringPtr("<offline-data-transfer-share-name>"),
 				ServerLocalPath:              to.StringPtr("<server-local-path>"),
 				ServerResourceID:             to.StringPtr("<server-resource-id>"),
@@ -54,7 +54,7 @@ func ExampleServerEndpointsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerEndpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServerEndpointsClientCreateResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Update.json
@@ -70,11 +70,11 @@ func ExampleServerEndpointsClient_BeginUpdate() {
 		"<storage-sync-service-name>",
 		"<sync-group-name>",
 		"<server-endpoint-name>",
-		&armstoragesync.ServerEndpointsBeginUpdateOptions{Parameters: &armstoragesync.ServerEndpointUpdateParameters{
+		&armstoragesync.ServerEndpointsClientBeginUpdateOptions{Parameters: &armstoragesync.ServerEndpointUpdateParameters{
 			Properties: &armstoragesync.ServerEndpointUpdateProperties{
-				CloudTiering:           armstoragesync.FeatureStatusOff.ToPtr(),
-				LocalCacheMode:         armstoragesync.LocalCacheModeUpdateLocallyCachedFiles.ToPtr(),
-				OfflineDataTransfer:    armstoragesync.FeatureStatusOff.ToPtr(),
+				CloudTiering:           armstoragesync.FeatureStatus("off").ToPtr(),
+				LocalCacheMode:         armstoragesync.LocalCacheMode("UpdateLocallyCachedFiles").ToPtr(),
+				OfflineDataTransfer:    armstoragesync.FeatureStatus("off").ToPtr(),
 				TierFilesOlderThanDays: to.Int32Ptr(0),
 				VolumeFreeSpacePercent: to.Int32Ptr(100),
 			},
@@ -87,7 +87,7 @@ func ExampleServerEndpointsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerEndpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServerEndpointsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Get.json
@@ -107,7 +107,7 @@ func ExampleServerEndpointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerEndpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServerEndpointsClientGetResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Delete.json
@@ -141,7 +141,7 @@ func ExampleServerEndpointsClient_ListBySyncGroup() {
 	}
 	ctx := context.Background()
 	client := armstoragesync.NewServerEndpointsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySyncGroup(ctx,
+	res, err := client.ListBySyncGroup(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		"<sync-group-name>",
@@ -149,6 +149,7 @@ func ExampleServerEndpointsClient_ListBySyncGroup() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServerEndpointsClientListBySyncGroupResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/ServerEndpoints_Recall.json

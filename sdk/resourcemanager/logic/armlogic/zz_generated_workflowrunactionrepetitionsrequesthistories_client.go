@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,58 @@ import (
 // WorkflowRunActionRepetitionsRequestHistoriesClient contains the methods for the WorkflowRunActionRepetitionsRequestHistories group.
 // Don't use this type directly, use NewWorkflowRunActionRepetitionsRequestHistoriesClient() instead.
 type WorkflowRunActionRepetitionsRequestHistoriesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkflowRunActionRepetitionsRequestHistoriesClient creates a new instance of WorkflowRunActionRepetitionsRequestHistoriesClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowRunActionRepetitionsRequestHistoriesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkflowRunActionRepetitionsRequestHistoriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkflowRunActionRepetitionsRequestHistoriesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a workflow run repetition request history.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, requestHistoryName string, options *WorkflowRunActionRepetitionsRequestHistoriesGetOptions) (WorkflowRunActionRepetitionsRequestHistoriesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// runName - The workflow run name.
+// actionName - The workflow action name.
+// repetitionName - The workflow repetition.
+// requestHistoryName - The request history name.
+// options - WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.Get
+// method.
+func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, requestHistoryName string, options *WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions) (WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName, options)
 	if err != nil {
-		return WorkflowRunActionRepetitionsRequestHistoriesGetResponse{}, err
+		return WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkflowRunActionRepetitionsRequestHistoriesGetResponse{}, err
+		return WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowRunActionRepetitionsRequestHistoriesGetResponse{}, client.getHandleError(resp)
+		return WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, requestHistoryName string, options *WorkflowRunActionRepetitionsRequestHistoriesGetOptions) (*policy.Request, error) {
+func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, requestHistoryName string, options *WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories/{requestHistoryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +105,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getCreateReque
 		return nil, errors.New("parameter requestHistoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{requestHistoryName}", url.PathEscape(requestHistoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -102,43 +117,37 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getCreateReque
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsRequestHistoriesGetResponse, error) {
-	result := WorkflowRunActionRepetitionsRequestHistoriesGetResponse{RawResponse: resp}
+func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse, error) {
+	result := WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestHistory); err != nil {
-		return WorkflowRunActionRepetitionsRequestHistoriesGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List a workflow run repetition request history.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) List(resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsRequestHistoriesListOptions) *WorkflowRunActionRepetitionsRequestHistoriesListPager {
-	return &WorkflowRunActionRepetitionsRequestHistoriesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// runName - The workflow run name.
+// actionName - The workflow action name.
+// repetitionName - The workflow repetition.
+// options - WorkflowRunActionRepetitionsRequestHistoriesClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.List
+// method.
+func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) List(resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsRequestHistoriesClientListOptions) *WorkflowRunActionRepetitionsRequestHistoriesClientListPager {
+	return &WorkflowRunActionRepetitionsRequestHistoriesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workflowName, runName, actionName, repetitionName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkflowRunActionRepetitionsRequestHistoriesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkflowRunActionRepetitionsRequestHistoriesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RequestHistoryListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsRequestHistoriesListOptions) (*policy.Request, error) {
+func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsRequestHistoriesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -164,7 +173,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listCreateRequ
 		return nil, errors.New("parameter repetitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{repetitionName}", url.PathEscape(repetitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -176,23 +185,10 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listCreateRequ
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsRequestHistoriesListResponse, error) {
-	result := WorkflowRunActionRepetitionsRequestHistoriesListResponse{RawResponse: resp}
+func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsRequestHistoriesClientListResponse, error) {
+	result := WorkflowRunActionRepetitionsRequestHistoriesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestHistoryListResult); err != nil {
-		return WorkflowRunActionRepetitionsRequestHistoriesListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkflowRunActionRepetitionsRequestHistoriesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

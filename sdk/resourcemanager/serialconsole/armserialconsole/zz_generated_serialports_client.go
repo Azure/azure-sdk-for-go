@@ -11,7 +11,6 @@ package armserialconsole
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,58 @@ import (
 // SerialPortsClient contains the methods for the SerialPorts group.
 // Don't use this type directly, use NewSerialPortsClient() instead.
 type SerialPortsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSerialPortsClient creates a new instance of SerialPortsClient with the specified values.
+// subscriptionID - Subscription ID which uniquely identifies the Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call requiring it.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSerialPortsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SerialPortsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SerialPortsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SerialPortsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Connect - Connect to serial port of the target resource
-// If the operation fails it returns the *CloudError error type.
-func (client *SerialPortsClient) Connect(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsConnectOptions) (SerialPortsConnectResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
+// parentResource - The resource name, or subordinate path, for the parent of the serial port. For example: the name of the
+// virtual machine.
+// serialPort - The name of the serial port to connect to.
+// options - SerialPortsClientConnectOptions contains the optional parameters for the SerialPortsClient.Connect method.
+func (client *SerialPortsClient) Connect(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsClientConnectOptions) (SerialPortsClientConnectResponse, error) {
 	req, err := client.connectCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourceType, parentResource, serialPort, options)
 	if err != nil {
-		return SerialPortsConnectResponse{}, err
+		return SerialPortsClientConnectResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SerialPortsConnectResponse{}, err
+		return SerialPortsClientConnectResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SerialPortsConnectResponse{}, client.connectHandleError(resp)
+		return SerialPortsClientConnectResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.connectHandleResponse(resp)
 }
 
 // connectCreateRequest creates the Connect request.
-func (client *SerialPortsClient) connectCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsConnectOptions) (*policy.Request, error) {
+func (client *SerialPortsClient) connectCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsClientConnectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts/{serialPort}/connect"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,7 +98,7 @@ func (client *SerialPortsClient) connectCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,46 +110,41 @@ func (client *SerialPortsClient) connectCreateRequest(ctx context.Context, resou
 }
 
 // connectHandleResponse handles the Connect response.
-func (client *SerialPortsClient) connectHandleResponse(resp *http.Response) (SerialPortsConnectResponse, error) {
-	result := SerialPortsConnectResponse{RawResponse: resp}
+func (client *SerialPortsClient) connectHandleResponse(resp *http.Response) (SerialPortsClientConnectResponse, error) {
+	result := SerialPortsClientConnectResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPortConnectResult); err != nil {
-		return SerialPortsConnectResponse{}, runtime.NewResponseError(err, resp)
+		return SerialPortsClientConnectResponse{}, err
 	}
 	return result, nil
 }
 
-// connectHandleError handles the Connect error response.
-func (client *SerialPortsClient) connectHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Create - Creates or updates a serial port
-// If the operation fails it returns the *CloudError error type.
-func (client *SerialPortsClient) Create(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, parameters SerialPort, options *SerialPortsCreateOptions) (SerialPortsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
+// parentResource - The resource name, or subordinate path, for the parent of the serial port. For example: the name of the
+// virtual machine.
+// serialPort - The name of the serial port to create.
+// parameters - Parameters supplied to create the serial port.
+// options - SerialPortsClientCreateOptions contains the optional parameters for the SerialPortsClient.Create method.
+func (client *SerialPortsClient) Create(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, parameters SerialPort, options *SerialPortsClientCreateOptions) (SerialPortsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourceType, parentResource, serialPort, parameters, options)
 	if err != nil {
-		return SerialPortsCreateResponse{}, err
+		return SerialPortsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SerialPortsCreateResponse{}, err
+		return SerialPortsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return SerialPortsCreateResponse{}, client.createHandleError(resp)
+		return SerialPortsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SerialPortsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, parameters SerialPort, options *SerialPortsCreateOptions) (*policy.Request, error) {
+func (client *SerialPortsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, parameters SerialPort, options *SerialPortsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts/{serialPort}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -157,7 +167,7 @@ func (client *SerialPortsClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,46 +179,40 @@ func (client *SerialPortsClient) createCreateRequest(ctx context.Context, resour
 }
 
 // createHandleResponse handles the Create response.
-func (client *SerialPortsClient) createHandleResponse(resp *http.Response) (SerialPortsCreateResponse, error) {
-	result := SerialPortsCreateResponse{RawResponse: resp}
+func (client *SerialPortsClient) createHandleResponse(resp *http.Response) (SerialPortsClientCreateResponse, error) {
+	result := SerialPortsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPort); err != nil {
-		return SerialPortsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SerialPortsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SerialPortsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a serial port
-// If the operation fails it returns the *CloudError error type.
-func (client *SerialPortsClient) Delete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsDeleteOptions) (SerialPortsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
+// parentResource - The resource name, or subordinate path, for the parent of the serial port. For example: the name of the
+// virtual machine.
+// serialPort - The name of the serial port to delete.
+// options - SerialPortsClientDeleteOptions contains the optional parameters for the SerialPortsClient.Delete method.
+func (client *SerialPortsClient) Delete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsClientDeleteOptions) (SerialPortsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourceType, parentResource, serialPort, options)
 	if err != nil {
-		return SerialPortsDeleteResponse{}, err
+		return SerialPortsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SerialPortsDeleteResponse{}, err
+		return SerialPortsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SerialPortsDeleteResponse{}, client.deleteHandleError(resp)
+		return SerialPortsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SerialPortsDeleteResponse{RawResponse: resp}, nil
+	return SerialPortsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SerialPortsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsDeleteOptions) (*policy.Request, error) {
+func (client *SerialPortsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts/{serialPort}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -231,7 +235,7 @@ func (client *SerialPortsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,38 +246,32 @@ func (client *SerialPortsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SerialPortsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the configured settings for a serial port
-// If the operation fails it returns the *CloudError error type.
-func (client *SerialPortsClient) Get(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsGetOptions) (SerialPortsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
+// parentResource - The resource name, or subordinate path, for the parent of the serial port. For example: the name of the
+// virtual machine.
+// serialPort - The name of the serial port to connect to.
+// options - SerialPortsClientGetOptions contains the optional parameters for the SerialPortsClient.Get method.
+func (client *SerialPortsClient) Get(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsClientGetOptions) (SerialPortsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourceType, parentResource, serialPort, options)
 	if err != nil {
-		return SerialPortsGetResponse{}, err
+		return SerialPortsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SerialPortsGetResponse{}, err
+		return SerialPortsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SerialPortsGetResponse{}, client.getHandleError(resp)
+		return SerialPortsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SerialPortsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsGetOptions) (*policy.Request, error) {
+func (client *SerialPortsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *SerialPortsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts/{serialPort}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -296,7 +294,7 @@ func (client *SerialPortsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,46 +306,39 @@ func (client *SerialPortsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *SerialPortsClient) getHandleResponse(resp *http.Response) (SerialPortsGetResponse, error) {
-	result := SerialPortsGetResponse{RawResponse: resp}
+func (client *SerialPortsClient) getHandleResponse(resp *http.Response) (SerialPortsClientGetResponse, error) {
+	result := SerialPortsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPort); err != nil {
-		return SerialPortsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SerialPortsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SerialPortsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all of the configured serial ports for a parent resource
-// If the operation fails it returns the *CloudError error type.
-func (client *SerialPortsClient) List(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, options *SerialPortsListOptions) (SerialPortsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
+// parentResource - The resource name, or subordinate path, for the parent of the serial port. For example: the name of the
+// virtual machine.
+// options - SerialPortsClientListOptions contains the optional parameters for the SerialPortsClient.List method.
+func (client *SerialPortsClient) List(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, options *SerialPortsClientListOptions) (SerialPortsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourceType, parentResource, options)
 	if err != nil {
-		return SerialPortsListResponse{}, err
+		return SerialPortsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SerialPortsListResponse{}, err
+		return SerialPortsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SerialPortsListResponse{}, client.listHandleError(resp)
+		return SerialPortsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SerialPortsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, options *SerialPortsListOptions) (*policy.Request, error) {
+func (client *SerialPortsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, options *SerialPortsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourceType}/{parentResource}/providers/Microsoft.SerialConsole/serialPorts"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -366,7 +357,7 @@ func (client *SerialPortsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -378,52 +369,41 @@ func (client *SerialPortsClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client *SerialPortsClient) listHandleResponse(resp *http.Response) (SerialPortsListResponse, error) {
-	result := SerialPortsListResponse{RawResponse: resp}
+func (client *SerialPortsClient) listHandleResponse(resp *http.Response) (SerialPortsClientListResponse, error) {
+	result := SerialPortsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPortListResult); err != nil {
-		return SerialPortsListResponse{}, runtime.NewResponseError(err, resp)
+		return SerialPortsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *SerialPortsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscriptions - Handles requests to list all SerialPort resources in a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *SerialPortsClient) ListBySubscriptions(ctx context.Context, options *SerialPortsListBySubscriptionsOptions) (SerialPortsListBySubscriptionsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SerialPortsClientListBySubscriptionsOptions contains the optional parameters for the SerialPortsClient.ListBySubscriptions
+// method.
+func (client *SerialPortsClient) ListBySubscriptions(ctx context.Context, options *SerialPortsClientListBySubscriptionsOptions) (SerialPortsClientListBySubscriptionsResponse, error) {
 	req, err := client.listBySubscriptionsCreateRequest(ctx, options)
 	if err != nil {
-		return SerialPortsListBySubscriptionsResponse{}, err
+		return SerialPortsClientListBySubscriptionsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SerialPortsListBySubscriptionsResponse{}, err
+		return SerialPortsClientListBySubscriptionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SerialPortsListBySubscriptionsResponse{}, client.listBySubscriptionsHandleError(resp)
+		return SerialPortsClientListBySubscriptionsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBySubscriptionsHandleResponse(resp)
 }
 
 // listBySubscriptionsCreateRequest creates the ListBySubscriptions request.
-func (client *SerialPortsClient) listBySubscriptionsCreateRequest(ctx context.Context, options *SerialPortsListBySubscriptionsOptions) (*policy.Request, error) {
+func (client *SerialPortsClient) listBySubscriptionsCreateRequest(ctx context.Context, options *SerialPortsClientListBySubscriptionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/serialPorts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -432,23 +412,10 @@ func (client *SerialPortsClient) listBySubscriptionsCreateRequest(ctx context.Co
 }
 
 // listBySubscriptionsHandleResponse handles the ListBySubscriptions response.
-func (client *SerialPortsClient) listBySubscriptionsHandleResponse(resp *http.Response) (SerialPortsListBySubscriptionsResponse, error) {
-	result := SerialPortsListBySubscriptionsResponse{RawResponse: resp}
+func (client *SerialPortsClient) listBySubscriptionsHandleResponse(resp *http.Response) (SerialPortsClientListBySubscriptionsResponse, error) {
+	result := SerialPortsClientListBySubscriptionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SerialPortListResult); err != nil {
-		return SerialPortsListBySubscriptionsResponse{}, runtime.NewResponseError(err, resp)
+		return SerialPortsClientListBySubscriptionsResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionsHandleError handles the ListBySubscriptions error response.
-func (client *SerialPortsClient) listBySubscriptionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

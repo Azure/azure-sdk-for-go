@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
 type ClustersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewClustersClient creates a new instance of ClustersClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClustersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ClustersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ClustersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a cluster in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, cluster Cluster, options *ClustersBeginCreateOrUpdateOptions) (ClustersCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - The name of the private cloud.
+// clusterName - Name of the cluster in the private cloud
+// cluster - A cluster in the private cloud
+// options - ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate
+// method.
+func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (ClustersClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, clusterName, cluster, options)
 	if err != nil {
-		return ClustersCreateOrUpdatePollerResponse{}, err
+		return ClustersClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ClustersCreateOrUpdatePollerResponse{
+	result := ClustersClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ClustersClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ClustersClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ClustersCreateOrUpdatePollerResponse{}, err
+		return ClustersClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ClustersCreateOrUpdatePoller{
+	result.Poller = &ClustersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a cluster in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, cluster Cluster, options *ClustersBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, cluster, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, cluster Cluster, options *ClustersBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,33 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, runtime.MarshalAsJSON(req, cluster)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ClustersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a cluster in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersBeginDeleteOptions) (ClustersDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// clusterName - Name of the cluster in the private cloud
+// options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientBeginDeleteOptions) (ClustersClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, clusterName, options)
 	if err != nil {
-		return ClustersDeletePollerResponse{}, err
+		return ClustersClientDeletePollerResponse{}, err
 	}
-	result := ClustersDeletePollerResponse{
+	result := ClustersClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ClustersClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ClustersClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ClustersDeletePollerResponse{}, err
+		return ClustersClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ClustersDeletePoller{
+	result.Poller = &ClustersClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a cluster in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +158,13 @@ func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersBeginDeleteOptions) (*policy.Request, error) {
+func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +182,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +193,29 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ClustersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a cluster by name in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersGetOptions) (ClustersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// clusterName - Name of the cluster in the private cloud
+// options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientGetOptions) (ClustersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, options)
 	if err != nil {
-		return ClustersGetResponse{}, err
+		return ClustersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClustersGetResponse{}, err
+		return ClustersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersGetResponse{}, client.getHandleError(resp)
+		return ClustersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersGetOptions) (*policy.Request, error) {
+func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *ClustersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +233,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +245,33 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersGetResponse, error) {
-	result := ClustersGetResponse{RawResponse: resp}
+func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersClientGetResponse, error) {
+	result := ClustersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Cluster); err != nil {
-		return ClustersGetResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ClustersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List clusters in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) List(resourceGroupName string, privateCloudName string, options *ClustersListOptions) *ClustersListPager {
-	return &ClustersListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+func (client *ClustersClient) List(resourceGroupName string, privateCloudName string, options *ClustersClientListOptions) *ClustersClientListPager {
+	return &ClustersClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 		},
-		advancer: func(ctx context.Context, resp ClustersListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ClustersClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ClusterList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ClustersClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *ClustersListOptions) (*policy.Request, error) {
+func (client *ClustersClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *ClustersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +285,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,50 +297,42 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, resourceGro
 }
 
 // listHandleResponse handles the List response.
-func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersListResponse, error) {
-	result := ClustersListResponse{RawResponse: resp}
+func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersClientListResponse, error) {
+	result := ClustersClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterList); err != nil {
-		return ClustersListResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ClustersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update a cluster in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, clusterUpdate ClusterUpdate, options *ClustersBeginUpdateOptions) (ClustersUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// clusterName - Name of the cluster in the private cloud
+// clusterUpdate - The cluster properties to be updated
+// options - ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
+func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, clusterUpdate ClusterUpdate, options *ClustersClientBeginUpdateOptions) (ClustersClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, privateCloudName, clusterName, clusterUpdate, options)
 	if err != nil {
-		return ClustersUpdatePollerResponse{}, err
+		return ClustersClientUpdatePollerResponse{}, err
 	}
-	result := ClustersUpdatePollerResponse{
+	result := ClustersClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ClustersClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ClustersClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ClustersUpdatePollerResponse{}, err
+		return ClustersClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ClustersUpdatePoller{
+	result.Poller = &ClustersClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update a cluster in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, clusterUpdate ClusterUpdate, options *ClustersBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, clusterUpdate ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, clusterUpdate, options)
 	if err != nil {
 		return nil, err
@@ -365,13 +342,13 @@ func (client *ClustersClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, clusterUpdate ClusterUpdate, options *ClustersBeginUpdateOptions) (*policy.Request, error) {
+func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, clusterUpdate ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -389,7 +366,7 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -398,17 +375,4 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, clusterUpdate)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ClustersClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

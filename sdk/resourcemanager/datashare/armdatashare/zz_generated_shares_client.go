@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // SharesClient contains the methods for the Shares group.
 // Don't use this type directly, use NewSharesClient() instead.
 type SharesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSharesClient creates a new instance of SharesClient with the specified values.
+// subscriptionID - The subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SharesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SharesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SharesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, share Share, options *SharesCreateOptions) (SharesCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// share - The share payload
+// options - SharesClientCreateOptions contains the optional parameters for the SharesClient.Create method.
+func (client *SharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, share Share, options *SharesClientCreateOptions) (SharesClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareName, share, options)
 	if err != nil {
-		return SharesCreateResponse{}, err
+		return SharesClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SharesCreateResponse{}, err
+		return SharesClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SharesCreateResponse{}, client.createHandleError(resp)
+		return SharesClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SharesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, share Share, options *SharesCreateOptions) (*policy.Request, error) {
+func (client *SharesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, share Share, options *SharesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *SharesClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter shareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,50 +102,41 @@ func (client *SharesClient) createCreateRequest(ctx context.Context, resourceGro
 }
 
 // createHandleResponse handles the Create response.
-func (client *SharesClient) createHandleResponse(resp *http.Response) (SharesCreateResponse, error) {
-	result := SharesCreateResponse{RawResponse: resp}
+func (client *SharesClient) createHandleResponse(resp *http.Response) (SharesClientCreateResponse, error) {
+	result := SharesClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Share); err != nil {
-		return SharesCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SharesClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SharesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SharesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesBeginDeleteOptions) (SharesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// options - SharesClientBeginDeleteOptions contains the optional parameters for the SharesClient.BeginDelete method.
+func (client *SharesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientBeginDeleteOptions) (SharesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
-		return SharesDeletePollerResponse{}, err
+		return SharesClientDeletePollerResponse{}, err
 	}
-	result := SharesDeletePollerResponse{
+	result := SharesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SharesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SharesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return SharesDeletePollerResponse{}, err
+		return SharesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SharesDeletePoller{
+	result.Poller = &SharesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SharesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SharesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return nil, err
@@ -143,13 +146,13 @@ func (client *SharesClient) deleteOperation(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SharesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesBeginDeleteOptions) (*policy.Request, error) {
+func (client *SharesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -167,7 +170,7 @@ func (client *SharesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter shareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -178,38 +181,29 @@ func (client *SharesClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SharesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesGetOptions) (SharesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share to retrieve.
+// options - SharesClientGetOptions contains the optional parameters for the SharesClient.Get method.
+func (client *SharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientGetOptions) (SharesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
-		return SharesGetResponse{}, err
+		return SharesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SharesGetResponse{}, err
+		return SharesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SharesGetResponse{}, client.getHandleError(resp)
+		return SharesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SharesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesGetOptions) (*policy.Request, error) {
+func (client *SharesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,7 +221,7 @@ func (client *SharesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter shareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,43 +233,33 @@ func (client *SharesClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *SharesClient) getHandleResponse(resp *http.Response) (SharesGetResponse, error) {
-	result := SharesGetResponse{RawResponse: resp}
+func (client *SharesClient) getHandleResponse(resp *http.Response) (SharesClientGetResponse, error) {
+	result := SharesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Share); err != nil {
-		return SharesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SharesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SharesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAccount - List shares in an account
-// If the operation fails it returns the *DataShareError error type.
-func (client *SharesClient) ListByAccount(resourceGroupName string, accountName string, options *SharesListByAccountOptions) *SharesListByAccountPager {
-	return &SharesListByAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// options - SharesClientListByAccountOptions contains the optional parameters for the SharesClient.ListByAccount method.
+func (client *SharesClient) ListByAccount(resourceGroupName string, accountName string, options *SharesClientListByAccountOptions) *SharesClientListByAccountPager {
+	return &SharesClientListByAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp SharesListByAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SharesClientListByAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ShareList.NextLink)
 		},
 	}
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *SharesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SharesListByAccountOptions) (*policy.Request, error) {
+func (client *SharesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SharesClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -289,7 +273,7 @@ func (client *SharesClient) listByAccountCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,43 +294,36 @@ func (client *SharesClient) listByAccountCreateRequest(ctx context.Context, reso
 }
 
 // listByAccountHandleResponse handles the ListByAccount response.
-func (client *SharesClient) listByAccountHandleResponse(resp *http.Response) (SharesListByAccountResponse, error) {
-	result := SharesListByAccountResponse{RawResponse: resp}
+func (client *SharesClient) listByAccountHandleResponse(resp *http.Response) (SharesClientListByAccountResponse, error) {
+	result := SharesClientListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ShareList); err != nil {
-		return SharesListByAccountResponse{}, runtime.NewResponseError(err, resp)
+		return SharesClientListByAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAccountHandleError handles the ListByAccount error response.
-func (client *SharesClient) listByAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSynchronizationDetails - List synchronization details
-// If the operation fails it returns the *DataShareError error type.
-func (client *SharesClient) ListSynchronizationDetails(resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesListSynchronizationDetailsOptions) *SharesListSynchronizationDetailsPager {
-	return &SharesListSynchronizationDetailsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// shareSynchronization - Share Synchronization payload.
+// options - SharesClientListSynchronizationDetailsOptions contains the optional parameters for the SharesClient.ListSynchronizationDetails
+// method.
+func (client *SharesClient) ListSynchronizationDetails(resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesClientListSynchronizationDetailsOptions) *SharesClientListSynchronizationDetailsPager {
+	return &SharesClientListSynchronizationDetailsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSynchronizationDetailsCreateRequest(ctx, resourceGroupName, accountName, shareName, shareSynchronization, options)
 		},
-		advancer: func(ctx context.Context, resp SharesListSynchronizationDetailsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SharesClientListSynchronizationDetailsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SynchronizationDetailsList.NextLink)
 		},
 	}
 }
 
 // listSynchronizationDetailsCreateRequest creates the ListSynchronizationDetails request.
-func (client *SharesClient) listSynchronizationDetailsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesListSynchronizationDetailsOptions) (*policy.Request, error) {
+func (client *SharesClient) listSynchronizationDetailsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesClientListSynchronizationDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/listSynchronizationDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -364,7 +341,7 @@ func (client *SharesClient) listSynchronizationDetailsCreateRequest(ctx context.
 		return nil, errors.New("parameter shareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -385,43 +362,35 @@ func (client *SharesClient) listSynchronizationDetailsCreateRequest(ctx context.
 }
 
 // listSynchronizationDetailsHandleResponse handles the ListSynchronizationDetails response.
-func (client *SharesClient) listSynchronizationDetailsHandleResponse(resp *http.Response) (SharesListSynchronizationDetailsResponse, error) {
-	result := SharesListSynchronizationDetailsResponse{RawResponse: resp}
+func (client *SharesClient) listSynchronizationDetailsHandleResponse(resp *http.Response) (SharesClientListSynchronizationDetailsResponse, error) {
+	result := SharesClientListSynchronizationDetailsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SynchronizationDetailsList); err != nil {
-		return SharesListSynchronizationDetailsResponse{}, runtime.NewResponseError(err, resp)
+		return SharesClientListSynchronizationDetailsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSynchronizationDetailsHandleError handles the ListSynchronizationDetails error response.
-func (client *SharesClient) listSynchronizationDetailsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSynchronizations - List synchronizations of a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *SharesClient) ListSynchronizations(resourceGroupName string, accountName string, shareName string, options *SharesListSynchronizationsOptions) *SharesListSynchronizationsPager {
-	return &SharesListSynchronizationsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// options - SharesClientListSynchronizationsOptions contains the optional parameters for the SharesClient.ListSynchronizations
+// method.
+func (client *SharesClient) ListSynchronizations(resourceGroupName string, accountName string, shareName string, options *SharesClientListSynchronizationsOptions) *SharesClientListSynchronizationsPager {
+	return &SharesClientListSynchronizationsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSynchronizationsCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 		},
-		advancer: func(ctx context.Context, resp SharesListSynchronizationsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SharesClientListSynchronizationsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ShareSynchronizationList.NextLink)
 		},
 	}
 }
 
 // listSynchronizationsCreateRequest creates the ListSynchronizations request.
-func (client *SharesClient) listSynchronizationsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesListSynchronizationsOptions) (*policy.Request, error) {
+func (client *SharesClient) listSynchronizationsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientListSynchronizationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/listSynchronizations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -439,7 +408,7 @@ func (client *SharesClient) listSynchronizationsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter shareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -460,23 +429,10 @@ func (client *SharesClient) listSynchronizationsCreateRequest(ctx context.Contex
 }
 
 // listSynchronizationsHandleResponse handles the ListSynchronizations response.
-func (client *SharesClient) listSynchronizationsHandleResponse(resp *http.Response) (SharesListSynchronizationsResponse, error) {
-	result := SharesListSynchronizationsResponse{RawResponse: resp}
+func (client *SharesClient) listSynchronizationsHandleResponse(resp *http.Response) (SharesClientListSynchronizationsResponse, error) {
+	result := SharesClientListSynchronizationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ShareSynchronizationList); err != nil {
-		return SharesListSynchronizationsResponse{}, runtime.NewResponseError(err, resp)
+		return SharesClientListSynchronizationsResponse{}, err
 	}
 	return result, nil
-}
-
-// listSynchronizationsHandleError handles the ListSynchronizations error response.
-func (client *SharesClient) listSynchronizationsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

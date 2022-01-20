@@ -30,44 +30,6 @@ func unmarshalAccessReviewDecisionTargetClassification(rawMsg json.RawMessage) (
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAccessReviewDecisionTargetClassificationArray(rawMsg json.RawMessage) ([]AccessReviewDecisionTargetClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]AccessReviewDecisionTargetClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAccessReviewDecisionTargetClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalAccessReviewDecisionTargetClassificationMap(rawMsg json.RawMessage) (map[string]AccessReviewDecisionTargetClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AccessReviewDecisionTargetClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAccessReviewDecisionTargetClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (RoleManagementPolicyRuleClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -111,23 +73,4 @@ func unmarshalRoleManagementPolicyRuleClassificationArray(rawMsg json.RawMessage
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalRoleManagementPolicyRuleClassificationMap(rawMsg json.RawMessage) (map[string]RoleManagementPolicyRuleClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]RoleManagementPolicyRuleClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalRoleManagementPolicyRuleClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

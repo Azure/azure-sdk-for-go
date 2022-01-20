@@ -17,17 +17,18 @@ import (
 )
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurationsResourceGroup_List.json
-func ExampleMaintenanceConfigurationsForResourceGroupClient_List() {
+func ExampleConfigurationsForResourceGroupClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmaintenance.NewMaintenanceConfigurationsForResourceGroupClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	client := armmaintenance.NewConfigurationsForResourceGroupClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ConfigurationsForResourceGroupClientListResult)
 }

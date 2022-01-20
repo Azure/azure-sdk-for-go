@@ -24,42 +24,57 @@ import (
 // SQLPoolBlobAuditingPoliciesClient contains the methods for the SQLPoolBlobAuditingPolicies group.
 // Don't use this type directly, use NewSQLPoolBlobAuditingPoliciesClient() instead.
 type SQLPoolBlobAuditingPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolBlobAuditingPoliciesClient creates a new instance of SQLPoolBlobAuditingPoliciesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolBlobAuditingPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolBlobAuditingPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolBlobAuditingPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a SQL pool's blob auditing policy.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, blobAuditingPolicyName Enum11, parameters SQLPoolBlobAuditingPolicy, options *SQLPoolBlobAuditingPoliciesCreateOrUpdateOptions) (SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// blobAuditingPolicyName - The name of the blob auditing policy.
+// parameters - The database blob auditing policy.
+// options - SQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions contains the optional parameters for the SQLPoolBlobAuditingPoliciesClient.CreateOrUpdate
+// method.
+func (client *SQLPoolBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, blobAuditingPolicyName Enum11, parameters SQLPoolBlobAuditingPolicy, options *SQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions) (SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, blobAuditingPolicyName, parameters, options)
 	if err != nil {
-		return SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse{}, err
+		return SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse{}, err
+		return SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, blobAuditingPolicyName Enum11, parameters SQLPoolBlobAuditingPolicy, options *SQLPoolBlobAuditingPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, blobAuditingPolicyName Enum11, parameters SQLPoolBlobAuditingPolicy, options *SQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings/{blobAuditingPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +96,7 @@ func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx
 		return nil, errors.New("parameter blobAuditingPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape(string(blobAuditingPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,45 +108,39 @@ func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse, error) {
-	result := SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse, error) {
+	result := SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolBlobAuditingPolicy); err != nil {
-		return SQLPoolBlobAuditingPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolBlobAuditingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SQLPoolBlobAuditingPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get a SQL pool's blob auditing policy.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, blobAuditingPolicyName Enum11, options *SQLPoolBlobAuditingPoliciesGetOptions) (SQLPoolBlobAuditingPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// blobAuditingPolicyName - The name of the blob auditing policy.
+// options - SQLPoolBlobAuditingPoliciesClientGetOptions contains the optional parameters for the SQLPoolBlobAuditingPoliciesClient.Get
+// method.
+func (client *SQLPoolBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, blobAuditingPolicyName Enum11, options *SQLPoolBlobAuditingPoliciesClientGetOptions) (SQLPoolBlobAuditingPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, blobAuditingPolicyName, options)
 	if err != nil {
-		return SQLPoolBlobAuditingPoliciesGetResponse{}, err
+		return SQLPoolBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolBlobAuditingPoliciesGetResponse{}, err
+		return SQLPoolBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolBlobAuditingPoliciesGetResponse{}, client.getHandleError(resp)
+		return SQLPoolBlobAuditingPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, blobAuditingPolicyName Enum11, options *SQLPoolBlobAuditingPoliciesGetOptions) (*policy.Request, error) {
+func (client *SQLPoolBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, blobAuditingPolicyName Enum11, options *SQLPoolBlobAuditingPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings/{blobAuditingPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -153,7 +162,7 @@ func (client *SQLPoolBlobAuditingPoliciesClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter blobAuditingPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape(string(blobAuditingPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,42 +174,35 @@ func (client *SQLPoolBlobAuditingPoliciesClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (SQLPoolBlobAuditingPoliciesGetResponse, error) {
-	result := SQLPoolBlobAuditingPoliciesGetResponse{RawResponse: resp}
+func (client *SQLPoolBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (SQLPoolBlobAuditingPoliciesClientGetResponse, error) {
+	result := SQLPoolBlobAuditingPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolBlobAuditingPolicy); err != nil {
-		return SQLPoolBlobAuditingPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLPoolBlobAuditingPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListBySQLPool - Lists auditing settings of a Sql pool.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolBlobAuditingPoliciesClient) ListBySQLPool(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolBlobAuditingPoliciesListBySQLPoolOptions) *SQLPoolBlobAuditingPoliciesListBySQLPoolPager {
-	return &SQLPoolBlobAuditingPoliciesListBySQLPoolPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions contains the optional parameters for the SQLPoolBlobAuditingPoliciesClient.ListBySQLPool
+// method.
+func (client *SQLPoolBlobAuditingPoliciesClient) ListBySQLPool(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions) *SQLPoolBlobAuditingPoliciesClientListBySQLPoolPager {
+	return &SQLPoolBlobAuditingPoliciesClientListBySQLPoolPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySQLPoolCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolBlobAuditingPoliciesListBySQLPoolResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLPoolBlobAuditingPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listBySQLPoolCreateRequest creates the ListBySQLPool request.
-func (client *SQLPoolBlobAuditingPoliciesClient) listBySQLPoolCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolBlobAuditingPoliciesListBySQLPoolOptions) (*policy.Request, error) {
+func (client *SQLPoolBlobAuditingPoliciesClient) listBySQLPoolCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -218,7 +220,7 @@ func (client *SQLPoolBlobAuditingPoliciesClient) listBySQLPoolCreateRequest(ctx 
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,22 +232,10 @@ func (client *SQLPoolBlobAuditingPoliciesClient) listBySQLPoolCreateRequest(ctx 
 }
 
 // listBySQLPoolHandleResponse handles the ListBySQLPool response.
-func (client *SQLPoolBlobAuditingPoliciesClient) listBySQLPoolHandleResponse(resp *http.Response) (SQLPoolBlobAuditingPoliciesListBySQLPoolResponse, error) {
-	result := SQLPoolBlobAuditingPoliciesListBySQLPoolResponse{RawResponse: resp}
+func (client *SQLPoolBlobAuditingPoliciesClient) listBySQLPoolHandleResponse(resp *http.Response) (SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse, error) {
+	result := SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolBlobAuditingPolicyListResult); err != nil {
-		return SQLPoolBlobAuditingPoliciesListBySQLPoolResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySQLPoolHandleError handles the ListBySQLPool error response.
-func (client *SQLPoolBlobAuditingPoliciesClient) listBySQLPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

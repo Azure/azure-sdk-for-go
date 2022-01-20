@@ -16,77 +16,23 @@ import (
 	"reflect"
 )
 
-// PrivateStoreCollectionOfferListPager provides operations for iterating over paged responses.
-type PrivateStoreCollectionOfferListPager struct {
-	client    *PrivateStoreCollectionOfferClient
-	current   PrivateStoreCollectionOfferListResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PrivateStoreCollectionOfferListResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *PrivateStoreCollectionOfferListPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *PrivateStoreCollectionOfferListPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.OfferListResponse.NextLink == nil || len(*p.current.OfferListResponse.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
-		return false
-	}
-	result, err := p.client.listHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current PrivateStoreCollectionOfferListResponse page.
-func (p *PrivateStoreCollectionOfferListPager) PageResponse() PrivateStoreCollectionOfferListResponse {
-	return p.current
-}
-
-// PrivateStoreListPager provides operations for iterating over paged responses.
-type PrivateStoreListPager struct {
+// PrivateStoreClientListPager provides operations for iterating over paged responses.
+type PrivateStoreClientListPager struct {
 	client    *PrivateStoreClient
-	current   PrivateStoreListResponse
+	current   PrivateStoreClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PrivateStoreListResponse) (*policy.Request, error)
+	advancer  func(context.Context, PrivateStoreClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PrivateStoreListPager) Err() error {
+func (p *PrivateStoreClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PrivateStoreListPager) NextPage(ctx context.Context) bool {
+func (p *PrivateStoreClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +53,7 @@ func (p *PrivateStoreListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,7 +65,61 @@ func (p *PrivateStoreListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current PrivateStoreListResponse page.
-func (p *PrivateStoreListPager) PageResponse() PrivateStoreListResponse {
+// PageResponse returns the current PrivateStoreClientListResponse page.
+func (p *PrivateStoreClientListPager) PageResponse() PrivateStoreClientListResponse {
+	return p.current
+}
+
+// PrivateStoreCollectionOfferClientListPager provides operations for iterating over paged responses.
+type PrivateStoreCollectionOfferClientListPager struct {
+	client    *PrivateStoreCollectionOfferClient
+	current   PrivateStoreCollectionOfferClientListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, PrivateStoreCollectionOfferClientListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *PrivateStoreCollectionOfferClientListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *PrivateStoreCollectionOfferClientListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.OfferListResponse.NextLink == nil || len(*p.current.OfferListResponse.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current PrivateStoreCollectionOfferClientListResponse page.
+func (p *PrivateStoreCollectionOfferClientListPager) PageResponse() PrivateStoreCollectionOfferClientListResponse {
 	return p.current
 }

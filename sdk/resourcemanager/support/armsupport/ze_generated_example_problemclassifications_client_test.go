@@ -24,12 +24,13 @@ func ExampleProblemClassificationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armsupport.NewProblemClassificationsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<service-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProblemClassificationsClientListResult)
 }
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/GetProblemClassification.json
@@ -47,5 +48,5 @@ func ExampleProblemClassificationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProblemClassification.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProblemClassificationsClientGetResult)
 }

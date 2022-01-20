@@ -24,43 +24,56 @@ import (
 // ReplicationEligibilityResultsClient contains the methods for the ReplicationEligibilityResults group.
 // Don't use this type directly, use NewReplicationEligibilityResultsClient() instead.
 type ReplicationEligibilityResultsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationEligibilityResultsClient creates a new instance of ReplicationEligibilityResultsClient with the specified values.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationEligibilityResultsClient(resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationEligibilityResultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationEligibilityResultsClient{resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationEligibilityResultsClient{
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Validates whether a given VM can be protected or not in which case returns list of errors.
-// If the operation fails it returns a generic error.
-func (client *ReplicationEligibilityResultsClient) Get(ctx context.Context, virtualMachineName string, options *ReplicationEligibilityResultsGetOptions) (ReplicationEligibilityResultsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// virtualMachineName - Virtual Machine name.
+// options - ReplicationEligibilityResultsClientGetOptions contains the optional parameters for the ReplicationEligibilityResultsClient.Get
+// method.
+func (client *ReplicationEligibilityResultsClient) Get(ctx context.Context, virtualMachineName string, options *ReplicationEligibilityResultsClientGetOptions) (ReplicationEligibilityResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, virtualMachineName, options)
 	if err != nil {
-		return ReplicationEligibilityResultsGetResponse{}, err
+		return ReplicationEligibilityResultsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationEligibilityResultsGetResponse{}, err
+		return ReplicationEligibilityResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationEligibilityResultsGetResponse{}, client.getHandleError(resp)
+		return ReplicationEligibilityResultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationEligibilityResultsClient) getCreateRequest(ctx context.Context, virtualMachineName string, options *ReplicationEligibilityResultsGetOptions) (*policy.Request, error) {
+func (client *ReplicationEligibilityResultsClient) getCreateRequest(ctx context.Context, virtualMachineName string, options *ReplicationEligibilityResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}/providers/Microsoft.RecoveryServices/replicationEligibilityResults/default"
 	if client.resourceGroupName == "" {
 		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
@@ -74,57 +87,48 @@ func (client *ReplicationEligibilityResultsClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationEligibilityResultsClient) getHandleResponse(resp *http.Response) (ReplicationEligibilityResultsGetResponse, error) {
-	result := ReplicationEligibilityResultsGetResponse{RawResponse: resp}
+func (client *ReplicationEligibilityResultsClient) getHandleResponse(resp *http.Response) (ReplicationEligibilityResultsClientGetResponse, error) {
+	result := ReplicationEligibilityResultsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationEligibilityResults); err != nil {
-		return ReplicationEligibilityResultsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationEligibilityResultsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationEligibilityResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Validates whether a given VM can be protected or not in which case returns list of errors.
-// If the operation fails it returns a generic error.
-func (client *ReplicationEligibilityResultsClient) List(ctx context.Context, virtualMachineName string, options *ReplicationEligibilityResultsListOptions) (ReplicationEligibilityResultsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// virtualMachineName - Virtual Machine name.
+// options - ReplicationEligibilityResultsClientListOptions contains the optional parameters for the ReplicationEligibilityResultsClient.List
+// method.
+func (client *ReplicationEligibilityResultsClient) List(ctx context.Context, virtualMachineName string, options *ReplicationEligibilityResultsClientListOptions) (ReplicationEligibilityResultsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, virtualMachineName, options)
 	if err != nil {
-		return ReplicationEligibilityResultsListResponse{}, err
+		return ReplicationEligibilityResultsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationEligibilityResultsListResponse{}, err
+		return ReplicationEligibilityResultsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationEligibilityResultsListResponse{}, client.listHandleError(resp)
+		return ReplicationEligibilityResultsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationEligibilityResultsClient) listCreateRequest(ctx context.Context, virtualMachineName string, options *ReplicationEligibilityResultsListOptions) (*policy.Request, error) {
+func (client *ReplicationEligibilityResultsClient) listCreateRequest(ctx context.Context, virtualMachineName string, options *ReplicationEligibilityResultsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{virtualMachineName}/providers/Microsoft.RecoveryServices/replicationEligibilityResults"
 	if client.resourceGroupName == "" {
 		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
@@ -138,34 +142,22 @@ func (client *ReplicationEligibilityResultsClient) listCreateRequest(ctx context
 		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationEligibilityResultsClient) listHandleResponse(resp *http.Response) (ReplicationEligibilityResultsListResponse, error) {
-	result := ReplicationEligibilityResultsListResponse{RawResponse: resp}
+func (client *ReplicationEligibilityResultsClient) listHandleResponse(resp *http.Response) (ReplicationEligibilityResultsClientListResponse, error) {
+	result := ReplicationEligibilityResultsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationEligibilityResultsCollection); err != nil {
-		return ReplicationEligibilityResultsListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationEligibilityResultsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ReplicationEligibilityResultsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

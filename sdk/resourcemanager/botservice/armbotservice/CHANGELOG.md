@@ -1,5 +1,438 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ChannelsClient.Update` parameter(s) have been changed from `(context.Context, string, string, ChannelName, BotChannel, *ChannelsUpdateOptions)` to `(context.Context, string, string, ChannelName, BotChannel, *ChannelsClientUpdateOptions)`
+- Function `*ChannelsClient.Update` return value(s) have been changed from `(ChannelsUpdateResponse, error)` to `(ChannelsClientUpdateResponse, error)`
+- Function `*ChannelsClient.Create` parameter(s) have been changed from `(context.Context, string, string, ChannelName, BotChannel, *ChannelsCreateOptions)` to `(context.Context, string, string, ChannelName, BotChannel, *ChannelsClientCreateOptions)`
+- Function `*ChannelsClient.Create` return value(s) have been changed from `(ChannelsCreateResponse, error)` to `(ChannelsClientCreateResponse, error)`
+- Function `*BotsClient.List` parameter(s) have been changed from `(*BotsListOptions)` to `(*BotsClientListOptions)`
+- Function `*BotsClient.List` return value(s) have been changed from `(*BotsListPager)` to `(*BotsClientListPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*BotConnectionClient.ListByBotService` parameter(s) have been changed from `(string, string, *BotConnectionListByBotServiceOptions)` to `(string, string, *BotConnectionClientListByBotServiceOptions)`
+- Function `*BotConnectionClient.ListByBotService` return value(s) have been changed from `(*BotConnectionListByBotServicePager)` to `(*BotConnectionClientListByBotServicePager)`
+- Function `*PrivateEndpointConnectionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.Delete` return value(s) have been changed from `(PrivateEndpointConnectionsDeleteResponse, error)` to `(PrivateEndpointConnectionsClientDeleteResponse, error)`
+- Function `*ChannelsClient.ListWithKeys` parameter(s) have been changed from `(context.Context, string, string, ChannelName, *ChannelsListWithKeysOptions)` to `(context.Context, string, string, ChannelName, *ChannelsClientListWithKeysOptions)`
+- Function `*ChannelsClient.ListWithKeys` return value(s) have been changed from `(ChannelsListWithKeysResponse, error)` to `(ChannelsClientListWithKeysResponse, error)`
+- Function `*ChannelsClient.ListByResourceGroup` parameter(s) have been changed from `(string, string, *ChannelsListByResourceGroupOptions)` to `(string, string, *ChannelsClientListByResourceGroupOptions)`
+- Function `*ChannelsClient.ListByResourceGroup` return value(s) have been changed from `(*ChannelsListByResourceGroupPager)` to `(*ChannelsClientListByResourceGroupPager)`
+- Function `*BotsClient.GetCheckNameAvailability` parameter(s) have been changed from `(context.Context, CheckNameAvailabilityRequestBody, *BotsGetCheckNameAvailabilityOptions)` to `(context.Context, CheckNameAvailabilityRequestBody, *BotsClientGetCheckNameAvailabilityOptions)`
+- Function `*BotsClient.GetCheckNameAvailability` return value(s) have been changed from `(BotsGetCheckNameAvailabilityResponse, error)` to `(BotsClientGetCheckNameAvailabilityResponse, error)`
+- Function `*BotConnectionClient.ListServiceProviders` parameter(s) have been changed from `(context.Context, *BotConnectionListServiceProvidersOptions)` to `(context.Context, *BotConnectionClientListServiceProvidersOptions)`
+- Function `*BotConnectionClient.ListServiceProviders` return value(s) have been changed from `(BotConnectionListServiceProvidersResponse, error)` to `(BotConnectionClientListServiceProvidersResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListResponse, error)` to `(PrivateEndpointConnectionsClientListResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByBotResource` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListByBotResourceOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListByBotResourceOptions)`
+- Function `*PrivateLinkResourcesClient.ListByBotResource` return value(s) have been changed from `(PrivateLinkResourcesListByBotResourceResponse, error)` to `(PrivateLinkResourcesClientListByBotResourceResponse, error)`
+- Function `*BotsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *BotsListByResourceGroupOptions)` to `(string, *BotsClientListByResourceGroupOptions)`
+- Function `*BotsClient.ListByResourceGroup` return value(s) have been changed from `(*BotsListByResourceGroupPager)` to `(*BotsClientListByResourceGroupPager)`
+- Function `*PrivateEndpointConnectionsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsCreateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientCreateOptions)`
+- Function `*PrivateEndpointConnectionsClient.Create` return value(s) have been changed from `(PrivateEndpointConnectionsCreateResponse, error)` to `(PrivateEndpointConnectionsClientCreateResponse, error)`
+- Function `*BotsClient.Create` parameter(s) have been changed from `(context.Context, string, string, Bot, *BotsCreateOptions)` to `(context.Context, string, string, Bot, *BotsClientCreateOptions)`
+- Function `*BotsClient.Create` return value(s) have been changed from `(BotsCreateResponse, error)` to `(BotsClientCreateResponse, error)`
+- Function `*HostSettingsClient.Get` parameter(s) have been changed from `(context.Context, *HostSettingsGetOptions)` to `(context.Context, *HostSettingsClientGetOptions)`
+- Function `*HostSettingsClient.Get` return value(s) have been changed from `(HostSettingsGetResponse, error)` to `(HostSettingsClientGetResponse, error)`
+- Function `*BotsClient.Update` parameter(s) have been changed from `(context.Context, string, string, Bot, *BotsUpdateOptions)` to `(context.Context, string, string, Bot, *BotsClientUpdateOptions)`
+- Function `*BotsClient.Update` return value(s) have been changed from `(BotsUpdateResponse, error)` to `(BotsClientUpdateResponse, error)`
+- Function `*OperationResultsClient.BeginGet` parameter(s) have been changed from `(context.Context, string, *OperationResultsBeginGetOptions)` to `(context.Context, string, *OperationResultsClientBeginGetOptions)`
+- Function `*OperationResultsClient.BeginGet` return value(s) have been changed from `(OperationResultsGetPollerResponse, error)` to `(OperationResultsClientGetPollerResponse, error)`
+- Function `*ChannelsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ChannelsGetOptions)` to `(context.Context, string, string, string, *ChannelsClientGetOptions)`
+- Function `*ChannelsClient.Get` return value(s) have been changed from `(ChannelsGetResponse, error)` to `(ChannelsClientGetResponse, error)`
+- Function `*BotsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *BotsDeleteOptions)` to `(context.Context, string, string, *BotsClientDeleteOptions)`
+- Function `*BotsClient.Delete` return value(s) have been changed from `(BotsDeleteResponse, error)` to `(BotsClientDeleteResponse, error)`
+- Function `*ChannelsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *ChannelsDeleteOptions)` to `(context.Context, string, string, string, *ChannelsClientDeleteOptions)`
+- Function `*ChannelsClient.Delete` return value(s) have been changed from `(ChannelsDeleteResponse, error)` to `(ChannelsClientDeleteResponse, error)`
+- Function `*BotConnectionClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, ConnectionSetting, *BotConnectionCreateOptions)` to `(context.Context, string, string, string, ConnectionSetting, *BotConnectionClientCreateOptions)`
+- Function `*BotConnectionClient.Create` return value(s) have been changed from `(BotConnectionCreateResponse, error)` to `(BotConnectionClientCreateResponse, error)`
+- Function `*BotConnectionClient.ListWithSecrets` parameter(s) have been changed from `(context.Context, string, string, string, *BotConnectionListWithSecretsOptions)` to `(context.Context, string, string, string, *BotConnectionClientListWithSecretsOptions)`
+- Function `*BotConnectionClient.ListWithSecrets` return value(s) have been changed from `(BotConnectionListWithSecretsResponse, error)` to `(BotConnectionClientListWithSecretsResponse, error)`
+- Function `*DirectLineClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, RegenerateKeysChannelName, SiteInfo, *DirectLineRegenerateKeysOptions)` to `(context.Context, string, string, RegenerateKeysChannelName, SiteInfo, *DirectLineClientRegenerateKeysOptions)`
+- Function `*DirectLineClient.RegenerateKeys` return value(s) have been changed from `(DirectLineRegenerateKeysResponse, error)` to `(DirectLineClientRegenerateKeysResponse, error)`
+- Function `*BotsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *BotsGetOptions)` to `(context.Context, string, string, *BotsClientGetOptions)`
+- Function `*BotsClient.Get` return value(s) have been changed from `(BotsGetResponse, error)` to `(BotsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*BotConnectionClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, ConnectionSetting, *BotConnectionUpdateOptions)` to `(context.Context, string, string, string, ConnectionSetting, *BotConnectionClientUpdateOptions)`
+- Function `*BotConnectionClient.Update` return value(s) have been changed from `(BotConnectionUpdateResponse, error)` to `(BotConnectionClientUpdateResponse, error)`
+- Function `*BotConnectionClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *BotConnectionGetOptions)` to `(context.Context, string, string, string, *BotConnectionClientGetOptions)`
+- Function `*BotConnectionClient.Get` return value(s) have been changed from `(BotConnectionGetResponse, error)` to `(BotConnectionClientGetResponse, error)`
+- Function `*BotConnectionClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *BotConnectionDeleteOptions)` to `(context.Context, string, string, string, *BotConnectionClientDeleteOptions)`
+- Function `*BotConnectionClient.Delete` return value(s) have been changed from `(BotConnectionDeleteResponse, error)` to `(BotConnectionClientDeleteResponse, error)`
+- Function `*Bot.UnmarshalJSON` has been removed
+- Function `*BotsListPager.Err` has been removed
+- Function `*BotsListPager.NextPage` has been removed
+- Function `*BotConnectionListByBotServicePager.NextPage` has been removed
+- Function `*BotConnectionListByBotServicePager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ConnectionSetting.UnmarshalJSON` has been removed
+- Function `*ChannelsListByResourceGroupPager.PageResponse` has been removed
+- Function `*BotsListByResourceGroupPager.Err` has been removed
+- Function `*BotsListByResourceGroupPager.NextPage` has been removed
+- Function `*ChannelsListByResourceGroupPager.Err` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*Channel.UnmarshalJSON` has been removed
+- Function `Error.Error` has been removed
+- Function `*OperationResultsGetPoller.FinalResponse` has been removed
+- Function `*OperationResultsGetPollerResponse.Resume` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*OperationResultsGetPoller.Done` has been removed
+- Function `*BotsListPager.PageResponse` has been removed
+- Function `*OperationResultsGetPoller.Poll` has been removed
+- Function `*OperationResultsGetPoller.ResumeToken` has been removed
+- Function `*BotsListByResourceGroupPager.PageResponse` has been removed
+- Function `*BotConnectionListByBotServicePager.PageResponse` has been removed
+- Function `*ChannelsListByResourceGroupPager.NextPage` has been removed
+- Function `OperationResultsGetPollerResponse.PollUntilDone` has been removed
+- Struct `BotConnectionCreateOptions` has been removed
+- Struct `BotConnectionCreateResponse` has been removed
+- Struct `BotConnectionCreateResult` has been removed
+- Struct `BotConnectionDeleteOptions` has been removed
+- Struct `BotConnectionDeleteResponse` has been removed
+- Struct `BotConnectionGetOptions` has been removed
+- Struct `BotConnectionGetResponse` has been removed
+- Struct `BotConnectionGetResult` has been removed
+- Struct `BotConnectionListByBotServiceOptions` has been removed
+- Struct `BotConnectionListByBotServicePager` has been removed
+- Struct `BotConnectionListByBotServiceResponse` has been removed
+- Struct `BotConnectionListByBotServiceResult` has been removed
+- Struct `BotConnectionListServiceProvidersOptions` has been removed
+- Struct `BotConnectionListServiceProvidersResponse` has been removed
+- Struct `BotConnectionListServiceProvidersResult` has been removed
+- Struct `BotConnectionListWithSecretsOptions` has been removed
+- Struct `BotConnectionListWithSecretsResponse` has been removed
+- Struct `BotConnectionListWithSecretsResult` has been removed
+- Struct `BotConnectionUpdateOptions` has been removed
+- Struct `BotConnectionUpdateResponse` has been removed
+- Struct `BotConnectionUpdateResult` has been removed
+- Struct `BotsCreateOptions` has been removed
+- Struct `BotsCreateResponse` has been removed
+- Struct `BotsCreateResult` has been removed
+- Struct `BotsDeleteOptions` has been removed
+- Struct `BotsDeleteResponse` has been removed
+- Struct `BotsGetCheckNameAvailabilityOptions` has been removed
+- Struct `BotsGetCheckNameAvailabilityResponse` has been removed
+- Struct `BotsGetCheckNameAvailabilityResult` has been removed
+- Struct `BotsGetOptions` has been removed
+- Struct `BotsGetResponse` has been removed
+- Struct `BotsGetResult` has been removed
+- Struct `BotsListByResourceGroupOptions` has been removed
+- Struct `BotsListByResourceGroupPager` has been removed
+- Struct `BotsListByResourceGroupResponse` has been removed
+- Struct `BotsListByResourceGroupResult` has been removed
+- Struct `BotsListOptions` has been removed
+- Struct `BotsListPager` has been removed
+- Struct `BotsListResponse` has been removed
+- Struct `BotsListResult` has been removed
+- Struct `BotsUpdateOptions` has been removed
+- Struct `BotsUpdateResponse` has been removed
+- Struct `BotsUpdateResult` has been removed
+- Struct `ChannelsCreateOptions` has been removed
+- Struct `ChannelsCreateResponse` has been removed
+- Struct `ChannelsCreateResult` has been removed
+- Struct `ChannelsDeleteOptions` has been removed
+- Struct `ChannelsDeleteResponse` has been removed
+- Struct `ChannelsGetOptions` has been removed
+- Struct `ChannelsGetResponse` has been removed
+- Struct `ChannelsGetResult` has been removed
+- Struct `ChannelsListByResourceGroupOptions` has been removed
+- Struct `ChannelsListByResourceGroupPager` has been removed
+- Struct `ChannelsListByResourceGroupResponse` has been removed
+- Struct `ChannelsListByResourceGroupResult` has been removed
+- Struct `ChannelsListWithKeysOptions` has been removed
+- Struct `ChannelsListWithKeysResponse` has been removed
+- Struct `ChannelsListWithKeysResult` has been removed
+- Struct `ChannelsUpdateOptions` has been removed
+- Struct `ChannelsUpdateResponse` has been removed
+- Struct `ChannelsUpdateResult` has been removed
+- Struct `DirectLineRegenerateKeysOptions` has been removed
+- Struct `DirectLineRegenerateKeysResponse` has been removed
+- Struct `DirectLineRegenerateKeysResult` has been removed
+- Struct `HostSettingsGetOptions` has been removed
+- Struct `HostSettingsGetResponse` has been removed
+- Struct `HostSettingsGetResult` has been removed
+- Struct `OperationResultsBeginGetOptions` has been removed
+- Struct `OperationResultsGetPoller` has been removed
+- Struct `OperationResultsGetPollerResponse` has been removed
+- Struct `OperationResultsGetResponse` has been removed
+- Struct `OperationResultsGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsCreateOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateLinkResourcesListByBotResourceOptions` has been removed
+- Struct `PrivateLinkResourcesListByBotResourceResponse` has been removed
+- Struct `PrivateLinkResourcesListByBotResourceResult` has been removed
+- Field `Channel` of struct `KikChannel` has been removed
+- Field `Channel` of struct `SmsChannel` has been removed
+- Field `Channel` of struct `MsTeamsChannel` has been removed
+- Field `IsIsolated` of struct `BotProperties` has been removed
+- Field `Channel` of struct `LineChannel` has been removed
+- Field `Channel` of struct `WebChatChannel` has been removed
+- Field `Channel` of struct `FacebookChannel` has been removed
+- Field `Channel` of struct `AlexaChannel` has been removed
+- Field `Resource` of struct `Bot` has been removed
+- Field `PrivateLinkResourceBase` of struct `PrivateLinkResource` has been removed
+- Field `PrivateLinkResourceBase` of struct `PrivateEndpointConnection` has been removed
+- Field `Resource` of struct `BotChannel` has been removed
+- Field `Channel` of struct `TelegramChannel` has been removed
+- Field `Channel` of struct `EmailChannel` has been removed
+- Field `Channel` of struct `SlackChannel` has been removed
+- Field `Channel` of struct `DirectLineChannel` has been removed
+- Field `Channel` of struct `DirectLineSpeechChannel` has been removed
+- Field `Resource` of struct `ConnectionSetting` has been removed
+- Field `Channel` of struct `SkypeChannel` has been removed
+- Field `InnerError` of struct `Error` has been removed
+
+### Features Added
+
+- New const `PublicNetworkAccessEnabled`
+- New const `PublicNetworkAccessDisabled`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*SmsChannel.GetChannel() *Channel`
+- New function `*OperationResultsClientGetPollerResponse.Resume(context.Context, *OperationResultsClient, string) error`
+- New function `*ChannelsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `OperationResultsClientGetPollerResponse.PollUntilDone(context.Context, time.Duration) (OperationResultsClientGetResponse, error)`
+- New function `*BotsClientListPager.PageResponse() BotsClientListResponse`
+- New function `*AlexaChannel.GetChannel() *Channel`
+- New function `*FacebookChannel.GetChannel() *Channel`
+- New function `*BotConnectionClientListByBotServicePager.NextPage(context.Context) bool`
+- New function `*OperationResultsClientGetPoller.FinalResponse(context.Context) (OperationResultsClientGetResponse, error)`
+- New function `*BotsClientListByResourceGroupPager.Err() error`
+- New function `*OperationResultsClientGetPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BotConnectionClientListByBotServicePager.Err() error`
+- New function `PossiblePublicNetworkAccessValues() []PublicNetworkAccess`
+- New function `*WebChatChannel.GetChannel() *Channel`
+- New function `*ChannelsClientListByResourceGroupPager.PageResponse() ChannelsClientListByResourceGroupResponse`
+- New function `*BotConnectionClientListByBotServicePager.PageResponse() BotConnectionClientListByBotServiceResponse`
+- New function `*BotsClientListPager.Err() error`
+- New function `*ChannelsClientListByResourceGroupPager.Err() error`
+- New function `*DirectLineSpeechChannel.GetChannel() *Channel`
+- New function `*LineChannel.GetChannel() *Channel`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*OperationResultsClientGetPoller.ResumeToken() (string, error)`
+- New function `*ListChannelWithKeysResponse.UnmarshalJSON([]byte) error`
+- New function `*OperationResultsClientGetPoller.Done() bool`
+- New function `*BotsClientListPager.NextPage(context.Context) bool`
+- New function `*SkypeChannel.GetChannel() *Channel`
+- New function `Site.MarshalJSON() ([]byte, error)`
+- New function `*SlackChannel.GetChannel() *Channel`
+- New function `PublicNetworkAccess.ToPtr() *PublicNetworkAccess`
+- New function `ListChannelWithKeysResponse.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*DirectLineChannel.GetChannel() *Channel`
+- New function `*TelegramChannel.GetChannel() *Channel`
+- New function `*KikChannel.GetChannel() *Channel`
+- New function `*EmailChannel.GetChannel() *Channel`
+- New function `*MsTeamsChannel.GetChannel() *Channel`
+- New function `*BotsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*BotsClientListByResourceGroupPager.PageResponse() BotsClientListByResourceGroupResponse`
+- New function `ChannelSettings.MarshalJSON() ([]byte, error)`
+- New struct `BotConnectionClientCreateOptions`
+- New struct `BotConnectionClientCreateResponse`
+- New struct `BotConnectionClientCreateResult`
+- New struct `BotConnectionClientDeleteOptions`
+- New struct `BotConnectionClientDeleteResponse`
+- New struct `BotConnectionClientGetOptions`
+- New struct `BotConnectionClientGetResponse`
+- New struct `BotConnectionClientGetResult`
+- New struct `BotConnectionClientListByBotServiceOptions`
+- New struct `BotConnectionClientListByBotServicePager`
+- New struct `BotConnectionClientListByBotServiceResponse`
+- New struct `BotConnectionClientListByBotServiceResult`
+- New struct `BotConnectionClientListServiceProvidersOptions`
+- New struct `BotConnectionClientListServiceProvidersResponse`
+- New struct `BotConnectionClientListServiceProvidersResult`
+- New struct `BotConnectionClientListWithSecretsOptions`
+- New struct `BotConnectionClientListWithSecretsResponse`
+- New struct `BotConnectionClientListWithSecretsResult`
+- New struct `BotConnectionClientUpdateOptions`
+- New struct `BotConnectionClientUpdateResponse`
+- New struct `BotConnectionClientUpdateResult`
+- New struct `BotsClientCreateOptions`
+- New struct `BotsClientCreateResponse`
+- New struct `BotsClientCreateResult`
+- New struct `BotsClientDeleteOptions`
+- New struct `BotsClientDeleteResponse`
+- New struct `BotsClientGetCheckNameAvailabilityOptions`
+- New struct `BotsClientGetCheckNameAvailabilityResponse`
+- New struct `BotsClientGetCheckNameAvailabilityResult`
+- New struct `BotsClientGetOptions`
+- New struct `BotsClientGetResponse`
+- New struct `BotsClientGetResult`
+- New struct `BotsClientListByResourceGroupOptions`
+- New struct `BotsClientListByResourceGroupPager`
+- New struct `BotsClientListByResourceGroupResponse`
+- New struct `BotsClientListByResourceGroupResult`
+- New struct `BotsClientListOptions`
+- New struct `BotsClientListPager`
+- New struct `BotsClientListResponse`
+- New struct `BotsClientListResult`
+- New struct `BotsClientUpdateOptions`
+- New struct `BotsClientUpdateResponse`
+- New struct `BotsClientUpdateResult`
+- New struct `ChannelSettings`
+- New struct `ChannelsClientCreateOptions`
+- New struct `ChannelsClientCreateResponse`
+- New struct `ChannelsClientCreateResult`
+- New struct `ChannelsClientDeleteOptions`
+- New struct `ChannelsClientDeleteResponse`
+- New struct `ChannelsClientGetOptions`
+- New struct `ChannelsClientGetResponse`
+- New struct `ChannelsClientGetResult`
+- New struct `ChannelsClientListByResourceGroupOptions`
+- New struct `ChannelsClientListByResourceGroupPager`
+- New struct `ChannelsClientListByResourceGroupResponse`
+- New struct `ChannelsClientListByResourceGroupResult`
+- New struct `ChannelsClientListWithKeysOptions`
+- New struct `ChannelsClientListWithKeysResponse`
+- New struct `ChannelsClientListWithKeysResult`
+- New struct `ChannelsClientUpdateOptions`
+- New struct `ChannelsClientUpdateResponse`
+- New struct `ChannelsClientUpdateResult`
+- New struct `DirectLineClientRegenerateKeysOptions`
+- New struct `DirectLineClientRegenerateKeysResponse`
+- New struct `DirectLineClientRegenerateKeysResult`
+- New struct `HostSettingsClientGetOptions`
+- New struct `HostSettingsClientGetResponse`
+- New struct `HostSettingsClientGetResult`
+- New struct `ListChannelWithKeysResponse`
+- New struct `OperationResultsClientBeginGetOptions`
+- New struct `OperationResultsClientGetPoller`
+- New struct `OperationResultsClientGetPollerResponse`
+- New struct `OperationResultsClientGetResponse`
+- New struct `OperationResultsClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientCreateOptions`
+- New struct `PrivateEndpointConnectionsClientCreateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateResult`
+- New struct `PrivateEndpointConnectionsClientDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateLinkResourcesClientListByBotResourceOptions`
+- New struct `PrivateLinkResourcesClientListByBotResourceResponse`
+- New struct `PrivateLinkResourcesClientListByBotResourceResult`
+- New struct `ServiceProviderParameterMetadata`
+- New struct `ServiceProviderParameterMetadataConstraints`
+- New struct `Site`
+- New field `Location` in struct `Channel`
+- New field `ProvisioningState` in struct `Channel`
+- New field `Location` in struct `TelegramChannel`
+- New field `ChannelName` in struct `TelegramChannel`
+- New field `Etag` in struct `TelegramChannel`
+- New field `Etag` in struct `DirectLineChannel`
+- New field `Location` in struct `DirectLineChannel`
+- New field `ChannelName` in struct `DirectLineChannel`
+- New field `Location` in struct `KikChannel`
+- New field `ProvisioningState` in struct `KikChannel`
+- New field `ChannelName` in struct `KikChannel`
+- New field `Etag` in struct `KikChannel`
+- New field `Etag` in struct `LineChannel`
+- New field `Location` in struct `LineChannel`
+- New field `ProvisioningState` in struct `LineChannel`
+- New field `ChannelName` in struct `LineChannel`
+- New field `ChannelName` in struct `EmailChannel`
+- New field `Etag` in struct `EmailChannel`
+- New field `Location` in struct `EmailChannel`
+- New field `IsStreamingSupported` in struct `BotProperties`
+- New field `CmekEncryptionStatus` in struct `BotProperties`
+- New field `Parameters` in struct `BotProperties`
+- New field `ProvisioningState` in struct `BotProperties`
+- New field `PublishingCredentials` in struct `BotProperties`
+- New field `PublicNetworkAccess` in struct `BotProperties`
+- New field `AllSettings` in struct `BotProperties`
+- New field `StorageResourceID` in struct `BotProperties`
+- New field `ManifestURL` in struct `BotProperties`
+- New field `ChannelName` in struct `AlexaChannel`
+- New field `Etag` in struct `AlexaChannel`
+- New field `Location` in struct `AlexaChannel`
+- New field `ProvisioningState` in struct `AlexaChannel`
+- New field `AcceptedTerms` in struct `MsTeamsChannelProperties`
+- New field `DeploymentEnvironment` in struct `MsTeamsChannelProperties`
+- New field `ProvisioningState` in struct `SkypeChannel`
+- New field `ChannelName` in struct `SkypeChannel`
+- New field `Etag` in struct `SkypeChannel`
+- New field `Location` in struct `SkypeChannel`
+- New field `ChannelName` in struct `MsTeamsChannel`
+- New field `Etag` in struct `MsTeamsChannel`
+- New field `Location` in struct `MsTeamsChannel`
+- New field `Location` in struct `ConnectionSetting`
+- New field `Tags` in struct `ConnectionSetting`
+- New field `Type` in struct `ConnectionSetting`
+- New field `SKU` in struct `ConnectionSetting`
+- New field `ID` in struct `ConnectionSetting`
+- New field `Zones` in struct `ConnectionSetting`
+- New field `Kind` in struct `ConnectionSetting`
+- New field `Etag` in struct `ConnectionSetting`
+- New field `Name` in struct `ConnectionSetting`
+- New field `ChannelName` in struct `SmsChannel`
+- New field `Etag` in struct `SmsChannel`
+- New field `Location` in struct `SmsChannel`
+- New field `ProvisioningState` in struct `SmsChannel`
+- New field `ProvisioningState` in struct `SlackChannel`
+- New field `ChannelName` in struct `SlackChannel`
+- New field `Etag` in struct `SlackChannel`
+- New field `ChannelName` in struct `DirectLineSpeechChannel`
+- New field `Etag` in struct `DirectLineSpeechChannel`
+- New field `Location` in struct `DirectLineSpeechChannel`
+- New field `Metadata` in struct `ServiceProviderParameter`
+- New field `Location` in struct `Bot`
+- New field `SKU` in struct `Bot`
+- New field `Tags` in struct `Bot`
+- New field `Type` in struct `Bot`
+- New field `Kind` in struct `Bot`
+- New field `Etag` in struct `Bot`
+- New field `Zones` in struct `Bot`
+- New field `ID` in struct `Bot`
+- New field `Name` in struct `Bot`
+- New field `Error` in struct `Error`
+- New field `Tags` in struct `BotChannel`
+- New field `Name` in struct `BotChannel`
+- New field `Etag` in struct `BotChannel`
+- New field `SKU` in struct `BotChannel`
+- New field `Location` in struct `BotChannel`
+- New field `ID` in struct `BotChannel`
+- New field `Zones` in struct `BotChannel`
+- New field `Type` in struct `BotChannel`
+- New field `Kind` in struct `BotChannel`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `ChannelName` in struct `FacebookChannel`
+- New field `Etag` in struct `FacebookChannel`
+- New field `ChannelName` in struct `WebChatChannel`
+- New field `Etag` in struct `WebChatChannel`
+- New field `ProvisioningState` in struct `WebChatChannel`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ID` in struct `ConnectionSettingProperties`
+- New field `Name` in struct `ConnectionSettingProperties`
+- New field `ProvisioningState` in struct `ConnectionSettingProperties`
+
+
 ## 0.1.0 (2021-11-16)
 
 - Initial preview release.

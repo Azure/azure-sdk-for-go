@@ -11,7 +11,6 @@ package armcostmanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,50 +24,69 @@ import (
 // ExportsClient contains the methods for the Exports group.
 // Don't use this type directly, use NewExportsClient() instead.
 type ExportsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewExportsClient creates a new instance of ExportsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExportsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ExportsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExportsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExportsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - The operation to create or update a export. Update operation requires latest eTag to be set in the request. You may obtain the latest
-// eTag by performing a get operation. Create operation does not
+// CreateOrUpdate - The operation to create or update a export. Update operation requires latest eTag to be set in the request.
+// You may obtain the latest eTag by performing a get operation. Create operation does not
 // require eTag.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExportsClient) CreateOrUpdate(ctx context.Context, scope string, exportName string, parameters Export, options *ExportsCreateOrUpdateOptions) (ExportsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+// scope,
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId} for Management Group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for billingProfile scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// exportName - Export Name.
+// parameters - Parameters supplied to the CreateOrUpdate Export operation.
+// options - ExportsClientCreateOrUpdateOptions contains the optional parameters for the ExportsClient.CreateOrUpdate method.
+func (client *ExportsClient) CreateOrUpdate(ctx context.Context, scope string, exportName string, parameters Export, options *ExportsClientCreateOrUpdateOptions) (ExportsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, exportName, parameters, options)
 	if err != nil {
-		return ExportsCreateOrUpdateResponse{}, err
+		return ExportsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportsCreateOrUpdateResponse{}, err
+		return ExportsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ExportsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ExportsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ExportsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, exportName string, parameters Export, options *ExportsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ExportsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, exportName string, parameters Export, options *ExportsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if exportName == "" {
 		return nil, errors.New("parameter exportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportName}", url.PathEscape(exportName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -80,53 +98,52 @@ func (client *ExportsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ExportsClient) createOrUpdateHandleResponse(resp *http.Response) (ExportsCreateOrUpdateResponse, error) {
-	result := ExportsCreateOrUpdateResponse{RawResponse: resp}
+func (client *ExportsClient) createOrUpdateHandleResponse(resp *http.Response) (ExportsClientCreateOrUpdateResponse, error) {
+	result := ExportsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Export); err != nil {
-		return ExportsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ExportsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ExportsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - The operation to delete a export.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExportsClient) Delete(ctx context.Context, scope string, exportName string, options *ExportsDeleteOptions) (ExportsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+// scope,
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId} for Management Group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for billingProfile scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// exportName - Export Name.
+// options - ExportsClientDeleteOptions contains the optional parameters for the ExportsClient.Delete method.
+func (client *ExportsClient) Delete(ctx context.Context, scope string, exportName string, options *ExportsClientDeleteOptions) (ExportsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, exportName, options)
 	if err != nil {
-		return ExportsDeleteResponse{}, err
+		return ExportsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportsDeleteResponse{}, err
+		return ExportsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportsDeleteResponse{}, client.deleteHandleError(resp)
+		return ExportsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ExportsDeleteResponse{RawResponse: resp}, nil
+	return ExportsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ExportsClient) deleteCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsDeleteOptions) (*policy.Request, error) {
+func (client *ExportsClient) deleteCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if exportName == "" {
 		return nil, errors.New("parameter exportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportName}", url.PathEscape(exportName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -137,45 +154,44 @@ func (client *ExportsClient) deleteCreateRequest(ctx context.Context, scope stri
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ExportsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Execute - The operation to execute an export.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExportsClient) Execute(ctx context.Context, scope string, exportName string, options *ExportsExecuteOptions) (ExportsExecuteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+// scope,
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId} for Management Group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for billingProfile scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// exportName - Export Name.
+// options - ExportsClientExecuteOptions contains the optional parameters for the ExportsClient.Execute method.
+func (client *ExportsClient) Execute(ctx context.Context, scope string, exportName string, options *ExportsClientExecuteOptions) (ExportsClientExecuteResponse, error) {
 	req, err := client.executeCreateRequest(ctx, scope, exportName, options)
 	if err != nil {
-		return ExportsExecuteResponse{}, err
+		return ExportsClientExecuteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportsExecuteResponse{}, err
+		return ExportsClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportsExecuteResponse{}, client.executeHandleError(resp)
+		return ExportsClientExecuteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ExportsExecuteResponse{RawResponse: resp}, nil
+	return ExportsClientExecuteResponse{RawResponse: resp}, nil
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *ExportsClient) executeCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsExecuteOptions) (*policy.Request, error) {
+func (client *ExportsClient) executeCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}/run"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if exportName == "" {
 		return nil, errors.New("parameter exportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportName}", url.PathEscape(exportName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,45 +202,44 @@ func (client *ExportsClient) executeCreateRequest(ctx context.Context, scope str
 	return req, nil
 }
 
-// executeHandleError handles the Execute error response.
-func (client *ExportsClient) executeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - The operation to get the export for the defined scope by export name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExportsClient) Get(ctx context.Context, scope string, exportName string, options *ExportsGetOptions) (ExportsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+// scope,
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId} for Management Group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for billingProfile scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// exportName - Export Name.
+// options - ExportsClientGetOptions contains the optional parameters for the ExportsClient.Get method.
+func (client *ExportsClient) Get(ctx context.Context, scope string, exportName string, options *ExportsClientGetOptions) (ExportsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, exportName, options)
 	if err != nil {
-		return ExportsGetResponse{}, err
+		return ExportsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportsGetResponse{}, err
+		return ExportsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportsGetResponse{}, client.getHandleError(resp)
+		return ExportsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExportsClient) getCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsGetOptions) (*policy.Request, error) {
+func (client *ExportsClient) getCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if exportName == "" {
 		return nil, errors.New("parameter exportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportName}", url.PathEscape(exportName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,53 +254,53 @@ func (client *ExportsClient) getCreateRequest(ctx context.Context, scope string,
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportsClient) getHandleResponse(resp *http.Response) (ExportsGetResponse, error) {
-	result := ExportsGetResponse{RawResponse: resp}
+func (client *ExportsClient) getHandleResponse(resp *http.Response) (ExportsClientGetResponse, error) {
+	result := ExportsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Export); err != nil {
-		return ExportsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ExportsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ExportsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetExecutionHistory - The operation to get the execution history of an export for the defined scope and export name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExportsClient) GetExecutionHistory(ctx context.Context, scope string, exportName string, options *ExportsGetExecutionHistoryOptions) (ExportsGetExecutionHistoryResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+// scope,
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId} for Management Group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for billingProfile scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// exportName - Export Name.
+// options - ExportsClientGetExecutionHistoryOptions contains the optional parameters for the ExportsClient.GetExecutionHistory
+// method.
+func (client *ExportsClient) GetExecutionHistory(ctx context.Context, scope string, exportName string, options *ExportsClientGetExecutionHistoryOptions) (ExportsClientGetExecutionHistoryResponse, error) {
 	req, err := client.getExecutionHistoryCreateRequest(ctx, scope, exportName, options)
 	if err != nil {
-		return ExportsGetExecutionHistoryResponse{}, err
+		return ExportsClientGetExecutionHistoryResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportsGetExecutionHistoryResponse{}, err
+		return ExportsClientGetExecutionHistoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportsGetExecutionHistoryResponse{}, client.getExecutionHistoryHandleError(resp)
+		return ExportsClientGetExecutionHistoryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getExecutionHistoryHandleResponse(resp)
 }
 
 // getExecutionHistoryCreateRequest creates the GetExecutionHistory request.
-func (client *ExportsClient) getExecutionHistoryCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsGetExecutionHistoryOptions) (*policy.Request, error) {
+func (client *ExportsClient) getExecutionHistoryCreateRequest(ctx context.Context, scope string, exportName string, options *ExportsClientGetExecutionHistoryOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}/runHistory"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if exportName == "" {
 		return nil, errors.New("parameter exportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportName}", url.PathEscape(exportName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -297,49 +312,47 @@ func (client *ExportsClient) getExecutionHistoryCreateRequest(ctx context.Contex
 }
 
 // getExecutionHistoryHandleResponse handles the GetExecutionHistory response.
-func (client *ExportsClient) getExecutionHistoryHandleResponse(resp *http.Response) (ExportsGetExecutionHistoryResponse, error) {
-	result := ExportsGetExecutionHistoryResponse{RawResponse: resp}
+func (client *ExportsClient) getExecutionHistoryHandleResponse(resp *http.Response) (ExportsClientGetExecutionHistoryResponse, error) {
+	result := ExportsClientGetExecutionHistoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportExecutionListResult); err != nil {
-		return ExportsGetExecutionHistoryResponse{}, runtime.NewResponseError(err, resp)
+		return ExportsClientGetExecutionHistoryResponse{}, err
 	}
 	return result, nil
 }
 
-// getExecutionHistoryHandleError handles the GetExecutionHistory error response.
-func (client *ExportsClient) getExecutionHistoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - The operation to list all exports at the given scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExportsClient) List(ctx context.Context, scope string, options *ExportsListOptions) (ExportsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+// scope,
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId} for Management Group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for billingProfile scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// options - ExportsClientListOptions contains the optional parameters for the ExportsClient.List method.
+func (client *ExportsClient) List(ctx context.Context, scope string, options *ExportsClientListOptions) (ExportsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, scope, options)
 	if err != nil {
-		return ExportsListResponse{}, err
+		return ExportsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportsListResponse{}, err
+		return ExportsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportsListResponse{}, client.listHandleError(resp)
+		return ExportsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ExportsClient) listCreateRequest(ctx context.Context, scope string, options *ExportsListOptions) (*policy.Request, error) {
+func (client *ExportsClient) listCreateRequest(ctx context.Context, scope string, options *ExportsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/exports"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -354,23 +367,10 @@ func (client *ExportsClient) listCreateRequest(ctx context.Context, scope string
 }
 
 // listHandleResponse handles the List response.
-func (client *ExportsClient) listHandleResponse(resp *http.Response) (ExportsListResponse, error) {
-	result := ExportsListResponse{RawResponse: resp}
+func (client *ExportsClient) listHandleResponse(resp *http.Response) (ExportsClientListResponse, error) {
+	result := ExportsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportListResult); err != nil {
-		return ExportsListResponse{}, runtime.NewResponseError(err, resp)
+		return ExportsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ExportsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

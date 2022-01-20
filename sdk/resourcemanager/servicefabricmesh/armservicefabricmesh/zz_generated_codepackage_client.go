@@ -11,7 +11,6 @@ package armservicefabricmesh
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,57 @@ import (
 // CodePackageClient contains the methods for the CodePackage group.
 // Don't use this type directly, use NewCodePackageClient() instead.
 type CodePackageClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCodePackageClient creates a new instance of CodePackageClient with the specified values.
+// subscriptionID - The customer subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCodePackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CodePackageClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CodePackageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CodePackageClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetContainerLogs - Gets the logs for the container of the specified code package of the service replica.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *CodePackageClient) GetContainerLogs(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string, replicaName string, codePackageName string, options *CodePackageGetContainerLogsOptions) (CodePackageGetContainerLogsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// applicationResourceName - The identity of the application.
+// serviceResourceName - The identity of the service.
+// replicaName - Service Fabric replica name.
+// codePackageName - The name of code package of the service.
+// options - CodePackageClientGetContainerLogsOptions contains the optional parameters for the CodePackageClient.GetContainerLogs
+// method.
+func (client *CodePackageClient) GetContainerLogs(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string, replicaName string, codePackageName string, options *CodePackageClientGetContainerLogsOptions) (CodePackageClientGetContainerLogsResponse, error) {
 	req, err := client.getContainerLogsCreateRequest(ctx, resourceGroupName, applicationResourceName, serviceResourceName, replicaName, codePackageName, options)
 	if err != nil {
-		return CodePackageGetContainerLogsResponse{}, err
+		return CodePackageClientGetContainerLogsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CodePackageGetContainerLogsResponse{}, err
+		return CodePackageClientGetContainerLogsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CodePackageGetContainerLogsResponse{}, client.getContainerLogsHandleError(resp)
+		return CodePackageClientGetContainerLogsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getContainerLogsHandleResponse(resp)
 }
 
 // getContainerLogsCreateRequest creates the GetContainerLogs request.
-func (client *CodePackageClient) getContainerLogsCreateRequest(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string, replicaName string, codePackageName string, options *CodePackageGetContainerLogsOptions) (*policy.Request, error) {
+func (client *CodePackageClient) getContainerLogsCreateRequest(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string, replicaName string, codePackageName string, options *CodePackageClientGetContainerLogsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}/services/{serviceResourceName}/replicas/{replicaName}/codePackages/{codePackageName}/logs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +92,7 @@ func (client *CodePackageClient) getContainerLogsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter codePackageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{codePackageName}", url.PathEscape(codePackageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,23 +107,10 @@ func (client *CodePackageClient) getContainerLogsCreateRequest(ctx context.Conte
 }
 
 // getContainerLogsHandleResponse handles the GetContainerLogs response.
-func (client *CodePackageClient) getContainerLogsHandleResponse(resp *http.Response) (CodePackageGetContainerLogsResponse, error) {
-	result := CodePackageGetContainerLogsResponse{RawResponse: resp}
+func (client *CodePackageClient) getContainerLogsHandleResponse(resp *http.Response) (CodePackageClientGetContainerLogsResponse, error) {
+	result := CodePackageClientGetContainerLogsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerLogs); err != nil {
-		return CodePackageGetContainerLogsResponse{}, runtime.NewResponseError(err, resp)
+		return CodePackageClientGetContainerLogsResponse{}, err
 	}
 	return result, nil
-}
-
-// getContainerLogsHandleError handles the GetContainerLogs error response.
-func (client *CodePackageClient) getContainerLogsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

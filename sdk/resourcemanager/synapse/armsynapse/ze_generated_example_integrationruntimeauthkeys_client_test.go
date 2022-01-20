@@ -24,17 +24,18 @@ func ExampleIntegrationRuntimeAuthKeysClient_Regenerate() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimeAuthKeysClient("<subscription-id>", cred, nil)
-	_, err = client.Regenerate(ctx,
+	res, err := client.Regenerate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
 		armsynapse.IntegrationRuntimeRegenerateKeyParameters{
-			KeyName: armsynapse.IntegrationRuntimeAuthKeyNameAuthKey2.ToPtr(),
+			KeyName: armsynapse.IntegrationRuntimeAuthKeyName("authKey2").ToPtr(),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeAuthKeysClientRegenerateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_ListAuthKeys.json
@@ -45,7 +46,7 @@ func ExampleIntegrationRuntimeAuthKeysClient_List() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimeAuthKeysClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
@@ -53,4 +54,5 @@ func ExampleIntegrationRuntimeAuthKeysClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeAuthKeysClientListResult)
 }

@@ -1,5 +1,724 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*FrontDoorsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *FrontDoorsBeginDeleteOptions)` to `(context.Context, string, string, *FrontDoorsClientBeginDeleteOptions)`
+- Function `*FrontDoorsClient.BeginDelete` return value(s) have been changed from `(FrontDoorsDeletePollerResponse, error)` to `(FrontDoorsClientDeletePollerResponse, error)`
+- Function `*FrontendEndpointsClient.ListByFrontDoor` parameter(s) have been changed from `(string, string, *FrontendEndpointsListByFrontDoorOptions)` to `(string, string, *FrontendEndpointsClientListByFrontDoorOptions)`
+- Function `*FrontendEndpointsClient.ListByFrontDoor` return value(s) have been changed from `(*FrontendEndpointsListByFrontDoorPager)` to `(*FrontendEndpointsClientListByFrontDoorPager)`
+- Function `*EndpointsClient.BeginPurgeContent` parameter(s) have been changed from `(context.Context, string, string, PurgeParameters, *EndpointsBeginPurgeContentOptions)` to `(context.Context, string, string, PurgeParameters, *EndpointsClientBeginPurgeContentOptions)`
+- Function `*EndpointsClient.BeginPurgeContent` return value(s) have been changed from `(EndpointsPurgeContentPollerResponse, error)` to `(EndpointsClientPurgeContentPollerResponse, error)`
+- Function `*ExperimentsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ExperimentUpdateModel, *ExperimentsBeginUpdateOptions)` to `(context.Context, string, string, string, ExperimentUpdateModel, *ExperimentsClientBeginUpdateOptions)`
+- Function `*ExperimentsClient.BeginUpdate` return value(s) have been changed from `(ExperimentsUpdatePollerResponse, error)` to `(ExperimentsClientUpdatePollerResponse, error)`
+- Function `*FrontendEndpointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *FrontendEndpointsGetOptions)` to `(context.Context, string, string, string, *FrontendEndpointsClientGetOptions)`
+- Function `*FrontendEndpointsClient.Get` return value(s) have been changed from `(FrontendEndpointsGetResponse, error)` to `(FrontendEndpointsClientGetResponse, error)`
+- Function `*PreconfiguredEndpointsClient.List` parameter(s) have been changed from `(string, string, *PreconfiguredEndpointsListOptions)` to `(string, string, *PreconfiguredEndpointsClientListOptions)`
+- Function `*PreconfiguredEndpointsClient.List` return value(s) have been changed from `(*PreconfiguredEndpointsListPager)` to `(*PreconfiguredEndpointsClientListPager)`
+- Function `*RulesEnginesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, RulesEngine, *RulesEnginesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, RulesEngine, *RulesEnginesClientBeginCreateOrUpdateOptions)`
+- Function `*RulesEnginesClient.BeginCreateOrUpdate` return value(s) have been changed from `(RulesEnginesCreateOrUpdatePollerResponse, error)` to `(RulesEnginesClientCreateOrUpdatePollerResponse, error)`
+- Function `*FrontDoorsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *FrontDoorsGetOptions)` to `(context.Context, string, string, *FrontDoorsClientGetOptions)`
+- Function `*FrontDoorsClient.Get` return value(s) have been changed from `(FrontDoorsGetResponse, error)` to `(FrontDoorsClientGetResponse, error)`
+- Function `*ManagedRuleSetsClient.List` parameter(s) have been changed from `(*ManagedRuleSetsListOptions)` to `(*ManagedRuleSetsClientListOptions)`
+- Function `*ManagedRuleSetsClient.List` return value(s) have been changed from `(*ManagedRuleSetsListPager)` to `(*ManagedRuleSetsClientListPager)`
+- Function `*RulesEnginesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *RulesEnginesBeginDeleteOptions)` to `(context.Context, string, string, string, *RulesEnginesClientBeginDeleteOptions)`
+- Function `*RulesEnginesClient.BeginDelete` return value(s) have been changed from `(RulesEnginesDeletePollerResponse, error)` to `(RulesEnginesClientDeletePollerResponse, error)`
+- Function `*RulesEnginesClient.ListByFrontDoor` parameter(s) have been changed from `(string, string, *RulesEnginesListByFrontDoorOptions)` to `(string, string, *RulesEnginesClientListByFrontDoorOptions)`
+- Function `*RulesEnginesClient.ListByFrontDoor` return value(s) have been changed from `(*RulesEnginesListByFrontDoorPager)` to `(*RulesEnginesClientListByFrontDoorPager)`
+- Function `*FrontendEndpointsClient.BeginEnableHTTPS` parameter(s) have been changed from `(context.Context, string, string, string, CustomHTTPSConfiguration, *FrontendEndpointsBeginEnableHTTPSOptions)` to `(context.Context, string, string, string, CustomHTTPSConfiguration, *FrontendEndpointsClientBeginEnableHTTPSOptions)`
+- Function `*FrontendEndpointsClient.BeginEnableHTTPS` return value(s) have been changed from `(FrontendEndpointsEnableHTTPSPollerResponse, error)` to `(FrontendEndpointsClientEnableHTTPSPollerResponse, error)`
+- Function `*FrontendEndpointsClient.BeginDisableHTTPS` parameter(s) have been changed from `(context.Context, string, string, string, *FrontendEndpointsBeginDisableHTTPSOptions)` to `(context.Context, string, string, string, *FrontendEndpointsClientBeginDisableHTTPSOptions)`
+- Function `*FrontendEndpointsClient.BeginDisableHTTPS` return value(s) have been changed from `(FrontendEndpointsDisableHTTPSPollerResponse, error)` to `(FrontendEndpointsClientDisableHTTPSPollerResponse, error)`
+- Function `*ExperimentsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *ExperimentsBeginDeleteOptions)` to `(context.Context, string, string, string, *ExperimentsClientBeginDeleteOptions)`
+- Function `*ExperimentsClient.BeginDelete` return value(s) have been changed from `(ExperimentsDeletePollerResponse, error)` to `(ExperimentsClientDeletePollerResponse, error)`
+- Function `*PoliciesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, WebApplicationFirewallPolicy, *PoliciesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, WebApplicationFirewallPolicy, *PoliciesClientBeginCreateOrUpdateOptions)`
+- Function `*PoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PoliciesCreateOrUpdatePollerResponse, error)` to `(PoliciesClientCreateOrUpdatePollerResponse, error)`
+- Function `*ReportsClient.GetTimeseries` parameter(s) have been changed from `(context.Context, string, string, string, time.Time, time.Time, TimeseriesAggregationInterval, TimeseriesType, *ReportsGetTimeseriesOptions)` to `(context.Context, string, string, string, time.Time, time.Time, TimeseriesAggregationInterval, TimeseriesType, *ReportsClientGetTimeseriesOptions)`
+- Function `*ReportsClient.GetTimeseries` return value(s) have been changed from `(ReportsGetTimeseriesResponse, error)` to `(ReportsClientGetTimeseriesResponse, error)`
+- Function `*RulesEnginesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *RulesEnginesGetOptions)` to `(context.Context, string, string, string, *RulesEnginesClientGetOptions)`
+- Function `*RulesEnginesClient.Get` return value(s) have been changed from `(RulesEnginesGetResponse, error)` to `(RulesEnginesClientGetResponse, error)`
+- Function `*PoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PoliciesGetOptions)` to `(context.Context, string, string, *PoliciesClientGetOptions)`
+- Function `*PoliciesClient.Get` return value(s) have been changed from `(PoliciesGetResponse, error)` to `(PoliciesClientGetResponse, error)`
+- Function `*NetworkExperimentProfilesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Profile, *NetworkExperimentProfilesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Profile, *NetworkExperimentProfilesClientBeginCreateOrUpdateOptions)`
+- Function `*NetworkExperimentProfilesClient.BeginCreateOrUpdate` return value(s) have been changed from `(NetworkExperimentProfilesCreateOrUpdatePollerResponse, error)` to `(NetworkExperimentProfilesClientCreateOrUpdatePollerResponse, error)`
+- Function `*ExperimentsClient.ListByProfile` parameter(s) have been changed from `(string, string, *ExperimentsListByProfileOptions)` to `(string, string, *ExperimentsClientListByProfileOptions)`
+- Function `*ExperimentsClient.ListByProfile` return value(s) have been changed from `(*ExperimentsListByProfilePager)` to `(*ExperimentsClientListByProfilePager)`
+- Function `*NetworkExperimentProfilesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *NetworkExperimentProfilesListByResourceGroupOptions)` to `(string, *NetworkExperimentProfilesClientListByResourceGroupOptions)`
+- Function `*NetworkExperimentProfilesClient.ListByResourceGroup` return value(s) have been changed from `(*NetworkExperimentProfilesListByResourceGroupPager)` to `(*NetworkExperimentProfilesClientListByResourceGroupPager)`
+- Function `*NetworkExperimentProfilesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ProfileUpdateModel, *NetworkExperimentProfilesBeginUpdateOptions)` to `(context.Context, string, string, ProfileUpdateModel, *NetworkExperimentProfilesClientBeginUpdateOptions)`
+- Function `*NetworkExperimentProfilesClient.BeginUpdate` return value(s) have been changed from `(NetworkExperimentProfilesUpdatePollerResponse, error)` to `(NetworkExperimentProfilesClientUpdatePollerResponse, error)`
+- Function `*FrontDoorsClient.List` parameter(s) have been changed from `(*FrontDoorsListOptions)` to `(*FrontDoorsClientListOptions)`
+- Function `*FrontDoorsClient.List` return value(s) have been changed from `(*FrontDoorsListPager)` to `(*FrontDoorsClientListPager)`
+- Function `*ReportsClient.GetLatencyScorecards` parameter(s) have been changed from `(context.Context, string, string, string, LatencyScorecardAggregationInterval, *ReportsGetLatencyScorecardsOptions)` to `(context.Context, string, string, string, LatencyScorecardAggregationInterval, *ReportsClientGetLatencyScorecardsOptions)`
+- Function `*ReportsClient.GetLatencyScorecards` return value(s) have been changed from `(ReportsGetLatencyScorecardsResponse, error)` to `(ReportsClientGetLatencyScorecardsResponse, error)`
+- Function `*FrontDoorsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *FrontDoorsListByResourceGroupOptions)` to `(string, *FrontDoorsClientListByResourceGroupOptions)`
+- Function `*FrontDoorsClient.ListByResourceGroup` return value(s) have been changed from `(*FrontDoorsListByResourceGroupPager)` to `(*FrontDoorsClientListByResourceGroupPager)`
+- Function `*PoliciesClient.List` parameter(s) have been changed from `(string, *PoliciesListOptions)` to `(string, *PoliciesClientListOptions)`
+- Function `*PoliciesClient.List` return value(s) have been changed from `(*PoliciesListPager)` to `(*PoliciesClientListPager)`
+- Function `*PoliciesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *PoliciesBeginDeleteOptions)` to `(context.Context, string, string, *PoliciesClientBeginDeleteOptions)`
+- Function `*PoliciesClient.BeginDelete` return value(s) have been changed from `(PoliciesDeletePollerResponse, error)` to `(PoliciesClientDeletePollerResponse, error)`
+- Function `*NetworkExperimentProfilesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *NetworkExperimentProfilesGetOptions)` to `(context.Context, string, string, *NetworkExperimentProfilesClientGetOptions)`
+- Function `*NetworkExperimentProfilesClient.Get` return value(s) have been changed from `(NetworkExperimentProfilesGetResponse, error)` to `(NetworkExperimentProfilesClientGetResponse, error)`
+- Function `*NetworkExperimentProfilesClient.List` parameter(s) have been changed from `(*NetworkExperimentProfilesListOptions)` to `(*NetworkExperimentProfilesClientListOptions)`
+- Function `*NetworkExperimentProfilesClient.List` return value(s) have been changed from `(*NetworkExperimentProfilesListPager)` to `(*NetworkExperimentProfilesClientListPager)`
+- Function `*NetworkExperimentProfilesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *NetworkExperimentProfilesBeginDeleteOptions)` to `(context.Context, string, string, *NetworkExperimentProfilesClientBeginDeleteOptions)`
+- Function `*NetworkExperimentProfilesClient.BeginDelete` return value(s) have been changed from `(NetworkExperimentProfilesDeletePollerResponse, error)` to `(NetworkExperimentProfilesClientDeletePollerResponse, error)`
+- Function `*FrontDoorsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, FrontDoor, *FrontDoorsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, FrontDoor, *FrontDoorsClientBeginCreateOrUpdateOptions)`
+- Function `*FrontDoorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(FrontDoorsCreateOrUpdatePollerResponse, error)` to `(FrontDoorsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ExperimentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Experiment, *ExperimentsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, Experiment, *ExperimentsClientBeginCreateOrUpdateOptions)`
+- Function `*ExperimentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ExperimentsCreateOrUpdatePollerResponse, error)` to `(ExperimentsClientCreateOrUpdatePollerResponse, error)`
+- Function `*FrontDoorsClient.ValidateCustomDomain` parameter(s) have been changed from `(context.Context, string, string, ValidateCustomDomainInput, *FrontDoorsValidateCustomDomainOptions)` to `(context.Context, string, string, ValidateCustomDomainInput, *FrontDoorsClientValidateCustomDomainOptions)`
+- Function `*FrontDoorsClient.ValidateCustomDomain` return value(s) have been changed from `(FrontDoorsValidateCustomDomainResponse, error)` to `(FrontDoorsClientValidateCustomDomainResponse, error)`
+- Function `*ExperimentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ExperimentsGetOptions)` to `(context.Context, string, string, string, *ExperimentsClientGetOptions)`
+- Function `*ExperimentsClient.Get` return value(s) have been changed from `(ExperimentsGetResponse, error)` to `(ExperimentsClientGetResponse, error)`
+- Type of `FrontDoor.Properties` has been changed from `*FrontDoorProperties` to `*Properties`
+- Type of `CustomHTTPSConfiguration.FrontDoorCertificateSourceParameters` has been changed from `*FrontDoorCertificateSourceParameters` to `*CertificateSourceParameters`
+- Function `*ExperimentsUpdatePoller.FinalResponse` has been removed
+- Function `*RouteConfiguration.UnmarshalJSON` has been removed
+- Function `*NetworkExperimentProfilesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ExperimentsDeletePoller.Poll` has been removed
+- Function `*RulesEnginesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*EndpointsPurgeContentPoller.Done` has been removed
+- Function `*NetworkExperimentProfilesUpdatePoller.ResumeToken` has been removed
+- Function `*FrontDoorsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PoliciesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NetworkExperimentProfilesListPager.PageResponse` has been removed
+- Function `*FrontDoorsListPager.NextPage` has been removed
+- Function `*PoliciesDeletePoller.Poll` has been removed
+- Function `*FrontendEndpointsEnableHTTPSPoller.ResumeToken` has been removed
+- Function `*PoliciesListPager.Err` has been removed
+- Function `NewFrontDoorNameAvailabilityWithSubscriptionClient` has been removed
+- Function `*ExperimentsDeletePoller.Done` has been removed
+- Function `*RulesEnginesListByFrontDoorPager.NextPage` has been removed
+- Function `*PreconfiguredEndpointsListPager.Err` has been removed
+- Function `ExperimentsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*FrontendEndpointsDisableHTTPSPoller.FinalResponse` has been removed
+- Function `*FrontendEndpointsDisableHTTPSPoller.Done` has been removed
+- Function `*ExperimentsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*NetworkExperimentProfilesListByResourceGroupPager.PageResponse` has been removed
+- Function `*PoliciesDeletePollerResponse.Resume` has been removed
+- Function `*ExperimentsCreateOrUpdatePoller.Done` has been removed
+- Function `*FrontDoorsListPager.Err` has been removed
+- Function `*FrontDoorsDeletePoller.Done` has been removed
+- Function `*NetworkExperimentProfilesDeletePoller.Done` has been removed
+- Function `*EndpointsPurgeContentPollerResponse.Resume` has been removed
+- Function `*ExperimentsListByProfilePager.PageResponse` has been removed
+- Function `FrontDoorsDeletePollerResponse.PollUntilDone` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*PoliciesDeletePoller.Done` has been removed
+- Function `*PoliciesCreateOrUpdatePoller.Poll` has been removed
+- Function `*NetworkExperimentProfilesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `FrontDoorProperties.MarshalJSON` has been removed
+- Function `*FrontDoorsDeletePoller.FinalResponse` has been removed
+- Function `*RulesEnginesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PoliciesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PoliciesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ManagedRuleSetsListPager.Err` has been removed
+- Function `*PoliciesListPager.NextPage` has been removed
+- Function `ExperimentsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*NetworkExperimentProfilesCreateOrUpdatePoller.Done` has been removed
+- Function `*RulesEnginesDeletePoller.Done` has been removed
+- Function `*ExperimentsUpdatePoller.Done` has been removed
+- Function `*EndpointsPurgeContentPoller.Poll` has been removed
+- Function `*FrontDoorsDeletePollerResponse.Resume` has been removed
+- Function `*ExperimentsUpdatePollerResponse.Resume` has been removed
+- Function `*ExperimentsListByProfilePager.NextPage` has been removed
+- Function `NetworkExperimentProfilesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ExperimentsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ExperimentsUpdatePoller.Poll` has been removed
+- Function `*FrontendEndpointsDisableHTTPSPoller.ResumeToken` has been removed
+- Function `*ExperimentsDeletePollerResponse.Resume` has been removed
+- Function `*NetworkExperimentProfilesUpdatePoller.Done` has been removed
+- Function `*FrontDoorNameAvailabilityWithSubscriptionClient.Check` has been removed
+- Function `NetworkExperimentProfilesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PreconfiguredEndpointsListPager.NextPage` has been removed
+- Function `*NetworkExperimentProfilesCreateOrUpdatePoller.Poll` has been removed
+- Function `*FrontDoorsListByResourceGroupPager.Err` has been removed
+- Function `ExperimentsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PoliciesListPager.PageResponse` has been removed
+- Function `*RulesEnginesDeletePollerResponse.Resume` has been removed
+- Function `*EndpointsPurgeContentPoller.FinalResponse` has been removed
+- Function `*PoliciesDeletePoller.ResumeToken` has been removed
+- Function `*ManagedRuleSetsListPager.NextPage` has been removed
+- Function `*PoliciesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*FrontDoorsListPager.PageResponse` has been removed
+- Function `*FrontendEndpointsListByFrontDoorPager.NextPage` has been removed
+- Function `*NetworkExperimentProfilesListByResourceGroupPager.Err` has been removed
+- Function `*PreconfiguredEndpointsListPager.PageResponse` has been removed
+- Function `*FrontDoorsListByResourceGroupPager.NextPage` has been removed
+- Function `*FrontendEndpointsEnableHTTPSPollerResponse.Resume` has been removed
+- Function `*NetworkExperimentProfilesUpdatePoller.Poll` has been removed
+- Function `*RulesEnginesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NetworkExperimentProfilesUpdatePollerResponse.Resume` has been removed
+- Function `*FrontendEndpointsDisableHTTPSPoller.Poll` has been removed
+- Function `*FrontDoorNameAvailabilityClient.Check` has been removed
+- Function `*RulesEnginesCreateOrUpdatePoller.Poll` has been removed
+- Function `*FrontDoorsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*FrontDoorsCreateOrUpdatePoller.Done` has been removed
+- Function `*FrontendEndpointsEnableHTTPSPoller.Done` has been removed
+- Function `*ExperimentsDeletePoller.FinalResponse` has been removed
+- Function `PoliciesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*NetworkExperimentProfilesDeletePoller.Poll` has been removed
+- Function `*RulesEnginesDeletePoller.FinalResponse` has been removed
+- Function `RulesEnginesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ManagedRuleSetsListPager.PageResponse` has been removed
+- Function `*RulesEnginesDeletePoller.Poll` has been removed
+- Function `RulesEnginesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*NetworkExperimentProfilesListPager.Err` has been removed
+- Function `*RulesEnginesListByFrontDoorPager.Err` has been removed
+- Function `*ExperimentsUpdatePoller.ResumeToken` has been removed
+- Function `*ExperimentsDeletePoller.ResumeToken` has been removed
+- Function `FrontendEndpointsDisableHTTPSPollerResponse.PollUntilDone` has been removed
+- Function `*FrontendEndpointsDisableHTTPSPollerResponse.Resume` has been removed
+- Function `*ExperimentsCreateOrUpdatePoller.Poll` has been removed
+- Function `*PoliciesCreateOrUpdatePoller.Done` has been removed
+- Function `*NetworkExperimentProfilesDeletePoller.ResumeToken` has been removed
+- Function `*FrontendEndpointsEnableHTTPSPoller.FinalResponse` has been removed
+- Function `*NetworkExperimentProfilesListPager.NextPage` has been removed
+- Function `*FrontendEndpointsListByFrontDoorPager.PageResponse` has been removed
+- Function `*RulesEnginesCreateOrUpdatePoller.Done` has been removed
+- Function `*ExperimentsListByProfilePager.Err` has been removed
+- Function `*FrontDoorsCreateOrUpdatePoller.Poll` has been removed
+- Function `*NetworkExperimentProfilesUpdatePoller.FinalResponse` has been removed
+- Function `*FrontDoorsDeletePoller.Poll` has been removed
+- Function `NewFrontDoorNameAvailabilityClient` has been removed
+- Function `FrontDoorUpdateParameters.MarshalJSON` has been removed
+- Function `*NetworkExperimentProfilesListByResourceGroupPager.NextPage` has been removed
+- Function `FrontendEndpointsEnableHTTPSPollerResponse.PollUntilDone` has been removed
+- Function `*EndpointsPurgeContentPoller.ResumeToken` has been removed
+- Function `*FrontDoorsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ExperimentsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*NetworkExperimentProfilesDeletePollerResponse.Resume` has been removed
+- Function `*NetworkExperimentProfilesDeletePoller.FinalResponse` has been removed
+- Function `EndpointsPurgeContentPollerResponse.PollUntilDone` has been removed
+- Function `FrontDoorListResult.MarshalJSON` has been removed
+- Function `*RulesEnginesListByFrontDoorPager.PageResponse` has been removed
+- Function `*FrontendEndpointsEnableHTTPSPoller.Poll` has been removed
+- Function `*PoliciesDeletePoller.FinalResponse` has been removed
+- Function `*RulesEnginesDeletePoller.ResumeToken` has been removed
+- Function `*FrontendEndpointsListByFrontDoorPager.Err` has been removed
+- Function `*FrontDoorsDeletePoller.ResumeToken` has been removed
+- Function `*FrontDoorsListByResourceGroupPager.PageResponse` has been removed
+- Function `FrontDoorsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `NetworkExperimentProfilesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*NetworkExperimentProfilesCreateOrUpdatePollerResponse.Resume` has been removed
+- Struct `EndpointsBeginPurgeContentOptions` has been removed
+- Struct `EndpointsPurgeContentPoller` has been removed
+- Struct `EndpointsPurgeContentPollerResponse` has been removed
+- Struct `EndpointsPurgeContentResponse` has been removed
+- Struct `ExperimentsBeginCreateOrUpdateOptions` has been removed
+- Struct `ExperimentsBeginDeleteOptions` has been removed
+- Struct `ExperimentsBeginUpdateOptions` has been removed
+- Struct `ExperimentsCreateOrUpdatePoller` has been removed
+- Struct `ExperimentsCreateOrUpdatePollerResponse` has been removed
+- Struct `ExperimentsCreateOrUpdateResponse` has been removed
+- Struct `ExperimentsCreateOrUpdateResult` has been removed
+- Struct `ExperimentsDeletePoller` has been removed
+- Struct `ExperimentsDeletePollerResponse` has been removed
+- Struct `ExperimentsDeleteResponse` has been removed
+- Struct `ExperimentsGetOptions` has been removed
+- Struct `ExperimentsGetResponse` has been removed
+- Struct `ExperimentsGetResult` has been removed
+- Struct `ExperimentsListByProfileOptions` has been removed
+- Struct `ExperimentsListByProfilePager` has been removed
+- Struct `ExperimentsListByProfileResponse` has been removed
+- Struct `ExperimentsListByProfileResult` has been removed
+- Struct `ExperimentsUpdatePoller` has been removed
+- Struct `ExperimentsUpdatePollerResponse` has been removed
+- Struct `ExperimentsUpdateResponse` has been removed
+- Struct `ExperimentsUpdateResult` has been removed
+- Struct `FrontDoorCertificateSourceParameters` has been removed
+- Struct `FrontDoorListResult` has been removed
+- Struct `FrontDoorNameAvailabilityCheckOptions` has been removed
+- Struct `FrontDoorNameAvailabilityCheckResponse` has been removed
+- Struct `FrontDoorNameAvailabilityCheckResult` has been removed
+- Struct `FrontDoorNameAvailabilityClient` has been removed
+- Struct `FrontDoorNameAvailabilityWithSubscriptionCheckOptions` has been removed
+- Struct `FrontDoorNameAvailabilityWithSubscriptionCheckResponse` has been removed
+- Struct `FrontDoorNameAvailabilityWithSubscriptionCheckResult` has been removed
+- Struct `FrontDoorNameAvailabilityWithSubscriptionClient` has been removed
+- Struct `FrontDoorProperties` has been removed
+- Struct `FrontDoorUpdateParameters` has been removed
+- Struct `FrontDoorsBeginCreateOrUpdateOptions` has been removed
+- Struct `FrontDoorsBeginDeleteOptions` has been removed
+- Struct `FrontDoorsCreateOrUpdatePoller` has been removed
+- Struct `FrontDoorsCreateOrUpdatePollerResponse` has been removed
+- Struct `FrontDoorsCreateOrUpdateResponse` has been removed
+- Struct `FrontDoorsCreateOrUpdateResult` has been removed
+- Struct `FrontDoorsDeletePoller` has been removed
+- Struct `FrontDoorsDeletePollerResponse` has been removed
+- Struct `FrontDoorsDeleteResponse` has been removed
+- Struct `FrontDoorsGetOptions` has been removed
+- Struct `FrontDoorsGetResponse` has been removed
+- Struct `FrontDoorsGetResult` has been removed
+- Struct `FrontDoorsListByResourceGroupOptions` has been removed
+- Struct `FrontDoorsListByResourceGroupPager` has been removed
+- Struct `FrontDoorsListByResourceGroupResponse` has been removed
+- Struct `FrontDoorsListByResourceGroupResult` has been removed
+- Struct `FrontDoorsListOptions` has been removed
+- Struct `FrontDoorsListPager` has been removed
+- Struct `FrontDoorsListResponse` has been removed
+- Struct `FrontDoorsListResult` has been removed
+- Struct `FrontDoorsValidateCustomDomainOptions` has been removed
+- Struct `FrontDoorsValidateCustomDomainResponse` has been removed
+- Struct `FrontDoorsValidateCustomDomainResult` has been removed
+- Struct `FrontendEndpointsBeginDisableHTTPSOptions` has been removed
+- Struct `FrontendEndpointsBeginEnableHTTPSOptions` has been removed
+- Struct `FrontendEndpointsDisableHTTPSPoller` has been removed
+- Struct `FrontendEndpointsDisableHTTPSPollerResponse` has been removed
+- Struct `FrontendEndpointsDisableHTTPSResponse` has been removed
+- Struct `FrontendEndpointsEnableHTTPSPoller` has been removed
+- Struct `FrontendEndpointsEnableHTTPSPollerResponse` has been removed
+- Struct `FrontendEndpointsEnableHTTPSResponse` has been removed
+- Struct `FrontendEndpointsGetOptions` has been removed
+- Struct `FrontendEndpointsGetResponse` has been removed
+- Struct `FrontendEndpointsGetResult` has been removed
+- Struct `FrontendEndpointsListByFrontDoorOptions` has been removed
+- Struct `FrontendEndpointsListByFrontDoorPager` has been removed
+- Struct `FrontendEndpointsListByFrontDoorResponse` has been removed
+- Struct `FrontendEndpointsListByFrontDoorResult` has been removed
+- Struct `ManagedRuleSetsListOptions` has been removed
+- Struct `ManagedRuleSetsListPager` has been removed
+- Struct `ManagedRuleSetsListResponse` has been removed
+- Struct `ManagedRuleSetsListResult` has been removed
+- Struct `NetworkExperimentProfilesBeginCreateOrUpdateOptions` has been removed
+- Struct `NetworkExperimentProfilesBeginDeleteOptions` has been removed
+- Struct `NetworkExperimentProfilesBeginUpdateOptions` has been removed
+- Struct `NetworkExperimentProfilesCreateOrUpdatePoller` has been removed
+- Struct `NetworkExperimentProfilesCreateOrUpdatePollerResponse` has been removed
+- Struct `NetworkExperimentProfilesCreateOrUpdateResponse` has been removed
+- Struct `NetworkExperimentProfilesCreateOrUpdateResult` has been removed
+- Struct `NetworkExperimentProfilesDeletePoller` has been removed
+- Struct `NetworkExperimentProfilesDeletePollerResponse` has been removed
+- Struct `NetworkExperimentProfilesDeleteResponse` has been removed
+- Struct `NetworkExperimentProfilesGetOptions` has been removed
+- Struct `NetworkExperimentProfilesGetResponse` has been removed
+- Struct `NetworkExperimentProfilesGetResult` has been removed
+- Struct `NetworkExperimentProfilesListByResourceGroupOptions` has been removed
+- Struct `NetworkExperimentProfilesListByResourceGroupPager` has been removed
+- Struct `NetworkExperimentProfilesListByResourceGroupResponse` has been removed
+- Struct `NetworkExperimentProfilesListByResourceGroupResult` has been removed
+- Struct `NetworkExperimentProfilesListOptions` has been removed
+- Struct `NetworkExperimentProfilesListPager` has been removed
+- Struct `NetworkExperimentProfilesListResponse` has been removed
+- Struct `NetworkExperimentProfilesListResult` has been removed
+- Struct `NetworkExperimentProfilesUpdatePoller` has been removed
+- Struct `NetworkExperimentProfilesUpdatePollerResponse` has been removed
+- Struct `NetworkExperimentProfilesUpdateResponse` has been removed
+- Struct `NetworkExperimentProfilesUpdateResult` has been removed
+- Struct `PoliciesBeginCreateOrUpdateOptions` has been removed
+- Struct `PoliciesBeginDeleteOptions` has been removed
+- Struct `PoliciesCreateOrUpdatePoller` has been removed
+- Struct `PoliciesCreateOrUpdatePollerResponse` has been removed
+- Struct `PoliciesCreateOrUpdateResponse` has been removed
+- Struct `PoliciesCreateOrUpdateResult` has been removed
+- Struct `PoliciesDeletePoller` has been removed
+- Struct `PoliciesDeletePollerResponse` has been removed
+- Struct `PoliciesDeleteResponse` has been removed
+- Struct `PoliciesGetOptions` has been removed
+- Struct `PoliciesGetResponse` has been removed
+- Struct `PoliciesGetResult` has been removed
+- Struct `PoliciesListOptions` has been removed
+- Struct `PoliciesListPager` has been removed
+- Struct `PoliciesListResponse` has been removed
+- Struct `PoliciesListResult` has been removed
+- Struct `PreconfiguredEndpointsListOptions` has been removed
+- Struct `PreconfiguredEndpointsListPager` has been removed
+- Struct `PreconfiguredEndpointsListResponse` has been removed
+- Struct `PreconfiguredEndpointsListResult` has been removed
+- Struct `ReportsGetLatencyScorecardsOptions` has been removed
+- Struct `ReportsGetLatencyScorecardsResponse` has been removed
+- Struct `ReportsGetLatencyScorecardsResult` has been removed
+- Struct `ReportsGetTimeseriesOptions` has been removed
+- Struct `ReportsGetTimeseriesResponse` has been removed
+- Struct `ReportsGetTimeseriesResult` has been removed
+- Struct `RulesEnginesBeginCreateOrUpdateOptions` has been removed
+- Struct `RulesEnginesBeginDeleteOptions` has been removed
+- Struct `RulesEnginesCreateOrUpdatePoller` has been removed
+- Struct `RulesEnginesCreateOrUpdatePollerResponse` has been removed
+- Struct `RulesEnginesCreateOrUpdateResponse` has been removed
+- Struct `RulesEnginesCreateOrUpdateResult` has been removed
+- Struct `RulesEnginesDeletePoller` has been removed
+- Struct `RulesEnginesDeletePollerResponse` has been removed
+- Struct `RulesEnginesDeleteResponse` has been removed
+- Struct `RulesEnginesGetOptions` has been removed
+- Struct `RulesEnginesGetResponse` has been removed
+- Struct `RulesEnginesGetResult` has been removed
+- Struct `RulesEnginesListByFrontDoorOptions` has been removed
+- Struct `RulesEnginesListByFrontDoorPager` has been removed
+- Struct `RulesEnginesListByFrontDoorResponse` has been removed
+- Struct `RulesEnginesListByFrontDoorResult` has been removed
+- Field `BackendPoolUpdateParameters` of struct `BackendPoolProperties` has been removed
+- Field `LoadBalancingSettingsUpdateParameters` of struct `LoadBalancingSettingsProperties` has been removed
+- Field `FrontendEndpointUpdateParameters` of struct `FrontendEndpointProperties` has been removed
+- Field `Resource` of struct `Experiment` has been removed
+- Field `SubResource` of struct `LoadBalancingSettingsModel` has been removed
+- Field `Resource` of struct `PreconfiguredEndpoint` has been removed
+- Field `Resource` of struct `WebApplicationFirewallPolicy` has been removed
+- Field `Resource` of struct `LatencyScorecard` has been removed
+- Field `RouteConfiguration` of struct `RedirectConfiguration` has been removed
+- Field `SubResource` of struct `FrontendEndpoint` has been removed
+- Field `Resource` of struct `ManagedRuleSetDefinition` has been removed
+- Field `SubResource` of struct `RoutingRule` has been removed
+- Field `Resource` of struct `Profile` has been removed
+- Field `RoutingRuleUpdateParameters` of struct `RoutingRuleProperties` has been removed
+- Field `Resource` of struct `FrontDoor` has been removed
+- Field `SubResource` of struct `HealthProbeSettingsModel` has been removed
+- Field `RouteConfiguration` of struct `ForwardingConfiguration` has been removed
+- Field `RulesEngineUpdateParameters` of struct `RulesEngineProperties` has been removed
+- Field `Resource` of struct `Timeseries` has been removed
+- Field `SubResource` of struct `BackendPool` has been removed
+- Field `HealthProbeSettingsUpdateParameters` of struct `HealthProbeSettingsProperties` has been removed
+
+### Features Added
+
+- New function `FrontendEndpointsClientDisableHTTPSPollerResponse.PollUntilDone(context.Context, time.Duration) (FrontendEndpointsClientDisableHTTPSResponse, error)`
+- New function `*ExperimentsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PoliciesClientListPager.Err() error`
+- New function `*ExperimentsClientListByProfilePager.PageResponse() ExperimentsClientListByProfileResponse`
+- New function `*NetworkExperimentProfilesClientListPager.PageResponse() NetworkExperimentProfilesClientListResponse`
+- New function `*NetworkExperimentProfilesClientCreateOrUpdatePoller.FinalResponse(context.Context) (NetworkExperimentProfilesClientCreateOrUpdateResponse, error)`
+- New function `*PoliciesClientCreateOrUpdatePoller.Done() bool`
+- New function `*NetworkExperimentProfilesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ExperimentsClientDeletePoller.FinalResponse(context.Context) (ExperimentsClientDeleteResponse, error)`
+- New function `*ManagedRuleSetsClientListPager.PageResponse() ManagedRuleSetsClientListResponse`
+- New function `*FrontDoorsClientDeletePollerResponse.Resume(context.Context, *FrontDoorsClient, string) error`
+- New function `*PoliciesClientListPager.PageResponse() PoliciesClientListResponse`
+- New function `*EndpointsClientPurgeContentPoller.FinalResponse(context.Context) (EndpointsClientPurgeContentResponse, error)`
+- New function `*FrontDoorsClientListPager.PageResponse() FrontDoorsClientListResponse`
+- New function `*EndpointsClientPurgeContentPollerResponse.Resume(context.Context, *EndpointsClient, string) error`
+- New function `*NetworkExperimentProfilesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*FrontDoorsClientCreateOrUpdatePoller.FinalResponse(context.Context) (FrontDoorsClientCreateOrUpdateResponse, error)`
+- New function `*ExperimentsClientDeletePollerResponse.Resume(context.Context, *ExperimentsClient, string) error`
+- New function `ExperimentsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ExperimentsClientUpdateResponse, error)`
+- New function `*FrontendEndpointsClientDisableHTTPSPoller.ResumeToken() (string, error)`
+- New function `*ExperimentsClientUpdatePoller.FinalResponse(context.Context) (ExperimentsClientUpdateResponse, error)`
+- New function `*NetworkExperimentProfilesClientCreateOrUpdatePoller.Done() bool`
+- New function `*ExperimentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*FrontendEndpointsClientDisableHTTPSPollerResponse.Resume(context.Context, *FrontendEndpointsClient, string) error`
+- New function `*NetworkExperimentProfilesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FrontendEndpointsClientDisableHTTPSPoller.Done() bool`
+- New function `*FrontDoorsClientListByResourceGroupPager.Err() error`
+- New function `*FrontDoorsClientListPager.NextPage(context.Context) bool`
+- New function `Properties.MarshalJSON() ([]byte, error)`
+- New function `NetworkExperimentProfilesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NetworkExperimentProfilesClientCreateOrUpdateResponse, error)`
+- New function `*RulesEnginesClientDeletePollerResponse.Resume(context.Context, *RulesEnginesClient, string) error`
+- New function `*FrontDoorsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*EndpointsClientPurgeContentPoller.Done() bool`
+- New function `ExperimentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ExperimentsClientCreateOrUpdateResponse, error)`
+- New function `*PoliciesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*FrontendEndpointsClientEnableHTTPSPollerResponse.Resume(context.Context, *FrontendEndpointsClient, string) error`
+- New function `*ManagedRuleSetsClientListPager.Err() error`
+- New function `*ExperimentsClientDeletePoller.Done() bool`
+- New function `FrontDoorsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (FrontDoorsClientCreateOrUpdateResponse, error)`
+- New function `*NetworkExperimentProfilesClientUpdatePollerResponse.Resume(context.Context, *NetworkExperimentProfilesClient, string) error`
+- New function `*NetworkExperimentProfilesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*FrontDoorsClientListPager.Err() error`
+- New function `*ExperimentsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*NetworkExperimentProfilesClientListByResourceGroupPager.PageResponse() NetworkExperimentProfilesClientListByResourceGroupResponse`
+- New function `*FrontendEndpointsClientEnableHTTPSPoller.FinalResponse(context.Context) (FrontendEndpointsClientEnableHTTPSResponse, error)`
+- New function `*RulesEnginesClientDeletePoller.FinalResponse(context.Context) (RulesEnginesClientDeleteResponse, error)`
+- New function `*NetworkExperimentProfilesClientDeletePollerResponse.Resume(context.Context, *NetworkExperimentProfilesClient, string) error`
+- New function `*ExperimentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*FrontendEndpointsClientListByFrontDoorPager.Err() error`
+- New function `*NetworkExperimentProfilesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*FrontendEndpointsClientDisableHTTPSPoller.Poll(context.Context) (*http.Response, error)`
+- New function `RulesEnginesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (RulesEnginesClientCreateOrUpdateResponse, error)`
+- New function `*ExperimentsClientUpdatePollerResponse.Resume(context.Context, *ExperimentsClient, string) error`
+- New function `*ExperimentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (ExperimentsClientCreateOrUpdateResponse, error)`
+- New function `*NetworkExperimentProfilesClientListPager.NextPage(context.Context) bool`
+- New function `*RulesEnginesClientListByFrontDoorPager.PageResponse() RulesEnginesClientListByFrontDoorResponse`
+- New function `*NetworkExperimentProfilesClientCreateOrUpdatePollerResponse.Resume(context.Context, *NetworkExperimentProfilesClient, string) error`
+- New function `*FrontDoorsClientListByResourceGroupPager.PageResponse() FrontDoorsClientListByResourceGroupResponse`
+- New function `*RulesEnginesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExperimentsClientListByProfilePager.NextPage(context.Context) bool`
+- New function `*ExperimentsClientListByProfilePager.Err() error`
+- New function `*FrontDoorsClientCreateOrUpdatePollerResponse.Resume(context.Context, *FrontDoorsClient, string) error`
+- New function `*PreconfiguredEndpointsClientListPager.Err() error`
+- New function `*PoliciesClientDeletePoller.FinalResponse(context.Context) (PoliciesClientDeleteResponse, error)`
+- New function `*PoliciesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FrontDoorsClientDeletePoller.FinalResponse(context.Context) (FrontDoorsClientDeleteResponse, error)`
+- New function `*RulesEnginesClientDeletePoller.Done() bool`
+- New function `*EndpointsClientPurgeContentPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PreconfiguredEndpointsClientListPager.NextPage(context.Context) bool`
+- New function `*PoliciesClientCreateOrUpdatePollerResponse.Resume(context.Context, *PoliciesClient, string) error`
+- New function `FrontDoorsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (FrontDoorsClientDeleteResponse, error)`
+- New function `*FrontendEndpointsClientDisableHTTPSPoller.FinalResponse(context.Context) (FrontendEndpointsClientDisableHTTPSResponse, error)`
+- New function `EndpointsClientPurgeContentPollerResponse.PollUntilDone(context.Context, time.Duration) (EndpointsClientPurgeContentResponse, error)`
+- New function `*PoliciesClientCreateOrUpdatePoller.FinalResponse(context.Context) (PoliciesClientCreateOrUpdateResponse, error)`
+- New function `*NameAvailabilityClient.Check(context.Context, CheckNameAvailabilityInput, *NameAvailabilityClientCheckOptions) (NameAvailabilityClientCheckResponse, error)`
+- New function `*ExperimentsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PoliciesClientDeletePollerResponse.Resume(context.Context, *PoliciesClient, string) error`
+- New function `*NameAvailabilityWithSubscriptionClient.Check(context.Context, CheckNameAvailabilityInput, *NameAvailabilityWithSubscriptionClientCheckOptions) (NameAvailabilityWithSubscriptionClientCheckResponse, error)`
+- New function `PoliciesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PoliciesClientCreateOrUpdateResponse, error)`
+- New function `*NetworkExperimentProfilesClientDeletePoller.FinalResponse(context.Context) (NetworkExperimentProfilesClientDeleteResponse, error)`
+- New function `*ExperimentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RulesEnginesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*RulesEnginesClientListByFrontDoorPager.Err() error`
+- New function `*RulesEnginesClientCreateOrUpdatePoller.Done() bool`
+- New function `NetworkExperimentProfilesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NetworkExperimentProfilesClientUpdateResponse, error)`
+- New function `*NetworkExperimentProfilesClientListByResourceGroupPager.Err() error`
+- New function `*EndpointsClientPurgeContentPoller.ResumeToken() (string, error)`
+- New function `NetworkExperimentProfilesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (NetworkExperimentProfilesClientDeleteResponse, error)`
+- New function `*NetworkExperimentProfilesClientDeletePoller.Done() bool`
+- New function `FrontendEndpointsClientEnableHTTPSPollerResponse.PollUntilDone(context.Context, time.Duration) (FrontendEndpointsClientEnableHTTPSResponse, error)`
+- New function `ExperimentsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ExperimentsClientDeleteResponse, error)`
+- New function `*ExperimentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *ExperimentsClient, string) error`
+- New function `*PreconfiguredEndpointsClientListPager.PageResponse() PreconfiguredEndpointsClientListResponse`
+- New function `*RulesEnginesClientListByFrontDoorPager.NextPage(context.Context) bool`
+- New function `ListResult.MarshalJSON() ([]byte, error)`
+- New function `*PoliciesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*NetworkExperimentProfilesClientUpdatePoller.Done() bool`
+- New function `NewNameAvailabilityClient(azcore.TokenCredential, *arm.ClientOptions) *NameAvailabilityClient`
+- New function `*PoliciesClientDeletePoller.Done() bool`
+- New function `NewNameAvailabilityWithSubscriptionClient(string, azcore.TokenCredential, *arm.ClientOptions) *NameAvailabilityWithSubscriptionClient`
+- New function `*NetworkExperimentProfilesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `RulesEnginesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (RulesEnginesClientDeleteResponse, error)`
+- New function `*ManagedRuleSetsClientListPager.NextPage(context.Context) bool`
+- New function `*NetworkExperimentProfilesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RedirectConfiguration.GetRouteConfiguration() *RouteConfiguration`
+- New function `UpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*NetworkExperimentProfilesClientListPager.Err() error`
+- New function `*RulesEnginesClientCreateOrUpdatePollerResponse.Resume(context.Context, *RulesEnginesClient, string) error`
+- New function `*FrontDoorsClientCreateOrUpdatePoller.Done() bool`
+- New function `*FrontendEndpointsClientEnableHTTPSPoller.Done() bool`
+- New function `*FrontDoorsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RulesEnginesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*FrontDoorsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*FrontDoorsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PoliciesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PoliciesClientDeleteResponse, error)`
+- New function `*RulesEnginesClientCreateOrUpdatePoller.FinalResponse(context.Context) (RulesEnginesClientCreateOrUpdateResponse, error)`
+- New function `*ExperimentsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FrontDoorsClientDeletePoller.Done() bool`
+- New function `*FrontendEndpointsClientEnableHTTPSPoller.ResumeToken() (string, error)`
+- New function `*PoliciesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExperimentsClientUpdatePoller.Done() bool`
+- New function `*FrontendEndpointsClientListByFrontDoorPager.NextPage(context.Context) bool`
+- New function `*FrontDoorsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*FrontendEndpointsClientEnableHTTPSPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NetworkExperimentProfilesClientUpdatePoller.FinalResponse(context.Context) (NetworkExperimentProfilesClientUpdateResponse, error)`
+- New function `*PoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*ForwardingConfiguration.GetRouteConfiguration() *RouteConfiguration`
+- New function `*RulesEnginesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FrontendEndpointsClientListByFrontDoorPager.PageResponse() FrontendEndpointsClientListByFrontDoorResponse`
+- New struct `CertificateSourceParameters`
+- New struct `EndpointsClientBeginPurgeContentOptions`
+- New struct `EndpointsClientPurgeContentPoller`
+- New struct `EndpointsClientPurgeContentPollerResponse`
+- New struct `EndpointsClientPurgeContentResponse`
+- New struct `ExperimentsClientBeginCreateOrUpdateOptions`
+- New struct `ExperimentsClientBeginDeleteOptions`
+- New struct `ExperimentsClientBeginUpdateOptions`
+- New struct `ExperimentsClientCreateOrUpdatePoller`
+- New struct `ExperimentsClientCreateOrUpdatePollerResponse`
+- New struct `ExperimentsClientCreateOrUpdateResponse`
+- New struct `ExperimentsClientCreateOrUpdateResult`
+- New struct `ExperimentsClientDeletePoller`
+- New struct `ExperimentsClientDeletePollerResponse`
+- New struct `ExperimentsClientDeleteResponse`
+- New struct `ExperimentsClientGetOptions`
+- New struct `ExperimentsClientGetResponse`
+- New struct `ExperimentsClientGetResult`
+- New struct `ExperimentsClientListByProfileOptions`
+- New struct `ExperimentsClientListByProfilePager`
+- New struct `ExperimentsClientListByProfileResponse`
+- New struct `ExperimentsClientListByProfileResult`
+- New struct `ExperimentsClientUpdatePoller`
+- New struct `ExperimentsClientUpdatePollerResponse`
+- New struct `ExperimentsClientUpdateResponse`
+- New struct `ExperimentsClientUpdateResult`
+- New struct `FrontDoorsClientBeginCreateOrUpdateOptions`
+- New struct `FrontDoorsClientBeginDeleteOptions`
+- New struct `FrontDoorsClientCreateOrUpdatePoller`
+- New struct `FrontDoorsClientCreateOrUpdatePollerResponse`
+- New struct `FrontDoorsClientCreateOrUpdateResponse`
+- New struct `FrontDoorsClientCreateOrUpdateResult`
+- New struct `FrontDoorsClientDeletePoller`
+- New struct `FrontDoorsClientDeletePollerResponse`
+- New struct `FrontDoorsClientDeleteResponse`
+- New struct `FrontDoorsClientGetOptions`
+- New struct `FrontDoorsClientGetResponse`
+- New struct `FrontDoorsClientGetResult`
+- New struct `FrontDoorsClientListByResourceGroupOptions`
+- New struct `FrontDoorsClientListByResourceGroupPager`
+- New struct `FrontDoorsClientListByResourceGroupResponse`
+- New struct `FrontDoorsClientListByResourceGroupResult`
+- New struct `FrontDoorsClientListOptions`
+- New struct `FrontDoorsClientListPager`
+- New struct `FrontDoorsClientListResponse`
+- New struct `FrontDoorsClientListResult`
+- New struct `FrontDoorsClientValidateCustomDomainOptions`
+- New struct `FrontDoorsClientValidateCustomDomainResponse`
+- New struct `FrontDoorsClientValidateCustomDomainResult`
+- New struct `FrontendEndpointsClientBeginDisableHTTPSOptions`
+- New struct `FrontendEndpointsClientBeginEnableHTTPSOptions`
+- New struct `FrontendEndpointsClientDisableHTTPSPoller`
+- New struct `FrontendEndpointsClientDisableHTTPSPollerResponse`
+- New struct `FrontendEndpointsClientDisableHTTPSResponse`
+- New struct `FrontendEndpointsClientEnableHTTPSPoller`
+- New struct `FrontendEndpointsClientEnableHTTPSPollerResponse`
+- New struct `FrontendEndpointsClientEnableHTTPSResponse`
+- New struct `FrontendEndpointsClientGetOptions`
+- New struct `FrontendEndpointsClientGetResponse`
+- New struct `FrontendEndpointsClientGetResult`
+- New struct `FrontendEndpointsClientListByFrontDoorOptions`
+- New struct `FrontendEndpointsClientListByFrontDoorPager`
+- New struct `FrontendEndpointsClientListByFrontDoorResponse`
+- New struct `FrontendEndpointsClientListByFrontDoorResult`
+- New struct `ListResult`
+- New struct `ManagedRuleSetsClientListOptions`
+- New struct `ManagedRuleSetsClientListPager`
+- New struct `ManagedRuleSetsClientListResponse`
+- New struct `ManagedRuleSetsClientListResult`
+- New struct `NameAvailabilityClient`
+- New struct `NameAvailabilityClientCheckOptions`
+- New struct `NameAvailabilityClientCheckResponse`
+- New struct `NameAvailabilityClientCheckResult`
+- New struct `NameAvailabilityWithSubscriptionClient`
+- New struct `NameAvailabilityWithSubscriptionClientCheckOptions`
+- New struct `NameAvailabilityWithSubscriptionClientCheckResponse`
+- New struct `NameAvailabilityWithSubscriptionClientCheckResult`
+- New struct `NetworkExperimentProfilesClientBeginCreateOrUpdateOptions`
+- New struct `NetworkExperimentProfilesClientBeginDeleteOptions`
+- New struct `NetworkExperimentProfilesClientBeginUpdateOptions`
+- New struct `NetworkExperimentProfilesClientCreateOrUpdatePoller`
+- New struct `NetworkExperimentProfilesClientCreateOrUpdatePollerResponse`
+- New struct `NetworkExperimentProfilesClientCreateOrUpdateResponse`
+- New struct `NetworkExperimentProfilesClientCreateOrUpdateResult`
+- New struct `NetworkExperimentProfilesClientDeletePoller`
+- New struct `NetworkExperimentProfilesClientDeletePollerResponse`
+- New struct `NetworkExperimentProfilesClientDeleteResponse`
+- New struct `NetworkExperimentProfilesClientGetOptions`
+- New struct `NetworkExperimentProfilesClientGetResponse`
+- New struct `NetworkExperimentProfilesClientGetResult`
+- New struct `NetworkExperimentProfilesClientListByResourceGroupOptions`
+- New struct `NetworkExperimentProfilesClientListByResourceGroupPager`
+- New struct `NetworkExperimentProfilesClientListByResourceGroupResponse`
+- New struct `NetworkExperimentProfilesClientListByResourceGroupResult`
+- New struct `NetworkExperimentProfilesClientListOptions`
+- New struct `NetworkExperimentProfilesClientListPager`
+- New struct `NetworkExperimentProfilesClientListResponse`
+- New struct `NetworkExperimentProfilesClientListResult`
+- New struct `NetworkExperimentProfilesClientUpdatePoller`
+- New struct `NetworkExperimentProfilesClientUpdatePollerResponse`
+- New struct `NetworkExperimentProfilesClientUpdateResponse`
+- New struct `NetworkExperimentProfilesClientUpdateResult`
+- New struct `PoliciesClientBeginCreateOrUpdateOptions`
+- New struct `PoliciesClientBeginDeleteOptions`
+- New struct `PoliciesClientCreateOrUpdatePoller`
+- New struct `PoliciesClientCreateOrUpdatePollerResponse`
+- New struct `PoliciesClientCreateOrUpdateResponse`
+- New struct `PoliciesClientCreateOrUpdateResult`
+- New struct `PoliciesClientDeletePoller`
+- New struct `PoliciesClientDeletePollerResponse`
+- New struct `PoliciesClientDeleteResponse`
+- New struct `PoliciesClientGetOptions`
+- New struct `PoliciesClientGetResponse`
+- New struct `PoliciesClientGetResult`
+- New struct `PoliciesClientListOptions`
+- New struct `PoliciesClientListPager`
+- New struct `PoliciesClientListResponse`
+- New struct `PoliciesClientListResult`
+- New struct `PreconfiguredEndpointsClientListOptions`
+- New struct `PreconfiguredEndpointsClientListPager`
+- New struct `PreconfiguredEndpointsClientListResponse`
+- New struct `PreconfiguredEndpointsClientListResult`
+- New struct `Properties`
+- New struct `ReportsClientGetLatencyScorecardsOptions`
+- New struct `ReportsClientGetLatencyScorecardsResponse`
+- New struct `ReportsClientGetLatencyScorecardsResult`
+- New struct `ReportsClientGetTimeseriesOptions`
+- New struct `ReportsClientGetTimeseriesResponse`
+- New struct `ReportsClientGetTimeseriesResult`
+- New struct `RulesEnginesClientBeginCreateOrUpdateOptions`
+- New struct `RulesEnginesClientBeginDeleteOptions`
+- New struct `RulesEnginesClientCreateOrUpdatePoller`
+- New struct `RulesEnginesClientCreateOrUpdatePollerResponse`
+- New struct `RulesEnginesClientCreateOrUpdateResponse`
+- New struct `RulesEnginesClientCreateOrUpdateResult`
+- New struct `RulesEnginesClientDeletePoller`
+- New struct `RulesEnginesClientDeletePollerResponse`
+- New struct `RulesEnginesClientDeleteResponse`
+- New struct `RulesEnginesClientGetOptions`
+- New struct `RulesEnginesClientGetResponse`
+- New struct `RulesEnginesClientGetResult`
+- New struct `RulesEnginesClientListByFrontDoorOptions`
+- New struct `RulesEnginesClientListByFrontDoorPager`
+- New struct `RulesEnginesClientListByFrontDoorResponse`
+- New struct `RulesEnginesClientListByFrontDoorResult`
+- New struct `UpdateParameters`
+- New field `Tags` in struct `ManagedRuleSetDefinition`
+- New field `ID` in struct `ManagedRuleSetDefinition`
+- New field `Name` in struct `ManagedRuleSetDefinition`
+- New field `Type` in struct `ManagedRuleSetDefinition`
+- New field `Location` in struct `ManagedRuleSetDefinition`
+- New field `ID` in struct `LoadBalancingSettingsModel`
+- New field `Path` in struct `HealthProbeSettingsProperties`
+- New field `Protocol` in struct `HealthProbeSettingsProperties`
+- New field `EnabledState` in struct `HealthProbeSettingsProperties`
+- New field `HealthProbeMethod` in struct `HealthProbeSettingsProperties`
+- New field `IntervalInSeconds` in struct `HealthProbeSettingsProperties`
+- New field `ID` in struct `WebApplicationFirewallPolicy`
+- New field `Name` in struct `WebApplicationFirewallPolicy`
+- New field `Type` in struct `WebApplicationFirewallPolicy`
+- New field `Location` in struct `WebApplicationFirewallPolicy`
+- New field `Tags` in struct `WebApplicationFirewallPolicy`
+- New field `ID` in struct `BackendPool`
+- New field `ODataType` in struct `RedirectConfiguration`
+- New field `ID` in struct `FrontendEndpoint`
+- New field `ODataType` in struct `ForwardingConfiguration`
+- New field `Type` in struct `PreconfiguredEndpoint`
+- New field `Location` in struct `PreconfiguredEndpoint`
+- New field `Tags` in struct `PreconfiguredEndpoint`
+- New field `ID` in struct `PreconfiguredEndpoint`
+- New field `Name` in struct `PreconfiguredEndpoint`
+- New field `Tags` in struct `Profile`
+- New field `ID` in struct `Profile`
+- New field `Name` in struct `Profile`
+- New field `Type` in struct `Profile`
+- New field `Location` in struct `Profile`
+- New field `Location` in struct `Experiment`
+- New field `Tags` in struct `Experiment`
+- New field `ID` in struct `Experiment`
+- New field `Name` in struct `Experiment`
+- New field `Type` in struct `Experiment`
+- New field `ID` in struct `HealthProbeSettingsModel`
+- New field `Rules` in struct `RulesEngineProperties`
+- New field `Backends` in struct `BackendPoolProperties`
+- New field `HealthProbeSettings` in struct `BackendPoolProperties`
+- New field `LoadBalancingSettings` in struct `BackendPoolProperties`
+- New field `ID` in struct `FrontDoor`
+- New field `Name` in struct `FrontDoor`
+- New field `Type` in struct `FrontDoor`
+- New field `Location` in struct `FrontDoor`
+- New field `Tags` in struct `FrontDoor`
+- New field `ID` in struct `RoutingRule`
+- New field `Tags` in struct `Timeseries`
+- New field `ID` in struct `Timeseries`
+- New field `Name` in struct `Timeseries`
+- New field `Type` in struct `Timeseries`
+- New field `Location` in struct `Timeseries`
+- New field `PatternsToMatch` in struct `RoutingRuleProperties`
+- New field `RouteConfiguration` in struct `RoutingRuleProperties`
+- New field `RulesEngine` in struct `RoutingRuleProperties`
+- New field `WebApplicationFirewallPolicyLink` in struct `RoutingRuleProperties`
+- New field `AcceptedProtocols` in struct `RoutingRuleProperties`
+- New field `EnabledState` in struct `RoutingRuleProperties`
+- New field `FrontendEndpoints` in struct `RoutingRuleProperties`
+- New field `ID` in struct `LatencyScorecard`
+- New field `Name` in struct `LatencyScorecard`
+- New field `Type` in struct `LatencyScorecard`
+- New field `Location` in struct `LatencyScorecard`
+- New field `Tags` in struct `LatencyScorecard`
+- New field `AdditionalLatencyMilliseconds` in struct `LoadBalancingSettingsProperties`
+- New field `SampleSize` in struct `LoadBalancingSettingsProperties`
+- New field `SuccessfulSamplesRequired` in struct `LoadBalancingSettingsProperties`
+- New field `SessionAffinityTTLSeconds` in struct `FrontendEndpointProperties`
+- New field `WebApplicationFirewallPolicyLink` in struct `FrontendEndpointProperties`
+- New field `HostName` in struct `FrontendEndpointProperties`
+- New field `SessionAffinityEnabledState` in struct `FrontendEndpointProperties`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Initial preview release.

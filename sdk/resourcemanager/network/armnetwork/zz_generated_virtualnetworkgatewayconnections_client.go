@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // VirtualNetworkGatewayConnectionsClient contains the methods for the VirtualNetworkGatewayConnections group.
 // Don't use this type directly, use NewVirtualNetworkGatewayConnectionsClient() instead.
 type VirtualNetworkGatewayConnectionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualNetworkGatewayConnectionsClient creates a new instance of VirtualNetworkGatewayConnectionsClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualNetworkGatewayConnectionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VirtualNetworkGatewayConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualNetworkGatewayConnectionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a virtual network gateway connection in the specified resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, options *VirtualNetworkGatewayConnectionsBeginCreateOrUpdateOptions) (VirtualNetworkGatewayConnectionsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection.
+// parameters - Parameters supplied to the create or update virtual network gateway connection operation.
+// options - VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginCreateOrUpdate
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, options *VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions) (VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsCreateOrUpdatePollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsCreateOrUpdatePollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsCreateOrUpdatePollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsCreateOrUpdatePoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a virtual network gateway connection in the specified resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, options *VirtualNetworkGatewayConnectionsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, options *VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, options *VirtualNetworkGatewayConnectionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, options *VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -94,7 +107,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +118,33 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateCreateReques
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified virtual network Gateway connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginDeleteOptions) (VirtualNetworkGatewayConnectionsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection.
+// options - VirtualNetworkGatewayConnectionsClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginDelete
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginDeleteOptions) (VirtualNetworkGatewayConnectionsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsDeletePollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientDeletePollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsDeletePollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsDeletePollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsDeletePoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified virtual network Gateway connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +154,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) deleteOperation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualNetworkGatewayConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginDeleteOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,7 +174,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) deleteCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +185,29 @@ func (client *VirtualNetworkGatewayConnectionsClient) deleteCreateRequest(ctx co
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VirtualNetworkGatewayConnectionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the specified virtual network gateway connection by resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsGetOptions) (VirtualNetworkGatewayConnectionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection.
+// options - VirtualNetworkGatewayConnectionsClientGetOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.Get
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientGetOptions) (VirtualNetworkGatewayConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsGetResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsGetResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualNetworkGatewayConnectionsGetResponse{}, client.getHandleError(resp)
+		return VirtualNetworkGatewayConnectionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualNetworkGatewayConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsGetOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -226,7 +221,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,50 +233,41 @@ func (client *VirtualNetworkGatewayConnectionsClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualNetworkGatewayConnectionsClient) getHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsGetResponse, error) {
-	result := VirtualNetworkGatewayConnectionsGetResponse{RawResponse: resp}
+func (client *VirtualNetworkGatewayConnectionsClient) getHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsClientGetResponse, error) {
+	result := VirtualNetworkGatewayConnectionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkGatewayConnection); err != nil {
-		return VirtualNetworkGatewayConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkGatewayConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VirtualNetworkGatewayConnectionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginGetIkeSas - Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginGetIkeSas(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginGetIkeSasOptions) (VirtualNetworkGatewayConnectionsGetIkeSasPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The name of the virtual network gateway Connection.
+// options - VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginGetIkeSas
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginGetIkeSas(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions) (VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse, error) {
 	resp, err := client.getIkeSas(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsGetIkeSasPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsGetIkeSasPollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.GetIkeSas", "location", resp, client.pl, client.getIkeSasHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.GetIkeSas", "location", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsGetIkeSasPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientGetIkeSasPollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsGetIkeSasPoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientGetIkeSasPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // GetIkeSas - Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualNetworkGatewayConnectionsClient) getIkeSas(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginGetIkeSasOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) getIkeSas(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions) (*http.Response, error) {
 	req, err := client.getIkeSasCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -291,13 +277,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) getIkeSas(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.getIkeSasHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // getIkeSasCreateRequest creates the GetIkeSas request.
-func (client *VirtualNetworkGatewayConnectionsClient) getIkeSasCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginGetIkeSasOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) getIkeSasCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/getikesas"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -311,7 +297,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getIkeSasCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -322,39 +308,30 @@ func (client *VirtualNetworkGatewayConnectionsClient) getIkeSasCreateRequest(ctx
 	return req, nil
 }
 
-// getIkeSasHandleError handles the GetIkeSas error response.
-func (client *VirtualNetworkGatewayConnectionsClient) getIkeSasHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetSharedKey - The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual network gateway connection
-// shared key through Network resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) GetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsGetSharedKeyOptions) (VirtualNetworkGatewayConnectionsGetSharedKeyResponse, error) {
+// GetSharedKey - The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
+// network gateway connection shared key through Network resource provider.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The virtual network gateway connection shared key name.
+// options - VirtualNetworkGatewayConnectionsClientGetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.GetSharedKey
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) GetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientGetSharedKeyOptions) (VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse, error) {
 	req, err := client.getSharedKeyCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsGetSharedKeyResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsGetSharedKeyResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualNetworkGatewayConnectionsGetSharedKeyResponse{}, client.getSharedKeyHandleError(resp)
+		return VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSharedKeyHandleResponse(resp)
 }
 
 // getSharedKeyCreateRequest creates the GetSharedKey request.
-func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsGetSharedKeyOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientGetSharedKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -368,7 +345,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -380,43 +357,33 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyCreateRequest(
 }
 
 // getSharedKeyHandleResponse handles the GetSharedKey response.
-func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsGetSharedKeyResponse, error) {
-	result := VirtualNetworkGatewayConnectionsGetSharedKeyResponse{RawResponse: resp}
+func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse, error) {
+	result := VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSharedKey); err != nil {
-		return VirtualNetworkGatewayConnectionsGetSharedKeyResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse{}, err
 	}
 	return result, nil
 }
 
-// getSharedKeyHandleError handles the GetSharedKey error response.
-func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string, options *VirtualNetworkGatewayConnectionsListOptions) *VirtualNetworkGatewayConnectionsListPager {
-	return &VirtualNetworkGatewayConnectionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - VirtualNetworkGatewayConnectionsClientListOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.List
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string, options *VirtualNetworkGatewayConnectionsClientListOptions) *VirtualNetworkGatewayConnectionsClientListPager {
+	return &VirtualNetworkGatewayConnectionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualNetworkGatewayConnectionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualNetworkGatewayConnectionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualNetworkGatewayConnectionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualNetworkGatewayConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualNetworkGatewayConnectionsListOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualNetworkGatewayConnectionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -426,7 +393,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) listCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -438,50 +405,41 @@ func (client *VirtualNetworkGatewayConnectionsClient) listCreateRequest(ctx cont
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualNetworkGatewayConnectionsClient) listHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsListResponse, error) {
-	result := VirtualNetworkGatewayConnectionsListResponse{RawResponse: resp}
+func (client *VirtualNetworkGatewayConnectionsClient) listHandleResponse(resp *http.Response) (VirtualNetworkGatewayConnectionsClientListResponse, error) {
+	result := VirtualNetworkGatewayConnectionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkGatewayConnectionListResult); err != nil {
-		return VirtualNetworkGatewayConnectionsListResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkGatewayConnectionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *VirtualNetworkGatewayConnectionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginResetConnection - Resets the virtual network gateway connection specified.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginResetConnection(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginResetConnectionOptions) (VirtualNetworkGatewayConnectionsResetConnectionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The name of the virtual network gateway Connection.
+// options - VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginResetConnection
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginResetConnection(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions) (VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse, error) {
 	resp, err := client.resetConnection(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsResetConnectionPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsResetConnectionPollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.ResetConnection", "location", resp, client.pl, client.resetConnectionHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.ResetConnection", "location", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsResetConnectionPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientResetConnectionPollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsResetConnectionPoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientResetConnectionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ResetConnection - Resets the virtual network gateway connection specified.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VirtualNetworkGatewayConnectionsClient) resetConnection(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginResetConnectionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) resetConnection(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions) (*http.Response, error) {
 	req, err := client.resetConnectionCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -491,13 +449,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetConnection(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.resetConnectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resetConnectionCreateRequest creates the ResetConnection request.
-func (client *VirtualNetworkGatewayConnectionsClient) resetConnectionCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginResetConnectionOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) resetConnectionCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/resetconnection"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -511,7 +469,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetConnectionCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -522,46 +480,39 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetConnectionCreateReque
 	return req, nil
 }
 
-// resetConnectionHandleError handles the ResetConnection error response.
-func (client *VirtualNetworkGatewayConnectionsClient) resetConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginResetSharedKey - The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed
-// virtual network gateway connection in the specified resource group
+// BeginResetSharedKey - The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection
+// shared key for passed virtual network gateway connection in the specified resource group
 // through Network resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginResetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, options *VirtualNetworkGatewayConnectionsBeginResetSharedKeyOptions) (VirtualNetworkGatewayConnectionsResetSharedKeyPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The virtual network gateway connection reset shared key Name.
+// parameters - Parameters supplied to the begin reset virtual network gateway connection shared key operation through network
+// resource provider.
+// options - VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginResetSharedKey
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginResetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions) (VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse, error) {
 	resp, err := client.resetSharedKey(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsResetSharedKeyPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsResetSharedKeyPollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.ResetSharedKey", "location", resp, client.pl, client.resetSharedKeyHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.ResetSharedKey", "location", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsResetSharedKeyPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientResetSharedKeyPollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsResetSharedKeyPoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientResetSharedKeyPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// ResetSharedKey - The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual
-// network gateway connection in the specified resource group
+// ResetSharedKey - The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection
+// shared key for passed virtual network gateway connection in the specified resource group
 // through Network resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, options *VirtualNetworkGatewayConnectionsBeginResetSharedKeyOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions) (*http.Response, error) {
 	req, err := client.resetSharedKeyCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -571,13 +522,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKey(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.resetSharedKeyHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resetSharedKeyCreateRequest creates the ResetSharedKey request.
-func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, options *VirtualNetworkGatewayConnectionsBeginResetSharedKeyOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey/reset"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -591,7 +542,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -602,46 +553,39 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyCreateReques
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// resetSharedKeyHandleError handles the ResetSharedKey error response.
-func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginSetSharedKey - The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual
-// network gateway connection in the specified resource group through
+// BeginSetSharedKey - The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection
+// shared key for passed virtual network gateway connection in the specified resource group through
 // Network resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginSetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, options *VirtualNetworkGatewayConnectionsBeginSetSharedKeyOptions) (VirtualNetworkGatewayConnectionsSetSharedKeyPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The virtual network gateway connection name.
+// parameters - Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation throughNetwork
+// resource provider.
+// options - VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginSetSharedKey
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginSetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions) (VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse, error) {
 	resp, err := client.setSharedKey(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsSetSharedKeyPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsSetSharedKeyPollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.SetSharedKey", "azure-async-operation", resp, client.pl, client.setSharedKeyHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.SetSharedKey", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsSetSharedKeyPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientSetSharedKeyPollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsSetSharedKeyPoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientSetSharedKeyPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// SetSharedKey - The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network
-// gateway connection in the specified resource group through
+// SetSharedKey - The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared
+// key for passed virtual network gateway connection in the specified resource group through
 // Network resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) setSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, options *VirtualNetworkGatewayConnectionsBeginSetSharedKeyOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) setSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions) (*http.Response, error) {
 	req, err := client.setSharedKeyCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -651,13 +595,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKey(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.setSharedKeyHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // setSharedKeyCreateRequest creates the SetSharedKey request.
-func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, options *VirtualNetworkGatewayConnectionsBeginSetSharedKeyOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, options *VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -671,7 +615,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -682,42 +626,33 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyCreateRequest(
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// setSharedKeyHandleError handles the SetSharedKey error response.
-func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStartPacketCapture - Starts packet capture on virtual network gateway connection in the specified resource group.
-// If the operation fails it returns the *Error error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginStartPacketCaptureOptions) (VirtualNetworkGatewayConnectionsStartPacketCapturePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection.
+// options - VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions contains the optional parameters for the
+// VirtualNetworkGatewayConnectionsClient.BeginStartPacketCapture method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions) (VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse, error) {
 	resp, err := client.startPacketCapture(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsStartPacketCapturePollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsStartPacketCapturePollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.StartPacketCapture", "location", resp, client.pl, client.startPacketCaptureHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.StartPacketCapture", "location", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsStartPacketCapturePollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientStartPacketCapturePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsStartPacketCapturePoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientStartPacketCapturePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // StartPacketCapture - Starts packet capture on virtual network gateway connection in the specified resource group.
-// If the operation fails it returns the *Error error type.
-func (client *VirtualNetworkGatewayConnectionsClient) startPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginStartPacketCaptureOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) startPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions) (*http.Response, error) {
 	req, err := client.startPacketCaptureCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -727,13 +662,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCapture(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.startPacketCaptureHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startPacketCaptureCreateRequest creates the StartPacketCapture request.
-func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginStartPacketCaptureOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsClientBeginStartPacketCaptureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/startPacketCapture"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -747,7 +682,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -761,42 +696,34 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureCreateRe
 	return req, nil
 }
 
-// startPacketCaptureHandleError handles the StartPacketCapture error response.
-func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStopPacketCapture - Stops packet capture on virtual network gateway connection in the specified resource group.
-// If the operation fails it returns the *Error error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewayConnectionsBeginStopPacketCaptureOptions) (VirtualNetworkGatewayConnectionsStopPacketCapturePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The name of the virtual network gateway Connection.
+// parameters - Virtual network gateway packet capture parameters supplied to stop packet capture on gateway connection.
+// options - VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions contains the optional parameters for the
+// VirtualNetworkGatewayConnectionsClient.BeginStopPacketCapture method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions) (VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse, error) {
 	resp, err := client.stopPacketCapture(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsStopPacketCapturePollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsStopPacketCapturePollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.StopPacketCapture", "location", resp, client.pl, client.stopPacketCaptureHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.StopPacketCapture", "location", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsStopPacketCapturePollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientStopPacketCapturePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsStopPacketCapturePoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientStopPacketCapturePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // StopPacketCapture - Stops packet capture on virtual network gateway connection in the specified resource group.
-// If the operation fails it returns the *Error error type.
-func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewayConnectionsBeginStopPacketCaptureOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions) (*http.Response, error) {
 	req, err := client.stopPacketCaptureCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -806,13 +733,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCapture(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.stopPacketCaptureHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // stopPacketCaptureCreateRequest creates the StopPacketCapture request.
-func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewayConnectionsBeginStopPacketCaptureOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/stopPacketCapture"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -826,7 +753,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -837,42 +764,34 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureCreateReq
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// stopPacketCaptureHandleError handles the StopPacketCapture error response.
-func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdateTags - Updates a virtual network gateway connection tags.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, options *VirtualNetworkGatewayConnectionsBeginUpdateTagsOptions) (VirtualNetworkGatewayConnectionsUpdateTagsPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection.
+// parameters - Parameters supplied to update virtual network gateway connection tags.
+// options - VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginUpdateTags
+// method.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, options *VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions) (VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse, error) {
 	resp, err := client.updateTags(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsUpdateTagsPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayConnectionsUpdateTagsPollerResponse{
+	result := VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.UpdateTags", "azure-async-operation", resp, client.pl, client.updateTagsHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayConnectionsClient.UpdateTags", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayConnectionsUpdateTagsPollerResponse{}, err
+		return VirtualNetworkGatewayConnectionsClientUpdateTagsPollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayConnectionsUpdateTagsPoller{
+	result.Poller = &VirtualNetworkGatewayConnectionsClientUpdateTagsPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdateTags - Updates a virtual network gateway connection tags.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) updateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, options *VirtualNetworkGatewayConnectionsBeginUpdateTagsOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayConnectionsClient) updateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, options *VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions) (*http.Response, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -882,13 +801,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) updateTags(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateTagsHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *VirtualNetworkGatewayConnectionsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, options *VirtualNetworkGatewayConnectionsBeginUpdateTagsOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, options *VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -902,7 +821,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) updateTagsCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -911,17 +830,4 @@ func (client *VirtualNetworkGatewayConnectionsClient) updateTagsCreateRequest(ct
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateTagsHandleError handles the UpdateTags error response.
-func (client *VirtualNetworkGatewayConnectionsClient) updateTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

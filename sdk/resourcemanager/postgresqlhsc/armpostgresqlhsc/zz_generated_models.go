@@ -16,17 +16,9 @@ import (
 )
 
 // CloudError - An error response from the Batch service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// The error.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Batch service.
@@ -54,43 +46,43 @@ func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConfigurationsBeginUpdateOptions contains the optional parameters for the Configurations.BeginUpdate method.
-type ConfigurationsBeginUpdateOptions struct {
+// ConfigurationsClientBeginUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginUpdate method.
+type ConfigurationsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsGetOptions contains the optional parameters for the Configurations.Get method.
-type ConfigurationsGetOptions struct {
+// ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
+type ConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsListByServerGroupOptions contains the optional parameters for the Configurations.ListByServerGroup method.
-type ConfigurationsListByServerGroupOptions struct {
+// ConfigurationsClientListByServerGroupOptions contains the optional parameters for the ConfigurationsClient.ListByServerGroup
+// method.
+type ConfigurationsClientListByServerGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsListByServerOptions contains the optional parameters for the Configurations.ListByServer method.
-type ConfigurationsListByServerOptions struct {
+// ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer method.
+type ConfigurationsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
 // FirewallRule - Represents a server group firewall rule.
 type FirewallRule struct {
-	ProxyResource
 	// REQUIRED; The properties of a firewall rule.
 	Properties *FirewallRuleProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type FirewallRule.
-func (f FirewallRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	f.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // FirewallRuleListResult - A list of firewall rules.
@@ -115,23 +107,25 @@ type FirewallRuleProperties struct {
 	StartIPAddress *string `json:"startIpAddress,omitempty"`
 }
 
-// FirewallRulesBeginCreateOrUpdateOptions contains the optional parameters for the FirewallRules.BeginCreateOrUpdate method.
-type FirewallRulesBeginCreateOrUpdateOptions struct {
+// FirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrUpdate
+// method.
+type FirewallRulesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesBeginDeleteOptions contains the optional parameters for the FirewallRules.BeginDelete method.
-type FirewallRulesBeginDeleteOptions struct {
+// FirewallRulesClientBeginDeleteOptions contains the optional parameters for the FirewallRulesClient.BeginDelete method.
+type FirewallRulesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesGetOptions contains the optional parameters for the FirewallRules.Get method.
-type FirewallRulesGetOptions struct {
+// FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
+type FirewallRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesListByServerGroupOptions contains the optional parameters for the FirewallRules.ListByServerGroup method.
-type FirewallRulesListByServerGroupOptions struct {
+// FirewallRulesClientListByServerGroupOptions contains the optional parameters for the FirewallRulesClient.ListByServerGroup
+// method.
+type FirewallRulesClientListByServerGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -235,18 +229,22 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -261,36 +259,22 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // Role - Represents a server group role.
 type Role struct {
-	ProxyResource
 	// The properties of a role.
 	Properties *RoleProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Role.
-func (r Role) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "systemData", r.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RoleListResult - A list of roles.
@@ -312,38 +296,37 @@ type RoleProperties struct {
 	Password *string `json:"password,omitempty"`
 }
 
-// RolesBeginCreateOptions contains the optional parameters for the Roles.BeginCreate method.
-type RolesBeginCreateOptions struct {
+// RolesClientBeginCreateOptions contains the optional parameters for the RolesClient.BeginCreate method.
+type RolesClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RolesBeginDeleteOptions contains the optional parameters for the Roles.BeginDelete method.
-type RolesBeginDeleteOptions struct {
+// RolesClientBeginDeleteOptions contains the optional parameters for the RolesClient.BeginDelete method.
+type RolesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RolesListByServerGroupOptions contains the optional parameters for the Roles.ListByServerGroup method.
-type RolesListByServerGroupOptions struct {
+// RolesClientListByServerGroupOptions contains the optional parameters for the RolesClient.ListByServerGroup method.
+type RolesClientListByServerGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ServerConfiguration - Represents a configuration.
 type ServerConfiguration struct {
-	ProxyResource
 	// The properties of a configuration.
 	Properties *ServerConfigurationProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ServerConfiguration.
-func (s ServerConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ServerConfigurationListResult - A list of server configurations.
@@ -386,39 +369,67 @@ type ServerConfigurationProperties struct {
 
 // ServerGroup - Represents a server group for create.
 type ServerGroup struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the server group create.
 	Properties *ServerGroupProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServerGroup.
 func (s ServerGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
 // ServerGroupConfiguration - Represents the configuration list of server role groups in a server group.
 type ServerGroupConfiguration struct {
-	ProxyResource
 	// The properties of server group configuration.
 	Properties *ServerGroupConfigurationProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServerGroupConfiguration.
 func (s ServerGroupConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -504,7 +515,8 @@ func (s ServerGroupListResult) MarshalJSON() ([]byte, error) {
 
 // ServerGroupProperties - The properties used to create a new server group.
 type ServerGroupProperties struct {
-	// The administrator's login name of servers in server group. Can only be specified when the server is being created (and is required for creation).
+	// The administrator's login name of servers in server group. Can only be specified when the server is being created (and
+	// is required for creation).
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
 
 	// The password of the administrator login.
@@ -762,21 +774,20 @@ type ServerGroupPropertiesPrivateDNSZoneArguments struct {
 
 // ServerGroupServer - Represents a server in a server group.
 type ServerGroupServer struct {
-	ProxyResource
 	// The properties of a server in a server group.
 	Properties *ServerGroupServerProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ServerGroupServer.
-func (s ServerGroupServer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ServerGroupServerListResult - A list of servers in a server group.
@@ -794,7 +805,6 @@ func (s ServerGroupServerListResult) MarshalJSON() ([]byte, error) {
 
 // ServerGroupServerProperties - The properties of a server in server group.
 type ServerGroupServerProperties struct {
-	ServerProperties
 	// The administrator's login name of a servers in server group.
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
 
@@ -804,14 +814,29 @@ type ServerGroupServerProperties struct {
 	// The Citus version of server.
 	CitusVersion *CitusVersion `json:"citusVersion,omitempty"`
 
+	// If high availability is enabled or not for the server.
+	EnableHa *bool `json:"enableHa,omitempty"`
+
 	// The PostgreSQL version of server.
 	PostgresqlVersion *PostgreSQLVersion `json:"postgresqlVersion,omitempty"`
 
 	// The role of server in the server group.
 	Role *ServerRole `json:"role,omitempty"`
 
+	// The edition of a server (default: GeneralPurpose).
+	ServerEdition *ServerEdition `json:"serverEdition,omitempty"`
+
 	// Standby Availability Zone information of the server group.
 	StandbyAvailabilityZone *string `json:"standbyAvailabilityZone,omitempty"`
+
+	// The storage of a server in MB (max: 2097152 = 2TiB).
+	StorageQuotaInMb *int64 `json:"storageQuotaInMb,omitempty"`
+
+	// The vCores count of a server (max: 64).
+	VCores *int64 `json:"vCores,omitempty"`
+
+	// READ-ONLY; If public IP is requested or not for a server.
+	EnablePublicIP *bool `json:"enablePublicIp,omitempty" azure:"ro"`
 
 	// READ-ONLY; The fully qualified domain name of a server.
 	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty" azure:"ro"`
@@ -823,69 +848,56 @@ type ServerGroupServerProperties struct {
 	State *ServerState `json:"state,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServerGroupServerProperties.
-func (s ServerGroupServerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ServerProperties.marshalInternal(objectMap)
-	populate(objectMap, "administratorLogin", s.AdministratorLogin)
-	populate(objectMap, "availabilityZone", s.AvailabilityZone)
-	populate(objectMap, "citusVersion", s.CitusVersion)
-	populate(objectMap, "fullyQualifiedDomainName", s.FullyQualifiedDomainName)
-	populate(objectMap, "haState", s.HaState)
-	populate(objectMap, "postgresqlVersion", s.PostgresqlVersion)
-	populate(objectMap, "role", s.Role)
-	populate(objectMap, "standbyAvailabilityZone", s.StandbyAvailabilityZone)
-	populate(objectMap, "state", s.State)
-	return json.Marshal(objectMap)
-}
-
-// ServerGroupsBeginCreateOrUpdateOptions contains the optional parameters for the ServerGroups.BeginCreateOrUpdate method.
-type ServerGroupsBeginCreateOrUpdateOptions struct {
+// ServerGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerGroupsClient.BeginCreateOrUpdate
+// method.
+type ServerGroupsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsBeginDeleteOptions contains the optional parameters for the ServerGroups.BeginDelete method.
-type ServerGroupsBeginDeleteOptions struct {
+// ServerGroupsClientBeginDeleteOptions contains the optional parameters for the ServerGroupsClient.BeginDelete method.
+type ServerGroupsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsBeginRestartOptions contains the optional parameters for the ServerGroups.BeginRestart method.
-type ServerGroupsBeginRestartOptions struct {
+// ServerGroupsClientBeginRestartOptions contains the optional parameters for the ServerGroupsClient.BeginRestart method.
+type ServerGroupsClientBeginRestartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsBeginStartOptions contains the optional parameters for the ServerGroups.BeginStart method.
-type ServerGroupsBeginStartOptions struct {
+// ServerGroupsClientBeginStartOptions contains the optional parameters for the ServerGroupsClient.BeginStart method.
+type ServerGroupsClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsBeginStopOptions contains the optional parameters for the ServerGroups.BeginStop method.
-type ServerGroupsBeginStopOptions struct {
+// ServerGroupsClientBeginStopOptions contains the optional parameters for the ServerGroupsClient.BeginStop method.
+type ServerGroupsClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsBeginUpdateOptions contains the optional parameters for the ServerGroups.BeginUpdate method.
-type ServerGroupsBeginUpdateOptions struct {
+// ServerGroupsClientBeginUpdateOptions contains the optional parameters for the ServerGroupsClient.BeginUpdate method.
+type ServerGroupsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsCheckNameAvailabilityOptions contains the optional parameters for the ServerGroups.CheckNameAvailability method.
-type ServerGroupsCheckNameAvailabilityOptions struct {
+// ServerGroupsClientCheckNameAvailabilityOptions contains the optional parameters for the ServerGroupsClient.CheckNameAvailability
+// method.
+type ServerGroupsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsGetOptions contains the optional parameters for the ServerGroups.Get method.
-type ServerGroupsGetOptions struct {
+// ServerGroupsClientGetOptions contains the optional parameters for the ServerGroupsClient.Get method.
+type ServerGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsListByResourceGroupOptions contains the optional parameters for the ServerGroups.ListByResourceGroup method.
-type ServerGroupsListByResourceGroupOptions struct {
+// ServerGroupsClientListByResourceGroupOptions contains the optional parameters for the ServerGroupsClient.ListByResourceGroup
+// method.
+type ServerGroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerGroupsListOptions contains the optional parameters for the ServerGroups.List method.
-type ServerGroupsListOptions struct {
+// ServerGroupsClientListOptions contains the optional parameters for the ServerGroupsClient.List method.
+type ServerGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -916,24 +928,11 @@ type ServerProperties struct {
 	EnablePublicIP *bool `json:"enablePublicIp,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServerProperties.
-func (s ServerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (s ServerProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "enableHa", s.EnableHa)
-	populate(objectMap, "enablePublicIp", s.EnablePublicIP)
-	populate(objectMap, "serverEdition", s.ServerEdition)
-	populate(objectMap, "storageQuotaInMb", s.StorageQuotaInMb)
-	populate(objectMap, "vCores", s.VCores)
-}
-
 // ServerRoleGroup - Represents a server role group.
 type ServerRoleGroup struct {
-	ServerProperties
+	// If high availability is enabled or not for the server.
+	EnableHa *bool `json:"enableHa,omitempty"`
+
 	// The name of the server role group.
 	Name *string `json:"name,omitempty"`
 
@@ -943,6 +942,18 @@ type ServerRoleGroup struct {
 	// The number of servers in the server role group.
 	ServerCount *int32 `json:"serverCount,omitempty"`
 
+	// The edition of a server (default: GeneralPurpose).
+	ServerEdition *ServerEdition `json:"serverEdition,omitempty"`
+
+	// The storage of a server in MB (max: 2097152 = 2TiB).
+	StorageQuotaInMb *int64 `json:"storageQuotaInMb,omitempty"`
+
+	// The vCores count of a server (max: 64).
+	VCores *int64 `json:"vCores,omitempty"`
+
+	// READ-ONLY; If public IP is requested or not for a server.
+	EnablePublicIP *bool `json:"enablePublicIp,omitempty" azure:"ro"`
+
 	// READ-ONLY; The list of server names in the server role group.
 	ServerNames []*ServerNameItem `json:"serverNames,omitempty" azure:"ro"`
 }
@@ -950,11 +961,15 @@ type ServerRoleGroup struct {
 // MarshalJSON implements the json.Marshaller interface for type ServerRoleGroup.
 func (s ServerRoleGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ServerProperties.marshalInternal(objectMap)
+	populate(objectMap, "enableHa", s.EnableHa)
+	populate(objectMap, "enablePublicIp", s.EnablePublicIP)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "role", s.Role)
 	populate(objectMap, "serverCount", s.ServerCount)
+	populate(objectMap, "serverEdition", s.ServerEdition)
 	populate(objectMap, "serverNames", s.ServerNames)
+	populate(objectMap, "storageQuotaInMb", s.StorageQuotaInMb)
+	populate(objectMap, "vCores", s.VCores)
 	return json.Marshal(objectMap)
 }
 
@@ -973,13 +988,13 @@ type ServerRoleGroupConfiguration struct {
 	Source *string `json:"source,omitempty" azure:"ro"`
 }
 
-// ServersGetOptions contains the optional parameters for the Servers.Get method.
-type ServersGetOptions struct {
+// ServersClientGetOptions contains the optional parameters for the ServersClient.Get method.
+type ServersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersListByServerGroupOptions contains the optional parameters for the Servers.ListByServerGroup method.
-type ServersListByServerGroupOptions struct {
+// ServersClientListByServerGroupOptions contains the optional parameters for the ServersClient.ListByServerGroup method.
+type ServersClientListByServerGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1051,27 +1066,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

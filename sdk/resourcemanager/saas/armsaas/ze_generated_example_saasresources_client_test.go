@@ -17,36 +17,41 @@ import (
 )
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasV2/SaaSGetAllResources.json
-func ExampleSaasResourcesClient_List() {
+func ExampleResourcesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasResourcesClient(cred, nil)
+	client := armsaas.NewResourcesClient(cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SaasResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasV2/ListAccessTokenPost.json
-func ExampleSaasResourcesClient_ListAccessToken() {
+func ExampleResourcesClient_ListAccessToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasResourcesClient(cred, nil)
-	_, err = client.ListAccessToken(ctx,
+	client := armsaas.NewResourcesClient(cred, nil)
+	res, err := client.ListAccessToken(ctx,
 		"<resource-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ResourcesClientListAccessTokenResult)
 }

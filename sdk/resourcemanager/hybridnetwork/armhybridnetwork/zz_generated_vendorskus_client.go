@@ -11,7 +11,6 @@ package armhybridnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // VendorSKUsClient contains the methods for the VendorSKUs group.
 // Don't use this type directly, use NewVendorSKUsClient() instead.
 type VendorSKUsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVendorSKUsClient creates a new instance of VendorSKUsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVendorSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VendorSKUsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VendorSKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VendorSKUsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorSKUsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsBeginCreateOrUpdateOptions) (VendorSKUsCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service
+// behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vendorName - The name of the vendor.
+// skuName - The name of the sku.
+// parameters - Parameters supplied to the create or update sku operation.
+// options - VendorSKUsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUsClient.BeginCreateOrUpdate
+// method.
+func (client *VendorSKUsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (VendorSKUsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, vendorName, skuName, parameters, options)
 	if err != nil {
-		return VendorSKUsCreateOrUpdatePollerResponse{}, err
+		return VendorSKUsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := VendorSKUsCreateOrUpdatePollerResponse{
+	result := VendorSKUsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VendorSKUsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("VendorSKUsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VendorSKUsCreateOrUpdatePollerResponse{}, err
+		return VendorSKUsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &VendorSKUsCreateOrUpdatePoller{
+	result.Poller = &VendorSKUsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorSKUsClient) createOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// CreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service
+// behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VendorSKUsClient) createOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, vendorName, skuName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *VendorSKUsClient) createOrUpdate(ctx context.Context, vendorName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}"
 	if vendorName == "" {
 		return nil, errors.New("parameter vendorName cannot be empty")
@@ -94,7 +108,7 @@ func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +119,32 @@ func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VendorSKUsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified sku. This operation can take up to 2 hours to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorSKUsClient) BeginDelete(ctx context.Context, vendorName string, skuName string, options *VendorSKUsBeginDeleteOptions) (VendorSKUsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vendorName - The name of the vendor.
+// skuName - The name of the sku.
+// options - VendorSKUsClientBeginDeleteOptions contains the optional parameters for the VendorSKUsClient.BeginDelete method.
+func (client *VendorSKUsClient) BeginDelete(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (VendorSKUsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, vendorName, skuName, options)
 	if err != nil {
-		return VendorSKUsDeletePollerResponse{}, err
+		return VendorSKUsClientDeletePollerResponse{}, err
 	}
-	result := VendorSKUsDeletePollerResponse{
+	result := VendorSKUsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VendorSKUsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("VendorSKUsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return VendorSKUsDeletePollerResponse{}, err
+		return VendorSKUsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &VendorSKUsDeletePoller{
+	result.Poller = &VendorSKUsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified sku. This operation can take up to 2 hours to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorSKUsClient) deleteOperation(ctx context.Context, vendorName string, skuName string, options *VendorSKUsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VendorSKUsClient) deleteOperation(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, vendorName, skuName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +154,13 @@ func (client *VendorSKUsClient) deleteOperation(ctx context.Context, vendorName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VendorSKUsClient) deleteCreateRequest(ctx context.Context, vendorName string, skuName string, options *VendorSKUsBeginDeleteOptions) (*policy.Request, error) {
+func (client *VendorSKUsClient) deleteCreateRequest(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}"
 	if vendorName == "" {
 		return nil, errors.New("parameter vendorName cannot be empty")
@@ -170,7 +174,7 @@ func (client *VendorSKUsClient) deleteCreateRequest(ctx context.Context, vendorN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +185,28 @@ func (client *VendorSKUsClient) deleteCreateRequest(ctx context.Context, vendorN
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VendorSKUsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about the specified sku.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorSKUsClient) Get(ctx context.Context, vendorName string, skuName string, options *VendorSKUsGetOptions) (VendorSKUsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vendorName - The name of the vendor.
+// skuName - The name of the sku.
+// options - VendorSKUsClientGetOptions contains the optional parameters for the VendorSKUsClient.Get method.
+func (client *VendorSKUsClient) Get(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientGetOptions) (VendorSKUsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vendorName, skuName, options)
 	if err != nil {
-		return VendorSKUsGetResponse{}, err
+		return VendorSKUsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VendorSKUsGetResponse{}, err
+		return VendorSKUsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VendorSKUsGetResponse{}, client.getHandleError(resp)
+		return VendorSKUsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VendorSKUsClient) getCreateRequest(ctx context.Context, vendorName string, skuName string, options *VendorSKUsGetOptions) (*policy.Request, error) {
+func (client *VendorSKUsClient) getCreateRequest(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}"
 	if vendorName == "" {
 		return nil, errors.New("parameter vendorName cannot be empty")
@@ -226,7 +220,7 @@ func (client *VendorSKUsClient) getCreateRequest(ctx context.Context, vendorName
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,43 +232,32 @@ func (client *VendorSKUsClient) getCreateRequest(ctx context.Context, vendorName
 }
 
 // getHandleResponse handles the Get response.
-func (client *VendorSKUsClient) getHandleResponse(resp *http.Response) (VendorSKUsGetResponse, error) {
-	result := VendorSKUsGetResponse{RawResponse: resp}
+func (client *VendorSKUsClient) getHandleResponse(resp *http.Response) (VendorSKUsClientGetResponse, error) {
+	result := VendorSKUsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorSKU); err != nil {
-		return VendorSKUsGetResponse{}, runtime.NewResponseError(err, resp)
+		return VendorSKUsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VendorSKUsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the skus of a vendor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorSKUsClient) List(vendorName string, options *VendorSKUsListOptions) *VendorSKUsListPager {
-	return &VendorSKUsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// vendorName - The name of the vendor.
+// options - VendorSKUsClientListOptions contains the optional parameters for the VendorSKUsClient.List method.
+func (client *VendorSKUsClient) List(vendorName string, options *VendorSKUsClientListOptions) *VendorSKUsClientListPager {
+	return &VendorSKUsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, vendorName, options)
 		},
-		advancer: func(ctx context.Context, resp VendorSKUsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VendorSKUsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VendorSKUListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VendorSKUsClient) listCreateRequest(ctx context.Context, vendorName string, options *VendorSKUsListOptions) (*policy.Request, error) {
+func (client *VendorSKUsClient) listCreateRequest(ctx context.Context, vendorName string, options *VendorSKUsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus"
 	if vendorName == "" {
 		return nil, errors.New("parameter vendorName cannot be empty")
@@ -284,7 +267,7 @@ func (client *VendorSKUsClient) listCreateRequest(ctx context.Context, vendorNam
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,23 +279,10 @@ func (client *VendorSKUsClient) listCreateRequest(ctx context.Context, vendorNam
 }
 
 // listHandleResponse handles the List response.
-func (client *VendorSKUsClient) listHandleResponse(resp *http.Response) (VendorSKUsListResponse, error) {
-	result := VendorSKUsListResponse{RawResponse: resp}
+func (client *VendorSKUsClient) listHandleResponse(resp *http.Response) (VendorSKUsClientListResponse, error) {
+	result := VendorSKUsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorSKUListResult); err != nil {
-		return VendorSKUsListResponse{}, runtime.NewResponseError(err, resp)
+		return VendorSKUsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *VendorSKUsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

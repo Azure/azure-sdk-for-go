@@ -53,22 +53,15 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-// FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them from being monitored.
+// FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
+// from being monitored.
 type FilteringTag struct {
 	// Valid actions for a filtering tag. Exclusion takes priority over inclusion.
 	Action *TagAction `json:"action,omitempty"`
@@ -92,10 +85,10 @@ type IdentityProperties struct {
 
 // LogRules - Set of rules for sending logs for the Monitor resource.
 type LogRules struct {
-	// List of filtering tags to be used for capturing logs. This only takes effect if SendActivityLogs flag is enabled. If empty, all resources will be captured.
-	// If only Exclude action is specified, the
-	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include resources with the associated
-	// tags.
+	// List of filtering tags to be used for capturing logs. This only takes effect if SendActivityLogs flag is enabled. If empty,
+	// all resources will be captured. If only Exclude action is specified, the
+	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include
+	// resources with the associated tags.
 	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
 
 	// Flag specifying if AAD logs should be sent for the Monitor resource.
@@ -118,7 +111,46 @@ func (l LogRules) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-type LogzMonitorResource struct {
+// MonitorClientListVMHostUpdateOptions contains the optional parameters for the MonitorClient.ListVMHostUpdate method.
+type MonitorClientListVMHostUpdateOptions struct {
+	// Request body to update the collection for agent installed in the given monitor.
+	Body *VMHostUpdateRequest
+}
+
+// MonitorClientListVMHostsOptions contains the optional parameters for the MonitorClient.ListVMHosts method.
+type MonitorClientListVMHostsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitorClientVMHostPayloadOptions contains the optional parameters for the MonitorClient.VMHostPayload method.
+type MonitorClientVMHostPayloadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitorProperties - Properties specific to the monitor resource.
+type MonitorProperties struct {
+	LogzOrganizationProperties *OrganizationProperties `json:"logzOrganizationProperties,omitempty"`
+
+	// Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource will
+	// go in Suspended state.
+	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty"`
+
+	// Flag specifying if the resource monitoring is enabled or disabled.
+	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
+	PlanData         *PlanData         `json:"planData,omitempty"`
+	UserInfo         *UserInfo         `json:"userInfo,omitempty"`
+
+	// READ-ONLY
+	LiftrResourceCategory *LiftrResourceCategories `json:"liftrResourceCategory,omitempty" azure:"ro"`
+
+	// READ-ONLY; The priority of the resource.
+	LiftrResourcePreference *int32 `json:"liftrResourcePreference,omitempty" azure:"ro"`
+
+	// READ-ONLY; Flag specifying if the resource provisioning state as tracked by ARM.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+type MonitorResource struct {
 	// REQUIRED
 	Location *string             `json:"location,omitempty"`
 	Identity *IdentityProperties `json:"identity,omitempty"`
@@ -142,39 +174,39 @@ type LogzMonitorResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LogzMonitorResource.
-func (l LogzMonitorResource) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MonitorResource.
+func (m MonitorResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", l.ID)
-	populate(objectMap, "identity", l.Identity)
-	populate(objectMap, "location", l.Location)
-	populate(objectMap, "name", l.Name)
-	populate(objectMap, "properties", l.Properties)
-	populate(objectMap, "systemData", l.SystemData)
-	populate(objectMap, "tags", l.Tags)
-	populate(objectMap, "type", l.Type)
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "identity", m.Identity)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "name", m.Name)
+	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "systemData", m.SystemData)
+	populate(objectMap, "tags", m.Tags)
+	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
-// LogzMonitorResourceListResponse - Response of a list operation.
-type LogzMonitorResourceListResponse struct {
+// MonitorResourceListResponse - Response of a list operation.
+type MonitorResourceListResponse struct {
 	// Link to the next set of results, if any.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// Results of a list operation.
-	Value []*LogzMonitorResource `json:"value,omitempty"`
+	Value []*MonitorResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LogzMonitorResourceListResponse.
-func (l LogzMonitorResourceListResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MonitorResourceListResponse.
+func (m MonitorResourceListResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
+	populate(objectMap, "nextLink", m.NextLink)
+	populate(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
 }
 
-// LogzMonitorResourceUpdateParameters - The parameters for a PATCH request to a monitor resource.
-type LogzMonitorResourceUpdateParameters struct {
+// MonitorResourceUpdateParameters - The parameters for a PATCH request to a monitor resource.
+type MonitorResourceUpdateParameters struct {
 	// The set of properties that can be update in a PATCH request to a monitor resource.
 	Properties *MonitorUpdateProperties `json:"properties,omitempty"`
 
@@ -182,117 +214,18 @@ type LogzMonitorResourceUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LogzMonitorResourceUpdateParameters.
-func (l LogzMonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MonitorResourceUpdateParameters.
+func (m MonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", l.Properties)
-	populate(objectMap, "tags", l.Tags)
+	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "tags", m.Tags)
 	return json.Marshal(objectMap)
-}
-
-type LogzOrganizationProperties struct {
-	// Name of the Logz organization.
-	CompanyName *string `json:"companyName,omitempty"`
-
-	// The Id of the Enterprise App used for Single sign on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
-
-	// The login URL specific to this Logz Organization.
-	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty"`
-
-	// READ-ONLY; Id of the Logz organization.
-	ID *string `json:"id,omitempty" azure:"ro"`
-}
-
-type LogzSingleSignOnProperties struct {
-	// The Id of the Enterprise App used for Single sign-on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
-
-	// Various states of the SSO resource
-	SingleSignOnState *SingleSignOnStates `json:"singleSignOnState,omitempty"`
-
-	// The login URL specific to this Logz Organization.
-	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty"`
-
-	// READ-ONLY; Flag specifying if the resource provisioning state as tracked by ARM.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-type LogzSingleSignOnResource struct {
-	Properties *LogzSingleSignOnProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; ARM id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the configuration.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// LogzSingleSignOnResourceListResponse - Response of a list operation.
-type LogzSingleSignOnResourceListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Results of a list operation.
-	Value []*LogzSingleSignOnResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LogzSingleSignOnResourceListResponse.
-func (l LogzSingleSignOnResourceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// MonitorListVMHostUpdateOptions contains the optional parameters for the Monitor.ListVMHostUpdate method.
-type MonitorListVMHostUpdateOptions struct {
-	// Request body to update the collection for agent installed in the given monitor.
-	Body *VMHostUpdateRequest
-}
-
-// MonitorListVMHostsOptions contains the optional parameters for the Monitor.ListVMHosts method.
-type MonitorListVMHostsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MonitorProperties - Properties specific to the monitor resource.
-type MonitorProperties struct {
-	LogzOrganizationProperties *LogzOrganizationProperties `json:"logzOrganizationProperties,omitempty"`
-
-	// Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource will go in Suspended state.
-	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty"`
-
-	// Flag specifying if the resource monitoring is enabled or disabled.
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
-	PlanData         *PlanData         `json:"planData,omitempty"`
-	UserInfo         *UserInfo         `json:"userInfo,omitempty"`
-
-	// READ-ONLY
-	LiftrResourceCategory *LiftrResourceCategories `json:"liftrResourceCategory,omitempty" azure:"ro"`
-
-	// READ-ONLY; The priority of the resource.
-	LiftrResourcePreference *int32 `json:"liftrResourcePreference,omitempty" azure:"ro"`
-
-	// READ-ONLY; Flag specifying if the resource provisioning state as tracked by ARM.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // MonitorUpdateProperties - The set of properties that can be update in a PATCH request to a monitor resource.
 type MonitorUpdateProperties struct {
 	// Flag specifying if the resource monitoring is enabled or disabled.
 	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
-}
-
-// MonitorVMHostPayloadOptions contains the optional parameters for the Monitor.VMHostPayload method.
-type MonitorVMHostPayloadOptions struct {
-	// placeholder for future optional parameters
 }
 
 // MonitoredResource - The properties of a resource currently being monitored by the Logz monitor resource.
@@ -380,44 +313,45 @@ type MonitoringTagRulesProperties struct {
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 }
 
-// MonitorsBeginCreateOptions contains the optional parameters for the Monitors.BeginCreate method.
-type MonitorsBeginCreateOptions struct {
-	Body *LogzMonitorResource
+// MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
+type MonitorsClientBeginCreateOptions struct {
+	Body *MonitorResource
 }
 
-// MonitorsBeginDeleteOptions contains the optional parameters for the Monitors.BeginDelete method.
-type MonitorsBeginDeleteOptions struct {
+// MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
+type MonitorsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsGetOptions contains the optional parameters for the Monitors.Get method.
-type MonitorsGetOptions struct {
+// MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
+type MonitorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListByResourceGroupOptions contains the optional parameters for the Monitors.ListByResourceGroup method.
-type MonitorsListByResourceGroupOptions struct {
+// MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.ListByResourceGroup method.
+type MonitorsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListBySubscriptionOptions contains the optional parameters for the Monitors.ListBySubscription method.
-type MonitorsListBySubscriptionOptions struct {
+// MonitorsClientListBySubscriptionOptions contains the optional parameters for the MonitorsClient.ListBySubscription method.
+type MonitorsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListMonitoredResourcesOptions contains the optional parameters for the Monitors.ListMonitoredResources method.
-type MonitorsListMonitoredResourcesOptions struct {
+// MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.ListMonitoredResources
+// method.
+type MonitorsClientListMonitoredResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsListUserRolesOptions contains the optional parameters for the Monitors.ListUserRoles method.
-type MonitorsListUserRolesOptions struct {
+// MonitorsClientListUserRolesOptions contains the optional parameters for the MonitorsClient.ListUserRoles method.
+type MonitorsClientListUserRolesOptions struct {
 	Body *UserRoleRequest
 }
 
-// MonitorsUpdateOptions contains the optional parameters for the Monitors.Update method.
-type MonitorsUpdateOptions struct {
-	Body *LogzMonitorResourceUpdateParameters
+// MonitorsClientUpdateOptions contains the optional parameters for the MonitorsClient.Update method.
+type MonitorsClientUpdateOptions struct {
+	Body *MonitorResourceUpdateParameters
 }
 
 // OperationDisplay - The object that represents the operation.
@@ -467,9 +401,23 @@ type OperationResult struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+type OrganizationProperties struct {
+	// Name of the Logz organization.
+	CompanyName *string `json:"companyName,omitempty"`
+
+	// The Id of the Enterprise App used for Single sign on.
+	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+
+	// The login URL specific to this Logz Organization.
+	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty"`
+
+	// READ-ONLY; Id of the Logz organization.
+	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
 type PlanData struct {
@@ -525,84 +473,134 @@ func (p *PlanData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SingleSignOnBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOn.BeginCreateOrUpdate method.
-type SingleSignOnBeginCreateOrUpdateOptions struct {
-	Body *LogzSingleSignOnResource
+// SingleSignOnClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnClient.BeginCreateOrUpdate
+// method.
+type SingleSignOnClientBeginCreateOrUpdateOptions struct {
+	Body *SingleSignOnResource
 }
 
-// SingleSignOnGetOptions contains the optional parameters for the SingleSignOn.Get method.
-type SingleSignOnGetOptions struct {
+// SingleSignOnClientGetOptions contains the optional parameters for the SingleSignOnClient.Get method.
+type SingleSignOnClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SingleSignOnListOptions contains the optional parameters for the SingleSignOn.List method.
-type SingleSignOnListOptions struct {
+// SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.List method.
+type SingleSignOnClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubAccountBeginCreateOptions contains the optional parameters for the SubAccount.BeginCreate method.
-type SubAccountBeginCreateOptions struct {
-	Body *LogzMonitorResource
+type SingleSignOnProperties struct {
+	// The Id of the Enterprise App used for Single sign-on.
+	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+
+	// Various states of the SSO resource
+	SingleSignOnState *SingleSignOnStates `json:"singleSignOnState,omitempty"`
+
+	// The login URL specific to this Logz Organization.
+	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty"`
+
+	// READ-ONLY; Flag specifying if the resource provisioning state as tracked by ARM.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// SubAccountBeginDeleteOptions contains the optional parameters for the SubAccount.BeginDelete method.
-type SubAccountBeginDeleteOptions struct {
+type SingleSignOnResource struct {
+	Properties *SingleSignOnProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; ARM id of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the configuration.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SingleSignOnResourceListResponse - Response of a list operation.
+type SingleSignOnResourceListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Results of a list operation.
+	Value []*SingleSignOnResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SingleSignOnResourceListResponse.
+func (s SingleSignOnResourceListResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// SubAccountClientBeginCreateOptions contains the optional parameters for the SubAccountClient.BeginCreate method.
+type SubAccountClientBeginCreateOptions struct {
+	Body *MonitorResource
+}
+
+// SubAccountClientBeginDeleteOptions contains the optional parameters for the SubAccountClient.BeginDelete method.
+type SubAccountClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubAccountGetOptions contains the optional parameters for the SubAccount.Get method.
-type SubAccountGetOptions struct {
+// SubAccountClientGetOptions contains the optional parameters for the SubAccountClient.Get method.
+type SubAccountClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubAccountListMonitoredResourcesOptions contains the optional parameters for the SubAccount.ListMonitoredResources method.
-type SubAccountListMonitoredResourcesOptions struct {
+// SubAccountClientListMonitoredResourcesOptions contains the optional parameters for the SubAccountClient.ListMonitoredResources
+// method.
+type SubAccountClientListMonitoredResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubAccountListOptions contains the optional parameters for the SubAccount.List method.
-type SubAccountListOptions struct {
+// SubAccountClientListOptions contains the optional parameters for the SubAccountClient.List method.
+type SubAccountClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubAccountListVMHostUpdateOptions contains the optional parameters for the SubAccount.ListVMHostUpdate method.
-type SubAccountListVMHostUpdateOptions struct {
+// SubAccountClientListVMHostUpdateOptions contains the optional parameters for the SubAccountClient.ListVMHostUpdate method.
+type SubAccountClientListVMHostUpdateOptions struct {
 	// Request body to update the collection for agent installed in the given monitor.
 	Body *VMHostUpdateRequest
 }
 
-// SubAccountListVMHostsOptions contains the optional parameters for the SubAccount.ListVMHosts method.
-type SubAccountListVMHostsOptions struct {
+// SubAccountClientListVMHostsOptions contains the optional parameters for the SubAccountClient.ListVMHosts method.
+type SubAccountClientListVMHostsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubAccountTagRulesCreateOrUpdateOptions contains the optional parameters for the SubAccountTagRules.CreateOrUpdate method.
-type SubAccountTagRulesCreateOrUpdateOptions struct {
+// SubAccountClientUpdateOptions contains the optional parameters for the SubAccountClient.Update method.
+type SubAccountClientUpdateOptions struct {
+	Body *MonitorResourceUpdateParameters
+}
+
+// SubAccountClientVMHostPayloadOptions contains the optional parameters for the SubAccountClient.VMHostPayload method.
+type SubAccountClientVMHostPayloadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubAccountTagRulesClientCreateOrUpdateOptions contains the optional parameters for the SubAccountTagRulesClient.CreateOrUpdate
+// method.
+type SubAccountTagRulesClientCreateOrUpdateOptions struct {
 	Body *MonitoringTagRules
 }
 
-// SubAccountTagRulesDeleteOptions contains the optional parameters for the SubAccountTagRules.Delete method.
-type SubAccountTagRulesDeleteOptions struct {
+// SubAccountTagRulesClientDeleteOptions contains the optional parameters for the SubAccountTagRulesClient.Delete method.
+type SubAccountTagRulesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubAccountTagRulesGetOptions contains the optional parameters for the SubAccountTagRules.Get method.
-type SubAccountTagRulesGetOptions struct {
+// SubAccountTagRulesClientGetOptions contains the optional parameters for the SubAccountTagRulesClient.Get method.
+type SubAccountTagRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubAccountTagRulesListOptions contains the optional parameters for the SubAccountTagRules.List method.
-type SubAccountTagRulesListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubAccountUpdateOptions contains the optional parameters for the SubAccount.Update method.
-type SubAccountUpdateOptions struct {
-	Body *LogzMonitorResourceUpdateParameters
-}
-
-// SubAccountVMHostPayloadOptions contains the optional parameters for the SubAccount.VMHostPayload method.
-type SubAccountVMHostPayloadOptions struct {
+// SubAccountTagRulesClientListOptions contains the optional parameters for the SubAccountTagRulesClient.List method.
+type SubAccountTagRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -674,23 +672,23 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TagRulesCreateOrUpdateOptions contains the optional parameters for the TagRules.CreateOrUpdate method.
-type TagRulesCreateOrUpdateOptions struct {
+// TagRulesClientCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.CreateOrUpdate method.
+type TagRulesClientCreateOrUpdateOptions struct {
 	Body *MonitoringTagRules
 }
 
-// TagRulesDeleteOptions contains the optional parameters for the TagRules.Delete method.
-type TagRulesDeleteOptions struct {
+// TagRulesClientDeleteOptions contains the optional parameters for the TagRulesClient.Delete method.
+type TagRulesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagRulesGetOptions contains the optional parameters for the TagRules.Get method.
-type TagRulesGetOptions struct {
+// TagRulesClientGetOptions contains the optional parameters for the TagRulesClient.Get method.
+type TagRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagRulesListOptions contains the optional parameters for the TagRules.List method.
-type TagRulesListOptions struct {
+// TagRulesClientListOptions contains the optional parameters for the TagRulesClient.List method.
+type TagRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

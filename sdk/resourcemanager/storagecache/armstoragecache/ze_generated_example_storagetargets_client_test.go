@@ -19,28 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
 )
 
-// x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/StorageTargets_DnsRefresh.json
-func ExampleStorageTargetsClient_BeginDNSRefresh() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armstoragecache.NewStorageTargetsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDNSRefresh(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<storage-target-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 // x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/StorageTargets_ListByCache.json
 func ExampleStorageTargetsClient_ListByCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -52,12 +30,16 @@ func ExampleStorageTargetsClient_ListByCache() {
 	pager := client.ListByCache("<resource-group-name>",
 		"<cache-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StorageTarget.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -74,7 +56,7 @@ func ExampleStorageTargetsClient_BeginDelete() {
 		"<resource-group-name>",
 		"<cache-name>",
 		"<storage-target-name>",
-		&armstoragecache.StorageTargetsBeginDeleteOptions{Force: nil})
+		&armstoragecache.StorageTargetsClientBeginDeleteOptions{Force: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -100,7 +82,7 @@ func ExampleStorageTargetsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageTarget.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StorageTargetsClientGetResult)
 }
 
 // x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/StorageTargets_CreateOrUpdate.json
@@ -115,7 +97,7 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<cache-name>",
 		"<storage-target-name>",
-		&armstoragecache.StorageTargetsBeginCreateOrUpdateOptions{Storagetarget: &armstoragecache.StorageTarget{
+		&armstoragecache.StorageTargetsClientBeginCreateOrUpdateOptions{Storagetarget: &armstoragecache.StorageTarget{
 			Properties: &armstoragecache.StorageTargetProperties{
 				Junctions: []*armstoragecache.NamespaceJunction{
 					{
@@ -134,7 +116,7 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate() {
 					Target:     to.StringPtr("<target>"),
 					UsageModel: to.StringPtr("<usage-model>"),
 				},
-				TargetType: armstoragecache.StorageTargetTypeNfs3.ToPtr(),
+				TargetType: armstoragecache.StorageTargetType("nfs3").ToPtr(),
 			},
 		},
 		})
@@ -145,5 +127,5 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageTarget.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StorageTargetsClientCreateOrUpdateResult)
 }

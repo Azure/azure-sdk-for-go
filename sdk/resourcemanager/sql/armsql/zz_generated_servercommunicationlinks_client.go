@@ -24,46 +24,61 @@ import (
 // ServerCommunicationLinksClient contains the methods for the ServerCommunicationLinks group.
 // Don't use this type directly, use NewServerCommunicationLinksClient() instead.
 type ServerCommunicationLinksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerCommunicationLinksClient creates a new instance of ServerCommunicationLinksClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerCommunicationLinksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerCommunicationLinksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerCommunicationLinksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates a server communication link.
-// If the operation fails it returns a generic error.
-func (client *ServerCommunicationLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksBeginCreateOrUpdateOptions) (ServerCommunicationLinksCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// communicationLinkName - The name of the server communication link.
+// parameters - The required parameters for creating a server communication link.
+// options - ServerCommunicationLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerCommunicationLinksClient.BeginCreateOrUpdate
+// method.
+func (client *ServerCommunicationLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (ServerCommunicationLinksClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, communicationLinkName, parameters, options)
 	if err != nil {
-		return ServerCommunicationLinksCreateOrUpdatePollerResponse{}, err
+		return ServerCommunicationLinksClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ServerCommunicationLinksCreateOrUpdatePollerResponse{
+	result := ServerCommunicationLinksClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerCommunicationLinksClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerCommunicationLinksClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ServerCommunicationLinksCreateOrUpdatePollerResponse{}, err
+		return ServerCommunicationLinksClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServerCommunicationLinksCreateOrUpdatePoller{
+	result.Poller = &ServerCommunicationLinksClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a server communication link.
-// If the operation fails it returns a generic error.
-func (client *ServerCommunicationLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerCommunicationLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, communicationLinkName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *ServerCommunicationLinksClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerCommunicationLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerCommunicationLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/communicationLinks/{communicationLinkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,7 +112,7 @@ func (client *ServerCommunicationLinksClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter communicationLinkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationLinkName}", url.PathEscape(communicationLinkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,37 +123,31 @@ func (client *ServerCommunicationLinksClient) createOrUpdateCreateRequest(ctx co
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServerCommunicationLinksClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes a server communication link.
-// If the operation fails it returns a generic error.
-func (client *ServerCommunicationLinksClient) Delete(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksDeleteOptions) (ServerCommunicationLinksDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// communicationLinkName - The name of the server communication link.
+// options - ServerCommunicationLinksClientDeleteOptions contains the optional parameters for the ServerCommunicationLinksClient.Delete
+// method.
+func (client *ServerCommunicationLinksClient) Delete(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksClientDeleteOptions) (ServerCommunicationLinksClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, communicationLinkName, options)
 	if err != nil {
-		return ServerCommunicationLinksDeleteResponse{}, err
+		return ServerCommunicationLinksClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerCommunicationLinksDeleteResponse{}, err
+		return ServerCommunicationLinksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerCommunicationLinksDeleteResponse{}, client.deleteHandleError(resp)
+		return ServerCommunicationLinksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ServerCommunicationLinksDeleteResponse{RawResponse: resp}, nil
+	return ServerCommunicationLinksClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerCommunicationLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksDeleteOptions) (*policy.Request, error) {
+func (client *ServerCommunicationLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/communicationLinks/{communicationLinkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,7 +165,7 @@ func (client *ServerCommunicationLinksClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter communicationLinkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationLinkName}", url.PathEscape(communicationLinkName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,37 +175,31 @@ func (client *ServerCommunicationLinksClient) deleteCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServerCommunicationLinksClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Returns a server communication link.
-// If the operation fails it returns a generic error.
-func (client *ServerCommunicationLinksClient) Get(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksGetOptions) (ServerCommunicationLinksGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// communicationLinkName - The name of the server communication link.
+// options - ServerCommunicationLinksClientGetOptions contains the optional parameters for the ServerCommunicationLinksClient.Get
+// method.
+func (client *ServerCommunicationLinksClient) Get(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksClientGetOptions) (ServerCommunicationLinksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, communicationLinkName, options)
 	if err != nil {
-		return ServerCommunicationLinksGetResponse{}, err
+		return ServerCommunicationLinksClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerCommunicationLinksGetResponse{}, err
+		return ServerCommunicationLinksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerCommunicationLinksGetResponse{}, client.getHandleError(resp)
+		return ServerCommunicationLinksClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerCommunicationLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksGetOptions) (*policy.Request, error) {
+func (client *ServerCommunicationLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/communicationLinks/{communicationLinkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -214,7 +217,7 @@ func (client *ServerCommunicationLinksClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter communicationLinkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{communicationLinkName}", url.PathEscape(communicationLinkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -226,45 +229,38 @@ func (client *ServerCommunicationLinksClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerCommunicationLinksClient) getHandleResponse(resp *http.Response) (ServerCommunicationLinksGetResponse, error) {
-	result := ServerCommunicationLinksGetResponse{RawResponse: resp}
+func (client *ServerCommunicationLinksClient) getHandleResponse(resp *http.Response) (ServerCommunicationLinksClientGetResponse, error) {
+	result := ServerCommunicationLinksClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerCommunicationLink); err != nil {
-		return ServerCommunicationLinksGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerCommunicationLinksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerCommunicationLinksClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByServer - Gets a list of server communication links.
-// If the operation fails it returns a generic error.
-func (client *ServerCommunicationLinksClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerCommunicationLinksListByServerOptions) (ServerCommunicationLinksListByServerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServerCommunicationLinksClientListByServerOptions contains the optional parameters for the ServerCommunicationLinksClient.ListByServer
+// method.
+func (client *ServerCommunicationLinksClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) (ServerCommunicationLinksClientListByServerResponse, error) {
 	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServerCommunicationLinksListByServerResponse{}, err
+		return ServerCommunicationLinksClientListByServerResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerCommunicationLinksListByServerResponse{}, err
+		return ServerCommunicationLinksClientListByServerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerCommunicationLinksListByServerResponse{}, client.listByServerHandleError(resp)
+		return ServerCommunicationLinksClientListByServerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServerHandleResponse(resp)
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerCommunicationLinksClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerCommunicationLinksListByServerOptions) (*policy.Request, error) {
+func (client *ServerCommunicationLinksClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/communicationLinks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -278,7 +274,7 @@ func (client *ServerCommunicationLinksClient) listByServerCreateRequest(ctx cont
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -290,22 +286,10 @@ func (client *ServerCommunicationLinksClient) listByServerCreateRequest(ctx cont
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerCommunicationLinksClient) listByServerHandleResponse(resp *http.Response) (ServerCommunicationLinksListByServerResponse, error) {
-	result := ServerCommunicationLinksListByServerResponse{RawResponse: resp}
+func (client *ServerCommunicationLinksClient) listByServerHandleResponse(resp *http.Response) (ServerCommunicationLinksClientListByServerResponse, error) {
+	result := ServerCommunicationLinksClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerCommunicationLinkListResult); err != nil {
-		return ServerCommunicationLinksListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ServerCommunicationLinksClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *ServerCommunicationLinksClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

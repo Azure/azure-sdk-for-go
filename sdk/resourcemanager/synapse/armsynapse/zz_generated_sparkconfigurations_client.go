@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // SparkConfigurationsClient contains the methods for the SparkConfigurations group.
 // Don't use this type directly, use NewSparkConfigurationsClient() instead.
 type SparkConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSparkConfigurationsClient creates a new instance of SparkConfigurationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSparkConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SparkConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SparkConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SparkConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByWorkspace - List sparkConfigurations in a workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SparkConfigurationsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *SparkConfigurationsListByWorkspaceOptions) *SparkConfigurationsListByWorkspacePager {
-	return &SparkConfigurationsListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - SparkConfigurationsClientListByWorkspaceOptions contains the optional parameters for the SparkConfigurationsClient.ListByWorkspace
+// method.
+func (client *SparkConfigurationsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *SparkConfigurationsClientListByWorkspaceOptions) *SparkConfigurationsClientListByWorkspacePager {
+	return &SparkConfigurationsClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp SparkConfigurationsListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SparkConfigurationsClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SparkConfigurationListResponse.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *SparkConfigurationsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SparkConfigurationsListByWorkspaceOptions) (*policy.Request, error) {
+func (client *SparkConfigurationsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SparkConfigurationsClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sparkconfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +82,7 @@ func (client *SparkConfigurationsClient) listByWorkspaceCreateRequest(ctx contex
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +94,10 @@ func (client *SparkConfigurationsClient) listByWorkspaceCreateRequest(ctx contex
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *SparkConfigurationsClient) listByWorkspaceHandleResponse(resp *http.Response) (SparkConfigurationsListByWorkspaceResponse, error) {
-	result := SparkConfigurationsListByWorkspaceResponse{RawResponse: resp}
+func (client *SparkConfigurationsClient) listByWorkspaceHandleResponse(resp *http.Response) (SparkConfigurationsClientListByWorkspaceResponse, error) {
+	result := SparkConfigurationsClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SparkConfigurationListResponse); err != nil {
-		return SparkConfigurationsListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return SparkConfigurationsClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *SparkConfigurationsClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

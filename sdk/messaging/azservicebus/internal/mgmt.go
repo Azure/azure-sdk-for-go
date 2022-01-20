@@ -39,7 +39,7 @@ type (
 		ns    NamespaceForMgmtClient
 		links AMQPLinks
 
-		clientMu sync.RWMutex
+		clientMu sync.Mutex
 		rpcLink  RPCLink
 
 		sessionID          *string
@@ -132,9 +132,9 @@ func (mc *mgmtClient) doRPCWithRetry(ctx context.Context, msg *amqp.Message, tim
 	sendCount := 0
 
 	for {
-		mc.clientMu.RLock()
+		mc.clientMu.Lock()
 		rpcLink, err := mc.getLinkWithoutLock(ctx)
-		mc.clientMu.RUnlock()
+		mc.clientMu.Unlock()
 
 		var rsp *rpc.Response
 

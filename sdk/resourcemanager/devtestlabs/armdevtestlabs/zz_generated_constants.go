@@ -9,8 +9,8 @@
 package armdevtestlabs
 
 const (
-	module  = "armdevtestlabs"
-	version = "v0.1.0"
+	moduleName    = "armdevtestlabs"
+	moduleVersion = "v0.2.0"
 )
 
 // CostThresholdStatus - Indicates whether this threshold will be displayed on cost charts.
@@ -425,8 +425,8 @@ func (c PolicyStatus) ToPtr() *PolicyStatus {
 	return &c
 }
 
-// PremiumDataDisk - The setting to enable usage of premium data disks. When its value is 'Enabled', creation of standard or premium data disks is allowed.
-// When its value is 'Disabled', only creation of standard data
+// PremiumDataDisk - The setting to enable usage of premium data disks. When its value is 'Enabled', creation of standard
+// or premium data disks is allowed. When its value is 'Disabled', only creation of standard data
 // disks is allowed.
 type PremiumDataDisk string
 

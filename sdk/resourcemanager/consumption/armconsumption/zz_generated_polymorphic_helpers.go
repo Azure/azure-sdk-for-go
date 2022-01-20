@@ -49,23 +49,24 @@ func unmarshalChargeSummaryClassificationArray(rawMsg json.RawMessage) ([]Charge
 	return fArray, nil
 }
 
-func unmarshalChargeSummaryClassificationMap(rawMsg json.RawMessage) (map[string]ChargeSummaryClassification, error) {
+func unmarshalLegacyReservationRecommendationPropertiesClassification(rawMsg json.RawMessage) (LegacyReservationRecommendationPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	fMap := make(map[string]ChargeSummaryClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalChargeSummaryClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
+	var b LegacyReservationRecommendationPropertiesClassification
+	switch m["scope"] {
+	case "Shared":
+		b = &LegacySharedScopeReservationRecommendationProperties{}
+	case "Single":
+		b = &LegacySingleScopeReservationRecommendationProperties{}
+	default:
+		b = &LegacyReservationRecommendationProperties{}
 	}
-	return fMap, nil
+	return b, json.Unmarshal(rawMsg, b)
 }
 
 func unmarshalReservationRecommendationClassification(rawMsg json.RawMessage) (ReservationRecommendationClassification, error) {
@@ -107,25 +108,6 @@ func unmarshalReservationRecommendationClassificationArray(rawMsg json.RawMessag
 	return fArray, nil
 }
 
-func unmarshalReservationRecommendationClassificationMap(rawMsg json.RawMessage) (map[string]ReservationRecommendationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ReservationRecommendationClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalReservationRecommendationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalUsageDetailClassification(rawMsg json.RawMessage) (UsageDetailClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -163,23 +145,4 @@ func unmarshalUsageDetailClassificationArray(rawMsg json.RawMessage) ([]UsageDet
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalUsageDetailClassificationMap(rawMsg json.RawMessage) (map[string]UsageDetailClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]UsageDetailClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalUsageDetailClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

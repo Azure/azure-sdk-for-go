@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,58 @@ import (
 // ProtectionPolicyOperationStatusesClient contains the methods for the ProtectionPolicyOperationStatuses group.
 // Don't use this type directly, use NewProtectionPolicyOperationStatusesClient() instead.
 type ProtectionPolicyOperationStatusesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProtectionPolicyOperationStatusesClient creates a new instance of ProtectionPolicyOperationStatusesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProtectionPolicyOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProtectionPolicyOperationStatusesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProtectionPolicyOperationStatusesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProtectionPolicyOperationStatusesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Get - Provides the status of the asynchronous operations like backup, restore. The status can be in progress, completed or failed. You can refer to the
-// Operation Status enum for all the possible states of
+// Get - Provides the status of the asynchronous operations like backup, restore. The status can be in progress, completed
+// or failed. You can refer to the Operation Status enum for all the possible states of
 // an operation. Some operations create jobs. This method returns the list of jobs associated with operation.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProtectionPolicyOperationStatusesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string, options *ProtectionPolicyOperationStatusesGetOptions) (ProtectionPolicyOperationStatusesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// policyName - Backup policy name whose operation's status needs to be fetched.
+// operationID - Operation ID which represents an operation whose status needs to be fetched.
+// options - ProtectionPolicyOperationStatusesClientGetOptions contains the optional parameters for the ProtectionPolicyOperationStatusesClient.Get
+// method.
+func (client *ProtectionPolicyOperationStatusesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string, options *ProtectionPolicyOperationStatusesClientGetOptions) (ProtectionPolicyOperationStatusesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, policyName, operationID, options)
 	if err != nil {
-		return ProtectionPolicyOperationStatusesGetResponse{}, err
+		return ProtectionPolicyOperationStatusesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProtectionPolicyOperationStatusesGetResponse{}, err
+		return ProtectionPolicyOperationStatusesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProtectionPolicyOperationStatusesGetResponse{}, client.getHandleError(resp)
+		return ProtectionPolicyOperationStatusesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProtectionPolicyOperationStatusesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string, options *ProtectionPolicyOperationStatusesGetOptions) (*policy.Request, error) {
+func (client *ProtectionPolicyOperationStatusesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string, options *ProtectionPolicyOperationStatusesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}/operations/{operationId}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -84,35 +97,22 @@ func (client *ProtectionPolicyOperationStatusesClient) getCreateRequest(ctx cont
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectionPolicyOperationStatusesClient) getHandleResponse(resp *http.Response) (ProtectionPolicyOperationStatusesGetResponse, error) {
-	result := ProtectionPolicyOperationStatusesGetResponse{RawResponse: resp}
+func (client *ProtectionPolicyOperationStatusesClient) getHandleResponse(resp *http.Response) (ProtectionPolicyOperationStatusesClientGetResponse, error) {
+	result := ProtectionPolicyOperationStatusesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
-		return ProtectionPolicyOperationStatusesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProtectionPolicyOperationStatusesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ProtectionPolicyOperationStatusesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

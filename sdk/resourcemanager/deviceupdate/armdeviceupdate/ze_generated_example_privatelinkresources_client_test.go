@@ -24,13 +24,14 @@ func ExamplePrivateLinkResourcesClient_ListByAccount() {
 	}
 	ctx := context.Background()
 	client := armdeviceupdate.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByAccount(ctx,
+	res, err := client.ListByAccount(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientListByAccountResult)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateLinkResources/PrivateLinkResources_Get.json
@@ -49,5 +50,5 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GroupInformation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientGetResult)
 }

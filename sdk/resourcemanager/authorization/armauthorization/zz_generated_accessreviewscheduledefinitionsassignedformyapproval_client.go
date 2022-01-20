@@ -10,7 +10,6 @@ package armauthorization
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,40 +21,48 @@ import (
 // AccessReviewScheduleDefinitionsAssignedForMyApprovalClient contains the methods for the AccessReviewScheduleDefinitionsAssignedForMyApproval group.
 // Don't use this type directly, use NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient() instead.
 type AccessReviewScheduleDefinitionsAssignedForMyApprovalClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient creates a new instance of AccessReviewScheduleDefinitionsAssignedForMyApprovalClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AccessReviewScheduleDefinitionsAssignedForMyApprovalClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AccessReviewScheduleDefinitionsAssignedForMyApprovalClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Get access review instances assigned for my approval.
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) List(options *AccessReviewScheduleDefinitionsAssignedForMyApprovalListOptions) *AccessReviewScheduleDefinitionsAssignedForMyApprovalListPager {
-	return &AccessReviewScheduleDefinitionsAssignedForMyApprovalListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions contains the optional parameters for the
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.List method.
+func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) List(options *AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions) *AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListPager {
+	return &AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AccessReviewScheduleDefinitionsAssignedForMyApprovalListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessReviewScheduleDefinitionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listCreateRequest(ctx context.Context, options *AccessReviewScheduleDefinitionsAssignedForMyApprovalListOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listCreateRequest(ctx context.Context, options *AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -67,23 +74,10 @@ func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listCr
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsAssignedForMyApprovalListResponse, error) {
-	result := AccessReviewScheduleDefinitionsAssignedForMyApprovalListResponse{RawResponse: resp}
+func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse, error) {
+	result := AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinitionListResult); err != nil {
-		return AccessReviewScheduleDefinitionsAssignedForMyApprovalListResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

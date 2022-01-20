@@ -28,12 +28,16 @@ func ExampleCachesClient_List() {
 	ctx := context.Background()
 	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Cache.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleCachesClient_ListByResourceGroup() {
 	client := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Cache.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -94,7 +102,7 @@ func ExampleCachesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cache.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CachesClientGetResult)
 }
 
 // x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_CreateOrUpdate.json
@@ -108,7 +116,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
-		&armstoragecache.CachesBeginCreateOrUpdateOptions{Cache: &armstoragecache.Cache{
+		&armstoragecache.CachesClientBeginCreateOrUpdateOptions{Cache: &armstoragecache.Cache{
 			Identity: &armstoragecache.CacheIdentity{
 				Type: armstoragecache.CacheIdentityTypeUserAssigned.ToPtr(),
 				UserAssignedIdentities: map[string]*armstoragecache.UserAssignedIdentitiesValue{
@@ -138,7 +146,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 						ExtendedGroups: to.BoolPtr(true),
 						LdapBaseDN:     to.StringPtr("<ldap-base-dn>"),
 						LdapServer:     to.StringPtr("<ldap-server>"),
-						UsernameSource: armstoragecache.UsernameSourceLDAP.ToPtr(),
+						UsernameSource: armstoragecache.UsernameSource("LDAP").ToPtr(),
 					},
 				},
 				EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
@@ -155,9 +163,9 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 							Name: to.StringPtr("<name>"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
-									Access:         armstoragecache.NfsAccessRuleAccessRw.ToPtr(),
+									Access:         armstoragecache.NfsAccessRuleAccess("rw").ToPtr(),
 									RootSquash:     to.BoolPtr(false),
-									Scope:          armstoragecache.NfsAccessRuleScopeDefault.ToPtr(),
+									Scope:          armstoragecache.NfsAccessRuleScope("default").ToPtr(),
 									SubmountAccess: to.BoolPtr(true),
 									Suid:           to.BoolPtr(false),
 								}},
@@ -180,7 +188,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cache.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CachesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_Update.json
@@ -194,7 +202,7 @@ func ExampleCachesClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<cache-name>",
-		&armstoragecache.CachesUpdateOptions{Cache: &armstoragecache.Cache{
+		&armstoragecache.CachesClientUpdateOptions{Cache: &armstoragecache.Cache{
 			Location: to.StringPtr("<location>"),
 			Properties: &armstoragecache.CacheProperties{
 				CacheSizeGB: to.Int32Ptr(3072),
@@ -208,7 +216,7 @@ func ExampleCachesClient_Update() {
 					},
 					UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 						ExtendedGroups: to.BoolPtr(true),
-						UsernameSource: armstoragecache.UsernameSourceAD.ToPtr(),
+						UsernameSource: armstoragecache.UsernameSource("AD").ToPtr(),
 					},
 				},
 				NetworkSettings: &armstoragecache.CacheNetworkSettings{
@@ -225,9 +233,9 @@ func ExampleCachesClient_Update() {
 							Name: to.StringPtr("<name>"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
-									Access:         armstoragecache.NfsAccessRuleAccessRw.ToPtr(),
+									Access:         armstoragecache.NfsAccessRuleAccess("rw").ToPtr(),
 									RootSquash:     to.BoolPtr(false),
-									Scope:          armstoragecache.NfsAccessRuleScopeDefault.ToPtr(),
+									Scope:          armstoragecache.NfsAccessRuleScope("default").ToPtr(),
 									SubmountAccess: to.BoolPtr(true),
 									Suid:           to.BoolPtr(false),
 								}},
@@ -236,27 +244,27 @@ func ExampleCachesClient_Update() {
 							Name: to.StringPtr("<name>"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
-									Access:         armstoragecache.NfsAccessRuleAccessRw.ToPtr(),
+									Access:         armstoragecache.NfsAccessRuleAccess("rw").ToPtr(),
 									Filter:         to.StringPtr("<filter>"),
 									RootSquash:     to.BoolPtr(false),
-									Scope:          armstoragecache.NfsAccessRuleScopeHost.ToPtr(),
+									Scope:          armstoragecache.NfsAccessRuleScope("host").ToPtr(),
 									SubmountAccess: to.BoolPtr(true),
 									Suid:           to.BoolPtr(true),
 								},
 								{
-									Access:         armstoragecache.NfsAccessRuleAccessRw.ToPtr(),
+									Access:         armstoragecache.NfsAccessRuleAccess("rw").ToPtr(),
 									Filter:         to.StringPtr("<filter>"),
 									RootSquash:     to.BoolPtr(false),
-									Scope:          armstoragecache.NfsAccessRuleScopeNetwork.ToPtr(),
+									Scope:          armstoragecache.NfsAccessRuleScope("network").ToPtr(),
 									SubmountAccess: to.BoolPtr(true),
 									Suid:           to.BoolPtr(true),
 								},
 								{
-									Access:         armstoragecache.NfsAccessRuleAccessNo.ToPtr(),
+									Access:         armstoragecache.NfsAccessRuleAccess("no").ToPtr(),
 									AnonymousGID:   to.StringPtr("<anonymous-gid>"),
 									AnonymousUID:   to.StringPtr("<anonymous-uid>"),
 									RootSquash:     to.BoolPtr(true),
-									Scope:          armstoragecache.NfsAccessRuleScopeDefault.ToPtr(),
+									Scope:          armstoragecache.NfsAccessRuleScope("default").ToPtr(),
 									SubmountAccess: to.BoolPtr(true),
 									Suid:           to.BoolPtr(false),
 								}},
@@ -275,7 +283,7 @@ func ExampleCachesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cache.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CachesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_DebugInfo.json

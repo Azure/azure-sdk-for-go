@@ -10,20 +10,20 @@ package armblueprint
 
 import "net/http"
 
-// ArtifactsCreateOrUpdateResponse contains the response from method Artifacts.CreateOrUpdate.
-type ArtifactsCreateOrUpdateResponse struct {
-	ArtifactsCreateOrUpdateResult
+// ArtifactsClientCreateOrUpdateResponse contains the response from method ArtifactsClient.CreateOrUpdate.
+type ArtifactsClientCreateOrUpdateResponse struct {
+	ArtifactsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArtifactsCreateOrUpdateResult contains the result from method Artifacts.CreateOrUpdate.
-type ArtifactsCreateOrUpdateResult struct {
+// ArtifactsClientCreateOrUpdateResult contains the result from method ArtifactsClient.CreateOrUpdate.
+type ArtifactsClientCreateOrUpdateResult struct {
 	ArtifactClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactsCreateOrUpdateResult.
-func (a *ArtifactsCreateOrUpdateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactsClientCreateOrUpdateResult.
+func (a *ArtifactsClientCreateOrUpdateResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalArtifactClassification(data)
 	if err != nil {
 		return err
@@ -32,20 +32,20 @@ func (a *ArtifactsCreateOrUpdateResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ArtifactsDeleteResponse contains the response from method Artifacts.Delete.
-type ArtifactsDeleteResponse struct {
-	ArtifactsDeleteResult
+// ArtifactsClientDeleteResponse contains the response from method ArtifactsClient.Delete.
+type ArtifactsClientDeleteResponse struct {
+	ArtifactsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArtifactsDeleteResult contains the result from method Artifacts.Delete.
-type ArtifactsDeleteResult struct {
+// ArtifactsClientDeleteResult contains the result from method ArtifactsClient.Delete.
+type ArtifactsClientDeleteResult struct {
 	ArtifactClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactsDeleteResult.
-func (a *ArtifactsDeleteResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactsClientDeleteResult.
+func (a *ArtifactsClientDeleteResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalArtifactClassification(data)
 	if err != nil {
 		return err
@@ -54,20 +54,20 @@ func (a *ArtifactsDeleteResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ArtifactsGetResponse contains the response from method Artifacts.Get.
-type ArtifactsGetResponse struct {
-	ArtifactsGetResult
+// ArtifactsClientGetResponse contains the response from method ArtifactsClient.Get.
+type ArtifactsClientGetResponse struct {
+	ArtifactsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArtifactsGetResult contains the result from method Artifacts.Get.
-type ArtifactsGetResult struct {
+// ArtifactsClientGetResult contains the result from method ArtifactsClient.Get.
+type ArtifactsClientGetResult struct {
 	ArtifactClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactsGetResult.
-func (a *ArtifactsGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactsClientGetResult.
+func (a *ArtifactsClientGetResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalArtifactClassification(data)
 	if err != nil {
 		return err
@@ -76,164 +76,164 @@ func (a *ArtifactsGetResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ArtifactsListResponse contains the response from method Artifacts.List.
-type ArtifactsListResponse struct {
-	ArtifactsListResult
+// ArtifactsClientListResponse contains the response from method ArtifactsClient.List.
+type ArtifactsClientListResponse struct {
+	ArtifactsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArtifactsListResult contains the result from method Artifacts.List.
-type ArtifactsListResult struct {
+// ArtifactsClientListResult contains the result from method ArtifactsClient.List.
+type ArtifactsClientListResult struct {
 	ArtifactList
 }
 
-// AssignmentOperationsGetResponse contains the response from method AssignmentOperations.Get.
-type AssignmentOperationsGetResponse struct {
-	AssignmentOperationsGetResult
+// AssignmentOperationsClientGetResponse contains the response from method AssignmentOperationsClient.Get.
+type AssignmentOperationsClientGetResponse struct {
+	AssignmentOperationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssignmentOperationsGetResult contains the result from method AssignmentOperations.Get.
-type AssignmentOperationsGetResult struct {
+// AssignmentOperationsClientGetResult contains the result from method AssignmentOperationsClient.Get.
+type AssignmentOperationsClientGetResult struct {
 	AssignmentOperation
 }
 
-// AssignmentOperationsListResponse contains the response from method AssignmentOperations.List.
-type AssignmentOperationsListResponse struct {
-	AssignmentOperationsListResult
+// AssignmentOperationsClientListResponse contains the response from method AssignmentOperationsClient.List.
+type AssignmentOperationsClientListResponse struct {
+	AssignmentOperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssignmentOperationsListResult contains the result from method AssignmentOperations.List.
-type AssignmentOperationsListResult struct {
+// AssignmentOperationsClientListResult contains the result from method AssignmentOperationsClient.List.
+type AssignmentOperationsClientListResult struct {
 	AssignmentOperationList
 }
 
-// AssignmentsCreateOrUpdateResponse contains the response from method Assignments.CreateOrUpdate.
-type AssignmentsCreateOrUpdateResponse struct {
-	AssignmentsCreateOrUpdateResult
+// AssignmentsClientCreateOrUpdateResponse contains the response from method AssignmentsClient.CreateOrUpdate.
+type AssignmentsClientCreateOrUpdateResponse struct {
+	AssignmentsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssignmentsCreateOrUpdateResult contains the result from method Assignments.CreateOrUpdate.
-type AssignmentsCreateOrUpdateResult struct {
+// AssignmentsClientCreateOrUpdateResult contains the result from method AssignmentsClient.CreateOrUpdate.
+type AssignmentsClientCreateOrUpdateResult struct {
 	Assignment
 }
 
-// AssignmentsDeleteResponse contains the response from method Assignments.Delete.
-type AssignmentsDeleteResponse struct {
-	AssignmentsDeleteResult
+// AssignmentsClientDeleteResponse contains the response from method AssignmentsClient.Delete.
+type AssignmentsClientDeleteResponse struct {
+	AssignmentsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssignmentsDeleteResult contains the result from method Assignments.Delete.
-type AssignmentsDeleteResult struct {
+// AssignmentsClientDeleteResult contains the result from method AssignmentsClient.Delete.
+type AssignmentsClientDeleteResult struct {
 	Assignment
 }
 
-// AssignmentsGetResponse contains the response from method Assignments.Get.
-type AssignmentsGetResponse struct {
-	AssignmentsGetResult
+// AssignmentsClientGetResponse contains the response from method AssignmentsClient.Get.
+type AssignmentsClientGetResponse struct {
+	AssignmentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssignmentsGetResult contains the result from method Assignments.Get.
-type AssignmentsGetResult struct {
+// AssignmentsClientGetResult contains the result from method AssignmentsClient.Get.
+type AssignmentsClientGetResult struct {
 	Assignment
 }
 
-// AssignmentsListResponse contains the response from method Assignments.List.
-type AssignmentsListResponse struct {
-	AssignmentsListResult
+// AssignmentsClientListResponse contains the response from method AssignmentsClient.List.
+type AssignmentsClientListResponse struct {
+	AssignmentsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssignmentsListResult contains the result from method Assignments.List.
-type AssignmentsListResult struct {
+// AssignmentsClientListResult contains the result from method AssignmentsClient.List.
+type AssignmentsClientListResult struct {
 	AssignmentList
 }
 
-// AssignmentsWhoIsBlueprintResponse contains the response from method Assignments.WhoIsBlueprint.
-type AssignmentsWhoIsBlueprintResponse struct {
-	AssignmentsWhoIsBlueprintResult
+// AssignmentsClientWhoIsBlueprintResponse contains the response from method AssignmentsClient.WhoIsBlueprint.
+type AssignmentsClientWhoIsBlueprintResponse struct {
+	AssignmentsClientWhoIsBlueprintResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssignmentsWhoIsBlueprintResult contains the result from method Assignments.WhoIsBlueprint.
-type AssignmentsWhoIsBlueprintResult struct {
+// AssignmentsClientWhoIsBlueprintResult contains the result from method AssignmentsClient.WhoIsBlueprint.
+type AssignmentsClientWhoIsBlueprintResult struct {
 	WhoIsBlueprintContract
 }
 
-// BlueprintsCreateOrUpdateResponse contains the response from method Blueprints.CreateOrUpdate.
-type BlueprintsCreateOrUpdateResponse struct {
-	BlueprintsCreateOrUpdateResult
+// BlueprintsClientCreateOrUpdateResponse contains the response from method BlueprintsClient.CreateOrUpdate.
+type BlueprintsClientCreateOrUpdateResponse struct {
+	BlueprintsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlueprintsCreateOrUpdateResult contains the result from method Blueprints.CreateOrUpdate.
-type BlueprintsCreateOrUpdateResult struct {
+// BlueprintsClientCreateOrUpdateResult contains the result from method BlueprintsClient.CreateOrUpdate.
+type BlueprintsClientCreateOrUpdateResult struct {
 	Blueprint
 }
 
-// BlueprintsDeleteResponse contains the response from method Blueprints.Delete.
-type BlueprintsDeleteResponse struct {
-	BlueprintsDeleteResult
+// BlueprintsClientDeleteResponse contains the response from method BlueprintsClient.Delete.
+type BlueprintsClientDeleteResponse struct {
+	BlueprintsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlueprintsDeleteResult contains the result from method Blueprints.Delete.
-type BlueprintsDeleteResult struct {
+// BlueprintsClientDeleteResult contains the result from method BlueprintsClient.Delete.
+type BlueprintsClientDeleteResult struct {
 	Blueprint
 }
 
-// BlueprintsGetResponse contains the response from method Blueprints.Get.
-type BlueprintsGetResponse struct {
-	BlueprintsGetResult
+// BlueprintsClientGetResponse contains the response from method BlueprintsClient.Get.
+type BlueprintsClientGetResponse struct {
+	BlueprintsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlueprintsGetResult contains the result from method Blueprints.Get.
-type BlueprintsGetResult struct {
+// BlueprintsClientGetResult contains the result from method BlueprintsClient.Get.
+type BlueprintsClientGetResult struct {
 	Blueprint
 }
 
-// BlueprintsListResponse contains the response from method Blueprints.List.
-type BlueprintsListResponse struct {
-	BlueprintsListResult
+// BlueprintsClientListResponse contains the response from method BlueprintsClient.List.
+type BlueprintsClientListResponse struct {
+	BlueprintsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlueprintsListResult contains the result from method Blueprints.List.
-type BlueprintsListResult struct {
-	BlueprintList
+// BlueprintsClientListResult contains the result from method BlueprintsClient.List.
+type BlueprintsClientListResult struct {
+	List
 }
 
-// PublishedArtifactsGetResponse contains the response from method PublishedArtifacts.Get.
-type PublishedArtifactsGetResponse struct {
-	PublishedArtifactsGetResult
+// PublishedArtifactsClientGetResponse contains the response from method PublishedArtifactsClient.Get.
+type PublishedArtifactsClientGetResponse struct {
+	PublishedArtifactsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PublishedArtifactsGetResult contains the result from method PublishedArtifacts.Get.
-type PublishedArtifactsGetResult struct {
+// PublishedArtifactsClientGetResult contains the result from method PublishedArtifactsClient.Get.
+type PublishedArtifactsClientGetResult struct {
 	ArtifactClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type PublishedArtifactsGetResult.
-func (p *PublishedArtifactsGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type PublishedArtifactsClientGetResult.
+func (p *PublishedArtifactsClientGetResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalArtifactClassification(data)
 	if err != nil {
 		return err
@@ -242,62 +242,62 @@ func (p *PublishedArtifactsGetResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// PublishedArtifactsListResponse contains the response from method PublishedArtifacts.List.
-type PublishedArtifactsListResponse struct {
-	PublishedArtifactsListResult
+// PublishedArtifactsClientListResponse contains the response from method PublishedArtifactsClient.List.
+type PublishedArtifactsClientListResponse struct {
+	PublishedArtifactsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PublishedArtifactsListResult contains the result from method PublishedArtifacts.List.
-type PublishedArtifactsListResult struct {
+// PublishedArtifactsClientListResult contains the result from method PublishedArtifactsClient.List.
+type PublishedArtifactsClientListResult struct {
 	ArtifactList
 }
 
-// PublishedBlueprintsCreateResponse contains the response from method PublishedBlueprints.Create.
-type PublishedBlueprintsCreateResponse struct {
-	PublishedBlueprintsCreateResult
+// PublishedBlueprintsClientCreateResponse contains the response from method PublishedBlueprintsClient.Create.
+type PublishedBlueprintsClientCreateResponse struct {
+	PublishedBlueprintsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PublishedBlueprintsCreateResult contains the result from method PublishedBlueprints.Create.
-type PublishedBlueprintsCreateResult struct {
+// PublishedBlueprintsClientCreateResult contains the result from method PublishedBlueprintsClient.Create.
+type PublishedBlueprintsClientCreateResult struct {
 	PublishedBlueprint
 }
 
-// PublishedBlueprintsDeleteResponse contains the response from method PublishedBlueprints.Delete.
-type PublishedBlueprintsDeleteResponse struct {
-	PublishedBlueprintsDeleteResult
+// PublishedBlueprintsClientDeleteResponse contains the response from method PublishedBlueprintsClient.Delete.
+type PublishedBlueprintsClientDeleteResponse struct {
+	PublishedBlueprintsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PublishedBlueprintsDeleteResult contains the result from method PublishedBlueprints.Delete.
-type PublishedBlueprintsDeleteResult struct {
+// PublishedBlueprintsClientDeleteResult contains the result from method PublishedBlueprintsClient.Delete.
+type PublishedBlueprintsClientDeleteResult struct {
 	PublishedBlueprint
 }
 
-// PublishedBlueprintsGetResponse contains the response from method PublishedBlueprints.Get.
-type PublishedBlueprintsGetResponse struct {
-	PublishedBlueprintsGetResult
+// PublishedBlueprintsClientGetResponse contains the response from method PublishedBlueprintsClient.Get.
+type PublishedBlueprintsClientGetResponse struct {
+	PublishedBlueprintsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PublishedBlueprintsGetResult contains the result from method PublishedBlueprints.Get.
-type PublishedBlueprintsGetResult struct {
+// PublishedBlueprintsClientGetResult contains the result from method PublishedBlueprintsClient.Get.
+type PublishedBlueprintsClientGetResult struct {
 	PublishedBlueprint
 }
 
-// PublishedBlueprintsListResponse contains the response from method PublishedBlueprints.List.
-type PublishedBlueprintsListResponse struct {
-	PublishedBlueprintsListResult
+// PublishedBlueprintsClientListResponse contains the response from method PublishedBlueprintsClient.List.
+type PublishedBlueprintsClientListResponse struct {
+	PublishedBlueprintsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PublishedBlueprintsListResult contains the result from method PublishedBlueprints.List.
-type PublishedBlueprintsListResult struct {
+// PublishedBlueprintsClientListResult contains the result from method PublishedBlueprintsClient.List.
+type PublishedBlueprintsClientListResult struct {
 	PublishedBlueprintList
 }

@@ -29,13 +29,17 @@ func ExampleComputeClient_List() {
 	client := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
-		&armmachinelearningservices.ComputeListOptions{Skip: nil})
-	for pager.NextPage(ctx) {
+		&armmachinelearningservices.ComputeClientListOptions{Skip: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ComputeResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleComputeClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ComputeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComputeClientGetResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Compute/createOrUpdate/KubernetesCompute.json
@@ -72,36 +76,29 @@ func ExampleComputeClient_BeginCreateOrUpdate() {
 		"<workspace-name>",
 		"<compute-name>",
 		armmachinelearningservices.ComputeResource{
-			Components1D3SwueSchemasComputeresourceAllof1: armmachinelearningservices.Components1D3SwueSchemasComputeresourceAllof1{
-				Properties: &armmachinelearningservices.Kubernetes{
-					Compute: armmachinelearningservices.Compute{
-						Description: to.StringPtr("<description>"),
-						ComputeType: armmachinelearningservices.ComputeTypeKubernetes.ToPtr(),
-						ResourceID:  to.StringPtr("<resource-id>"),
-					},
-					KubernetesSchema: armmachinelearningservices.KubernetesSchema{
-						Properties: &armmachinelearningservices.KubernetesProperties{
-							DefaultInstanceType: to.StringPtr("<default-instance-type>"),
-							InstanceTypes: map[string]*armmachinelearningservices.InstanceTypeSchema{
-								"defaultInstanceType": {
-									NodeSelector: map[string]*string{},
-									Resources: &armmachinelearningservices.InstanceTypeSchemaResources{
-										Limits: map[string]*string{
-											"cpu":            to.StringPtr("1"),
-											"memory":         to.StringPtr("4Gi"),
-											"nvidia.com/gpu": nil,
-										},
-										Requests: map[string]*string{
-											"cpu":            to.StringPtr("1"),
-											"memory":         to.StringPtr("4Gi"),
-											"nvidia.com/gpu": nil,
-										},
-									},
+			Properties: &armmachinelearningservices.Kubernetes{
+				Description: to.StringPtr("<description>"),
+				ComputeType: armmachinelearningservices.ComputeType("Kubernetes").ToPtr(),
+				ResourceID:  to.StringPtr("<resource-id>"),
+				Properties: &armmachinelearningservices.KubernetesProperties{
+					DefaultInstanceType: to.StringPtr("<default-instance-type>"),
+					InstanceTypes: map[string]*armmachinelearningservices.InstanceTypeSchema{
+						"defaultInstanceType": {
+							Resources: &armmachinelearningservices.InstanceTypeSchemaResources{
+								Limits: map[string]*string{
+									"cpu":            to.StringPtr("1"),
+									"memory":         to.StringPtr("4Gi"),
+									"nvidia.com/gpu": nil,
+								},
+								Requests: map[string]*string{
+									"cpu":            to.StringPtr("1"),
+									"memory":         to.StringPtr("4Gi"),
+									"nvidia.com/gpu": nil,
 								},
 							},
-							Namespace: to.StringPtr("<namespace>"),
 						},
 					},
+					Namespace: to.StringPtr("<namespace>"),
 				},
 			},
 			Location: to.StringPtr("<location>"),
@@ -114,7 +111,7 @@ func ExampleComputeClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ComputeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComputeClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Compute/patch.json
@@ -148,7 +145,7 @@ func ExampleComputeClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ComputeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComputeClientUpdateResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Compute/delete.json
@@ -163,7 +160,7 @@ func ExampleComputeClient_BeginDelete() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<compute-name>",
-		armmachinelearningservices.UnderlyingResourceActionDelete,
+		armmachinelearningservices.UnderlyingResourceAction("Delete"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -186,9 +183,16 @@ func ExampleComputeClient_ListNodes() {
 		"<workspace-name>",
 		"<compute-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Nodes {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -201,7 +205,7 @@ func ExampleComputeClient_ListKeys() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<compute-name>",
@@ -209,6 +213,7 @@ func ExampleComputeClient_ListKeys() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ComputeClientListKeysResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Compute/start.json

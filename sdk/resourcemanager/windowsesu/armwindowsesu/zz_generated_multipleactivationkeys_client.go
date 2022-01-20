@@ -11,7 +11,6 @@ package armwindowsesu
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // MultipleActivationKeysClient contains the methods for the MultipleActivationKeys group.
 // Don't use this type directly, use NewMultipleActivationKeysClient() instead.
 type MultipleActivationKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMultipleActivationKeysClient creates a new instance of MultipleActivationKeysClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMultipleActivationKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MultipleActivationKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MultipleActivationKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MultipleActivationKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create a MAK key.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MultipleActivationKeysClient) BeginCreate(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysBeginCreateOptions) (MultipleActivationKeysCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// multipleActivationKeyName - The name of the MAK key.
+// multipleActivationKey - Details of the MAK key.
+// options - MultipleActivationKeysClientBeginCreateOptions contains the optional parameters for the MultipleActivationKeysClient.BeginCreate
+// method.
+func (client *MultipleActivationKeysClient) BeginCreate(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysClientBeginCreateOptions) (MultipleActivationKeysClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, multipleActivationKeyName, multipleActivationKey, options)
 	if err != nil {
-		return MultipleActivationKeysCreatePollerResponse{}, err
+		return MultipleActivationKeysClientCreatePollerResponse{}, err
 	}
-	result := MultipleActivationKeysCreatePollerResponse{
+	result := MultipleActivationKeysClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("MultipleActivationKeysClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("MultipleActivationKeysClient.Create", "", resp, client.pl)
 	if err != nil {
-		return MultipleActivationKeysCreatePollerResponse{}, err
+		return MultipleActivationKeysClientCreatePollerResponse{}, err
 	}
-	result.Poller = &MultipleActivationKeysCreatePoller{
+	result.Poller = &MultipleActivationKeysClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create a MAK key.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MultipleActivationKeysClient) create(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MultipleActivationKeysClient) create(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, multipleActivationKeyName, multipleActivationKey, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *MultipleActivationKeysClient) create(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *MultipleActivationKeysClient) createCreateRequest(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysBeginCreateOptions) (*policy.Request, error) {
+func (client *MultipleActivationKeysClient) createCreateRequest(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKey, options *MultipleActivationKeysClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsESU/multipleActivationKeys/{multipleActivationKeyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *MultipleActivationKeysClient) createCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter multipleActivationKeyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{multipleActivationKeyName}", url.PathEscape(multipleActivationKeyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,38 +117,29 @@ func (client *MultipleActivationKeysClient) createCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, multipleActivationKey)
 }
 
-// createHandleError handles the Create error response.
-func (client *MultipleActivationKeysClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a MAK key.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MultipleActivationKeysClient) Delete(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, options *MultipleActivationKeysDeleteOptions) (MultipleActivationKeysDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// multipleActivationKeyName - The name of the MAK key.
+// options - MultipleActivationKeysClientDeleteOptions contains the optional parameters for the MultipleActivationKeysClient.Delete
+// method.
+func (client *MultipleActivationKeysClient) Delete(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, options *MultipleActivationKeysClientDeleteOptions) (MultipleActivationKeysClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, multipleActivationKeyName, options)
 	if err != nil {
-		return MultipleActivationKeysDeleteResponse{}, err
+		return MultipleActivationKeysClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MultipleActivationKeysDeleteResponse{}, err
+		return MultipleActivationKeysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return MultipleActivationKeysDeleteResponse{}, client.deleteHandleError(resp)
+		return MultipleActivationKeysClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MultipleActivationKeysDeleteResponse{RawResponse: resp}, nil
+	return MultipleActivationKeysClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MultipleActivationKeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, options *MultipleActivationKeysDeleteOptions) (*policy.Request, error) {
+func (client *MultipleActivationKeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, options *MultipleActivationKeysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsESU/multipleActivationKeys/{multipleActivationKeyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +153,7 @@ func (client *MultipleActivationKeysClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter multipleActivationKeyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{multipleActivationKeyName}", url.PathEscape(multipleActivationKeyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,38 +164,29 @@ func (client *MultipleActivationKeysClient) deleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *MultipleActivationKeysClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a MAK key.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MultipleActivationKeysClient) Get(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, options *MultipleActivationKeysGetOptions) (MultipleActivationKeysGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// multipleActivationKeyName - The name of the MAK key.
+// options - MultipleActivationKeysClientGetOptions contains the optional parameters for the MultipleActivationKeysClient.Get
+// method.
+func (client *MultipleActivationKeysClient) Get(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, options *MultipleActivationKeysClientGetOptions) (MultipleActivationKeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, multipleActivationKeyName, options)
 	if err != nil {
-		return MultipleActivationKeysGetResponse{}, err
+		return MultipleActivationKeysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MultipleActivationKeysGetResponse{}, err
+		return MultipleActivationKeysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MultipleActivationKeysGetResponse{}, client.getHandleError(resp)
+		return MultipleActivationKeysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MultipleActivationKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, options *MultipleActivationKeysGetOptions) (*policy.Request, error) {
+func (client *MultipleActivationKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, options *MultipleActivationKeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsESU/multipleActivationKeys/{multipleActivationKeyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,7 +200,7 @@ func (client *MultipleActivationKeysClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter multipleActivationKeyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{multipleActivationKeyName}", url.PathEscape(multipleActivationKeyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,49 +212,38 @@ func (client *MultipleActivationKeysClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *MultipleActivationKeysClient) getHandleResponse(resp *http.Response) (MultipleActivationKeysGetResponse, error) {
-	result := MultipleActivationKeysGetResponse{RawResponse: resp}
+func (client *MultipleActivationKeysClient) getHandleResponse(resp *http.Response) (MultipleActivationKeysClientGetResponse, error) {
+	result := MultipleActivationKeysClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MultipleActivationKey); err != nil {
-		return MultipleActivationKeysGetResponse{}, runtime.NewResponseError(err, resp)
+		return MultipleActivationKeysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MultipleActivationKeysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List all Multiple Activation Keys (MAK) created for a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MultipleActivationKeysClient) List(options *MultipleActivationKeysListOptions) *MultipleActivationKeysListPager {
-	return &MultipleActivationKeysListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - MultipleActivationKeysClientListOptions contains the optional parameters for the MultipleActivationKeysClient.List
+// method.
+func (client *MultipleActivationKeysClient) List(options *MultipleActivationKeysClientListOptions) *MultipleActivationKeysClientListPager {
+	return &MultipleActivationKeysClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp MultipleActivationKeysListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MultipleActivationKeysClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MultipleActivationKeyList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *MultipleActivationKeysClient) listCreateRequest(ctx context.Context, options *MultipleActivationKeysListOptions) (*policy.Request, error) {
+func (client *MultipleActivationKeysClient) listCreateRequest(ctx context.Context, options *MultipleActivationKeysClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.WindowsESU/multipleActivationKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -272,43 +255,33 @@ func (client *MultipleActivationKeysClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *MultipleActivationKeysClient) listHandleResponse(resp *http.Response) (MultipleActivationKeysListResponse, error) {
-	result := MultipleActivationKeysListResponse{RawResponse: resp}
+func (client *MultipleActivationKeysClient) listHandleResponse(resp *http.Response) (MultipleActivationKeysClientListResponse, error) {
+	result := MultipleActivationKeysClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MultipleActivationKeyList); err != nil {
-		return MultipleActivationKeysListResponse{}, runtime.NewResponseError(err, resp)
+		return MultipleActivationKeysClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *MultipleActivationKeysClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - List all Multiple Activation Keys (MAK) in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MultipleActivationKeysClient) ListByResourceGroup(resourceGroupName string, options *MultipleActivationKeysListByResourceGroupOptions) *MultipleActivationKeysListByResourceGroupPager {
-	return &MultipleActivationKeysListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - MultipleActivationKeysClientListByResourceGroupOptions contains the optional parameters for the MultipleActivationKeysClient.ListByResourceGroup
+// method.
+func (client *MultipleActivationKeysClient) ListByResourceGroup(resourceGroupName string, options *MultipleActivationKeysClientListByResourceGroupOptions) *MultipleActivationKeysClientListByResourceGroupPager {
+	return &MultipleActivationKeysClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp MultipleActivationKeysListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MultipleActivationKeysClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MultipleActivationKeyList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MultipleActivationKeysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *MultipleActivationKeysListByResourceGroupOptions) (*policy.Request, error) {
+func (client *MultipleActivationKeysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *MultipleActivationKeysClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsESU/multipleActivationKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -318,7 +291,7 @@ func (client *MultipleActivationKeysClient) listByResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -330,46 +303,38 @@ func (client *MultipleActivationKeysClient) listByResourceGroupCreateRequest(ctx
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *MultipleActivationKeysClient) listByResourceGroupHandleResponse(resp *http.Response) (MultipleActivationKeysListByResourceGroupResponse, error) {
-	result := MultipleActivationKeysListByResourceGroupResponse{RawResponse: resp}
+func (client *MultipleActivationKeysClient) listByResourceGroupHandleResponse(resp *http.Response) (MultipleActivationKeysClientListByResourceGroupResponse, error) {
+	result := MultipleActivationKeysClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MultipleActivationKeyList); err != nil {
-		return MultipleActivationKeysListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return MultipleActivationKeysClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *MultipleActivationKeysClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a MAK key.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MultipleActivationKeysClient) Update(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKeyUpdate, options *MultipleActivationKeysUpdateOptions) (MultipleActivationKeysUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// multipleActivationKeyName - The name of the MAK key.
+// multipleActivationKey - Details of the MAK key.
+// options - MultipleActivationKeysClientUpdateOptions contains the optional parameters for the MultipleActivationKeysClient.Update
+// method.
+func (client *MultipleActivationKeysClient) Update(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKeyUpdate, options *MultipleActivationKeysClientUpdateOptions) (MultipleActivationKeysClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, multipleActivationKeyName, multipleActivationKey, options)
 	if err != nil {
-		return MultipleActivationKeysUpdateResponse{}, err
+		return MultipleActivationKeysClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MultipleActivationKeysUpdateResponse{}, err
+		return MultipleActivationKeysClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MultipleActivationKeysUpdateResponse{}, client.updateHandleError(resp)
+		return MultipleActivationKeysClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MultipleActivationKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKeyUpdate, options *MultipleActivationKeysUpdateOptions) (*policy.Request, error) {
+func (client *MultipleActivationKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, multipleActivationKeyName string, multipleActivationKey MultipleActivationKeyUpdate, options *MultipleActivationKeysClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WindowsESU/multipleActivationKeys/{multipleActivationKeyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -383,7 +348,7 @@ func (client *MultipleActivationKeysClient) updateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter multipleActivationKeyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{multipleActivationKeyName}", url.PathEscape(multipleActivationKeyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -395,23 +360,10 @@ func (client *MultipleActivationKeysClient) updateCreateRequest(ctx context.Cont
 }
 
 // updateHandleResponse handles the Update response.
-func (client *MultipleActivationKeysClient) updateHandleResponse(resp *http.Response) (MultipleActivationKeysUpdateResponse, error) {
-	result := MultipleActivationKeysUpdateResponse{RawResponse: resp}
+func (client *MultipleActivationKeysClient) updateHandleResponse(resp *http.Response) (MultipleActivationKeysClientUpdateResponse, error) {
+	result := MultipleActivationKeysClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MultipleActivationKey); err != nil {
-		return MultipleActivationKeysUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MultipleActivationKeysClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *MultipleActivationKeysClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

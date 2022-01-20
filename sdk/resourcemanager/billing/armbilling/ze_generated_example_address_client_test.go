@@ -25,7 +25,7 @@ func ExampleAddressClient_Validate() {
 	}
 	ctx := context.Background()
 	client := armbilling.NewAddressClient(cred, nil)
-	_, err = client.Validate(ctx,
+	res, err := client.Validate(ctx,
 		armbilling.AddressDetails{
 			AddressLine1: to.StringPtr("<address-line1>"),
 			City:         to.StringPtr("<city>"),
@@ -37,4 +37,5 @@ func ExampleAddressClient_Validate() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AddressClientValidateResult)
 }

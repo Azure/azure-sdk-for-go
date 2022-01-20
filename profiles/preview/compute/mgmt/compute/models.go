@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-08-01/compute"
 )
 
 const (
@@ -116,14 +116,16 @@ const (
 type DiskCreateOption = original.DiskCreateOption
 
 const (
-	DiskCreateOptionAttach    DiskCreateOption = original.DiskCreateOptionAttach
-	DiskCreateOptionCopy      DiskCreateOption = original.DiskCreateOptionCopy
-	DiskCreateOptionCopyStart DiskCreateOption = original.DiskCreateOptionCopyStart
-	DiskCreateOptionEmpty     DiskCreateOption = original.DiskCreateOptionEmpty
-	DiskCreateOptionFromImage DiskCreateOption = original.DiskCreateOptionFromImage
-	DiskCreateOptionImport    DiskCreateOption = original.DiskCreateOptionImport
-	DiskCreateOptionRestore   DiskCreateOption = original.DiskCreateOptionRestore
-	DiskCreateOptionUpload    DiskCreateOption = original.DiskCreateOptionUpload
+	DiskCreateOptionAttach               DiskCreateOption = original.DiskCreateOptionAttach
+	DiskCreateOptionCopy                 DiskCreateOption = original.DiskCreateOptionCopy
+	DiskCreateOptionCopyStart            DiskCreateOption = original.DiskCreateOptionCopyStart
+	DiskCreateOptionEmpty                DiskCreateOption = original.DiskCreateOptionEmpty
+	DiskCreateOptionFromImage            DiskCreateOption = original.DiskCreateOptionFromImage
+	DiskCreateOptionImport               DiskCreateOption = original.DiskCreateOptionImport
+	DiskCreateOptionImportSecure         DiskCreateOption = original.DiskCreateOptionImportSecure
+	DiskCreateOptionRestore              DiskCreateOption = original.DiskCreateOptionRestore
+	DiskCreateOptionUpload               DiskCreateOption = original.DiskCreateOptionUpload
+	DiskCreateOptionUploadPreparedSecure DiskCreateOption = original.DiskCreateOptionUploadPreparedSecure
 )
 
 type DiskCreateOptionTypes = original.DiskCreateOptionTypes
@@ -157,6 +159,7 @@ const (
 type DiskEncryptionSetType = original.DiskEncryptionSetType
 
 const (
+	DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey      DiskEncryptionSetType = original.DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey
 	DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey             DiskEncryptionSetType = original.DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey
 	DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = original.DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys
 )
@@ -164,7 +167,10 @@ const (
 type DiskSecurityTypes = original.DiskSecurityTypes
 
 const (
-	DiskSecurityTypesTrustedLaunch DiskSecurityTypes = original.DiskSecurityTypesTrustedLaunch
+	DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey             DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey
+	DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey             DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey
+	DiskSecurityTypesConfidentialVMVMGuestStateOnlyEncryptedWithPlatformKey DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMVMGuestStateOnlyEncryptedWithPlatformKey
+	DiskSecurityTypesTrustedLaunch                                          DiskSecurityTypes = original.DiskSecurityTypesTrustedLaunch
 )
 
 type DiskState = original.DiskState
@@ -1355,7 +1361,6 @@ type RestorePointCollectionUpdate = original.RestorePointCollectionUpdate
 type RestorePointCollectionsClient = original.RestorePointCollectionsClient
 type RestorePointCollectionsDeleteFuture = original.RestorePointCollectionsDeleteFuture
 type RestorePointProperties = original.RestorePointProperties
-type RestorePointProvisioningDetails = original.RestorePointProvisioningDetails
 type RestorePointSourceMetadata = original.RestorePointSourceMetadata
 type RestorePointSourceVMDataDisk = original.RestorePointSourceVMDataDisk
 type RestorePointSourceVMOSDisk = original.RestorePointSourceVMOSDisk

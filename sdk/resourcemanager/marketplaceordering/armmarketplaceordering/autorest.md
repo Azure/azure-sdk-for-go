@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/cf36bdc6bc70308a3f05f6399efe21a0e1e9b7d8/specification/marketplaceordering/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/cf36bdc6bc70308a3f05f6399efe21a0e1e9b7d8/specification/marketplaceordering/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/8e4746332979ed6ff3577bdc97dd2065a7577598/specification/marketplaceordering/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/8e4746332979ed6ff3577bdc97dd2065a7577598/specification/marketplaceordering/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.1.0
+module-version: 0.2.0
 
 ```

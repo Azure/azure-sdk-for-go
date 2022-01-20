@@ -25,12 +25,16 @@ func ExampleAzureBareMetalInstancesClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armbaremetalinfrastructure.NewAzureBareMetalInstancesClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AzureBareMetalInstance.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -45,12 +49,16 @@ func ExampleAzureBareMetalInstancesClient_ListByResourceGroup() {
 	client := armbaremetalinfrastructure.NewAzureBareMetalInstancesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AzureBareMetalInstance.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -70,7 +78,7 @@ func ExampleAzureBareMetalInstancesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureBareMetalInstance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AzureBareMetalInstancesClientGetResult)
 }
 
 // x-ms-original-file: specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/examples/AzureBareMetalInstances_PatchTags_Delete.json
@@ -91,5 +99,5 @@ func ExampleAzureBareMetalInstancesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureBareMetalInstance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AzureBareMetalInstancesClientUpdateResult)
 }

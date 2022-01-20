@@ -25,7 +25,7 @@ func ExampleExposureControlClient_GetFeatureValue() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
-	_, err = client.GetFeatureValue(ctx,
+	res, err := client.GetFeatureValue(ctx,
 		"<location-id>",
 		armdatafactory.ExposureControlRequest{
 			FeatureName: to.StringPtr("<feature-name>"),
@@ -35,6 +35,7 @@ func ExampleExposureControlClient_GetFeatureValue() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExposureControlClientGetFeatureValueResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValueByFactory.json
@@ -45,7 +46,7 @@ func ExampleExposureControlClient_GetFeatureValueByFactory() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
-	_, err = client.GetFeatureValueByFactory(ctx,
+	res, err := client.GetFeatureValueByFactory(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.ExposureControlRequest{
@@ -56,6 +57,7 @@ func ExampleExposureControlClient_GetFeatureValueByFactory() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExposureControlClientGetFeatureValueByFactoryResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_QueryFeatureValuesByFactory.json
@@ -66,7 +68,7 @@ func ExampleExposureControlClient_QueryFeatureValuesByFactory() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
-	_, err = client.QueryFeatureValuesByFactory(ctx,
+	res, err := client.QueryFeatureValuesByFactory(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.ExposureControlBatchRequest{
@@ -84,4 +86,5 @@ func ExampleExposureControlClient_QueryFeatureValuesByFactory() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExposureControlClientQueryFeatureValuesByFactoryResult)
 }

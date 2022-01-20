@@ -29,60 +29,50 @@ func ExampleApplicationClient_Create() {
 		"<resource-group-name>",
 		"<application-resource-name>",
 		armservicefabricmesh.ApplicationResourceDescription{
-			TrackedResource: armservicefabricmesh.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.ApplicationResourceProperties{
-				ApplicationProperties: armservicefabricmesh.ApplicationProperties{
-					Description: to.StringPtr("<description>"),
-					Services: []*armservicefabricmesh.ServiceResourceDescription{
-						{
-							ManagedProxyResource: armservicefabricmesh.ManagedProxyResource{
-								Name: to.StringPtr("<name>"),
-							},
-							Properties: &armservicefabricmesh.ServiceResourceProperties{
-								ServiceProperties: armservicefabricmesh.ServiceProperties{
-									Description:  to.StringPtr("<description>"),
-									ReplicaCount: to.Int32Ptr(1),
-								},
-								ServiceReplicaProperties: armservicefabricmesh.ServiceReplicaProperties{
-									CodePackages: []*armservicefabricmesh.ContainerCodePackageProperties{
+				Description: to.StringPtr("<description>"),
+				Services: []*armservicefabricmesh.ServiceResourceDescription{
+					{
+						Name: to.StringPtr("<name>"),
+						Properties: &armservicefabricmesh.ServiceResourceProperties{
+							Description:  to.StringPtr("<description>"),
+							ReplicaCount: to.Int32Ptr(1),
+							CodePackages: []*armservicefabricmesh.ContainerCodePackageProperties{
+								{
+									Name: to.StringPtr("<name>"),
+									Endpoints: []*armservicefabricmesh.EndpointProperties{
 										{
 											Name: to.StringPtr("<name>"),
-											Endpoints: []*armservicefabricmesh.EndpointProperties{
-												{
-													Name: to.StringPtr("<name>"),
-													Port: to.Int32Ptr(80),
-												}},
-											Image: to.StringPtr("<image>"),
-											Resources: &armservicefabricmesh.ResourceRequirements{
-												Requests: &armservicefabricmesh.ResourceRequests{
-													CPU:        to.Float64Ptr(1),
-													MemoryInGB: to.Float64Ptr(1),
-												},
-											},
+											Port: to.Int32Ptr(80),
 										}},
-									NetworkRefs: []*armservicefabricmesh.NetworkRef{
+									Image: to.StringPtr("<image>"),
+									Resources: &armservicefabricmesh.ResourceRequirements{
+										Requests: &armservicefabricmesh.ResourceRequests{
+											CPU:        to.Float64Ptr(1),
+											MemoryInGB: to.Float64Ptr(1),
+										},
+									},
+								}},
+							NetworkRefs: []*armservicefabricmesh.NetworkRef{
+								{
+									Name: to.StringPtr("<name>"),
+									EndpointRefs: []*armservicefabricmesh.EndpointRef{
 										{
 											Name: to.StringPtr("<name>"),
-											EndpointRefs: []*armservicefabricmesh.EndpointRef{
-												{
-													Name: to.StringPtr("<name>"),
-												}},
 										}},
-									OSType: armservicefabricmesh.OperatingSystemTypeLinux.ToPtr(),
-								},
-							},
-						}},
-				},
+								}},
+							OSType: armservicefabricmesh.OperatingSystemType("Linux").ToPtr(),
+						},
+					}},
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationClientCreateResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/applications/get.json
@@ -100,7 +90,7 @@ func ExampleApplicationClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationClientGetResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/applications/delete.json
@@ -130,12 +120,16 @@ func ExampleApplicationClient_ListByResourceGroup() {
 	client := armservicefabricmesh.NewApplicationClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -149,12 +143,16 @@ func ExampleApplicationClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armservicefabricmesh.NewApplicationClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

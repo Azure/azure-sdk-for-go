@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,10 +33,10 @@ func ExampleResourceGuardProxyClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ResourceGuardProxyBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardProxyClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,10 +52,10 @@ func ExampleResourceGuardProxyClient_Put() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ResourceGuardProxyBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardProxyClientPutResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleResourceGuardProxyClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
 func ExampleResourceGuardProxyClient_UnlockDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleResourceGuardProxyClient_UnlockDelete() {
 	}
 	ctx := context.Background()
 	client := armrecoveryservicesbackup.NewResourceGuardProxyClient("<subscription-id>", cred, nil)
-	_, err = client.UnlockDelete(ctx,
+	res, err := client.UnlockDelete(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		"<resource-guard-proxy-name>",
@@ -94,4 +94,5 @@ func ExampleResourceGuardProxyClient_UnlockDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ResourceGuardProxyClientUnlockDeleteResult)
 }

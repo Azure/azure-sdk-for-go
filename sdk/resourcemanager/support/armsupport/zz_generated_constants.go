@@ -9,8 +9,8 @@
 package armsupport
 
 const (
-	module  = "armsupport"
-	version = "v0.1.0"
+	moduleName    = "armsupport"
+	moduleVersion = "v0.2.0"
 )
 
 // CommunicationDirection - Direction of communication.
@@ -76,9 +76,10 @@ func (c PreferredContactMethod) ToPtr() *PreferredContactMethod {
 	return &c
 }
 
-// SeverityLevel - A value that indicates the urgency of the case, which in turn determines the response time according to the service level agreement of
-// the technical support plan you have with Azure. Note: 'Highest
-// critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers.
+// SeverityLevel - A value that indicates the urgency of the case, which in turn determines the response time according to
+// the service level agreement of the technical support plan you have with Azure. Note: 'Highest
+// critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium
+// customers.
 type SeverityLevel string
 
 const (

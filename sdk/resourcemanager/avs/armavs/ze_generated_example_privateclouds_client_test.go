@@ -29,12 +29,16 @@ func ExamplePrivateCloudsClient_List() {
 	client := armavs.NewPrivateCloudsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateCloud.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExamplePrivateCloudsClient_ListInSubscription() {
 	ctx := context.Background()
 	client := armavs.NewPrivateCloudsClient("<subscription-id>", cred, nil)
 	pager := client.ListInSubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateCloud.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExamplePrivateCloudsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateCloud.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateCloudsClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_CreateOrUpdate.json
@@ -88,20 +96,14 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<private-cloud-name>",
 		armavs.PrivateCloud{
-			TrackedResource: armavs.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Identity: &armavs.PrivateCloudIdentity{
-				Type: armavs.ResourceIdentityTypeSystemAssigned.ToPtr(),
+				Type: armavs.ResourceIdentityType("SystemAssigned").ToPtr(),
 			},
 			Properties: &armavs.PrivateCloudProperties{
-				PrivateCloudUpdateProperties: armavs.PrivateCloudUpdateProperties{
-					ManagementCluster: &armavs.ManagementCluster{
-						CommonClusterProperties: armavs.CommonClusterProperties{
-							ClusterSize: to.Int32Ptr(4),
-						},
-					},
+				ManagementCluster: &armavs.ManagementCluster{
+					ClusterSize: to.Int32Ptr(4),
 				},
 				NetworkBlock: to.StringPtr("<network-block>"),
 			},
@@ -117,7 +119,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateCloud.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateCloudsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_Update.json
@@ -133,7 +135,7 @@ func ExamplePrivateCloudsClient_BeginUpdate() {
 		"<private-cloud-name>",
 		armavs.PrivateCloudUpdate{
 			Identity: &armavs.PrivateCloudIdentity{
-				Type: armavs.ResourceIdentityTypeNone.ToPtr(),
+				Type: armavs.ResourceIdentityType("None").ToPtr(),
 			},
 			Properties: &armavs.PrivateCloudUpdateProperties{
 				Encryption: &armavs.Encryption{
@@ -142,12 +144,10 @@ func ExamplePrivateCloudsClient_BeginUpdate() {
 						KeyVaultURL: to.StringPtr("<key-vault-url>"),
 						KeyVersion:  to.StringPtr("<key-version>"),
 					},
-					Status: armavs.EncryptionStateEnabled.ToPtr(),
+					Status: armavs.EncryptionState("Enabled").ToPtr(),
 				},
 				ManagementCluster: &armavs.ManagementCluster{
-					CommonClusterProperties: armavs.CommonClusterProperties{
-						ClusterSize: to.Int32Ptr(4),
-					},
+					ClusterSize: to.Int32Ptr(4),
 				},
 			},
 		},
@@ -159,7 +159,7 @@ func ExamplePrivateCloudsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateCloud.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateCloudsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_Delete.json
@@ -233,11 +233,12 @@ func ExamplePrivateCloudsClient_ListAdminCredentials() {
 	}
 	ctx := context.Background()
 	client := armavs.NewPrivateCloudsClient("<subscription-id>", cred, nil)
-	_, err = client.ListAdminCredentials(ctx,
+	res, err := client.ListAdminCredentials(ctx,
 		"<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateCloudsClientListAdminCredentialsResult)
 }

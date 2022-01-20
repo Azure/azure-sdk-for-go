@@ -30,12 +30,12 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.EncryptionProtectorNameCurrent,
+		armsynapse.EncryptionProtectorName("current"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("EncryptionProtector.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceManagedSQLServerEncryptionProtectorClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/WorkspaceManagedSqlServerEncryptionProtectorCreateOrUpdateKeyVault.json
@@ -49,11 +49,11 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_BeginCreateOrUpda
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.EncryptionProtectorNameCurrent,
+		armsynapse.EncryptionProtectorName("current"),
 		armsynapse.EncryptionProtector{
 			Properties: &armsynapse.EncryptionProtectorProperties{
 				ServerKeyName: to.StringPtr("<server-key-name>"),
-				ServerKeyType: armsynapse.ServerKeyTypeAzureKeyVault.ToPtr(),
+				ServerKeyType: armsynapse.ServerKeyType("AzureKeyVault").ToPtr(),
 			},
 		},
 		nil)
@@ -64,7 +64,7 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_BeginCreateOrUpda
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("EncryptionProtector.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceManagedSqlServerEncryptionProtectorList.json
@@ -78,12 +78,16 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("EncryptionProtector.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -99,7 +103,7 @@ func ExampleWorkspaceManagedSQLServerEncryptionProtectorClient_BeginRevalidate()
 	poller, err := client.BeginRevalidate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.EncryptionProtectorNameCurrent,
+		armsynapse.EncryptionProtectorName("current"),
 		nil)
 	if err != nil {
 		log.Fatal(err)

@@ -1,14 +1,290 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*QueryKeysClient.ListBySearchService` return value(s) have been changed from `(*QueryKeysListBySearchServicePager)` to `(*QueryKeysClientListBySearchServicePager)`
+- Function `*SharedPrivateLinkResourcesClient.BeginDelete` return value(s) have been changed from `(SharedPrivateLinkResourcesDeletePollerResponse, error)` to `(SharedPrivateLinkResourcesClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*ServicesClient.Delete` return value(s) have been changed from `(ServicesDeleteResponse, error)` to `(ServicesClientDeleteResponse, error)`
+- Function `*SharedPrivateLinkResourcesClient.ListByService` return value(s) have been changed from `(*SharedPrivateLinkResourcesListByServicePager)` to `(*SharedPrivateLinkResourcesClientListByServicePager)`
+- Function `*ServicesClient.ListByResourceGroup` return value(s) have been changed from `(*ServicesListByResourceGroupPager)` to `(*ServicesClientListByResourceGroupPager)`
+- Function `*ServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, SearchService, *SearchManagementRequestOptions)` to `(context.Context, string, string, Service, *SearchManagementRequestOptions)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServicesCreateOrUpdatePollerResponse, error)` to `(ServicesClientCreateOrUpdatePollerResponse, error)`
+- Function `*ServicesClient.Update` parameter(s) have been changed from `(context.Context, string, string, SearchServiceUpdate, *SearchManagementRequestOptions)` to `(context.Context, string, string, ServiceUpdate, *SearchManagementRequestOptions)`
+- Function `*ServicesClient.Update` return value(s) have been changed from `(ServicesUpdateResponse, error)` to `(ServicesClientUpdateResponse, error)`
+- Function `*AdminKeysClient.Get` return value(s) have been changed from `(AdminKeysGetResponse, error)` to `(AdminKeysClientGetResponse, error)`
+- Function `*ServicesClient.CheckNameAvailability` return value(s) have been changed from `(ServicesCheckNameAvailabilityResponse, error)` to `(ServicesClientCheckNameAvailabilityResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByService` return value(s) have been changed from `(*PrivateEndpointConnectionsListByServicePager)` to `(*PrivateEndpointConnectionsClientListByServicePager)`
+- Function `*ServicesClient.Get` return value(s) have been changed from `(ServicesGetResponse, error)` to `(ServicesClientGetResponse, error)`
+- Function `*ServicesClient.ListBySubscription` return value(s) have been changed from `(*ServicesListBySubscriptionPager)` to `(*ServicesClientListBySubscriptionPager)`
+- Function `*QueryKeysClient.Create` return value(s) have been changed from `(QueryKeysCreateResponse, error)` to `(QueryKeysClientCreateResponse, error)`
+- Function `*SharedPrivateLinkResourcesClient.Get` return value(s) have been changed from `(SharedPrivateLinkResourcesGetResponse, error)` to `(SharedPrivateLinkResourcesClientGetResponse, error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate` return value(s) have been changed from `(SharedPrivateLinkResourcesCreateOrUpdatePollerResponse, error)` to `(SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse, error)`
+- Function `*QueryKeysClient.Delete` return value(s) have been changed from `(QueryKeysDeleteResponse, error)` to `(QueryKeysClientDeleteResponse, error)`
+- Function `*AdminKeysClient.Regenerate` return value(s) have been changed from `(AdminKeysRegenerateResponse, error)` to `(AdminKeysClientRegenerateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Delete` return value(s) have been changed from `(PrivateEndpointConnectionsDeleteResponse, error)` to `(PrivateEndpointConnectionsClientDeleteResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListSupported` return value(s) have been changed from `(PrivateLinkResourcesListSupportedResponse, error)` to `(PrivateLinkResourcesClientListSupportedResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Update` return value(s) have been changed from `(PrivateEndpointConnectionsUpdateResponse, error)` to `(PrivateEndpointConnectionsClientUpdateResponse, error)`
+- Function `*SharedPrivateLinkResourcesListByServicePager.NextPage` has been removed
+- Function `*ServicesCreateOrUpdatePoller.Poll` has been removed
+- Function `*SharedPrivateLinkResourcesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*SharedPrivateLinkResourcesListByServicePager.Err` has been removed
+- Function `*QueryKeysListBySearchServicePager.PageResponse` has been removed
+- Function `*ServicesListBySubscriptionPager.NextPage` has been removed
+- Function `SearchServiceProperties.MarshalJSON` has been removed
+- Function `*QueryKeysListBySearchServicePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsListByServicePager.PageResponse` has been removed
+- Function `*SharedPrivateLinkResourcesDeletePoller.Poll` has been removed
+- Function `*ServicesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SharedPrivateLinkResourcesDeletePoller.Done` has been removed
+- Function `*SharedPrivateLinkResourcesDeletePoller.ResumeToken` has been removed
+- Function `SharedPrivateLinkResource.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsListByServicePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsListByServicePager.NextPage` has been removed
+- Function `*SharedPrivateLinkResourcesCreateOrUpdatePoller.Done` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*SharedPrivateLinkResourcesCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServicesListBySubscriptionPager.Err` has been removed
+- Function `*SharedPrivateLinkResourcesListByServicePager.PageResponse` has been removed
+- Function `*ServicesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SharedPrivateLinkResourcesDeletePoller.FinalResponse` has been removed
+- Function `SearchServiceUpdate.MarshalJSON` has been removed
+- Function `*ServicesCreateOrUpdatePoller.Done` has been removed
+- Function `*SharedPrivateLinkResourcesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*SharedPrivateLinkResourcesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServicesListByResourceGroupPager.PageResponse` has been removed
+- Function `*ServicesListBySubscriptionPager.PageResponse` has been removed
+- Function `SearchServiceListResult.MarshalJSON` has been removed
+- Function `ServicesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesListByResourceGroupPager.NextPage` has been removed
+- Function `*ServicesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServicesListByResourceGroupPager.Err` has been removed
+- Function `SharedPrivateLinkResourcesDeletePollerResponse.PollUntilDone` has been removed
+- Function `SearchService.MarshalJSON` has been removed
+- Function `*QueryKeysListBySearchServicePager.NextPage` has been removed
+- Function `SharedPrivateLinkResourcesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SharedPrivateLinkResourcesDeletePollerResponse.Resume` has been removed
+- Struct `AdminKeysGetOptions` has been removed
+- Struct `AdminKeysGetResponse` has been removed
+- Struct `AdminKeysGetResult` has been removed
+- Struct `AdminKeysRegenerateOptions` has been removed
+- Struct `AdminKeysRegenerateResponse` has been removed
+- Struct `AdminKeysRegenerateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResult` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListByServiceOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByServicePager` has been removed
+- Struct `PrivateEndpointConnectionsListByServiceResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionsUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsUpdateResult` has been removed
+- Struct `PrivateLinkResourcesListSupportedOptions` has been removed
+- Struct `PrivateLinkResourcesListSupportedResponse` has been removed
+- Struct `PrivateLinkResourcesListSupportedResult` has been removed
+- Struct `QueryKeysCreateOptions` has been removed
+- Struct `QueryKeysCreateResponse` has been removed
+- Struct `QueryKeysCreateResult` has been removed
+- Struct `QueryKeysDeleteOptions` has been removed
+- Struct `QueryKeysDeleteResponse` has been removed
+- Struct `QueryKeysListBySearchServiceOptions` has been removed
+- Struct `QueryKeysListBySearchServicePager` has been removed
+- Struct `QueryKeysListBySearchServiceResponse` has been removed
+- Struct `QueryKeysListBySearchServiceResult` has been removed
+- Struct `SearchService` has been removed
+- Struct `SearchServiceListResult` has been removed
+- Struct `SearchServiceProperties` has been removed
+- Struct `SearchServiceUpdate` has been removed
+- Struct `ServicesBeginCreateOrUpdateOptions` has been removed
+- Struct `ServicesCheckNameAvailabilityOptions` has been removed
+- Struct `ServicesCheckNameAvailabilityResponse` has been removed
+- Struct `ServicesCheckNameAvailabilityResult` has been removed
+- Struct `ServicesCreateOrUpdatePoller` has been removed
+- Struct `ServicesCreateOrUpdatePollerResponse` has been removed
+- Struct `ServicesCreateOrUpdateResponse` has been removed
+- Struct `ServicesCreateOrUpdateResult` has been removed
+- Struct `ServicesDeleteOptions` has been removed
+- Struct `ServicesDeleteResponse` has been removed
+- Struct `ServicesGetOptions` has been removed
+- Struct `ServicesGetResponse` has been removed
+- Struct `ServicesGetResult` has been removed
+- Struct `ServicesListByResourceGroupOptions` has been removed
+- Struct `ServicesListByResourceGroupPager` has been removed
+- Struct `ServicesListByResourceGroupResponse` has been removed
+- Struct `ServicesListByResourceGroupResult` has been removed
+- Struct `ServicesListBySubscriptionOptions` has been removed
+- Struct `ServicesListBySubscriptionPager` has been removed
+- Struct `ServicesListBySubscriptionResponse` has been removed
+- Struct `ServicesListBySubscriptionResult` has been removed
+- Struct `ServicesUpdateOptions` has been removed
+- Struct `ServicesUpdateResponse` has been removed
+- Struct `ServicesUpdateResult` has been removed
+- Struct `SharedPrivateLinkResourcesBeginCreateOrUpdateOptions` has been removed
+- Struct `SharedPrivateLinkResourcesBeginDeleteOptions` has been removed
+- Struct `SharedPrivateLinkResourcesCreateOrUpdatePoller` has been removed
+- Struct `SharedPrivateLinkResourcesCreateOrUpdatePollerResponse` has been removed
+- Struct `SharedPrivateLinkResourcesCreateOrUpdateResponse` has been removed
+- Struct `SharedPrivateLinkResourcesCreateOrUpdateResult` has been removed
+- Struct `SharedPrivateLinkResourcesDeletePoller` has been removed
+- Struct `SharedPrivateLinkResourcesDeletePollerResponse` has been removed
+- Struct `SharedPrivateLinkResourcesDeleteResponse` has been removed
+- Struct `SharedPrivateLinkResourcesGetOptions` has been removed
+- Struct `SharedPrivateLinkResourcesGetResponse` has been removed
+- Struct `SharedPrivateLinkResourcesGetResult` has been removed
+- Struct `SharedPrivateLinkResourcesListByServiceOptions` has been removed
+- Struct `SharedPrivateLinkResourcesListByServicePager` has been removed
+- Struct `SharedPrivateLinkResourcesListByServiceResponse` has been removed
+- Struct `SharedPrivateLinkResourcesListByServiceResult` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Resource` of struct `SharedPrivateLinkResource` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `Service.MarshalJSON() ([]byte, error)`
+- New function `*QueryKeysClientListBySearchServicePager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientListByServicePager.Err() error`
+- New function `*PrivateEndpointConnectionsClientListByServicePager.PageResponse() PrivateEndpointConnectionsClientListByServiceResponse`
+- New function `*SharedPrivateLinkResourcesClientDeletePoller.FinalResponse(context.Context) (SharedPrivateLinkResourcesClientDeleteResponse, error)`
+- New function `ServiceUpdate.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClientListByResourceGroupPager.PageResponse() ServicesClientListByResourceGroupResponse`
+- New function `*SharedPrivateLinkResourcesClientListByServicePager.PageResponse() SharedPrivateLinkResourcesClientListByServiceResponse`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ServicesClientListByResourceGroupPager.Err() error`
+- New function `*SharedPrivateLinkResourcesClientDeletePoller.ResumeToken() (string, error)`
+- New function `ServiceListResult.MarshalJSON() ([]byte, error)`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.FinalResponse(context.Context) (SharedPrivateLinkResourcesClientCreateOrUpdateResponse, error)`
+- New function `*ServicesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*ServicesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ServicesClientListBySubscriptionPager.PageResponse() ServicesClientListBySubscriptionResponse`
+- New function `ServicesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientCreateOrUpdateResponse, error)`
+- New function `ServiceProperties.MarshalJSON() ([]byte, error)`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse.Resume(context.Context, *SharedPrivateLinkResourcesClient, string) error`
+- New function `*ServicesClientCreateOrUpdatePoller.Done() bool`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SharedPrivateLinkResourcesClientCreateOrUpdateResponse, error)`
+- New function `*ServicesClientCreateOrUpdatePoller.FinalResponse(context.Context) (ServicesClientCreateOrUpdateResponse, error)`
+- New function `*SharedPrivateLinkResourcesClientListByServicePager.Err() error`
+- New function `*SharedPrivateLinkResourcesClientCreateOrUpdatePoller.Done() bool`
+- New function `*SharedPrivateLinkResourcesClientListByServicePager.NextPage(context.Context) bool`
+- New function `*QueryKeysClientListBySearchServicePager.Err() error`
+- New function `*ServicesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*QueryKeysClientListBySearchServicePager.PageResponse() QueryKeysClientListBySearchServiceResponse`
+- New function `*SharedPrivateLinkResourcesClientDeletePollerResponse.Resume(context.Context, *SharedPrivateLinkResourcesClient, string) error`
+- New function `*SharedPrivateLinkResourcesClientDeletePoller.Done() bool`
+- New function `SharedPrivateLinkResourcesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SharedPrivateLinkResourcesClientDeleteResponse, error)`
+- New function `*ServicesClientCreateOrUpdatePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*SharedPrivateLinkResourcesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServicesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServicesClientListBySubscriptionPager.Err() error`
+- New struct `AdminKeysClientGetOptions`
+- New struct `AdminKeysClientGetResponse`
+- New struct `AdminKeysClientGetResult`
+- New struct `AdminKeysClientRegenerateOptions`
+- New struct `AdminKeysClientRegenerateResponse`
+- New struct `AdminKeysClientRegenerateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResult`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListByServiceOptions`
+- New struct `PrivateEndpointConnectionsClientListByServicePager`
+- New struct `PrivateEndpointConnectionsClientListByServiceResponse`
+- New struct `PrivateEndpointConnectionsClientListByServiceResult`
+- New struct `PrivateEndpointConnectionsClientUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientUpdateResult`
+- New struct `PrivateLinkResourcesClientListSupportedOptions`
+- New struct `PrivateLinkResourcesClientListSupportedResponse`
+- New struct `PrivateLinkResourcesClientListSupportedResult`
+- New struct `QueryKeysClientCreateOptions`
+- New struct `QueryKeysClientCreateResponse`
+- New struct `QueryKeysClientCreateResult`
+- New struct `QueryKeysClientDeleteOptions`
+- New struct `QueryKeysClientDeleteResponse`
+- New struct `QueryKeysClientListBySearchServiceOptions`
+- New struct `QueryKeysClientListBySearchServicePager`
+- New struct `QueryKeysClientListBySearchServiceResponse`
+- New struct `QueryKeysClientListBySearchServiceResult`
+- New struct `Service`
+- New struct `ServiceListResult`
+- New struct `ServiceProperties`
+- New struct `ServiceUpdate`
+- New struct `ServicesClientBeginCreateOrUpdateOptions`
+- New struct `ServicesClientCheckNameAvailabilityOptions`
+- New struct `ServicesClientCheckNameAvailabilityResponse`
+- New struct `ServicesClientCheckNameAvailabilityResult`
+- New struct `ServicesClientCreateOrUpdatePoller`
+- New struct `ServicesClientCreateOrUpdatePollerResponse`
+- New struct `ServicesClientCreateOrUpdateResponse`
+- New struct `ServicesClientCreateOrUpdateResult`
+- New struct `ServicesClientDeleteOptions`
+- New struct `ServicesClientDeleteResponse`
+- New struct `ServicesClientGetOptions`
+- New struct `ServicesClientGetResponse`
+- New struct `ServicesClientGetResult`
+- New struct `ServicesClientListByResourceGroupOptions`
+- New struct `ServicesClientListByResourceGroupPager`
+- New struct `ServicesClientListByResourceGroupResponse`
+- New struct `ServicesClientListByResourceGroupResult`
+- New struct `ServicesClientListBySubscriptionOptions`
+- New struct `ServicesClientListBySubscriptionPager`
+- New struct `ServicesClientListBySubscriptionResponse`
+- New struct `ServicesClientListBySubscriptionResult`
+- New struct `ServicesClientUpdateOptions`
+- New struct `ServicesClientUpdateResponse`
+- New struct `ServicesClientUpdateResult`
+- New struct `SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions`
+- New struct `SharedPrivateLinkResourcesClientBeginDeleteOptions`
+- New struct `SharedPrivateLinkResourcesClientCreateOrUpdatePoller`
+- New struct `SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse`
+- New struct `SharedPrivateLinkResourcesClientCreateOrUpdateResponse`
+- New struct `SharedPrivateLinkResourcesClientCreateOrUpdateResult`
+- New struct `SharedPrivateLinkResourcesClientDeletePoller`
+- New struct `SharedPrivateLinkResourcesClientDeletePollerResponse`
+- New struct `SharedPrivateLinkResourcesClientDeleteResponse`
+- New struct `SharedPrivateLinkResourcesClientGetOptions`
+- New struct `SharedPrivateLinkResourcesClientGetResponse`
+- New struct `SharedPrivateLinkResourcesClientGetResult`
+- New struct `SharedPrivateLinkResourcesClientListByServiceOptions`
+- New struct `SharedPrivateLinkResourcesClientListByServicePager`
+- New struct `SharedPrivateLinkResourcesClientListByServiceResponse`
+- New struct `SharedPrivateLinkResourcesClientListByServiceResult`
+- New field `ID` in struct `SharedPrivateLinkResource`
+- New field `Name` in struct `SharedPrivateLinkResource`
+- New field `Type` in struct `SharedPrivateLinkResource`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `Error` in struct `CloudError`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

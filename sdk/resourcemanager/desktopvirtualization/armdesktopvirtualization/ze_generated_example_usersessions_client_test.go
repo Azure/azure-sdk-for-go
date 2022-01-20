@@ -27,13 +27,17 @@ func ExampleUserSessionsClient_ListByHostPool() {
 	client := armdesktopvirtualization.NewUserSessionsClient("<subscription-id>", cred, nil)
 	pager := client.ListByHostPool("<resource-group-name>",
 		"<host-pool-name>",
-		&armdesktopvirtualization.UserSessionsListByHostPoolOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
+		&armdesktopvirtualization.UserSessionsClientListByHostPoolOptions{Filter: to.StringPtr("<filter>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("UserSession.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -55,7 +59,7 @@ func ExampleUserSessionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("UserSession.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.UserSessionsClientGetResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/UserSession_Delete.json
@@ -71,7 +75,7 @@ func ExampleUserSessionsClient_Delete() {
 		"<host-pool-name>",
 		"<session-host-name>",
 		"<user-session-id>",
-		&armdesktopvirtualization.UserSessionsDeleteOptions{Force: to.BoolPtr(true)})
+		&armdesktopvirtualization.UserSessionsClientDeleteOptions{Force: to.BoolPtr(true)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -89,12 +93,16 @@ func ExampleUserSessionsClient_List() {
 		"<host-pool-name>",
 		"<session-host-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("UserSession.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -131,7 +139,7 @@ func ExampleUserSessionsClient_SendMessage() {
 		"<host-pool-name>",
 		"<session-host-name>",
 		"<user-session-id>",
-		&armdesktopvirtualization.UserSessionsSendMessageOptions{SendMessage: &armdesktopvirtualization.SendMessage{
+		&armdesktopvirtualization.UserSessionsClientSendMessageOptions{SendMessage: &armdesktopvirtualization.SendMessage{
 			MessageBody:  to.StringPtr("<message-body>"),
 			MessageTitle: to.StringPtr("<message-title>"),
 		},

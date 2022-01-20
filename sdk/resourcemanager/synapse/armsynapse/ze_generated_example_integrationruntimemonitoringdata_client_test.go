@@ -24,7 +24,7 @@ func ExampleIntegrationRuntimeMonitoringDataClient_List() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimeMonitoringDataClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
@@ -32,4 +32,5 @@ func ExampleIntegrationRuntimeMonitoringDataClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeMonitoringDataClientListResult)
 }

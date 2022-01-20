@@ -27,13 +27,14 @@ func ExamplePrivateEndpointConnectionProxiesClient_ListByAccount() {
 	}
 	ctx := context.Background()
 	client := armdeviceupdate.NewPrivateEndpointConnectionProxiesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByAccount(ctx,
+	res, err := client.ListByAccount(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionProxiesClientListByAccountResult)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Validate.json
@@ -49,22 +50,20 @@ func ExamplePrivateEndpointConnectionProxiesClient_Validate() {
 		"<account-name>",
 		"<private-endpoint-connection-proxy-id>",
 		armdeviceupdate.PrivateEndpointConnectionProxy{
-			PrivateEndpointConnectionProxyProperties: armdeviceupdate.PrivateEndpointConnectionProxyProperties{
-				RemotePrivateEndpoint: &armdeviceupdate.RemotePrivateEndpoint{
-					ID: to.StringPtr("<id>"),
-					ManualPrivateLinkServiceConnections: []*armdeviceupdate.PrivateLinkServiceConnection{
-						{
-							Name: to.StringPtr("<name>"),
-							GroupIDs: []*string{
-								to.StringPtr("DeviceUpdate")},
-							RequestMessage: to.StringPtr("<request-message>"),
-						}},
-					PrivateLinkServiceProxies: []*armdeviceupdate.PrivateLinkServiceProxy{
-						{
-							GroupConnectivityInformation: []*armdeviceupdate.GroupConnectivityInformation{},
-							ID:                           to.StringPtr("<id>"),
-						}},
-				},
+			RemotePrivateEndpoint: &armdeviceupdate.RemotePrivateEndpoint{
+				ID: to.StringPtr("<id>"),
+				ManualPrivateLinkServiceConnections: []*armdeviceupdate.PrivateLinkServiceConnection{
+					{
+						Name: to.StringPtr("<name>"),
+						GroupIDs: []*string{
+							to.StringPtr("DeviceUpdate")},
+						RequestMessage: to.StringPtr("<request-message>"),
+					}},
+				PrivateLinkServiceProxies: []*armdeviceupdate.PrivateLinkServiceProxy{
+					{
+						GroupConnectivityInformation: []*armdeviceupdate.GroupConnectivityInformation{},
+						ID:                           to.StringPtr("<id>"),
+					}},
 			},
 		},
 		nil)
@@ -89,7 +88,7 @@ func ExamplePrivateEndpointConnectionProxiesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionProxy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionProxiesClientGetResult)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
@@ -105,33 +104,30 @@ func ExamplePrivateEndpointConnectionProxiesClient_BeginCreateOrUpdate() {
 		"<account-name>",
 		"<private-endpoint-connection-proxy-id>",
 		armdeviceupdate.PrivateEndpointConnectionProxy{
-			PrivateEndpointConnectionProxyProperties: armdeviceupdate.PrivateEndpointConnectionProxyProperties{
-				RemotePrivateEndpoint: &armdeviceupdate.RemotePrivateEndpoint{
-					ID: to.StringPtr("<id>"),
-					ManualPrivateLinkServiceConnections: []*armdeviceupdate.PrivateLinkServiceConnection{
-						{
-							Name: to.StringPtr("<name>"),
-							GroupIDs: []*string{
-								to.StringPtr("DeviceUpdate")},
-							RequestMessage: to.StringPtr("<request-message>"),
-						}},
-					PrivateLinkServiceProxies: []*armdeviceupdate.PrivateLinkServiceProxy{
-						{
-							GroupConnectivityInformation: []*armdeviceupdate.GroupConnectivityInformation{},
-							ID:                           to.StringPtr("<id>"),
-						}},
-				},
+			RemotePrivateEndpoint: &armdeviceupdate.RemotePrivateEndpoint{
+				ID: to.StringPtr("<id>"),
+				ManualPrivateLinkServiceConnections: []*armdeviceupdate.PrivateLinkServiceConnection{
+					{
+						Name: to.StringPtr("<name>"),
+						GroupIDs: []*string{
+							to.StringPtr("DeviceUpdate")},
+						RequestMessage: to.StringPtr("<request-message>"),
+					}},
+				PrivateLinkServiceProxies: []*armdeviceupdate.PrivateLinkServiceProxy{
+					{
+						GroupConnectivityInformation: []*armdeviceupdate.GroupConnectivityInformation{},
+						ID:                           to.StringPtr("<id>"),
+					}},
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionProxy.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Delete.json

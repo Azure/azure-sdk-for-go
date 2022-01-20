@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
 )
@@ -27,12 +28,39 @@ func ExampleAccountsClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armmaps.MapsAccount{},
+		armmaps.Account{
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"test": to.StringPtr("true"),
+			},
+			Identity: &armmaps.ManagedServiceIdentity{
+				Type: armmaps.ResourceIdentityTypeSystemAssignedUserAssigned.ToPtr(),
+				UserAssignedIdentities: map[string]*armmaps.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+					"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": {},
+				},
+			},
+			Kind: armmaps.Kind("Gen2").ToPtr(),
+			Properties: &armmaps.AccountProperties{
+				DisableLocalAuth: to.BoolPtr(false),
+				LinkedResources: []*armmaps.LinkedResource{
+					{
+						ID:         to.StringPtr("<id>"),
+						UniqueName: to.StringPtr("<unique-name>"),
+					},
+					{
+						ID:         to.StringPtr("<id>"),
+						UniqueName: to.StringPtr("<unique-name>"),
+					}},
+			},
+			SKU: &armmaps.SKU{
+				Name: armmaps.Name("G2").ToPtr(),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MapsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/UpdateAccountManagedIdentity.json
@@ -46,12 +74,30 @@ func ExampleAccountsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armmaps.MapsAccountUpdateParameters{},
+		armmaps.AccountUpdateParameters{
+			Identity: &armmaps.ManagedServiceIdentity{
+				Type: armmaps.ResourceIdentityTypeSystemAssignedUserAssigned.ToPtr(),
+				UserAssignedIdentities: map[string]*armmaps.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+					"/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName": {},
+				},
+			},
+			Kind: armmaps.Kind("Gen2").ToPtr(),
+			Properties: &armmaps.AccountProperties{
+				LinkedResources: []*armmaps.LinkedResource{
+					{
+						ID:         to.StringPtr("<id>"),
+						UniqueName: to.StringPtr("<unique-name>"),
+					}},
+			},
+			SKU: &armmaps.SKU{
+				Name: armmaps.Name("G2").ToPtr(),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MapsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/DeleteAccount.json
@@ -86,7 +132,7 @@ func ExampleAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MapsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/ListAccountsByResourceGroup.json
@@ -99,12 +145,16 @@ func ExampleAccountsClient_ListByResourceGroup() {
 	client := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MapsAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -118,12 +168,16 @@ func ExampleAccountsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MapsAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -136,14 +190,23 @@ func ExampleAccountsClient_ListSas() {
 	}
 	ctx := context.Background()
 	client := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.ListSas(ctx,
+	res, err := client.ListSas(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armmaps.AccountSasParameters{},
+		armmaps.AccountSasParameters{
+			Expiry:           to.StringPtr("<expiry>"),
+			MaxRatePerSecond: to.Int32Ptr(500),
+			PrincipalID:      to.StringPtr("<principal-id>"),
+			Regions: []*string{
+				to.StringPtr("eastus")},
+			SigningKey: armmaps.SigningKey("primaryKey").ToPtr(),
+			Start:      to.StringPtr("<start>"),
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientListSasResult)
 }
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/ListKeys.json
@@ -154,13 +217,14 @@ func ExampleAccountsClient_ListKeys() {
 	}
 	ctx := context.Background()
 	client := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientListKeysResult)
 }
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/RegenerateKey.json
@@ -171,14 +235,15 @@ func ExampleAccountsClient_RegenerateKeys() {
 	}
 	ctx := context.Background()
 	client := armmaps.NewAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.RegenerateKeys(ctx,
+	res, err := client.RegenerateKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armmaps.MapsKeySpecification{
-			KeyType: armmaps.KeyTypePrimary.ToPtr(),
+		armmaps.KeySpecification{
+			KeyType: armmaps.KeyType("primary").ToPtr(),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientRegenerateKeysResult)
 }

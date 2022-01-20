@@ -11,7 +11,6 @@ package armbatch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,54 @@ import (
 // LocationClient contains the methods for the Location group.
 // Don't use this type directly, use NewLocationClient() instead.
 type LocationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLocationClient creates a new instance of LocationClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LocationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LocationClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Checks whether the Batch account name is available in the specified region.
-// If the operation fails it returns the *CloudError error type.
-func (client *LocationClient) CheckNameAvailability(ctx context.Context, locationName string, parameters CheckNameAvailabilityParameters, options *LocationCheckNameAvailabilityOptions) (LocationCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The desired region for the name check.
+// parameters - Properties needed to check the availability of a name.
+// options - LocationClientCheckNameAvailabilityOptions contains the optional parameters for the LocationClient.CheckNameAvailability
+// method.
+func (client *LocationClient) CheckNameAvailability(ctx context.Context, locationName string, parameters CheckNameAvailabilityParameters, options *LocationClientCheckNameAvailabilityOptions) (LocationClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, locationName, parameters, options)
 	if err != nil {
-		return LocationCheckNameAvailabilityResponse{}, err
+		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationCheckNameAvailabilityResponse{}, err
+		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return LocationClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Context, locationName string, parameters CheckNameAvailabilityParameters, options *LocationCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Context, locationName string, parameters CheckNameAvailabilityParameters, options *LocationClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/checkNameAvailability"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -71,7 +82,7 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,46 +94,35 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *LocationClient) checkNameAvailabilityHandleResponse(resp *http.Response) (LocationCheckNameAvailabilityResponse, error) {
-	result := LocationCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *LocationClient) checkNameAvailabilityHandleResponse(resp *http.Response) (LocationClientCheckNameAvailabilityResponse, error) {
+	result := LocationClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return LocationCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *LocationClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetQuotas - Gets the Batch service quotas for the specified subscription at the given location.
-// If the operation fails it returns the *CloudError error type.
-func (client *LocationClient) GetQuotas(ctx context.Context, locationName string, options *LocationGetQuotasOptions) (LocationGetQuotasResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The region for which to retrieve Batch service quotas.
+// options - LocationClientGetQuotasOptions contains the optional parameters for the LocationClient.GetQuotas method.
+func (client *LocationClient) GetQuotas(ctx context.Context, locationName string, options *LocationClientGetQuotasOptions) (LocationClientGetQuotasResponse, error) {
 	req, err := client.getQuotasCreateRequest(ctx, locationName, options)
 	if err != nil {
-		return LocationGetQuotasResponse{}, err
+		return LocationClientGetQuotasResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationGetQuotasResponse{}, err
+		return LocationClientGetQuotasResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationGetQuotasResponse{}, client.getQuotasHandleError(resp)
+		return LocationClientGetQuotasResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getQuotasHandleResponse(resp)
 }
 
 // getQuotasCreateRequest creates the GetQuotas request.
-func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locationName string, options *LocationGetQuotasOptions) (*policy.Request, error) {
+func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locationName string, options *LocationClientGetQuotasOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/quotas"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -132,7 +132,7 @@ func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locati
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,43 +144,33 @@ func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locati
 }
 
 // getQuotasHandleResponse handles the GetQuotas response.
-func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (LocationGetQuotasResponse, error) {
-	result := LocationGetQuotasResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BatchLocationQuota); err != nil {
-		return LocationGetQuotasResponse{}, runtime.NewResponseError(err, resp)
+func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (LocationClientGetQuotasResponse, error) {
+	result := LocationClientGetQuotasResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LocationQuota); err != nil {
+		return LocationClientGetQuotasResponse{}, err
 	}
 	return result, nil
 }
 
-// getQuotasHandleError handles the GetQuotas error response.
-func (client *LocationClient) getQuotasHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSupportedCloudServiceSKUs - Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-// If the operation fails it returns the *CloudError error type.
-func (client *LocationClient) ListSupportedCloudServiceSKUs(locationName string, options *LocationListSupportedCloudServiceSKUsOptions) *LocationListSupportedCloudServiceSKUsPager {
-	return &LocationListSupportedCloudServiceSKUsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The region for which to retrieve Batch service supported SKUs.
+// options - LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.ListSupportedCloudServiceSKUs
+// method.
+func (client *LocationClient) ListSupportedCloudServiceSKUs(locationName string, options *LocationClientListSupportedCloudServiceSKUsOptions) *LocationClientListSupportedCloudServiceSKUsPager {
+	return &LocationClientListSupportedCloudServiceSKUsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSupportedCloudServiceSKUsCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp LocationListSupportedCloudServiceSKUsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LocationClientListSupportedCloudServiceSKUsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SupportedSKUsResult.NextLink)
 		},
 	}
 }
 
 // listSupportedCloudServiceSKUsCreateRequest creates the ListSupportedCloudServiceSKUs request.
-func (client *LocationClient) listSupportedCloudServiceSKUsCreateRequest(ctx context.Context, locationName string, options *LocationListSupportedCloudServiceSKUsOptions) (*policy.Request, error) {
+func (client *LocationClient) listSupportedCloudServiceSKUsCreateRequest(ctx context.Context, locationName string, options *LocationClientListSupportedCloudServiceSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/cloudServiceSkus"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -190,7 +180,7 @@ func (client *LocationClient) listSupportedCloudServiceSKUsCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,43 +198,33 @@ func (client *LocationClient) listSupportedCloudServiceSKUsCreateRequest(ctx con
 }
 
 // listSupportedCloudServiceSKUsHandleResponse handles the ListSupportedCloudServiceSKUs response.
-func (client *LocationClient) listSupportedCloudServiceSKUsHandleResponse(resp *http.Response) (LocationListSupportedCloudServiceSKUsResponse, error) {
-	result := LocationListSupportedCloudServiceSKUsResponse{RawResponse: resp}
+func (client *LocationClient) listSupportedCloudServiceSKUsHandleResponse(resp *http.Response) (LocationClientListSupportedCloudServiceSKUsResponse, error) {
+	result := LocationClientListSupportedCloudServiceSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedSKUsResult); err != nil {
-		return LocationListSupportedCloudServiceSKUsResponse{}, runtime.NewResponseError(err, resp)
+		return LocationClientListSupportedCloudServiceSKUsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSupportedCloudServiceSKUsHandleError handles the ListSupportedCloudServiceSKUs error response.
-func (client *LocationClient) listSupportedCloudServiceSKUsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSupportedVirtualMachineSKUs - Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-// If the operation fails it returns the *CloudError error type.
-func (client *LocationClient) ListSupportedVirtualMachineSKUs(locationName string, options *LocationListSupportedVirtualMachineSKUsOptions) *LocationListSupportedVirtualMachineSKUsPager {
-	return &LocationListSupportedVirtualMachineSKUsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The region for which to retrieve Batch service supported SKUs.
+// options - LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.ListSupportedVirtualMachineSKUs
+// method.
+func (client *LocationClient) ListSupportedVirtualMachineSKUs(locationName string, options *LocationClientListSupportedVirtualMachineSKUsOptions) *LocationClientListSupportedVirtualMachineSKUsPager {
+	return &LocationClientListSupportedVirtualMachineSKUsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSupportedVirtualMachineSKUsCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp LocationListSupportedVirtualMachineSKUsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LocationClientListSupportedVirtualMachineSKUsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SupportedSKUsResult.NextLink)
 		},
 	}
 }
 
 // listSupportedVirtualMachineSKUsCreateRequest creates the ListSupportedVirtualMachineSKUs request.
-func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx context.Context, locationName string, options *LocationListSupportedVirtualMachineSKUsOptions) (*policy.Request, error) {
+func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx context.Context, locationName string, options *LocationClientListSupportedVirtualMachineSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/virtualMachineSkus"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -254,7 +234,7 @@ func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -272,23 +252,10 @@ func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx c
 }
 
 // listSupportedVirtualMachineSKUsHandleResponse handles the ListSupportedVirtualMachineSKUs response.
-func (client *LocationClient) listSupportedVirtualMachineSKUsHandleResponse(resp *http.Response) (LocationListSupportedVirtualMachineSKUsResponse, error) {
-	result := LocationListSupportedVirtualMachineSKUsResponse{RawResponse: resp}
+func (client *LocationClient) listSupportedVirtualMachineSKUsHandleResponse(resp *http.Response) (LocationClientListSupportedVirtualMachineSKUsResponse, error) {
+	result := LocationClientListSupportedVirtualMachineSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedSKUsResult); err != nil {
-		return LocationListSupportedVirtualMachineSKUsResponse{}, runtime.NewResponseError(err, resp)
+		return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
 	}
 	return result, nil
-}
-
-// listSupportedVirtualMachineSKUsHandleError handles the ListSupportedVirtualMachineSKUs error response.
-func (client *LocationClient) listSupportedVirtualMachineSKUsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

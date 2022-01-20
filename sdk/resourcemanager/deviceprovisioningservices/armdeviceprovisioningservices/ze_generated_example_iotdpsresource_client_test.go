@@ -34,7 +34,7 @@ func ExampleIotDpsResourceClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProvisioningServiceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientGetResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSCreate.json
@@ -49,13 +49,11 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<provisioning-service-name>",
 		armdeviceprovisioningservices.ProvisioningServiceDescription{
-			Resource: armdeviceprovisioningservices.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location:   to.StringPtr("<location>"),
+			Tags:       map[string]*string{},
 			Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{},
 			SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
-				Name:     armdeviceprovisioningservices.IotDpsSKUS1.ToPtr(),
+				Name:     armdeviceprovisioningservices.IotDpsSKU("S1").ToPtr(),
 				Capacity: to.Int64Ptr(1),
 			},
 		},
@@ -67,7 +65,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProvisioningServiceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSPatch.json
@@ -81,7 +79,11 @@ func ExampleIotDpsResourceClient_BeginUpdate() {
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<provisioning-service-name>",
-		armdeviceprovisioningservices.TagsResource{},
+		armdeviceprovisioningservices.TagsResource{
+			Tags: map[string]*string{
+				"foo": to.StringPtr("bar"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -90,7 +92,7 @@ func ExampleIotDpsResourceClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProvisioningServiceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientUpdateResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSDelete.json
@@ -123,12 +125,16 @@ func ExampleIotDpsResourceClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ProvisioningServiceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -143,12 +149,16 @@ func ExampleIotDpsResourceClient_ListByResourceGroup() {
 	client := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ProvisioningServiceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -161,7 +171,7 @@ func ExampleIotDpsResourceClient_GetOperationResult() {
 	}
 	ctx := context.Background()
 	client := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
-	_, err = client.GetOperationResult(ctx,
+	res, err := client.GetOperationResult(ctx,
 		"<operation-id>",
 		"<resource-group-name>",
 		"<provisioning-service-name>",
@@ -170,24 +180,7 @@ func ExampleIotDpsResourceClient_GetOperationResult() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-// x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSGetValidSku.json
-func ExampleIotDpsResourceClient_ListValidSKUs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
-	pager := client.ListValidSKUs("<provisioning-service-name>",
-		"<resource-group-name>",
-		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-	}
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientGetOperationResultResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSCheckNameAvailability.json
@@ -198,7 +191,7 @@ func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
-	_, err = client.CheckProvisioningServiceNameAvailability(ctx,
+	res, err := client.CheckProvisioningServiceNameAvailability(ctx,
 		armdeviceprovisioningservices.OperationInputs{
 			Name: to.StringPtr("<name>"),
 		},
@@ -206,6 +199,7 @@ func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSListKeys.json
@@ -219,9 +213,16 @@ func ExampleIotDpsResourceClient_ListKeys() {
 	pager := client.ListKeys("<provisioning-service-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -234,7 +235,7 @@ func ExampleIotDpsResourceClient_ListKeysForKeyName() {
 	}
 	ctx := context.Background()
 	client := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeysForKeyName(ctx,
+	res, err := client.ListKeysForKeyName(ctx,
 		"<provisioning-service-name>",
 		"<key-name>",
 		"<resource-group-name>",
@@ -242,6 +243,7 @@ func ExampleIotDpsResourceClient_ListKeysForKeyName() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientListKeysForKeyNameResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSListPrivateLinkResources.json
@@ -252,13 +254,14 @@ func ExampleIotDpsResourceClient_ListPrivateLinkResources() {
 	}
 	ctx := context.Background()
 	client := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
-	_, err = client.ListPrivateLinkResources(ctx,
+	res, err := client.ListPrivateLinkResources(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientListPrivateLinkResourcesResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSGetPrivateLinkResources.json
@@ -277,7 +280,7 @@ func ExampleIotDpsResourceClient_GetPrivateLinkResources() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GroupIDInformation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientGetPrivateLinkResourcesResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSListPrivateEndpointConnections.json
@@ -288,13 +291,14 @@ func ExampleIotDpsResourceClient_ListPrivateEndpointConnections() {
 	}
 	ctx := context.Background()
 	client := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
-	_, err = client.ListPrivateEndpointConnections(ctx,
+	res, err := client.ListPrivateEndpointConnections(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientListPrivateEndpointConnectionsResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSGetPrivateEndpointConnection.json
@@ -313,7 +317,7 @@ func ExampleIotDpsResourceClient_GetPrivateEndpointConnection() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientGetPrivateEndpointConnectionResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSCreateOrUpdatePrivateEndpointConnection.json
@@ -332,7 +336,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() 
 			Properties: &armdeviceprovisioningservices.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armdeviceprovisioningservices.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armdeviceprovisioningservices.PrivateLinkServiceConnectionStatusApproved.ToPtr(),
+					Status:      armdeviceprovisioningservices.PrivateLinkServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -344,7 +348,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() 
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSDeletePrivateEndpointConnection.json
@@ -367,5 +371,5 @@ func ExampleIotDpsResourceClient_BeginDeletePrivateEndpointConnection() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotDpsResourceClientDeletePrivateEndpointConnectionResult)
 }

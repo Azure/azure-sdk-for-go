@@ -24,42 +24,54 @@ import (
 // ComponentQuotaStatusClient contains the methods for the ComponentQuotaStatus group.
 // Don't use this type directly, use NewComponentQuotaStatusClient() instead.
 type ComponentQuotaStatusClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewComponentQuotaStatusClient creates a new instance of ComponentQuotaStatusClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewComponentQuotaStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ComponentQuotaStatusClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ComponentQuotaStatusClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ComponentQuotaStatusClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns daily data volume cap (quota) status for an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *ComponentQuotaStatusClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentQuotaStatusGetOptions) (ComponentQuotaStatusGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - ComponentQuotaStatusClientGetOptions contains the optional parameters for the ComponentQuotaStatusClient.Get
+// method.
+func (client *ComponentQuotaStatusClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentQuotaStatusClientGetOptions) (ComponentQuotaStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return ComponentQuotaStatusGetResponse{}, err
+		return ComponentQuotaStatusClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentQuotaStatusGetResponse{}, err
+		return ComponentQuotaStatusClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentQuotaStatusGetResponse{}, client.getHandleError(resp)
+		return ComponentQuotaStatusClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ComponentQuotaStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentQuotaStatusGetOptions) (*policy.Request, error) {
+func (client *ComponentQuotaStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentQuotaStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/quotastatus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +85,7 @@ func (client *ComponentQuotaStatusClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,22 +97,10 @@ func (client *ComponentQuotaStatusClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComponentQuotaStatusClient) getHandleResponse(resp *http.Response) (ComponentQuotaStatusGetResponse, error) {
-	result := ComponentQuotaStatusGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentQuotaStatus); err != nil {
-		return ComponentQuotaStatusGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentQuotaStatusClient) getHandleResponse(resp *http.Response) (ComponentQuotaStatusClientGetResponse, error) {
+	result := ComponentQuotaStatusClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentQuotaStatus); err != nil {
+		return ComponentQuotaStatusClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ComponentQuotaStatusClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

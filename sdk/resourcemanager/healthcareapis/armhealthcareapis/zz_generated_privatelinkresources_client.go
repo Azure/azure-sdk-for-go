@@ -11,7 +11,6 @@ package armhealthcareapis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a private link resource that need to be created for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesGetOptions) (PrivateLinkResourcesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// groupName - The name of the private link resource group.
+// options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
+// method.
+func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, groupName, options)
 	if err != nil {
-		return PrivateLinkResourcesGetResponse{}, err
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesGetResponse{}, err
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkResourcesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}/privateLinkResources/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter groupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +102,37 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesGetResponse, error) {
-	result := PrivateLinkResourcesGetResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesClientGetResponse, error) {
+	result := PrivateLinkResourcesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceDescription); err != nil {
-		return PrivateLinkResourcesGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateLinkResourcesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByService - Gets the private link resources that need to be created for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkResourcesClient) ListByService(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesListByServiceOptions) (PrivateLinkResourcesListByServiceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// options - PrivateLinkResourcesClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByService
+// method.
+func (client *PrivateLinkResourcesClient) ListByService(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListByServiceOptions) (PrivateLinkResourcesClientListByServiceResponse, error) {
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return PrivateLinkResourcesListByServiceResponse{}, err
+		return PrivateLinkResourcesClientListByServiceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesListByServiceResponse{}, err
+		return PrivateLinkResourcesClientListByServiceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesListByServiceResponse{}, client.listByServiceHandleError(resp)
+		return PrivateLinkResourcesClientListByServiceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServiceHandleResponse(resp)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *PrivateLinkResourcesClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesListByServiceOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -143,7 +146,7 @@ func (client *PrivateLinkResourcesClient) listByServiceCreateRequest(ctx context
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,23 +158,10 @@ func (client *PrivateLinkResourcesClient) listByServiceCreateRequest(ctx context
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *PrivateLinkResourcesClient) listByServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesListByServiceResponse, error) {
-	result := PrivateLinkResourcesListByServiceResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesClient) listByServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByServiceResponse, error) {
+	result := PrivateLinkResourcesClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResultDescription); err != nil {
-		return PrivateLinkResourcesListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *PrivateLinkResourcesClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -9,8 +9,8 @@
 package armquantum
 
 const (
-	module  = "armquantum"
-	version = "v0.1.0"
+	moduleName    = "armquantum"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

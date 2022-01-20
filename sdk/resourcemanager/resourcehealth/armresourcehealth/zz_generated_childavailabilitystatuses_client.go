@@ -10,7 +10,6 @@ package armresourcehealth
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,44 +22,55 @@ import (
 // ChildAvailabilityStatusesClient contains the methods for the ChildAvailabilityStatuses group.
 // Don't use this type directly, use NewChildAvailabilityStatusesClient() instead.
 type ChildAvailabilityStatusesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewChildAvailabilityStatusesClient creates a new instance of ChildAvailabilityStatusesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewChildAvailabilityStatusesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ChildAvailabilityStatusesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ChildAvailabilityStatusesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ChildAvailabilityStatusesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetByResource - Gets current availability status for a single resource
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ChildAvailabilityStatusesClient) GetByResource(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesGetByResourceOptions) (ChildAvailabilityStatusesGetByResourceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
+// only support one nesting level resource types :
+// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}
+// options - ChildAvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the ChildAvailabilityStatusesClient.GetByResource
+// method.
+func (client *ChildAvailabilityStatusesClient) GetByResource(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesClientGetByResourceOptions) (ChildAvailabilityStatusesClientGetByResourceResponse, error) {
 	req, err := client.getByResourceCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return ChildAvailabilityStatusesGetByResourceResponse{}, err
+		return ChildAvailabilityStatusesClientGetByResourceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ChildAvailabilityStatusesGetByResourceResponse{}, err
+		return ChildAvailabilityStatusesClientGetByResourceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ChildAvailabilityStatusesGetByResourceResponse{}, client.getByResourceHandleError(resp)
+		return ChildAvailabilityStatusesClientGetByResourceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByResourceHandleResponse(resp)
 }
 
 // getByResourceCreateRequest creates the GetByResource request.
-func (client *ChildAvailabilityStatusesClient) getByResourceCreateRequest(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesGetByResourceOptions) (*policy.Request, error) {
+func (client *ChildAvailabilityStatusesClient) getByResourceCreateRequest(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesClientGetByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses/current"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,47 +88,39 @@ func (client *ChildAvailabilityStatusesClient) getByResourceCreateRequest(ctx co
 }
 
 // getByResourceHandleResponse handles the GetByResource response.
-func (client *ChildAvailabilityStatusesClient) getByResourceHandleResponse(resp *http.Response) (ChildAvailabilityStatusesGetByResourceResponse, error) {
-	result := ChildAvailabilityStatusesGetByResourceResponse{RawResponse: resp}
+func (client *ChildAvailabilityStatusesClient) getByResourceHandleResponse(resp *http.Response) (ChildAvailabilityStatusesClientGetByResourceResponse, error) {
+	result := ChildAvailabilityStatusesClientGetByResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatus); err != nil {
-		return ChildAvailabilityStatusesGetByResourceResponse{}, runtime.NewResponseError(err, resp)
+		return ChildAvailabilityStatusesClientGetByResourceResponse{}, err
 	}
 	return result, nil
 }
 
-// getByResourceHandleError handles the GetByResource error response.
-func (client *ChildAvailabilityStatusesClient) getByResourceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists the historical availability statuses for a single child resource. Use the nextLink property in the response to get the next page of availability
-// status
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ChildAvailabilityStatusesClient) List(resourceURI string, options *ChildAvailabilityStatusesListOptions) *ChildAvailabilityStatusesListPager {
-	return &ChildAvailabilityStatusesListPager{
+// List - Lists the historical availability statuses for a single child resource. Use the nextLink property in the response
+// to get the next page of availability status
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
+// only support one nesting level resource types :
+// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}
+// options - ChildAvailabilityStatusesClientListOptions contains the optional parameters for the ChildAvailabilityStatusesClient.List
+// method.
+func (client *ChildAvailabilityStatusesClient) List(resourceURI string, options *ChildAvailabilityStatusesClientListOptions) *ChildAvailabilityStatusesClientListPager {
+	return &ChildAvailabilityStatusesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceURI, options)
 		},
-		advancer: func(ctx context.Context, resp ChildAvailabilityStatusesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ChildAvailabilityStatusesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailabilityStatusListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesListOptions) (*policy.Request, error) {
+func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,23 +138,10 @@ func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *ChildAvailabilityStatusesClient) listHandleResponse(resp *http.Response) (ChildAvailabilityStatusesListResponse, error) {
-	result := ChildAvailabilityStatusesListResponse{RawResponse: resp}
+func (client *ChildAvailabilityStatusesClient) listHandleResponse(resp *http.Response) (ChildAvailabilityStatusesClientListResponse, error) {
+	result := ChildAvailabilityStatusesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return ChildAvailabilityStatusesListResponse{}, runtime.NewResponseError(err, resp)
+		return ChildAvailabilityStatusesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ChildAvailabilityStatusesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

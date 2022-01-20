@@ -30,12 +30,16 @@ func ExampleCloudLinksClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CloudLink.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleCloudLinksClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CloudLink.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CloudLinksClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/CloudLinks_CreateOrUpdate.json
@@ -84,7 +88,7 @@ func ExampleCloudLinksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CloudLink.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CloudLinksClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/CloudLinks_Delete.json

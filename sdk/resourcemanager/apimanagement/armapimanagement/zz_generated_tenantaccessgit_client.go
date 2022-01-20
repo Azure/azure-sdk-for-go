@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // TenantAccessGitClient contains the methods for the TenantAccessGit group.
 // Don't use this type directly, use NewTenantAccessGitClient() instead.
 type TenantAccessGitClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTenantAccessGitClient creates a new instance of TenantAccessGitClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTenantAccessGitClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TenantAccessGitClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TenantAccessGitClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TenantAccessGitClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // RegeneratePrimaryKey - Regenerate primary access key for GIT.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessGitClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitRegeneratePrimaryKeyOptions) (TenantAccessGitRegeneratePrimaryKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// options - TenantAccessGitClientRegeneratePrimaryKeyOptions contains the optional parameters for the TenantAccessGitClient.RegeneratePrimaryKey
+// method.
+func (client *TenantAccessGitClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitClientRegeneratePrimaryKeyOptions) (TenantAccessGitClientRegeneratePrimaryKeyResponse, error) {
 	req, err := client.regeneratePrimaryKeyCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
-		return TenantAccessGitRegeneratePrimaryKeyResponse{}, err
+		return TenantAccessGitClientRegeneratePrimaryKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessGitRegeneratePrimaryKeyResponse{}, err
+		return TenantAccessGitClientRegeneratePrimaryKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return TenantAccessGitRegeneratePrimaryKeyResponse{}, client.regeneratePrimaryKeyHandleError(resp)
+		return TenantAccessGitClientRegeneratePrimaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return TenantAccessGitRegeneratePrimaryKeyResponse{RawResponse: resp}, nil
+	return TenantAccessGitClientRegeneratePrimaryKeyResponse{RawResponse: resp}, nil
 }
 
 // regeneratePrimaryKeyCreateRequest creates the RegeneratePrimaryKey request.
-func (client *TenantAccessGitClient) regeneratePrimaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitRegeneratePrimaryKeyOptions) (*policy.Request, error) {
+func (client *TenantAccessGitClient) regeneratePrimaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitClientRegeneratePrimaryKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regeneratePrimaryKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +91,7 @@ func (client *TenantAccessGitClient) regeneratePrimaryKeyCreateRequest(ctx conte
 		return nil, errors.New("parameter accessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessName}", url.PathEscape(string(accessName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,38 +102,30 @@ func (client *TenantAccessGitClient) regeneratePrimaryKeyCreateRequest(ctx conte
 	return req, nil
 }
 
-// regeneratePrimaryKeyHandleError handles the RegeneratePrimaryKey error response.
-func (client *TenantAccessGitClient) regeneratePrimaryKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegenerateSecondaryKey - Regenerate secondary access key for GIT.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessGitClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitRegenerateSecondaryKeyOptions) (TenantAccessGitRegenerateSecondaryKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// options - TenantAccessGitClientRegenerateSecondaryKeyOptions contains the optional parameters for the TenantAccessGitClient.RegenerateSecondaryKey
+// method.
+func (client *TenantAccessGitClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitClientRegenerateSecondaryKeyOptions) (TenantAccessGitClientRegenerateSecondaryKeyResponse, error) {
 	req, err := client.regenerateSecondaryKeyCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
-		return TenantAccessGitRegenerateSecondaryKeyResponse{}, err
+		return TenantAccessGitClientRegenerateSecondaryKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessGitRegenerateSecondaryKeyResponse{}, err
+		return TenantAccessGitClientRegenerateSecondaryKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return TenantAccessGitRegenerateSecondaryKeyResponse{}, client.regenerateSecondaryKeyHandleError(resp)
+		return TenantAccessGitClientRegenerateSecondaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return TenantAccessGitRegenerateSecondaryKeyResponse{RawResponse: resp}, nil
+	return TenantAccessGitClientRegenerateSecondaryKeyResponse{RawResponse: resp}, nil
 }
 
 // regenerateSecondaryKeyCreateRequest creates the RegenerateSecondaryKey request.
-func (client *TenantAccessGitClient) regenerateSecondaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitRegenerateSecondaryKeyOptions) (*policy.Request, error) {
+func (client *TenantAccessGitClient) regenerateSecondaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGitClientRegenerateSecondaryKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regenerateSecondaryKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -138,7 +143,7 @@ func (client *TenantAccessGitClient) regenerateSecondaryKeyCreateRequest(ctx con
 		return nil, errors.New("parameter accessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessName}", url.PathEscape(string(accessName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,17 +152,4 @@ func (client *TenantAccessGitClient) regenerateSecondaryKeyCreateRequest(ctx con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// regenerateSecondaryKeyHandleError handles the RegenerateSecondaryKey error response.
-func (client *TenantAccessGitClient) regenerateSecondaryKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

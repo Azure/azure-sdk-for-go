@@ -20,13 +20,13 @@ import (
 )
 
 // x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-06-10-preview/examples/Extensions_Upgrade.json
-func ExampleHybridComputeManagementClient_BeginUpgradeExtensions() {
+func ExampleManagementClient_BeginUpgradeExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybridcompute.NewHybridComputeManagementClient("<subscription-id>", cred, nil)
+	client := armhybridcompute.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpgradeExtensions(ctx,
 		"<resource-group-name>",
 		"<machine-name>",

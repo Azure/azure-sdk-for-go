@@ -26,15 +26,19 @@ func ExampleJobsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armstorageimportexport.NewJobsClient("<subscription-id>",
 		nil, cred, nil)
-	pager := client.ListBySubscription(&armstorageimportexport.JobsListBySubscriptionOptions{Top: nil,
+	pager := client.ListBySubscription(&armstorageimportexport.JobsClientListBySubscriptionOptions{Top: nil,
 		Filter: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("JobResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -49,15 +53,19 @@ func ExampleJobsClient_ListByResourceGroup() {
 	client := armstorageimportexport.NewJobsClient("<subscription-id>",
 		nil, cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armstorageimportexport.JobsListByResourceGroupOptions{Top: nil,
+		&armstorageimportexport.JobsClientListByResourceGroupOptions{Top: nil,
 			Filter: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("JobResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -78,7 +86,7 @@ func ExampleJobsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JobResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobsClientGetResult)
 }
 
 // x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/UpdateExportJob.json
@@ -104,7 +112,7 @@ func ExampleJobsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JobResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/CreateExportJob.json
@@ -150,11 +158,11 @@ func ExampleJobsClient_Create() {
 				StorageAccountID: to.StringPtr("<storage-account-id>"),
 			},
 		},
-		&armstorageimportexport.JobsCreateOptions{ClientTenantID: nil})
+		&armstorageimportexport.JobsClientCreateOptions{ClientTenantID: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JobResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JobsClientCreateResult)
 }
 
 // x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/DeleteJob.json

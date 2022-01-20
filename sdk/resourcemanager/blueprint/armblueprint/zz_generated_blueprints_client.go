@@ -11,7 +11,6 @@ package armblueprint
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,60 @@ import (
 // BlueprintsClient contains the methods for the Blueprints group.
 // Don't use this type directly, use NewBlueprintsClient() instead.
 type BlueprintsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewBlueprintsClient creates a new instance of BlueprintsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBlueprintsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BlueprintsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BlueprintsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BlueprintsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *BlueprintsClient) CreateOrUpdate(ctx context.Context, resourceScope string, blueprintName string, blueprint Blueprint, options *BlueprintsCreateOrUpdateOptions) (BlueprintsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// blueprint - Blueprint definition.
+// options - BlueprintsClientCreateOrUpdateOptions contains the optional parameters for the BlueprintsClient.CreateOrUpdate
+// method.
+func (client *BlueprintsClient) CreateOrUpdate(ctx context.Context, resourceScope string, blueprintName string, blueprint Blueprint, options *BlueprintsClientCreateOrUpdateOptions) (BlueprintsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceScope, blueprintName, blueprint, options)
 	if err != nil {
-		return BlueprintsCreateOrUpdateResponse{}, err
+		return BlueprintsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BlueprintsCreateOrUpdateResponse{}, err
+		return BlueprintsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return BlueprintsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return BlueprintsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BlueprintsClient) createOrUpdateCreateRequest(ctx context.Context, resourceScope string, blueprintName string, blueprint Blueprint, options *BlueprintsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *BlueprintsClient) createOrUpdateCreateRequest(ctx context.Context, resourceScope string, blueprintName string, blueprint Blueprint, options *BlueprintsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
 		return nil, errors.New("parameter blueprintName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blueprintName}", url.PathEscape(blueprintName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,53 +89,44 @@ func (client *BlueprintsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *BlueprintsClient) createOrUpdateHandleResponse(resp *http.Response) (BlueprintsCreateOrUpdateResponse, error) {
-	result := BlueprintsCreateOrUpdateResponse{RawResponse: resp}
+func (client *BlueprintsClient) createOrUpdateHandleResponse(resp *http.Response) (BlueprintsClientCreateOrUpdateResponse, error) {
+	result := BlueprintsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Blueprint); err != nil {
-		return BlueprintsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return BlueprintsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *BlueprintsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *BlueprintsClient) Delete(ctx context.Context, resourceScope string, blueprintName string, options *BlueprintsDeleteOptions) (BlueprintsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// options - BlueprintsClientDeleteOptions contains the optional parameters for the BlueprintsClient.Delete method.
+func (client *BlueprintsClient) Delete(ctx context.Context, resourceScope string, blueprintName string, options *BlueprintsClientDeleteOptions) (BlueprintsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceScope, blueprintName, options)
 	if err != nil {
-		return BlueprintsDeleteResponse{}, err
+		return BlueprintsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BlueprintsDeleteResponse{}, err
+		return BlueprintsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return BlueprintsDeleteResponse{}, client.deleteHandleError(resp)
+		return BlueprintsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BlueprintsClient) deleteCreateRequest(ctx context.Context, resourceScope string, blueprintName string, options *BlueprintsDeleteOptions) (*policy.Request, error) {
+func (client *BlueprintsClient) deleteCreateRequest(ctx context.Context, resourceScope string, blueprintName string, options *BlueprintsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
 		return nil, errors.New("parameter blueprintName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blueprintName}", url.PathEscape(blueprintName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,53 +138,44 @@ func (client *BlueprintsClient) deleteCreateRequest(ctx context.Context, resourc
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *BlueprintsClient) deleteHandleResponse(resp *http.Response) (BlueprintsDeleteResponse, error) {
-	result := BlueprintsDeleteResponse{RawResponse: resp}
+func (client *BlueprintsClient) deleteHandleResponse(resp *http.Response) (BlueprintsClientDeleteResponse, error) {
+	result := BlueprintsClientDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Blueprint); err != nil {
-		return BlueprintsDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return BlueprintsClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *BlueprintsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *BlueprintsClient) Get(ctx context.Context, resourceScope string, blueprintName string, options *BlueprintsGetOptions) (BlueprintsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// options - BlueprintsClientGetOptions contains the optional parameters for the BlueprintsClient.Get method.
+func (client *BlueprintsClient) Get(ctx context.Context, resourceScope string, blueprintName string, options *BlueprintsClientGetOptions) (BlueprintsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceScope, blueprintName, options)
 	if err != nil {
-		return BlueprintsGetResponse{}, err
+		return BlueprintsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BlueprintsGetResponse{}, err
+		return BlueprintsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlueprintsGetResponse{}, client.getHandleError(resp)
+		return BlueprintsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BlueprintsClient) getCreateRequest(ctx context.Context, resourceScope string, blueprintName string, options *BlueprintsGetOptions) (*policy.Request, error) {
+func (client *BlueprintsClient) getCreateRequest(ctx context.Context, resourceScope string, blueprintName string, options *BlueprintsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
 		return nil, errors.New("parameter blueprintName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blueprintName}", url.PathEscape(blueprintName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,46 +187,36 @@ func (client *BlueprintsClient) getCreateRequest(ctx context.Context, resourceSc
 }
 
 // getHandleResponse handles the Get response.
-func (client *BlueprintsClient) getHandleResponse(resp *http.Response) (BlueprintsGetResponse, error) {
-	result := BlueprintsGetResponse{RawResponse: resp}
+func (client *BlueprintsClient) getHandleResponse(resp *http.Response) (BlueprintsClientGetResponse, error) {
+	result := BlueprintsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Blueprint); err != nil {
-		return BlueprintsGetResponse{}, runtime.NewResponseError(err, resp)
+		return BlueprintsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BlueprintsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List blueprint definitions.
-// If the operation fails it returns the *CloudError error type.
-func (client *BlueprintsClient) List(resourceScope string, options *BlueprintsListOptions) *BlueprintsListPager {
-	return &BlueprintsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// options - BlueprintsClientListOptions contains the optional parameters for the BlueprintsClient.List method.
+func (client *BlueprintsClient) List(resourceScope string, options *BlueprintsClientListOptions) *BlueprintsClientListPager {
+	return &BlueprintsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceScope, options)
 		},
-		advancer: func(ctx context.Context, resp BlueprintsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.BlueprintList.NextLink)
+		advancer: func(ctx context.Context, resp BlueprintsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.List.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *BlueprintsClient) listCreateRequest(ctx context.Context, resourceScope string, options *BlueprintsListOptions) (*policy.Request, error) {
+func (client *BlueprintsClient) listCreateRequest(ctx context.Context, resourceScope string, options *BlueprintsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -245,23 +228,10 @@ func (client *BlueprintsClient) listCreateRequest(ctx context.Context, resourceS
 }
 
 // listHandleResponse handles the List response.
-func (client *BlueprintsClient) listHandleResponse(resp *http.Response) (BlueprintsListResponse, error) {
-	result := BlueprintsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BlueprintList); err != nil {
-		return BlueprintsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *BlueprintsClient) listHandleResponse(resp *http.Response) (BlueprintsClientListResponse, error) {
+	result := BlueprintsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
+		return BlueprintsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BlueprintsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

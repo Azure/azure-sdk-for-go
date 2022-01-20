@@ -18,13 +18,13 @@ import (
 )
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyAssignment.json
-func ExamplePolicyAssignmentsClient_Delete() {
+func ExampleAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
 	res, err := client.Delete(ctx,
 		"<scope>",
 		"<policy-assignment-name>",
@@ -32,22 +32,22 @@ func ExamplePolicyAssignmentsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssignmentsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createPolicyAssignment.json
-func ExamplePolicyAssignmentsClient_Create() {
+func ExampleAssignmentsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
-	res, err := client.Create(ctx,
+	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	_, err = client.Create(ctx,
 		"<scope>",
 		"<policy-assignment-name>",
-		armpolicy.PolicyAssignment{
-			Properties: &armpolicy.PolicyAssignmentProperties{
+		armpolicy.Assignment{
+			Properties: &armpolicy.AssignmentProperties{
 				Description: to.StringPtr("<description>"),
 				DisplayName: to.StringPtr("<display-name>"),
 				Metadata: map[string]interface{}{
@@ -82,17 +82,16 @@ func ExamplePolicyAssignmentsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyAssignment.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyAssignment.json
-func ExamplePolicyAssignmentsClient_Get() {
+func ExampleAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<scope>",
 		"<policy-assignment-name>",
@@ -100,21 +99,21 @@ func ExamplePolicyAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssignmentsClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/updatePolicyAssignmentWithIdentity.json
-func ExamplePolicyAssignmentsClient_Update() {
+func ExampleAssignmentsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<scope>",
 		"<policy-assignment-name>",
-		armpolicy.PolicyAssignmentUpdate{
+		armpolicy.AssignmentUpdate{
 			Identity: &armpolicy.Identity{
 				Type: armpolicy.ResourceIdentityTypeSystemAssigned.ToPtr(),
 			},
@@ -124,189 +123,112 @@ func ExamplePolicyAssignmentsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssignmentsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResourceGroup.json
-func ExamplePolicyAssignmentsClient_ListForResourceGroup() {
+func ExampleAssignmentsClient_ListForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
 	pager := client.ListForResourceGroup("<resource-group-name>",
-		&armpolicy.PolicyAssignmentsListForResourceGroupOptions{Filter: to.StringPtr("<filter>"),
+		&armpolicy.AssignmentsClientListForResourceGroupOptions{Filter: to.StringPtr("<filter>"),
 			Top: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyAssignment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResource.json
-func ExamplePolicyAssignmentsClient_ListForResource() {
+func ExampleAssignmentsClient_ListForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
 	pager := client.ListForResource("<resource-group-name>",
 		"<resource-provider-namespace>",
 		"<parent-resource-path>",
 		"<resource-type>",
 		"<resource-name>",
-		&armpolicy.PolicyAssignmentsListForResourceOptions{Filter: nil,
+		&armpolicy.AssignmentsClientListForResourceOptions{Filter: nil,
 			Top: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyAssignment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForManagementGroup.json
-func ExamplePolicyAssignmentsClient_ListForManagementGroup() {
+func ExampleAssignmentsClient_ListForManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
 	pager := client.ListForManagementGroup("<management-group-id>",
-		&armpolicy.PolicyAssignmentsListForManagementGroupOptions{Filter: to.StringPtr("<filter>"),
+		&armpolicy.AssignmentsClientListForManagementGroupOptions{Filter: to.StringPtr("<filter>"),
 			Top: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyAssignment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignments.json
-func ExamplePolicyAssignmentsClient_List() {
+func ExampleAssignmentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armpolicy.PolicyAssignmentsListOptions{Filter: to.StringPtr("<filter>"),
+	client := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	pager := client.List(&armpolicy.AssignmentsClientListOptions{Filter: to.StringPtr("<filter>"),
 		Top: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyAssignment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyAssignmentById.json
-func ExamplePolicyAssignmentsClient_DeleteByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
-	res, err := client.DeleteByID(ctx,
-		"<policy-assignment-id>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("PolicyAssignment.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createPolicyAssignmentById.json
-func ExamplePolicyAssignmentsClient_CreateByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
-	res, err := client.CreateByID(ctx,
-		"<policy-assignment-id>",
-		armpolicy.PolicyAssignment{
-			Properties: &armpolicy.PolicyAssignmentProperties{
-				Description:     to.StringPtr("<description>"),
-				DisplayName:     to.StringPtr("<display-name>"),
-				EnforcementMode: armpolicy.EnforcementModeDefault.ToPtr(),
-				Metadata: map[string]interface{}{
-					"assignedBy": "Cheapskate Boss",
-				},
-				Parameters: map[string]*armpolicy.ParameterValuesValue{
-					"listOfAllowedSKUs": {
-						Value: map[string]interface{}{
-							"0": "Standard_GRS",
-							"1": "Standard_LRS",
-						},
-					},
-				},
-				PolicyDefinitionID: to.StringPtr("<policy-definition-id>"),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("PolicyAssignment.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyAssignmentById.json
-func ExamplePolicyAssignmentsClient_GetByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
-	res, err := client.GetByID(ctx,
-		"<policy-assignment-id>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("PolicyAssignment.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/updatePolicyAssignmentWithIdentityById.json
-func ExamplePolicyAssignmentsClient_UpdateByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armpolicy.NewPolicyAssignmentsClient("<subscription-id>", cred, nil)
-	res, err := client.UpdateByID(ctx,
-		"<policy-assignment-id>",
-		armpolicy.PolicyAssignmentUpdate{
-			Identity: &armpolicy.Identity{
-				Type: armpolicy.ResourceIdentityTypeSystemAssigned.ToPtr(),
-			},
-			Location: to.StringPtr("<location>"),
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("PolicyAssignment.ID: %s\n", *res.ID)
 }

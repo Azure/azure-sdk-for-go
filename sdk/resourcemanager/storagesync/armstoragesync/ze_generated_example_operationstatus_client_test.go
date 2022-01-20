@@ -24,7 +24,7 @@ func ExampleOperationStatusClient_Get() {
 	}
 	ctx := context.Background()
 	client := armstoragesync.NewOperationStatusClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<location-name>",
 		"<workflow-id>",
@@ -33,4 +33,5 @@ func ExampleOperationStatusClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.OperationStatusClientGetResult)
 }

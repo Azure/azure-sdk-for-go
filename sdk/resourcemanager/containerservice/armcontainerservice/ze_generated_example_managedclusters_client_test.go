@@ -11,6 +11,7 @@ package armcontainerservice_test
 import (
 	"context"
 	"log"
+
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -18,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
 )
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ContainerServiceGetOSOptions.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ContainerServiceGetOSOptions.json
 func ExampleManagedClustersClient_GetOSOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,14 +29,14 @@ func ExampleManagedClustersClient_GetOSOptions() {
 	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
 	res, err := client.GetOSOptions(ctx,
 		"<location>",
-		&armcontainerservice.ManagedClustersGetOSOptionsOptions{ResourceType: nil})
+		&armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OSOptionProfile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetOSOptionsResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersList.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersList.json
 func ExampleManagedClustersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,17 +45,21 @@ func ExampleManagedClustersClient_List() {
 	ctx := context.Background()
 	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ManagedCluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersListByResourceGroup.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersListByResourceGroup.json
 func ExampleManagedClustersClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,17 +69,21 @@ func ExampleManagedClustersClient_ListByResourceGroup() {
 	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ManagedCluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersGetUpgradeProfile.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersGetUpgradeProfile.json
 func ExampleManagedClustersClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,10 +98,10 @@ func ExampleManagedClustersClient_GetUpgradeProfile() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedClusterUpgradeProfile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetUpgradeProfileResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersGetAccessProfile.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersGetAccessProfile.json
 func ExampleManagedClustersClient_GetAccessProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,10 +117,10 @@ func ExampleManagedClustersClient_GetAccessProfile() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedClusterAccessProfile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetAccessProfileResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersListClusterCredentialResult.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,16 +128,17 @@ func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	}
 	ctx := context.Background()
 	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListClusterAdminCredentials(ctx,
+	res, err := client.ListClusterAdminCredentials(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		&armcontainerservice.ManagedClustersListClusterAdminCredentialsOptions{ServerFqdn: nil})
+		&armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{ServerFqdn: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientListClusterAdminCredentialsResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersListClusterCredentialResult.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterUserCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,16 +146,17 @@ func ExampleManagedClustersClient_ListClusterUserCredentials() {
 	}
 	ctx := context.Background()
 	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListClusterUserCredentials(ctx,
+	res, err := client.ListClusterUserCredentials(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		&armcontainerservice.ManagedClustersListClusterUserCredentialsOptions{ServerFqdn: nil})
+		&armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{ServerFqdn: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientListClusterUserCredentialsResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersListClusterCredentialResult.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterMonitoringUserCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,16 +164,17 @@ func ExampleManagedClustersClient_ListClusterMonitoringUserCredentials() {
 	}
 	ctx := context.Background()
 	client := armcontainerservice.NewManagedClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListClusterMonitoringUserCredentials(ctx,
+	res, err := client.ListClusterMonitoringUserCredentials(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		&armcontainerservice.ManagedClustersListClusterMonitoringUserCredentialsOptions{ServerFqdn: nil})
+		&armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{ServerFqdn: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientListClusterMonitoringUserCredentialsResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersGet.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersGet.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,10 +189,10 @@ func ExampleManagedClustersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_Snapshot.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersAssociate_CRG.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,30 +204,23 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<resource-name>",
 		armcontainerservice.ManagedCluster{
-			Resource: armcontainerservice.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"archv2": to.StringPtr(""),
-					"tier":   to.StringPtr("production"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"archv2": to.StringPtr(""),
+				"tier":   to.StringPtr("production"),
 			},
 			Properties: &armcontainerservice.ManagedClusterProperties{
 				AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
 				AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
 					{
-						ManagedClusterAgentPoolProfileProperties: armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-							Type:  armcontainerservice.AgentPoolTypeVirtualMachineScaleSets.ToPtr(),
-							Count: to.Int32Ptr(3),
-							CreationData: &armcontainerservice.CreationData{
-								SourceResourceID: to.StringPtr("<source-resource-id>"),
-							},
-							EnableFIPS:         to.BoolPtr(true),
-							EnableNodePublicIP: to.BoolPtr(true),
-							Mode:               armcontainerservice.AgentPoolModeSystem.ToPtr(),
-							OSType:             armcontainerservice.OSTypeLinux.ToPtr(),
-							VMSize:             to.StringPtr("<vmsize>"),
-						},
-						Name: to.StringPtr("<name>"),
+						Type:                       armcontainerservice.AgentPoolType("VirtualMachineScaleSets").ToPtr(),
+						CapacityReservationGroupID: to.StringPtr("<capacity-reservation-group-id>"),
+						Count:                      to.Int32Ptr(3),
+						EnableNodePublicIP:         to.BoolPtr(true),
+						Mode:                       armcontainerservice.AgentPoolMode("System").ToPtr(),
+						OSType:                     armcontainerservice.OSType("Linux").ToPtr(),
+						VMSize:                     to.StringPtr("<vmsize>"),
+						Name:                       to.StringPtr("<name>"),
 					}},
 				AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
 					ScaleDownDelayAfterAdd: to.StringPtr("<scale-down-delay-after-add>"),
@@ -223,26 +228,26 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate() {
 				},
 				DiskEncryptionSetID:     to.StringPtr("<disk-encryption-set-id>"),
 				DNSPrefix:               to.StringPtr("<dnsprefix>"),
-				EnablePodSecurityPolicy: to.BoolPtr(false),
+				EnablePodSecurityPolicy: to.BoolPtr(true),
 				EnableRBAC:              to.BoolPtr(true),
 				KubernetesVersion:       to.StringPtr("<kubernetes-version>"),
-				LinuxProfile: &armcontainerservice.ContainerServiceLinuxProfile{
+				LinuxProfile: &armcontainerservice.LinuxProfile{
 					AdminUsername: to.StringPtr("<admin-username>"),
-					SSH: &armcontainerservice.ContainerServiceSSHConfiguration{
-						PublicKeys: []*armcontainerservice.ContainerServiceSSHPublicKey{
+					SSH: &armcontainerservice.SSHConfiguration{
+						PublicKeys: []*armcontainerservice.SSHPublicKey{
 							{
 								KeyData: to.StringPtr("<key-data>"),
 							}},
 					},
 				},
-				NetworkProfile: &armcontainerservice.ContainerServiceNetworkProfile{
+				NetworkProfile: &armcontainerservice.NetworkProfile{
 					LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
 						ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
 							Count: to.Int32Ptr(2),
 						},
 					},
-					LoadBalancerSKU: armcontainerservice.LoadBalancerSKUStandard.ToPtr(),
-					OutboundType:    armcontainerservice.OutboundTypeLoadBalancer.ToPtr(),
+					LoadBalancerSKU: armcontainerservice.LoadBalancerSKU("standard").ToPtr(),
+					OutboundType:    armcontainerservice.OutboundType("loadBalancer").ToPtr(),
 				},
 				ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
 					ClientID: to.StringPtr("<client-id>"),
@@ -254,8 +259,8 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate() {
 				},
 			},
 			SKU: &armcontainerservice.ManagedClusterSKU{
-				Name: armcontainerservice.ManagedClusterSKUNameBasic.ToPtr(),
-				Tier: armcontainerservice.ManagedClusterSKUTierFree.ToPtr(),
+				Name: armcontainerservice.ManagedClusterSKUName("Basic").ToPtr(),
+				Tier: armcontainerservice.ManagedClusterSKUTier("Free").ToPtr(),
 			},
 		},
 		nil)
@@ -266,10 +271,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersUpdateTags.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersUpdateTags.json
 func ExampleManagedClustersClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,10 +299,10 @@ func ExampleManagedClustersClient_BeginUpdateTags() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientUpdateTagsResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersDelete.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersDelete.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +323,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersResetServicePrincipalProfile.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersResetServicePrincipalProfile.json
 func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +348,7 @@ func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersResetAADProfile.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersResetAADProfile.json
 func ExampleManagedClustersClient_BeginResetAADProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +375,7 @@ func ExampleManagedClustersClient_BeginResetAADProfile() {
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersRotateClusterCertificates.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersRotateClusterCertificates.json
 func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,7 +396,7 @@ func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersStop.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersStop.json
 func ExampleManagedClustersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -412,7 +417,7 @@ func ExampleManagedClustersClient_BeginStop() {
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersStart.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/ManagedClustersStart.json
 func ExampleManagedClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +438,7 @@ func ExampleManagedClustersClient_BeginStart() {
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/RunCommandRequest.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/RunCommandRequest.json
 func ExampleManagedClustersClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,10 +462,10 @@ func ExampleManagedClustersClient_BeginRunCommand() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RunCommandResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientRunCommandResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/RunCommandResultFailed.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/RunCommandResultFailed.json
 func ExampleManagedClustersClient_GetCommandResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -476,10 +481,10 @@ func ExampleManagedClustersClient_GetCommandResult() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RunCommandResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedClustersClientGetCommandResultResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/OutboundNetworkDependenciesEndpointsList.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/OutboundNetworkDependenciesEndpointsList.json
 func ExampleManagedClustersClient_ListOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,9 +495,16 @@ func ExampleManagedClustersClient_ListOutboundNetworkDependenciesEndpoints() {
 	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

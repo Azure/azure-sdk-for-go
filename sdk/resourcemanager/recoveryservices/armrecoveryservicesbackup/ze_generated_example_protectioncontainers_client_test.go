@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureWorkload/ProtectionContainers_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureWorkload/ProtectionContainers_Get.json
 func ExampleProtectionContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,10 +34,10 @@ func ExampleProtectionContainersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectionContainerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProtectionContainersClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureStorage/ProtectionContainers_Register.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureStorage/ProtectionContainers_Register.json
 func ExampleProtectionContainersClient_Register() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,25 +51,22 @@ func ExampleProtectionContainersClient_Register() {
 		"<fabric-name>",
 		"<container-name>",
 		armrecoveryservicesbackup.ProtectionContainerResource{
-			Properties: &armrecoveryservicesbackup.AzureVMAppContainerProtectionContainer{
-				AzureWorkloadContainer: armrecoveryservicesbackup.AzureWorkloadContainer{
-					ProtectionContainer: armrecoveryservicesbackup.ProtectionContainer{
-						BackupManagementType: armrecoveryservicesbackup.BackupManagementTypeAzureWorkload.ToPtr(),
-						ContainerType:        armrecoveryservicesbackup.ContainerTypeVMAppContainer.ToPtr(),
-						FriendlyName:         to.StringPtr("<friendly-name>"),
-					},
-					SourceResourceID: to.StringPtr("<source-resource-id>"),
-				},
+			Properties: &armrecoveryservicesbackup.AzureStorageContainer{
+				BackupManagementType:      armrecoveryservicesbackup.BackupManagementType("AzureStorage").ToPtr(),
+				ContainerType:             armrecoveryservicesbackup.ContainerType("StorageContainer").ToPtr(),
+				FriendlyName:              to.StringPtr("<friendly-name>"),
+				AcquireStorageAccountLock: armrecoveryservicesbackup.AcquireStorageAccountLock("Acquire").ToPtr(),
+				SourceResourceID:          to.StringPtr("<source-resource-id>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectionContainerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProtectionContainersClientRegisterResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
 func ExampleProtectionContainersClient_Unregister() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +85,7 @@ func ExampleProtectionContainersClient_Unregister() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureStorage/ProtectionContainers_Inquire.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureStorage/ProtectionContainers_Inquire.json
 func ExampleProtectionContainersClient_Inquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,13 +98,13 @@ func ExampleProtectionContainersClient_Inquire() {
 		"<resource-group-name>",
 		"<fabric-name>",
 		"<container-name>",
-		&armrecoveryservicesbackup.ProtectionContainersInquireOptions{Filter: nil})
+		&armrecoveryservicesbackup.ProtectionContainersClientInquireOptions{Filter: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Common/RefreshContainers.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Common/RefreshContainers.json
 func ExampleProtectionContainersClient_Refresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +116,7 @@ func ExampleProtectionContainersClient_Refresh() {
 		"<vault-name>",
 		"<resource-group-name>",
 		"<fabric-name>",
-		&armrecoveryservicesbackup.ProtectionContainersRefreshOptions{Filter: nil})
+		&armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions{Filter: nil})
 	if err != nil {
 		log.Fatal(err)
 	}

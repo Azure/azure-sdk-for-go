@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // ProtectableContainersClient contains the methods for the ProtectableContainers group.
 // Don't use this type directly, use NewProtectableContainersClient() instead.
 type ProtectableContainersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProtectableContainersClient creates a new instance of ProtectableContainersClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProtectableContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProtectableContainersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProtectableContainersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProtectableContainersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists the containers that can be registered to Recovery Services Vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProtectableContainersClient) List(vaultName string, resourceGroupName string, fabricName string, options *ProtectableContainersListOptions) *ProtectableContainersListPager {
-	return &ProtectableContainersListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// options - ProtectableContainersClientListOptions contains the optional parameters for the ProtectableContainersClient.List
+// method.
+func (client *ProtectableContainersClient) List(vaultName string, resourceGroupName string, fabricName string, options *ProtectableContainersClientListOptions) *ProtectableContainersClientListPager {
+	return &ProtectableContainersClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, options)
 		},
-		advancer: func(ctx context.Context, resp ProtectableContainersListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ProtectableContainersClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectableContainerResourceList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ProtectableContainersClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *ProtectableContainersListOptions) (*policy.Request, error) {
+func (client *ProtectableContainersClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *ProtectableContainersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectableContainers"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -75,12 +86,12 @@ func (client *ProtectableContainersClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -90,23 +101,10 @@ func (client *ProtectableContainersClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *ProtectableContainersClient) listHandleResponse(resp *http.Response) (ProtectableContainersListResponse, error) {
-	result := ProtectableContainersListResponse{RawResponse: resp}
+func (client *ProtectableContainersClient) listHandleResponse(resp *http.Response) (ProtectableContainersClientListResponse, error) {
+	result := ProtectableContainersClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectableContainerResourceList); err != nil {
-		return ProtectableContainersListResponse{}, runtime.NewResponseError(err, resp)
+		return ProtectableContainersClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ProtectableContainersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

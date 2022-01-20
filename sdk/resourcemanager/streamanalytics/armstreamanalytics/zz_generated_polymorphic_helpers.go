@@ -21,55 +21,13 @@ func unmarshalFunctionBindingClassification(rawMsg json.RawMessage) (FunctionBin
 	var b FunctionBindingClassification
 	switch m["type"] {
 	case "Microsoft.MachineLearning/WebService":
-		b = &AzureMachineLearningStudioFunctionBinding{}
-	case "Microsoft.MachineLearningServices":
-		b = &AzureMachineLearningServiceFunctionBinding{}
-	case "Microsoft.StreamAnalytics/CLRUdf":
-		b = &CSharpFunctionBinding{}
+		b = &AzureMachineLearningWebServiceFunctionBinding{}
 	case "Microsoft.StreamAnalytics/JavascriptUdf":
 		b = &JavaScriptFunctionBinding{}
 	default:
 		b = &FunctionBinding{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalFunctionBindingClassificationArray(rawMsg json.RawMessage) ([]FunctionBindingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]FunctionBindingClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalFunctionBindingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalFunctionBindingClassificationMap(rawMsg json.RawMessage) (map[string]FunctionBindingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]FunctionBindingClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalFunctionBindingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalFunctionPropertiesClassification(rawMsg json.RawMessage) (FunctionPropertiesClassification, error) {
@@ -82,114 +40,12 @@ func unmarshalFunctionPropertiesClassification(rawMsg json.RawMessage) (Function
 	}
 	var b FunctionPropertiesClassification
 	switch m["type"] {
-	case "Aggregate":
-		b = &AggregateFunctionProperties{}
 	case "Scalar":
 		b = &ScalarFunctionProperties{}
 	default:
 		b = &FunctionProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalFunctionPropertiesClassificationArray(rawMsg json.RawMessage) ([]FunctionPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]FunctionPropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalFunctionPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalFunctionPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]FunctionPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]FunctionPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalFunctionPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
-func unmarshalFunctionRetrieveDefaultDefinitionParametersClassification(rawMsg json.RawMessage) (FunctionRetrieveDefaultDefinitionParametersClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b FunctionRetrieveDefaultDefinitionParametersClassification
-	switch m["bindingType"] {
-	case "Microsoft.MachineLearning/WebService":
-		b = &AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters{}
-	case "Microsoft.MachineLearningServices":
-		b = &AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters{}
-	case "Microsoft.StreamAnalytics/CLRUdf":
-		b = &CSharpFunctionRetrieveDefaultDefinitionParameters{}
-	case "Microsoft.StreamAnalytics/JavascriptUdf":
-		b = &JavaScriptFunctionRetrieveDefaultDefinitionParameters{}
-	default:
-		b = &FunctionRetrieveDefaultDefinitionParameters{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalFunctionRetrieveDefaultDefinitionParametersClassificationArray(rawMsg json.RawMessage) ([]FunctionRetrieveDefaultDefinitionParametersClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]FunctionRetrieveDefaultDefinitionParametersClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalFunctionRetrieveDefaultDefinitionParametersClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalFunctionRetrieveDefaultDefinitionParametersClassificationMap(rawMsg json.RawMessage) (map[string]FunctionRetrieveDefaultDefinitionParametersClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]FunctionRetrieveDefaultDefinitionParametersClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalFunctionRetrieveDefaultDefinitionParametersClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalInputPropertiesClassification(rawMsg json.RawMessage) (InputPropertiesClassification, error) {
@@ -212,44 +68,6 @@ func unmarshalInputPropertiesClassification(rawMsg json.RawMessage) (InputProper
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalInputPropertiesClassificationArray(rawMsg json.RawMessage) ([]InputPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]InputPropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalInputPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalInputPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]InputPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]InputPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalInputPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalOutputDataSourceClassification(rawMsg json.RawMessage) (OutputDataSourceClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -260,8 +78,6 @@ func unmarshalOutputDataSourceClassification(rawMsg json.RawMessage) (OutputData
 	}
 	var b OutputDataSourceClassification
 	switch m["type"] {
-	case "Microsoft.AzureFunction":
-		b = &AzureFunctionOutputDataSource{}
 	case "Microsoft.DataLake/Accounts":
 		b = &AzureDataLakeStoreOutputDataSource{}
 	case "Microsoft.EventHub/EventHub":
@@ -284,50 +100,10 @@ func unmarshalOutputDataSourceClassification(rawMsg json.RawMessage) (OutputData
 		b = &AzureTableOutputDataSource{}
 	case "PowerBI":
 		b = &PowerBIOutputDataSource{}
-	case "Raw":
-		b = &RawOutputDatasource{}
 	default:
 		b = &OutputDataSource{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalOutputDataSourceClassificationArray(rawMsg json.RawMessage) ([]OutputDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]OutputDataSourceClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalOutputDataSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalOutputDataSourceClassificationMap(rawMsg json.RawMessage) (map[string]OutputDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]OutputDataSourceClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalOutputDataSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalReferenceInputDataSourceClassification(rawMsg json.RawMessage) (ReferenceInputDataSourceClassification, error) {
@@ -344,50 +120,10 @@ func unmarshalReferenceInputDataSourceClassification(rawMsg json.RawMessage) (Re
 		b = &AzureSQLReferenceInputDataSource{}
 	case "Microsoft.Storage/Blob":
 		b = &BlobReferenceInputDataSource{}
-	case "Raw":
-		b = &RawReferenceInputDataSource{}
 	default:
 		b = &ReferenceInputDataSource{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalReferenceInputDataSourceClassificationArray(rawMsg json.RawMessage) ([]ReferenceInputDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ReferenceInputDataSourceClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalReferenceInputDataSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalReferenceInputDataSourceClassificationMap(rawMsg json.RawMessage) (map[string]ReferenceInputDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ReferenceInputDataSourceClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalReferenceInputDataSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalSerializationClassification(rawMsg json.RawMessage) (SerializationClassification, error) {
@@ -404,8 +140,6 @@ func unmarshalSerializationClassification(rawMsg json.RawMessage) (Serialization
 		b = &AvroSerialization{}
 	case string(EventSerializationTypeCSV):
 		b = &CSVSerialization{}
-	case string(EventSerializationTypeCustomClr):
-		b = &CustomClrSerialization{}
 	case string(EventSerializationTypeJSON):
 		b = &JSONSerialization{}
 	case string(EventSerializationTypeParquet):
@@ -414,44 +148,6 @@ func unmarshalSerializationClassification(rawMsg json.RawMessage) (Serialization
 		b = &Serialization{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalSerializationClassificationArray(rawMsg json.RawMessage) ([]SerializationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]SerializationClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalSerializationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalSerializationClassificationMap(rawMsg json.RawMessage) (map[string]SerializationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]SerializationClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalSerializationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalStreamInputDataSourceClassification(rawMsg json.RawMessage) (StreamInputDataSourceClassification, error) {
@@ -472,48 +168,8 @@ func unmarshalStreamInputDataSourceClassification(rawMsg json.RawMessage) (Strea
 		b = &EventHubStreamInputDataSource{}
 	case "Microsoft.Storage/Blob":
 		b = &BlobStreamInputDataSource{}
-	case "Raw":
-		b = &RawStreamInputDataSource{}
 	default:
 		b = &StreamInputDataSource{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalStreamInputDataSourceClassificationArray(rawMsg json.RawMessage) ([]StreamInputDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]StreamInputDataSourceClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalStreamInputDataSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalStreamInputDataSourceClassificationMap(rawMsg json.RawMessage) (map[string]StreamInputDataSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]StreamInputDataSourceClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalStreamInputDataSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

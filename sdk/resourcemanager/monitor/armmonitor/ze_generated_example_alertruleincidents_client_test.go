@@ -24,7 +24,7 @@ func ExampleAlertRuleIncidentsClient_Get() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewAlertRuleIncidentsClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<rule-name>",
 		"<incident-name>",
@@ -32,6 +32,7 @@ func ExampleAlertRuleIncidentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AlertRuleIncidentsClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRuleIncidents.json
@@ -42,11 +43,12 @@ func ExampleAlertRuleIncidentsClient_ListByAlertRule() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewAlertRuleIncidentsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByAlertRule(ctx,
+	res, err := client.ListByAlertRule(ctx,
 		"<resource-group-name>",
 		"<rule-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AlertRuleIncidentsClientListByAlertRuleResult)
 }

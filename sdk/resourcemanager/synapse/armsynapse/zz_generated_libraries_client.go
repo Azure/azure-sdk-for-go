@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // LibrariesClient contains the methods for the Libraries group.
 // Don't use this type directly, use NewLibrariesClient() instead.
 type LibrariesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLibrariesClient creates a new instance of LibrariesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLibrariesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LibrariesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LibrariesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LibrariesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByWorkspace - List libraries in a workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LibrariesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *LibrariesListByWorkspaceOptions) *LibrariesListByWorkspacePager {
-	return &LibrariesListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - LibrariesClientListByWorkspaceOptions contains the optional parameters for the LibrariesClient.ListByWorkspace
+// method.
+func (client *LibrariesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *LibrariesClientListByWorkspaceOptions) *LibrariesClientListByWorkspacePager {
+	return &LibrariesClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp LibrariesListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LibrariesClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LibraryListResponse.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *LibrariesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *LibrariesListByWorkspaceOptions) (*policy.Request, error) {
+func (client *LibrariesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *LibrariesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/libraries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +82,7 @@ func (client *LibrariesClient) listByWorkspaceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +94,10 @@ func (client *LibrariesClient) listByWorkspaceCreateRequest(ctx context.Context,
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *LibrariesClient) listByWorkspaceHandleResponse(resp *http.Response) (LibrariesListByWorkspaceResponse, error) {
-	result := LibrariesListByWorkspaceResponse{RawResponse: resp}
+func (client *LibrariesClient) listByWorkspaceHandleResponse(resp *http.Response) (LibrariesClientListByWorkspaceResponse, error) {
+	result := LibrariesClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LibraryListResponse); err != nil {
-		return LibrariesListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return LibrariesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *LibrariesClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

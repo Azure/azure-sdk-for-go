@@ -15,34 +15,22 @@ import (
 	"time"
 )
 
-// ApplicationsListResponse contains the response from method Applications.List.
-type ApplicationsListResponse struct {
-	ApplicationsListResult
+// ApplicationsClientListResponse contains the response from method ApplicationsClient.List.
+type ApplicationsClientListResponse struct {
+	ApplicationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ApplicationsListResult contains the result from method Applications.List.
-type ApplicationsListResult struct {
-	SaasAppResponseWithContinuation
+// ApplicationsClientListResult contains the result from method ApplicationsClient.List.
+type ApplicationsClientListResult struct {
+	AppResponseWithContinuation
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	SaasAppOperationsResponseWithContinuation
-}
-
-// SaaSCreateResourcePollerResponse contains the response from method SaaS.CreateResource.
-type SaaSCreateResourcePollerResponse struct {
+// ClientCreateResourcePollerResponse contains the response from method Client.CreateResource.
+type ClientCreateResourcePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaaSCreateResourcePoller
+	Poller *ClientCreateResourcePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,9 +39,9 @@ type SaaSCreateResourcePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaaSCreateResourcePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaaSCreateResourceResponse, error) {
-	respType := SaaSCreateResourceResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SaasResource)
+func (l ClientCreateResourcePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientCreateResourceResponse, error) {
+	respType := ClientCreateResourceResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Resource)
 	if err != nil {
 		return respType, err
 	}
@@ -61,13 +49,13 @@ func (l SaaSCreateResourcePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a SaaSCreateResourcePollerResponse from the provided client and resume token.
-func (l *SaaSCreateResourcePollerResponse) Resume(ctx context.Context, client *SaaSClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaaSClient.CreateResource", token, client.pl, client.createResourceHandleError)
+// Resume rehydrates a ClientCreateResourcePollerResponse from the provided client and resume token.
+func (l *ClientCreateResourcePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.CreateResource", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaaSCreateResourcePoller{
+	poller := &ClientCreateResourcePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,22 +67,22 @@ func (l *SaaSCreateResourcePollerResponse) Resume(ctx context.Context, client *S
 	return nil
 }
 
-// SaaSCreateResourceResponse contains the response from method SaaS.CreateResource.
-type SaaSCreateResourceResponse struct {
-	SaaSCreateResourceResult
+// ClientCreateResourceResponse contains the response from method Client.CreateResource.
+type ClientCreateResourceResponse struct {
+	ClientCreateResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaaSCreateResourceResult contains the result from method SaaS.CreateResource.
-type SaaSCreateResourceResult struct {
-	SaasResource
+// ClientCreateResourceResult contains the result from method Client.CreateResource.
+type ClientCreateResourceResult struct {
+	Resource
 }
 
-// SaaSDeletePollerResponse contains the response from method SaaS.Delete.
-type SaaSDeletePollerResponse struct {
+// ClientDeletePollerResponse contains the response from method Client.Delete.
+type ClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaaSDeletePoller
+	Poller *ClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -103,8 +91,8 @@ type SaaSDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaaSDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaaSDeleteResponse, error) {
-	respType := SaaSDeleteResponse{}
+func (l ClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientDeleteResponse, error) {
+	respType := ClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -113,13 +101,13 @@ func (l SaaSDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.D
 	return respType, nil
 }
 
-// Resume rehydrates a SaaSDeletePollerResponse from the provided client and resume token.
-func (l *SaaSDeletePollerResponse) Resume(ctx context.Context, client *SaaSClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaaSClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ClientDeletePollerResponse from the provided client and resume token.
+func (l *ClientDeletePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaaSDeletePoller{
+	poller := &ClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -131,28 +119,28 @@ func (l *SaaSDeletePollerResponse) Resume(ctx context.Context, client *SaaSClien
 	return nil
 }
 
-// SaaSDeleteResponse contains the response from method SaaS.Delete.
-type SaaSDeleteResponse struct {
+// ClientDeleteResponse contains the response from method Client.Delete.
+type ClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaaSGetResourceResponse contains the response from method SaaS.GetResource.
-type SaaSGetResourceResponse struct {
-	SaaSGetResourceResult
+// ClientGetResourceResponse contains the response from method Client.GetResource.
+type ClientGetResourceResponse struct {
+	ClientGetResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaaSGetResourceResult contains the result from method SaaS.GetResource.
-type SaaSGetResourceResult struct {
-	SaasResource
+// ClientGetResourceResult contains the result from method Client.GetResource.
+type ClientGetResourceResult struct {
+	Resource
 }
 
-// SaaSOperationGetPollerResponse contains the response from method SaaSOperation.Get.
-type SaaSOperationGetPollerResponse struct {
+// ClientUpdateResourcePollerResponse contains the response from method Client.UpdateResource.
+type ClientUpdateResourcePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaaSOperationGetPoller
+	Poller *ClientUpdateResourcePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -161,9 +149,9 @@ type SaaSOperationGetPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaaSOperationGetPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaaSOperationGetResponse, error) {
-	respType := SaaSOperationGetResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SaasResource)
+func (l ClientUpdateResourcePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientUpdateResourceResponse, error) {
+	respType := ClientUpdateResourceResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Resource)
 	if err != nil {
 		return respType, err
 	}
@@ -171,13 +159,13 @@ func (l SaaSOperationGetPollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a SaaSOperationGetPollerResponse from the provided client and resume token.
-func (l *SaaSOperationGetPollerResponse) Resume(ctx context.Context, client *SaaSOperationClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaaSOperationClient.Get", token, client.pl, client.getHandleError)
+// Resume rehydrates a ClientUpdateResourcePollerResponse from the provided client and resume token.
+func (l *ClientUpdateResourcePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.UpdateResource", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaaSOperationGetPoller{
+	poller := &ClientUpdateResourcePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -189,22 +177,22 @@ func (l *SaaSOperationGetPollerResponse) Resume(ctx context.Context, client *Saa
 	return nil
 }
 
-// SaaSOperationGetResponse contains the response from method SaaSOperation.Get.
-type SaaSOperationGetResponse struct {
-	SaaSOperationGetResult
+// ClientUpdateResourceResponse contains the response from method Client.UpdateResource.
+type ClientUpdateResourceResponse struct {
+	ClientUpdateResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaaSOperationGetResult contains the result from method SaaSOperation.Get.
-type SaaSOperationGetResult struct {
-	SaasResource
+// ClientUpdateResourceResult contains the result from method Client.UpdateResource.
+type ClientUpdateResourceResult struct {
+	Resource
 }
 
-// SaaSUpdateResourcePollerResponse contains the response from method SaaS.UpdateResource.
-type SaaSUpdateResourcePollerResponse struct {
+// OperationClientGetPollerResponse contains the response from method OperationClient.Get.
+type OperationClientGetPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaaSUpdateResourcePoller
+	Poller *OperationClientGetPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -213,9 +201,9 @@ type SaaSUpdateResourcePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaaSUpdateResourcePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaaSUpdateResourceResponse, error) {
-	respType := SaaSUpdateResourceResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SaasResource)
+func (l OperationClientGetPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OperationClientGetResponse, error) {
+	respType := OperationClientGetResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Resource)
 	if err != nil {
 		return respType, err
 	}
@@ -223,13 +211,13 @@ func (l SaaSUpdateResourcePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a SaaSUpdateResourcePollerResponse from the provided client and resume token.
-func (l *SaaSUpdateResourcePollerResponse) Resume(ctx context.Context, client *SaaSClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaaSClient.UpdateResource", token, client.pl, client.updateResourceHandleError)
+// Resume rehydrates a OperationClientGetPollerResponse from the provided client and resume token.
+func (l *OperationClientGetPollerResponse) Resume(ctx context.Context, client *OperationClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OperationClient.Get", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaaSUpdateResourcePoller{
+	poller := &OperationClientGetPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -241,46 +229,58 @@ func (l *SaaSUpdateResourcePollerResponse) Resume(ctx context.Context, client *S
 	return nil
 }
 
-// SaaSUpdateResourceResponse contains the response from method SaaS.UpdateResource.
-type SaaSUpdateResourceResponse struct {
-	SaaSUpdateResourceResult
+// OperationClientGetResponse contains the response from method OperationClient.Get.
+type OperationClientGetResponse struct {
+	OperationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaaSUpdateResourceResult contains the result from method SaaS.UpdateResource.
-type SaaSUpdateResourceResult struct {
-	SaasResource
+// OperationClientGetResult contains the result from method OperationClient.Get.
+type OperationClientGetResult struct {
+	Resource
 }
 
-// SaasResourcesListAccessTokenResponse contains the response from method SaasResources.ListAccessToken.
-type SaasResourcesListAccessTokenResponse struct {
-	SaasResourcesListAccessTokenResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasResourcesListAccessTokenResult contains the result from method SaasResources.ListAccessToken.
-type SaasResourcesListAccessTokenResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	AppOperationsResponseWithContinuation
+}
+
+// ResourcesClientListAccessTokenResponse contains the response from method ResourcesClient.ListAccessToken.
+type ResourcesClientListAccessTokenResponse struct {
+	ResourcesClientListAccessTokenResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourcesClientListAccessTokenResult contains the result from method ResourcesClient.ListAccessToken.
+type ResourcesClientListAccessTokenResult struct {
 	AccessTokenResult
 }
 
-// SaasResourcesListResponse contains the response from method SaasResources.List.
-type SaasResourcesListResponse struct {
-	SaasResourcesListResult
+// ResourcesClientListResponse contains the response from method ResourcesClient.List.
+type ResourcesClientListResponse struct {
+	ResourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasResourcesListResult contains the result from method SaasResources.List.
-type SaasResourcesListResult struct {
-	SaasResourceResponseWithContinuation
+// ResourcesClientListResult contains the result from method ResourcesClient.List.
+type ResourcesClientListResult struct {
+	ResourceResponseWithContinuation
 }
 
-// SaasSubscriptionLevelCreateOrUpdatePollerResponse contains the response from method SaasSubscriptionLevel.CreateOrUpdate.
-type SaasSubscriptionLevelCreateOrUpdatePollerResponse struct {
+// SubscriptionLevelClientCreateOrUpdatePollerResponse contains the response from method SubscriptionLevelClient.CreateOrUpdate.
+type SubscriptionLevelClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaasSubscriptionLevelCreateOrUpdatePoller
+	Poller *SubscriptionLevelClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -289,9 +289,9 @@ type SaasSubscriptionLevelCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaasSubscriptionLevelCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaasSubscriptionLevelCreateOrUpdateResponse, error) {
-	respType := SaasSubscriptionLevelCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SaasResource)
+func (l SubscriptionLevelClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubscriptionLevelClientCreateOrUpdateResponse, error) {
+	respType := SubscriptionLevelClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Resource)
 	if err != nil {
 		return respType, err
 	}
@@ -299,13 +299,13 @@ func (l SaasSubscriptionLevelCreateOrUpdatePollerResponse) PollUntilDone(ctx con
 	return respType, nil
 }
 
-// Resume rehydrates a SaasSubscriptionLevelCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *SaasSubscriptionLevelCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SaasSubscriptionLevelClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaasSubscriptionLevelClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a SubscriptionLevelClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *SubscriptionLevelClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SubscriptionLevelClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SubscriptionLevelClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaasSubscriptionLevelCreateOrUpdatePoller{
+	poller := &SubscriptionLevelClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -317,22 +317,22 @@ func (l *SaasSubscriptionLevelCreateOrUpdatePollerResponse) Resume(ctx context.C
 	return nil
 }
 
-// SaasSubscriptionLevelCreateOrUpdateResponse contains the response from method SaasSubscriptionLevel.CreateOrUpdate.
-type SaasSubscriptionLevelCreateOrUpdateResponse struct {
-	SaasSubscriptionLevelCreateOrUpdateResult
+// SubscriptionLevelClientCreateOrUpdateResponse contains the response from method SubscriptionLevelClient.CreateOrUpdate.
+type SubscriptionLevelClientCreateOrUpdateResponse struct {
+	SubscriptionLevelClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelCreateOrUpdateResult contains the result from method SaasSubscriptionLevel.CreateOrUpdate.
-type SaasSubscriptionLevelCreateOrUpdateResult struct {
-	SaasResource
+// SubscriptionLevelClientCreateOrUpdateResult contains the result from method SubscriptionLevelClient.CreateOrUpdate.
+type SubscriptionLevelClientCreateOrUpdateResult struct {
+	Resource
 }
 
-// SaasSubscriptionLevelDeletePollerResponse contains the response from method SaasSubscriptionLevel.Delete.
-type SaasSubscriptionLevelDeletePollerResponse struct {
+// SubscriptionLevelClientDeletePollerResponse contains the response from method SubscriptionLevelClient.Delete.
+type SubscriptionLevelClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaasSubscriptionLevelDeletePoller
+	Poller *SubscriptionLevelClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -341,8 +341,8 @@ type SaasSubscriptionLevelDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaasSubscriptionLevelDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaasSubscriptionLevelDeleteResponse, error) {
-	respType := SaasSubscriptionLevelDeleteResponse{}
+func (l SubscriptionLevelClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubscriptionLevelClientDeleteResponse, error) {
+	respType := SubscriptionLevelClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -351,13 +351,13 @@ func (l SaasSubscriptionLevelDeletePollerResponse) PollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// Resume rehydrates a SaasSubscriptionLevelDeletePollerResponse from the provided client and resume token.
-func (l *SaasSubscriptionLevelDeletePollerResponse) Resume(ctx context.Context, client *SaasSubscriptionLevelClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaasSubscriptionLevelClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SubscriptionLevelClientDeletePollerResponse from the provided client and resume token.
+func (l *SubscriptionLevelClientDeletePollerResponse) Resume(ctx context.Context, client *SubscriptionLevelClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SubscriptionLevelClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaasSubscriptionLevelDeletePoller{
+	poller := &SubscriptionLevelClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -369,64 +369,64 @@ func (l *SaasSubscriptionLevelDeletePollerResponse) Resume(ctx context.Context, 
 	return nil
 }
 
-// SaasSubscriptionLevelDeleteResponse contains the response from method SaasSubscriptionLevel.Delete.
-type SaasSubscriptionLevelDeleteResponse struct {
+// SubscriptionLevelClientDeleteResponse contains the response from method SubscriptionLevelClient.Delete.
+type SubscriptionLevelClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelGetResponse contains the response from method SaasSubscriptionLevel.Get.
-type SaasSubscriptionLevelGetResponse struct {
-	SaasSubscriptionLevelGetResult
+// SubscriptionLevelClientGetResponse contains the response from method SubscriptionLevelClient.Get.
+type SubscriptionLevelClientGetResponse struct {
+	SubscriptionLevelClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelGetResult contains the result from method SaasSubscriptionLevel.Get.
-type SaasSubscriptionLevelGetResult struct {
-	SaasResource
+// SubscriptionLevelClientGetResult contains the result from method SubscriptionLevelClient.Get.
+type SubscriptionLevelClientGetResult struct {
+	Resource
 }
 
-// SaasSubscriptionLevelListAccessTokenResponse contains the response from method SaasSubscriptionLevel.ListAccessToken.
-type SaasSubscriptionLevelListAccessTokenResponse struct {
-	SaasSubscriptionLevelListAccessTokenResult
+// SubscriptionLevelClientListAccessTokenResponse contains the response from method SubscriptionLevelClient.ListAccessToken.
+type SubscriptionLevelClientListAccessTokenResponse struct {
+	SubscriptionLevelClientListAccessTokenResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelListAccessTokenResult contains the result from method SaasSubscriptionLevel.ListAccessToken.
-type SaasSubscriptionLevelListAccessTokenResult struct {
+// SubscriptionLevelClientListAccessTokenResult contains the result from method SubscriptionLevelClient.ListAccessToken.
+type SubscriptionLevelClientListAccessTokenResult struct {
 	AccessTokenResult
 }
 
-// SaasSubscriptionLevelListByAzureSubscriptionResponse contains the response from method SaasSubscriptionLevel.ListByAzureSubscription.
-type SaasSubscriptionLevelListByAzureSubscriptionResponse struct {
-	SaasSubscriptionLevelListByAzureSubscriptionResult
+// SubscriptionLevelClientListByAzureSubscriptionResponse contains the response from method SubscriptionLevelClient.ListByAzureSubscription.
+type SubscriptionLevelClientListByAzureSubscriptionResponse struct {
+	SubscriptionLevelClientListByAzureSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelListByAzureSubscriptionResult contains the result from method SaasSubscriptionLevel.ListByAzureSubscription.
-type SaasSubscriptionLevelListByAzureSubscriptionResult struct {
-	SaasResourceResponseWithContinuation
+// SubscriptionLevelClientListByAzureSubscriptionResult contains the result from method SubscriptionLevelClient.ListByAzureSubscription.
+type SubscriptionLevelClientListByAzureSubscriptionResult struct {
+	ResourceResponseWithContinuation
 }
 
-// SaasSubscriptionLevelListByResourceGroupResponse contains the response from method SaasSubscriptionLevel.ListByResourceGroup.
-type SaasSubscriptionLevelListByResourceGroupResponse struct {
-	SaasSubscriptionLevelListByResourceGroupResult
+// SubscriptionLevelClientListByResourceGroupResponse contains the response from method SubscriptionLevelClient.ListByResourceGroup.
+type SubscriptionLevelClientListByResourceGroupResponse struct {
+	SubscriptionLevelClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelListByResourceGroupResult contains the result from method SaasSubscriptionLevel.ListByResourceGroup.
-type SaasSubscriptionLevelListByResourceGroupResult struct {
-	SaasResourceResponseWithContinuation
+// SubscriptionLevelClientListByResourceGroupResult contains the result from method SubscriptionLevelClient.ListByResourceGroup.
+type SubscriptionLevelClientListByResourceGroupResult struct {
+	ResourceResponseWithContinuation
 }
 
-// SaasSubscriptionLevelMoveResourcesPollerResponse contains the response from method SaasSubscriptionLevel.MoveResources.
-type SaasSubscriptionLevelMoveResourcesPollerResponse struct {
+// SubscriptionLevelClientMoveResourcesPollerResponse contains the response from method SubscriptionLevelClient.MoveResources.
+type SubscriptionLevelClientMoveResourcesPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaasSubscriptionLevelMoveResourcesPoller
+	Poller *SubscriptionLevelClientMoveResourcesPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -435,8 +435,8 @@ type SaasSubscriptionLevelMoveResourcesPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaasSubscriptionLevelMoveResourcesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaasSubscriptionLevelMoveResourcesResponse, error) {
-	respType := SaasSubscriptionLevelMoveResourcesResponse{}
+func (l SubscriptionLevelClientMoveResourcesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubscriptionLevelClientMoveResourcesResponse, error) {
+	respType := SubscriptionLevelClientMoveResourcesResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -445,13 +445,13 @@ func (l SaasSubscriptionLevelMoveResourcesPollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a SaasSubscriptionLevelMoveResourcesPollerResponse from the provided client and resume token.
-func (l *SaasSubscriptionLevelMoveResourcesPollerResponse) Resume(ctx context.Context, client *SaasSubscriptionLevelClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaasSubscriptionLevelClient.MoveResources", token, client.pl, client.moveResourcesHandleError)
+// Resume rehydrates a SubscriptionLevelClientMoveResourcesPollerResponse from the provided client and resume token.
+func (l *SubscriptionLevelClientMoveResourcesPollerResponse) Resume(ctx context.Context, client *SubscriptionLevelClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SubscriptionLevelClient.MoveResources", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaasSubscriptionLevelMoveResourcesPoller{
+	poller := &SubscriptionLevelClientMoveResourcesPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -463,16 +463,16 @@ func (l *SaasSubscriptionLevelMoveResourcesPollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// SaasSubscriptionLevelMoveResourcesResponse contains the response from method SaasSubscriptionLevel.MoveResources.
-type SaasSubscriptionLevelMoveResourcesResponse struct {
+// SubscriptionLevelClientMoveResourcesResponse contains the response from method SubscriptionLevelClient.MoveResources.
+type SubscriptionLevelClientMoveResourcesResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelUpdatePollerResponse contains the response from method SaasSubscriptionLevel.Update.
-type SaasSubscriptionLevelUpdatePollerResponse struct {
+// SubscriptionLevelClientUpdatePollerResponse contains the response from method SubscriptionLevelClient.Update.
+type SubscriptionLevelClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaasSubscriptionLevelUpdatePoller
+	Poller *SubscriptionLevelClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -481,9 +481,9 @@ type SaasSubscriptionLevelUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaasSubscriptionLevelUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaasSubscriptionLevelUpdateResponse, error) {
-	respType := SaasSubscriptionLevelUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SaasResource)
+func (l SubscriptionLevelClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubscriptionLevelClientUpdateResponse, error) {
+	respType := SubscriptionLevelClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Resource)
 	if err != nil {
 		return respType, err
 	}
@@ -491,13 +491,13 @@ func (l SaasSubscriptionLevelUpdatePollerResponse) PollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// Resume rehydrates a SaasSubscriptionLevelUpdatePollerResponse from the provided client and resume token.
-func (l *SaasSubscriptionLevelUpdatePollerResponse) Resume(ctx context.Context, client *SaasSubscriptionLevelClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaasSubscriptionLevelClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a SubscriptionLevelClientUpdatePollerResponse from the provided client and resume token.
+func (l *SubscriptionLevelClientUpdatePollerResponse) Resume(ctx context.Context, client *SubscriptionLevelClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SubscriptionLevelClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaasSubscriptionLevelUpdatePoller{
+	poller := &SubscriptionLevelClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -509,22 +509,22 @@ func (l *SaasSubscriptionLevelUpdatePollerResponse) Resume(ctx context.Context, 
 	return nil
 }
 
-// SaasSubscriptionLevelUpdateResponse contains the response from method SaasSubscriptionLevel.Update.
-type SaasSubscriptionLevelUpdateResponse struct {
-	SaasSubscriptionLevelUpdateResult
+// SubscriptionLevelClientUpdateResponse contains the response from method SubscriptionLevelClient.Update.
+type SubscriptionLevelClientUpdateResponse struct {
+	SubscriptionLevelClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelUpdateResult contains the result from method SaasSubscriptionLevel.Update.
-type SaasSubscriptionLevelUpdateResult struct {
-	SaasResource
+// SubscriptionLevelClientUpdateResult contains the result from method SubscriptionLevelClient.Update.
+type SubscriptionLevelClientUpdateResult struct {
+	Resource
 }
 
-// SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse contains the response from method SaasSubscriptionLevel.UpdateToUnsubscribed.
-type SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse struct {
+// SubscriptionLevelClientUpdateToUnsubscribedPollerResponse contains the response from method SubscriptionLevelClient.UpdateToUnsubscribed.
+type SubscriptionLevelClientUpdateToUnsubscribedPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SaasSubscriptionLevelUpdateToUnsubscribedPoller
+	Poller *SubscriptionLevelClientUpdateToUnsubscribedPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -533,8 +533,8 @@ type SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SaasSubscriptionLevelUpdateToUnsubscribedResponse, error) {
-	respType := SaasSubscriptionLevelUpdateToUnsubscribedResponse{}
+func (l SubscriptionLevelClientUpdateToUnsubscribedPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubscriptionLevelClientUpdateToUnsubscribedResponse, error) {
+	respType := SubscriptionLevelClientUpdateToUnsubscribedResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -543,13 +543,13 @@ func (l SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse from the provided client and resume token.
-func (l *SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse) Resume(ctx context.Context, client *SaasSubscriptionLevelClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SaasSubscriptionLevelClient.UpdateToUnsubscribed", token, client.pl, client.updateToUnsubscribedHandleError)
+// Resume rehydrates a SubscriptionLevelClientUpdateToUnsubscribedPollerResponse from the provided client and resume token.
+func (l *SubscriptionLevelClientUpdateToUnsubscribedPollerResponse) Resume(ctx context.Context, client *SubscriptionLevelClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SubscriptionLevelClient.UpdateToUnsubscribed", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SaasSubscriptionLevelUpdateToUnsubscribedPoller{
+	poller := &SubscriptionLevelClientUpdateToUnsubscribedPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -561,14 +561,14 @@ func (l *SaasSubscriptionLevelUpdateToUnsubscribedPollerResponse) Resume(ctx con
 	return nil
 }
 
-// SaasSubscriptionLevelUpdateToUnsubscribedResponse contains the response from method SaasSubscriptionLevel.UpdateToUnsubscribed.
-type SaasSubscriptionLevelUpdateToUnsubscribedResponse struct {
+// SubscriptionLevelClientUpdateToUnsubscribedResponse contains the response from method SubscriptionLevelClient.UpdateToUnsubscribed.
+type SubscriptionLevelClientUpdateToUnsubscribedResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SaasSubscriptionLevelValidateMoveResourcesResponse contains the response from method SaasSubscriptionLevel.ValidateMoveResources.
-type SaasSubscriptionLevelValidateMoveResourcesResponse struct {
+// SubscriptionLevelClientValidateMoveResourcesResponse contains the response from method SubscriptionLevelClient.ValidateMoveResources.
+type SubscriptionLevelClientValidateMoveResourcesResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }

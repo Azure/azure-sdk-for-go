@@ -9,7 +9,7 @@
 
 package automationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2018-06-30-preview/automation/automationapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2020-01-13-preview/automation/automationapi"
 
 type AccountClientAPI = original.AccountClientAPI
 type ActivityClientAPI = original.ActivityClientAPI
@@ -35,6 +35,8 @@ type NodeCountInformationClientAPI = original.NodeCountInformationClientAPI
 type NodeReportsClientAPI = original.NodeReportsClientAPI
 type ObjectDataTypesClientAPI = original.ObjectDataTypesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type Python2PackageClientAPI = original.Python2PackageClientAPI
 type RunbookClientAPI = original.RunbookClientAPI
 type RunbookDraftClientAPI = original.RunbookDraftClientAPI

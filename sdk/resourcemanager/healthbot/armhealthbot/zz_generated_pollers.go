@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// BotsCreatePoller provides polling facilities until the operation reaches a terminal state.
-type BotsCreatePoller struct {
+// BotsClientCreatePoller provides polling facilities until the operation reaches a terminal state.
+type BotsClientCreatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *BotsCreatePoller) Done() bool {
+func (p *BotsClientCreatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *BotsCreatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *BotsCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *BotsClientCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final BotsCreateResponse will be returned.
-func (p *BotsCreatePoller) FinalResponse(ctx context.Context) (BotsCreateResponse, error) {
-	respType := BotsCreateResponse{}
+// If the final GET succeeded then the final BotsClientCreateResponse will be returned.
+func (p *BotsClientCreatePoller) FinalResponse(ctx context.Context) (BotsClientCreateResponse, error) {
+	respType := BotsClientCreateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.HealthBot)
 	if err != nil {
-		return BotsCreateResponse{}, err
+		return BotsClientCreateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *BotsCreatePoller) FinalResponse(ctx context.Context) (BotsCreateRespons
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *BotsCreatePoller) ResumeToken() (string, error) {
+func (p *BotsClientCreatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// BotsDeletePoller provides polling facilities until the operation reaches a terminal state.
-type BotsDeletePoller struct {
+// BotsClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type BotsClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *BotsDeletePoller) Done() bool {
+func (p *BotsClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *BotsDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *BotsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *BotsClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final BotsDeleteResponse will be returned.
-func (p *BotsDeletePoller) FinalResponse(ctx context.Context) (BotsDeleteResponse, error) {
-	respType := BotsDeleteResponse{}
+// If the final GET succeeded then the final BotsClientDeleteResponse will be returned.
+func (p *BotsClientDeletePoller) FinalResponse(ctx context.Context) (BotsClientDeleteResponse, error) {
+	respType := BotsClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return BotsDeleteResponse{}, err
+		return BotsClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,6 +96,6 @@ func (p *BotsDeletePoller) FinalResponse(ctx context.Context) (BotsDeleteRespons
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *BotsDeletePoller) ResumeToken() (string, error) {
+func (p *BotsClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

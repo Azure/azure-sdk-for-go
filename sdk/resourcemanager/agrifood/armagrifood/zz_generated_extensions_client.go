@@ -11,7 +11,6 @@ package armagrifood
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,54 @@ import (
 // ExtensionsClient contains the methods for the Extensions group.
 // Don't use this type directly, use NewExtensionsClient() instead.
 type ExtensionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExtensionsClient creates a new instance of ExtensionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExtensionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExtensionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExtensionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Install extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Create(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsCreateOptions) (ExtensionsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// extensionID - Id of extension resource.
+// farmBeatsResourceName - FarmBeats resource name.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ExtensionsClientCreateOptions contains the optional parameters for the ExtensionsClient.Create method.
+func (client *ExtensionsClient) Create(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsClientCreateOptions) (ExtensionsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, extensionID, farmBeatsResourceName, resourceGroupName, options)
 	if err != nil {
-		return ExtensionsCreateResponse{}, err
+		return ExtensionsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsCreateResponse{}, err
+		return ExtensionsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ExtensionsCreateResponse{}, client.createHandleError(resp)
+		return ExtensionsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ExtensionsClient) createCreateRequest(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsCreateOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) createCreateRequest(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}"
 	if extensionID == "" {
 		return nil, errors.New("parameter extensionID cannot be empty")
@@ -79,7 +90,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, extensi
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +102,37 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, extensi
 }
 
 // createHandleResponse handles the Create response.
-func (client *ExtensionsClient) createHandleResponse(resp *http.Response) (ExtensionsCreateResponse, error) {
-	result := ExtensionsCreateResponse{RawResponse: resp}
+func (client *ExtensionsClient) createHandleResponse(resp *http.Response) (ExtensionsClientCreateResponse, error) {
+	result := ExtensionsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Extension); err != nil {
-		return ExtensionsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ExtensionsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Uninstall extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Delete(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsDeleteOptions) (ExtensionsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// extensionID - Id of extension resource.
+// farmBeatsResourceName - FarmBeats resource name.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ExtensionsClientDeleteOptions contains the optional parameters for the ExtensionsClient.Delete method.
+func (client *ExtensionsClient) Delete(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsClientDeleteOptions) (ExtensionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, extensionID, farmBeatsResourceName, resourceGroupName, options)
 	if err != nil {
-		return ExtensionsDeleteResponse{}, err
+		return ExtensionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsDeleteResponse{}, err
+		return ExtensionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ExtensionsDeleteResponse{}, client.deleteHandleError(resp)
+		return ExtensionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ExtensionsDeleteResponse{RawResponse: resp}, nil
+	return ExtensionsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsDeleteOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}"
 	if extensionID == "" {
 		return nil, errors.New("parameter extensionID cannot be empty")
@@ -148,7 +150,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, extensi
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +161,29 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, extensi
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ExtensionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get installed extension details by extension id.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Get(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsGetOptions) (ExtensionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// extensionID - Id of extension resource.
+// farmBeatsResourceName - FarmBeats resource name.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
+func (client *ExtensionsClient) Get(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsClientGetOptions) (ExtensionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, extensionID, farmBeatsResourceName, resourceGroupName, options)
 	if err != nil {
-		return ExtensionsGetResponse{}, err
+		return ExtensionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsGetResponse{}, err
+		return ExtensionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsGetResponse{}, client.getHandleError(resp)
+		return ExtensionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExtensionsClient) getCreateRequest(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsGetOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) getCreateRequest(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}"
 	if extensionID == "" {
 		return nil, errors.New("parameter extensionID cannot be empty")
@@ -208,7 +201,7 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, extensionI
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +213,34 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, extensionI
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (ExtensionsGetResponse, error) {
-	result := ExtensionsGetResponse{RawResponse: resp}
+func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (ExtensionsClientGetResponse, error) {
+	result := ExtensionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Extension); err != nil {
-		return ExtensionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ExtensionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByFarmBeats - Get installed extensions details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) ListByFarmBeats(resourceGroupName string, farmBeatsResourceName string, options *ExtensionsListByFarmBeatsOptions) *ExtensionsListByFarmBeatsPager {
-	return &ExtensionsListByFarmBeatsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// farmBeatsResourceName - FarmBeats resource name.
+// options - ExtensionsClientListByFarmBeatsOptions contains the optional parameters for the ExtensionsClient.ListByFarmBeats
+// method.
+func (client *ExtensionsClient) ListByFarmBeats(resourceGroupName string, farmBeatsResourceName string, options *ExtensionsClientListByFarmBeatsOptions) *ExtensionsClientListByFarmBeatsPager {
+	return &ExtensionsClientListByFarmBeatsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFarmBeatsCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, options)
 		},
-		advancer: func(ctx context.Context, resp ExtensionsListByFarmBeatsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ExtensionsClientListByFarmBeatsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExtensionListResponse.NextLink)
 		},
 	}
 }
 
 // listByFarmBeatsCreateRequest creates the ListByFarmBeats request.
-func (client *ExtensionsClient) listByFarmBeatsCreateRequest(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *ExtensionsListByFarmBeatsOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) listByFarmBeatsCreateRequest(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *ExtensionsClientListByFarmBeatsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}/extensions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -270,7 +254,7 @@ func (client *ExtensionsClient) listByFarmBeatsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{farmBeatsResourceName}", url.PathEscape(farmBeatsResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -298,46 +282,37 @@ func (client *ExtensionsClient) listByFarmBeatsCreateRequest(ctx context.Context
 }
 
 // listByFarmBeatsHandleResponse handles the ListByFarmBeats response.
-func (client *ExtensionsClient) listByFarmBeatsHandleResponse(resp *http.Response) (ExtensionsListByFarmBeatsResponse, error) {
-	result := ExtensionsListByFarmBeatsResponse{RawResponse: resp}
+func (client *ExtensionsClient) listByFarmBeatsHandleResponse(resp *http.Response) (ExtensionsClientListByFarmBeatsResponse, error) {
+	result := ExtensionsClientListByFarmBeatsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionListResponse); err != nil {
-		return ExtensionsListByFarmBeatsResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientListByFarmBeatsResponse{}, err
 	}
 	return result, nil
 }
 
-// listByFarmBeatsHandleError handles the ListByFarmBeats error response.
-func (client *ExtensionsClient) listByFarmBeatsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Upgrade to latest extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Update(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsUpdateOptions) (ExtensionsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// extensionID - Id of extension resource.
+// farmBeatsResourceName - FarmBeats resource name.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ExtensionsClientUpdateOptions contains the optional parameters for the ExtensionsClient.Update method.
+func (client *ExtensionsClient) Update(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsClientUpdateOptions) (ExtensionsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, extensionID, farmBeatsResourceName, resourceGroupName, options)
 	if err != nil {
-		return ExtensionsUpdateResponse{}, err
+		return ExtensionsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsUpdateResponse{}, err
+		return ExtensionsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsUpdateResponse{}, client.updateHandleError(resp)
+		return ExtensionsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsUpdateOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}"
 	if extensionID == "" {
 		return nil, errors.New("parameter extensionID cannot be empty")
@@ -355,7 +330,7 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, extensi
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -367,23 +342,10 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, extensi
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ExtensionsClient) updateHandleResponse(resp *http.Response) (ExtensionsUpdateResponse, error) {
-	result := ExtensionsUpdateResponse{RawResponse: resp}
+func (client *ExtensionsClient) updateHandleResponse(resp *http.Response) (ExtensionsClientUpdateResponse, error) {
+	result := ExtensionsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Extension); err != nil {
-		return ExtensionsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ExtensionsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,52 @@ import (
 // RecoveryPointsRecommendedForMoveClient contains the methods for the RecoveryPointsRecommendedForMove group.
 // Don't use this type directly, use NewRecoveryPointsRecommendedForMoveClient() instead.
 type RecoveryPointsRecommendedForMoveClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRecoveryPointsRecommendedForMoveClient creates a new instance of RecoveryPointsRecommendedForMoveClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRecoveryPointsRecommendedForMoveClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecoveryPointsRecommendedForMoveClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RecoveryPointsRecommendedForMoveClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RecoveryPointsRecommendedForMoveClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists the recovery points recommended for move to another tier
-// If the operation fails it returns the *CloudError error type.
-func (client *RecoveryPointsRecommendedForMoveClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ListRecoveryPointsRecommendedForMoveRequest, options *RecoveryPointsRecommendedForMoveListOptions) *RecoveryPointsRecommendedForMoveListPager {
-	return &RecoveryPointsRecommendedForMoveListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// parameters - List Recovery points Recommended for Move Request
+// options - RecoveryPointsRecommendedForMoveClientListOptions contains the optional parameters for the RecoveryPointsRecommendedForMoveClient.List
+// method.
+func (client *RecoveryPointsRecommendedForMoveClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ListRecoveryPointsRecommendedForMoveRequest, options *RecoveryPointsRecommendedForMoveClientListOptions) *RecoveryPointsRecommendedForMoveClientListPager {
+	return &RecoveryPointsRecommendedForMoveClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, options)
 		},
-		advancer: func(ctx context.Context, resp RecoveryPointsRecommendedForMoveListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RecoveryPointsRecommendedForMoveClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecoveryPointResourceList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RecoveryPointsRecommendedForMoveClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ListRecoveryPointsRecommendedForMoveRequest, options *RecoveryPointsRecommendedForMoveListOptions) (*policy.Request, error) {
+func (client *RecoveryPointsRecommendedForMoveClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ListRecoveryPointsRecommendedForMoveRequest, options *RecoveryPointsRecommendedForMoveClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPointsRecommendedForMove"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -83,35 +95,22 @@ func (client *RecoveryPointsRecommendedForMoveClient) listCreateRequest(ctx cont
 		return nil, errors.New("parameter protectedItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectedItemName}", url.PathEscape(protectedItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // listHandleResponse handles the List response.
-func (client *RecoveryPointsRecommendedForMoveClient) listHandleResponse(resp *http.Response) (RecoveryPointsRecommendedForMoveListResponse, error) {
-	result := RecoveryPointsRecommendedForMoveListResponse{RawResponse: resp}
+func (client *RecoveryPointsRecommendedForMoveClient) listHandleResponse(resp *http.Response) (RecoveryPointsRecommendedForMoveClientListResponse, error) {
+	result := RecoveryPointsRecommendedForMoveClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPointResourceList); err != nil {
-		return RecoveryPointsRecommendedForMoveListResponse{}, runtime.NewResponseError(err, resp)
+		return RecoveryPointsRecommendedForMoveClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RecoveryPointsRecommendedForMoveClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

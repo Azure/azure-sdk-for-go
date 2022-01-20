@@ -10,92 +10,92 @@ package armmsi
 
 import "net/http"
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// SystemAssignedIdentitiesGetByScopeResponse contains the response from method SystemAssignedIdentities.GetByScope.
-type SystemAssignedIdentitiesGetByScopeResponse struct {
-	SystemAssignedIdentitiesGetByScopeResult
+// SystemAssignedIdentitiesClientGetByScopeResponse contains the response from method SystemAssignedIdentitiesClient.GetByScope.
+type SystemAssignedIdentitiesClientGetByScopeResponse struct {
+	SystemAssignedIdentitiesClientGetByScopeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SystemAssignedIdentitiesGetByScopeResult contains the result from method SystemAssignedIdentities.GetByScope.
-type SystemAssignedIdentitiesGetByScopeResult struct {
+// SystemAssignedIdentitiesClientGetByScopeResult contains the result from method SystemAssignedIdentitiesClient.GetByScope.
+type SystemAssignedIdentitiesClientGetByScopeResult struct {
 	SystemAssignedIdentity
 }
 
-// UserAssignedIdentitiesCreateOrUpdateResponse contains the response from method UserAssignedIdentities.CreateOrUpdate.
-type UserAssignedIdentitiesCreateOrUpdateResponse struct {
-	UserAssignedIdentitiesCreateOrUpdateResult
+// UserAssignedIdentitiesClientCreateOrUpdateResponse contains the response from method UserAssignedIdentitiesClient.CreateOrUpdate.
+type UserAssignedIdentitiesClientCreateOrUpdateResponse struct {
+	UserAssignedIdentitiesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserAssignedIdentitiesCreateOrUpdateResult contains the result from method UserAssignedIdentities.CreateOrUpdate.
-type UserAssignedIdentitiesCreateOrUpdateResult struct {
+// UserAssignedIdentitiesClientCreateOrUpdateResult contains the result from method UserAssignedIdentitiesClient.CreateOrUpdate.
+type UserAssignedIdentitiesClientCreateOrUpdateResult struct {
 	Identity
 }
 
-// UserAssignedIdentitiesDeleteResponse contains the response from method UserAssignedIdentities.Delete.
-type UserAssignedIdentitiesDeleteResponse struct {
+// UserAssignedIdentitiesClientDeleteResponse contains the response from method UserAssignedIdentitiesClient.Delete.
+type UserAssignedIdentitiesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserAssignedIdentitiesGetResponse contains the response from method UserAssignedIdentities.Get.
-type UserAssignedIdentitiesGetResponse struct {
-	UserAssignedIdentitiesGetResult
+// UserAssignedIdentitiesClientGetResponse contains the response from method UserAssignedIdentitiesClient.Get.
+type UserAssignedIdentitiesClientGetResponse struct {
+	UserAssignedIdentitiesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserAssignedIdentitiesGetResult contains the result from method UserAssignedIdentities.Get.
-type UserAssignedIdentitiesGetResult struct {
+// UserAssignedIdentitiesClientGetResult contains the result from method UserAssignedIdentitiesClient.Get.
+type UserAssignedIdentitiesClientGetResult struct {
 	Identity
 }
 
-// UserAssignedIdentitiesListByResourceGroupResponse contains the response from method UserAssignedIdentities.ListByResourceGroup.
-type UserAssignedIdentitiesListByResourceGroupResponse struct {
-	UserAssignedIdentitiesListByResourceGroupResult
+// UserAssignedIdentitiesClientListByResourceGroupResponse contains the response from method UserAssignedIdentitiesClient.ListByResourceGroup.
+type UserAssignedIdentitiesClientListByResourceGroupResponse struct {
+	UserAssignedIdentitiesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserAssignedIdentitiesListByResourceGroupResult contains the result from method UserAssignedIdentities.ListByResourceGroup.
-type UserAssignedIdentitiesListByResourceGroupResult struct {
+// UserAssignedIdentitiesClientListByResourceGroupResult contains the result from method UserAssignedIdentitiesClient.ListByResourceGroup.
+type UserAssignedIdentitiesClientListByResourceGroupResult struct {
 	UserAssignedIdentitiesListResult
 }
 
-// UserAssignedIdentitiesListBySubscriptionResponse contains the response from method UserAssignedIdentities.ListBySubscription.
-type UserAssignedIdentitiesListBySubscriptionResponse struct {
-	UserAssignedIdentitiesListBySubscriptionResult
+// UserAssignedIdentitiesClientListBySubscriptionResponse contains the response from method UserAssignedIdentitiesClient.ListBySubscription.
+type UserAssignedIdentitiesClientListBySubscriptionResponse struct {
+	UserAssignedIdentitiesClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserAssignedIdentitiesListBySubscriptionResult contains the result from method UserAssignedIdentities.ListBySubscription.
-type UserAssignedIdentitiesListBySubscriptionResult struct {
+// UserAssignedIdentitiesClientListBySubscriptionResult contains the result from method UserAssignedIdentitiesClient.ListBySubscription.
+type UserAssignedIdentitiesClientListBySubscriptionResult struct {
 	UserAssignedIdentitiesListResult
 }
 
-// UserAssignedIdentitiesUpdateResponse contains the response from method UserAssignedIdentities.Update.
-type UserAssignedIdentitiesUpdateResponse struct {
-	UserAssignedIdentitiesUpdateResult
+// UserAssignedIdentitiesClientUpdateResponse contains the response from method UserAssignedIdentitiesClient.Update.
+type UserAssignedIdentitiesClientUpdateResponse struct {
+	UserAssignedIdentitiesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UserAssignedIdentitiesUpdateResult contains the result from method UserAssignedIdentities.Update.
-type UserAssignedIdentitiesUpdateResult struct {
+// UserAssignedIdentitiesClientUpdateResult contains the result from method UserAssignedIdentitiesClient.Update.
+type UserAssignedIdentitiesClientUpdateResult struct {
 	Identity
 }

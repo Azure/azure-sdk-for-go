@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // PrivateLinkHubPrivateLinkResourcesClient contains the methods for the PrivateLinkHubPrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkHubPrivateLinkResourcesClient() instead.
 type PrivateLinkHubPrivateLinkResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkHubPrivateLinkResourcesClient creates a new instance of PrivateLinkHubPrivateLinkResourcesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkHubPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkHubPrivateLinkResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkHubPrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkHubPrivateLinkResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get private link resource in private link hub
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkResourceName string, options *PrivateLinkHubPrivateLinkResourcesGetOptions) (PrivateLinkHubPrivateLinkResourcesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateLinkHubName - The name of the private link hub
+// privateLinkResourceName - The name of the private link resource
+// options - PrivateLinkHubPrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkHubPrivateLinkResourcesClient.Get
+// method.
+func (client *PrivateLinkHubPrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkResourceName string, options *PrivateLinkHubPrivateLinkResourcesClientGetOptions) (PrivateLinkHubPrivateLinkResourcesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateLinkHubName, privateLinkResourceName, options)
 	if err != nil {
-		return PrivateLinkHubPrivateLinkResourcesGetResponse{}, err
+		return PrivateLinkHubPrivateLinkResourcesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkHubPrivateLinkResourcesGetResponse{}, err
+		return PrivateLinkHubPrivateLinkResourcesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkHubPrivateLinkResourcesGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkHubPrivateLinkResourcesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkResourceName string, options *PrivateLinkHubPrivateLinkResourcesGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkHubPrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkResourceName string, options *PrivateLinkHubPrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateLinkResources/{privateLinkResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *PrivateLinkHubPrivateLinkResourcesClient) getCreateRequest(ctx con
 		return nil, errors.New("parameter privateLinkResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateLinkResourceName}", url.PathEscape(privateLinkResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +102,34 @@ func (client *PrivateLinkHubPrivateLinkResourcesClient) getCreateRequest(ctx con
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkHubPrivateLinkResourcesGetResponse, error) {
-	result := PrivateLinkHubPrivateLinkResourcesGetResponse{RawResponse: resp}
+func (client *PrivateLinkHubPrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkHubPrivateLinkResourcesClientGetResponse, error) {
+	result := PrivateLinkHubPrivateLinkResourcesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
-		return PrivateLinkHubPrivateLinkResourcesGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkHubPrivateLinkResourcesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get all private link resources for a private link hub
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) List(resourceGroupName string, privateLinkHubName string, options *PrivateLinkHubPrivateLinkResourcesListOptions) *PrivateLinkHubPrivateLinkResourcesListPager {
-	return &PrivateLinkHubPrivateLinkResourcesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateLinkHubName - The name of the private link hub
+// options - PrivateLinkHubPrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkHubPrivateLinkResourcesClient.List
+// method.
+func (client *PrivateLinkHubPrivateLinkResourcesClient) List(resourceGroupName string, privateLinkHubName string, options *PrivateLinkHubPrivateLinkResourcesClientListOptions) *PrivateLinkHubPrivateLinkResourcesClientListPager {
+	return &PrivateLinkHubPrivateLinkResourcesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateLinkHubName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkHubPrivateLinkResourcesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateLinkHubPrivateLinkResourcesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateLinkHubName string, options *PrivateLinkHubPrivateLinkResourcesListOptions) (*policy.Request, error) {
+func (client *PrivateLinkHubPrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateLinkHubName string, options *PrivateLinkHubPrivateLinkResourcesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +143,7 @@ func (client *PrivateLinkHubPrivateLinkResourcesClient) listCreateRequest(ctx co
 		return nil, errors.New("parameter privateLinkHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateLinkHubName}", url.PathEscape(privateLinkHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +155,10 @@ func (client *PrivateLinkHubPrivateLinkResourcesClient) listCreateRequest(ctx co
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) listHandleResponse(resp *http.Response) (PrivateLinkHubPrivateLinkResourcesListResponse, error) {
-	result := PrivateLinkHubPrivateLinkResourcesListResponse{RawResponse: resp}
+func (client *PrivateLinkHubPrivateLinkResourcesClient) listHandleResponse(resp *http.Response) (PrivateLinkHubPrivateLinkResourcesClientListResponse, error) {
+	result := PrivateLinkHubPrivateLinkResourcesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinkHubPrivateLinkResourcesListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkHubPrivateLinkResourcesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PrivateLinkHubPrivateLinkResourcesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

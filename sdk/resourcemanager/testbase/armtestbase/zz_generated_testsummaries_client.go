@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // TestSummariesClient contains the methods for the TestSummaries group.
 // Don't use this type directly, use NewTestSummariesClient() instead.
 type TestSummariesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTestSummariesClient creates a new instance of TestSummariesClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTestSummariesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TestSummariesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TestSummariesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TestSummariesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a Test Summary with specific name from all the Test Summaries of all the packages under a Test Base Account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestSummariesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, testSummaryName string, options *TestSummariesGetOptions) (TestSummariesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// testSummaryName - The name of the Test Summary.
+// options - TestSummariesClientGetOptions contains the optional parameters for the TestSummariesClient.Get method.
+func (client *TestSummariesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, testSummaryName string, options *TestSummariesClientGetOptions) (TestSummariesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, testSummaryName, options)
 	if err != nil {
-		return TestSummariesGetResponse{}, err
+		return TestSummariesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestSummariesGetResponse{}, err
+		return TestSummariesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestSummariesGetResponse{}, client.getHandleError(resp)
+		return TestSummariesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TestSummariesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, testSummaryName string, options *TestSummariesGetOptions) (*policy.Request, error) {
+func (client *TestSummariesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, testSummaryName string, options *TestSummariesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/testSummaries/{testSummaryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *TestSummariesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter testSummaryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testSummaryName}", url.PathEscape(testSummaryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,33 @@ func (client *TestSummariesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *TestSummariesClient) getHandleResponse(resp *http.Response) (TestSummariesGetResponse, error) {
-	result := TestSummariesGetResponse{RawResponse: resp}
+func (client *TestSummariesClient) getHandleResponse(resp *http.Response) (TestSummariesClientGetResponse, error) {
+	result := TestSummariesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestSummaryResource); err != nil {
-		return TestSummariesGetResponse{}, runtime.NewResponseError(err, resp)
+		return TestSummariesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TestSummariesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the Test Summaries of all the packages under a Test Base Account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestSummariesClient) List(resourceGroupName string, testBaseAccountName string, options *TestSummariesListOptions) *TestSummariesListPager {
-	return &TestSummariesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// options - TestSummariesClientListOptions contains the optional parameters for the TestSummariesClient.List method.
+func (client *TestSummariesClient) List(resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) *TestSummariesClientListPager {
+	return &TestSummariesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp TestSummariesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TestSummariesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TestSummaryListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TestSummariesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *TestSummariesListOptions) (*policy.Request, error) {
+func (client *TestSummariesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/testSummaries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +141,7 @@ func (client *TestSummariesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +153,10 @@ func (client *TestSummariesClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *TestSummariesClient) listHandleResponse(resp *http.Response) (TestSummariesListResponse, error) {
-	result := TestSummariesListResponse{RawResponse: resp}
+func (client *TestSummariesClient) listHandleResponse(resp *http.Response) (TestSummariesClientListResponse, error) {
+	result := TestSummariesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestSummaryListResult); err != nil {
-		return TestSummariesListResponse{}, runtime.NewResponseError(err, resp)
+		return TestSummariesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *TestSummariesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

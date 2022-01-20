@@ -16,6 +16,114 @@ import (
 	"reflect"
 )
 
+// ClientListAllPager provides operations for iterating over paged responses.
+type ClientListAllPager struct {
+	client    *Client
+	current   ClientListAllResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ClientListAllResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *ClientListAllPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ClientListAllPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.FeatureOperationsListResult.NextLink == nil || len(*p.current.FeatureOperationsListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listAllHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current ClientListAllResponse page.
+func (p *ClientListAllPager) PageResponse() ClientListAllResponse {
+	return p.current
+}
+
+// ClientListPager provides operations for iterating over paged responses.
+type ClientListPager struct {
+	client    *Client
+	current   ClientListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ClientListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *ClientListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ClientListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.FeatureOperationsListResult.NextLink == nil || len(*p.current.FeatureOperationsListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current ClientListResponse page.
+func (p *ClientListPager) PageResponse() ClientListResponse {
+	return p.current
+}
+
 // FeatureClientListOperationsPager provides operations for iterating over paged responses.
 type FeatureClientListOperationsPager struct {
 	client    *FeatureClient
@@ -53,7 +161,7 @@ func (p *FeatureClientListOperationsPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listOperationsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listOperationsHandleResponse(resp)
@@ -70,131 +178,23 @@ func (p *FeatureClientListOperationsPager) PageResponse() FeatureClientListOpera
 	return p.current
 }
 
-// FeaturesListAllPager provides operations for iterating over paged responses.
-type FeaturesListAllPager struct {
-	client    *FeaturesClient
-	current   FeaturesListAllResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, FeaturesListAllResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *FeaturesListAllPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *FeaturesListAllPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.FeatureOperationsListResult.NextLink == nil || len(*p.current.FeatureOperationsListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listAllHandleError(resp)
-		return false
-	}
-	result, err := p.client.listAllHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current FeaturesListAllResponse page.
-func (p *FeaturesListAllPager) PageResponse() FeaturesListAllResponse {
-	return p.current
-}
-
-// FeaturesListPager provides operations for iterating over paged responses.
-type FeaturesListPager struct {
-	client    *FeaturesClient
-	current   FeaturesListResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, FeaturesListResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *FeaturesListPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *FeaturesListPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.FeatureOperationsListResult.NextLink == nil || len(*p.current.FeatureOperationsListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
-		return false
-	}
-	result, err := p.client.listHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current FeaturesListResponse page.
-func (p *FeaturesListPager) PageResponse() FeaturesListResponse {
-	return p.current
-}
-
-// SubscriptionFeatureRegistrationsListAllBySubscriptionPager provides operations for iterating over paged responses.
-type SubscriptionFeatureRegistrationsListAllBySubscriptionPager struct {
+// SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager provides operations for iterating over paged responses.
+type SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager struct {
 	client    *SubscriptionFeatureRegistrationsClient
-	current   SubscriptionFeatureRegistrationsListAllBySubscriptionResponse
+	current   SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SubscriptionFeatureRegistrationsListAllBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SubscriptionFeatureRegistrationsListAllBySubscriptionPager) Err() error {
+func (p *SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SubscriptionFeatureRegistrationsListAllBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *SubscriptionFeatureRegistrationsListAllBySubscriptionPager) NextPage(ct
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listAllBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listAllBySubscriptionHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *SubscriptionFeatureRegistrationsListAllBySubscriptionPager) NextPage(ct
 	return true
 }
 
-// PageResponse returns the current SubscriptionFeatureRegistrationsListAllBySubscriptionResponse page.
-func (p *SubscriptionFeatureRegistrationsListAllBySubscriptionPager) PageResponse() SubscriptionFeatureRegistrationsListAllBySubscriptionResponse {
+// PageResponse returns the current SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse page.
+func (p *SubscriptionFeatureRegistrationsClientListAllBySubscriptionPager) PageResponse() SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse {
 	return p.current
 }
 
-// SubscriptionFeatureRegistrationsListBySubscriptionPager provides operations for iterating over paged responses.
-type SubscriptionFeatureRegistrationsListBySubscriptionPager struct {
+// SubscriptionFeatureRegistrationsClientListBySubscriptionPager provides operations for iterating over paged responses.
+type SubscriptionFeatureRegistrationsClientListBySubscriptionPager struct {
 	client    *SubscriptionFeatureRegistrationsClient
-	current   SubscriptionFeatureRegistrationsListBySubscriptionResponse
+	current   SubscriptionFeatureRegistrationsClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SubscriptionFeatureRegistrationsListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, SubscriptionFeatureRegistrationsClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SubscriptionFeatureRegistrationsListBySubscriptionPager) Err() error {
+func (p *SubscriptionFeatureRegistrationsClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SubscriptionFeatureRegistrationsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *SubscriptionFeatureRegistrationsClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *SubscriptionFeatureRegistrationsListBySubscriptionPager) NextPage(ctx c
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -281,7 +281,7 @@ func (p *SubscriptionFeatureRegistrationsListBySubscriptionPager) NextPage(ctx c
 	return true
 }
 
-// PageResponse returns the current SubscriptionFeatureRegistrationsListBySubscriptionResponse page.
-func (p *SubscriptionFeatureRegistrationsListBySubscriptionPager) PageResponse() SubscriptionFeatureRegistrationsListBySubscriptionResponse {
+// PageResponse returns the current SubscriptionFeatureRegistrationsClientListBySubscriptionResponse page.
+func (p *SubscriptionFeatureRegistrationsClientListBySubscriptionPager) PageResponse() SubscriptionFeatureRegistrationsClientListBySubscriptionResponse {
 	return p.current
 }

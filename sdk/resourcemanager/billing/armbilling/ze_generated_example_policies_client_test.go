@@ -31,7 +31,7 @@ func ExamplePoliciesClient_GetByBillingProfile() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Policy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PoliciesClientGetByBillingProfileResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdatePolicy.json
@@ -47,16 +47,16 @@ func ExamplePoliciesClient_Update() {
 		"<billing-profile-name>",
 		armbilling.Policy{
 			Properties: &armbilling.PolicyProperties{
-				MarketplacePurchases: armbilling.MarketplacePurchasesPolicyOnlyFreeAllowed.ToPtr(),
-				ReservationPurchases: armbilling.ReservationPurchasesPolicyNotAllowed.ToPtr(),
-				ViewCharges:          armbilling.ViewChargesPolicyAllowed.ToPtr(),
+				MarketplacePurchases: armbilling.MarketplacePurchasesPolicy("OnlyFreeAllowed").ToPtr(),
+				ReservationPurchases: armbilling.ReservationPurchasesPolicy("NotAllowed").ToPtr(),
+				ViewCharges:          armbilling.ViewChargesPolicy("Allowed").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Policy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PoliciesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/CustomerPolicy.json
@@ -74,7 +74,7 @@ func ExamplePoliciesClient_GetByCustomer() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomerPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PoliciesClientGetByCustomerResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateCustomerPolicy.json
@@ -90,12 +90,12 @@ func ExamplePoliciesClient_UpdateCustomer() {
 		"<customer-name>",
 		armbilling.CustomerPolicy{
 			Properties: &armbilling.CustomerPolicyProperties{
-				ViewCharges: armbilling.ViewChargesNotAllowed.ToPtr(),
+				ViewCharges: armbilling.ViewCharges("NotAllowed").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomerPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PoliciesClientUpdateCustomerResult)
 }

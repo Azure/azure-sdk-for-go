@@ -11,7 +11,6 @@ package armlogz
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,58 @@ import (
 // SubAccountClient contains the methods for the SubAccount group.
 // Don't use this type directly, use NewSubAccountClient() instead.
 type SubAccountClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSubAccountClient creates a new instance of SubAccountClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSubAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubAccountClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SubAccountClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SubAccountClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) BeginCreate(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountBeginCreateOptions) (SubAccountCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountClientBeginCreateOptions contains the optional parameters for the SubAccountClient.BeginCreate method.
+func (client *SubAccountClient) BeginCreate(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginCreateOptions) (SubAccountClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
-		return SubAccountCreatePollerResponse{}, err
+		return SubAccountClientCreatePollerResponse{}, err
 	}
-	result := SubAccountCreatePollerResponse{
+	result := SubAccountClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SubAccountClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("SubAccountClient.Create", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return SubAccountCreatePollerResponse{}, err
+		return SubAccountClientCreatePollerResponse{}, err
 	}
-	result.Poller = &SubAccountCreatePoller{
+	result.Poller = &SubAccountClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) create(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SubAccountClient) create(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +85,13 @@ func (client *SubAccountClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *SubAccountClient) createCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountBeginCreateOptions) (*policy.Request, error) {
+func (client *SubAccountClient) createCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +109,7 @@ func (client *SubAccountClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,42 +123,33 @@ func (client *SubAccountClient) createCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SubAccountClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountBeginDeleteOptions) (SubAccountDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountClientBeginDeleteOptions contains the optional parameters for the SubAccountClient.BeginDelete method.
+func (client *SubAccountClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginDeleteOptions) (SubAccountClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
-		return SubAccountDeletePollerResponse{}, err
+		return SubAccountClientDeletePollerResponse{}, err
 	}
-	result := SubAccountDeletePollerResponse{
+	result := SubAccountClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SubAccountClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SubAccountClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return SubAccountDeletePollerResponse{}, err
+		return SubAccountClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SubAccountDeletePoller{
+	result.Poller = &SubAccountClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SubAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
 		return nil, err
@@ -157,13 +159,13 @@ func (client *SubAccountClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SubAccountClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountBeginDeleteOptions) (*policy.Request, error) {
+func (client *SubAccountClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -181,7 +183,7 @@ func (client *SubAccountClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,38 +194,29 @@ func (client *SubAccountClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SubAccountClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a sub account under a given monitor resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) Get(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountGetOptions) (SubAccountGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountClientGetOptions contains the optional parameters for the SubAccountClient.Get method.
+func (client *SubAccountClient) Get(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientGetOptions) (SubAccountClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
-		return SubAccountGetResponse{}, err
+		return SubAccountClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubAccountGetResponse{}, err
+		return SubAccountClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubAccountGetResponse{}, client.getHandleError(resp)
+		return SubAccountClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubAccountClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountGetOptions) (*policy.Request, error) {
+func (client *SubAccountClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -241,7 +234,7 @@ func (client *SubAccountClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -253,43 +246,33 @@ func (client *SubAccountClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubAccountClient) getHandleResponse(resp *http.Response) (SubAccountGetResponse, error) {
-	result := SubAccountGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogzMonitorResource); err != nil {
-		return SubAccountGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *SubAccountClient) getHandleResponse(resp *http.Response) (SubAccountClientGetResponse, error) {
+	result := SubAccountClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResource); err != nil {
+		return SubAccountClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SubAccountClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List the sub account under a given monitor resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) List(resourceGroupName string, monitorName string, options *SubAccountListOptions) *SubAccountListPager {
-	return &SubAccountListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// options - SubAccountClientListOptions contains the optional parameters for the SubAccountClient.List method.
+func (client *SubAccountClient) List(resourceGroupName string, monitorName string, options *SubAccountClientListOptions) *SubAccountClientListPager {
+	return &SubAccountClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
 		},
-		advancer: func(ctx context.Context, resp SubAccountListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LogzMonitorResourceListResponse.NextLink)
+		advancer: func(ctx context.Context, resp SubAccountClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.MonitorResourceListResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SubAccountClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *SubAccountListOptions) (*policy.Request, error) {
+func (client *SubAccountClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *SubAccountClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -303,7 +286,7 @@ func (client *SubAccountClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -315,43 +298,35 @@ func (client *SubAccountClient) listCreateRequest(ctx context.Context, resourceG
 }
 
 // listHandleResponse handles the List response.
-func (client *SubAccountClient) listHandleResponse(resp *http.Response) (SubAccountListResponse, error) {
-	result := SubAccountListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogzMonitorResourceListResponse); err != nil {
-		return SubAccountListResponse{}, runtime.NewResponseError(err, resp)
+func (client *SubAccountClient) listHandleResponse(resp *http.Response) (SubAccountClientListResponse, error) {
+	result := SubAccountClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResourceListResponse); err != nil {
+		return SubAccountClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *SubAccountClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListMonitoredResources - List the resources currently being monitored by the Logz sub account resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) ListMonitoredResources(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountListMonitoredResourcesOptions) *SubAccountListMonitoredResourcesPager {
-	return &SubAccountListMonitoredResourcesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountClientListMonitoredResourcesOptions contains the optional parameters for the SubAccountClient.ListMonitoredResources
+// method.
+func (client *SubAccountClient) ListMonitoredResources(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListMonitoredResourcesOptions) *SubAccountClientListMonitoredResourcesPager {
+	return &SubAccountClientListMonitoredResourcesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listMonitoredResourcesCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp SubAccountListMonitoredResourcesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SubAccountClientListMonitoredResourcesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MonitoredResourceListResponse.NextLink)
 		},
 	}
 }
 
 // listMonitoredResourcesCreateRequest creates the ListMonitoredResources request.
-func (client *SubAccountClient) listMonitoredResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountListMonitoredResourcesOptions) (*policy.Request, error) {
+func (client *SubAccountClient) listMonitoredResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListMonitoredResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/listMonitoredResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -369,7 +344,7 @@ func (client *SubAccountClient) listMonitoredResourcesCreateRequest(ctx context.
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -381,43 +356,35 @@ func (client *SubAccountClient) listMonitoredResourcesCreateRequest(ctx context.
 }
 
 // listMonitoredResourcesHandleResponse handles the ListMonitoredResources response.
-func (client *SubAccountClient) listMonitoredResourcesHandleResponse(resp *http.Response) (SubAccountListMonitoredResourcesResponse, error) {
-	result := SubAccountListMonitoredResourcesResponse{RawResponse: resp}
+func (client *SubAccountClient) listMonitoredResourcesHandleResponse(resp *http.Response) (SubAccountClientListMonitoredResourcesResponse, error) {
+	result := SubAccountClientListMonitoredResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoredResourceListResponse); err != nil {
-		return SubAccountListMonitoredResourcesResponse{}, runtime.NewResponseError(err, resp)
+		return SubAccountClientListMonitoredResourcesResponse{}, err
 	}
 	return result, nil
 }
 
-// listMonitoredResourcesHandleError handles the ListMonitoredResources error response.
-func (client *SubAccountClient) listMonitoredResourcesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListVMHostUpdate - Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) ListVMHostUpdate(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountListVMHostUpdateOptions) *SubAccountListVMHostUpdatePager {
-	return &SubAccountListVMHostUpdatePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountClientListVMHostUpdateOptions contains the optional parameters for the SubAccountClient.ListVMHostUpdate
+// method.
+func (client *SubAccountClient) ListVMHostUpdate(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostUpdateOptions) *SubAccountClientListVMHostUpdatePager {
+	return &SubAccountClientListVMHostUpdatePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listVMHostUpdateCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp SubAccountListVMHostUpdateResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SubAccountClientListVMHostUpdateResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VMResourcesListResponse.NextLink)
 		},
 	}
 }
 
 // listVMHostUpdateCreateRequest creates the ListVMHostUpdate request.
-func (client *SubAccountClient) listVMHostUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountListVMHostUpdateOptions) (*policy.Request, error) {
+func (client *SubAccountClient) listVMHostUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/vmHostUpdate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -435,7 +402,7 @@ func (client *SubAccountClient) listVMHostUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -450,43 +417,34 @@ func (client *SubAccountClient) listVMHostUpdateCreateRequest(ctx context.Contex
 }
 
 // listVMHostUpdateHandleResponse handles the ListVMHostUpdate response.
-func (client *SubAccountClient) listVMHostUpdateHandleResponse(resp *http.Response) (SubAccountListVMHostUpdateResponse, error) {
-	result := SubAccountListVMHostUpdateResponse{RawResponse: resp}
+func (client *SubAccountClient) listVMHostUpdateHandleResponse(resp *http.Response) (SubAccountClientListVMHostUpdateResponse, error) {
+	result := SubAccountClientListVMHostUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMResourcesListResponse); err != nil {
-		return SubAccountListVMHostUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SubAccountClientListVMHostUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// listVMHostUpdateHandleError handles the ListVMHostUpdate error response.
-func (client *SubAccountClient) listVMHostUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListVMHosts - List the compute resources currently being monitored by the Logz sub account resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) ListVMHosts(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountListVMHostsOptions) *SubAccountListVMHostsPager {
-	return &SubAccountListVMHostsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountClientListVMHostsOptions contains the optional parameters for the SubAccountClient.ListVMHosts method.
+func (client *SubAccountClient) ListVMHosts(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostsOptions) *SubAccountClientListVMHostsPager {
+	return &SubAccountClientListVMHostsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listVMHostsCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp SubAccountListVMHostsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SubAccountClientListVMHostsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VMResourcesListResponse.NextLink)
 		},
 	}
 }
 
 // listVMHostsCreateRequest creates the ListVMHosts request.
-func (client *SubAccountClient) listVMHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountListVMHostsOptions) (*policy.Request, error) {
+func (client *SubAccountClient) listVMHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientListVMHostsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/listVMHosts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -504,7 +462,7 @@ func (client *SubAccountClient) listVMHostsCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -516,46 +474,37 @@ func (client *SubAccountClient) listVMHostsCreateRequest(ctx context.Context, re
 }
 
 // listVMHostsHandleResponse handles the ListVMHosts response.
-func (client *SubAccountClient) listVMHostsHandleResponse(resp *http.Response) (SubAccountListVMHostsResponse, error) {
-	result := SubAccountListVMHostsResponse{RawResponse: resp}
+func (client *SubAccountClient) listVMHostsHandleResponse(resp *http.Response) (SubAccountClientListVMHostsResponse, error) {
+	result := SubAccountClientListVMHostsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMResourcesListResponse); err != nil {
-		return SubAccountListVMHostsResponse{}, runtime.NewResponseError(err, resp)
+		return SubAccountClientListVMHostsResponse{}, err
 	}
 	return result, nil
 }
 
-// listVMHostsHandleError handles the ListVMHosts error response.
-func (client *SubAccountClient) listVMHostsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a monitor resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) Update(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountUpdateOptions) (SubAccountUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountClientUpdateOptions contains the optional parameters for the SubAccountClient.Update method.
+func (client *SubAccountClient) Update(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientUpdateOptions) (SubAccountClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
-		return SubAccountUpdateResponse{}, err
+		return SubAccountClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubAccountUpdateResponse{}, err
+		return SubAccountClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubAccountUpdateResponse{}, client.updateHandleError(resp)
+		return SubAccountClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SubAccountClient) updateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountUpdateOptions) (*policy.Request, error) {
+func (client *SubAccountClient) updateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -573,7 +522,7 @@ func (client *SubAccountClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -588,46 +537,38 @@ func (client *SubAccountClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SubAccountClient) updateHandleResponse(resp *http.Response) (SubAccountUpdateResponse, error) {
-	result := SubAccountUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogzMonitorResource); err != nil {
-		return SubAccountUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *SubAccountClient) updateHandleResponse(resp *http.Response) (SubAccountClientUpdateResponse, error) {
+	result := SubAccountClientUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResource); err != nil {
+		return SubAccountClientUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// updateHandleError handles the Update error response.
-func (client *SubAccountClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // VMHostPayload - Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountClient) VMHostPayload(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountVMHostPayloadOptions) (SubAccountVMHostPayloadResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountClientVMHostPayloadOptions contains the optional parameters for the SubAccountClient.VMHostPayload
+// method.
+func (client *SubAccountClient) VMHostPayload(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientVMHostPayloadOptions) (SubAccountClientVMHostPayloadResponse, error) {
 	req, err := client.vmHostPayloadCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 	if err != nil {
-		return SubAccountVMHostPayloadResponse{}, err
+		return SubAccountClientVMHostPayloadResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubAccountVMHostPayloadResponse{}, err
+		return SubAccountClientVMHostPayloadResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubAccountVMHostPayloadResponse{}, client.vmHostPayloadHandleError(resp)
+		return SubAccountClientVMHostPayloadResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.vmHostPayloadHandleResponse(resp)
 }
 
 // vmHostPayloadCreateRequest creates the VMHostPayload request.
-func (client *SubAccountClient) vmHostPayloadCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountVMHostPayloadOptions) (*policy.Request, error) {
+func (client *SubAccountClient) vmHostPayloadCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountClientVMHostPayloadOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/vmHostPayload"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -645,7 +586,7 @@ func (client *SubAccountClient) vmHostPayloadCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -657,23 +598,10 @@ func (client *SubAccountClient) vmHostPayloadCreateRequest(ctx context.Context, 
 }
 
 // vmHostPayloadHandleResponse handles the VMHostPayload response.
-func (client *SubAccountClient) vmHostPayloadHandleResponse(resp *http.Response) (SubAccountVMHostPayloadResponse, error) {
-	result := SubAccountVMHostPayloadResponse{RawResponse: resp}
+func (client *SubAccountClient) vmHostPayloadHandleResponse(resp *http.Response) (SubAccountClientVMHostPayloadResponse, error) {
+	result := SubAccountClientVMHostPayloadResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMExtensionPayload); err != nil {
-		return SubAccountVMHostPayloadResponse{}, runtime.NewResponseError(err, resp)
+		return SubAccountClientVMHostPayloadResponse{}, err
 	}
 	return result, nil
-}
-
-// vmHostPayloadHandleError handles the VMHostPayload error response.
-func (client *SubAccountClient) vmHostPayloadHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

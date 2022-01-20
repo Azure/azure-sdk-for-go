@@ -9,8 +9,8 @@
 package armeventgrid
 
 const (
-	module  = "armeventgrid"
-	version = "v0.2.1"
+	moduleName    = "armeventgrid"
+	moduleVersion = "v0.3.0"
 )
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -18,16 +18,23 @@ type AdvancedFilterOperatorType string
 
 const (
 	AdvancedFilterOperatorTypeBoolEquals                AdvancedFilterOperatorType = "BoolEquals"
+	AdvancedFilterOperatorTypeIsNotNull                 AdvancedFilterOperatorType = "IsNotNull"
+	AdvancedFilterOperatorTypeIsNullOrUndefined         AdvancedFilterOperatorType = "IsNullOrUndefined"
 	AdvancedFilterOperatorTypeNumberGreaterThan         AdvancedFilterOperatorType = "NumberGreaterThan"
 	AdvancedFilterOperatorTypeNumberGreaterThanOrEquals AdvancedFilterOperatorType = "NumberGreaterThanOrEquals"
 	AdvancedFilterOperatorTypeNumberIn                  AdvancedFilterOperatorType = "NumberIn"
+	AdvancedFilterOperatorTypeNumberInRange             AdvancedFilterOperatorType = "NumberInRange"
 	AdvancedFilterOperatorTypeNumberLessThan            AdvancedFilterOperatorType = "NumberLessThan"
 	AdvancedFilterOperatorTypeNumberLessThanOrEquals    AdvancedFilterOperatorType = "NumberLessThanOrEquals"
 	AdvancedFilterOperatorTypeNumberNotIn               AdvancedFilterOperatorType = "NumberNotIn"
+	AdvancedFilterOperatorTypeNumberNotInRange          AdvancedFilterOperatorType = "NumberNotInRange"
 	AdvancedFilterOperatorTypeStringBeginsWith          AdvancedFilterOperatorType = "StringBeginsWith"
 	AdvancedFilterOperatorTypeStringContains            AdvancedFilterOperatorType = "StringContains"
 	AdvancedFilterOperatorTypeStringEndsWith            AdvancedFilterOperatorType = "StringEndsWith"
 	AdvancedFilterOperatorTypeStringIn                  AdvancedFilterOperatorType = "StringIn"
+	AdvancedFilterOperatorTypeStringNotBeginsWith       AdvancedFilterOperatorType = "StringNotBeginsWith"
+	AdvancedFilterOperatorTypeStringNotContains         AdvancedFilterOperatorType = "StringNotContains"
+	AdvancedFilterOperatorTypeStringNotEndsWith         AdvancedFilterOperatorType = "StringNotEndsWith"
 	AdvancedFilterOperatorTypeStringNotIn               AdvancedFilterOperatorType = "StringNotIn"
 )
 
@@ -35,16 +42,23 @@ const (
 func PossibleAdvancedFilterOperatorTypeValues() []AdvancedFilterOperatorType {
 	return []AdvancedFilterOperatorType{
 		AdvancedFilterOperatorTypeBoolEquals,
+		AdvancedFilterOperatorTypeIsNotNull,
+		AdvancedFilterOperatorTypeIsNullOrUndefined,
 		AdvancedFilterOperatorTypeNumberGreaterThan,
 		AdvancedFilterOperatorTypeNumberGreaterThanOrEquals,
 		AdvancedFilterOperatorTypeNumberIn,
+		AdvancedFilterOperatorTypeNumberInRange,
 		AdvancedFilterOperatorTypeNumberLessThan,
 		AdvancedFilterOperatorTypeNumberLessThanOrEquals,
 		AdvancedFilterOperatorTypeNumberNotIn,
+		AdvancedFilterOperatorTypeNumberNotInRange,
 		AdvancedFilterOperatorTypeStringBeginsWith,
 		AdvancedFilterOperatorTypeStringContains,
 		AdvancedFilterOperatorTypeStringEndsWith,
 		AdvancedFilterOperatorTypeStringIn,
+		AdvancedFilterOperatorTypeStringNotBeginsWith,
+		AdvancedFilterOperatorTypeStringNotContains,
+		AdvancedFilterOperatorTypeStringNotEndsWith,
 		AdvancedFilterOperatorTypeStringNotIn,
 	}
 }
@@ -311,8 +325,8 @@ func (c EventDeliverySchema) ToPtr() *EventDeliverySchema {
 	return &c
 }
 
-// EventSubscriptionIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
-// and a set of user-assigned identities. The type 'None' will remove any identity.
+// EventSubscriptionIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
+// an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
 type EventSubscriptionIdentityType string
 
 const (
@@ -383,8 +397,8 @@ func (c IPActionType) ToPtr() *IPActionType {
 	return &c
 }
 
-// IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned
-// identities. The type 'None' will remove any identity.
+// IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+// identity and a set of user-assigned identities. The type 'None' will remove any identity.
 type IdentityType string
 
 const (
@@ -476,8 +490,8 @@ func (c PersistedConnectionStatus) ToPtr() *PersistedConnectionStatus {
 	return &c
 }
 
-// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by
-// configuring
+// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled. You can further
+// restrict to specific IPs by configuring
 type PublicNetworkAccess string
 
 const (

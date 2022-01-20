@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// DedicatedHsmCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type DedicatedHsmCreateOrUpdatePoller struct {
+// DedicatedHsmClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DedicatedHsmClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *DedicatedHsmCreateOrUpdatePoller) Done() bool {
+func (p *DedicatedHsmClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *DedicatedHsmCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *DedicatedHsmCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *DedicatedHsmClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final DedicatedHsmCreateOrUpdateResponse will be returned.
-func (p *DedicatedHsmCreateOrUpdatePoller) FinalResponse(ctx context.Context) (DedicatedHsmCreateOrUpdateResponse, error) {
-	respType := DedicatedHsmCreateOrUpdateResponse{}
+// If the final GET succeeded then the final DedicatedHsmClientCreateOrUpdateResponse will be returned.
+func (p *DedicatedHsmClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (DedicatedHsmClientCreateOrUpdateResponse, error) {
+	respType := DedicatedHsmClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.DedicatedHsm)
 	if err != nil {
-		return DedicatedHsmCreateOrUpdateResponse{}, err
+		return DedicatedHsmClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *DedicatedHsmCreateOrUpdatePoller) FinalResponse(ctx context.Context) (D
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *DedicatedHsmCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *DedicatedHsmClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// DedicatedHsmDeletePoller provides polling facilities until the operation reaches a terminal state.
-type DedicatedHsmDeletePoller struct {
+// DedicatedHsmClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type DedicatedHsmClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *DedicatedHsmDeletePoller) Done() bool {
+func (p *DedicatedHsmClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *DedicatedHsmDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *DedicatedHsmDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *DedicatedHsmClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final DedicatedHsmDeleteResponse will be returned.
-func (p *DedicatedHsmDeletePoller) FinalResponse(ctx context.Context) (DedicatedHsmDeleteResponse, error) {
-	respType := DedicatedHsmDeleteResponse{}
+// If the final GET succeeded then the final DedicatedHsmClientDeleteResponse will be returned.
+func (p *DedicatedHsmClientDeletePoller) FinalResponse(ctx context.Context) (DedicatedHsmClientDeleteResponse, error) {
+	respType := DedicatedHsmClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return DedicatedHsmDeleteResponse{}, err
+		return DedicatedHsmClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *DedicatedHsmDeletePoller) FinalResponse(ctx context.Context) (Dedicated
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *DedicatedHsmDeletePoller) ResumeToken() (string, error) {
+func (p *DedicatedHsmClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// DedicatedHsmUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type DedicatedHsmUpdatePoller struct {
+// DedicatedHsmClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DedicatedHsmClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *DedicatedHsmUpdatePoller) Done() bool {
+func (p *DedicatedHsmClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *DedicatedHsmUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *DedicatedHsmUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *DedicatedHsmClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final DedicatedHsmUpdateResponse will be returned.
-func (p *DedicatedHsmUpdatePoller) FinalResponse(ctx context.Context) (DedicatedHsmUpdateResponse, error) {
-	respType := DedicatedHsmUpdateResponse{}
+// If the final GET succeeded then the final DedicatedHsmClientUpdateResponse will be returned.
+func (p *DedicatedHsmClientUpdatePoller) FinalResponse(ctx context.Context) (DedicatedHsmClientUpdateResponse, error) {
+	respType := DedicatedHsmClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.DedicatedHsm)
 	if err != nil {
-		return DedicatedHsmUpdateResponse{}, err
+		return DedicatedHsmClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,6 +139,6 @@ func (p *DedicatedHsmUpdatePoller) FinalResponse(ctx context.Context) (Dedicated
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *DedicatedHsmUpdatePoller) ResumeToken() (string, error) {
+func (p *DedicatedHsmClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

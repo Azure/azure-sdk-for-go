@@ -27,7 +27,7 @@ func ExampleDatabasesClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.CheckNameRequest{
@@ -38,6 +38,7 @@ func ExampleDatabasesClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DatabasesClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesListByCluster.json
@@ -48,13 +49,14 @@ func ExampleDatabasesClient_ListByCluster() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByCluster(ctx,
+	res, err := client.ListByCluster(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DatabasesClientListByClusterResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesGet.json
@@ -73,7 +75,7 @@ func ExampleDatabasesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	log.Printf("Response result: %#v\n", res.DatabasesClientGetResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseReadonlyUpdate.json
@@ -89,10 +91,8 @@ func ExampleDatabasesClient_BeginCreateOrUpdate() {
 		"<cluster-name>",
 		"<database-name>",
 		&armkusto.ReadOnlyFollowingDatabase{
-			Database: armkusto.Database{
-				Kind:     armkusto.KindReadOnlyFollowing.ToPtr(),
-				Location: to.StringPtr("<location>"),
-			},
+			Kind:     armkusto.Kind("ReadOnlyFollowing").ToPtr(),
+			Location: to.StringPtr("<location>"),
 			Properties: &armkusto.ReadOnlyFollowingDatabaseProperties{
 				HotCachePeriod: to.StringPtr("<hot-cache-period>"),
 			},
@@ -105,7 +105,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	log.Printf("Response result: %#v\n", res.DatabasesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesUpdate.json
@@ -129,7 +129,7 @@ func ExampleDatabasesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	log.Printf("Response result: %#v\n", res.DatabasesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesDelete.json
@@ -162,7 +162,7 @@ func ExampleDatabasesClient_ListPrincipals() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.ListPrincipals(ctx,
+	res, err := client.ListPrincipals(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
@@ -170,6 +170,7 @@ func ExampleDatabasesClient_ListPrincipals() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DatabasesClientListPrincipalsResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseAddPrincipals.json
@@ -180,7 +181,7 @@ func ExampleDatabasesClient_AddPrincipals() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.AddPrincipals(ctx,
+	res, err := client.AddPrincipals(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
@@ -188,33 +189,34 @@ func ExampleDatabasesClient_AddPrincipals() {
 			Value: []*armkusto.DatabasePrincipal{
 				{
 					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeUser.ToPtr(),
+					Type:  armkusto.DatabasePrincipalType("User").ToPtr(),
 					AppID: to.StringPtr("<app-id>"),
 					Email: to.StringPtr("<email>"),
 					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleAdmin.ToPtr(),
+					Role:  armkusto.DatabasePrincipalRole("Admin").ToPtr(),
 				},
 				{
 					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeGroup.ToPtr(),
+					Type:  armkusto.DatabasePrincipalType("Group").ToPtr(),
 					AppID: to.StringPtr("<app-id>"),
 					Email: to.StringPtr("<email>"),
 					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleViewer.ToPtr(),
+					Role:  armkusto.DatabasePrincipalRole("Viewer").ToPtr(),
 				},
 				{
 					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeApp.ToPtr(),
+					Type:  armkusto.DatabasePrincipalType("App").ToPtr(),
 					AppID: to.StringPtr("<app-id>"),
 					Email: to.StringPtr("<email>"),
 					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleAdmin.ToPtr(),
+					Role:  armkusto.DatabasePrincipalRole("Admin").ToPtr(),
 				}},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DatabasesClientAddPrincipalsResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseRemovePrincipals.json
@@ -225,7 +227,7 @@ func ExampleDatabasesClient_RemovePrincipals() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.RemovePrincipals(ctx,
+	res, err := client.RemovePrincipals(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
@@ -233,31 +235,32 @@ func ExampleDatabasesClient_RemovePrincipals() {
 			Value: []*armkusto.DatabasePrincipal{
 				{
 					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeUser.ToPtr(),
+					Type:  armkusto.DatabasePrincipalType("User").ToPtr(),
 					AppID: to.StringPtr("<app-id>"),
 					Email: to.StringPtr("<email>"),
 					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleAdmin.ToPtr(),
+					Role:  armkusto.DatabasePrincipalRole("Admin").ToPtr(),
 				},
 				{
 					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeGroup.ToPtr(),
+					Type:  armkusto.DatabasePrincipalType("Group").ToPtr(),
 					AppID: to.StringPtr("<app-id>"),
 					Email: to.StringPtr("<email>"),
 					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleViewer.ToPtr(),
+					Role:  armkusto.DatabasePrincipalRole("Viewer").ToPtr(),
 				},
 				{
 					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeApp.ToPtr(),
+					Type:  armkusto.DatabasePrincipalType("App").ToPtr(),
 					AppID: to.StringPtr("<app-id>"),
 					Email: to.StringPtr("<email>"),
 					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleAdmin.ToPtr(),
+					Role:  armkusto.DatabasePrincipalRole("Admin").ToPtr(),
 				}},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DatabasesClientRemovePrincipalsResult)
 }

@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,58 @@ import (
 // APIDiagnosticClient contains the methods for the APIDiagnostic group.
 // Don't use this type directly, use NewAPIDiagnosticClient() instead.
 type APIDiagnosticClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAPIDiagnosticClient creates a new instance of APIDiagnosticClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAPIDiagnosticClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIDiagnosticClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &APIDiagnosticClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &APIDiagnosticClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a new Diagnostic for an API or updates an existing one.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIDiagnosticClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, parameters DiagnosticContract, options *APIDiagnosticCreateOrUpdateOptions) (APIDiagnosticCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// diagnosticID - Diagnostic identifier. Must be unique in the current API Management service instance.
+// parameters - Create parameters.
+// options - APIDiagnosticClientCreateOrUpdateOptions contains the optional parameters for the APIDiagnosticClient.CreateOrUpdate
+// method.
+func (client *APIDiagnosticClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, parameters DiagnosticContract, options *APIDiagnosticClientCreateOrUpdateOptions) (APIDiagnosticClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, parameters, options)
 	if err != nil {
-		return APIDiagnosticCreateOrUpdateResponse{}, err
+		return APIDiagnosticClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIDiagnosticCreateOrUpdateResponse{}, err
+		return APIDiagnosticClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return APIDiagnosticCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return APIDiagnosticClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *APIDiagnosticClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, parameters DiagnosticContract, options *APIDiagnosticCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *APIDiagnosticClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, parameters DiagnosticContract, options *APIDiagnosticClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,7 +98,7 @@ func (client *APIDiagnosticClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,49 +113,43 @@ func (client *APIDiagnosticClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *APIDiagnosticClient) createOrUpdateHandleResponse(resp *http.Response) (APIDiagnosticCreateOrUpdateResponse, error) {
-	result := APIDiagnosticCreateOrUpdateResponse{RawResponse: resp}
+func (client *APIDiagnosticClient) createOrUpdateHandleResponse(resp *http.Response) (APIDiagnosticClientCreateOrUpdateResponse, error) {
+	result := APIDiagnosticClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {
-		return APIDiagnosticCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return APIDiagnosticClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *APIDiagnosticClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified Diagnostic from an API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIDiagnosticClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, options *APIDiagnosticDeleteOptions) (APIDiagnosticDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// diagnosticID - Diagnostic identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - APIDiagnosticClientDeleteOptions contains the optional parameters for the APIDiagnosticClient.Delete method.
+func (client *APIDiagnosticClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, options *APIDiagnosticClientDeleteOptions) (APIDiagnosticClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, ifMatch, options)
 	if err != nil {
-		return APIDiagnosticDeleteResponse{}, err
+		return APIDiagnosticClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIDiagnosticDeleteResponse{}, err
+		return APIDiagnosticClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return APIDiagnosticDeleteResponse{}, client.deleteHandleError(resp)
+		return APIDiagnosticClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return APIDiagnosticDeleteResponse{RawResponse: resp}, nil
+	return APIDiagnosticClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APIDiagnosticClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, options *APIDiagnosticDeleteOptions) (*policy.Request, error) {
+func (client *APIDiagnosticClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, options *APIDiagnosticClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -162,7 +171,7 @@ func (client *APIDiagnosticClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,38 +183,30 @@ func (client *APIDiagnosticClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *APIDiagnosticClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the Diagnostic for an API specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIDiagnosticClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticGetOptions) (APIDiagnosticGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// diagnosticID - Diagnostic identifier. Must be unique in the current API Management service instance.
+// options - APIDiagnosticClientGetOptions contains the optional parameters for the APIDiagnosticClient.Get method.
+func (client *APIDiagnosticClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticClientGetOptions) (APIDiagnosticClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, options)
 	if err != nil {
-		return APIDiagnosticGetResponse{}, err
+		return APIDiagnosticClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIDiagnosticGetResponse{}, err
+		return APIDiagnosticClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIDiagnosticGetResponse{}, client.getHandleError(resp)
+		return APIDiagnosticClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *APIDiagnosticClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticGetOptions) (*policy.Request, error) {
+func (client *APIDiagnosticClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -227,7 +228,7 @@ func (client *APIDiagnosticClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,46 +240,38 @@ func (client *APIDiagnosticClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIDiagnosticClient) getHandleResponse(resp *http.Response) (APIDiagnosticGetResponse, error) {
-	result := APIDiagnosticGetResponse{RawResponse: resp}
+func (client *APIDiagnosticClient) getHandleResponse(resp *http.Response) (APIDiagnosticClientGetResponse, error) {
+	result := APIDiagnosticClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {
-		return APIDiagnosticGetResponse{}, runtime.NewResponseError(err, resp)
+		return APIDiagnosticClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *APIDiagnosticClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIDiagnosticClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticGetEntityTagOptions) (APIDiagnosticGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// diagnosticID - Diagnostic identifier. Must be unique in the current API Management service instance.
+// options - APIDiagnosticClientGetEntityTagOptions contains the optional parameters for the APIDiagnosticClient.GetEntityTag
+// method.
+func (client *APIDiagnosticClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticClientGetEntityTagOptions) (APIDiagnosticClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, options)
 	if err != nil {
-		return APIDiagnosticGetEntityTagResponse{}, err
+		return APIDiagnosticClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIDiagnosticGetEntityTagResponse{}, err
+		return APIDiagnosticClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *APIDiagnosticClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticGetEntityTagOptions) (*policy.Request, error) {
+func (client *APIDiagnosticClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,7 +293,7 @@ func (client *APIDiagnosticClient) getEntityTagCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,8 +305,8 @@ func (client *APIDiagnosticClient) getEntityTagCreateRequest(ctx context.Context
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *APIDiagnosticClient) getEntityTagHandleResponse(resp *http.Response) (APIDiagnosticGetEntityTagResponse, error) {
-	result := APIDiagnosticGetEntityTagResponse{RawResponse: resp}
+func (client *APIDiagnosticClient) getEntityTagHandleResponse(resp *http.Response) (APIDiagnosticClientGetEntityTagResponse, error) {
+	result := APIDiagnosticClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -324,21 +317,26 @@ func (client *APIDiagnosticClient) getEntityTagHandleResponse(resp *http.Respons
 }
 
 // ListByService - Lists all diagnostics of an API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIDiagnosticClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIDiagnosticListByServiceOptions) *APIDiagnosticListByServicePager {
-	return &APIDiagnosticListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// options - APIDiagnosticClientListByServiceOptions contains the optional parameters for the APIDiagnosticClient.ListByService
+// method.
+func (client *APIDiagnosticClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIDiagnosticClientListByServiceOptions) *APIDiagnosticClientListByServicePager {
+	return &APIDiagnosticClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp APIDiagnosticListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp APIDiagnosticClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiagnosticCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *APIDiagnosticClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIDiagnosticListByServiceOptions) (*policy.Request, error) {
+func (client *APIDiagnosticClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIDiagnosticClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -356,7 +354,7 @@ func (client *APIDiagnosticClient) listByServiceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -377,46 +375,41 @@ func (client *APIDiagnosticClient) listByServiceCreateRequest(ctx context.Contex
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *APIDiagnosticClient) listByServiceHandleResponse(resp *http.Response) (APIDiagnosticListByServiceResponse, error) {
-	result := APIDiagnosticListByServiceResponse{RawResponse: resp}
+func (client *APIDiagnosticClient) listByServiceHandleResponse(resp *http.Response) (APIDiagnosticClientListByServiceResponse, error) {
+	result := APIDiagnosticClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCollection); err != nil {
-		return APIDiagnosticListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return APIDiagnosticClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *APIDiagnosticClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the details of the Diagnostic for an API specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIDiagnosticClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, parameters DiagnosticContract, options *APIDiagnosticUpdateOptions) (APIDiagnosticUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// diagnosticID - Diagnostic identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Diagnostic Update parameters.
+// options - APIDiagnosticClientUpdateOptions contains the optional parameters for the APIDiagnosticClient.Update method.
+func (client *APIDiagnosticClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, parameters DiagnosticContract, options *APIDiagnosticClientUpdateOptions) (APIDiagnosticClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, ifMatch, parameters, options)
 	if err != nil {
-		return APIDiagnosticUpdateResponse{}, err
+		return APIDiagnosticClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIDiagnosticUpdateResponse{}, err
+		return APIDiagnosticClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIDiagnosticUpdateResponse{}, client.updateHandleError(resp)
+		return APIDiagnosticClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *APIDiagnosticClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, parameters DiagnosticContract, options *APIDiagnosticUpdateOptions) (*policy.Request, error) {
+func (client *APIDiagnosticClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, parameters DiagnosticContract, options *APIDiagnosticClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/diagnostics/{diagnosticId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -438,7 +431,7 @@ func (client *APIDiagnosticClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -451,26 +444,13 @@ func (client *APIDiagnosticClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *APIDiagnosticClient) updateHandleResponse(resp *http.Response) (APIDiagnosticUpdateResponse, error) {
-	result := APIDiagnosticUpdateResponse{RawResponse: resp}
+func (client *APIDiagnosticClient) updateHandleResponse(resp *http.Response) (APIDiagnosticClientUpdateResponse, error) {
+	result := APIDiagnosticClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {
-		return APIDiagnosticUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return APIDiagnosticClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *APIDiagnosticClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

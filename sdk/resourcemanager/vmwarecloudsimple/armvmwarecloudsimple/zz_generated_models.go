@@ -54,7 +54,8 @@ type AvailableOperationDisplayPropertyServiceSpecification struct {
 	ServiceSpecification *AvailableOperationDisplayPropertyServiceSpecificationMetricsList `json:"serviceSpecification,omitempty"`
 }
 
-// AvailableOperationDisplayPropertyServiceSpecificationMetricsItem - Available operation display property service specification metrics item
+// AvailableOperationDisplayPropertyServiceSpecificationMetricsItem - Available operation display property service specification
+// metrics item
 type AvailableOperationDisplayPropertyServiceSpecificationMetricsItem struct {
 	// REQUIRED; Metric's aggregation type for e.g. (Average, Total)
 	AggregationType *AggregationType `json:"aggregationType,omitempty"`
@@ -72,7 +73,8 @@ type AvailableOperationDisplayPropertyServiceSpecificationMetricsItem struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
-// AvailableOperationDisplayPropertyServiceSpecificationMetricsList - List of available operation display property service specification metrics
+// AvailableOperationDisplayPropertyServiceSpecificationMetricsList - List of available operation display property service
+// specification metrics
 type AvailableOperationDisplayPropertyServiceSpecificationMetricsList struct {
 	// Metric specifications of operation
 	MetricSpecifications []*AvailableOperationDisplayPropertyServiceSpecificationMetricsItem `json:"metricSpecifications,omitempty"`
@@ -103,17 +105,9 @@ func (a AvailableOperationsListResponse) MarshalJSON() ([]byte, error) {
 }
 
 // CSRPError - General error model
-// Implements the error and azcore.HTTPResponse interfaces.
 type CSRPError struct {
-	raw string
 	// Error's body
-	InnerError *CSRPErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CSRPError.
-// The contents of the error text are not contractual and subject to change.
-func (e CSRPError) Error() string {
-	return e.raw
+	Error *CSRPErrorBody `json:"error,omitempty"`
 }
 
 // CSRPErrorBody - Error properties
@@ -209,13 +203,13 @@ type CustomizationNicSetting struct {
 	MacAddress *string `json:"macAddress,omitempty"`
 }
 
-// CustomizationPoliciesGetOptions contains the optional parameters for the CustomizationPolicies.Get method.
-type CustomizationPoliciesGetOptions struct {
+// CustomizationPoliciesClientGetOptions contains the optional parameters for the CustomizationPoliciesClient.Get method.
+type CustomizationPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomizationPoliciesListOptions contains the optional parameters for the CustomizationPolicies.List method.
-type CustomizationPoliciesListOptions struct {
+// CustomizationPoliciesClientListOptions contains the optional parameters for the CustomizationPoliciesClient.List method.
+type CustomizationPoliciesClientListOptions struct {
 	// The filter to apply on the list operation. only type is allowed here as a filter e.g. $filter=type eq 'xxxx'
 	Filter *string
 }
@@ -468,23 +462,25 @@ func (d *DedicatedCloudNodeProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DedicatedCloudNodesBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedCloudNodes.BeginCreateOrUpdate method.
-type DedicatedCloudNodesBeginCreateOrUpdateOptions struct {
+// DedicatedCloudNodesClientBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedCloudNodesClient.BeginCreateOrUpdate
+// method.
+type DedicatedCloudNodesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DedicatedCloudNodesDeleteOptions contains the optional parameters for the DedicatedCloudNodes.Delete method.
-type DedicatedCloudNodesDeleteOptions struct {
+// DedicatedCloudNodesClientDeleteOptions contains the optional parameters for the DedicatedCloudNodesClient.Delete method.
+type DedicatedCloudNodesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DedicatedCloudNodesGetOptions contains the optional parameters for the DedicatedCloudNodes.Get method.
-type DedicatedCloudNodesGetOptions struct {
+// DedicatedCloudNodesClientGetOptions contains the optional parameters for the DedicatedCloudNodesClient.Get method.
+type DedicatedCloudNodesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DedicatedCloudNodesListByResourceGroupOptions contains the optional parameters for the DedicatedCloudNodes.ListByResourceGroup method.
-type DedicatedCloudNodesListByResourceGroupOptions struct {
+// DedicatedCloudNodesClientListByResourceGroupOptions contains the optional parameters for the DedicatedCloudNodesClient.ListByResourceGroup
+// method.
+type DedicatedCloudNodesClientListByResourceGroupOptions struct {
 	// The filter to apply on the list operation
 	Filter *string
 	// to be used by nextLink implementation
@@ -493,8 +489,9 @@ type DedicatedCloudNodesListByResourceGroupOptions struct {
 	Top *int32
 }
 
-// DedicatedCloudNodesListBySubscriptionOptions contains the optional parameters for the DedicatedCloudNodes.ListBySubscription method.
-type DedicatedCloudNodesListBySubscriptionOptions struct {
+// DedicatedCloudNodesClientListBySubscriptionOptions contains the optional parameters for the DedicatedCloudNodesClient.ListBySubscription
+// method.
+type DedicatedCloudNodesClientListBySubscriptionOptions struct {
 	// The filter to apply on the list operation
 	Filter *string
 	// to be used by nextLink implementation
@@ -503,8 +500,8 @@ type DedicatedCloudNodesListBySubscriptionOptions struct {
 	Top *int32
 }
 
-// DedicatedCloudNodesUpdateOptions contains the optional parameters for the DedicatedCloudNodes.Update method.
-type DedicatedCloudNodesUpdateOptions struct {
+// DedicatedCloudNodesClientUpdateOptions contains the optional parameters for the DedicatedCloudNodesClient.Update method.
+type DedicatedCloudNodesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -573,23 +570,26 @@ type DedicatedCloudServiceProperties struct {
 	ServiceURL *string `json:"serviceURL,omitempty" azure:"ro"`
 }
 
-// DedicatedCloudServicesBeginDeleteOptions contains the optional parameters for the DedicatedCloudServices.BeginDelete method.
-type DedicatedCloudServicesBeginDeleteOptions struct {
+// DedicatedCloudServicesClientBeginDeleteOptions contains the optional parameters for the DedicatedCloudServicesClient.BeginDelete
+// method.
+type DedicatedCloudServicesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DedicatedCloudServicesCreateOrUpdateOptions contains the optional parameters for the DedicatedCloudServices.CreateOrUpdate method.
-type DedicatedCloudServicesCreateOrUpdateOptions struct {
+// DedicatedCloudServicesClientCreateOrUpdateOptions contains the optional parameters for the DedicatedCloudServicesClient.CreateOrUpdate
+// method.
+type DedicatedCloudServicesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DedicatedCloudServicesGetOptions contains the optional parameters for the DedicatedCloudServices.Get method.
-type DedicatedCloudServicesGetOptions struct {
+// DedicatedCloudServicesClientGetOptions contains the optional parameters for the DedicatedCloudServicesClient.Get method.
+type DedicatedCloudServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DedicatedCloudServicesListByResourceGroupOptions contains the optional parameters for the DedicatedCloudServices.ListByResourceGroup method.
-type DedicatedCloudServicesListByResourceGroupOptions struct {
+// DedicatedCloudServicesClientListByResourceGroupOptions contains the optional parameters for the DedicatedCloudServicesClient.ListByResourceGroup
+// method.
+type DedicatedCloudServicesClientListByResourceGroupOptions struct {
 	// The filter to apply on the list operation
 	Filter *string
 	// to be used by nextLink implementation
@@ -598,8 +598,9 @@ type DedicatedCloudServicesListByResourceGroupOptions struct {
 	Top *int32
 }
 
-// DedicatedCloudServicesListBySubscriptionOptions contains the optional parameters for the DedicatedCloudServices.ListBySubscription method.
-type DedicatedCloudServicesListBySubscriptionOptions struct {
+// DedicatedCloudServicesClientListBySubscriptionOptions contains the optional parameters for the DedicatedCloudServicesClient.ListBySubscription
+// method.
+type DedicatedCloudServicesClientListBySubscriptionOptions struct {
 	// The filter to apply on the list operation
 	Filter *string
 	// to be used by nextLink implementation
@@ -608,8 +609,9 @@ type DedicatedCloudServicesListBySubscriptionOptions struct {
 	Top *int32
 }
 
-// DedicatedCloudServicesUpdateOptions contains the optional parameters for the DedicatedCloudServices.Update method.
-type DedicatedCloudServicesUpdateOptions struct {
+// DedicatedCloudServicesClientUpdateOptions contains the optional parameters for the DedicatedCloudServicesClient.Update
+// method.
+type DedicatedCloudServicesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -756,13 +758,13 @@ func (o *OperationResource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// OperationsGetOptions contains the optional parameters for the Operations.Get method.
-type OperationsGetOptions struct {
+// OperationsClientGetOptions contains the optional parameters for the OperationsClient.Get method.
+type OperationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1008,13 +1010,13 @@ func (p *PrivateCloudProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// PrivateCloudsGetOptions contains the optional parameters for the PrivateClouds.Get method.
-type PrivateCloudsGetOptions struct {
+// PrivateCloudsClientGetOptions contains the optional parameters for the PrivateCloudsClient.Get method.
+type PrivateCloudsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateCloudsListOptions contains the optional parameters for the PrivateClouds.List method.
-type PrivateCloudsListOptions struct {
+// PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
+type PrivateCloudsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1045,13 +1047,13 @@ type ResourcePoolProperties struct {
 	FullName *string `json:"fullName,omitempty" azure:"ro"`
 }
 
-// ResourcePoolsGetOptions contains the optional parameters for the ResourcePools.Get method.
-type ResourcePoolsGetOptions struct {
+// ResourcePoolsClientGetOptions contains the optional parameters for the ResourcePoolsClient.Get method.
+type ResourcePoolsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourcePoolsListOptions contains the optional parameters for the ResourcePools.List method.
-type ResourcePoolsListOptions struct {
+// ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.List method.
+type ResourcePoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1080,8 +1082,8 @@ type SKU struct {
 	// The capacity of the SKU
 	Capacity *string `json:"capacity,omitempty"`
 
-	// dedicatedCloudNode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640 v4 2.40GHz 25MB Cache (90W); 12 x 64GB PC4-19200 2400MHz DDR4 ECC Registered
-	// DIMM, …
+	// dedicatedCloudNode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640 v4 2.40GHz 25MB Cache (90W); 12 x 64GB PC4-19200
+	// 2400MHz DDR4 ECC Registered DIMM, …
 	Description *string `json:"description,omitempty"`
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here
@@ -1144,8 +1146,8 @@ type SKUDescription struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// SKUsAvailabilityListOptions contains the optional parameters for the SKUsAvailability.List method.
-type SKUsAvailabilityListOptions struct {
+// SKUsAvailabilityClientListOptions contains the optional parameters for the SKUsAvailabilityClient.List method.
+type SKUsAvailabilityClientListOptions struct {
 	// sku id, if no sku is passed availability for all skus will be returned
 	SKUID *string
 }
@@ -1155,8 +1157,8 @@ type Usage struct {
 	// REQUIRED; The current usage value
 	CurrentValue *int32 `json:"currentValue,omitempty"`
 
-	// REQUIRED; limit of a given sku in a region for a subscription. The maximum permitted value for the usage quota. If there is no limit, this value will
-	// be -1
+	// REQUIRED; limit of a given sku in a region for a subscription. The maximum permitted value for the usage quota. If there
+	// is no limit, this value will be -1
 	Limit *int32 `json:"limit,omitempty"`
 
 	// Usage name value and localized name
@@ -1192,8 +1194,8 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// UsagesListOptions contains the optional parameters for the Usages.List method.
-type UsagesListOptions struct {
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+type UsagesClientListOptions struct {
 	// The filter to apply on the list operation. only name.value is allowed here as a filter e.g. $filter=name.value eq 'xxxx'
 	Filter *string
 }
@@ -1484,51 +1486,53 @@ func (v VirtualMachineTemplateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachineTemplatesGetOptions contains the optional parameters for the VirtualMachineTemplates.Get method.
-type VirtualMachineTemplatesGetOptions struct {
+// VirtualMachineTemplatesClientGetOptions contains the optional parameters for the VirtualMachineTemplatesClient.Get method.
+type VirtualMachineTemplatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachineTemplatesListOptions contains the optional parameters for the VirtualMachineTemplates.List method.
-type VirtualMachineTemplatesListOptions struct {
+// VirtualMachineTemplatesClientListOptions contains the optional parameters for the VirtualMachineTemplatesClient.List method.
+type VirtualMachineTemplatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachines.BeginCreateOrUpdate method.
-type VirtualMachinesBeginCreateOrUpdateOptions struct {
+// VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
+// method.
+type VirtualMachinesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesBeginDeleteOptions contains the optional parameters for the VirtualMachines.BeginDelete method.
-type VirtualMachinesBeginDeleteOptions struct {
+// VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete method.
+type VirtualMachinesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesBeginStartOptions contains the optional parameters for the VirtualMachines.BeginStart method.
-type VirtualMachinesBeginStartOptions struct {
+// VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart method.
+type VirtualMachinesClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesBeginStopOptions contains the optional parameters for the VirtualMachines.BeginStop method.
-type VirtualMachinesBeginStopOptions struct {
-	// body stop mode parameter (reboot, shutdown, etc...)
+// VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop method.
+type VirtualMachinesClientBeginStopOptions struct {
+	// body stop mode parameter (reboot, shutdown, etc…)
 	M *VirtualMachineStopMode
-	// query stop mode parameter (reboot, shutdown, etc...)
+	// query stop mode parameter (reboot, shutdown, etc…)
 	Mode *StopMode
 }
 
-// VirtualMachinesBeginUpdateOptions contains the optional parameters for the VirtualMachines.BeginUpdate method.
-type VirtualMachinesBeginUpdateOptions struct {
+// VirtualMachinesClientBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate method.
+type VirtualMachinesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesGetOptions contains the optional parameters for the VirtualMachines.Get method.
-type VirtualMachinesGetOptions struct {
+// VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
+type VirtualMachinesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesListByResourceGroupOptions contains the optional parameters for the VirtualMachines.ListByResourceGroup method.
-type VirtualMachinesListByResourceGroupOptions struct {
+// VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.ListByResourceGroup
+// method.
+type VirtualMachinesClientListByResourceGroupOptions struct {
 	// The filter to apply on the list operation
 	Filter *string
 	// to be used by nextLink implementation
@@ -1537,8 +1541,9 @@ type VirtualMachinesListByResourceGroupOptions struct {
 	Top *int32
 }
 
-// VirtualMachinesListBySubscriptionOptions contains the optional parameters for the VirtualMachines.ListBySubscription method.
-type VirtualMachinesListBySubscriptionOptions struct {
+// VirtualMachinesClientListBySubscriptionOptions contains the optional parameters for the VirtualMachinesClient.ListBySubscription
+// method.
+type VirtualMachinesClientListBySubscriptionOptions struct {
 	// The filter to apply on the list operation
 	Filter *string
 	// to be used by nextLink implementation
@@ -1591,13 +1596,13 @@ type VirtualNetworkProperties struct {
 	PrivateCloudID *string `json:"privateCloudId,omitempty" azure:"ro"`
 }
 
-// VirtualNetworksGetOptions contains the optional parameters for the VirtualNetworks.Get method.
-type VirtualNetworksGetOptions struct {
+// VirtualNetworksClientGetOptions contains the optional parameters for the VirtualNetworksClient.Get method.
+type VirtualNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworksListOptions contains the optional parameters for the VirtualNetworks.List method.
-type VirtualNetworksListOptions struct {
+// VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.List method.
+type VirtualNetworksClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

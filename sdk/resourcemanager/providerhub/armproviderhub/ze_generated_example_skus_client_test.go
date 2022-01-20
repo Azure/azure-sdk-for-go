@@ -33,7 +33,7 @@ func ExampleSKUsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SKUResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SKUsClientGetResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_CreateOrUpdate.json
@@ -50,30 +50,28 @@ func ExampleSKUsClient_CreateOrUpdate() {
 		"<sku>",
 		armproviderhub.SKUResource{
 			Properties: &armproviderhub.SKUResourceProperties{
-				ResourceTypeSKU: armproviderhub.ResourceTypeSKU{
-					SKUSettings: []*armproviderhub.SKUSetting{
-						{
-							Name: to.StringPtr("<name>"),
-							Kind: to.StringPtr("<kind>"),
-							Tier: to.StringPtr("<tier>"),
-						},
-						{
-							Name: to.StringPtr("<name>"),
-							Costs: []*armproviderhub.SKUCost{
-								{
-									MeterID: to.StringPtr("<meter-id>"),
-								}},
-							Kind: to.StringPtr("<kind>"),
-							Tier: to.StringPtr("<tier>"),
-						}},
-				},
+				SKUSettings: []*armproviderhub.SKUSetting{
+					{
+						Name: to.StringPtr("<name>"),
+						Kind: to.StringPtr("<kind>"),
+						Tier: to.StringPtr("<tier>"),
+					},
+					{
+						Name: to.StringPtr("<name>"),
+						Costs: []*armproviderhub.SKUCost{
+							{
+								MeterID: to.StringPtr("<meter-id>"),
+							}},
+						Kind: to.StringPtr("<kind>"),
+						Tier: to.StringPtr("<tier>"),
+					}},
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SKUResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SKUsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_Delete.json
@@ -111,7 +109,7 @@ func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SKUResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SKUsClientGetNestedResourceTypeFirstResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_CreateOrUpdateNestedResourceTypeFirst.json
@@ -129,30 +127,28 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 		"<sku>",
 		armproviderhub.SKUResource{
 			Properties: &armproviderhub.SKUResourceProperties{
-				ResourceTypeSKU: armproviderhub.ResourceTypeSKU{
-					SKUSettings: []*armproviderhub.SKUSetting{
-						{
-							Name: to.StringPtr("<name>"),
-							Kind: to.StringPtr("<kind>"),
-							Tier: to.StringPtr("<tier>"),
-						},
-						{
-							Name: to.StringPtr("<name>"),
-							Costs: []*armproviderhub.SKUCost{
-								{
-									MeterID: to.StringPtr("<meter-id>"),
-								}},
-							Kind: to.StringPtr("<kind>"),
-							Tier: to.StringPtr("<tier>"),
-						}},
-				},
+				SKUSettings: []*armproviderhub.SKUSetting{
+					{
+						Name: to.StringPtr("<name>"),
+						Kind: to.StringPtr("<kind>"),
+						Tier: to.StringPtr("<tier>"),
+					},
+					{
+						Name: to.StringPtr("<name>"),
+						Costs: []*armproviderhub.SKUCost{
+							{
+								MeterID: to.StringPtr("<meter-id>"),
+							}},
+						Kind: to.StringPtr("<kind>"),
+						Tier: to.StringPtr("<tier>"),
+					}},
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SKUResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SKUsClientCreateOrUpdateNestedResourceTypeFirstResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_DeleteNestedResourceTypeFirst.json
@@ -192,7 +188,7 @@ func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SKUResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SKUsClientGetNestedResourceTypeSecondResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_CreateOrUpdateNestedResourceTypeSecond.json
@@ -211,30 +207,28 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 		"<sku>",
 		armproviderhub.SKUResource{
 			Properties: &armproviderhub.SKUResourceProperties{
-				ResourceTypeSKU: armproviderhub.ResourceTypeSKU{
-					SKUSettings: []*armproviderhub.SKUSetting{
-						{
-							Name: to.StringPtr("<name>"),
-							Kind: to.StringPtr("<kind>"),
-							Tier: to.StringPtr("<tier>"),
-						},
-						{
-							Name: to.StringPtr("<name>"),
-							Costs: []*armproviderhub.SKUCost{
-								{
-									MeterID: to.StringPtr("<meter-id>"),
-								}},
-							Kind: to.StringPtr("<kind>"),
-							Tier: to.StringPtr("<tier>"),
-						}},
-				},
+				SKUSettings: []*armproviderhub.SKUSetting{
+					{
+						Name: to.StringPtr("<name>"),
+						Kind: to.StringPtr("<kind>"),
+						Tier: to.StringPtr("<tier>"),
+					},
+					{
+						Name: to.StringPtr("<name>"),
+						Costs: []*armproviderhub.SKUCost{
+							{
+								MeterID: to.StringPtr("<meter-id>"),
+							}},
+						Kind: to.StringPtr("<kind>"),
+						Tier: to.StringPtr("<tier>"),
+					}},
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SKUResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SKUsClientCreateOrUpdateNestedResourceTypeSecondResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_DeleteNestedResourceTypeSecond.json
@@ -276,7 +270,7 @@ func ExampleSKUsClient_GetNestedResourceTypeThird() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SKUResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SKUsClientGetNestedResourceTypeThirdResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_CreateOrUpdateNestedResourceTypeThird.json
@@ -296,30 +290,28 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 		"<sku>",
 		armproviderhub.SKUResource{
 			Properties: &armproviderhub.SKUResourceProperties{
-				ResourceTypeSKU: armproviderhub.ResourceTypeSKU{
-					SKUSettings: []*armproviderhub.SKUSetting{
-						{
-							Name: to.StringPtr("<name>"),
-							Kind: to.StringPtr("<kind>"),
-							Tier: to.StringPtr("<tier>"),
-						},
-						{
-							Name: to.StringPtr("<name>"),
-							Costs: []*armproviderhub.SKUCost{
-								{
-									MeterID: to.StringPtr("<meter-id>"),
-								}},
-							Kind: to.StringPtr("<kind>"),
-							Tier: to.StringPtr("<tier>"),
-						}},
-				},
+				SKUSettings: []*armproviderhub.SKUSetting{
+					{
+						Name: to.StringPtr("<name>"),
+						Kind: to.StringPtr("<kind>"),
+						Tier: to.StringPtr("<tier>"),
+					},
+					{
+						Name: to.StringPtr("<name>"),
+						Costs: []*armproviderhub.SKUCost{
+							{
+								MeterID: to.StringPtr("<meter-id>"),
+							}},
+						Kind: to.StringPtr("<kind>"),
+						Tier: to.StringPtr("<tier>"),
+					}},
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SKUResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SKUsClientCreateOrUpdateNestedResourceTypeThirdResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_DeleteNestedResourceTypeThird.json
@@ -354,12 +346,16 @@ func ExampleSKUsClient_ListByResourceTypeRegistrations() {
 	pager := client.ListByResourceTypeRegistrations("<provider-namespace>",
 		"<resource-type>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SKUResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -376,12 +372,16 @@ func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeFirst() 
 		"<resource-type>",
 		"<nested-resource-type-first>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SKUResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -399,12 +399,16 @@ func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeSecond()
 		"<nested-resource-type-first>",
 		"<nested-resource-type-second>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SKUResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -423,12 +427,16 @@ func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeThird() 
 		"<nested-resource-type-second>",
 		"<nested-resource-type-third>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SKUResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

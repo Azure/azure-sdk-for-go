@@ -24,42 +24,57 @@ import (
 // ManagementPoliciesClient contains the methods for the ManagementPolicies group.
 // Don't use this type directly, use NewManagementPoliciesClient() instead.
 type ManagementPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagementPoliciesClient creates a new instance of ManagementPoliciesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagementPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagementPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagementPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Sets the managementpolicy to the specified storage account.
-// If the operation fails it returns a generic error.
-func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (ManagementPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// accountName - The name of the storage account within the specified resource group. Storage account names must be between
+// 3 and 24 characters in length and use numbers and lower-case letters only.
+// managementPolicyName - The name of the Storage Account Management Policy. It should always be 'default'
+// properties - The ManagementPolicy set to a storage account.
+// options - ManagementPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ManagementPoliciesClient.CreateOrUpdate
+// method.
+func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesClientCreateOrUpdateOptions) (ManagementPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, properties, options)
 	if err != nil {
-		return ManagementPoliciesCreateOrUpdateResponse{}, err
+		return ManagementPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementPoliciesCreateOrUpdateResponse{}, err
+		return ManagementPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ManagementPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagementPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagementPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,57 +92,51 @@ func (client *ManagementPoliciesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter managementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementPolicyName}", url.PathEscape(string(managementPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagementPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ManagementPoliciesCreateOrUpdateResponse, error) {
-	result := ManagementPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ManagementPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ManagementPoliciesClientCreateOrUpdateResponse, error) {
+	result := ManagementPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementPolicy); err != nil {
-		return ManagementPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagementPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes the managementpolicy associated with the specified storage account.
-// If the operation fails it returns a generic error.
-func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (ManagementPoliciesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// accountName - The name of the storage account within the specified resource group. Storage account names must be between
+// 3 and 24 characters in length and use numbers and lower-case letters only.
+// managementPolicyName - The name of the Storage Account Management Policy. It should always be 'default'
+// options - ManagementPoliciesClientDeleteOptions contains the optional parameters for the ManagementPoliciesClient.Delete
+// method.
+func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesClientDeleteOptions) (ManagementPoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
-		return ManagementPoliciesDeleteResponse{}, err
+		return ManagementPoliciesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementPoliciesDeleteResponse{}, err
+		return ManagementPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ManagementPoliciesDeleteResponse{}, client.deleteHandleError(resp)
+		return ManagementPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagementPoliciesDeleteResponse{RawResponse: resp}, nil
+	return ManagementPoliciesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ManagementPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*policy.Request, error) {
+func (client *ManagementPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -145,47 +154,40 @@ func (client *ManagementPoliciesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter managementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementPolicyName}", url.PathEscape(string(managementPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ManagementPoliciesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the managementpolicy associated with the specified storage account.
-// If the operation fails it returns a generic error.
-func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (ManagementPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// accountName - The name of the storage account within the specified resource group. Storage account names must be between
+// 3 and 24 characters in length and use numbers and lower-case letters only.
+// managementPolicyName - The name of the Storage Account Management Policy. It should always be 'default'
+// options - ManagementPoliciesClientGetOptions contains the optional parameters for the ManagementPoliciesClient.Get method.
+func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesClientGetOptions) (ManagementPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
-		return ManagementPoliciesGetResponse{}, err
+		return ManagementPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementPoliciesGetResponse{}, err
+		return ManagementPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementPoliciesGetResponse{}, client.getHandleError(resp)
+		return ManagementPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagementPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*policy.Request, error) {
+func (client *ManagementPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -203,34 +205,22 @@ func (client *ManagementPoliciesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter managementPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementPolicyName}", url.PathEscape(string(managementPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagementPoliciesClient) getHandleResponse(resp *http.Response) (ManagementPoliciesGetResponse, error) {
-	result := ManagementPoliciesGetResponse{RawResponse: resp}
+func (client *ManagementPoliciesClient) getHandleResponse(resp *http.Response) (ManagementPoliciesClientGetResponse, error) {
+	result := ManagementPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementPolicy); err != nil {
-		return ManagementPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementPoliciesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ManagementPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

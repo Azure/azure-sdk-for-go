@@ -25,46 +25,60 @@ import (
 // SystemTopicsClient contains the methods for the SystemTopics group.
 // Don't use this type directly, use NewSystemTopicsClient() instead.
 type SystemTopicsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSystemTopicsClient creates a new instance of SystemTopicsClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSystemTopicsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SystemTopicsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SystemTopicsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SystemTopicsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Asynchronously creates a new system topic with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicInfo SystemTopic, options *SystemTopicsBeginCreateOrUpdateOptions) (SystemTopicsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// systemTopicName - Name of the system topic.
+// systemTopicInfo - System Topic information.
+// options - SystemTopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the SystemTopicsClient.BeginCreateOrUpdate
+// method.
+func (client *SystemTopicsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicInfo SystemTopic, options *SystemTopicsClientBeginCreateOrUpdateOptions) (SystemTopicsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, systemTopicName, systemTopicInfo, options)
 	if err != nil {
-		return SystemTopicsCreateOrUpdatePollerResponse{}, err
+		return SystemTopicsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := SystemTopicsCreateOrUpdatePollerResponse{
+	result := SystemTopicsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SystemTopicsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("SystemTopicsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return SystemTopicsCreateOrUpdatePollerResponse{}, err
+		return SystemTopicsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &SystemTopicsCreateOrUpdatePoller{
+	result.Poller = &SystemTopicsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Asynchronously creates a new system topic with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicInfo SystemTopic, options *SystemTopicsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SystemTopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicInfo SystemTopic, options *SystemTopicsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, systemTopicName, systemTopicInfo, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *SystemTopicsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SystemTopicsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicInfo SystemTopic, options *SystemTopicsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SystemTopicsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicInfo SystemTopic, options *SystemTopicsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics/{systemTopicName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +108,7 @@ func (client *SystemTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter systemTopicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{systemTopicName}", url.PathEscape(systemTopicName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,41 +119,33 @@ func (client *SystemTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, systemTopicInfo)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SystemTopicsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Delete existing system topic.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsBeginDeleteOptions) (SystemTopicsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// systemTopicName - Name of the system topic.
+// options - SystemTopicsClientBeginDeleteOptions contains the optional parameters for the SystemTopicsClient.BeginDelete
+// method.
+func (client *SystemTopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientBeginDeleteOptions) (SystemTopicsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, systemTopicName, options)
 	if err != nil {
-		return SystemTopicsDeletePollerResponse{}, err
+		return SystemTopicsClientDeletePollerResponse{}, err
 	}
-	result := SystemTopicsDeletePollerResponse{
+	result := SystemTopicsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SystemTopicsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SystemTopicsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return SystemTopicsDeletePollerResponse{}, err
+		return SystemTopicsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SystemTopicsDeletePoller{
+	result.Poller = &SystemTopicsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete existing system topic.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SystemTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, systemTopicName, options)
 	if err != nil {
 		return nil, err
@@ -149,13 +155,13 @@ func (client *SystemTopicsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SystemTopicsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsBeginDeleteOptions) (*policy.Request, error) {
+func (client *SystemTopicsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics/{systemTopicName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -169,7 +175,7 @@ func (client *SystemTopicsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter systemTopicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{systemTopicName}", url.PathEscape(systemTopicName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,37 +185,28 @@ func (client *SystemTopicsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SystemTopicsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get properties of a system topic.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) Get(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsGetOptions) (SystemTopicsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// systemTopicName - Name of the system topic.
+// options - SystemTopicsClientGetOptions contains the optional parameters for the SystemTopicsClient.Get method.
+func (client *SystemTopicsClient) Get(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientGetOptions) (SystemTopicsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, systemTopicName, options)
 	if err != nil {
-		return SystemTopicsGetResponse{}, err
+		return SystemTopicsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SystemTopicsGetResponse{}, err
+		return SystemTopicsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SystemTopicsGetResponse{}, client.getHandleError(resp)
+		return SystemTopicsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SystemTopicsClient) getCreateRequest(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsGetOptions) (*policy.Request, error) {
+func (client *SystemTopicsClient) getCreateRequest(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics/{systemTopicName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -223,7 +220,7 @@ func (client *SystemTopicsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter systemTopicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{systemTopicName}", url.PathEscape(systemTopicName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,42 +232,33 @@ func (client *SystemTopicsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *SystemTopicsClient) getHandleResponse(resp *http.Response) (SystemTopicsGetResponse, error) {
-	result := SystemTopicsGetResponse{RawResponse: resp}
+func (client *SystemTopicsClient) getHandleResponse(resp *http.Response) (SystemTopicsClientGetResponse, error) {
+	result := SystemTopicsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemTopic); err != nil {
-		return SystemTopicsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SystemTopicsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SystemTopicsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroup - List all the system topics under a resource group.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) ListByResourceGroup(resourceGroupName string, options *SystemTopicsListByResourceGroupOptions) *SystemTopicsListByResourceGroupPager {
-	return &SystemTopicsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// options - SystemTopicsClientListByResourceGroupOptions contains the optional parameters for the SystemTopicsClient.ListByResourceGroup
+// method.
+func (client *SystemTopicsClient) ListByResourceGroup(resourceGroupName string, options *SystemTopicsClientListByResourceGroupOptions) *SystemTopicsClientListByResourceGroupPager {
+	return &SystemTopicsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp SystemTopicsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SystemTopicsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SystemTopicsListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SystemTopicsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SystemTopicsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *SystemTopicsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SystemTopicsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -280,7 +268,7 @@ func (client *SystemTopicsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -298,48 +286,38 @@ func (client *SystemTopicsClient) listByResourceGroupCreateRequest(ctx context.C
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SystemTopicsClient) listByResourceGroupHandleResponse(resp *http.Response) (SystemTopicsListByResourceGroupResponse, error) {
-	result := SystemTopicsListByResourceGroupResponse{RawResponse: resp}
+func (client *SystemTopicsClient) listByResourceGroupHandleResponse(resp *http.Response) (SystemTopicsClientListByResourceGroupResponse, error) {
+	result := SystemTopicsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemTopicsListResult); err != nil {
-		return SystemTopicsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return SystemTopicsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *SystemTopicsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListBySubscription - List all the system topics under an Azure subscription.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) ListBySubscription(options *SystemTopicsListBySubscriptionOptions) *SystemTopicsListBySubscriptionPager {
-	return &SystemTopicsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SystemTopicsClientListBySubscriptionOptions contains the optional parameters for the SystemTopicsClient.ListBySubscription
+// method.
+func (client *SystemTopicsClient) ListBySubscription(options *SystemTopicsClientListBySubscriptionOptions) *SystemTopicsClientListBySubscriptionPager {
+	return &SystemTopicsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SystemTopicsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SystemTopicsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SystemTopicsListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SystemTopicsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SystemTopicsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *SystemTopicsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SystemTopicsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/systemTopics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,49 +335,42 @@ func (client *SystemTopicsClient) listBySubscriptionCreateRequest(ctx context.Co
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SystemTopicsClient) listBySubscriptionHandleResponse(resp *http.Response) (SystemTopicsListBySubscriptionResponse, error) {
-	result := SystemTopicsListBySubscriptionResponse{RawResponse: resp}
+func (client *SystemTopicsClient) listBySubscriptionHandleResponse(resp *http.Response) (SystemTopicsClientListBySubscriptionResponse, error) {
+	result := SystemTopicsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemTopicsListResult); err != nil {
-		return SystemTopicsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return SystemTopicsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *SystemTopicsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Asynchronously updates a system topic with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) BeginUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicUpdateParameters SystemTopicUpdateParameters, options *SystemTopicsBeginUpdateOptions) (SystemTopicsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// systemTopicName - Name of the system topic.
+// systemTopicUpdateParameters - SystemTopic update information.
+// options - SystemTopicsClientBeginUpdateOptions contains the optional parameters for the SystemTopicsClient.BeginUpdate
+// method.
+func (client *SystemTopicsClient) BeginUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicUpdateParameters SystemTopicUpdateParameters, options *SystemTopicsClientBeginUpdateOptions) (SystemTopicsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, systemTopicName, systemTopicUpdateParameters, options)
 	if err != nil {
-		return SystemTopicsUpdatePollerResponse{}, err
+		return SystemTopicsClientUpdatePollerResponse{}, err
 	}
-	result := SystemTopicsUpdatePollerResponse{
+	result := SystemTopicsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SystemTopicsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("SystemTopicsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return SystemTopicsUpdatePollerResponse{}, err
+		return SystemTopicsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &SystemTopicsUpdatePoller{
+	result.Poller = &SystemTopicsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Asynchronously updates a system topic with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *SystemTopicsClient) update(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicUpdateParameters SystemTopicUpdateParameters, options *SystemTopicsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SystemTopicsClient) update(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicUpdateParameters SystemTopicUpdateParameters, options *SystemTopicsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, systemTopicName, systemTopicUpdateParameters, options)
 	if err != nil {
 		return nil, err
@@ -409,13 +380,13 @@ func (client *SystemTopicsClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SystemTopicsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicUpdateParameters SystemTopicUpdateParameters, options *SystemTopicsBeginUpdateOptions) (*policy.Request, error) {
+func (client *SystemTopicsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, systemTopicName string, systemTopicUpdateParameters SystemTopicUpdateParameters, options *SystemTopicsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/systemTopics/{systemTopicName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -429,7 +400,7 @@ func (client *SystemTopicsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter systemTopicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{systemTopicName}", url.PathEscape(systemTopicName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -438,16 +409,4 @@ func (client *SystemTopicsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, systemTopicUpdateParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *SystemTopicsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

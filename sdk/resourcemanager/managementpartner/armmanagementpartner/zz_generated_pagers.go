@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// OperationListPager provides operations for iterating over paged responses.
-type OperationListPager struct {
+// OperationClientListPager provides operations for iterating over paged responses.
+type OperationClientListPager struct {
 	client    *OperationClient
-	current   OperationListResponse
+	current   OperationClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationListPager) Err() error {
+func (p *OperationClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationListPager) NextPage(ctx context.Context) bool {
+func (p *OperationClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *OperationListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,7 +65,7 @@ func (p *OperationListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationListResponse page.
-func (p *OperationListPager) PageResponse() OperationListResponse {
+// PageResponse returns the current OperationClientListResponse page.
+func (p *OperationClientListPager) PageResponse() OperationClientListResponse {
 	return p.current
 }

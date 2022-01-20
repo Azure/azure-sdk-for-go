@@ -27,7 +27,7 @@ func ExampleSnapshotsClient_List() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewSnapshotsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<pool-name>",
@@ -36,6 +36,7 @@ func ExampleSnapshotsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SnapshotsClientListResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Snapshots_Get.json
@@ -56,7 +57,7 @@ func ExampleSnapshotsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Snapshot.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SnapshotsClientGetResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Snapshots_Create.json
@@ -80,11 +81,10 @@ func ExampleSnapshotsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Snapshot.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Snapshots_Update.json
@@ -110,7 +110,7 @@ func ExampleSnapshotsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Snapshot.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SnapshotsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Snapshots_Delete.json

@@ -27,12 +27,16 @@ func ExampleDataCollectionEndpointsClient_ListByResourceGroup() {
 	client := armmonitor.NewDataCollectionEndpointsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataCollectionEndpointResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -46,12 +50,16 @@ func ExampleDataCollectionEndpointsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmonitor.NewDataCollectionEndpointsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataCollectionEndpointResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -71,7 +79,7 @@ func ExampleDataCollectionEndpointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataCollectionEndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataCollectionEndpointsClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionEndpointsCreate.json
@@ -85,15 +93,11 @@ func ExampleDataCollectionEndpointsClient_Create() {
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<data-collection-endpoint-name>",
-		&armmonitor.DataCollectionEndpointsCreateOptions{Body: &armmonitor.DataCollectionEndpointResource{
+		&armmonitor.DataCollectionEndpointsClientCreateOptions{Body: &armmonitor.DataCollectionEndpointResource{
 			Location: to.StringPtr("<location>"),
 			Properties: &armmonitor.DataCollectionEndpointResourceProperties{
-				DataCollectionEndpoint: armmonitor.DataCollectionEndpoint{
-					NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
-						NetworkRuleSet: armmonitor.NetworkRuleSet{
-							PublicNetworkAccess: armmonitor.KnownPublicNetworkAccessOptionsEnabled.ToPtr(),
-						},
-					},
+				NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
+					PublicNetworkAccess: armmonitor.KnownPublicNetworkAccessOptions("Enabled").ToPtr(),
 				},
 			},
 		},
@@ -101,7 +105,7 @@ func ExampleDataCollectionEndpointsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataCollectionEndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataCollectionEndpointsClientCreateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionEndpointsUpdate.json
@@ -115,7 +119,7 @@ func ExampleDataCollectionEndpointsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<data-collection-endpoint-name>",
-		&armmonitor.DataCollectionEndpointsUpdateOptions{Body: &armmonitor.ResourceForUpdate{
+		&armmonitor.DataCollectionEndpointsClientUpdateOptions{Body: &armmonitor.ResourceForUpdate{
 			Tags: map[string]*string{
 				"tag1": to.StringPtr("A"),
 				"tag2": to.StringPtr("B"),
@@ -126,7 +130,7 @@ func ExampleDataCollectionEndpointsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataCollectionEndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataCollectionEndpointsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionEndpointsDelete.json

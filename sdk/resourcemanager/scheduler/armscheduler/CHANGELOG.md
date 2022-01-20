@@ -1,14 +1,226 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*JobCollectionsClient.Patch` parameter(s) have been changed from `(context.Context, string, string, JobCollectionDefinition, *JobCollectionsPatchOptions)` to `(context.Context, string, string, JobCollectionDefinition, *JobCollectionsClientPatchOptions)`
+- Function `*JobCollectionsClient.Patch` return value(s) have been changed from `(JobCollectionsPatchResponse, error)` to `(JobCollectionsClientPatchResponse, error)`
+- Function `*JobCollectionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, JobCollectionDefinition, *JobCollectionsCreateOrUpdateOptions)` to `(context.Context, string, string, JobCollectionDefinition, *JobCollectionsClientCreateOrUpdateOptions)`
+- Function `*JobCollectionsClient.CreateOrUpdate` return value(s) have been changed from `(JobCollectionsCreateOrUpdateResponse, error)` to `(JobCollectionsClientCreateOrUpdateResponse, error)`
+- Function `*JobsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, JobDefinition, *JobsCreateOrUpdateOptions)` to `(context.Context, string, string, string, JobDefinition, *JobsClientCreateOrUpdateOptions)`
+- Function `*JobsClient.CreateOrUpdate` return value(s) have been changed from `(JobsCreateOrUpdateResponse, error)` to `(JobsClientCreateOrUpdateResponse, error)`
+- Function `*JobCollectionsClient.ListBySubscription` parameter(s) have been changed from `(*JobCollectionsListBySubscriptionOptions)` to `(*JobCollectionsClientListBySubscriptionOptions)`
+- Function `*JobCollectionsClient.ListBySubscription` return value(s) have been changed from `(*JobCollectionsListBySubscriptionPager)` to `(*JobCollectionsClientListBySubscriptionPager)`
+- Function `*JobsClient.Run` parameter(s) have been changed from `(context.Context, string, string, string, *JobsRunOptions)` to `(context.Context, string, string, string, *JobsClientRunOptions)`
+- Function `*JobsClient.Run` return value(s) have been changed from `(JobsRunResponse, error)` to `(JobsClientRunResponse, error)`
+- Function `*JobsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *JobsDeleteOptions)` to `(context.Context, string, string, string, *JobsClientDeleteOptions)`
+- Function `*JobsClient.Delete` return value(s) have been changed from `(JobsDeleteResponse, error)` to `(JobsClientDeleteResponse, error)`
+- Function `*JobsClient.Patch` parameter(s) have been changed from `(context.Context, string, string, string, JobDefinition, *JobsPatchOptions)` to `(context.Context, string, string, string, JobDefinition, *JobsClientPatchOptions)`
+- Function `*JobsClient.Patch` return value(s) have been changed from `(JobsPatchResponse, error)` to `(JobsClientPatchResponse, error)`
+- Function `*JobCollectionsClient.BeginEnable` parameter(s) have been changed from `(context.Context, string, string, *JobCollectionsBeginEnableOptions)` to `(context.Context, string, string, *JobCollectionsClientBeginEnableOptions)`
+- Function `*JobCollectionsClient.BeginEnable` return value(s) have been changed from `(JobCollectionsEnablePollerResponse, error)` to `(JobCollectionsClientEnablePollerResponse, error)`
+- Function `*JobCollectionsClient.BeginDisable` parameter(s) have been changed from `(context.Context, string, string, *JobCollectionsBeginDisableOptions)` to `(context.Context, string, string, *JobCollectionsClientBeginDisableOptions)`
+- Function `*JobCollectionsClient.BeginDisable` return value(s) have been changed from `(JobCollectionsDisablePollerResponse, error)` to `(JobCollectionsClientDisablePollerResponse, error)`
+- Function `*JobsClient.ListJobHistory` parameter(s) have been changed from `(string, string, string, *JobsListJobHistoryOptions)` to `(string, string, string, *JobsClientListJobHistoryOptions)`
+- Function `*JobsClient.ListJobHistory` return value(s) have been changed from `(*JobsListJobHistoryPager)` to `(*JobsClientListJobHistoryPager)`
+- Function `*JobsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *JobsGetOptions)` to `(context.Context, string, string, string, *JobsClientGetOptions)`
+- Function `*JobsClient.Get` return value(s) have been changed from `(JobsGetResponse, error)` to `(JobsClientGetResponse, error)`
+- Function `*JobCollectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *JobCollectionsGetOptions)` to `(context.Context, string, string, *JobCollectionsClientGetOptions)`
+- Function `*JobCollectionsClient.Get` return value(s) have been changed from `(JobCollectionsGetResponse, error)` to `(JobCollectionsClientGetResponse, error)`
+- Function `*JobsClient.List` parameter(s) have been changed from `(string, string, *JobsListOptions)` to `(string, string, *JobsClientListOptions)`
+- Function `*JobsClient.List` return value(s) have been changed from `(*JobsListPager)` to `(*JobsClientListPager)`
+- Function `*JobCollectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *JobCollectionsBeginDeleteOptions)` to `(context.Context, string, string, *JobCollectionsClientBeginDeleteOptions)`
+- Function `*JobCollectionsClient.BeginDelete` return value(s) have been changed from `(JobCollectionsDeletePollerResponse, error)` to `(JobCollectionsClientDeletePollerResponse, error)`
+- Function `*JobCollectionsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *JobCollectionsListByResourceGroupOptions)` to `(string, *JobCollectionsClientListByResourceGroupOptions)`
+- Function `*JobCollectionsClient.ListByResourceGroup` return value(s) have been changed from `(*JobCollectionsListByResourceGroupPager)` to `(*JobCollectionsClientListByResourceGroupPager)`
+- Function `*JobsListPager.PageResponse` has been removed
+- Function `*JobCollectionsDeletePoller.Done` has been removed
+- Function `*JobCollectionsListBySubscriptionPager.Err` has been removed
+- Function `*JobCollectionsDisablePoller.Poll` has been removed
+- Function `*JobCollectionsEnablePoller.FinalResponse` has been removed
+- Function `*JobCollectionsListByResourceGroupPager.Err` has been removed
+- Function `*JobsListJobHistoryPager.NextPage` has been removed
+- Function `*JobCollectionsDeletePoller.FinalResponse` has been removed
+- Function `*JobsListJobHistoryPager.PageResponse` has been removed
+- Function `*JobCollectionsDeletePoller.ResumeToken` has been removed
+- Function `*JobCollectionsDisablePoller.FinalResponse` has been removed
+- Function `*HTTPAuthentication.UnmarshalJSON` has been removed
+- Function `JobCollectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*JobCollectionsDeletePollerResponse.Resume` has been removed
+- Function `JobCollectionsEnablePollerResponse.PollUntilDone` has been removed
+- Function `JobCollectionsDisablePollerResponse.PollUntilDone` has been removed
+- Function `*JobCollectionsEnablePollerResponse.Resume` has been removed
+- Function `*JobCollectionsDeletePoller.Poll` has been removed
+- Function `*JobCollectionsEnablePoller.Poll` has been removed
+- Function `*JobCollectionsDisablePoller.ResumeToken` has been removed
+- Function `*JobsListJobHistoryPager.Err` has been removed
+- Function `*JobCollectionsEnablePoller.Done` has been removed
+- Function `*JobsListPager.NextPage` has been removed
+- Function `*JobsListPager.Err` has been removed
+- Function `*JobCollectionsListBySubscriptionPager.PageResponse` has been removed
+- Function `*JobCollectionsDisablePoller.Done` has been removed
+- Function `*JobCollectionsListBySubscriptionPager.NextPage` has been removed
+- Function `*JobCollectionsListByResourceGroupPager.NextPage` has been removed
+- Function `*JobCollectionsEnablePoller.ResumeToken` has been removed
+- Function `*JobCollectionsDisablePollerResponse.Resume` has been removed
+- Function `*JobCollectionsListByResourceGroupPager.PageResponse` has been removed
+- Struct `JobCollectionsBeginDeleteOptions` has been removed
+- Struct `JobCollectionsBeginDisableOptions` has been removed
+- Struct `JobCollectionsBeginEnableOptions` has been removed
+- Struct `JobCollectionsCreateOrUpdateOptions` has been removed
+- Struct `JobCollectionsCreateOrUpdateResponse` has been removed
+- Struct `JobCollectionsCreateOrUpdateResult` has been removed
+- Struct `JobCollectionsDeletePoller` has been removed
+- Struct `JobCollectionsDeletePollerResponse` has been removed
+- Struct `JobCollectionsDeleteResponse` has been removed
+- Struct `JobCollectionsDisablePoller` has been removed
+- Struct `JobCollectionsDisablePollerResponse` has been removed
+- Struct `JobCollectionsDisableResponse` has been removed
+- Struct `JobCollectionsEnablePoller` has been removed
+- Struct `JobCollectionsEnablePollerResponse` has been removed
+- Struct `JobCollectionsEnableResponse` has been removed
+- Struct `JobCollectionsGetOptions` has been removed
+- Struct `JobCollectionsGetResponse` has been removed
+- Struct `JobCollectionsGetResult` has been removed
+- Struct `JobCollectionsListByResourceGroupOptions` has been removed
+- Struct `JobCollectionsListByResourceGroupPager` has been removed
+- Struct `JobCollectionsListByResourceGroupResponse` has been removed
+- Struct `JobCollectionsListByResourceGroupResult` has been removed
+- Struct `JobCollectionsListBySubscriptionOptions` has been removed
+- Struct `JobCollectionsListBySubscriptionPager` has been removed
+- Struct `JobCollectionsListBySubscriptionResponse` has been removed
+- Struct `JobCollectionsListBySubscriptionResult` has been removed
+- Struct `JobCollectionsPatchOptions` has been removed
+- Struct `JobCollectionsPatchResponse` has been removed
+- Struct `JobCollectionsPatchResult` has been removed
+- Struct `JobsCreateOrUpdateOptions` has been removed
+- Struct `JobsCreateOrUpdateResponse` has been removed
+- Struct `JobsCreateOrUpdateResult` has been removed
+- Struct `JobsDeleteOptions` has been removed
+- Struct `JobsDeleteResponse` has been removed
+- Struct `JobsGetOptions` has been removed
+- Struct `JobsGetResponse` has been removed
+- Struct `JobsGetResult` has been removed
+- Struct `JobsListJobHistoryOptions` has been removed
+- Struct `JobsListJobHistoryPager` has been removed
+- Struct `JobsListJobHistoryResponse` has been removed
+- Struct `JobsListJobHistoryResult` has been removed
+- Struct `JobsListOptions` has been removed
+- Struct `JobsListPager` has been removed
+- Struct `JobsListResponse` has been removed
+- Struct `JobsListResult` has been removed
+- Struct `JobsPatchOptions` has been removed
+- Struct `JobsPatchResponse` has been removed
+- Struct `JobsPatchResult` has been removed
+- Struct `JobsRunOptions` has been removed
+- Struct `JobsRunResponse` has been removed
+- Field `HTTPAuthentication` of struct `ClientCertAuthentication` has been removed
+- Field `ServiceBusMessage` of struct `ServiceBusTopicMessage` has been removed
+- Field `HTTPAuthentication` of struct `BasicAuthentication` has been removed
+- Field `ServiceBusMessage` of struct `ServiceBusQueueMessage` has been removed
+- Field `HTTPAuthentication` of struct `OAuthAuthentication` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*JobCollectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobsClientListJobHistoryPager.NextPage(context.Context) bool`
+- New function `*JobCollectionsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*JobsClientListPager.PageResponse() JobsClientListResponse`
+- New function `*JobCollectionsClientDisablePoller.FinalResponse(context.Context) (JobCollectionsClientDisableResponse, error)`
+- New function `*BasicAuthentication.GetHTTPAuthentication() *HTTPAuthentication`
+- New function `*JobCollectionsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*JobCollectionsClientDeletePoller.Done() bool`
+- New function `*JobsClientListJobHistoryPager.Err() error`
+- New function `*JobCollectionsClientListByResourceGroupPager.PageResponse() JobCollectionsClientListByResourceGroupResponse`
+- New function `*JobCollectionsClientDisablePoller.Done() bool`
+- New function `*JobCollectionsClientDisablePoller.ResumeToken() (string, error)`
+- New function `JobCollectionsClientDisablePollerResponse.PollUntilDone(context.Context, time.Duration) (JobCollectionsClientDisableResponse, error)`
+- New function `*JobCollectionsClientListByResourceGroupPager.Err() error`
+- New function `*JobCollectionsClientDeletePollerResponse.Resume(context.Context, *JobCollectionsClient, string) error`
+- New function `*JobCollectionsClientListBySubscriptionPager.Err() error`
+- New function `*JobsClientListJobHistoryPager.PageResponse() JobsClientListJobHistoryResponse`
+- New function `*JobCollectionsClientEnablePollerResponse.Resume(context.Context, *JobCollectionsClient, string) error`
+- New function `*JobCollectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*JobCollectionsClientEnablePoller.ResumeToken() (string, error)`
+- New function `*JobCollectionsClientEnablePoller.Done() bool`
+- New function `*OAuthAuthentication.GetHTTPAuthentication() *HTTPAuthentication`
+- New function `JobCollectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (JobCollectionsClientDeleteResponse, error)`
+- New function `*JobCollectionsClientDeletePoller.FinalResponse(context.Context) (JobCollectionsClientDeleteResponse, error)`
+- New function `*JobsClientListPager.NextPage(context.Context) bool`
+- New function `*ClientCertAuthentication.GetHTTPAuthentication() *HTTPAuthentication`
+- New function `*JobCollectionsClientEnablePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobCollectionsClientListBySubscriptionPager.PageResponse() JobCollectionsClientListBySubscriptionResponse`
+- New function `*JobsClientListPager.Err() error`
+- New function `*JobCollectionsClientDisablePollerResponse.Resume(context.Context, *JobCollectionsClient, string) error`
+- New function `*JobCollectionsClientDisablePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobCollectionsClientEnablePoller.FinalResponse(context.Context) (JobCollectionsClientEnableResponse, error)`
+- New function `JobCollectionsClientEnablePollerResponse.PollUntilDone(context.Context, time.Duration) (JobCollectionsClientEnableResponse, error)`
+- New struct `JobCollectionsClientBeginDeleteOptions`
+- New struct `JobCollectionsClientBeginDisableOptions`
+- New struct `JobCollectionsClientBeginEnableOptions`
+- New struct `JobCollectionsClientCreateOrUpdateOptions`
+- New struct `JobCollectionsClientCreateOrUpdateResponse`
+- New struct `JobCollectionsClientCreateOrUpdateResult`
+- New struct `JobCollectionsClientDeletePoller`
+- New struct `JobCollectionsClientDeletePollerResponse`
+- New struct `JobCollectionsClientDeleteResponse`
+- New struct `JobCollectionsClientDisablePoller`
+- New struct `JobCollectionsClientDisablePollerResponse`
+- New struct `JobCollectionsClientDisableResponse`
+- New struct `JobCollectionsClientEnablePoller`
+- New struct `JobCollectionsClientEnablePollerResponse`
+- New struct `JobCollectionsClientEnableResponse`
+- New struct `JobCollectionsClientGetOptions`
+- New struct `JobCollectionsClientGetResponse`
+- New struct `JobCollectionsClientGetResult`
+- New struct `JobCollectionsClientListByResourceGroupOptions`
+- New struct `JobCollectionsClientListByResourceGroupPager`
+- New struct `JobCollectionsClientListByResourceGroupResponse`
+- New struct `JobCollectionsClientListByResourceGroupResult`
+- New struct `JobCollectionsClientListBySubscriptionOptions`
+- New struct `JobCollectionsClientListBySubscriptionPager`
+- New struct `JobCollectionsClientListBySubscriptionResponse`
+- New struct `JobCollectionsClientListBySubscriptionResult`
+- New struct `JobCollectionsClientPatchOptions`
+- New struct `JobCollectionsClientPatchResponse`
+- New struct `JobCollectionsClientPatchResult`
+- New struct `JobsClientCreateOrUpdateOptions`
+- New struct `JobsClientCreateOrUpdateResponse`
+- New struct `JobsClientCreateOrUpdateResult`
+- New struct `JobsClientDeleteOptions`
+- New struct `JobsClientDeleteResponse`
+- New struct `JobsClientGetOptions`
+- New struct `JobsClientGetResponse`
+- New struct `JobsClientGetResult`
+- New struct `JobsClientListJobHistoryOptions`
+- New struct `JobsClientListJobHistoryPager`
+- New struct `JobsClientListJobHistoryResponse`
+- New struct `JobsClientListJobHistoryResult`
+- New struct `JobsClientListOptions`
+- New struct `JobsClientListPager`
+- New struct `JobsClientListResponse`
+- New struct `JobsClientListResult`
+- New struct `JobsClientPatchOptions`
+- New struct `JobsClientPatchResponse`
+- New struct `JobsClientPatchResult`
+- New struct `JobsClientRunOptions`
+- New struct `JobsClientRunResponse`
+- New field `Namespace` in struct `ServiceBusTopicMessage`
+- New field `TransportType` in struct `ServiceBusTopicMessage`
+- New field `Authentication` in struct `ServiceBusTopicMessage`
+- New field `BrokeredMessageProperties` in struct `ServiceBusTopicMessage`
+- New field `CustomMessageProperties` in struct `ServiceBusTopicMessage`
+- New field `Message` in struct `ServiceBusTopicMessage`
+- New field `BrokeredMessageProperties` in struct `ServiceBusQueueMessage`
+- New field `CustomMessageProperties` in struct `ServiceBusQueueMessage`
+- New field `Message` in struct `ServiceBusQueueMessage`
+- New field `Namespace` in struct `ServiceBusQueueMessage`
+- New field `TransportType` in struct `ServiceBusQueueMessage`
+- New field `Authentication` in struct `ServiceBusQueueMessage`
+- New field `Type` in struct `ClientCertAuthentication`
+- New field `Type` in struct `OAuthAuthentication`
+- New field `Type` in struct `BasicAuthentication`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

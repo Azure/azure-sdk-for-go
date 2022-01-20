@@ -138,10 +138,10 @@ function StartMockServer()
     if ($swaggerInfo.isRepoUrl -eq $true) {
         Add-Content $envFile "specRetrievalGitUrl=$swaggerPath"
         if ([string]::IsNullOrEmpty($swaggerInfo.branch) -eq $false) {
-            Add-Content $envFile "specRetrievalGitBranch=$(swaggerInfo.branch)"
+            Add-Content $envFile "specRetrievalGitBranch=$($swaggerInfo.branch)"
         }
         if ([string]::IsNullOrEmpty($swaggerInfo.commitID) -eq $false) {
-            Add-Content $envFile "specRetrievalGitCommitID=$(swaggerInfo.commitID)"
+            Add-Content $envFile "specRetrievalGitCommitID=$($swaggerInfo.commitID)"
         }
         Add-Content $envFile "validationPathsPattern=specification/$specName/resource-manager/**/*.json"
     } else {

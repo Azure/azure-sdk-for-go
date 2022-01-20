@@ -221,6 +221,11 @@ func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkI
 		return err
 	}
 
+	// We'll recreate the link if:
+	// - `created` is true, meaning we recreated the AMQP connection (ie, all old links are invalid)
+	// - the link they received an error on is our current link, so it needs to be recreated.
+	//   (if it wasn't the same then we've already recovered and created a new link,
+	//    so no recovery would be needed)
 	if created || theirID.Link == links.id.Link {
 		log.Writef(EventConn, "recreating link: c: %v, current:%v, old:%v", created, links.id, theirID)
 		if err := links.initWithoutLocking(ctx); err != nil {

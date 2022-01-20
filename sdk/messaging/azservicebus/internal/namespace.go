@@ -37,7 +37,7 @@ type (
 		// See:
 		//   Godoc: https://pkg.go.dev/sync/atomic#pkg-note-BUG
 		//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
-		clientRevision uint64
+		connID uint64
 
 		FQDN          string
 		TokenProvider *sbauth.TokenProvider
@@ -240,8 +240,11 @@ func (ns *Namespace) Close(ctx context.Context) error {
 	return nil
 }
 
-// Recover destroys the currently held client and recreates it.
-func (ns *Namespace) Recover(ctx context.Context, theirRevision uint64) (bool, error) {
+// Recover destroys the currently held AMQP connection and recreates it, if needed.
+// If a new is actually created (rather than just cached) then the returned bool
+// will be true. Any links that were created from the original connection will need to
+// be recreated.
+func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, error) {
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
 
@@ -249,11 +252,11 @@ func (ns *Namespace) Recover(ctx context.Context, theirRevision uint64) (bool, e
 	defer span.End()
 
 	span.AddAttributes(
-		tab.Int64Attribute("revision", int64(ns.clientRevision)),
-		tab.Int64Attribute("requested", int64(theirRevision)))
+		tab.Int64Attribute("connID", int64(ns.connID)),
+		tab.Int64Attribute("theirConnID", int64(theirConnID)))
 
-	if ns.clientRevision != theirRevision {
-		log.Writef(EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.clientRevision, theirRevision)
+	if ns.connID != theirConnID {
+		log.Writef(EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.connID, theirConnID)
 		// we've already recovered since the client last tried.
 		return false, nil
 	}
@@ -267,15 +270,15 @@ func (ns *Namespace) Recover(ctx context.Context, theirRevision uint64) (bool, e
 	}
 
 	var err error
-	log.Writef(EventConn, "Creating a new client (rev:%d)", ns.clientRevision)
+	log.Writef(EventConn, "Creating a new client (rev:%d)", ns.connID)
 	ns.client, err = ns.newClient(ctx)
 
 	if err != nil {
 		return false, err
 	}
 
-	ns.clientRevision++
-	log.Writef(EventConn, "New client created, (rev: %d)", ns.clientRevision)
+	ns.connID++
+	log.Writef(EventConn, "New client created, (rev: %d)", ns.connID)
 	return true, nil
 }
 
@@ -401,17 +404,17 @@ func (ns *Namespace) GetAMQPClientImpl(ctx context.Context) (*amqp.Client, uint6
 	defer ns.clientMu.Unlock()
 
 	if ns.client != nil {
-		return ns.client, ns.clientRevision, nil
+		return ns.client, ns.connID, nil
 	}
 
 	var err error
 	ns.client, err = ns.newClient(ctx)
 
 	if err == nil {
-		ns.clientRevision++
+		ns.connID++
 	}
 
-	return ns.client, ns.clientRevision, err
+	return ns.client, ns.connID, err
 }
 
 func (ns *Namespace) getWSSHostURI() string {

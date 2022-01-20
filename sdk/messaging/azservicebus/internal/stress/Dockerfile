@@ -5,7 +5,7 @@ ENV GOARCH=amd64
 ENV CGO_ENABLED=0
 ADD . /src
 WORKDIR /src/internal/stress
-RUN go build -race -o stress .
+RUN go build -o stress .
 
 FROM alpine
 RUN mkdir -p /app

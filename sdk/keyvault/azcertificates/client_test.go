@@ -60,7 +60,19 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, pollerResp.ID)
 
-	cleanUp(t, client, certName)
+	defer cleanUp(t, client, certName)
+
+	// want to interface with x509 std library
+
+	mid := base64.StdEncoding.EncodeToString(pollerResp.Csr)
+	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
+
+	// load certificate request
+	csrblock, _ := pem.Decode([]byte(csr))
+	require.NotNil(t, csrblock)
+	req, err := x509.ParseCertificateRequest(csrblock.Bytes)
+	require.NoError(t, err)
+	require.NoError(t, req.CheckSignature())
 }
 
 func TestClient_BeginDeleteCertificate(t *testing.T) {
@@ -543,6 +555,15 @@ func TestCRUDOperations(t *testing.T) {
 	// Make sure certificates are the same
 	require.Equal(t, *finalResp.ID, *received.ID)
 
+	// Make sure we can interface with x509 library
+	mid := base64.StdEncoding.EncodeToString(received.Cer)
+	cer := fmt.Sprintf("-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----", mid)
+	block, _ := pem.Decode([]byte(cer))
+	require.NotNil(t, block)
+	parsedCert, err := x509.ParseCertificate(block.Bytes)
+	require.NoError(t, err)
+	require.NotNil(t, parsedCert)
+
 	// Update the policy
 	policy.KeyProperties.KeyType = JSONWebKeyTypeEC.ToPtr()
 	policy.KeyProperties.KeySize = to.Int32Ptr(256)
@@ -775,8 +796,8 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 	pager := client.ListDeletedCertificates(nil)
 	deletedCount := 0
 	for pager.NextPage(ctx) {
-		deletedCount += len(pager.PageResponse().Value)
-		for _, val := range pager.PageResponse().Value {
+		deletedCount += len(pager.PageResponse().Certificates)
+		for _, val := range pager.PageResponse().Certificates {
 			_, _ = client.PurgeDeletedCertificate(ctx, *val.ID, nil)
 		}
 	}

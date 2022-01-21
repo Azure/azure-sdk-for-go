@@ -18,10 +18,6 @@
 - Struct `ErrorAdditionalInfo` has been removed
 - Struct `ErrorResponse` has been removed
 
-### Features Added
-
-
-
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

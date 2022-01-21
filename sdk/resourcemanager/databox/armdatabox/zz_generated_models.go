@@ -15,17 +15,65 @@ import (
 	"time"
 )
 
-// Implements the error and azcore.HTTPResponse interfaces.
-type APIError struct {
-	raw string
-	// REQUIRED
-	InnerError *ErrorDetail `json:"error,omitempty"`
+// AccountCopyLogDetails - Copy log details for a storage account of a DataBox job
+type AccountCopyLogDetails struct {
+	// REQUIRED; Indicates the type of job details.
+	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+
+	// READ-ONLY; Account name.
+	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Link for copy logs.
+	CopyLogLink *string `json:"copyLogLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Link for copy verbose logs. This will be set only when LogCollectionLevel is set to Verbose.
+	CopyVerboseLogLink *string `json:"copyVerboseLogLink,omitempty" azure:"ro"`
 }
 
-// Error implements the error interface for type APIError.
-// The contents of the error text are not contractual and subject to change.
-func (e APIError) Error() string {
-	return e.raw
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type AccountCopyLogDetails.
+func (a *AccountCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
+	return &CopyLogDetails{
+		CopyLogDetailsType: a.CopyLogDetailsType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountCopyLogDetails.
+func (a AccountCopyLogDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accountName", a.AccountName)
+	objectMap["copyLogDetailsType"] = ClassDiscriminatorDataBox
+	populate(objectMap, "copyLogLink", a.CopyLogLink)
+	populate(objectMap, "copyVerboseLogLink", a.CopyVerboseLogLink)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccountCopyLogDetails.
+func (a *AccountCopyLogDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accountName":
+			err = unpopulate(val, &a.AccountName)
+			delete(rawMsg, key)
+		case "copyLogDetailsType":
+			err = unpopulate(val, &a.CopyLogDetailsType)
+			delete(rawMsg, key)
+		case "copyLogLink":
+			err = unpopulate(val, &a.CopyLogLink)
+			delete(rawMsg, key)
+		case "copyVerboseLogLink":
+			err = unpopulate(val, &a.CopyVerboseLogLink)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AccountCredentialDetails - Credential details of the account.
@@ -56,7 +104,7 @@ func (a AccountCredentialDetails) MarshalJSON() ([]byte, error) {
 // AdditionalErrorInfo - Additional error info.
 type AdditionalErrorInfo struct {
 	// Additional error info.
-	Info map[string]interface{} `json:"info,omitempty"`
+	Info interface{} `json:"info,omitempty"`
 
 	// Additional error type.
 	Type *string `json:"type,omitempty"`
@@ -70,20 +118,34 @@ type AddressValidationOutput struct {
 
 // AddressValidationProperties - The address validation output.
 type AddressValidationProperties struct {
-	ValidationInputResponse
+	// REQUIRED; Identifies the type of validation response.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+
 	// READ-ONLY; List of alternate addresses.
 	AlternateAddresses []*ShippingAddress `json:"alternateAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY; Error code and message of validation response.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
 
 	// READ-ONLY; The address validation status.
 	ValidationStatus *AddressValidationStatus `json:"validationStatus,omitempty" azure:"ro"`
 }
 
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type AddressValidationProperties.
+func (a *AddressValidationProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: a.ValidationType,
+		Error:          a.Error,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AddressValidationProperties.
 func (a AddressValidationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ValidationInputResponse.marshalInternal(objectMap, ValidationInputDiscriminatorValidateAddress)
 	populate(objectMap, "alternateAddresses", a.AlternateAddresses)
+	populate(objectMap, "error", a.Error)
 	populate(objectMap, "validationStatus", a.ValidationStatus)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateAddress
 	return json.Marshal(objectMap)
 }
 
@@ -99,16 +161,19 @@ func (a *AddressValidationProperties) UnmarshalJSON(data []byte) error {
 		case "alternateAddresses":
 			err = unpopulate(val, &a.AlternateAddresses)
 			delete(rawMsg, key)
+		case "error":
+			err = unpopulate(val, &a.Error)
+			delete(rawMsg, key)
 		case "validationStatus":
 			err = unpopulate(val, &a.ValidationStatus)
+			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &a.ValidationType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ValidationInputResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -120,18 +185,6 @@ type ApplianceNetworkConfiguration struct {
 
 	// READ-ONLY; Name of the network.
 	Name *string `json:"name,omitempty" azure:"ro"`
-}
-
-// ArmBaseObject - Base class for all objects under resource.
-type ArmBaseObject struct {
-	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AvailableSKURequest - The filters for showing the available skus.
@@ -253,6 +306,221 @@ func (c CloudError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// CommonJobDetailsClassification provides polymorphic access to related types.
+// Call the interface's GetCommonJobDetails() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CommonJobDetails, *CustomerDiskJobDetails, *DiskJobDetails, *HeavyJobDetails, *JobDetails
+type CommonJobDetailsClassification interface {
+	// GetCommonJobDetails returns the CommonJobDetails content of the underlying type.
+	GetCommonJobDetails() *CommonJobDetails
+}
+
+// CommonJobDetails - Job details.
+type CommonJobDetails struct {
+	// REQUIRED; Contact details for notification and shipping.
+	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+
+	// REQUIRED; Indicates the type of job details.
+	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+
+	// Details of the data to be exported from azure.
+	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+
+	// Details of the data to be imported into azure.
+	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+
+	// The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+
+	// Details about which key encryption type is being used.
+	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+
+	// Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+
+	// Shipping address of the customer.
+	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+
+	// READ-ONLY; Available actions on the job.
+	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of copy log details.
+	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; DataCenter code.
+	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of stages that run in the job.
+	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+
+	// READ-ONLY; Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type CommonJobDetails.
+func (c *CommonJobDetails) GetCommonJobDetails() *CommonJobDetails { return c }
+
+// MarshalJSON implements the json.Marshaller interface for type CommonJobDetails.
+func (c CommonJobDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", c.Actions)
+	populate(objectMap, "chainOfCustodySasKey", c.ChainOfCustodySasKey)
+	populate(objectMap, "contactDetails", c.ContactDetails)
+	populate(objectMap, "copyLogDetails", c.CopyLogDetails)
+	populate(objectMap, "dataCenterCode", c.DataCenterCode)
+	populate(objectMap, "dataExportDetails", c.DataExportDetails)
+	populate(objectMap, "dataImportDetails", c.DataImportDetails)
+	populate(objectMap, "datacenterAddress", c.DatacenterAddress)
+	populate(objectMap, "deliveryPackage", c.DeliveryPackage)
+	populate(objectMap, "expectedDataSizeInTeraBytes", c.ExpectedDataSizeInTeraBytes)
+	objectMap["jobDetailsType"] = c.JobDetailsType
+	populate(objectMap, "jobStages", c.JobStages)
+	populate(objectMap, "keyEncryptionKey", c.KeyEncryptionKey)
+	populate(objectMap, "lastMitigationActionOnJob", c.LastMitigationActionOnJob)
+	populate(objectMap, "preferences", c.Preferences)
+	populate(objectMap, "returnPackage", c.ReturnPackage)
+	populate(objectMap, "reverseShipmentLabelSasKey", c.ReverseShipmentLabelSasKey)
+	populate(objectMap, "shippingAddress", c.ShippingAddress)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CommonJobDetails.
+func (c *CommonJobDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actions":
+			err = unpopulate(val, &c.Actions)
+			delete(rawMsg, key)
+		case "chainOfCustodySasKey":
+			err = unpopulate(val, &c.ChainOfCustodySasKey)
+			delete(rawMsg, key)
+		case "contactDetails":
+			err = unpopulate(val, &c.ContactDetails)
+			delete(rawMsg, key)
+		case "copyLogDetails":
+			c.CopyLogDetails, err = unmarshalCopyLogDetailsClassificationArray(val)
+			delete(rawMsg, key)
+		case "dataCenterCode":
+			err = unpopulate(val, &c.DataCenterCode)
+			delete(rawMsg, key)
+		case "dataExportDetails":
+			err = unpopulate(val, &c.DataExportDetails)
+			delete(rawMsg, key)
+		case "dataImportDetails":
+			err = unpopulate(val, &c.DataImportDetails)
+			delete(rawMsg, key)
+		case "datacenterAddress":
+			c.DatacenterAddress, err = unmarshalDatacenterAddressResponseClassification(val)
+			delete(rawMsg, key)
+		case "deliveryPackage":
+			err = unpopulate(val, &c.DeliveryPackage)
+			delete(rawMsg, key)
+		case "expectedDataSizeInTeraBytes":
+			err = unpopulate(val, &c.ExpectedDataSizeInTeraBytes)
+			delete(rawMsg, key)
+		case "jobDetailsType":
+			err = unpopulate(val, &c.JobDetailsType)
+			delete(rawMsg, key)
+		case "jobStages":
+			err = unpopulate(val, &c.JobStages)
+			delete(rawMsg, key)
+		case "keyEncryptionKey":
+			err = unpopulate(val, &c.KeyEncryptionKey)
+			delete(rawMsg, key)
+		case "lastMitigationActionOnJob":
+			err = unpopulate(val, &c.LastMitigationActionOnJob)
+			delete(rawMsg, key)
+		case "preferences":
+			err = unpopulate(val, &c.Preferences)
+			delete(rawMsg, key)
+		case "returnPackage":
+			err = unpopulate(val, &c.ReturnPackage)
+			delete(rawMsg, key)
+		case "reverseShipmentLabelSasKey":
+			err = unpopulate(val, &c.ReverseShipmentLabelSasKey)
+			delete(rawMsg, key)
+		case "shippingAddress":
+			err = unpopulate(val, &c.ShippingAddress)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CommonJobSecretsClassification provides polymorphic access to related types.
+// Call the interface's GetCommonJobSecrets() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CommonJobSecrets, *CustomerDiskJobSecrets, *DiskJobSecrets, *HeavyJobSecrets, *JobSecrets
+type CommonJobSecretsClassification interface {
+	// GetCommonJobSecrets returns the CommonJobSecrets content of the underlying type.
+	GetCommonJobSecrets() *CommonJobSecrets
+}
+
+// CommonJobSecrets - The base class for the secrets
+type CommonJobSecrets struct {
+	// REQUIRED; Used to indicate what type of job secrets object.
+	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+
+	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
+	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Error while fetching the secrets.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+}
+
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type CommonJobSecrets.
+func (c *CommonJobSecrets) GetCommonJobSecrets() *CommonJobSecrets { return c }
+
+// CommonScheduleAvailabilityRequestClassification provides polymorphic access to related types.
+// Call the interface's GetCommonScheduleAvailabilityRequest() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CommonScheduleAvailabilityRequest, *DiskScheduleAvailabilityRequest, *HeavyScheduleAvailabilityRequest, *ScheduleAvailabilityRequest
+type CommonScheduleAvailabilityRequestClassification interface {
+	// GetCommonScheduleAvailabilityRequest returns the CommonScheduleAvailabilityRequest content of the underlying type.
+	GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest
+}
+
+// CommonScheduleAvailabilityRequest - Request body to get the availability for scheduling orders.
+type CommonScheduleAvailabilityRequest struct {
+	// REQUIRED; Sku Name for which the order is to be scheduled.
+	SKUName *SKUName `json:"skuName,omitempty"`
+
+	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+	StorageLocation *string `json:"storageLocation,omitempty"`
+
+	// Country in which storage location should be supported.
+	Country *string `json:"country,omitempty"`
+}
+
+// GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
+// CommonScheduleAvailabilityRequest.
+func (c *CommonScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest {
+	return c
+}
+
 // ContactDetails - Contact Details.
 type ContactDetails struct {
 	// REQUIRED; Contact name of the person.
@@ -289,7 +557,7 @@ func (c ContactDetails) MarshalJSON() ([]byte, error) {
 // CopyLogDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetCopyLogDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CopyLogDetails, *DataBoxAccountCopyLogDetails, *DataBoxCustomerDiskCopyLogDetails, *DataBoxDiskCopyLogDetails, *DataBoxHeavyAccountCopyLogDetails
+// - *AccountCopyLogDetails, *CopyLogDetails, *CustomerDiskCopyLogDetails, *DiskCopyLogDetails, *HeavyAccountCopyLogDetails
 type CopyLogDetailsClassification interface {
 	// GetCopyLogDetails returns the CopyLogDetails content of the underlying type.
 	GetCopyLogDetails() *CopyLogDetails
@@ -303,35 +571,6 @@ type CopyLogDetails struct {
 
 // GetCopyLogDetails implements the CopyLogDetailsClassification interface for type CopyLogDetails.
 func (c *CopyLogDetails) GetCopyLogDetails() *CopyLogDetails { return c }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CopyLogDetails.
-func (c *CopyLogDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c CopyLogDetails) marshalInternal(objectMap map[string]interface{}, discValue ClassDiscriminator) {
-	c.CopyLogDetailsType = &discValue
-	objectMap["copyLogDetailsType"] = c.CopyLogDetailsType
-}
-
-func (c *CopyLogDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "copyLogDetailsType":
-			err = unpopulate(val, &c.CopyLogDetailsType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // CopyProgress - Copy progress.
 type CopyProgress struct {
@@ -383,28 +622,73 @@ type CopyProgress struct {
 
 // CreateJobValidations - It does all pre-job creation validations.
 type CreateJobValidations struct {
-	ValidationRequest
+	// REQUIRED; List of request details contain validationType and its request as key and value respectively.
+	IndividualRequestDetails []ValidationInputRequestClassification `json:"individualRequestDetails,omitempty"`
+
+	// REQUIRED; Identify the nature of validation.
+	ValidationCategory *string `json:"validationCategory,omitempty"`
+}
+
+// GetValidationRequest implements the ValidationRequestClassification interface for type CreateJobValidations.
+func (c *CreateJobValidations) GetValidationRequest() *ValidationRequest {
+	return &ValidationRequest{
+		ValidationCategory:       c.ValidationCategory,
+		IndividualRequestDetails: c.IndividualRequestDetails,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CreateJobValidations.
 func (c CreateJobValidations) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ValidationRequest.marshalInternal(objectMap, "JobCreationValidation")
+	populate(objectMap, "individualRequestDetails", c.IndividualRequestDetails)
+	objectMap["validationCategory"] = "JobCreationValidation"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CreateJobValidations.
+func (c *CreateJobValidations) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "individualRequestDetails":
+			c.IndividualRequestDetails, err = unmarshalValidationInputRequestClassificationArray(val)
+			delete(rawMsg, key)
+		case "validationCategory":
+			err = unpopulate(val, &c.ValidationCategory)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // CreateOrderLimitForSubscriptionValidationRequest - Request to validate create order limit for current subscription.
 type CreateOrderLimitForSubscriptionValidationRequest struct {
-	ValidationInputRequest
 	// REQUIRED; Device type to be used for the job.
 	DeviceType *SKUName `json:"deviceType,omitempty"`
+
+	// REQUIRED; Identifies the type of validation request.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+}
+
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type CreateOrderLimitForSubscriptionValidationRequest.
+func (c *CreateOrderLimitForSubscriptionValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: c.ValidationType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CreateOrderLimitForSubscriptionValidationRequest.
 func (c CreateOrderLimitForSubscriptionValidationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ValidationInputRequest.marshalInternal(objectMap, ValidationInputDiscriminatorValidateCreateOrderLimit)
 	populate(objectMap, "deviceType", c.DeviceType)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateCreateOrderLimit
 	return json.Marshal(objectMap)
 }
 
@@ -420,29 +704,44 @@ func (c *CreateOrderLimitForSubscriptionValidationRequest) UnmarshalJSON(data []
 		case "deviceType":
 			err = unpopulate(val, &c.DeviceType)
 			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &c.ValidationType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := c.ValidationInputRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// CreateOrderLimitForSubscriptionValidationResponseProperties - Properties of create order limit for subscription validation response.
+// CreateOrderLimitForSubscriptionValidationResponseProperties - Properties of create order limit for subscription validation
+// response.
 type CreateOrderLimitForSubscriptionValidationResponseProperties struct {
-	ValidationInputResponse
+	// REQUIRED; Identifies the type of validation response.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+
+	// READ-ONLY; Error code and message of validation response.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+
 	// READ-ONLY; Create order limit validation status.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type CreateOrderLimitForSubscriptionValidationResponseProperties.
+func (c *CreateOrderLimitForSubscriptionValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: c.ValidationType,
+		Error:          c.Error,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CreateOrderLimitForSubscriptionValidationResponseProperties.
 func (c CreateOrderLimitForSubscriptionValidationResponseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ValidationInputResponse.marshalInternal(objectMap, ValidationInputDiscriminatorValidateCreateOrderLimit)
+	populate(objectMap, "error", c.Error)
 	populate(objectMap, "status", c.Status)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateCreateOrderLimit
 	return json.Marshal(objectMap)
 }
 
@@ -455,36 +754,391 @@ func (c *CreateOrderLimitForSubscriptionValidationResponseProperties) UnmarshalJ
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "error":
+			err = unpopulate(val, &c.Error)
+			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &c.Status)
+			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &c.ValidationType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := c.ValidationInputResponse.unmarshalInternal(rawMsg); err != nil {
+	return nil
+}
+
+// CustomerDiskCopyLogDetails - Copy Log Details for customer disk
+type CustomerDiskCopyLogDetails struct {
+	// REQUIRED; Indicates the type of job details.
+	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+
+	// READ-ONLY; Link for copy error logs.
+	ErrorLogLink *string `json:"errorLogLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Disk Serial Number.
+	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+
+	// READ-ONLY; Link for copy verbose logs.
+	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
+}
+
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type CustomerDiskCopyLogDetails.
+func (c *CustomerDiskCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
+	return &CopyLogDetails{
+		CopyLogDetailsType: c.CopyLogDetailsType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomerDiskCopyLogDetails.
+func (c CustomerDiskCopyLogDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["copyLogDetailsType"] = ClassDiscriminatorDataBoxCustomerDisk
+	populate(objectMap, "errorLogLink", c.ErrorLogLink)
+	populate(objectMap, "serialNumber", c.SerialNumber)
+	populate(objectMap, "verboseLogLink", c.VerboseLogLink)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomerDiskCopyLogDetails.
+func (c *CustomerDiskCopyLogDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "copyLogDetailsType":
+			err = unpopulate(val, &c.CopyLogDetailsType)
+			delete(rawMsg, key)
+		case "errorLogLink":
+			err = unpopulate(val, &c.ErrorLogLink)
+			delete(rawMsg, key)
+		case "serialNumber":
+			err = unpopulate(val, &c.SerialNumber)
+			delete(rawMsg, key)
+		case "verboseLogLink":
+			err = unpopulate(val, &c.VerboseLogLink)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CustomerDiskCopyProgress - DataBox CustomerDisk Copy Progress
+type CustomerDiskCopyProgress struct {
+	// READ-ONLY; Id of the account where the data needs to be uploaded.
+	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+
+	// READ-ONLY; To indicate bytes transferred.
+	BytesProcessed *int64 `json:"bytesProcessed,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Status of the copy
+	CopyStatus *CopyStatus `json:"copyStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; Data Account Type.
+	DataAccountType *DataAccountType `json:"dataAccountType,omitempty" azure:"ro"`
+
+	// READ-ONLY; To indicate directories errored out in the job.
+	DirectoriesErroredOut *int64 `json:"directoriesErroredOut,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of files which could not be copied
+	FilesErroredOut *int64 `json:"filesErroredOut,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of files processed
+	FilesProcessed *int64 `json:"filesProcessed,omitempty" azure:"ro"`
+
+	// READ-ONLY; To indicate directories renamed
+	InvalidDirectoriesProcessed *int64 `json:"invalidDirectoriesProcessed,omitempty" azure:"ro"`
+
+	// READ-ONLY; Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
+	InvalidFileBytesUploaded *int64 `json:"invalidFileBytesUploaded,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of files not adhering to azure naming conventions which were processed by automatic renaming
+	InvalidFilesProcessed *int64 `json:"invalidFilesProcessed,omitempty" azure:"ro"`
+
+	// READ-ONLY; To indicate if enumeration of data is in progress. Until this is true, the TotalBytesToProcess may not be valid.
+	IsEnumerationInProgress *bool `json:"isEnumerationInProgress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Number of folders not adhering to azure naming conventions which were processed by automatic renaming
+	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; Disk Serial Number.
+	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the storage account. This will be empty for data account types other than storage account.
+	StorageAccountName *string `json:"storageAccountName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Total amount of data to be processed by the job.
+	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty" azure:"ro"`
+
+	// READ-ONLY; Total files to process
+	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty" azure:"ro"`
+
+	// READ-ONLY; Transfer type of data
+	TransferType *TransferType `json:"transferType,omitempty" azure:"ro"`
+}
+
+// CustomerDiskJobDetails - Customer disk job details.
+type CustomerDiskJobDetails struct {
+	// REQUIRED; Contact details for notification and shipping.
+	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+
+	// REQUIRED; Indicates the type of job details.
+	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+
+	// REQUIRED; Return package shipping details.
+	ReturnToCustomerPackageDetails *PackageCarrierDetails `json:"returnToCustomerPackageDetails,omitempty"`
+
+	// Details of the data to be exported from azure.
+	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+
+	// Details of the data to be imported into azure.
+	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+
+	// Flag to indicate if disk manifest should be backed-up in the Storage Account.
+	EnableManifestBackup *bool `json:"enableManifestBackup,omitempty"`
+
+	// The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+
+	// Contains the map of disk serial number to the disk details for import jobs.
+	ImportDiskDetailsCollection map[string]*ImportDiskDetails `json:"importDiskDetailsCollection,omitempty"`
+
+	// Details about which key encryption type is being used.
+	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+
+	// Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+
+	// Shipping address of the customer.
+	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+
+	// READ-ONLY; Available actions on the job.
+	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of copy log details.
+	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Copy progress per disk.
+	CopyProgress []*CustomerDiskCopyProgress `json:"copyProgress,omitempty" azure:"ro"`
+
+	// READ-ONLY; DataCenter code.
+	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Delivery package shipping details.
+	DeliverToDcPackageDetails *PackageCarrierInfo `json:"deliverToDcPackageDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Contains the map of disk serial number to the disk details for export jobs.
+	ExportDiskDetailsCollection map[string]*ExportDiskDetails `json:"exportDiskDetailsCollection,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of stages that run in the job.
+	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+
+	// READ-ONLY; Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type CustomerDiskJobDetails.
+func (c *CustomerDiskJobDetails) GetCommonJobDetails() *CommonJobDetails {
+	return &CommonJobDetails{
+		JobStages:                   c.JobStages,
+		ContactDetails:              c.ContactDetails,
+		ShippingAddress:             c.ShippingAddress,
+		DeliveryPackage:             c.DeliveryPackage,
+		ReturnPackage:               c.ReturnPackage,
+		DataImportDetails:           c.DataImportDetails,
+		DataExportDetails:           c.DataExportDetails,
+		JobDetailsType:              c.JobDetailsType,
+		Preferences:                 c.Preferences,
+		CopyLogDetails:              c.CopyLogDetails,
+		ReverseShipmentLabelSasKey:  c.ReverseShipmentLabelSasKey,
+		ChainOfCustodySasKey:        c.ChainOfCustodySasKey,
+		KeyEncryptionKey:            c.KeyEncryptionKey,
+		ExpectedDataSizeInTeraBytes: c.ExpectedDataSizeInTeraBytes,
+		Actions:                     c.Actions,
+		LastMitigationActionOnJob:   c.LastMitigationActionOnJob,
+		DatacenterAddress:           c.DatacenterAddress,
+		DataCenterCode:              c.DataCenterCode,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomerDiskJobDetails.
+func (c CustomerDiskJobDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", c.Actions)
+	populate(objectMap, "chainOfCustodySasKey", c.ChainOfCustodySasKey)
+	populate(objectMap, "contactDetails", c.ContactDetails)
+	populate(objectMap, "copyLogDetails", c.CopyLogDetails)
+	populate(objectMap, "copyProgress", c.CopyProgress)
+	populate(objectMap, "dataCenterCode", c.DataCenterCode)
+	populate(objectMap, "dataExportDetails", c.DataExportDetails)
+	populate(objectMap, "dataImportDetails", c.DataImportDetails)
+	populate(objectMap, "datacenterAddress", c.DatacenterAddress)
+	populate(objectMap, "deliverToDcPackageDetails", c.DeliverToDcPackageDetails)
+	populate(objectMap, "deliveryPackage", c.DeliveryPackage)
+	populate(objectMap, "enableManifestBackup", c.EnableManifestBackup)
+	populate(objectMap, "expectedDataSizeInTeraBytes", c.ExpectedDataSizeInTeraBytes)
+	populate(objectMap, "exportDiskDetailsCollection", c.ExportDiskDetailsCollection)
+	populate(objectMap, "importDiskDetailsCollection", c.ImportDiskDetailsCollection)
+	objectMap["jobDetailsType"] = ClassDiscriminatorDataBoxCustomerDisk
+	populate(objectMap, "jobStages", c.JobStages)
+	populate(objectMap, "keyEncryptionKey", c.KeyEncryptionKey)
+	populate(objectMap, "lastMitigationActionOnJob", c.LastMitigationActionOnJob)
+	populate(objectMap, "preferences", c.Preferences)
+	populate(objectMap, "returnPackage", c.ReturnPackage)
+	populate(objectMap, "returnToCustomerPackageDetails", c.ReturnToCustomerPackageDetails)
+	populate(objectMap, "reverseShipmentLabelSasKey", c.ReverseShipmentLabelSasKey)
+	populate(objectMap, "shippingAddress", c.ShippingAddress)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomerDiskJobDetails.
+func (c *CustomerDiskJobDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actions":
+			err = unpopulate(val, &c.Actions)
+			delete(rawMsg, key)
+		case "chainOfCustodySasKey":
+			err = unpopulate(val, &c.ChainOfCustodySasKey)
+			delete(rawMsg, key)
+		case "contactDetails":
+			err = unpopulate(val, &c.ContactDetails)
+			delete(rawMsg, key)
+		case "copyLogDetails":
+			c.CopyLogDetails, err = unmarshalCopyLogDetailsClassificationArray(val)
+			delete(rawMsg, key)
+		case "copyProgress":
+			err = unpopulate(val, &c.CopyProgress)
+			delete(rawMsg, key)
+		case "dataCenterCode":
+			err = unpopulate(val, &c.DataCenterCode)
+			delete(rawMsg, key)
+		case "dataExportDetails":
+			err = unpopulate(val, &c.DataExportDetails)
+			delete(rawMsg, key)
+		case "dataImportDetails":
+			err = unpopulate(val, &c.DataImportDetails)
+			delete(rawMsg, key)
+		case "datacenterAddress":
+			c.DatacenterAddress, err = unmarshalDatacenterAddressResponseClassification(val)
+			delete(rawMsg, key)
+		case "deliverToDcPackageDetails":
+			err = unpopulate(val, &c.DeliverToDcPackageDetails)
+			delete(rawMsg, key)
+		case "deliveryPackage":
+			err = unpopulate(val, &c.DeliveryPackage)
+			delete(rawMsg, key)
+		case "enableManifestBackup":
+			err = unpopulate(val, &c.EnableManifestBackup)
+			delete(rawMsg, key)
+		case "expectedDataSizeInTeraBytes":
+			err = unpopulate(val, &c.ExpectedDataSizeInTeraBytes)
+			delete(rawMsg, key)
+		case "exportDiskDetailsCollection":
+			err = unpopulate(val, &c.ExportDiskDetailsCollection)
+			delete(rawMsg, key)
+		case "importDiskDetailsCollection":
+			err = unpopulate(val, &c.ImportDiskDetailsCollection)
+			delete(rawMsg, key)
+		case "jobDetailsType":
+			err = unpopulate(val, &c.JobDetailsType)
+			delete(rawMsg, key)
+		case "jobStages":
+			err = unpopulate(val, &c.JobStages)
+			delete(rawMsg, key)
+		case "keyEncryptionKey":
+			err = unpopulate(val, &c.KeyEncryptionKey)
+			delete(rawMsg, key)
+		case "lastMitigationActionOnJob":
+			err = unpopulate(val, &c.LastMitigationActionOnJob)
+			delete(rawMsg, key)
+		case "preferences":
+			err = unpopulate(val, &c.Preferences)
+			delete(rawMsg, key)
+		case "returnPackage":
+			err = unpopulate(val, &c.ReturnPackage)
+			delete(rawMsg, key)
+		case "returnToCustomerPackageDetails":
+			err = unpopulate(val, &c.ReturnToCustomerPackageDetails)
+			delete(rawMsg, key)
+		case "reverseShipmentLabelSasKey":
+			err = unpopulate(val, &c.ReverseShipmentLabelSasKey)
+			delete(rawMsg, key)
+		case "shippingAddress":
+			err = unpopulate(val, &c.ShippingAddress)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
 // CustomerDiskJobSecrets - The secrets related to customer disk job.
 type CustomerDiskJobSecrets struct {
-	JobSecrets
+	// REQUIRED; Used to indicate what type of job secrets object.
+	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+
 	// READ-ONLY; Carrier Account Number of the customer
 	CarrierAccountNumber *string `json:"carrierAccountNumber,omitempty" azure:"ro"`
 
+	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
+	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+
 	// READ-ONLY; Contains the list of secrets object for that device.
 	DiskSecrets []*DiskSecret `json:"diskSecrets,omitempty" azure:"ro"`
+
+	// READ-ONLY; Error while fetching the secrets.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+}
+
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type CustomerDiskJobSecrets.
+func (c *CustomerDiskJobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
+	return &CommonJobSecrets{
+		JobSecretsType:       c.JobSecretsType,
+		DcAccessSecurityCode: c.DcAccessSecurityCode,
+		Error:                c.Error,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CustomerDiskJobSecrets.
 func (c CustomerDiskJobSecrets) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.JobSecrets.marshalInternal(objectMap, ClassDiscriminatorDataBoxCustomerDisk)
 	populate(objectMap, "carrierAccountNumber", c.CarrierAccountNumber)
+	populate(objectMap, "dcAccessSecurityCode", c.DcAccessSecurityCode)
 	populate(objectMap, "diskSecrets", c.DiskSecrets)
+	populate(objectMap, "error", c.Error)
+	objectMap["jobSecretsType"] = ClassDiscriminatorDataBoxCustomerDisk
 	return json.Marshal(objectMap)
 }
 
@@ -500,16 +1154,22 @@ func (c *CustomerDiskJobSecrets) UnmarshalJSON(data []byte) error {
 		case "carrierAccountNumber":
 			err = unpopulate(val, &c.CarrierAccountNumber)
 			delete(rawMsg, key)
+		case "dcAccessSecurityCode":
+			err = unpopulate(val, &c.DcAccessSecurityCode)
+			delete(rawMsg, key)
 		case "diskSecrets":
 			err = unpopulate(val, &c.DiskSecrets)
+			delete(rawMsg, key)
+		case "error":
+			err = unpopulate(val, &c.Error)
+			delete(rawMsg, key)
+		case "jobSecretsType":
+			err = unpopulate(val, &c.JobSecretsType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.JobSecrets.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -528,678 +1188,17 @@ type DataAccountDetails struct {
 	// REQUIRED; Account Type of the data to be transferred.
 	DataAccountType *DataAccountType `json:"dataAccountType,omitempty"`
 
-	// Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure jobs. If this is not passed, the service
-	// will generate password itself. This will not be
-	// returned in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at least one uppercase
-	// alphabet, one number and one special character.
-	// Password cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters : @#-$%^!+=;:_()]+
+	// Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure jobs. If
+	// this is not passed, the service will generate password itself. This will not be
+	// returned in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must
+	// have at least one uppercase alphabet, one number and one special character.
+	// Password cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
+	// : @#-$%^!+=;:_()]+
 	SharePassword *string `json:"sharePassword,omitempty"`
 }
 
 // GetDataAccountDetails implements the DataAccountDetailsClassification interface for type DataAccountDetails.
 func (d *DataAccountDetails) GetDataAccountDetails() *DataAccountDetails { return d }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataAccountDetails.
-func (d *DataAccountDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DataAccountDetails) marshalInternal(objectMap map[string]interface{}, discValue DataAccountType) {
-	d.DataAccountType = &discValue
-	objectMap["dataAccountType"] = d.DataAccountType
-	populate(objectMap, "sharePassword", d.SharePassword)
-}
-
-func (d *DataAccountDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataAccountType":
-			err = unpopulate(val, &d.DataAccountType)
-			delete(rawMsg, key)
-		case "sharePassword":
-			err = unpopulate(val, &d.SharePassword)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// DataBoxAccountCopyLogDetails - Copy log details for a storage account of a DataBox job
-type DataBoxAccountCopyLogDetails struct {
-	CopyLogDetails
-	// READ-ONLY; Account name.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Link for copy logs.
-	CopyLogLink *string `json:"copyLogLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Link for copy verbose logs. This will be set only when LogCollectionLevel is set to Verbose.
-	CopyVerboseLogLink *string `json:"copyVerboseLogLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxAccountCopyLogDetails.
-func (d DataBoxAccountCopyLogDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.CopyLogDetails.marshalInternal(objectMap, ClassDiscriminatorDataBox)
-	populate(objectMap, "accountName", d.AccountName)
-	populate(objectMap, "copyLogLink", d.CopyLogLink)
-	populate(objectMap, "copyVerboseLogLink", d.CopyVerboseLogLink)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxAccountCopyLogDetails.
-func (d *DataBoxAccountCopyLogDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountName":
-			err = unpopulate(val, &d.AccountName)
-			delete(rawMsg, key)
-		case "copyLogLink":
-			err = unpopulate(val, &d.CopyLogLink)
-			delete(rawMsg, key)
-		case "copyVerboseLogLink":
-			err = unpopulate(val, &d.CopyVerboseLogLink)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.CopyLogDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxCustomerDiskCopyLogDetails - Copy Log Details for customer disk
-type DataBoxCustomerDiskCopyLogDetails struct {
-	CopyLogDetails
-	// READ-ONLY; Link for copy error logs.
-	ErrorLogLink *string `json:"errorLogLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Disk Serial Number.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
-
-	// READ-ONLY; Link for copy verbose logs.
-	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxCustomerDiskCopyLogDetails.
-func (d DataBoxCustomerDiskCopyLogDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.CopyLogDetails.marshalInternal(objectMap, ClassDiscriminatorDataBoxCustomerDisk)
-	populate(objectMap, "errorLogLink", d.ErrorLogLink)
-	populate(objectMap, "serialNumber", d.SerialNumber)
-	populate(objectMap, "verboseLogLink", d.VerboseLogLink)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxCustomerDiskCopyLogDetails.
-func (d *DataBoxCustomerDiskCopyLogDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "errorLogLink":
-			err = unpopulate(val, &d.ErrorLogLink)
-			delete(rawMsg, key)
-		case "serialNumber":
-			err = unpopulate(val, &d.SerialNumber)
-			delete(rawMsg, key)
-		case "verboseLogLink":
-			err = unpopulate(val, &d.VerboseLogLink)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.CopyLogDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxCustomerDiskCopyProgress - DataBox CustomerDisk Copy Progress
-type DataBoxCustomerDiskCopyProgress struct {
-	CopyProgress
-	// READ-ONLY; The Status of the copy
-	CopyStatus *CopyStatus `json:"copyStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; Disk Serial Number.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
-}
-
-// DataBoxCustomerDiskJobDetails - Customer disk job details.
-type DataBoxCustomerDiskJobDetails struct {
-	JobDetails
-	// REQUIRED; Return package shipping details.
-	ReturnToCustomerPackageDetails *PackageCarrierDetails `json:"returnToCustomerPackageDetails,omitempty"`
-
-	// Flag to indicate if disk manifest should be backed-up in the Storage Account.
-	EnableManifestBackup *bool `json:"enableManifestBackup,omitempty"`
-
-	// Contains the map of disk serial number to the disk details for import jobs.
-	ImportDiskDetailsCollection map[string]*ImportDiskDetails `json:"importDiskDetailsCollection,omitempty"`
-
-	// READ-ONLY; Copy progress per disk.
-	CopyProgress []*DataBoxCustomerDiskCopyProgress `json:"copyProgress,omitempty" azure:"ro"`
-
-	// READ-ONLY; Delivery package shipping details.
-	DeliverToDcPackageDetails *PackageCarrierInfo `json:"deliverToDcPackageDetails,omitempty" azure:"ro"`
-
-	// READ-ONLY; Contains the map of disk serial number to the disk details for export jobs.
-	ExportDiskDetailsCollection map[string]*ExportDiskDetails `json:"exportDiskDetailsCollection,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxCustomerDiskJobDetails.
-func (d DataBoxCustomerDiskJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.JobDetails.marshalInternal(objectMap, ClassDiscriminatorDataBoxCustomerDisk)
-	populate(objectMap, "copyProgress", d.CopyProgress)
-	populate(objectMap, "deliverToDcPackageDetails", d.DeliverToDcPackageDetails)
-	populate(objectMap, "enableManifestBackup", d.EnableManifestBackup)
-	populate(objectMap, "exportDiskDetailsCollection", d.ExportDiskDetailsCollection)
-	populate(objectMap, "importDiskDetailsCollection", d.ImportDiskDetailsCollection)
-	populate(objectMap, "returnToCustomerPackageDetails", d.ReturnToCustomerPackageDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxCustomerDiskJobDetails.
-func (d *DataBoxCustomerDiskJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "copyProgress":
-			err = unpopulate(val, &d.CopyProgress)
-			delete(rawMsg, key)
-		case "deliverToDcPackageDetails":
-			err = unpopulate(val, &d.DeliverToDcPackageDetails)
-			delete(rawMsg, key)
-		case "enableManifestBackup":
-			err = unpopulate(val, &d.EnableManifestBackup)
-			delete(rawMsg, key)
-		case "exportDiskDetailsCollection":
-			err = unpopulate(val, &d.ExportDiskDetailsCollection)
-			delete(rawMsg, key)
-		case "importDiskDetailsCollection":
-			err = unpopulate(val, &d.ImportDiskDetailsCollection)
-			delete(rawMsg, key)
-		case "returnToCustomerPackageDetails":
-			err = unpopulate(val, &d.ReturnToCustomerPackageDetails)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.JobDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxDiskCopyLogDetails - Copy Log Details for a disk
-type DataBoxDiskCopyLogDetails struct {
-	CopyLogDetails
-	// READ-ONLY; Disk Serial Number.
-	DiskSerialNumber *string `json:"diskSerialNumber,omitempty" azure:"ro"`
-
-	// READ-ONLY; Link for copy error logs.
-	ErrorLogLink *string `json:"errorLogLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Link for copy verbose logs.
-	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxDiskCopyLogDetails.
-func (d DataBoxDiskCopyLogDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.CopyLogDetails.marshalInternal(objectMap, ClassDiscriminatorDataBoxDisk)
-	populate(objectMap, "diskSerialNumber", d.DiskSerialNumber)
-	populate(objectMap, "errorLogLink", d.ErrorLogLink)
-	populate(objectMap, "verboseLogLink", d.VerboseLogLink)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxDiskCopyLogDetails.
-func (d *DataBoxDiskCopyLogDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskSerialNumber":
-			err = unpopulate(val, &d.DiskSerialNumber)
-			delete(rawMsg, key)
-		case "errorLogLink":
-			err = unpopulate(val, &d.ErrorLogLink)
-			delete(rawMsg, key)
-		case "verboseLogLink":
-			err = unpopulate(val, &d.VerboseLogLink)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.CopyLogDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxDiskCopyProgress - DataBox Disk Copy Progress
-type DataBoxDiskCopyProgress struct {
-	// READ-ONLY; Bytes copied during the copy of disk.
-	BytesCopied *int64 `json:"bytesCopied,omitempty" azure:"ro"`
-
-	// READ-ONLY; Indicates the percentage completed for the copy of the disk.
-	PercentComplete *int32 `json:"percentComplete,omitempty" azure:"ro"`
-
-	// READ-ONLY; The serial number of the disk
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Status of the copy
-	Status *CopyStatus `json:"status,omitempty" azure:"ro"`
-}
-
-// DataBoxDiskJobDetails - DataBox Disk Job Details.
-type DataBoxDiskJobDetails struct {
-	JobDetails
-	// User entered passkey for DataBox Disk job.
-	Passkey *string `json:"passkey,omitempty"`
-
-	// User preference on what size disks are needed for the job. The map is from the disk size in TB to the count. Eg. {2,5} means 5 disks of 2 TB size. Key
-	// is string but will be checked against an int.
-	PreferredDisks map[string]*int32 `json:"preferredDisks,omitempty"`
-
-	// READ-ONLY; Copy progress per disk.
-	CopyProgress []*DataBoxDiskCopyProgress `json:"copyProgress,omitempty" azure:"ro"`
-
-	// READ-ONLY; Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks are shipped to the customer.
-	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxDiskJobDetails.
-func (d DataBoxDiskJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.JobDetails.marshalInternal(objectMap, ClassDiscriminatorDataBoxDisk)
-	populate(objectMap, "copyProgress", d.CopyProgress)
-	populate(objectMap, "disksAndSizeDetails", d.DisksAndSizeDetails)
-	populate(objectMap, "passkey", d.Passkey)
-	populate(objectMap, "preferredDisks", d.PreferredDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxDiskJobDetails.
-func (d *DataBoxDiskJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "copyProgress":
-			err = unpopulate(val, &d.CopyProgress)
-			delete(rawMsg, key)
-		case "disksAndSizeDetails":
-			err = unpopulate(val, &d.DisksAndSizeDetails)
-			delete(rawMsg, key)
-		case "passkey":
-			err = unpopulate(val, &d.Passkey)
-			delete(rawMsg, key)
-		case "preferredDisks":
-			err = unpopulate(val, &d.PreferredDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.JobDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxDiskJobSecrets - The secrets related to disk job.
-type DataBoxDiskJobSecrets struct {
-	JobSecrets
-	// READ-ONLY; Contains the list of secrets object for that device.
-	DiskSecrets []*DiskSecret `json:"diskSecrets,omitempty" azure:"ro"`
-
-	// READ-ONLY; Whether passkey was provided by user.
-	IsPasskeyUserDefined *bool `json:"isPasskeyUserDefined,omitempty" azure:"ro"`
-
-	// READ-ONLY; PassKey for the disk Job.
-	PassKey *string `json:"passKey,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxDiskJobSecrets.
-func (d DataBoxDiskJobSecrets) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.JobSecrets.marshalInternal(objectMap, ClassDiscriminatorDataBoxDisk)
-	populate(objectMap, "diskSecrets", d.DiskSecrets)
-	populate(objectMap, "isPasskeyUserDefined", d.IsPasskeyUserDefined)
-	populate(objectMap, "passKey", d.PassKey)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxDiskJobSecrets.
-func (d *DataBoxDiskJobSecrets) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskSecrets":
-			err = unpopulate(val, &d.DiskSecrets)
-			delete(rawMsg, key)
-		case "isPasskeyUserDefined":
-			err = unpopulate(val, &d.IsPasskeyUserDefined)
-			delete(rawMsg, key)
-		case "passKey":
-			err = unpopulate(val, &d.PassKey)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.JobSecrets.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxHeavyAccountCopyLogDetails - Copy log details for a storage account for Databox heavy
-type DataBoxHeavyAccountCopyLogDetails struct {
-	CopyLogDetails
-	// READ-ONLY; Account name.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Link for copy logs.
-	CopyLogLink []*string `json:"copyLogLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Link for copy verbose logs. This will be set only when the LogCollectionLevel is set to verbose.
-	CopyVerboseLogLink []*string `json:"copyVerboseLogLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxHeavyAccountCopyLogDetails.
-func (d DataBoxHeavyAccountCopyLogDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.CopyLogDetails.marshalInternal(objectMap, ClassDiscriminatorDataBoxHeavy)
-	populate(objectMap, "accountName", d.AccountName)
-	populate(objectMap, "copyLogLink", d.CopyLogLink)
-	populate(objectMap, "copyVerboseLogLink", d.CopyVerboseLogLink)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxHeavyAccountCopyLogDetails.
-func (d *DataBoxHeavyAccountCopyLogDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountName":
-			err = unpopulate(val, &d.AccountName)
-			delete(rawMsg, key)
-		case "copyLogLink":
-			err = unpopulate(val, &d.CopyLogLink)
-			delete(rawMsg, key)
-		case "copyVerboseLogLink":
-			err = unpopulate(val, &d.CopyVerboseLogLink)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.CopyLogDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxHeavyJobDetails - Databox Heavy Device Job Details
-type DataBoxHeavyJobDetails struct {
-	JobDetails
-	// Set Device password for unlocking Databox Heavy. Should not be passed for TransferType:ExportFromAzure jobs. If this is not passed, the service will
-	// generate password itself. This will not be returned
-	// in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at least one uppercase alphabet,
-	// one number and one special character. Password
-	// cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters : @#-$%^!+=;:_()]+
-	DevicePassword *string `json:"devicePassword,omitempty"`
-
-	// READ-ONLY; Copy progress per account.
-	CopyProgress []*CopyProgress `json:"copyProgress,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxHeavyJobDetails.
-func (d DataBoxHeavyJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.JobDetails.marshalInternal(objectMap, ClassDiscriminatorDataBoxHeavy)
-	populate(objectMap, "copyProgress", d.CopyProgress)
-	populate(objectMap, "devicePassword", d.DevicePassword)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxHeavyJobDetails.
-func (d *DataBoxHeavyJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "copyProgress":
-			err = unpopulate(val, &d.CopyProgress)
-			delete(rawMsg, key)
-		case "devicePassword":
-			err = unpopulate(val, &d.DevicePassword)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.JobDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxHeavyJobSecrets - The secrets related to a databox heavy job.
-type DataBoxHeavyJobSecrets struct {
-	JobSecrets
-	// READ-ONLY; Contains the list of secret objects for a databox heavy job.
-	CabinetPodSecrets []*DataBoxHeavySecret `json:"cabinetPodSecrets,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxHeavyJobSecrets.
-func (d DataBoxHeavyJobSecrets) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.JobSecrets.marshalInternal(objectMap, ClassDiscriminatorDataBoxHeavy)
-	populate(objectMap, "cabinetPodSecrets", d.CabinetPodSecrets)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxHeavyJobSecrets.
-func (d *DataBoxHeavyJobSecrets) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cabinetPodSecrets":
-			err = unpopulate(val, &d.CabinetPodSecrets)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.JobSecrets.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxHeavySecret - The secrets related to a databox heavy.
-type DataBoxHeavySecret struct {
-	// READ-ONLY; Per account level access credentials.
-	AccountCredentialDetails []*AccountCredentialDetails `json:"accountCredentialDetails,omitempty" azure:"ro"`
-
-	// READ-ONLY; Password for out of the box experience on device.
-	DevicePassword *string `json:"devicePassword,omitempty" azure:"ro"`
-
-	// READ-ONLY; Serial number of the assigned device.
-	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty" azure:"ro"`
-
-	// READ-ONLY; The base 64 encoded public key to authenticate with the device
-	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty" azure:"ro"`
-
-	// READ-ONLY; Network configuration of the appliance.
-	NetworkConfigurations []*ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxHeavySecret.
-func (d DataBoxHeavySecret) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountCredentialDetails", d.AccountCredentialDetails)
-	populate(objectMap, "devicePassword", d.DevicePassword)
-	populate(objectMap, "deviceSerialNumber", d.DeviceSerialNumber)
-	populate(objectMap, "encodedValidationCertPubKey", d.EncodedValidationCertPubKey)
-	populate(objectMap, "networkConfigurations", d.NetworkConfigurations)
-	return json.Marshal(objectMap)
-}
-
-// DataBoxJobDetails - Databox Job Details
-type DataBoxJobDetails struct {
-	JobDetails
-	// Set Device password for unlocking Databox. Should not be passed for TransferType:ExportFromAzure jobs. If this is not passed, the service will generate
-	// password itself. This will not be returned in
-	// Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at least one uppercase alphabet, one
-	// number and one special character. Password cannot
-	// have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters : @#-$%^!+=;:_()]+
-	DevicePassword *string `json:"devicePassword,omitempty"`
-
-	// READ-ONLY; Copy progress per storage account.
-	CopyProgress []*CopyProgress `json:"copyProgress,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxJobDetails.
-func (d DataBoxJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.JobDetails.marshalInternal(objectMap, ClassDiscriminatorDataBox)
-	populate(objectMap, "copyProgress", d.CopyProgress)
-	populate(objectMap, "devicePassword", d.DevicePassword)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxJobDetails.
-func (d *DataBoxJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "copyProgress":
-			err = unpopulate(val, &d.CopyProgress)
-			delete(rawMsg, key)
-		case "devicePassword":
-			err = unpopulate(val, &d.DevicePassword)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.JobDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxManagementClientMitigateOptions contains the optional parameters for the DataBoxManagementClient.Mitigate method.
-type DataBoxManagementClientMitigateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DataBoxScheduleAvailabilityRequest - Request body to get the availability for scheduling data box orders orders.
-type DataBoxScheduleAvailabilityRequest struct {
-	ScheduleAvailabilityRequest
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxScheduleAvailabilityRequest.
-func (d DataBoxScheduleAvailabilityRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ScheduleAvailabilityRequest.marshalInternal(objectMap, SKUNameDataBox)
-	return json.Marshal(objectMap)
-}
-
-// DataBoxSecret - The secrets related to a DataBox.
-type DataBoxSecret struct {
-	// READ-ONLY; Per account level access credentials.
-	AccountCredentialDetails []*AccountCredentialDetails `json:"accountCredentialDetails,omitempty" azure:"ro"`
-
-	// READ-ONLY; Password for out of the box experience on device.
-	DevicePassword *string `json:"devicePassword,omitempty" azure:"ro"`
-
-	// READ-ONLY; Serial number of the assigned device.
-	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty" azure:"ro"`
-
-	// READ-ONLY; The base 64 encoded public key to authenticate with the device
-	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty" azure:"ro"`
-
-	// READ-ONLY; Network configuration of the appliance.
-	NetworkConfigurations []*ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxSecret.
-func (d DataBoxSecret) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountCredentialDetails", d.AccountCredentialDetails)
-	populate(objectMap, "devicePassword", d.DevicePassword)
-	populate(objectMap, "deviceSerialNumber", d.DeviceSerialNumber)
-	populate(objectMap, "encodedValidationCertPubKey", d.EncodedValidationCertPubKey)
-	populate(objectMap, "networkConfigurations", d.NetworkConfigurations)
-	return json.Marshal(objectMap)
-}
 
 // DataExportDetails - Details of the data to be used for exporting data from azure.
 type DataExportDetails struct {
@@ -1299,12 +1298,14 @@ type DataLocationToServiceLocationMap struct {
 
 // DataTransferDetailsValidationRequest - Request to validate export and import data details.
 type DataTransferDetailsValidationRequest struct {
-	ValidationInputRequest
 	// REQUIRED; Device type.
 	DeviceType *SKUName `json:"deviceType,omitempty"`
 
 	// REQUIRED; Type of the transfer.
 	TransferType *TransferType `json:"transferType,omitempty"`
+
+	// REQUIRED; Identifies the type of validation request.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
 
 	// List of DataTransfer details to be used to export data from azure.
 	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
@@ -1313,14 +1314,21 @@ type DataTransferDetailsValidationRequest struct {
 	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
 }
 
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type DataTransferDetailsValidationRequest.
+func (d *DataTransferDetailsValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: d.ValidationType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DataTransferDetailsValidationRequest.
 func (d DataTransferDetailsValidationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ValidationInputRequest.marshalInternal(objectMap, ValidationInputDiscriminatorValidateDataTransferDetails)
 	populate(objectMap, "dataExportDetails", d.DataExportDetails)
 	populate(objectMap, "dataImportDetails", d.DataImportDetails)
 	populate(objectMap, "deviceType", d.DeviceType)
 	populate(objectMap, "transferType", d.TransferType)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateDataTransferDetails
 	return json.Marshal(objectMap)
 }
 
@@ -1345,29 +1353,43 @@ func (d *DataTransferDetailsValidationRequest) UnmarshalJSON(data []byte) error 
 		case "transferType":
 			err = unpopulate(val, &d.TransferType)
 			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &d.ValidationType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.ValidationInputRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // DataTransferDetailsValidationResponseProperties - Properties of data transfer details validation response.
 type DataTransferDetailsValidationResponseProperties struct {
-	ValidationInputResponse
+	// REQUIRED; Identifies the type of validation response.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+
+	// READ-ONLY; Error code and message of validation response.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+
 	// READ-ONLY; Data transfer details validation status.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type DataTransferDetailsValidationResponseProperties.
+func (d *DataTransferDetailsValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: d.ValidationType,
+		Error:          d.Error,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DataTransferDetailsValidationResponseProperties.
 func (d DataTransferDetailsValidationResponseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ValidationInputResponse.marshalInternal(objectMap, ValidationInputDiscriminatorValidateDataTransferDetails)
+	populate(objectMap, "error", d.Error)
 	populate(objectMap, "status", d.Status)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateDataTransferDetails
 	return json.Marshal(objectMap)
 }
 
@@ -1380,70 +1402,54 @@ func (d *DataTransferDetailsValidationResponseProperties) UnmarshalJSON(data []b
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "error":
+			err = unpopulate(val, &d.Error)
+			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &d.Status)
 			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ValidationInputResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataboxJobSecrets - The secrets related to a databox job.
-type DataboxJobSecrets struct {
-	JobSecrets
-	// Contains the list of secret objects for a job.
-	PodSecrets []*DataBoxSecret `json:"podSecrets,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataboxJobSecrets.
-func (d DataboxJobSecrets) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.JobSecrets.marshalInternal(objectMap, ClassDiscriminatorDataBox)
-	populate(objectMap, "podSecrets", d.PodSecrets)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataboxJobSecrets.
-func (d *DataboxJobSecrets) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "podSecrets":
-			err = unpopulate(val, &d.PodSecrets)
+		case "validationType":
+			err = unpopulate(val, &d.ValidationType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.JobSecrets.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // DatacenterAddressInstructionResponse - Datacenter instruction for given storage location.
 type DatacenterAddressInstructionResponse struct {
-	DatacenterAddressResponse
+	// REQUIRED; Data center address type
+	DatacenterAddressType *DatacenterAddressType `json:"datacenterAddressType,omitempty"`
+
 	// READ-ONLY; Data center communication instruction
 	CommunicationInstruction *string `json:"communicationInstruction,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Location where the Data Center serves primarily.
+	DataCenterAzureLocation *string `json:"dataCenterAzureLocation,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of supported carriers for return shipment.
+	SupportedCarriersForReturnShipment []*string `json:"supportedCarriersForReturnShipment,omitempty" azure:"ro"`
+}
+
+// GetDatacenterAddressResponse implements the DatacenterAddressResponseClassification interface for type DatacenterAddressInstructionResponse.
+func (d *DatacenterAddressInstructionResponse) GetDatacenterAddressResponse() *DatacenterAddressResponse {
+	return &DatacenterAddressResponse{
+		DatacenterAddressType:              d.DatacenterAddressType,
+		SupportedCarriersForReturnShipment: d.SupportedCarriersForReturnShipment,
+		DataCenterAzureLocation:            d.DataCenterAzureLocation,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DatacenterAddressInstructionResponse.
 func (d DatacenterAddressInstructionResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.DatacenterAddressResponse.marshalInternal(objectMap, DatacenterAddressTypeDatacenterAddressInstruction)
 	populate(objectMap, "communicationInstruction", d.CommunicationInstruction)
+	populate(objectMap, "dataCenterAzureLocation", d.DataCenterAzureLocation)
+	objectMap["datacenterAddressType"] = DatacenterAddressTypeDatacenterAddressInstruction
+	populate(objectMap, "supportedCarriersForReturnShipment", d.SupportedCarriersForReturnShipment)
 	return json.Marshal(objectMap)
 }
 
@@ -1459,20 +1465,28 @@ func (d *DatacenterAddressInstructionResponse) UnmarshalJSON(data []byte) error 
 		case "communicationInstruction":
 			err = unpopulate(val, &d.CommunicationInstruction)
 			delete(rawMsg, key)
+		case "dataCenterAzureLocation":
+			err = unpopulate(val, &d.DataCenterAzureLocation)
+			delete(rawMsg, key)
+		case "datacenterAddressType":
+			err = unpopulate(val, &d.DatacenterAddressType)
+			delete(rawMsg, key)
+		case "supportedCarriersForReturnShipment":
+			err = unpopulate(val, &d.SupportedCarriersForReturnShipment)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.DatacenterAddressResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // DatacenterAddressLocationResponse - Datacenter address for given storage location.
 type DatacenterAddressLocationResponse struct {
-	DatacenterAddressResponse
+	// REQUIRED; Data center address type
+	DatacenterAddressType *DatacenterAddressType `json:"datacenterAddressType,omitempty"`
+
 	// READ-ONLY; Special instruction for shipping
 	AdditionalShippingInformation *string `json:"additionalShippingInformation,omitempty" azure:"ro"`
 
@@ -1490,6 +1504,9 @@ type DatacenterAddressLocationResponse struct {
 
 	// READ-ONLY; name of the country
 	Country *string `json:"country,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Location where the Data Center serves primarily.
+	DataCenterAzureLocation *string `json:"dataCenterAzureLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; Phone number
 	Phone *string `json:"phone,omitempty" azure:"ro"`
@@ -1509,26 +1526,40 @@ type DatacenterAddressLocationResponse struct {
 	// READ-ONLY; Street address line 3
 	Street3 *string `json:"street3,omitempty" azure:"ro"`
 
+	// READ-ONLY; List of supported carriers for return shipment.
+	SupportedCarriersForReturnShipment []*string `json:"supportedCarriersForReturnShipment,omitempty" azure:"ro"`
+
 	// READ-ONLY; Zip code
 	Zip *string `json:"zip,omitempty" azure:"ro"`
+}
+
+// GetDatacenterAddressResponse implements the DatacenterAddressResponseClassification interface for type DatacenterAddressLocationResponse.
+func (d *DatacenterAddressLocationResponse) GetDatacenterAddressResponse() *DatacenterAddressResponse {
+	return &DatacenterAddressResponse{
+		DatacenterAddressType:              d.DatacenterAddressType,
+		SupportedCarriersForReturnShipment: d.SupportedCarriersForReturnShipment,
+		DataCenterAzureLocation:            d.DataCenterAzureLocation,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DatacenterAddressLocationResponse.
 func (d DatacenterAddressLocationResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.DatacenterAddressResponse.marshalInternal(objectMap, DatacenterAddressTypeDatacenterAddressLocation)
 	populate(objectMap, "additionalShippingInformation", d.AdditionalShippingInformation)
 	populate(objectMap, "addressType", d.AddressType)
 	populate(objectMap, "city", d.City)
 	populate(objectMap, "company", d.Company)
 	populate(objectMap, "contactPersonName", d.ContactPersonName)
 	populate(objectMap, "country", d.Country)
+	populate(objectMap, "dataCenterAzureLocation", d.DataCenterAzureLocation)
+	objectMap["datacenterAddressType"] = DatacenterAddressTypeDatacenterAddressLocation
 	populate(objectMap, "phone", d.Phone)
 	populate(objectMap, "phoneExtension", d.PhoneExtension)
 	populate(objectMap, "state", d.State)
 	populate(objectMap, "street1", d.Street1)
 	populate(objectMap, "street2", d.Street2)
 	populate(objectMap, "street3", d.Street3)
+	populate(objectMap, "supportedCarriersForReturnShipment", d.SupportedCarriersForReturnShipment)
 	populate(objectMap, "zip", d.Zip)
 	return json.Marshal(objectMap)
 }
@@ -1560,6 +1591,12 @@ func (d *DatacenterAddressLocationResponse) UnmarshalJSON(data []byte) error {
 		case "country":
 			err = unpopulate(val, &d.Country)
 			delete(rawMsg, key)
+		case "dataCenterAzureLocation":
+			err = unpopulate(val, &d.DataCenterAzureLocation)
+			delete(rawMsg, key)
+		case "datacenterAddressType":
+			err = unpopulate(val, &d.DatacenterAddressType)
+			delete(rawMsg, key)
 		case "phone":
 			err = unpopulate(val, &d.Phone)
 			delete(rawMsg, key)
@@ -1578,6 +1615,9 @@ func (d *DatacenterAddressLocationResponse) UnmarshalJSON(data []byte) error {
 		case "street3":
 			err = unpopulate(val, &d.Street3)
 			delete(rawMsg, key)
+		case "supportedCarriersForReturnShipment":
+			err = unpopulate(val, &d.SupportedCarriersForReturnShipment)
+			delete(rawMsg, key)
 		case "zip":
 			err = unpopulate(val, &d.Zip)
 			delete(rawMsg, key)
@@ -1585,9 +1625,6 @@ func (d *DatacenterAddressLocationResponse) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.DatacenterAddressResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1627,41 +1664,13 @@ func (d *DatacenterAddressResponse) GetDatacenterAddressResponse() *DatacenterAd
 	return d
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatacenterAddressResponse.
-func (d *DatacenterAddressResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DatacenterAddressResponse) marshalInternal(objectMap map[string]interface{}, discValue DatacenterAddressType) {
+// MarshalJSON implements the json.Marshaller interface for type DatacenterAddressResponse.
+func (d DatacenterAddressResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	populate(objectMap, "dataCenterAzureLocation", d.DataCenterAzureLocation)
-	d.DatacenterAddressType = &discValue
 	objectMap["datacenterAddressType"] = d.DatacenterAddressType
 	populate(objectMap, "supportedCarriersForReturnShipment", d.SupportedCarriersForReturnShipment)
-}
-
-func (d *DatacenterAddressResponse) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataCenterAzureLocation":
-			err = unpopulate(val, &d.DataCenterAzureLocation)
-			delete(rawMsg, key)
-		case "datacenterAddressType":
-			err = unpopulate(val, &d.DatacenterAddressType)
-			delete(rawMsg, key)
-		case "supportedCarriersForReturnShipment":
-			err = unpopulate(val, &d.SupportedCarriersForReturnShipment)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return json.Marshal(objectMap)
 }
 
 // DcAccessSecurityCode - Dc access security code
@@ -1673,26 +1682,397 @@ type DcAccessSecurityCode struct {
 	ReverseDCAccessCode *string `json:"reverseDCAccessCode,omitempty"`
 }
 
-type Details struct {
-	// REQUIRED
-	Code *string `json:"code,omitempty"`
+// DiskCopyLogDetails - Copy Log Details for a disk
+type DiskCopyLogDetails struct {
+	// REQUIRED; Indicates the type of job details.
+	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
 
-	// REQUIRED
-	Message *string `json:"message,omitempty"`
+	// READ-ONLY; Disk Serial Number.
+	DiskSerialNumber *string `json:"diskSerialNumber,omitempty" azure:"ro"`
+
+	// READ-ONLY; Link for copy error logs.
+	ErrorLogLink *string `json:"errorLogLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Link for copy verbose logs.
+	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
+}
+
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type DiskCopyLogDetails.
+func (d *DiskCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
+	return &CopyLogDetails{
+		CopyLogDetailsType: d.CopyLogDetailsType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DiskCopyLogDetails.
+func (d DiskCopyLogDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["copyLogDetailsType"] = ClassDiscriminatorDataBoxDisk
+	populate(objectMap, "diskSerialNumber", d.DiskSerialNumber)
+	populate(objectMap, "errorLogLink", d.ErrorLogLink)
+	populate(objectMap, "verboseLogLink", d.VerboseLogLink)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DiskCopyLogDetails.
+func (d *DiskCopyLogDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "copyLogDetailsType":
+			err = unpopulate(val, &d.CopyLogDetailsType)
+			delete(rawMsg, key)
+		case "diskSerialNumber":
+			err = unpopulate(val, &d.DiskSerialNumber)
+			delete(rawMsg, key)
+		case "errorLogLink":
+			err = unpopulate(val, &d.ErrorLogLink)
+			delete(rawMsg, key)
+		case "verboseLogLink":
+			err = unpopulate(val, &d.VerboseLogLink)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// DiskCopyProgress - DataBox Disk Copy Progress
+type DiskCopyProgress struct {
+	// READ-ONLY; Bytes copied during the copy of disk.
+	BytesCopied *int64 `json:"bytesCopied,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicates the percentage completed for the copy of the disk.
+	PercentComplete *int32 `json:"percentComplete,omitempty" azure:"ro"`
+
+	// READ-ONLY; The serial number of the disk
+	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Status of the copy
+	Status *CopyStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// DiskJobDetails - DataBox Disk Job Details.
+type DiskJobDetails struct {
+	// REQUIRED; Contact details for notification and shipping.
+	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+
+	// REQUIRED; Indicates the type of job details.
+	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+
+	// Details of the data to be exported from azure.
+	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+
+	// Details of the data to be imported into azure.
+	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+
+	// The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+
+	// Details about which key encryption type is being used.
+	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+
+	// User entered passkey for DataBox Disk job.
+	Passkey *string `json:"passkey,omitempty"`
+
+	// Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+
+	// User preference on what size disks are needed for the job. The map is from the disk size in TB to the count. Eg. {2,5}
+	// means 5 disks of 2 TB size. Key is string but will be checked against an int.
+	PreferredDisks map[string]*int32 `json:"preferredDisks,omitempty"`
+
+	// Shipping address of the customer.
+	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+
+	// READ-ONLY; Available actions on the job.
+	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of copy log details.
+	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Copy progress per disk.
+	CopyProgress []*DiskCopyProgress `json:"copyProgress,omitempty" azure:"ro"`
+
+	// READ-ONLY; DataCenter code.
+	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks
+	// are shipped to the customer.
+	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of stages that run in the job.
+	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+
+	// READ-ONLY; Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type DiskJobDetails.
+func (d *DiskJobDetails) GetCommonJobDetails() *CommonJobDetails {
+	return &CommonJobDetails{
+		JobStages:                   d.JobStages,
+		ContactDetails:              d.ContactDetails,
+		ShippingAddress:             d.ShippingAddress,
+		DeliveryPackage:             d.DeliveryPackage,
+		ReturnPackage:               d.ReturnPackage,
+		DataImportDetails:           d.DataImportDetails,
+		DataExportDetails:           d.DataExportDetails,
+		JobDetailsType:              d.JobDetailsType,
+		Preferences:                 d.Preferences,
+		CopyLogDetails:              d.CopyLogDetails,
+		ReverseShipmentLabelSasKey:  d.ReverseShipmentLabelSasKey,
+		ChainOfCustodySasKey:        d.ChainOfCustodySasKey,
+		KeyEncryptionKey:            d.KeyEncryptionKey,
+		ExpectedDataSizeInTeraBytes: d.ExpectedDataSizeInTeraBytes,
+		Actions:                     d.Actions,
+		LastMitigationActionOnJob:   d.LastMitigationActionOnJob,
+		DatacenterAddress:           d.DatacenterAddress,
+		DataCenterCode:              d.DataCenterCode,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DiskJobDetails.
+func (d DiskJobDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", d.Actions)
+	populate(objectMap, "chainOfCustodySasKey", d.ChainOfCustodySasKey)
+	populate(objectMap, "contactDetails", d.ContactDetails)
+	populate(objectMap, "copyLogDetails", d.CopyLogDetails)
+	populate(objectMap, "copyProgress", d.CopyProgress)
+	populate(objectMap, "dataCenterCode", d.DataCenterCode)
+	populate(objectMap, "dataExportDetails", d.DataExportDetails)
+	populate(objectMap, "dataImportDetails", d.DataImportDetails)
+	populate(objectMap, "datacenterAddress", d.DatacenterAddress)
+	populate(objectMap, "deliveryPackage", d.DeliveryPackage)
+	populate(objectMap, "disksAndSizeDetails", d.DisksAndSizeDetails)
+	populate(objectMap, "expectedDataSizeInTeraBytes", d.ExpectedDataSizeInTeraBytes)
+	objectMap["jobDetailsType"] = ClassDiscriminatorDataBoxDisk
+	populate(objectMap, "jobStages", d.JobStages)
+	populate(objectMap, "keyEncryptionKey", d.KeyEncryptionKey)
+	populate(objectMap, "lastMitigationActionOnJob", d.LastMitigationActionOnJob)
+	populate(objectMap, "passkey", d.Passkey)
+	populate(objectMap, "preferences", d.Preferences)
+	populate(objectMap, "preferredDisks", d.PreferredDisks)
+	populate(objectMap, "returnPackage", d.ReturnPackage)
+	populate(objectMap, "reverseShipmentLabelSasKey", d.ReverseShipmentLabelSasKey)
+	populate(objectMap, "shippingAddress", d.ShippingAddress)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DiskJobDetails.
+func (d *DiskJobDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actions":
+			err = unpopulate(val, &d.Actions)
+			delete(rawMsg, key)
+		case "chainOfCustodySasKey":
+			err = unpopulate(val, &d.ChainOfCustodySasKey)
+			delete(rawMsg, key)
+		case "contactDetails":
+			err = unpopulate(val, &d.ContactDetails)
+			delete(rawMsg, key)
+		case "copyLogDetails":
+			d.CopyLogDetails, err = unmarshalCopyLogDetailsClassificationArray(val)
+			delete(rawMsg, key)
+		case "copyProgress":
+			err = unpopulate(val, &d.CopyProgress)
+			delete(rawMsg, key)
+		case "dataCenterCode":
+			err = unpopulate(val, &d.DataCenterCode)
+			delete(rawMsg, key)
+		case "dataExportDetails":
+			err = unpopulate(val, &d.DataExportDetails)
+			delete(rawMsg, key)
+		case "dataImportDetails":
+			err = unpopulate(val, &d.DataImportDetails)
+			delete(rawMsg, key)
+		case "datacenterAddress":
+			d.DatacenterAddress, err = unmarshalDatacenterAddressResponseClassification(val)
+			delete(rawMsg, key)
+		case "deliveryPackage":
+			err = unpopulate(val, &d.DeliveryPackage)
+			delete(rawMsg, key)
+		case "disksAndSizeDetails":
+			err = unpopulate(val, &d.DisksAndSizeDetails)
+			delete(rawMsg, key)
+		case "expectedDataSizeInTeraBytes":
+			err = unpopulate(val, &d.ExpectedDataSizeInTeraBytes)
+			delete(rawMsg, key)
+		case "jobDetailsType":
+			err = unpopulate(val, &d.JobDetailsType)
+			delete(rawMsg, key)
+		case "jobStages":
+			err = unpopulate(val, &d.JobStages)
+			delete(rawMsg, key)
+		case "keyEncryptionKey":
+			err = unpopulate(val, &d.KeyEncryptionKey)
+			delete(rawMsg, key)
+		case "lastMitigationActionOnJob":
+			err = unpopulate(val, &d.LastMitigationActionOnJob)
+			delete(rawMsg, key)
+		case "passkey":
+			err = unpopulate(val, &d.Passkey)
+			delete(rawMsg, key)
+		case "preferences":
+			err = unpopulate(val, &d.Preferences)
+			delete(rawMsg, key)
+		case "preferredDisks":
+			err = unpopulate(val, &d.PreferredDisks)
+			delete(rawMsg, key)
+		case "returnPackage":
+			err = unpopulate(val, &d.ReturnPackage)
+			delete(rawMsg, key)
+		case "reverseShipmentLabelSasKey":
+			err = unpopulate(val, &d.ReverseShipmentLabelSasKey)
+			delete(rawMsg, key)
+		case "shippingAddress":
+			err = unpopulate(val, &d.ShippingAddress)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// DiskJobSecrets - The secrets related to disk job.
+type DiskJobSecrets struct {
+	// REQUIRED; Used to indicate what type of job secrets object.
+	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+
+	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
+	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Contains the list of secrets object for that device.
+	DiskSecrets []*DiskSecret `json:"diskSecrets,omitempty" azure:"ro"`
+
+	// READ-ONLY; Error while fetching the secrets.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+
+	// READ-ONLY; Whether passkey was provided by user.
+	IsPasskeyUserDefined *bool `json:"isPasskeyUserDefined,omitempty" azure:"ro"`
+
+	// READ-ONLY; PassKey for the disk Job.
+	PassKey *string `json:"passKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type DiskJobSecrets.
+func (d *DiskJobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
+	return &CommonJobSecrets{
+		JobSecretsType:       d.JobSecretsType,
+		DcAccessSecurityCode: d.DcAccessSecurityCode,
+		Error:                d.Error,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DiskJobSecrets.
+func (d DiskJobSecrets) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "dcAccessSecurityCode", d.DcAccessSecurityCode)
+	populate(objectMap, "diskSecrets", d.DiskSecrets)
+	populate(objectMap, "error", d.Error)
+	populate(objectMap, "isPasskeyUserDefined", d.IsPasskeyUserDefined)
+	objectMap["jobSecretsType"] = ClassDiscriminatorDataBoxDisk
+	populate(objectMap, "passKey", d.PassKey)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DiskJobSecrets.
+func (d *DiskJobSecrets) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dcAccessSecurityCode":
+			err = unpopulate(val, &d.DcAccessSecurityCode)
+			delete(rawMsg, key)
+		case "diskSecrets":
+			err = unpopulate(val, &d.DiskSecrets)
+			delete(rawMsg, key)
+		case "error":
+			err = unpopulate(val, &d.Error)
+			delete(rawMsg, key)
+		case "isPasskeyUserDefined":
+			err = unpopulate(val, &d.IsPasskeyUserDefined)
+			delete(rawMsg, key)
+		case "jobSecretsType":
+			err = unpopulate(val, &d.JobSecretsType)
+			delete(rawMsg, key)
+		case "passKey":
+			err = unpopulate(val, &d.PassKey)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // DiskScheduleAvailabilityRequest - Request body to get the availability for scheduling disk orders.
 type DiskScheduleAvailabilityRequest struct {
-	ScheduleAvailabilityRequest
 	// REQUIRED; The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+
+	// REQUIRED; Sku Name for which the order is to be scheduled.
+	SKUName *SKUName `json:"skuName,omitempty"`
+
+	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+	StorageLocation *string `json:"storageLocation,omitempty"`
+
+	// Country in which storage location should be supported.
+	Country *string `json:"country,omitempty"`
+}
+
+// GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
+// DiskScheduleAvailabilityRequest.
+func (d *DiskScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest {
+	return &CommonScheduleAvailabilityRequest{
+		StorageLocation: d.StorageLocation,
+		SKUName:         d.SKUName,
+		Country:         d.Country,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DiskScheduleAvailabilityRequest.
 func (d DiskScheduleAvailabilityRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ScheduleAvailabilityRequest.marshalInternal(objectMap, SKUNameDataBoxDisk)
+	populate(objectMap, "country", d.Country)
 	populate(objectMap, "expectedDataSizeInTeraBytes", d.ExpectedDataSizeInTeraBytes)
+	objectMap["skuName"] = SKUNameDataBoxDisk
+	populate(objectMap, "storageLocation", d.StorageLocation)
 	return json.Marshal(objectMap)
 }
 
@@ -1705,16 +2085,22 @@ func (d *DiskScheduleAvailabilityRequest) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "country":
+			err = unpopulate(val, &d.Country)
+			delete(rawMsg, key)
 		case "expectedDataSizeInTeraBytes":
 			err = unpopulate(val, &d.ExpectedDataSizeInTeraBytes)
+			delete(rawMsg, key)
+		case "skuName":
+			err = unpopulate(val, &d.SKUName)
+			delete(rawMsg, key)
+		case "storageLocation":
+			err = unpopulate(val, &d.StorageLocation)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.ScheduleAvailabilityRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1732,26 +2118,6 @@ type DiskSecret struct {
 type EncryptionPreferences struct {
 	// Defines secondary layer of software-based encryption enablement.
 	DoubleEncryption *DoubleEncryption `json:"doubleEncryption,omitempty"`
-}
-
-type ErrorDetail struct {
-	// REQUIRED
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED
-	Message *string    `json:"message,omitempty"`
-	Details []*Details `json:"details,omitempty"`
-	Target  *string    `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ExportDiskDetails - Export disk details
@@ -1775,15 +2141,407 @@ type FilterFileDetails struct {
 	FilterFileType *FilterFileType `json:"filterFileType,omitempty"`
 }
 
+// HeavyAccountCopyLogDetails - Copy log details for a storage account for Databox heavy
+type HeavyAccountCopyLogDetails struct {
+	// REQUIRED; Indicates the type of job details.
+	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+
+	// READ-ONLY; Account name.
+	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Link for copy logs.
+	CopyLogLink []*string `json:"copyLogLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Link for copy verbose logs. This will be set only when the LogCollectionLevel is set to verbose.
+	CopyVerboseLogLink []*string `json:"copyVerboseLogLink,omitempty" azure:"ro"`
+}
+
+// GetCopyLogDetails implements the CopyLogDetailsClassification interface for type HeavyAccountCopyLogDetails.
+func (h *HeavyAccountCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
+	return &CopyLogDetails{
+		CopyLogDetailsType: h.CopyLogDetailsType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HeavyAccountCopyLogDetails.
+func (h HeavyAccountCopyLogDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accountName", h.AccountName)
+	objectMap["copyLogDetailsType"] = ClassDiscriminatorDataBoxHeavy
+	populate(objectMap, "copyLogLink", h.CopyLogLink)
+	populate(objectMap, "copyVerboseLogLink", h.CopyVerboseLogLink)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type HeavyAccountCopyLogDetails.
+func (h *HeavyAccountCopyLogDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accountName":
+			err = unpopulate(val, &h.AccountName)
+			delete(rawMsg, key)
+		case "copyLogDetailsType":
+			err = unpopulate(val, &h.CopyLogDetailsType)
+			delete(rawMsg, key)
+		case "copyLogLink":
+			err = unpopulate(val, &h.CopyLogLink)
+			delete(rawMsg, key)
+		case "copyVerboseLogLink":
+			err = unpopulate(val, &h.CopyVerboseLogLink)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// HeavyJobDetails - Databox Heavy Device Job Details
+type HeavyJobDetails struct {
+	// REQUIRED; Contact details for notification and shipping.
+	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+
+	// REQUIRED; Indicates the type of job details.
+	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+
+	// Details of the data to be exported from azure.
+	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+
+	// Details of the data to be imported into azure.
+	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+
+	// Set Device password for unlocking Databox Heavy. Should not be passed for TransferType:ExportFromAzure jobs. If this is
+	// not passed, the service will generate password itself. This will not be returned
+	// in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at
+	// least one uppercase alphabet, one number and one special character. Password
+	// cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters : @#-$%^!+=;:_()]+
+	DevicePassword *string `json:"devicePassword,omitempty"`
+
+	// The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+
+	// Details about which key encryption type is being used.
+	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+
+	// Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+
+	// Shipping address of the customer.
+	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+
+	// READ-ONLY; Available actions on the job.
+	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of copy log details.
+	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Copy progress per account.
+	CopyProgress []*CopyProgress `json:"copyProgress,omitempty" azure:"ro"`
+
+	// READ-ONLY; DataCenter code.
+	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
+	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of stages that run in the job.
+	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+
+	// READ-ONLY; Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+}
+
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type HeavyJobDetails.
+func (h *HeavyJobDetails) GetCommonJobDetails() *CommonJobDetails {
+	return &CommonJobDetails{
+		JobStages:                   h.JobStages,
+		ContactDetails:              h.ContactDetails,
+		ShippingAddress:             h.ShippingAddress,
+		DeliveryPackage:             h.DeliveryPackage,
+		ReturnPackage:               h.ReturnPackage,
+		DataImportDetails:           h.DataImportDetails,
+		DataExportDetails:           h.DataExportDetails,
+		JobDetailsType:              h.JobDetailsType,
+		Preferences:                 h.Preferences,
+		CopyLogDetails:              h.CopyLogDetails,
+		ReverseShipmentLabelSasKey:  h.ReverseShipmentLabelSasKey,
+		ChainOfCustodySasKey:        h.ChainOfCustodySasKey,
+		KeyEncryptionKey:            h.KeyEncryptionKey,
+		ExpectedDataSizeInTeraBytes: h.ExpectedDataSizeInTeraBytes,
+		Actions:                     h.Actions,
+		LastMitigationActionOnJob:   h.LastMitigationActionOnJob,
+		DatacenterAddress:           h.DatacenterAddress,
+		DataCenterCode:              h.DataCenterCode,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HeavyJobDetails.
+func (h HeavyJobDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", h.Actions)
+	populate(objectMap, "chainOfCustodySasKey", h.ChainOfCustodySasKey)
+	populate(objectMap, "contactDetails", h.ContactDetails)
+	populate(objectMap, "copyLogDetails", h.CopyLogDetails)
+	populate(objectMap, "copyProgress", h.CopyProgress)
+	populate(objectMap, "dataCenterCode", h.DataCenterCode)
+	populate(objectMap, "dataExportDetails", h.DataExportDetails)
+	populate(objectMap, "dataImportDetails", h.DataImportDetails)
+	populate(objectMap, "datacenterAddress", h.DatacenterAddress)
+	populate(objectMap, "deliveryPackage", h.DeliveryPackage)
+	populate(objectMap, "devicePassword", h.DevicePassword)
+	populate(objectMap, "expectedDataSizeInTeraBytes", h.ExpectedDataSizeInTeraBytes)
+	objectMap["jobDetailsType"] = ClassDiscriminatorDataBoxHeavy
+	populate(objectMap, "jobStages", h.JobStages)
+	populate(objectMap, "keyEncryptionKey", h.KeyEncryptionKey)
+	populate(objectMap, "lastMitigationActionOnJob", h.LastMitigationActionOnJob)
+	populate(objectMap, "preferences", h.Preferences)
+	populate(objectMap, "returnPackage", h.ReturnPackage)
+	populate(objectMap, "reverseShipmentLabelSasKey", h.ReverseShipmentLabelSasKey)
+	populate(objectMap, "shippingAddress", h.ShippingAddress)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type HeavyJobDetails.
+func (h *HeavyJobDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actions":
+			err = unpopulate(val, &h.Actions)
+			delete(rawMsg, key)
+		case "chainOfCustodySasKey":
+			err = unpopulate(val, &h.ChainOfCustodySasKey)
+			delete(rawMsg, key)
+		case "contactDetails":
+			err = unpopulate(val, &h.ContactDetails)
+			delete(rawMsg, key)
+		case "copyLogDetails":
+			h.CopyLogDetails, err = unmarshalCopyLogDetailsClassificationArray(val)
+			delete(rawMsg, key)
+		case "copyProgress":
+			err = unpopulate(val, &h.CopyProgress)
+			delete(rawMsg, key)
+		case "dataCenterCode":
+			err = unpopulate(val, &h.DataCenterCode)
+			delete(rawMsg, key)
+		case "dataExportDetails":
+			err = unpopulate(val, &h.DataExportDetails)
+			delete(rawMsg, key)
+		case "dataImportDetails":
+			err = unpopulate(val, &h.DataImportDetails)
+			delete(rawMsg, key)
+		case "datacenterAddress":
+			h.DatacenterAddress, err = unmarshalDatacenterAddressResponseClassification(val)
+			delete(rawMsg, key)
+		case "deliveryPackage":
+			err = unpopulate(val, &h.DeliveryPackage)
+			delete(rawMsg, key)
+		case "devicePassword":
+			err = unpopulate(val, &h.DevicePassword)
+			delete(rawMsg, key)
+		case "expectedDataSizeInTeraBytes":
+			err = unpopulate(val, &h.ExpectedDataSizeInTeraBytes)
+			delete(rawMsg, key)
+		case "jobDetailsType":
+			err = unpopulate(val, &h.JobDetailsType)
+			delete(rawMsg, key)
+		case "jobStages":
+			err = unpopulate(val, &h.JobStages)
+			delete(rawMsg, key)
+		case "keyEncryptionKey":
+			err = unpopulate(val, &h.KeyEncryptionKey)
+			delete(rawMsg, key)
+		case "lastMitigationActionOnJob":
+			err = unpopulate(val, &h.LastMitigationActionOnJob)
+			delete(rawMsg, key)
+		case "preferences":
+			err = unpopulate(val, &h.Preferences)
+			delete(rawMsg, key)
+		case "returnPackage":
+			err = unpopulate(val, &h.ReturnPackage)
+			delete(rawMsg, key)
+		case "reverseShipmentLabelSasKey":
+			err = unpopulate(val, &h.ReverseShipmentLabelSasKey)
+			delete(rawMsg, key)
+		case "shippingAddress":
+			err = unpopulate(val, &h.ShippingAddress)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// HeavyJobSecrets - The secrets related to a databox heavy job.
+type HeavyJobSecrets struct {
+	// REQUIRED; Used to indicate what type of job secrets object.
+	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+
+	// READ-ONLY; Contains the list of secret objects for a databox heavy job.
+	CabinetPodSecrets []*HeavySecret `json:"cabinetPodSecrets,omitempty" azure:"ro"`
+
+	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
+	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Error while fetching the secrets.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+}
+
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type HeavyJobSecrets.
+func (h *HeavyJobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
+	return &CommonJobSecrets{
+		JobSecretsType:       h.JobSecretsType,
+		DcAccessSecurityCode: h.DcAccessSecurityCode,
+		Error:                h.Error,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HeavyJobSecrets.
+func (h HeavyJobSecrets) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "cabinetPodSecrets", h.CabinetPodSecrets)
+	populate(objectMap, "dcAccessSecurityCode", h.DcAccessSecurityCode)
+	populate(objectMap, "error", h.Error)
+	objectMap["jobSecretsType"] = ClassDiscriminatorDataBoxHeavy
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type HeavyJobSecrets.
+func (h *HeavyJobSecrets) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "cabinetPodSecrets":
+			err = unpopulate(val, &h.CabinetPodSecrets)
+			delete(rawMsg, key)
+		case "dcAccessSecurityCode":
+			err = unpopulate(val, &h.DcAccessSecurityCode)
+			delete(rawMsg, key)
+		case "error":
+			err = unpopulate(val, &h.Error)
+			delete(rawMsg, key)
+		case "jobSecretsType":
+			err = unpopulate(val, &h.JobSecretsType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // HeavyScheduleAvailabilityRequest - Request body to get the availability for scheduling heavy orders.
 type HeavyScheduleAvailabilityRequest struct {
-	ScheduleAvailabilityRequest
+	// REQUIRED; Sku Name for which the order is to be scheduled.
+	SKUName *SKUName `json:"skuName,omitempty"`
+
+	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+	StorageLocation *string `json:"storageLocation,omitempty"`
+
+	// Country in which storage location should be supported.
+	Country *string `json:"country,omitempty"`
+}
+
+// GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
+// HeavyScheduleAvailabilityRequest.
+func (h *HeavyScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest {
+	return &CommonScheduleAvailabilityRequest{
+		StorageLocation: h.StorageLocation,
+		SKUName:         h.SKUName,
+		Country:         h.Country,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type HeavyScheduleAvailabilityRequest.
 func (h HeavyScheduleAvailabilityRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.ScheduleAvailabilityRequest.marshalInternal(objectMap, SKUNameDataBoxHeavy)
+	populate(objectMap, "country", h.Country)
+	objectMap["skuName"] = SKUNameDataBoxHeavy
+	populate(objectMap, "storageLocation", h.StorageLocation)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type HeavyScheduleAvailabilityRequest.
+func (h *HeavyScheduleAvailabilityRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "country":
+			err = unpopulate(val, &h.Country)
+			delete(rawMsg, key)
+		case "skuName":
+			err = unpopulate(val, &h.SKUName)
+			delete(rawMsg, key)
+		case "storageLocation":
+			err = unpopulate(val, &h.StorageLocation)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// HeavySecret - The secrets related to a databox heavy.
+type HeavySecret struct {
+	// READ-ONLY; Per account level access credentials.
+	AccountCredentialDetails []*AccountCredentialDetails `json:"accountCredentialDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Password for out of the box experience on device.
+	DevicePassword *string `json:"devicePassword,omitempty" azure:"ro"`
+
+	// READ-ONLY; Serial number of the assigned device.
+	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty" azure:"ro"`
+
+	// READ-ONLY; The base 64 encoded public key to authenticate with the device
+	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; Network configuration of the appliance.
+	NetworkConfigurations []*ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HeavySecret.
+func (h HeavySecret) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accountCredentialDetails", h.AccountCredentialDetails)
+	populate(objectMap, "devicePassword", h.DevicePassword)
+	populate(objectMap, "deviceSerialNumber", h.DeviceSerialNumber)
+	populate(objectMap, "encodedValidationCertPubKey", h.EncodedValidationCertPubKey)
+	populate(objectMap, "networkConfigurations", h.NetworkConfigurations)
 	return json.Marshal(objectMap)
 }
 
@@ -1844,16 +2602,7 @@ func (j *JobDeliveryInfo) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JobDetailsClassification provides polymorphic access to related types.
-// Call the interface's GetJobDetails() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *DataBoxCustomerDiskJobDetails, *DataBoxDiskJobDetails, *DataBoxHeavyJobDetails, *DataBoxJobDetails, *JobDetails
-type JobDetailsClassification interface {
-	// GetJobDetails returns the JobDetails content of the underlying type.
-	GetJobDetails() *JobDetails
-}
-
-// JobDetails - Job details.
+// JobDetails - Databox Job Details
 type JobDetails struct {
 	// REQUIRED; Contact details for notification and shipping.
 	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
@@ -1866,6 +2615,13 @@ type JobDetails struct {
 
 	// Details of the data to be imported into azure.
 	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+
+	// Set Device password for unlocking Databox. Should not be passed for TransferType:ExportFromAzure jobs. If this is not passed,
+	// the service will generate password itself. This will not be returned in
+	// Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at least
+	// one uppercase alphabet, one number and one special character. Password cannot
+	// have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters : @#-$%^!+=;:_()]+
+	DevicePassword *string `json:"devicePassword,omitempty"`
 
 	// The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
@@ -1887,6 +2643,9 @@ type JobDetails struct {
 
 	// READ-ONLY; List of copy log details.
 	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Copy progress per storage account.
+	CopyProgress []*CopyProgress `json:"copyProgress,omitempty" azure:"ro"`
 
 	// READ-ONLY; DataCenter code.
 	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
@@ -1910,31 +2669,46 @@ type JobDetails struct {
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
 }
 
-// GetJobDetails implements the JobDetailsClassification interface for type JobDetails.
-func (j *JobDetails) GetJobDetails() *JobDetails { return j }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JobDetails.
-func (j *JobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCommonJobDetails implements the CommonJobDetailsClassification interface for type JobDetails.
+func (j *JobDetails) GetCommonJobDetails() *CommonJobDetails {
+	return &CommonJobDetails{
+		JobStages:                   j.JobStages,
+		ContactDetails:              j.ContactDetails,
+		ShippingAddress:             j.ShippingAddress,
+		DeliveryPackage:             j.DeliveryPackage,
+		ReturnPackage:               j.ReturnPackage,
+		DataImportDetails:           j.DataImportDetails,
+		DataExportDetails:           j.DataExportDetails,
+		JobDetailsType:              j.JobDetailsType,
+		Preferences:                 j.Preferences,
+		CopyLogDetails:              j.CopyLogDetails,
+		ReverseShipmentLabelSasKey:  j.ReverseShipmentLabelSasKey,
+		ChainOfCustodySasKey:        j.ChainOfCustodySasKey,
+		KeyEncryptionKey:            j.KeyEncryptionKey,
+		ExpectedDataSizeInTeraBytes: j.ExpectedDataSizeInTeraBytes,
+		Actions:                     j.Actions,
+		LastMitigationActionOnJob:   j.LastMitigationActionOnJob,
+		DatacenterAddress:           j.DatacenterAddress,
+		DataCenterCode:              j.DataCenterCode,
 	}
-	return j.unmarshalInternal(rawMsg)
 }
 
-func (j JobDetails) marshalInternal(objectMap map[string]interface{}, discValue ClassDiscriminator) {
+// MarshalJSON implements the json.Marshaller interface for type JobDetails.
+func (j JobDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	populate(objectMap, "actions", j.Actions)
 	populate(objectMap, "chainOfCustodySasKey", j.ChainOfCustodySasKey)
 	populate(objectMap, "contactDetails", j.ContactDetails)
 	populate(objectMap, "copyLogDetails", j.CopyLogDetails)
+	populate(objectMap, "copyProgress", j.CopyProgress)
 	populate(objectMap, "dataCenterCode", j.DataCenterCode)
 	populate(objectMap, "dataExportDetails", j.DataExportDetails)
 	populate(objectMap, "dataImportDetails", j.DataImportDetails)
 	populate(objectMap, "datacenterAddress", j.DatacenterAddress)
 	populate(objectMap, "deliveryPackage", j.DeliveryPackage)
+	populate(objectMap, "devicePassword", j.DevicePassword)
 	populate(objectMap, "expectedDataSizeInTeraBytes", j.ExpectedDataSizeInTeraBytes)
-	j.JobDetailsType = &discValue
-	objectMap["jobDetailsType"] = j.JobDetailsType
+	objectMap["jobDetailsType"] = ClassDiscriminatorDataBox
 	populate(objectMap, "jobStages", j.JobStages)
 	populate(objectMap, "keyEncryptionKey", j.KeyEncryptionKey)
 	populate(objectMap, "lastMitigationActionOnJob", j.LastMitigationActionOnJob)
@@ -1942,9 +2716,15 @@ func (j JobDetails) marshalInternal(objectMap map[string]interface{}, discValue 
 	populate(objectMap, "returnPackage", j.ReturnPackage)
 	populate(objectMap, "reverseShipmentLabelSasKey", j.ReverseShipmentLabelSasKey)
 	populate(objectMap, "shippingAddress", j.ShippingAddress)
+	return json.Marshal(objectMap)
 }
 
-func (j *JobDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type JobDetails.
+func (j *JobDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -1960,6 +2740,9 @@ func (j *JobDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error 
 		case "copyLogDetails":
 			j.CopyLogDetails, err = unmarshalCopyLogDetailsClassificationArray(val)
 			delete(rawMsg, key)
+		case "copyProgress":
+			err = unpopulate(val, &j.CopyProgress)
+			delete(rawMsg, key)
 		case "dataCenterCode":
 			err = unpopulate(val, &j.DataCenterCode)
 			delete(rawMsg, key)
@@ -1974,6 +2757,9 @@ func (j *JobDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error 
 			delete(rawMsg, key)
 		case "deliveryPackage":
 			err = unpopulate(val, &j.DeliveryPackage)
+			delete(rawMsg, key)
+		case "devicePassword":
+			err = unpopulate(val, &j.DevicePassword)
 			delete(rawMsg, key)
 		case "expectedDataSizeInTeraBytes":
 			err = unpopulate(val, &j.ExpectedDataSizeInTeraBytes)
@@ -2022,7 +2808,7 @@ type JobProperties struct {
 	DeliveryType *JobDeliveryType `json:"deliveryType,omitempty"`
 
 	// Details of a job run. This field will only be sent for expand details filter.
-	Details JobDetailsClassification `json:"details,omitempty"`
+	Details CommonJobDetailsClassification `json:"details,omitempty"`
 
 	// READ-ONLY; Reason for cancellation.
 	CancellationReason *string `json:"cancellationReason,omitempty" azure:"ro"`
@@ -2090,7 +2876,7 @@ func (j *JobProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &j.DeliveryType)
 			delete(rawMsg, key)
 		case "details":
-			j.Details, err = unmarshalJobDetailsClassification(val)
+			j.Details, err = unmarshalCommonJobDetailsClassification(val)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, &j.Error)
@@ -2129,9 +2915,23 @@ func (j *JobProperties) UnmarshalJSON(data []byte) error {
 
 // JobResource - Job Resource.
 type JobResource struct {
-	Resource
+	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East
+	// US, Southeast Asia, etc.). The region of a resource cannot be changed once it is
+	// created, but if an identical region is specified on update the request will succeed.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Properties of a job.
 	Properties *JobProperties `json:"properties,omitempty"`
+
+	// REQUIRED; The sku type.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Msi identity of the resource
+	Identity *ResourceIdentity `json:"identity,omitempty"`
+
+	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
+	// resource groups).
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -2149,11 +2949,14 @@ type JobResource struct {
 // MarshalJSON implements the json.Marshaller interface for type JobResource.
 func (j JobResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.Resource.marshalInternal(objectMap)
 	populate(objectMap, "id", j.ID)
+	populate(objectMap, "identity", j.Identity)
+	populate(objectMap, "location", j.Location)
 	populate(objectMap, "name", j.Name)
 	populate(objectMap, "properties", j.Properties)
+	populate(objectMap, "sku", j.SKU)
 	populate(objectMap, "systemData", j.SystemData)
+	populate(objectMap, "tags", j.Tags)
 	populate(objectMap, "type", j.Type)
 	return json.Marshal(objectMap)
 }
@@ -2183,7 +2986,8 @@ type JobResourceUpdateParameter struct {
 	// Properties of a job to be updated.
 	Properties *UpdateJobProperties `json:"properties,omitempty"`
 
-	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
+	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
+	// resource groups).
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
@@ -2196,19 +3000,13 @@ func (j JobResourceUpdateParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// JobSecretsClassification provides polymorphic access to related types.
-// Call the interface's GetJobSecrets() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *CustomerDiskJobSecrets, *DataBoxDiskJobSecrets, *DataBoxHeavyJobSecrets, *DataboxJobSecrets, *JobSecrets
-type JobSecretsClassification interface {
-	// GetJobSecrets returns the JobSecrets content of the underlying type.
-	GetJobSecrets() *JobSecrets
-}
-
-// JobSecrets - The base class for the secrets
+// JobSecrets - The secrets related to a databox job.
 type JobSecrets struct {
 	// REQUIRED; Used to indicate what type of job secrets object.
 	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+
+	// Contains the list of secret objects for a job.
+	PodSecrets []*Secret `json:"podSecrets,omitempty"`
 
 	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
 	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
@@ -2217,8 +3015,24 @@ type JobSecrets struct {
 	Error *CloudError `json:"error,omitempty" azure:"ro"`
 }
 
-// GetJobSecrets implements the JobSecretsClassification interface for type JobSecrets.
-func (j *JobSecrets) GetJobSecrets() *JobSecrets { return j }
+// GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type JobSecrets.
+func (j *JobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
+	return &CommonJobSecrets{
+		JobSecretsType:       j.JobSecretsType,
+		DcAccessSecurityCode: j.DcAccessSecurityCode,
+		Error:                j.Error,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type JobSecrets.
+func (j JobSecrets) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "dcAccessSecurityCode", j.DcAccessSecurityCode)
+	populate(objectMap, "error", j.Error)
+	objectMap["jobSecretsType"] = ClassDiscriminatorDataBox
+	populate(objectMap, "podSecrets", j.PodSecrets)
+	return json.Marshal(objectMap)
+}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type JobSecrets.
 func (j *JobSecrets) UnmarshalJSON(data []byte) error {
@@ -2226,17 +3040,6 @@ func (j *JobSecrets) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return j.unmarshalInternal(rawMsg)
-}
-
-func (j JobSecrets) marshalInternal(objectMap map[string]interface{}, discValue ClassDiscriminator) {
-	populate(objectMap, "dcAccessSecurityCode", j.DcAccessSecurityCode)
-	populate(objectMap, "error", j.Error)
-	j.JobSecretsType = &discValue
-	objectMap["jobSecretsType"] = j.JobSecretsType
-}
-
-func (j *JobSecrets) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -2248,6 +3051,9 @@ func (j *JobSecrets) unmarshalInternal(rawMsg map[string]json.RawMessage) error 
 			delete(rawMsg, key)
 		case "jobSecretsType":
 			err = unpopulate(val, &j.JobSecretsType)
+			delete(rawMsg, key)
+		case "podSecrets":
+			err = unpopulate(val, &j.PodSecrets)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2263,7 +3069,7 @@ type JobStages struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 
 	// READ-ONLY; Job Stage Details
-	JobStageDetails map[string]interface{} `json:"jobStageDetails,omitempty" azure:"ro"`
+	JobStageDetails interface{} `json:"jobStageDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name of the job stage.
 	StageName *StageName `json:"stageName,omitempty" azure:"ro"`
@@ -2279,7 +3085,7 @@ type JobStages struct {
 func (j JobStages) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "displayName", j.DisplayName)
-	populate(objectMap, "jobStageDetails", j.JobStageDetails)
+	populate(objectMap, "jobStageDetails", &j.JobStageDetails)
 	populate(objectMap, "stageName", j.StageName)
 	populate(objectMap, "stageStatus", j.StageStatus)
 	populateTimeRFC3339(objectMap, "stageTime", j.StageTime)
@@ -2318,57 +3124,57 @@ func (j *JobStages) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JobsBeginCreateOptions contains the optional parameters for the Jobs.BeginCreate method.
-type JobsBeginCreateOptions struct {
+// JobsClientBeginCreateOptions contains the optional parameters for the JobsClient.BeginCreate method.
+type JobsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsBeginDeleteOptions contains the optional parameters for the Jobs.BeginDelete method.
-type JobsBeginDeleteOptions struct {
+// JobsClientBeginDeleteOptions contains the optional parameters for the JobsClient.BeginDelete method.
+type JobsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsBeginUpdateOptions contains the optional parameters for the Jobs.BeginUpdate method.
-type JobsBeginUpdateOptions struct {
+// JobsClientBeginUpdateOptions contains the optional parameters for the JobsClient.BeginUpdate method.
+type JobsClientBeginUpdateOptions struct {
 	// Defines the If-Match condition. The patch will be performed only if the ETag of the job on the server matches this value.
 	IfMatch *string
 }
 
-// JobsBookShipmentPickUpOptions contains the optional parameters for the Jobs.BookShipmentPickUp method.
-type JobsBookShipmentPickUpOptions struct {
+// JobsClientBookShipmentPickUpOptions contains the optional parameters for the JobsClient.BookShipmentPickUp method.
+type JobsClientBookShipmentPickUpOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsCancelOptions contains the optional parameters for the Jobs.Cancel method.
-type JobsCancelOptions struct {
+// JobsClientCancelOptions contains the optional parameters for the JobsClient.Cancel method.
+type JobsClientCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsGetOptions contains the optional parameters for the Jobs.Get method.
-type JobsGetOptions struct {
+// JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+type JobsClientGetOptions struct {
 	// $expand is supported on details parameter for job, which provides details on the job stages.
 	Expand *string
 }
 
-// JobsListByResourceGroupOptions contains the optional parameters for the Jobs.ListByResourceGroup method.
-type JobsListByResourceGroupOptions struct {
+// JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.ListByResourceGroup method.
+type JobsClientListByResourceGroupOptions struct {
 	// $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
 	SkipToken *string
 }
 
-// JobsListCredentialsOptions contains the optional parameters for the Jobs.ListCredentials method.
-type JobsListCredentialsOptions struct {
+// JobsClientListCredentialsOptions contains the optional parameters for the JobsClient.ListCredentials method.
+type JobsClientListCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsListOptions contains the optional parameters for the Jobs.List method.
-type JobsListOptions struct {
+// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+type JobsClientListOptions struct {
 	// $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
 	SkipToken *string
 }
 
-// JobsMarkDevicesShippedOptions contains the optional parameters for the Jobs.MarkDevicesShipped method.
-type JobsMarkDevicesShippedOptions struct {
+// JobsClientMarkDevicesShippedOptions contains the optional parameters for the JobsClient.MarkDevicesShipped method.
+type JobsClientMarkDevicesShippedOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2436,19 +3242,38 @@ func (l *LastMitigationActionOnJob) UnmarshalJSON(data []byte) error {
 
 // ManagedDiskDetails - Details of the managed disks.
 type ManagedDiskDetails struct {
-	DataAccountDetails
+	// REQUIRED; Account Type of the data to be transferred.
+	DataAccountType *DataAccountType `json:"dataAccountType,omitempty"`
+
 	// REQUIRED; Resource Group Id of the compute disks.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty"`
 
 	// REQUIRED; Resource Id of the storage account that can be used to copy the vhd for staging.
 	StagingStorageAccountID *string `json:"stagingStorageAccountId,omitempty"`
+
+	// Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure jobs. If
+	// this is not passed, the service will generate password itself. This will not be
+	// returned in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must
+	// have at least one uppercase alphabet, one number and one special character.
+	// Password cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
+	// : @#-$%^!+=;:_()]+
+	SharePassword *string `json:"sharePassword,omitempty"`
+}
+
+// GetDataAccountDetails implements the DataAccountDetailsClassification interface for type ManagedDiskDetails.
+func (m *ManagedDiskDetails) GetDataAccountDetails() *DataAccountDetails {
+	return &DataAccountDetails{
+		DataAccountType: m.DataAccountType,
+		SharePassword:   m.SharePassword,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ManagedDiskDetails.
 func (m ManagedDiskDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.DataAccountDetails.marshalInternal(objectMap, DataAccountTypeManagedDisk)
+	objectMap["dataAccountType"] = DataAccountTypeManagedDisk
 	populate(objectMap, "resourceGroupId", m.ResourceGroupID)
+	populate(objectMap, "sharePassword", m.SharePassword)
 	populate(objectMap, "stagingStorageAccountId", m.StagingStorageAccountID)
 	return json.Marshal(objectMap)
 }
@@ -2462,8 +3287,14 @@ func (m *ManagedDiskDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "dataAccountType":
+			err = unpopulate(val, &m.DataAccountType)
+			delete(rawMsg, key)
 		case "resourceGroupId":
 			err = unpopulate(val, &m.ResourceGroupID)
+			delete(rawMsg, key)
+		case "sharePassword":
+			err = unpopulate(val, &m.SharePassword)
 			delete(rawMsg, key)
 		case "stagingStorageAccountId":
 			err = unpopulate(val, &m.StagingStorageAccountID)
@@ -2473,10 +3304,12 @@ func (m *ManagedDiskDetails) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := m.DataAccountDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
+}
+
+// ManagementClientMitigateOptions contains the optional parameters for the ManagementClient.Mitigate method.
+type ManagementClientMitigateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // MarkDevicesShippedRequest - The request body to provide the delivery package details of job
@@ -2515,7 +3348,7 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty" azure:"ro"`
 
 	// READ-ONLY; Operation properties.
-	Properties map[string]interface{} `json:"properties,omitempty" azure:"ro"`
+	Properties interface{} `json:"properties,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - Operation display
@@ -2550,8 +3383,8 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2611,20 +3444,29 @@ func (p Preferences) MarshalJSON() ([]byte, error) {
 
 // PreferencesValidationRequest - Request to validate preference of transport and data center.
 type PreferencesValidationRequest struct {
-	ValidationInputRequest
 	// REQUIRED; Device type to be used for the job.
 	DeviceType *SKUName `json:"deviceType,omitempty"`
+
+	// REQUIRED; Identifies the type of validation request.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
 
 	// Preference of transport and data center.
 	Preference *Preferences `json:"preference,omitempty"`
 }
 
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type PreferencesValidationRequest.
+func (p *PreferencesValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: p.ValidationType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type PreferencesValidationRequest.
 func (p PreferencesValidationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ValidationInputRequest.marshalInternal(objectMap, ValidationInputDiscriminatorValidatePreferences)
 	populate(objectMap, "deviceType", p.DeviceType)
 	populate(objectMap, "preference", p.Preference)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidatePreferences
 	return json.Marshal(objectMap)
 }
 
@@ -2643,29 +3485,43 @@ func (p *PreferencesValidationRequest) UnmarshalJSON(data []byte) error {
 		case "preference":
 			err = unpopulate(val, &p.Preference)
 			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &p.ValidationType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := p.ValidationInputRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // PreferencesValidationResponseProperties - Properties of data center and transport preference validation response.
 type PreferencesValidationResponseProperties struct {
-	ValidationInputResponse
+	// REQUIRED; Identifies the type of validation response.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+
+	// READ-ONLY; Error code and message of validation response.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+
 	// READ-ONLY; Validation status of requested data center and transport.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type PreferencesValidationResponseProperties.
+func (p *PreferencesValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: p.ValidationType,
+		Error:          p.Error,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PreferencesValidationResponseProperties.
 func (p PreferencesValidationResponseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ValidationInputResponse.marshalInternal(objectMap, ValidationInputDiscriminatorValidatePreferences)
+	populate(objectMap, "error", p.Error)
 	populate(objectMap, "status", p.Status)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidatePreferences
 	return json.Marshal(objectMap)
 }
 
@@ -2678,16 +3534,19 @@ func (p *PreferencesValidationResponseProperties) UnmarshalJSON(data []byte) err
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "error":
+			err = unpopulate(val, &p.Error)
+			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &p.Status)
+			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &p.ValidationType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := p.ValidationInputResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2698,7 +3557,7 @@ type RegionConfigurationRequest struct {
 	DatacenterAddressRequest *DatacenterAddressRequest `json:"datacenterAddressRequest,omitempty"`
 
 	// Request body to get the availability for scheduling orders.
-	ScheduleAvailabilityRequest ScheduleAvailabilityRequestClassification `json:"scheduleAvailabilityRequest,omitempty"`
+	ScheduleAvailabilityRequest CommonScheduleAvailabilityRequestClassification `json:"scheduleAvailabilityRequest,omitempty"`
 
 	// Request body to get the transport availability for given sku.
 	TransportAvailabilityRequest *TransportAvailabilityRequest `json:"transportAvailabilityRequest,omitempty"`
@@ -2726,7 +3585,7 @@ func (r *RegionConfigurationRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &r.DatacenterAddressRequest)
 			delete(rawMsg, key)
 		case "scheduleAvailabilityRequest":
-			r.ScheduleAvailabilityRequest, err = unmarshalScheduleAvailabilityRequestClassification(val)
+			r.ScheduleAvailabilityRequest, err = unmarshalCommonScheduleAvailabilityRequestClassification(val)
 			delete(rawMsg, key)
 		case "transportAvailabilityRequest":
 			err = unpopulate(val, &r.TransportAvailabilityRequest)
@@ -2788,8 +3647,8 @@ func (r *RegionConfigurationResponse) UnmarshalJSON(data []byte) error {
 
 // Resource - Model of the Resource.
 type Resource struct {
-	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East US, Southeast Asia, etc.).
-	// The region of a resource cannot be changed once it is
+	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East
+	// US, Southeast Asia, etc.). The region of a resource cannot be changed once it is
 	// created, but if an identical region is specified on update the request will succeed.
 	Location *string `json:"location,omitempty"`
 
@@ -2799,22 +3658,19 @@ type Resource struct {
 	// Msi identity of the resource
 	Identity *ResourceIdentity `json:"identity,omitempty"`
 
-	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
+	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
+	// resource groups).
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "identity", r.Identity)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "sku", r.SKU)
 	populate(objectMap, "tags", r.Tags)
+	return json.Marshal(objectMap)
 }
 
 // ResourceIdentity - Msi identity details of the resource
@@ -2856,7 +3712,6 @@ type SKU struct {
 
 // SKUAvailabilityValidationRequest - Request to validate sku availability.
 type SKUAvailabilityValidationRequest struct {
-	ValidationInputRequest
 	// REQUIRED; ISO country code. Country for hardware shipment. For codes check: https://en.wikipedia.org/wiki/ISO3166-1alpha-2#Officiallyassignedcode_elements
 	Country *string `json:"country,omitempty"`
 
@@ -2868,16 +3723,26 @@ type SKUAvailabilityValidationRequest struct {
 
 	// REQUIRED; Type of the transfer.
 	TransferType *TransferType `json:"transferType,omitempty"`
+
+	// REQUIRED; Identifies the type of validation request.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+}
+
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type SKUAvailabilityValidationRequest.
+func (s *SKUAvailabilityValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: s.ValidationType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SKUAvailabilityValidationRequest.
 func (s SKUAvailabilityValidationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ValidationInputRequest.marshalInternal(objectMap, ValidationInputDiscriminatorValidateSKUAvailability)
 	populate(objectMap, "country", s.Country)
 	populate(objectMap, "deviceType", s.DeviceType)
 	populate(objectMap, "location", s.Location)
 	populate(objectMap, "transferType", s.TransferType)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateSKUAvailability
 	return json.Marshal(objectMap)
 }
 
@@ -2902,29 +3767,43 @@ func (s *SKUAvailabilityValidationRequest) UnmarshalJSON(data []byte) error {
 		case "transferType":
 			err = unpopulate(val, &s.TransferType)
 			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &s.ValidationType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.ValidationInputRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // SKUAvailabilityValidationResponseProperties - Properties of sku availability validation response.
 type SKUAvailabilityValidationResponseProperties struct {
-	ValidationInputResponse
+	// REQUIRED; Identifies the type of validation response.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+
+	// READ-ONLY; Error code and message of validation response.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+
 	// READ-ONLY; Sku availability validation status.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type SKUAvailabilityValidationResponseProperties.
+func (s *SKUAvailabilityValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: s.ValidationType,
+		Error:          s.Error,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SKUAvailabilityValidationResponseProperties.
 func (s SKUAvailabilityValidationResponseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ValidationInputResponse.marshalInternal(objectMap, ValidationInputDiscriminatorValidateSKUAvailability)
+	populate(objectMap, "error", s.Error)
 	populate(objectMap, "status", s.Status)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateSKUAvailability
 	return json.Marshal(objectMap)
 }
 
@@ -2937,16 +3816,19 @@ func (s *SKUAvailabilityValidationResponseProperties) UnmarshalJSON(data []byte)
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "error":
+			err = unpopulate(val, &s.Error)
+			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &s.Status)
+			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &s.ValidationType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.ValidationInputResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2968,8 +3850,8 @@ type SKUCost struct {
 	// READ-ONLY; The type of the meter.
 	MeterType *string `json:"meterType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Multiplier specifies the region specific value to be multiplied with 1$ guid. Eg: Our new regions will be using 1$ shipping guid with appropriate
-	// multiplier specific to region.
+	// READ-ONLY; Multiplier specifies the region specific value to be multiplied with 1$ guid. Eg: Our new regions will be using
+	// 1$ shipping guid with appropriate multiplier specific to region.
 	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
 }
 
@@ -3022,16 +3904,7 @@ func (s SKUProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ScheduleAvailabilityRequestClassification provides polymorphic access to related types.
-// Call the interface's GetScheduleAvailabilityRequest() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *DataBoxScheduleAvailabilityRequest, *DiskScheduleAvailabilityRequest, *HeavyScheduleAvailabilityRequest, *ScheduleAvailabilityRequest
-type ScheduleAvailabilityRequestClassification interface {
-	// GetScheduleAvailabilityRequest returns the ScheduleAvailabilityRequest content of the underlying type.
-	GetScheduleAvailabilityRequest() *ScheduleAvailabilityRequest
-}
-
-// ScheduleAvailabilityRequest - Request body to get the availability for scheduling orders.
+// ScheduleAvailabilityRequest - Request body to get the availability for scheduling data box orders orders.
 type ScheduleAvailabilityRequest struct {
 	// REQUIRED; Sku Name for which the order is to be scheduled.
 	SKUName *SKUName `json:"skuName,omitempty"`
@@ -3043,9 +3916,23 @@ type ScheduleAvailabilityRequest struct {
 	Country *string `json:"country,omitempty"`
 }
 
-// GetScheduleAvailabilityRequest implements the ScheduleAvailabilityRequestClassification interface for type ScheduleAvailabilityRequest.
-func (s *ScheduleAvailabilityRequest) GetScheduleAvailabilityRequest() *ScheduleAvailabilityRequest {
-	return s
+// GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
+// ScheduleAvailabilityRequest.
+func (s *ScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest {
+	return &CommonScheduleAvailabilityRequest{
+		StorageLocation: s.StorageLocation,
+		SKUName:         s.SKUName,
+		Country:         s.Country,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ScheduleAvailabilityRequest.
+func (s ScheduleAvailabilityRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "country", s.Country)
+	objectMap["skuName"] = SKUNameDataBox
+	populate(objectMap, "storageLocation", s.StorageLocation)
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ScheduleAvailabilityRequest.
@@ -3054,17 +3941,6 @@ func (s *ScheduleAvailabilityRequest) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return s.unmarshalInternal(rawMsg)
-}
-
-func (s ScheduleAvailabilityRequest) marshalInternal(objectMap map[string]interface{}, discValue SKUName) {
-	populate(objectMap, "country", s.Country)
-	s.SKUName = &discValue
-	objectMap["skuName"] = s.SKUName
-	populate(objectMap, "storageLocation", s.StorageLocation)
-}
-
-func (s *ScheduleAvailabilityRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -3102,33 +3978,65 @@ func (s ScheduleAvailabilityResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServiceListAvailableSKUsByResourceGroupOptions contains the optional parameters for the Service.ListAvailableSKUsByResourceGroup method.
-type ServiceListAvailableSKUsByResourceGroupOptions struct {
+// Secret - The secrets related to a DataBox.
+type Secret struct {
+	// READ-ONLY; Per account level access credentials.
+	AccountCredentialDetails []*AccountCredentialDetails `json:"accountCredentialDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Password for out of the box experience on device.
+	DevicePassword *string `json:"devicePassword,omitempty" azure:"ro"`
+
+	// READ-ONLY; Serial number of the assigned device.
+	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty" azure:"ro"`
+
+	// READ-ONLY; The base 64 encoded public key to authenticate with the device
+	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; Network configuration of the appliance.
+	NetworkConfigurations []*ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Secret.
+func (s Secret) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accountCredentialDetails", s.AccountCredentialDetails)
+	populate(objectMap, "devicePassword", s.DevicePassword)
+	populate(objectMap, "deviceSerialNumber", s.DeviceSerialNumber)
+	populate(objectMap, "encodedValidationCertPubKey", s.EncodedValidationCertPubKey)
+	populate(objectMap, "networkConfigurations", s.NetworkConfigurations)
+	return json.Marshal(objectMap)
+}
+
+// ServiceClientListAvailableSKUsByResourceGroupOptions contains the optional parameters for the ServiceClient.ListAvailableSKUsByResourceGroup
+// method.
+type ServiceClientListAvailableSKUsByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceRegionConfigurationByResourceGroupOptions contains the optional parameters for the Service.RegionConfigurationByResourceGroup method.
-type ServiceRegionConfigurationByResourceGroupOptions struct {
+// ServiceClientRegionConfigurationByResourceGroupOptions contains the optional parameters for the ServiceClient.RegionConfigurationByResourceGroup
+// method.
+type ServiceClientRegionConfigurationByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceRegionConfigurationOptions contains the optional parameters for the Service.RegionConfiguration method.
-type ServiceRegionConfigurationOptions struct {
+// ServiceClientRegionConfigurationOptions contains the optional parameters for the ServiceClient.RegionConfiguration method.
+type ServiceClientRegionConfigurationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceValidateAddressOptions contains the optional parameters for the Service.ValidateAddress method.
-type ServiceValidateAddressOptions struct {
+// ServiceClientValidateAddressOptions contains the optional parameters for the ServiceClient.ValidateAddress method.
+type ServiceClientValidateAddressOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceValidateInputsByResourceGroupOptions contains the optional parameters for the Service.ValidateInputsByResourceGroup method.
-type ServiceValidateInputsByResourceGroupOptions struct {
+// ServiceClientValidateInputsByResourceGroupOptions contains the optional parameters for the ServiceClient.ValidateInputsByResourceGroup
+// method.
+type ServiceClientValidateInputsByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceValidateInputsOptions contains the optional parameters for the Service.ValidateInputs method.
-type ServiceValidateInputsOptions struct {
+// ServiceClientValidateInputsOptions contains the optional parameters for the ServiceClient.ValidateInputs method.
+type ServiceClientValidateInputsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3283,15 +4191,34 @@ type ShippingAddress struct {
 
 // StorageAccountDetails - Details for the storage account.
 type StorageAccountDetails struct {
-	DataAccountDetails
+	// REQUIRED; Account Type of the data to be transferred.
+	DataAccountType *DataAccountType `json:"dataAccountType,omitempty"`
+
 	// REQUIRED; Storage Account Resource Id.
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
+
+	// Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure jobs. If
+	// this is not passed, the service will generate password itself. This will not be
+	// returned in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must
+	// have at least one uppercase alphabet, one number and one special character.
+	// Password cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
+	// : @#-$%^!+=;:_()]+
+	SharePassword *string `json:"sharePassword,omitempty"`
+}
+
+// GetDataAccountDetails implements the DataAccountDetailsClassification interface for type StorageAccountDetails.
+func (s *StorageAccountDetails) GetDataAccountDetails() *DataAccountDetails {
+	return &DataAccountDetails{
+		DataAccountType: s.DataAccountType,
+		SharePassword:   s.SharePassword,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StorageAccountDetails.
 func (s StorageAccountDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.DataAccountDetails.marshalInternal(objectMap, DataAccountTypeStorageAccount)
+	objectMap["dataAccountType"] = DataAccountTypeStorageAccount
+	populate(objectMap, "sharePassword", s.SharePassword)
 	populate(objectMap, "storageAccountId", s.StorageAccountID)
 	return json.Marshal(objectMap)
 }
@@ -3305,6 +4232,12 @@ func (s *StorageAccountDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "dataAccountType":
+			err = unpopulate(val, &s.DataAccountType)
+			delete(rawMsg, key)
+		case "sharePassword":
+			err = unpopulate(val, &s.SharePassword)
+			delete(rawMsg, key)
 		case "storageAccountId":
 			err = unpopulate(val, &s.StorageAccountID)
 			delete(rawMsg, key)
@@ -3313,36 +4246,76 @@ func (s *StorageAccountDetails) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := s.DataAccountDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // SubscriptionIsAllowedToCreateJobValidationRequest - Request to validate subscription permission to create jobs.
 type SubscriptionIsAllowedToCreateJobValidationRequest struct {
-	ValidationInputRequest
+	// REQUIRED; Identifies the type of validation request.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+}
+
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type SubscriptionIsAllowedToCreateJobValidationRequest.
+func (s *SubscriptionIsAllowedToCreateJobValidationRequest) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: s.ValidationType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SubscriptionIsAllowedToCreateJobValidationRequest.
 func (s SubscriptionIsAllowedToCreateJobValidationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ValidationInputRequest.marshalInternal(objectMap, ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob
 	return json.Marshal(objectMap)
 }
 
-// SubscriptionIsAllowedToCreateJobValidationResponseProperties - Properties of subscription permission to create job validation response.
+// UnmarshalJSON implements the json.Unmarshaller interface for type SubscriptionIsAllowedToCreateJobValidationRequest.
+func (s *SubscriptionIsAllowedToCreateJobValidationRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "validationType":
+			err = unpopulate(val, &s.ValidationType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// SubscriptionIsAllowedToCreateJobValidationResponseProperties - Properties of subscription permission to create job validation
+// response.
 type SubscriptionIsAllowedToCreateJobValidationResponseProperties struct {
-	ValidationInputResponse
+	// REQUIRED; Identifies the type of validation response.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+
+	// READ-ONLY; Error code and message of validation response.
+	Error *CloudError `json:"error,omitempty" azure:"ro"`
+
 	// READ-ONLY; Validation status of subscription permission to create job.
 	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetValidationInputResponse implements the ValidationInputResponseClassification interface for type SubscriptionIsAllowedToCreateJobValidationResponseProperties.
+func (s *SubscriptionIsAllowedToCreateJobValidationResponseProperties) GetValidationInputResponse() *ValidationInputResponse {
+	return &ValidationInputResponse{
+		ValidationType: s.ValidationType,
+		Error:          s.Error,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SubscriptionIsAllowedToCreateJobValidationResponseProperties.
 func (s SubscriptionIsAllowedToCreateJobValidationResponseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ValidationInputResponse.marshalInternal(objectMap, ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob)
+	populate(objectMap, "error", s.Error)
 	populate(objectMap, "status", s.Status)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob
 	return json.Marshal(objectMap)
 }
 
@@ -3355,16 +4328,19 @@ func (s *SubscriptionIsAllowedToCreateJobValidationResponseProperties) Unmarshal
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "error":
+			err = unpopulate(val, &s.Error)
+			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &s.Status)
+			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &s.ValidationType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.ValidationInputResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3454,22 +4430,24 @@ type TransferConfiguration struct {
 	// REQUIRED; Type of the configuration for transfer.
 	TransferConfigurationType *TransferConfigurationType `json:"transferConfigurationType,omitempty"`
 
-	// Map of filter type and the details to transfer all data. This field is required only if the TransferConfigurationType is given as TransferAll
+	// Map of filter type and the details to transfer all data. This field is required only if the TransferConfigurationType is
+	// given as TransferAll
 	TransferAllDetails *TransferConfigurationTransferAllDetails `json:"transferAllDetails,omitempty"`
 
-	// Map of filter type and the details to filter. This field is required only if the TransferConfigurationType is given as TransferUsingFilter.
+	// Map of filter type and the details to filter. This field is required only if the TransferConfigurationType is given as
+	// TransferUsingFilter.
 	TransferFilterDetails *TransferConfigurationTransferFilterDetails `json:"transferFilterDetails,omitempty"`
 }
 
-// TransferConfigurationTransferAllDetails - Map of filter type and the details to transfer all data. This field is required only if the TransferConfigurationType
-// is given as TransferAll
+// TransferConfigurationTransferAllDetails - Map of filter type and the details to transfer all data. This field is required
+// only if the TransferConfigurationType is given as TransferAll
 type TransferConfigurationTransferAllDetails struct {
 	// Details to transfer all data.
 	Include *TransferAllDetails `json:"include,omitempty"`
 }
 
-// TransferConfigurationTransferFilterDetails - Map of filter type and the details to filter. This field is required only if the TransferConfigurationType
-// is given as TransferUsingFilter.
+// TransferConfigurationTransferFilterDetails - Map of filter type and the details to filter. This field is required only
+// if the TransferConfigurationType is given as TransferUsingFilter.
 type TransferConfigurationTransferFilterDetails struct {
 	// Details of the filtering the transfer of data.
 	Include *TransferFilterDetails `json:"include,omitempty"`
@@ -3537,7 +4515,7 @@ type UnencryptedCredentials struct {
 	JobName *string `json:"jobName,omitempty" azure:"ro"`
 
 	// READ-ONLY; Secrets related to this job.
-	JobSecrets JobSecretsClassification `json:"jobSecrets,omitempty" azure:"ro"`
+	JobSecrets CommonJobSecretsClassification `json:"jobSecrets,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type UnencryptedCredentials.
@@ -3561,7 +4539,7 @@ func (u *UnencryptedCredentials) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &u.JobName)
 			delete(rawMsg, key)
 		case "jobSecrets":
-			u.JobSecrets, err = unmarshalJobSecretsClassification(val)
+			u.JobSecrets, err = unmarshalCommonJobSecretsClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3626,24 +4604,33 @@ type UserAssignedProperties struct {
 
 // ValidateAddress - The requirements to validate customer address where the device needs to be shipped.
 type ValidateAddress struct {
-	ValidationInputRequest
 	// REQUIRED; Device type to be used for the job.
 	DeviceType *SKUName `json:"deviceType,omitempty"`
 
 	// REQUIRED; Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
 
+	// REQUIRED; Identifies the type of validation request.
+	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+
 	// Preferences related to the shipment logistics of the sku.
 	TransportPreferences *TransportPreferences `json:"transportPreferences,omitempty"`
+}
+
+// GetValidationInputRequest implements the ValidationInputRequestClassification interface for type ValidateAddress.
+func (v *ValidateAddress) GetValidationInputRequest() *ValidationInputRequest {
+	return &ValidationInputRequest{
+		ValidationType: v.ValidationType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ValidateAddress.
 func (v ValidateAddress) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.ValidationInputRequest.marshalInternal(objectMap, ValidationInputDiscriminatorValidateAddress)
 	populate(objectMap, "deviceType", v.DeviceType)
 	populate(objectMap, "shippingAddress", v.ShippingAddress)
 	populate(objectMap, "transportPreferences", v.TransportPreferences)
+	objectMap["validationType"] = ValidationInputDiscriminatorValidateAddress
 	return json.Marshal(objectMap)
 }
 
@@ -3665,13 +4652,13 @@ func (v *ValidateAddress) UnmarshalJSON(data []byte) error {
 		case "transportPreferences":
 			err = unpopulate(val, &v.TransportPreferences)
 			delete(rawMsg, key)
+		case "validationType":
+			err = unpopulate(val, &v.ValidationType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := v.ValidationInputRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3680,7 +4667,7 @@ func (v *ValidateAddress) UnmarshalJSON(data []byte) error {
 // Call the interface's GetValidationInputRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *CreateOrderLimitForSubscriptionValidationRequest, *DataTransferDetailsValidationRequest, *PreferencesValidationRequest,
-// - *SkuAvailabilityValidationRequest, *SubscriptionIsAllowedToCreateJobValidationRequest, *ValidateAddress, *ValidationInputRequest
+// - *SKUAvailabilityValidationRequest, *SubscriptionIsAllowedToCreateJobValidationRequest, *ValidateAddress, *ValidationInputRequest
 type ValidationInputRequestClassification interface {
 	// GetValidationInputRequest returns the ValidationInputRequest content of the underlying type.
 	GetValidationInputRequest() *ValidationInputRequest
@@ -3695,40 +4682,11 @@ type ValidationInputRequest struct {
 // GetValidationInputRequest implements the ValidationInputRequestClassification interface for type ValidationInputRequest.
 func (v *ValidationInputRequest) GetValidationInputRequest() *ValidationInputRequest { return v }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ValidationInputRequest.
-func (v *ValidationInputRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return v.unmarshalInternal(rawMsg)
-}
-
-func (v ValidationInputRequest) marshalInternal(objectMap map[string]interface{}, discValue ValidationInputDiscriminator) {
-	v.ValidationType = &discValue
-	objectMap["validationType"] = v.ValidationType
-}
-
-func (v *ValidationInputRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "validationType":
-			err = unpopulate(val, &v.ValidationType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ValidationInputResponseClassification provides polymorphic access to related types.
 // Call the interface's GetValidationInputResponse() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AddressValidationProperties, *CreateOrderLimitForSubscriptionValidationResponseProperties, *DataTransferDetailsValidationResponseProperties,
-// - *PreferencesValidationResponseProperties, *SkuAvailabilityValidationResponseProperties, *SubscriptionIsAllowedToCreateJobValidationResponseProperties,
+// - *PreferencesValidationResponseProperties, *SKUAvailabilityValidationResponseProperties, *SubscriptionIsAllowedToCreateJobValidationResponseProperties,
 // - *ValidationInputResponse
 type ValidationInputResponseClassification interface {
 	// GetValidationInputResponse returns the ValidationInputResponse content of the underlying type.
@@ -3746,39 +4704,6 @@ type ValidationInputResponse struct {
 
 // GetValidationInputResponse implements the ValidationInputResponseClassification interface for type ValidationInputResponse.
 func (v *ValidationInputResponse) GetValidationInputResponse() *ValidationInputResponse { return v }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ValidationInputResponse.
-func (v *ValidationInputResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return v.unmarshalInternal(rawMsg)
-}
-
-func (v ValidationInputResponse) marshalInternal(objectMap map[string]interface{}, discValue ValidationInputDiscriminator) {
-	populate(objectMap, "error", v.Error)
-	v.ValidationType = &discValue
-	objectMap["validationType"] = v.ValidationType
-}
-
-func (v *ValidationInputResponse) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "error":
-			err = unpopulate(val, &v.Error)
-			delete(rawMsg, key)
-		case "validationType":
-			err = unpopulate(val, &v.ValidationType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // ValidationRequestClassification provides polymorphic access to related types.
 // Call the interface's GetValidationRequest() method to access the common type.
@@ -3801,22 +4726,20 @@ type ValidationRequest struct {
 // GetValidationRequest implements the ValidationRequestClassification interface for type ValidationRequest.
 func (v *ValidationRequest) GetValidationRequest() *ValidationRequest { return v }
 
+// MarshalJSON implements the json.Marshaller interface for type ValidationRequest.
+func (v ValidationRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "individualRequestDetails", v.IndividualRequestDetails)
+	objectMap["validationCategory"] = v.ValidationCategory
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON implements the json.Unmarshaller interface for type ValidationRequest.
 func (v *ValidationRequest) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return v.unmarshalInternal(rawMsg)
-}
-
-func (v ValidationRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "individualRequestDetails", v.IndividualRequestDetails)
-	v.ValidationCategory = &discValue
-	objectMap["validationCategory"] = v.ValidationCategory
-}
-
-func (v *ValidationRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {

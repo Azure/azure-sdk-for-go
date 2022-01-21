@@ -1,5 +1,442 @@
 # Release History
 
+## 0.2.0 (2022-01-21)
+### Breaking Changes
+
+- Function `*JobsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, JobResourceUpdateParameter, *JobsBeginUpdateOptions)` to `(context.Context, string, string, JobResourceUpdateParameter, *JobsClientBeginUpdateOptions)`
+- Function `*JobsClient.BeginUpdate` return value(s) have been changed from `(JobsUpdatePollerResponse, error)` to `(JobsClientUpdatePollerResponse, error)`
+- Function `*ServiceClient.ValidateInputsByResourceGroup` parameter(s) have been changed from `(context.Context, string, string, ValidationRequestClassification, *ServiceValidateInputsByResourceGroupOptions)` to `(context.Context, string, string, ValidationRequestClassification, *ServiceClientValidateInputsByResourceGroupOptions)`
+- Function `*ServiceClient.ValidateInputsByResourceGroup` return value(s) have been changed from `(ServiceValidateInputsByResourceGroupResponse, error)` to `(ServiceClientValidateInputsByResourceGroupResponse, error)`
+- Function `*JobsClient.BookShipmentPickUp` parameter(s) have been changed from `(context.Context, string, string, ShipmentPickUpRequest, *JobsBookShipmentPickUpOptions)` to `(context.Context, string, string, ShipmentPickUpRequest, *JobsClientBookShipmentPickUpOptions)`
+- Function `*JobsClient.BookShipmentPickUp` return value(s) have been changed from `(JobsBookShipmentPickUpResponse, error)` to `(JobsClientBookShipmentPickUpResponse, error)`
+- Function `*ServiceClient.ValidateAddress` parameter(s) have been changed from `(context.Context, string, ValidateAddress, *ServiceValidateAddressOptions)` to `(context.Context, string, ValidateAddress, *ServiceClientValidateAddressOptions)`
+- Function `*ServiceClient.ValidateAddress` return value(s) have been changed from `(ServiceValidateAddressResponse, error)` to `(ServiceClientValidateAddressResponse, error)`
+- Function `*ServiceClient.ListAvailableSKUsByResourceGroup` parameter(s) have been changed from `(string, string, AvailableSKURequest, *ServiceListAvailableSKUsByResourceGroupOptions)` to `(string, string, AvailableSKURequest, *ServiceClientListAvailableSKUsByResourceGroupOptions)`
+- Function `*ServiceClient.ListAvailableSKUsByResourceGroup` return value(s) have been changed from `(*ServiceListAvailableSKUsByResourceGroupPager)` to `(*ServiceClientListAvailableSKUsByResourceGroupPager)`
+- Function `*ServiceClient.ValidateInputs` parameter(s) have been changed from `(context.Context, string, ValidationRequestClassification, *ServiceValidateInputsOptions)` to `(context.Context, string, ValidationRequestClassification, *ServiceClientValidateInputsOptions)`
+- Function `*ServiceClient.ValidateInputs` return value(s) have been changed from `(ServiceValidateInputsResponse, error)` to `(ServiceClientValidateInputsResponse, error)`
+- Function `*JobsClient.List` parameter(s) have been changed from `(*JobsListOptions)` to `(*JobsClientListOptions)`
+- Function `*JobsClient.List` return value(s) have been changed from `(*JobsListPager)` to `(*JobsClientListPager)`
+- Function `*JobsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *JobsListByResourceGroupOptions)` to `(string, *JobsClientListByResourceGroupOptions)`
+- Function `*JobsClient.ListByResourceGroup` return value(s) have been changed from `(*JobsListByResourceGroupPager)` to `(*JobsClientListByResourceGroupPager)`
+- Function `*JobsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *JobsGetOptions)` to `(context.Context, string, string, *JobsClientGetOptions)`
+- Function `*JobsClient.Get` return value(s) have been changed from `(JobsGetResponse, error)` to `(JobsClientGetResponse, error)`
+- Function `*ServiceClient.RegionConfiguration` parameter(s) have been changed from `(context.Context, string, RegionConfigurationRequest, *ServiceRegionConfigurationOptions)` to `(context.Context, string, RegionConfigurationRequest, *ServiceClientRegionConfigurationOptions)`
+- Function `*ServiceClient.RegionConfiguration` return value(s) have been changed from `(ServiceRegionConfigurationResponse, error)` to `(ServiceClientRegionConfigurationResponse, error)`
+- Function `*JobsClient.ListCredentials` parameter(s) have been changed from `(context.Context, string, string, *JobsListCredentialsOptions)` to `(context.Context, string, string, *JobsClientListCredentialsOptions)`
+- Function `*JobsClient.ListCredentials` return value(s) have been changed from `(JobsListCredentialsResponse, error)` to `(JobsClientListCredentialsResponse, error)`
+- Function `*JobsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, JobResource, *JobsBeginCreateOptions)` to `(context.Context, string, string, JobResource, *JobsClientBeginCreateOptions)`
+- Function `*JobsClient.BeginCreate` return value(s) have been changed from `(JobsCreatePollerResponse, error)` to `(JobsClientCreatePollerResponse, error)`
+- Function `*JobsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *JobsBeginDeleteOptions)` to `(context.Context, string, string, *JobsClientBeginDeleteOptions)`
+- Function `*JobsClient.BeginDelete` return value(s) have been changed from `(JobsDeletePollerResponse, error)` to `(JobsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*JobsClient.Cancel` parameter(s) have been changed from `(context.Context, string, string, CancellationReason, *JobsCancelOptions)` to `(context.Context, string, string, CancellationReason, *JobsClientCancelOptions)`
+- Function `*JobsClient.Cancel` return value(s) have been changed from `(JobsCancelResponse, error)` to `(JobsClientCancelResponse, error)`
+- Function `*ServiceClient.RegionConfigurationByResourceGroup` parameter(s) have been changed from `(context.Context, string, string, RegionConfigurationRequest, *ServiceRegionConfigurationByResourceGroupOptions)` to `(context.Context, string, string, RegionConfigurationRequest, *ServiceClientRegionConfigurationByResourceGroupOptions)`
+- Function `*ServiceClient.RegionConfigurationByResourceGroup` return value(s) have been changed from `(ServiceRegionConfigurationByResourceGroupResponse, error)` to `(ServiceClientRegionConfigurationByResourceGroupResponse, error)`
+- Function `*JobsClient.MarkDevicesShipped` parameter(s) have been changed from `(context.Context, string, string, MarkDevicesShippedRequest, *JobsMarkDevicesShippedOptions)` to `(context.Context, string, string, MarkDevicesShippedRequest, *JobsClientMarkDevicesShippedOptions)`
+- Function `*JobsClient.MarkDevicesShipped` return value(s) have been changed from `(JobsMarkDevicesShippedResponse, error)` to `(JobsClientMarkDevicesShippedResponse, error)`
+- Type of `RegionConfigurationRequest.ScheduleAvailabilityRequest` has been changed from `ScheduleAvailabilityRequestClassification` to `CommonScheduleAvailabilityRequestClassification`
+- Type of `AdditionalErrorInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `JobProperties.Details` has been changed from `JobDetailsClassification` to `CommonJobDetailsClassification`
+- Type of `UnencryptedCredentials.JobSecrets` has been changed from `JobSecretsClassification` to `CommonJobSecretsClassification`
+- Type of `JobStages.JobStageDetails` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `Operation.Properties` has been changed from `map[string]interface{}` to `interface{}`
+- Function `JobsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*JobsDeletePoller.Done` has been removed
+- Function `*DatacenterAddressResponse.UnmarshalJSON` has been removed
+- Function `DataBoxScheduleAvailabilityRequest.MarshalJSON` has been removed
+- Function `DataBoxDiskJobSecrets.MarshalJSON` has been removed
+- Function `DataBoxJobDetails.MarshalJSON` has been removed
+- Function `*JobsUpdatePoller.FinalResponse` has been removed
+- Function `*ValidationInputResponse.UnmarshalJSON` has been removed
+- Function `*DataBoxCustomerDiskJobDetails.UnmarshalJSON` has been removed
+- Function `DataBoxHeavyAccountCopyLogDetails.MarshalJSON` has been removed
+- Function `*JobsListPager.Err` has been removed
+- Function `DataboxJobSecrets.MarshalJSON` has been removed
+- Function `*JobsDeletePoller.Poll` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*JobsCreatePoller.Poll` has been removed
+- Function `*DataBoxHeavyAccountCopyLogDetails.UnmarshalJSON` has been removed
+- Function `*JobsUpdatePoller.Poll` has been removed
+- Function `*DataBoxDiskCopyLogDetails.UnmarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `*DataBoxDiskJobDetails.UnmarshalJSON` has been removed
+- Function `*DataBoxDiskJobSecrets.UnmarshalJSON` has been removed
+- Function `*ServiceListAvailableSKUsByResourceGroupPager.Err` has been removed
+- Function `*ValidationInputRequest.UnmarshalJSON` has been removed
+- Function `NewDataBoxManagementClient` has been removed
+- Function `DataBoxDiskCopyLogDetails.MarshalJSON` has been removed
+- Function `*JobsDeletePoller.ResumeToken` has been removed
+- Function `*JobsDeletePollerResponse.Resume` has been removed
+- Function `*JobsCreatePoller.FinalResponse` has been removed
+- Function `DataBoxCustomerDiskCopyLogDetails.MarshalJSON` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*JobsUpdatePollerResponse.Resume` has been removed
+- Function `*DataBoxHeavyJobSecrets.UnmarshalJSON` has been removed
+- Function `DataBoxAccountCopyLogDetails.MarshalJSON` has been removed
+- Function `*JobsListPager.NextPage` has been removed
+- Function `*DataBoxAccountCopyLogDetails.UnmarshalJSON` has been removed
+- Function `DataBoxSecret.MarshalJSON` has been removed
+- Function `JobsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*DataAccountDetails.UnmarshalJSON` has been removed
+- Function `DataBoxCustomerDiskJobDetails.MarshalJSON` has been removed
+- Function `DataBoxHeavyJobSecrets.MarshalJSON` has been removed
+- Function `*JobsListPager.PageResponse` has been removed
+- Function `*JobsDeletePoller.FinalResponse` has been removed
+- Function `*ScheduleAvailabilityRequest.GetScheduleAvailabilityRequest` has been removed
+- Function `*DataBoxManagementClient.Mitigate` has been removed
+- Function `DataBoxDiskJobDetails.MarshalJSON` has been removed
+- Function `*JobsListByResourceGroupPager.PageResponse` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*JobSecrets.GetJobSecrets` has been removed
+- Function `*JobsUpdatePoller.Done` has been removed
+- Function `JobsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DataboxJobSecrets.UnmarshalJSON` has been removed
+- Function `DataBoxHeavyJobDetails.MarshalJSON` has been removed
+- Function `APIError.Error` has been removed
+- Function `*JobsCreatePoller.Done` has been removed
+- Function `*JobsListByResourceGroupPager.Err` has been removed
+- Function `*ServiceListAvailableSKUsByResourceGroupPager.PageResponse` has been removed
+- Function `*ServiceListAvailableSKUsByResourceGroupPager.NextPage` has been removed
+- Function `*JobsCreatePoller.ResumeToken` has been removed
+- Function `*CopyLogDetails.UnmarshalJSON` has been removed
+- Function `*DataBoxHeavyJobDetails.UnmarshalJSON` has been removed
+- Function `*DataBoxCustomerDiskCopyLogDetails.UnmarshalJSON` has been removed
+- Function `DataBoxHeavySecret.MarshalJSON` has been removed
+- Function `*JobsCreatePollerResponse.Resume` has been removed
+- Function `*JobsListByResourceGroupPager.NextPage` has been removed
+- Function `*JobDetails.GetJobDetails` has been removed
+- Function `*JobsUpdatePoller.ResumeToken` has been removed
+- Function `*DataBoxJobDetails.UnmarshalJSON` has been removed
+- Struct `APIError` has been removed
+- Struct `ArmBaseObject` has been removed
+- Struct `DataBoxAccountCopyLogDetails` has been removed
+- Struct `DataBoxCustomerDiskCopyLogDetails` has been removed
+- Struct `DataBoxCustomerDiskCopyProgress` has been removed
+- Struct `DataBoxCustomerDiskJobDetails` has been removed
+- Struct `DataBoxDiskCopyLogDetails` has been removed
+- Struct `DataBoxDiskCopyProgress` has been removed
+- Struct `DataBoxDiskJobDetails` has been removed
+- Struct `DataBoxDiskJobSecrets` has been removed
+- Struct `DataBoxHeavyAccountCopyLogDetails` has been removed
+- Struct `DataBoxHeavyJobDetails` has been removed
+- Struct `DataBoxHeavyJobSecrets` has been removed
+- Struct `DataBoxHeavySecret` has been removed
+- Struct `DataBoxJobDetails` has been removed
+- Struct `DataBoxManagementClient` has been removed
+- Struct `DataBoxManagementClientMitigateOptions` has been removed
+- Struct `DataBoxManagementClientMitigateResponse` has been removed
+- Struct `DataBoxScheduleAvailabilityRequest` has been removed
+- Struct `DataBoxSecret` has been removed
+- Struct `DataboxJobSecrets` has been removed
+- Struct `Details` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `JobsBeginCreateOptions` has been removed
+- Struct `JobsBeginDeleteOptions` has been removed
+- Struct `JobsBeginUpdateOptions` has been removed
+- Struct `JobsBookShipmentPickUpOptions` has been removed
+- Struct `JobsBookShipmentPickUpResponse` has been removed
+- Struct `JobsBookShipmentPickUpResult` has been removed
+- Struct `JobsCancelOptions` has been removed
+- Struct `JobsCancelResponse` has been removed
+- Struct `JobsCreatePoller` has been removed
+- Struct `JobsCreatePollerResponse` has been removed
+- Struct `JobsCreateResponse` has been removed
+- Struct `JobsCreateResult` has been removed
+- Struct `JobsDeletePoller` has been removed
+- Struct `JobsDeletePollerResponse` has been removed
+- Struct `JobsDeleteResponse` has been removed
+- Struct `JobsGetOptions` has been removed
+- Struct `JobsGetResponse` has been removed
+- Struct `JobsGetResult` has been removed
+- Struct `JobsListByResourceGroupOptions` has been removed
+- Struct `JobsListByResourceGroupPager` has been removed
+- Struct `JobsListByResourceGroupResponse` has been removed
+- Struct `JobsListByResourceGroupResult` has been removed
+- Struct `JobsListCredentialsOptions` has been removed
+- Struct `JobsListCredentialsResponse` has been removed
+- Struct `JobsListCredentialsResult` has been removed
+- Struct `JobsListOptions` has been removed
+- Struct `JobsListPager` has been removed
+- Struct `JobsListResponse` has been removed
+- Struct `JobsListResult` has been removed
+- Struct `JobsMarkDevicesShippedOptions` has been removed
+- Struct `JobsMarkDevicesShippedResponse` has been removed
+- Struct `JobsUpdatePoller` has been removed
+- Struct `JobsUpdatePollerResponse` has been removed
+- Struct `JobsUpdateResponse` has been removed
+- Struct `JobsUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `ServiceListAvailableSKUsByResourceGroupOptions` has been removed
+- Struct `ServiceListAvailableSKUsByResourceGroupPager` has been removed
+- Struct `ServiceListAvailableSKUsByResourceGroupResponse` has been removed
+- Struct `ServiceListAvailableSKUsByResourceGroupResult` has been removed
+- Struct `ServiceRegionConfigurationByResourceGroupOptions` has been removed
+- Struct `ServiceRegionConfigurationByResourceGroupResponse` has been removed
+- Struct `ServiceRegionConfigurationByResourceGroupResult` has been removed
+- Struct `ServiceRegionConfigurationOptions` has been removed
+- Struct `ServiceRegionConfigurationResponse` has been removed
+- Struct `ServiceRegionConfigurationResult` has been removed
+- Struct `ServiceValidateAddressOptions` has been removed
+- Struct `ServiceValidateAddressResponse` has been removed
+- Struct `ServiceValidateAddressResult` has been removed
+- Struct `ServiceValidateInputsByResourceGroupOptions` has been removed
+- Struct `ServiceValidateInputsByResourceGroupResponse` has been removed
+- Struct `ServiceValidateInputsByResourceGroupResult` has been removed
+- Struct `ServiceValidateInputsOptions` has been removed
+- Struct `ServiceValidateInputsResponse` has been removed
+- Struct `ServiceValidateInputsResult` has been removed
+- Field `ValidationInputResponse` of struct `AddressValidationProperties` has been removed
+- Field `DatacenterAddressResponse` of struct `DatacenterAddressInstructionResponse` has been removed
+- Field `ValidationInputRequest` of struct `SKUAvailabilityValidationRequest` has been removed
+- Field `ValidationInputResponse` of struct `PreferencesValidationResponseProperties` has been removed
+- Field `ValidationInputRequest` of struct `ValidateAddress` has been removed
+- Field `DatacenterAddressResponse` of struct `DatacenterAddressLocationResponse` has been removed
+- Field `ScheduleAvailabilityRequest` of struct `DiskScheduleAvailabilityRequest` has been removed
+- Field `ValidationInputRequest` of struct `PreferencesValidationRequest` has been removed
+- Field `ScheduleAvailabilityRequest` of struct `HeavyScheduleAvailabilityRequest` has been removed
+- Field `ValidationInputRequest` of struct `CreateOrderLimitForSubscriptionValidationRequest` has been removed
+- Field `ValidationInputResponse` of struct `DataTransferDetailsValidationResponseProperties` has been removed
+- Field `ValidationInputRequest` of struct `SubscriptionIsAllowedToCreateJobValidationRequest` has been removed
+- Field `DataAccountDetails` of struct `ManagedDiskDetails` has been removed
+- Field `Resource` of struct `JobResource` has been removed
+- Field `JobSecrets` of struct `CustomerDiskJobSecrets` has been removed
+- Field `ValidationInputResponse` of struct `SubscriptionIsAllowedToCreateJobValidationResponseProperties` has been removed
+- Field `ValidationRequest` of struct `CreateJobValidations` has been removed
+- Field `ValidationInputResponse` of struct `SKUAvailabilityValidationResponseProperties` has been removed
+- Field `ValidationInputRequest` of struct `DataTransferDetailsValidationRequest` has been removed
+- Field `DataAccountDetails` of struct `StorageAccountDetails` has been removed
+- Field `ValidationInputResponse` of struct `CreateOrderLimitForSubscriptionValidationResponseProperties` has been removed
+
+### Features Added
+
+- New function `*JobsClientUpdatePoller.FinalResponse(context.Context) (JobsClientUpdateResponse, error)`
+- New function `*CommonJobSecrets.GetCommonJobSecrets() *CommonJobSecrets`
+- New function `*CustomerDiskCopyLogDetails.UnmarshalJSON([]byte) error`
+- New function `AccountCopyLogDetails.MarshalJSON() ([]byte, error)`
+- New function `*SubscriptionIsAllowedToCreateJobValidationRequest.GetValidationInputRequest() *ValidationInputRequest`
+- New function `*SubscriptionIsAllowedToCreateJobValidationRequest.UnmarshalJSON([]byte) error`
+- New function `*CustomerDiskCopyLogDetails.GetCopyLogDetails() *CopyLogDetails`
+- New function `CustomerDiskCopyLogDetails.MarshalJSON() ([]byte, error)`
+- New function `*AccountCopyLogDetails.GetCopyLogDetails() *CopyLogDetails`
+- New function `CommonJobDetails.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*DataTransferDetailsValidationResponseProperties.GetValidationInputResponse() *ValidationInputResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*DiskCopyLogDetails.UnmarshalJSON([]byte) error`
+- New function `ScheduleAvailabilityRequest.MarshalJSON() ([]byte, error)`
+- New function `*JobsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobSecrets.GetCommonJobSecrets() *CommonJobSecrets`
+- New function `*DiskJobDetails.UnmarshalJSON([]byte) error`
+- New function `DatacenterAddressResponse.MarshalJSON() ([]byte, error)`
+- New function `JobsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (JobsClientUpdateResponse, error)`
+- New function `*JobsClientUpdatePoller.Done() bool`
+- New function `*HeavyScheduleAvailabilityRequest.UnmarshalJSON([]byte) error`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) *ManagementClient`
+- New function `*JobsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*JobsClientDeletePoller.ResumeToken() (string, error)`
+- New function `Secret.MarshalJSON() ([]byte, error)`
+- New function `*PreferencesValidationRequest.GetValidationInputRequest() *ValidationInputRequest`
+- New function `*CreateOrderLimitForSubscriptionValidationRequest.GetValidationInputRequest() *ValidationInputRequest`
+- New function `*JobsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*JobsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*CustomerDiskJobSecrets.GetCommonJobSecrets() *CommonJobSecrets`
+- New function `JobsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (JobsClientCreateResponse, error)`
+- New function `*AddressValidationProperties.GetValidationInputResponse() *ValidationInputResponse`
+- New function `CustomerDiskJobDetails.MarshalJSON() ([]byte, error)`
+- New function `*JobDetails.GetCommonJobDetails() *CommonJobDetails`
+- New function `*JobsClientListByResourceGroupPager.Err() error`
+- New function `*ServiceClientListAvailableSKUsByResourceGroupPager.Err() error`
+- New function `*HeavyScheduleAvailabilityRequest.GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest`
+- New function `*CreateOrderLimitForSubscriptionValidationResponseProperties.GetValidationInputResponse() *ValidationInputResponse`
+- New function `*JobsClientListByResourceGroupPager.PageResponse() JobsClientListByResourceGroupResponse`
+- New function `*HeavyJobSecrets.UnmarshalJSON([]byte) error`
+- New function `*ManagedDiskDetails.GetDataAccountDetails() *DataAccountDetails`
+- New function `*DiskJobDetails.GetCommonJobDetails() *CommonJobDetails`
+- New function `*SKUAvailabilityValidationResponseProperties.GetValidationInputResponse() *ValidationInputResponse`
+- New function `*StorageAccountDetails.GetDataAccountDetails() *DataAccountDetails`
+- New function `*ScheduleAvailabilityRequest.GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest`
+- New function `*CommonScheduleAvailabilityRequest.GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest`
+- New function `*JobsClientDeletePoller.Done() bool`
+- New function `*DiskJobSecrets.GetCommonJobSecrets() *CommonJobSecrets`
+- New function `DiskJobSecrets.MarshalJSON() ([]byte, error)`
+- New function `JobDetails.MarshalJSON() ([]byte, error)`
+- New function `*JobsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DataTransferDetailsValidationRequest.GetValidationInputRequest() *ValidationInputRequest`
+- New function `*CreateJobValidations.GetValidationRequest() *ValidationRequest`
+- New function `*CommonJobDetails.GetCommonJobDetails() *CommonJobDetails`
+- New function `*CustomerDiskJobDetails.UnmarshalJSON([]byte) error`
+- New function `*ManagementClient.Mitigate(context.Context, string, string, MitigateJobRequest, *ManagementClientMitigateOptions) (ManagementClientMitigateResponse, error)`
+- New function `*JobsClientDeletePollerResponse.Resume(context.Context, *JobsClient, string) error`
+- New function `*JobsClientCreatePoller.FinalResponse(context.Context) (JobsClientCreateResponse, error)`
+- New function `HeavyJobSecrets.MarshalJSON() ([]byte, error)`
+- New function `*ValidateAddress.GetValidationInputRequest() *ValidationInputRequest`
+- New function `*CreateJobValidations.UnmarshalJSON([]byte) error`
+- New function `*CustomerDiskJobDetails.GetCommonJobDetails() *CommonJobDetails`
+- New function `*HeavyJobSecrets.GetCommonJobSecrets() *CommonJobSecrets`
+- New function `*HeavyJobDetails.UnmarshalJSON([]byte) error`
+- New function `*JobsClientUpdatePollerResponse.Resume(context.Context, *JobsClient, string) error`
+- New function `*DiskJobSecrets.UnmarshalJSON([]byte) error`
+- New function `*JobsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*DiskScheduleAvailabilityRequest.GetCommonScheduleAvailabilityRequest() *CommonScheduleAvailabilityRequest`
+- New function `*ServiceClientListAvailableSKUsByResourceGroupPager.PageResponse() ServiceClientListAvailableSKUsByResourceGroupResponse`
+- New function `ValidationRequest.MarshalJSON() ([]byte, error)`
+- New function `*JobsClientListPager.PageResponse() JobsClientListResponse`
+- New function `*SubscriptionIsAllowedToCreateJobValidationResponseProperties.GetValidationInputResponse() *ValidationInputResponse`
+- New function `HeavyJobDetails.MarshalJSON() ([]byte, error)`
+- New function `*DatacenterAddressLocationResponse.GetDatacenterAddressResponse() *DatacenterAddressResponse`
+- New function `*JobsClientListPager.NextPage(context.Context) bool`
+- New function `*JobsClientCreatePollerResponse.Resume(context.Context, *JobsClient, string) error`
+- New function `HeavySecret.MarshalJSON() ([]byte, error)`
+- New function `*HeavyAccountCopyLogDetails.UnmarshalJSON([]byte) error`
+- New function `*ServiceClientListAvailableSKUsByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DatacenterAddressInstructionResponse.GetDatacenterAddressResponse() *DatacenterAddressResponse`
+- New function `*JobsClientDeletePoller.FinalResponse(context.Context) (JobsClientDeleteResponse, error)`
+- New function `*HeavyAccountCopyLogDetails.GetCopyLogDetails() *CopyLogDetails`
+- New function `*PreferencesValidationResponseProperties.GetValidationInputResponse() *ValidationInputResponse`
+- New function `DiskCopyLogDetails.MarshalJSON() ([]byte, error)`
+- New function `JobsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (JobsClientDeleteResponse, error)`
+- New function `JobSecrets.MarshalJSON() ([]byte, error)`
+- New function `*CommonJobDetails.UnmarshalJSON([]byte) error`
+- New function `*JobsClientCreatePoller.Done() bool`
+- New function `HeavyAccountCopyLogDetails.MarshalJSON() ([]byte, error)`
+- New function `*HeavyJobDetails.GetCommonJobDetails() *CommonJobDetails`
+- New function `*JobsClientListPager.Err() error`
+- New function `*AccountCopyLogDetails.UnmarshalJSON([]byte) error`
+- New function `*SKUAvailabilityValidationRequest.GetValidationInputRequest() *ValidationInputRequest`
+- New function `DiskJobDetails.MarshalJSON() ([]byte, error)`
+- New function `*DiskCopyLogDetails.GetCopyLogDetails() *CopyLogDetails`
+- New struct `AccountCopyLogDetails`
+- New struct `CommonJobDetails`
+- New struct `CommonJobSecrets`
+- New struct `CommonScheduleAvailabilityRequest`
+- New struct `CustomerDiskCopyLogDetails`
+- New struct `CustomerDiskCopyProgress`
+- New struct `CustomerDiskJobDetails`
+- New struct `DiskCopyLogDetails`
+- New struct `DiskCopyProgress`
+- New struct `DiskJobDetails`
+- New struct `DiskJobSecrets`
+- New struct `HeavyAccountCopyLogDetails`
+- New struct `HeavyJobDetails`
+- New struct `HeavyJobSecrets`
+- New struct `HeavySecret`
+- New struct `JobsClientBeginCreateOptions`
+- New struct `JobsClientBeginDeleteOptions`
+- New struct `JobsClientBeginUpdateOptions`
+- New struct `JobsClientBookShipmentPickUpOptions`
+- New struct `JobsClientBookShipmentPickUpResponse`
+- New struct `JobsClientBookShipmentPickUpResult`
+- New struct `JobsClientCancelOptions`
+- New struct `JobsClientCancelResponse`
+- New struct `JobsClientCreatePoller`
+- New struct `JobsClientCreatePollerResponse`
+- New struct `JobsClientCreateResponse`
+- New struct `JobsClientCreateResult`
+- New struct `JobsClientDeletePoller`
+- New struct `JobsClientDeletePollerResponse`
+- New struct `JobsClientDeleteResponse`
+- New struct `JobsClientGetOptions`
+- New struct `JobsClientGetResponse`
+- New struct `JobsClientGetResult`
+- New struct `JobsClientListByResourceGroupOptions`
+- New struct `JobsClientListByResourceGroupPager`
+- New struct `JobsClientListByResourceGroupResponse`
+- New struct `JobsClientListByResourceGroupResult`
+- New struct `JobsClientListCredentialsOptions`
+- New struct `JobsClientListCredentialsResponse`
+- New struct `JobsClientListCredentialsResult`
+- New struct `JobsClientListOptions`
+- New struct `JobsClientListPager`
+- New struct `JobsClientListResponse`
+- New struct `JobsClientListResult`
+- New struct `JobsClientMarkDevicesShippedOptions`
+- New struct `JobsClientMarkDevicesShippedResponse`
+- New struct `JobsClientUpdatePoller`
+- New struct `JobsClientUpdatePollerResponse`
+- New struct `JobsClientUpdateResponse`
+- New struct `JobsClientUpdateResult`
+- New struct `ManagementClient`
+- New struct `ManagementClientMitigateOptions`
+- New struct `ManagementClientMitigateResponse`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `Secret`
+- New struct `ServiceClientListAvailableSKUsByResourceGroupOptions`
+- New struct `ServiceClientListAvailableSKUsByResourceGroupPager`
+- New struct `ServiceClientListAvailableSKUsByResourceGroupResponse`
+- New struct `ServiceClientListAvailableSKUsByResourceGroupResult`
+- New struct `ServiceClientRegionConfigurationByResourceGroupOptions`
+- New struct `ServiceClientRegionConfigurationByResourceGroupResponse`
+- New struct `ServiceClientRegionConfigurationByResourceGroupResult`
+- New struct `ServiceClientRegionConfigurationOptions`
+- New struct `ServiceClientRegionConfigurationResponse`
+- New struct `ServiceClientRegionConfigurationResult`
+- New struct `ServiceClientValidateAddressOptions`
+- New struct `ServiceClientValidateAddressResponse`
+- New struct `ServiceClientValidateAddressResult`
+- New struct `ServiceClientValidateInputsByResourceGroupOptions`
+- New struct `ServiceClientValidateInputsByResourceGroupResponse`
+- New struct `ServiceClientValidateInputsByResourceGroupResult`
+- New struct `ServiceClientValidateInputsOptions`
+- New struct `ServiceClientValidateInputsResponse`
+- New struct `ServiceClientValidateInputsResult`
+- New field `ValidationType` in struct `SubscriptionIsAllowedToCreateJobValidationRequest`
+- New field `ValidationType` in struct `SKUAvailabilityValidationResponseProperties`
+- New field `Error` in struct `SKUAvailabilityValidationResponseProperties`
+- New field `IndividualRequestDetails` in struct `CreateJobValidations`
+- New field `ValidationCategory` in struct `CreateJobValidations`
+- New field `DataAccountType` in struct `ManagedDiskDetails`
+- New field `SharePassword` in struct `ManagedDiskDetails`
+- New field `ValidationType` in struct `AddressValidationProperties`
+- New field `Error` in struct `AddressValidationProperties`
+- New field `StorageLocation` in struct `HeavyScheduleAvailabilityRequest`
+- New field `Country` in struct `HeavyScheduleAvailabilityRequest`
+- New field `SKUName` in struct `HeavyScheduleAvailabilityRequest`
+- New field `ValidationType` in struct `ValidateAddress`
+- New field `DcAccessSecurityCode` in struct `CustomerDiskJobSecrets`
+- New field `Error` in struct `CustomerDiskJobSecrets`
+- New field `JobSecretsType` in struct `CustomerDiskJobSecrets`
+- New field `DevicePassword` in struct `JobDetails`
+- New field `CopyProgress` in struct `JobDetails`
+- New field `ValidationType` in struct `PreferencesValidationResponseProperties`
+- New field `Error` in struct `PreferencesValidationResponseProperties`
+- New field `ValidationType` in struct `SubscriptionIsAllowedToCreateJobValidationResponseProperties`
+- New field `Error` in struct `SubscriptionIsAllowedToCreateJobValidationResponseProperties`
+- New field `DataAccountType` in struct `StorageAccountDetails`
+- New field `SharePassword` in struct `StorageAccountDetails`
+- New field `ValidationType` in struct `SKUAvailabilityValidationRequest`
+- New field `PodSecrets` in struct `JobSecrets`
+- New field `ValidationType` in struct `PreferencesValidationRequest`
+- New field `ValidationType` in struct `DataTransferDetailsValidationResponseProperties`
+- New field `Error` in struct `DataTransferDetailsValidationResponseProperties`
+- New field `DatacenterAddressType` in struct `DatacenterAddressInstructionResponse`
+- New field `DataCenterAzureLocation` in struct `DatacenterAddressInstructionResponse`
+- New field `SupportedCarriersForReturnShipment` in struct `DatacenterAddressInstructionResponse`
+- New field `Tags` in struct `JobResource`
+- New field `Location` in struct `JobResource`
+- New field `SKU` in struct `JobResource`
+- New field `Identity` in struct `JobResource`
+- New field `ValidationType` in struct `DataTransferDetailsValidationRequest`
+- New field `ValidationType` in struct `CreateOrderLimitForSubscriptionValidationRequest`
+- New field `ValidationType` in struct `CreateOrderLimitForSubscriptionValidationResponseProperties`
+- New field `Error` in struct `CreateOrderLimitForSubscriptionValidationResponseProperties`
+- New field `SKUName` in struct `DiskScheduleAvailabilityRequest`
+- New field `StorageLocation` in struct `DiskScheduleAvailabilityRequest`
+- New field `Country` in struct `DiskScheduleAvailabilityRequest`
+- New field `DatacenterAddressType` in struct `DatacenterAddressLocationResponse`
+- New field `DataCenterAzureLocation` in struct `DatacenterAddressLocationResponse`
+- New field `SupportedCarriersForReturnShipment` in struct `DatacenterAddressLocationResponse`
+
+
 ## 0.1.0 (2021-12-01)
 
 - Initial preview release.

@@ -11,7 +11,6 @@ package armdatabox
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,53 @@ import (
 // ServiceClient contains the methods for the Service group.
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
+// subscriptionID - The Subscription Id
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &ServiceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServiceClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// ListAvailableSKUsByResourceGroup - This method provides the list of available skus for the given subscription, resource group and location.
-// If the operation fails it returns the *APIError error type.
-func (client *ServiceClient) ListAvailableSKUsByResourceGroup(resourceGroupName string, location string, availableSKURequest AvailableSKURequest, options *ServiceListAvailableSKUsByResourceGroupOptions) *ServiceListAvailableSKUsByResourceGroupPager {
-	return &ServiceListAvailableSKUsByResourceGroupPager{
+// ListAvailableSKUsByResourceGroup - This method provides the list of available skus for the given subscription, resource
+// group and location.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The Resource Group Name
+// location - The location of the resource
+// availableSKURequest - Filters for showing the available skus.
+// options - ServiceClientListAvailableSKUsByResourceGroupOptions contains the optional parameters for the ServiceClient.ListAvailableSKUsByResourceGroup
+// method.
+func (client *ServiceClient) ListAvailableSKUsByResourceGroup(resourceGroupName string, location string, availableSKURequest AvailableSKURequest, options *ServiceClientListAvailableSKUsByResourceGroupOptions) *ServiceClientListAvailableSKUsByResourceGroupPager {
+	return &ServiceClientListAvailableSKUsByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAvailableSKUsByResourceGroupCreateRequest(ctx, resourceGroupName, location, availableSKURequest, options)
 		},
-		advancer: func(ctx context.Context, resp ServiceListAvailableSKUsByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServiceClientListAvailableSKUsByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailableSKUsResult.NextLink)
 		},
 	}
 }
 
 // listAvailableSKUsByResourceGroupCreateRequest creates the ListAvailableSKUsByResourceGroup request.
-func (client *ServiceClient) listAvailableSKUsByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, availableSKURequest AvailableSKURequest, options *ServiceListAvailableSKUsByResourceGroupOptions) (*policy.Request, error) {
+func (client *ServiceClient) listAvailableSKUsByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, availableSKURequest AvailableSKURequest, options *ServiceClientListAvailableSKUsByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/availableSkus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +84,7 @@ func (client *ServiceClient) listAvailableSKUsByResourceGroupCreateRequest(ctx c
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,46 +96,37 @@ func (client *ServiceClient) listAvailableSKUsByResourceGroupCreateRequest(ctx c
 }
 
 // listAvailableSKUsByResourceGroupHandleResponse handles the ListAvailableSKUsByResourceGroup response.
-func (client *ServiceClient) listAvailableSKUsByResourceGroupHandleResponse(resp *http.Response) (ServiceListAvailableSKUsByResourceGroupResponse, error) {
-	result := ServiceListAvailableSKUsByResourceGroupResponse{RawResponse: resp}
+func (client *ServiceClient) listAvailableSKUsByResourceGroupHandleResponse(resp *http.Response) (ServiceClientListAvailableSKUsByResourceGroupResponse, error) {
+	result := ServiceClientListAvailableSKUsByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableSKUsResult); err != nil {
-		return ServiceListAvailableSKUsByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceClientListAvailableSKUsByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listAvailableSKUsByResourceGroupHandleError handles the ListAvailableSKUsByResourceGroup error response.
-func (client *ServiceClient) listAvailableSKUsByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := APIError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegionConfiguration - This API provides configuration details specific to given region/location at Subscription level.
-// If the operation fails it returns the *APIError error type.
-func (client *ServiceClient) RegionConfiguration(ctx context.Context, location string, regionConfigurationRequest RegionConfigurationRequest, options *ServiceRegionConfigurationOptions) (ServiceRegionConfigurationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location of the resource
+// regionConfigurationRequest - Request body to get the configuration for the region.
+// options - ServiceClientRegionConfigurationOptions contains the optional parameters for the ServiceClient.RegionConfiguration
+// method.
+func (client *ServiceClient) RegionConfiguration(ctx context.Context, location string, regionConfigurationRequest RegionConfigurationRequest, options *ServiceClientRegionConfigurationOptions) (ServiceClientRegionConfigurationResponse, error) {
 	req, err := client.regionConfigurationCreateRequest(ctx, location, regionConfigurationRequest, options)
 	if err != nil {
-		return ServiceRegionConfigurationResponse{}, err
+		return ServiceClientRegionConfigurationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceRegionConfigurationResponse{}, err
+		return ServiceClientRegionConfigurationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceRegionConfigurationResponse{}, client.regionConfigurationHandleError(resp)
+		return ServiceClientRegionConfigurationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regionConfigurationHandleResponse(resp)
 }
 
 // regionConfigurationCreateRequest creates the RegionConfiguration request.
-func (client *ServiceClient) regionConfigurationCreateRequest(ctx context.Context, location string, regionConfigurationRequest RegionConfigurationRequest, options *ServiceRegionConfigurationOptions) (*policy.Request, error) {
+func (client *ServiceClient) regionConfigurationCreateRequest(ctx context.Context, location string, regionConfigurationRequest RegionConfigurationRequest, options *ServiceClientRegionConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/regionConfiguration"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -132,7 +136,7 @@ func (client *ServiceClient) regionConfigurationCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,46 +148,39 @@ func (client *ServiceClient) regionConfigurationCreateRequest(ctx context.Contex
 }
 
 // regionConfigurationHandleResponse handles the RegionConfiguration response.
-func (client *ServiceClient) regionConfigurationHandleResponse(resp *http.Response) (ServiceRegionConfigurationResponse, error) {
-	result := ServiceRegionConfigurationResponse{RawResponse: resp}
+func (client *ServiceClient) regionConfigurationHandleResponse(resp *http.Response) (ServiceClientRegionConfigurationResponse, error) {
+	result := ServiceClientRegionConfigurationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionConfigurationResponse); err != nil {
-		return ServiceRegionConfigurationResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceClientRegionConfigurationResponse{}, err
 	}
 	return result, nil
 }
 
-// regionConfigurationHandleError handles the RegionConfiguration error response.
-func (client *ServiceClient) regionConfigurationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := APIError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// RegionConfigurationByResourceGroup - This API provides configuration details specific to given region/location at Resource group level.
-// If the operation fails it returns the *APIError error type.
-func (client *ServiceClient) RegionConfigurationByResourceGroup(ctx context.Context, resourceGroupName string, location string, regionConfigurationRequest RegionConfigurationRequest, options *ServiceRegionConfigurationByResourceGroupOptions) (ServiceRegionConfigurationByResourceGroupResponse, error) {
+// RegionConfigurationByResourceGroup - This API provides configuration details specific to given region/location at Resource
+// group level.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The Resource Group Name
+// location - The location of the resource
+// regionConfigurationRequest - Request body to get the configuration for the region at resource group level.
+// options - ServiceClientRegionConfigurationByResourceGroupOptions contains the optional parameters for the ServiceClient.RegionConfigurationByResourceGroup
+// method.
+func (client *ServiceClient) RegionConfigurationByResourceGroup(ctx context.Context, resourceGroupName string, location string, regionConfigurationRequest RegionConfigurationRequest, options *ServiceClientRegionConfigurationByResourceGroupOptions) (ServiceClientRegionConfigurationByResourceGroupResponse, error) {
 	req, err := client.regionConfigurationByResourceGroupCreateRequest(ctx, resourceGroupName, location, regionConfigurationRequest, options)
 	if err != nil {
-		return ServiceRegionConfigurationByResourceGroupResponse{}, err
+		return ServiceClientRegionConfigurationByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceRegionConfigurationByResourceGroupResponse{}, err
+		return ServiceClientRegionConfigurationByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceRegionConfigurationByResourceGroupResponse{}, client.regionConfigurationByResourceGroupHandleError(resp)
+		return ServiceClientRegionConfigurationByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regionConfigurationByResourceGroupHandleResponse(resp)
 }
 
 // regionConfigurationByResourceGroupCreateRequest creates the RegionConfigurationByResourceGroup request.
-func (client *ServiceClient) regionConfigurationByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, regionConfigurationRequest RegionConfigurationRequest, options *ServiceRegionConfigurationByResourceGroupOptions) (*policy.Request, error) {
+func (client *ServiceClient) regionConfigurationByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, regionConfigurationRequest RegionConfigurationRequest, options *ServiceClientRegionConfigurationByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/regionConfiguration"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -197,7 +194,7 @@ func (client *ServiceClient) regionConfigurationByResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -209,47 +206,37 @@ func (client *ServiceClient) regionConfigurationByResourceGroupCreateRequest(ctx
 }
 
 // regionConfigurationByResourceGroupHandleResponse handles the RegionConfigurationByResourceGroup response.
-func (client *ServiceClient) regionConfigurationByResourceGroupHandleResponse(resp *http.Response) (ServiceRegionConfigurationByResourceGroupResponse, error) {
-	result := ServiceRegionConfigurationByResourceGroupResponse{RawResponse: resp}
+func (client *ServiceClient) regionConfigurationByResourceGroupHandleResponse(resp *http.Response) (ServiceClientRegionConfigurationByResourceGroupResponse, error) {
+	result := ServiceClientRegionConfigurationByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionConfigurationResponse); err != nil {
-		return ServiceRegionConfigurationByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceClientRegionConfigurationByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// regionConfigurationByResourceGroupHandleError handles the RegionConfigurationByResourceGroup error response.
-func (client *ServiceClient) regionConfigurationByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := APIError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ValidateAddress - [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and provide alternate
-// addresses if any.
-// If the operation fails it returns the *APIError error type.
-func (client *ServiceClient) ValidateAddress(ctx context.Context, location string, validateAddress ValidateAddress, options *ServiceValidateAddressOptions) (ServiceValidateAddressResponse, error) {
+// ValidateAddress - [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping
+// address and provide alternate addresses if any.
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location of the resource
+// validateAddress - Shipping address of the customer.
+// options - ServiceClientValidateAddressOptions contains the optional parameters for the ServiceClient.ValidateAddress method.
+func (client *ServiceClient) ValidateAddress(ctx context.Context, location string, validateAddress ValidateAddress, options *ServiceClientValidateAddressOptions) (ServiceClientValidateAddressResponse, error) {
 	req, err := client.validateAddressCreateRequest(ctx, location, validateAddress, options)
 	if err != nil {
-		return ServiceValidateAddressResponse{}, err
+		return ServiceClientValidateAddressResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceValidateAddressResponse{}, err
+		return ServiceClientValidateAddressResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceValidateAddressResponse{}, client.validateAddressHandleError(resp)
+		return ServiceClientValidateAddressResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateAddressHandleResponse(resp)
 }
 
 // validateAddressCreateRequest creates the ValidateAddress request.
-func (client *ServiceClient) validateAddressCreateRequest(ctx context.Context, location string, validateAddress ValidateAddress, options *ServiceValidateAddressOptions) (*policy.Request, error) {
+func (client *ServiceClient) validateAddressCreateRequest(ctx context.Context, location string, validateAddress ValidateAddress, options *ServiceClientValidateAddressOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/validateAddress"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -259,7 +246,7 @@ func (client *ServiceClient) validateAddressCreateRequest(ctx context.Context, l
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -271,46 +258,36 @@ func (client *ServiceClient) validateAddressCreateRequest(ctx context.Context, l
 }
 
 // validateAddressHandleResponse handles the ValidateAddress response.
-func (client *ServiceClient) validateAddressHandleResponse(resp *http.Response) (ServiceValidateAddressResponse, error) {
-	result := ServiceValidateAddressResponse{RawResponse: resp}
+func (client *ServiceClient) validateAddressHandleResponse(resp *http.Response) (ServiceClientValidateAddressResponse, error) {
+	result := ServiceClientValidateAddressResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AddressValidationOutput); err != nil {
-		return ServiceValidateAddressResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceClientValidateAddressResponse{}, err
 	}
 	return result, nil
 }
 
-// validateAddressHandleError handles the ValidateAddress error response.
-func (client *ServiceClient) validateAddressHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := APIError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ValidateInputs - This method does all necessary pre-job creation validation under subscription.
-// If the operation fails it returns the *APIError error type.
-func (client *ServiceClient) ValidateInputs(ctx context.Context, location string, validationRequest ValidationRequestClassification, options *ServiceValidateInputsOptions) (ServiceValidateInputsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location of the resource
+// validationRequest - Inputs of the customer.
+// options - ServiceClientValidateInputsOptions contains the optional parameters for the ServiceClient.ValidateInputs method.
+func (client *ServiceClient) ValidateInputs(ctx context.Context, location string, validationRequest ValidationRequestClassification, options *ServiceClientValidateInputsOptions) (ServiceClientValidateInputsResponse, error) {
 	req, err := client.validateInputsCreateRequest(ctx, location, validationRequest, options)
 	if err != nil {
-		return ServiceValidateInputsResponse{}, err
+		return ServiceClientValidateInputsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceValidateInputsResponse{}, err
+		return ServiceClientValidateInputsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceValidateInputsResponse{}, client.validateInputsHandleError(resp)
+		return ServiceClientValidateInputsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateInputsHandleResponse(resp)
 }
 
 // validateInputsCreateRequest creates the ValidateInputs request.
-func (client *ServiceClient) validateInputsCreateRequest(ctx context.Context, location string, validationRequest ValidationRequestClassification, options *ServiceValidateInputsOptions) (*policy.Request, error) {
+func (client *ServiceClient) validateInputsCreateRequest(ctx context.Context, location string, validationRequest ValidationRequestClassification, options *ServiceClientValidateInputsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/validateInputs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -320,7 +297,7 @@ func (client *ServiceClient) validateInputsCreateRequest(ctx context.Context, lo
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -332,46 +309,38 @@ func (client *ServiceClient) validateInputsCreateRequest(ctx context.Context, lo
 }
 
 // validateInputsHandleResponse handles the ValidateInputs response.
-func (client *ServiceClient) validateInputsHandleResponse(resp *http.Response) (ServiceValidateInputsResponse, error) {
-	result := ServiceValidateInputsResponse{RawResponse: resp}
+func (client *ServiceClient) validateInputsHandleResponse(resp *http.Response) (ServiceClientValidateInputsResponse, error) {
+	result := ServiceClientValidateInputsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
-		return ServiceValidateInputsResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceClientValidateInputsResponse{}, err
 	}
 	return result, nil
 }
 
-// validateInputsHandleError handles the ValidateInputs error response.
-func (client *ServiceClient) validateInputsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := APIError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ValidateInputsByResourceGroup - This method does all necessary pre-job creation validation under resource group.
-// If the operation fails it returns the *APIError error type.
-func (client *ServiceClient) ValidateInputsByResourceGroup(ctx context.Context, resourceGroupName string, location string, validationRequest ValidationRequestClassification, options *ServiceValidateInputsByResourceGroupOptions) (ServiceValidateInputsByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The Resource Group Name
+// location - The location of the resource
+// validationRequest - Inputs of the customer.
+// options - ServiceClientValidateInputsByResourceGroupOptions contains the optional parameters for the ServiceClient.ValidateInputsByResourceGroup
+// method.
+func (client *ServiceClient) ValidateInputsByResourceGroup(ctx context.Context, resourceGroupName string, location string, validationRequest ValidationRequestClassification, options *ServiceClientValidateInputsByResourceGroupOptions) (ServiceClientValidateInputsByResourceGroupResponse, error) {
 	req, err := client.validateInputsByResourceGroupCreateRequest(ctx, resourceGroupName, location, validationRequest, options)
 	if err != nil {
-		return ServiceValidateInputsByResourceGroupResponse{}, err
+		return ServiceClientValidateInputsByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceValidateInputsByResourceGroupResponse{}, err
+		return ServiceClientValidateInputsByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceValidateInputsByResourceGroupResponse{}, client.validateInputsByResourceGroupHandleError(resp)
+		return ServiceClientValidateInputsByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateInputsByResourceGroupHandleResponse(resp)
 }
 
 // validateInputsByResourceGroupCreateRequest creates the ValidateInputsByResourceGroup request.
-func (client *ServiceClient) validateInputsByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, validationRequest ValidationRequestClassification, options *ServiceValidateInputsByResourceGroupOptions) (*policy.Request, error) {
+func (client *ServiceClient) validateInputsByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, validationRequest ValidationRequestClassification, options *ServiceClientValidateInputsByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/validateInputs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -385,7 +354,7 @@ func (client *ServiceClient) validateInputsByResourceGroupCreateRequest(ctx cont
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -397,23 +366,10 @@ func (client *ServiceClient) validateInputsByResourceGroupCreateRequest(ctx cont
 }
 
 // validateInputsByResourceGroupHandleResponse handles the ValidateInputsByResourceGroup response.
-func (client *ServiceClient) validateInputsByResourceGroupHandleResponse(resp *http.Response) (ServiceValidateInputsByResourceGroupResponse, error) {
-	result := ServiceValidateInputsByResourceGroupResponse{RawResponse: resp}
+func (client *ServiceClient) validateInputsByResourceGroupHandleResponse(resp *http.Response) (ServiceClientValidateInputsByResourceGroupResponse, error) {
+	result := ServiceClientValidateInputsByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
-		return ServiceValidateInputsByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceClientValidateInputsByResourceGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// validateInputsByResourceGroupHandleError handles the ValidateInputsByResourceGroup error response.
-func (client *ServiceClient) validateInputsByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := APIError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

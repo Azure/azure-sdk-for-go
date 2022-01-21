@@ -72,17 +72,16 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errorMessages = append(errorMessages, fmt.Sprintf("AzureCLICredential: %s", err.Error()))
 	}
 
-	errorMargin := "\n\t"
 	errorMessage := strings.Join(errorMessages, "\n\t")
 
 	if len(creds) == 0 {
-		err := errors.New(errorMargin + errorMessage)
-		logCredentialError("Default Azure Credential", err)
+		err := errors.New(errorMessage)
+		log.Writef(EventAuthentication, "Azure Identity => ERROR in Default Azure Credential:\n\t%s", err.Error())
 		return nil, err
 	}
 
 	if len(errorMessage) != 0 {
-		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:%s%s", errorMargin, errorMessage)
+		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:\n\t%s", errorMessage)
 	}
 
 	chain, err := NewChainedTokenCredential(creds, nil)

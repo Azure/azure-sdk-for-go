@@ -575,7 +575,6 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-recording-file", testId)
 
 	req.Header.Set("Content-Type", "application/json")
 	marshalled, err := json.Marshal(map[string]string{"x-recording-file": testId})

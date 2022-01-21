@@ -6,11 +6,16 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 // constants used throughout this package
@@ -27,90 +32,108 @@ const (
 	customHostString = "https://custommock.com/"
 )
 
-func getTenantDiscoveryResponse(url string) string {
-	return `{` +
-		`"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",` +
-		`"token_endpoint_auth_methods_supported": [` +
-		`"client_secret_post",` +
-		`"private_key_jwt",` +
-		`"client_secret_basic"` +
-		`],` +
-		`"jwks_uri": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/discovery/v2.0/keys",` +
-		`"response_modes_supported": [` +
-		`"query",` +
-		`"fragment",` +
-		`"form_post"` +
-		`],` +
-		`"subject_types_supported": [` +
-		`"pairwise"` +
-		`],` +
-		`"id_token_signing_alg_values_supported": [` +
-		`"RS256"` +
-		`],` +
-		`"response_types_supported": [` +
-		`"code",` +
-		`"id_token",` +
-		`"code id_token",` +
-		`"id_token token"` +
-		`],` +
-		`"scopes_supported": [` +
-		`"openid",` +
-		`"profile",` +
-		`"email",` +
-		`"offline_access"` +
-		`],` +
-		`"issuer": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/v2.0",` +
-		`"request_uri_parameter_supported": false,` +
-		`"userinfo_endpoint": "https://graph.microsoft.com/oidc/userinfo",` +
-		`"authorization_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/authorize",` +
-		`"device_authorization_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/devicecode",` +
-		`"http_logout_supported": true,` +
-		`"frontchannel_logout_supported": true,` +
-		`"end_session_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/logout",` +
-		`"claims_supported": [` +
-		`"sub",` +
-		`"iss",` +
-		`"cloud_instance_name",` +
-		`"cloud_instance_host_name",` +
-		`"cloud_graph_host_name",` +
-		`"msgraph_host",` +
-		`"aud",` +
-		`"exp",` +
-		`"iat",` +
-		`"auth_time",` +
-		`"acr",` +
-		`"nonce",` +
-		`"preferred_username",` +
-		`"name",` +
-		`"tid",` +
-		`"ver",` +
-		`"at_hash",` +
-		`"c_hash",` +
-		`"email"` +
-		`],` +
-		`"kerberos_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/kerberos",` +
-		`"tenant_region_scope": "NA",` +
-		`"cloud_instance_name": "microsoftonline.com",` +
-		`"cloud_graph_host_name": "graph.windows.net",` +
-		`"msgraph_host": "graph.microsoft.com",` +
-		`"rbac_url": "https://pas.windows.net"` +
-		`}` +
-		`},` +
-		`{` +
-		`"RequestUri": "https://login.microsoftonline.com/fake-tenant/oauth2/v2.0/token",` +
-		`"RequestMethod": "POST",` +
-		`"RequestHeaders": {` +
-		`":authority": "localhost:5001",` +
-		`":method": "POST",` +
-		`":path": "/fake-tenant/oauth2/v2.0/token",` +
-		`":scheme": "https",` +
-		`"Accept-Encoding": "gzip",` +
-		`"Content-Length": "2",` +
-		`"Content-Type": "application/x-www-form-urlencoded; charset=utf-8",` +
-		`"User-Agent": "azsdk-go-azidentity/v0.12.1 azsdk-go-azcore/v0.21.0 (go1.16.7; linux)"` +
-		`},` +
-		`"RequestBody": {},` +
-		`"StatusCode": 400,`
+func getTenantDiscoveryResponse() string {
+	return `{
+		"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",
+		"token_endpoint_auth_methods_supported": [
+		"client_secret_post",
+		"private_key_jwt",
+		"client_secret_basic"
+		],
+		"jwks_uri": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/discovery/v2.0/keys",
+		"response_modes_supported": [
+		"query",
+		"fragment",
+		"form_post"
+		],
+		"subject_types_supported": [
+		"pairwise"
+		],
+		"id_token_signing_alg_values_supported": [
+		"RS256"
+		],
+		"response_types_supported": [
+		"code",
+		"id_token",
+		"code id_token",
+		"id_token token"
+		],
+		"scopes_supported": [
+		"openid",
+		"profile",
+		"email",
+		"offline_access"
+		],
+		"issuer": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/v2.0",
+		"request_uri_parameter_supported": false,
+		"userinfo_endpoint": "https://graph.microsoft.com/oidc/userinfo",
+		"authorization_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/authorize",
+		"device_authorization_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/devicecode",
+		"http_logout_supported": true,
+		"frontchannel_logout_supported": true,
+		"end_session_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/logout",
+		"claims_supported": [
+		"sub",
+		"iss",
+		"cloud_instance_name",
+		"cloud_instance_host_name",
+		"cloud_graph_host_name",
+		"msgraph_host",
+		"aud",
+		"exp",
+		"iat",
+		"auth_time",
+		"acr",
+		"nonce",
+		"preferred_username",
+		"name",
+		"tid",
+		"ver",
+		"at_hash",
+		"c_hash",
+		"email"
+		],
+		"kerberos_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/kerberos",
+		"tenant_region_scope": "NA",
+		"cloud_instance_name": "microsoftonline.com",
+		"cloud_graph_host_name": "graph.windows.net",
+		"msgraph_host": "graph.microsoft.com",
+		"rbac_url": "https://pas.windows.net"
+		}
+		},
+		{
+		"RequestUri": "https://login.microsoftonline.com/fake-tenant/oauth2/v2.0/token",
+		"RequestMethod": "POST",
+		"RequestHeaders": {
+		":authority": "localhost:5001",
+		":method": "POST",
+		":path": "/fake-tenant/oauth2/v2.0/token",
+		":scheme": "https",
+		"Accept-Encoding": "gzip",
+		"Content-Length": "2",
+		"Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+		"User-Agent": "azsdk-go-azidentity/v0.12.1 azsdk-go-azcore/v0.21.0 (go1.16.7; linux)"
+		},
+		"RequestBody": {},
+		"StatusCode": 400,`
+}
+
+func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.ResponsePredicate {
+	return func(req *http.Request) bool {
+		body, err := ioutil.ReadAll(req.Body)
+		if err == nil {
+			bodystr := string(body)
+			kvps := strings.Split(bodystr, "&")
+			assertion := strings.Split(kvps[0], "=")
+			token, _ := jwt.Parse(assertion[1], nil)
+			if _, ok := token.Header[headerName]; !ok {
+				t.Fatalf("JWT did not contain the %s header", headerName)
+			}
+		} else {
+			t.Fatal("Expected a request with the JWT in the body.")
+		}
+		return true
+	}
 }
 
 // Set environment variables for the duration of a test. Restore their prior values

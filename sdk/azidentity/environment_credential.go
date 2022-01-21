@@ -8,15 +8,14 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-const (
-	envVarSendCertChain = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN"
-)
+const envVarSendCertChain = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN"
 
 // EnvironmentCredentialOptions contains optional parameters for EnvironmentCredential
 type EnvironmentCredentialOptions struct {
@@ -84,9 +83,10 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}
-		sendChainEnv := os.Getenv(envVarSendCertChain)
-		sendCertChain := sendChainEnv == "true" || sendChainEnv == "1"
-		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions, SendCertificateChain: sendCertChain}
+		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		if v, ok := os.LookupEnv(envVarSendCertChain); ok {
+			o.SendCertificateChain = v == "1" || strings.ToLower(v) == "true"
+		}
 		cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, o)
 		if err != nil {
 			return nil, err

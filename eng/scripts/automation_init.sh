@@ -20,7 +20,7 @@ fi
 
 DIRECTORY=$(cd `dirname $0` && pwd)
 
-if [ "$GOPATH" == "" ]; then
+if [ "$GOPATH" = "" ]; then
   WORKFOLDER="$(realpath $DIRECTORY/../../../)"
   echo $WORKFOLDER
   export GOPATH=$WORKFOLDER/gofolder

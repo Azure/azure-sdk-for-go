@@ -30,12 +30,16 @@ func ExampleOrdersClient_ListByDataBoxEdgeDevice() {
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Order.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -55,7 +59,7 @@ func ExampleOrdersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Order.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OrdersClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/OrderPut.json
@@ -97,7 +101,7 @@ func ExampleOrdersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Order.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OrdersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/OrderDelete.json
@@ -129,11 +133,12 @@ func ExampleOrdersClient_ListDCAccessCode() {
 	}
 	ctx := context.Background()
 	client := armdataboxedge.NewOrdersClient("<subscription-id>", cred, nil)
-	_, err = client.ListDCAccessCode(ctx,
+	res, err := client.ListDCAccessCode(ctx,
 		"<device-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.OrdersClientListDCAccessCodeResult)
 }

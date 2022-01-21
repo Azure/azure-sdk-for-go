@@ -28,12 +28,9 @@ const (
 
 // constants for this file
 const (
-	envHostString    = "https://mock.com/"
-	customHostString = "https://custommock.com/"
-)
-
-func getTenantDiscoveryResponse() string {
-	return `{
+	envHostString              = "https://mock.com/"
+	customHostString           = "https://custommock.com/"
+	getTenantDiscoveryResponse = `{
 		"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",
 		"token_endpoint_auth_methods_supported": [
 		"client_secret_post",
@@ -116,7 +113,7 @@ func getTenantDiscoveryResponse() string {
 		},
 		"RequestBody": {},
 		"StatusCode": 400,`
-}
+)
 
 func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.ResponsePredicate {
 	return func(req *http.Request) bool {
@@ -126,6 +123,9 @@ func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.Resp
 			kvps := strings.Split(bodystr, "&")
 			assertion := strings.Split(kvps[0], "=")
 			token, _ := jwt.Parse(assertion[1], nil)
+			if token == nil {
+				t.Fatalf("Failed to parse the JWT token: %s.", assertion[1])
+			}
 			if _, ok := token.Header[headerName]; !ok {
 				t.Fatalf("JWT did not contain the %s header", headerName)
 			}

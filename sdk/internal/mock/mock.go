@@ -9,6 +9,7 @@ package mock
 import (
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -130,9 +131,13 @@ func (s *Server) Do(req *http.Request) (*http.Response, error) {
 	var err error
 	var resp *http.Response
 	if s.routeAllRequestsToMockServer {
+		var srvUrl *url.URL
 		originalURL := req.URL
 		mockUrl := *req.URL
-		srvUrl, _ := url.Parse(s.srv.URL)
+		srvUrl, err = url.Parse(s.srv.URL)
+		if err != nil {
+			return nil, fmt.Errorf("Unable to parse the test server URL: %v", err)
+		}
 		mockUrl.Host = srvUrl.Host
 		mockUrl.Scheme = srvUrl.Scheme
 		req.URL = &mockUrl

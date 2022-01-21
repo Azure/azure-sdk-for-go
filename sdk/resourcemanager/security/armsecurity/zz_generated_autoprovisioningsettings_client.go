@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // AutoProvisioningSettingsClient contains the methods for the AutoProvisioningSettings group.
 // Don't use this type directly, use NewAutoProvisioningSettingsClient() instead.
 type AutoProvisioningSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAutoProvisioningSettingsClient creates a new instance of AutoProvisioningSettingsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAutoProvisioningSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutoProvisioningSettingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &AutoProvisioningSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AutoProvisioningSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Create - Details of a specific setting
-// If the operation fails it returns the *CloudError error type.
-func (client *AutoProvisioningSettingsClient) Create(ctx context.Context, settingName string, setting AutoProvisioningSetting, options *AutoProvisioningSettingsCreateOptions) (AutoProvisioningSettingsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// settingName - Auto provisioning setting key
+// setting - Auto provisioning setting key
+// options - AutoProvisioningSettingsClientCreateOptions contains the optional parameters for the AutoProvisioningSettingsClient.Create
+// method.
+func (client *AutoProvisioningSettingsClient) Create(ctx context.Context, settingName string, setting AutoProvisioningSetting, options *AutoProvisioningSettingsClientCreateOptions) (AutoProvisioningSettingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, settingName, setting, options)
 	if err != nil {
-		return AutoProvisioningSettingsCreateResponse{}, err
+		return AutoProvisioningSettingsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoProvisioningSettingsCreateResponse{}, err
+		return AutoProvisioningSettingsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutoProvisioningSettingsCreateResponse{}, client.createHandleError(resp)
+		return AutoProvisioningSettingsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Context, settingName string, setting AutoProvisioningSetting, options *AutoProvisioningSettingsCreateOptions) (*policy.Request, error) {
+func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Context, settingName string, setting AutoProvisioningSetting, options *AutoProvisioningSettingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Co
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(settingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +93,36 @@ func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Co
 }
 
 // createHandleResponse handles the Create response.
-func (client *AutoProvisioningSettingsClient) createHandleResponse(resp *http.Response) (AutoProvisioningSettingsCreateResponse, error) {
-	result := AutoProvisioningSettingsCreateResponse{RawResponse: resp}
+func (client *AutoProvisioningSettingsClient) createHandleResponse(resp *http.Response) (AutoProvisioningSettingsClientCreateResponse, error) {
+	result := AutoProvisioningSettingsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSetting); err != nil {
-		return AutoProvisioningSettingsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return AutoProvisioningSettingsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *AutoProvisioningSettingsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Details of a specific setting
-// If the operation fails it returns the *CloudError error type.
-func (client *AutoProvisioningSettingsClient) Get(ctx context.Context, settingName string, options *AutoProvisioningSettingsGetOptions) (AutoProvisioningSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// settingName - Auto provisioning setting key
+// options - AutoProvisioningSettingsClientGetOptions contains the optional parameters for the AutoProvisioningSettingsClient.Get
+// method.
+func (client *AutoProvisioningSettingsClient) Get(ctx context.Context, settingName string, options *AutoProvisioningSettingsClientGetOptions) (AutoProvisioningSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, settingName, options)
 	if err != nil {
-		return AutoProvisioningSettingsGetResponse{}, err
+		return AutoProvisioningSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoProvisioningSettingsGetResponse{}, err
+		return AutoProvisioningSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutoProvisioningSettingsGetResponse{}, client.getHandleError(resp)
+		return AutoProvisioningSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Context, settingName string, options *AutoProvisioningSettingsGetOptions) (*policy.Request, error) {
+func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Context, settingName string, options *AutoProvisioningSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,7 +132,7 @@ func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(settingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -143,49 +144,38 @@ func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Response) (AutoProvisioningSettingsGetResponse, error) {
-	result := AutoProvisioningSettingsGetResponse{RawResponse: resp}
+func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Response) (AutoProvisioningSettingsClientGetResponse, error) {
+	result := AutoProvisioningSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSetting); err != nil {
-		return AutoProvisioningSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AutoProvisioningSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AutoProvisioningSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Exposes the auto provisioning settings of the subscriptions
-// If the operation fails it returns the *CloudError error type.
-func (client *AutoProvisioningSettingsClient) List(options *AutoProvisioningSettingsListOptions) *AutoProvisioningSettingsListPager {
-	return &AutoProvisioningSettingsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AutoProvisioningSettingsClientListOptions contains the optional parameters for the AutoProvisioningSettingsClient.List
+// method.
+func (client *AutoProvisioningSettingsClient) List(options *AutoProvisioningSettingsClientListOptions) *AutoProvisioningSettingsClientListPager {
+	return &AutoProvisioningSettingsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AutoProvisioningSettingsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AutoProvisioningSettingsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutoProvisioningSettingList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Context, options *AutoProvisioningSettingsListOptions) (*policy.Request, error) {
+func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Context, options *AutoProvisioningSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,23 +187,10 @@ func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Cont
 }
 
 // listHandleResponse handles the List response.
-func (client *AutoProvisioningSettingsClient) listHandleResponse(resp *http.Response) (AutoProvisioningSettingsListResponse, error) {
-	result := AutoProvisioningSettingsListResponse{RawResponse: resp}
+func (client *AutoProvisioningSettingsClient) listHandleResponse(resp *http.Response) (AutoProvisioningSettingsClientListResponse, error) {
+	result := AutoProvisioningSettingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSettingList); err != nil {
-		return AutoProvisioningSettingsListResponse{}, runtime.NewResponseError(err, resp)
+		return AutoProvisioningSettingsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AutoProvisioningSettingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // RegulatoryComplianceStandardsClient contains the methods for the RegulatoryComplianceStandards group.
 // Don't use this type directly, use NewRegulatoryComplianceStandardsClient() instead.
 type RegulatoryComplianceStandardsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRegulatoryComplianceStandardsClient creates a new instance of RegulatoryComplianceStandardsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRegulatoryComplianceStandardsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegulatoryComplianceStandardsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &RegulatoryComplianceStandardsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RegulatoryComplianceStandardsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Get - Supported regulatory compliance details state for selected standard
-// If the operation fails it returns the *CloudError error type.
-func (client *RegulatoryComplianceStandardsClient) Get(ctx context.Context, regulatoryComplianceStandardName string, options *RegulatoryComplianceStandardsGetOptions) (RegulatoryComplianceStandardsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// regulatoryComplianceStandardName - Name of the regulatory compliance standard object
+// options - RegulatoryComplianceStandardsClientGetOptions contains the optional parameters for the RegulatoryComplianceStandardsClient.Get
+// method.
+func (client *RegulatoryComplianceStandardsClient) Get(ctx context.Context, regulatoryComplianceStandardName string, options *RegulatoryComplianceStandardsClientGetOptions) (RegulatoryComplianceStandardsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, regulatoryComplianceStandardName, options)
 	if err != nil {
-		return RegulatoryComplianceStandardsGetResponse{}, err
+		return RegulatoryComplianceStandardsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RegulatoryComplianceStandardsGetResponse{}, err
+		return RegulatoryComplianceStandardsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RegulatoryComplianceStandardsGetResponse{}, client.getHandleError(resp)
+		return RegulatoryComplianceStandardsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RegulatoryComplianceStandardsClient) getCreateRequest(ctx context.Context, regulatoryComplianceStandardName string, options *RegulatoryComplianceStandardsGetOptions) (*policy.Request, error) {
+func (client *RegulatoryComplianceStandardsClient) getCreateRequest(ctx context.Context, regulatoryComplianceStandardName string, options *RegulatoryComplianceStandardsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +80,7 @@ func (client *RegulatoryComplianceStandardsClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter regulatoryComplianceStandardName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{regulatoryComplianceStandardName}", url.PathEscape(regulatoryComplianceStandardName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,49 +92,38 @@ func (client *RegulatoryComplianceStandardsClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegulatoryComplianceStandardsClient) getHandleResponse(resp *http.Response) (RegulatoryComplianceStandardsGetResponse, error) {
-	result := RegulatoryComplianceStandardsGetResponse{RawResponse: resp}
+func (client *RegulatoryComplianceStandardsClient) getHandleResponse(resp *http.Response) (RegulatoryComplianceStandardsClientGetResponse, error) {
+	result := RegulatoryComplianceStandardsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceStandard); err != nil {
-		return RegulatoryComplianceStandardsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RegulatoryComplianceStandardsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RegulatoryComplianceStandardsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Supported regulatory compliance standards details and state
-// If the operation fails it returns the *CloudError error type.
-func (client *RegulatoryComplianceStandardsClient) List(options *RegulatoryComplianceStandardsListOptions) *RegulatoryComplianceStandardsListPager {
-	return &RegulatoryComplianceStandardsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - RegulatoryComplianceStandardsClientListOptions contains the optional parameters for the RegulatoryComplianceStandardsClient.List
+// method.
+func (client *RegulatoryComplianceStandardsClient) List(options *RegulatoryComplianceStandardsClientListOptions) *RegulatoryComplianceStandardsClientListPager {
+	return &RegulatoryComplianceStandardsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp RegulatoryComplianceStandardsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RegulatoryComplianceStandardsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegulatoryComplianceStandardList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RegulatoryComplianceStandardsClient) listCreateRequest(ctx context.Context, options *RegulatoryComplianceStandardsListOptions) (*policy.Request, error) {
+func (client *RegulatoryComplianceStandardsClient) listCreateRequest(ctx context.Context, options *RegulatoryComplianceStandardsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,23 +138,10 @@ func (client *RegulatoryComplianceStandardsClient) listCreateRequest(ctx context
 }
 
 // listHandleResponse handles the List response.
-func (client *RegulatoryComplianceStandardsClient) listHandleResponse(resp *http.Response) (RegulatoryComplianceStandardsListResponse, error) {
-	result := RegulatoryComplianceStandardsListResponse{RawResponse: resp}
+func (client *RegulatoryComplianceStandardsClient) listHandleResponse(resp *http.Response) (RegulatoryComplianceStandardsClientListResponse, error) {
+	result := RegulatoryComplianceStandardsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceStandardList); err != nil {
-		return RegulatoryComplianceStandardsListResponse{}, runtime.NewResponseError(err, resp)
+		return RegulatoryComplianceStandardsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RegulatoryComplianceStandardsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

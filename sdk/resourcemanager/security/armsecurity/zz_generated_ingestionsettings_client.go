@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // IngestionSettingsClient contains the methods for the IngestionSettings group.
 // Don't use this type directly, use NewIngestionSettingsClient() instead.
 type IngestionSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIngestionSettingsClient creates a new instance of IngestionSettingsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIngestionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IngestionSettingsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &IngestionSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IngestionSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Create - Create setting for ingesting security data and logs to correlate with resources associated with the subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *IngestionSettingsClient) Create(ctx context.Context, ingestionSettingName string, ingestionSetting IngestionSetting, options *IngestionSettingsCreateOptions) (IngestionSettingsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// ingestionSettingName - Name of the ingestion setting
+// ingestionSetting - Ingestion setting object
+// options - IngestionSettingsClientCreateOptions contains the optional parameters for the IngestionSettingsClient.Create
+// method.
+func (client *IngestionSettingsClient) Create(ctx context.Context, ingestionSettingName string, ingestionSetting IngestionSetting, options *IngestionSettingsClientCreateOptions) (IngestionSettingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, ingestionSettingName, ingestionSetting, options)
 	if err != nil {
-		return IngestionSettingsCreateResponse{}, err
+		return IngestionSettingsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IngestionSettingsCreateResponse{}, err
+		return IngestionSettingsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IngestionSettingsCreateResponse{}, client.createHandleError(resp)
+		return IngestionSettingsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *IngestionSettingsClient) createCreateRequest(ctx context.Context, ingestionSettingName string, ingestionSetting IngestionSetting, options *IngestionSettingsCreateOptions) (*policy.Request, error) {
+func (client *IngestionSettingsClient) createCreateRequest(ctx context.Context, ingestionSettingName string, ingestionSetting IngestionSetting, options *IngestionSettingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *IngestionSettingsClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +93,36 @@ func (client *IngestionSettingsClient) createCreateRequest(ctx context.Context, 
 }
 
 // createHandleResponse handles the Create response.
-func (client *IngestionSettingsClient) createHandleResponse(resp *http.Response) (IngestionSettingsCreateResponse, error) {
-	result := IngestionSettingsCreateResponse{RawResponse: resp}
+func (client *IngestionSettingsClient) createHandleResponse(resp *http.Response) (IngestionSettingsClientCreateResponse, error) {
+	result := IngestionSettingsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSetting); err != nil {
-		return IngestionSettingsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return IngestionSettingsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *IngestionSettingsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the ingestion settings for this subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *IngestionSettingsClient) Delete(ctx context.Context, ingestionSettingName string, options *IngestionSettingsDeleteOptions) (IngestionSettingsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// ingestionSettingName - Name of the ingestion setting
+// options - IngestionSettingsClientDeleteOptions contains the optional parameters for the IngestionSettingsClient.Delete
+// method.
+func (client *IngestionSettingsClient) Delete(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientDeleteOptions) (IngestionSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, ingestionSettingName, options)
 	if err != nil {
-		return IngestionSettingsDeleteResponse{}, err
+		return IngestionSettingsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IngestionSettingsDeleteResponse{}, err
+		return IngestionSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IngestionSettingsDeleteResponse{}, client.deleteHandleError(resp)
+		return IngestionSettingsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IngestionSettingsDeleteResponse{RawResponse: resp}, nil
+	return IngestionSettingsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IngestionSettingsClient) deleteCreateRequest(ctx context.Context, ingestionSettingName string, options *IngestionSettingsDeleteOptions) (*policy.Request, error) {
+func (client *IngestionSettingsClient) deleteCreateRequest(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,7 +132,7 @@ func (client *IngestionSettingsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,38 +143,27 @@ func (client *IngestionSettingsClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IngestionSettingsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *IngestionSettingsClient) Get(ctx context.Context, ingestionSettingName string, options *IngestionSettingsGetOptions) (IngestionSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// ingestionSettingName - Name of the ingestion setting
+// options - IngestionSettingsClientGetOptions contains the optional parameters for the IngestionSettingsClient.Get method.
+func (client *IngestionSettingsClient) Get(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientGetOptions) (IngestionSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, ingestionSettingName, options)
 	if err != nil {
-		return IngestionSettingsGetResponse{}, err
+		return IngestionSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IngestionSettingsGetResponse{}, err
+		return IngestionSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IngestionSettingsGetResponse{}, client.getHandleError(resp)
+		return IngestionSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IngestionSettingsClient) getCreateRequest(ctx context.Context, ingestionSettingName string, options *IngestionSettingsGetOptions) (*policy.Request, error) {
+func (client *IngestionSettingsClient) getCreateRequest(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -183,7 +173,7 @@ func (client *IngestionSettingsClient) getCreateRequest(ctx context.Context, ing
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -195,49 +185,37 @@ func (client *IngestionSettingsClient) getCreateRequest(ctx context.Context, ing
 }
 
 // getHandleResponse handles the Get response.
-func (client *IngestionSettingsClient) getHandleResponse(resp *http.Response) (IngestionSettingsGetResponse, error) {
-	result := IngestionSettingsGetResponse{RawResponse: resp}
+func (client *IngestionSettingsClient) getHandleResponse(resp *http.Response) (IngestionSettingsClientGetResponse, error) {
+	result := IngestionSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSetting); err != nil {
-		return IngestionSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return IngestionSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IngestionSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *IngestionSettingsClient) List(options *IngestionSettingsListOptions) *IngestionSettingsListPager {
-	return &IngestionSettingsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - IngestionSettingsClientListOptions contains the optional parameters for the IngestionSettingsClient.List method.
+func (client *IngestionSettingsClient) List(options *IngestionSettingsClientListOptions) *IngestionSettingsClientListPager {
+	return &IngestionSettingsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp IngestionSettingsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IngestionSettingsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IngestionSettingList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IngestionSettingsClient) listCreateRequest(ctx context.Context, options *IngestionSettingsListOptions) (*policy.Request, error) {
+func (client *IngestionSettingsClient) listCreateRequest(ctx context.Context, options *IngestionSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,46 +227,36 @@ func (client *IngestionSettingsClient) listCreateRequest(ctx context.Context, op
 }
 
 // listHandleResponse handles the List response.
-func (client *IngestionSettingsClient) listHandleResponse(resp *http.Response) (IngestionSettingsListResponse, error) {
-	result := IngestionSettingsListResponse{RawResponse: resp}
+func (client *IngestionSettingsClient) listHandleResponse(resp *http.Response) (IngestionSettingsClientListResponse, error) {
+	result := IngestionSettingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSettingList); err != nil {
-		return IngestionSettingsListResponse{}, runtime.NewResponseError(err, resp)
+		return IngestionSettingsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *IngestionSettingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListConnectionStrings - Connection strings for ingesting security scan logs and data.
-// If the operation fails it returns the *CloudError error type.
-func (client *IngestionSettingsClient) ListConnectionStrings(ctx context.Context, ingestionSettingName string, options *IngestionSettingsListConnectionStringsOptions) (IngestionSettingsListConnectionStringsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// ingestionSettingName - Name of the ingestion setting
+// options - IngestionSettingsClientListConnectionStringsOptions contains the optional parameters for the IngestionSettingsClient.ListConnectionStrings
+// method.
+func (client *IngestionSettingsClient) ListConnectionStrings(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientListConnectionStringsOptions) (IngestionSettingsClientListConnectionStringsResponse, error) {
 	req, err := client.listConnectionStringsCreateRequest(ctx, ingestionSettingName, options)
 	if err != nil {
-		return IngestionSettingsListConnectionStringsResponse{}, err
+		return IngestionSettingsClientListConnectionStringsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IngestionSettingsListConnectionStringsResponse{}, err
+		return IngestionSettingsClientListConnectionStringsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IngestionSettingsListConnectionStringsResponse{}, client.listConnectionStringsHandleError(resp)
+		return IngestionSettingsClientListConnectionStringsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listConnectionStringsHandleResponse(resp)
 }
 
 // listConnectionStringsCreateRequest creates the ListConnectionStrings request.
-func (client *IngestionSettingsClient) listConnectionStringsCreateRequest(ctx context.Context, ingestionSettingName string, options *IngestionSettingsListConnectionStringsOptions) (*policy.Request, error) {
+func (client *IngestionSettingsClient) listConnectionStringsCreateRequest(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientListConnectionStringsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}/listConnectionStrings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -298,7 +266,7 @@ func (client *IngestionSettingsClient) listConnectionStringsCreateRequest(ctx co
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,46 +278,36 @@ func (client *IngestionSettingsClient) listConnectionStringsCreateRequest(ctx co
 }
 
 // listConnectionStringsHandleResponse handles the ListConnectionStrings response.
-func (client *IngestionSettingsClient) listConnectionStringsHandleResponse(resp *http.Response) (IngestionSettingsListConnectionStringsResponse, error) {
-	result := IngestionSettingsListConnectionStringsResponse{RawResponse: resp}
+func (client *IngestionSettingsClient) listConnectionStringsHandleResponse(resp *http.Response) (IngestionSettingsClientListConnectionStringsResponse, error) {
+	result := IngestionSettingsClientListConnectionStringsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionStrings); err != nil {
-		return IngestionSettingsListConnectionStringsResponse{}, runtime.NewResponseError(err, resp)
+		return IngestionSettingsClientListConnectionStringsResponse{}, err
 	}
 	return result, nil
 }
 
-// listConnectionStringsHandleError handles the ListConnectionStrings error response.
-func (client *IngestionSettingsClient) listConnectionStringsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListTokens - Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *IngestionSettingsClient) ListTokens(ctx context.Context, ingestionSettingName string, options *IngestionSettingsListTokensOptions) (IngestionSettingsListTokensResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// ingestionSettingName - Name of the ingestion setting
+// options - IngestionSettingsClientListTokensOptions contains the optional parameters for the IngestionSettingsClient.ListTokens
+// method.
+func (client *IngestionSettingsClient) ListTokens(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientListTokensOptions) (IngestionSettingsClientListTokensResponse, error) {
 	req, err := client.listTokensCreateRequest(ctx, ingestionSettingName, options)
 	if err != nil {
-		return IngestionSettingsListTokensResponse{}, err
+		return IngestionSettingsClientListTokensResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IngestionSettingsListTokensResponse{}, err
+		return IngestionSettingsClientListTokensResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IngestionSettingsListTokensResponse{}, client.listTokensHandleError(resp)
+		return IngestionSettingsClientListTokensResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listTokensHandleResponse(resp)
 }
 
 // listTokensCreateRequest creates the ListTokens request.
-func (client *IngestionSettingsClient) listTokensCreateRequest(ctx context.Context, ingestionSettingName string, options *IngestionSettingsListTokensOptions) (*policy.Request, error) {
+func (client *IngestionSettingsClient) listTokensCreateRequest(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientListTokensOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}/listTokens"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -359,7 +317,7 @@ func (client *IngestionSettingsClient) listTokensCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter ingestionSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ingestionSettingName}", url.PathEscape(ingestionSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -371,23 +329,10 @@ func (client *IngestionSettingsClient) listTokensCreateRequest(ctx context.Conte
 }
 
 // listTokensHandleResponse handles the ListTokens response.
-func (client *IngestionSettingsClient) listTokensHandleResponse(resp *http.Response) (IngestionSettingsListTokensResponse, error) {
-	result := IngestionSettingsListTokensResponse{RawResponse: resp}
+func (client *IngestionSettingsClient) listTokensHandleResponse(resp *http.Response) (IngestionSettingsClientListTokensResponse, error) {
+	result := IngestionSettingsClientListTokensResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSettingToken); err != nil {
-		return IngestionSettingsListTokensResponse{}, runtime.NewResponseError(err, resp)
+		return IngestionSettingsClientListTokensResponse{}, err
 	}
 	return result, nil
-}
-
-// listTokensHandleError handles the ListTokens error response.
-func (client *IngestionSettingsClient) listTokensHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

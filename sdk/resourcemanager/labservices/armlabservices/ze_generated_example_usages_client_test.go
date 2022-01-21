@@ -25,13 +25,17 @@ func ExampleUsagesClient_ListByLocation() {
 	ctx := context.Background()
 	client := armlabservices.NewUsagesClient("<subscription-id>", cred, nil)
 	pager := client.ListByLocation("<location>",
-		&armlabservices.UsagesListByLocationOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armlabservices.UsagesClientListByLocationOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Usage.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -11,7 +11,6 @@ package armlabservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ImagesClient contains the methods for the Images group.
 // Don't use this type directly, use NewImagesClient() instead.
 type ImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewImagesClient creates a new instance of ImagesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ImagesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &ImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ImagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // CreateOrUpdate - Updates an image resource via PUT. Creating new resources via PUT will not function.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body Image, options *ImagesCreateOrUpdateOptions) (ImagesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// imageName - The image name.
+// body - The request body.
+// options - ImagesClientCreateOrUpdateOptions contains the optional parameters for the ImagesClient.CreateOrUpdate method.
+func (client *ImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body Image, options *ImagesClientCreateOrUpdateOptions) (ImagesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labPlanName, imageName, body, options)
 	if err != nil {
-		return ImagesCreateOrUpdateResponse{}, err
+		return ImagesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ImagesCreateOrUpdateResponse{}, err
+		return ImagesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ImagesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ImagesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body Image, options *ImagesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body Image, options *ImagesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}/images/{imageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter imageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,38 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ImagesClient) createOrUpdateHandleResponse(resp *http.Response) (ImagesCreateOrUpdateResponse, error) {
-	result := ImagesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ImagesClient) createOrUpdateHandleResponse(resp *http.Response) (ImagesClientCreateOrUpdateResponse, error) {
+	result := ImagesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
-		return ImagesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ImagesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ImagesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an image resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, options *ImagesGetOptions) (ImagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// imageName - The image name.
+// options - ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
+func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, options *ImagesClientGetOptions) (ImagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labPlanName, imageName, options)
 	if err != nil {
-		return ImagesGetResponse{}, err
+		return ImagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ImagesGetResponse{}, err
+		return ImagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ImagesGetResponse{}, client.getHandleError(resp)
+		return ImagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, options *ImagesGetOptions) (*policy.Request, error) {
+func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, options *ImagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}/images/{imageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +152,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter imageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,43 +164,34 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesGetResponse, error) {
-	result := ImagesGetResponse{RawResponse: resp}
+func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClientGetResponse, error) {
+	result := ImagesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
-		return ImagesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ImagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ImagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByLabPlan - Gets all images from galleries attached to a lab plan.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ImagesClient) ListByLabPlan(resourceGroupName string, labPlanName string, options *ImagesListByLabPlanOptions) *ImagesListByLabPlanPager {
-	return &ImagesListByLabPlanPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// options - ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.ListByLabPlan method.
+func (client *ImagesClient) ListByLabPlan(resourceGroupName string, labPlanName string, options *ImagesClientListByLabPlanOptions) *ImagesClientListByLabPlanPager {
+	return &ImagesClientListByLabPlanPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLabPlanCreateRequest(ctx, resourceGroupName, labPlanName, options)
 		},
-		advancer: func(ctx context.Context, resp ImagesListByLabPlanResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ImagesClientListByLabPlanResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedImages.NextLink)
 		},
 	}
 }
 
 // listByLabPlanCreateRequest creates the ListByLabPlan request.
-func (client *ImagesClient) listByLabPlanCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, options *ImagesListByLabPlanOptions) (*policy.Request, error) {
+func (client *ImagesClient) listByLabPlanCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, options *ImagesClientListByLabPlanOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}/images"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -209,7 +205,7 @@ func (client *ImagesClient) listByLabPlanCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter labPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labPlanName}", url.PathEscape(labPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -224,46 +220,39 @@ func (client *ImagesClient) listByLabPlanCreateRequest(ctx context.Context, reso
 }
 
 // listByLabPlanHandleResponse handles the ListByLabPlan response.
-func (client *ImagesClient) listByLabPlanHandleResponse(resp *http.Response) (ImagesListByLabPlanResponse, error) {
-	result := ImagesListByLabPlanResponse{RawResponse: resp}
+func (client *ImagesClient) listByLabPlanHandleResponse(resp *http.Response) (ImagesClientListByLabPlanResponse, error) {
+	result := ImagesClientListByLabPlanResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedImages); err != nil {
-		return ImagesListByLabPlanResponse{}, runtime.NewResponseError(err, resp)
+		return ImagesClientListByLabPlanResponse{}, err
 	}
 	return result, nil
 }
 
-// listByLabPlanHandleError handles the ListByLabPlan error response.
-func (client *ImagesClient) listByLabPlanHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an image resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ImagesClient) Update(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body ImageUpdate, options *ImagesUpdateOptions) (ImagesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// imageName - The image name.
+// body - The request body.
+// options - ImagesClientUpdateOptions contains the optional parameters for the ImagesClient.Update method.
+func (client *ImagesClient) Update(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body ImageUpdate, options *ImagesClientUpdateOptions) (ImagesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labPlanName, imageName, body, options)
 	if err != nil {
-		return ImagesUpdateResponse{}, err
+		return ImagesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ImagesUpdateResponse{}, err
+		return ImagesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ImagesUpdateResponse{}, client.updateHandleError(resp)
+		return ImagesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body ImageUpdate, options *ImagesUpdateOptions) (*policy.Request, error) {
+func (client *ImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, imageName string, body ImageUpdate, options *ImagesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}/images/{imageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -281,7 +270,7 @@ func (client *ImagesClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter imageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -293,23 +282,10 @@ func (client *ImagesClient) updateCreateRequest(ctx context.Context, resourceGro
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ImagesClient) updateHandleResponse(resp *http.Response) (ImagesUpdateResponse, error) {
-	result := ImagesUpdateResponse{RawResponse: resp}
+func (client *ImagesClient) updateHandleResponse(resp *http.Response) (ImagesClientUpdateResponse, error) {
+	result := ImagesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
-		return ImagesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ImagesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ImagesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

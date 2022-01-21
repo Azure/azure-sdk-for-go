@@ -1683,6 +1683,90 @@ func (client AppsClient) CreateMSDeployOperationSlotResponder(resp *http.Respons
 	return
 }
 
+// CreateOneDeployOperation description for Invoke the OneDeploy publish web app extension.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of web app.
+func (client AppsClient) CreateOneDeployOperation(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOneDeployOperation")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CreateOneDeployOperation", err.Error())
+	}
+
+	req, err := client.CreateOneDeployOperationPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOneDeployOperation", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOneDeployOperationSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOneDeployOperation", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOneDeployOperationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOneDeployOperation", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// CreateOneDeployOperationPreparer prepares the CreateOneDeployOperation request.
+func (client AppsClient) CreateOneDeployOperationPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/onedeploy", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOneDeployOperationSender sends the CreateOneDeployOperation request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CreateOneDeployOperationSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOneDeployOperationResponder handles the response to the CreateOneDeployOperation request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CreateOneDeployOperationResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdate description for Creates a new web, mobile, or API app in an existing resource group, or updates an
 // existing app.
 // Parameters:
@@ -13990,6 +14074,91 @@ func (client AppsClient) GetNetworkTracesV2Sender(req *http.Request) (*http.Resp
 // GetNetworkTracesV2Responder handles the response to the GetNetworkTracesV2 request. The method always
 // closes the http.Response Body.
 func (client AppsClient) GetNetworkTracesV2Responder(resp *http.Response) (result ListNetworkTrace, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetOneDeployStatus description for Invoke onedeploy status API /api/deployments and gets the deployment status for
+// the site
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of web app.
+func (client AppsClient) GetOneDeployStatus(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetOneDeployStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetOneDeployStatus", err.Error())
+	}
+
+	req, err := client.GetOneDeployStatusPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetOneDeployStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetOneDeployStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetOneDeployStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetOneDeployStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetOneDeployStatus", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// GetOneDeployStatusPreparer prepares the GetOneDeployStatus request.
+func (client AppsClient) GetOneDeployStatusPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/onedeploy", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetOneDeployStatusSender sends the GetOneDeployStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetOneDeployStatusSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetOneDeployStatusResponder handles the response to the GetOneDeployStatus request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetOneDeployStatusResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

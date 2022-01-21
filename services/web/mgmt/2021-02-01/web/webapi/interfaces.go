@@ -16,7 +16,6 @@ import (
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
 	CheckNameAvailability(ctx context.Context, request web.ResourceNameAvailabilityRequest) (result web.ResourceNameAvailability, err error)
-	GenerateGithubAccessTokenForAppserviceCLIAsync(ctx context.Context, request web.AppserviceGithubTokenRequest) (result web.AppserviceGithubToken, err error)
 	GetPublishingUser(ctx context.Context) (result web.User, err error)
 	GetSourceControl(ctx context.Context, sourceControlType string) (result web.SourceControl, err error)
 	GetSubscriptionDeploymentLocations(ctx context.Context) (result web.DeploymentLocations, err error)
@@ -328,18 +327,18 @@ var _ KubeEnvironmentsClientAPI = (*web.KubeEnvironmentsClient)(nil)
 
 // ProviderClientAPI contains the set of methods on the ProviderClient type.
 type ProviderClientAPI interface {
-	GetAvailableStacks(ctx context.Context, osTypeSelected string) (result web.ApplicationStackCollectionPage, err error)
-	GetAvailableStacksComplete(ctx context.Context, osTypeSelected string) (result web.ApplicationStackCollectionIterator, err error)
-	GetAvailableStacksOnPrem(ctx context.Context, osTypeSelected string) (result web.ApplicationStackCollectionPage, err error)
-	GetAvailableStacksOnPremComplete(ctx context.Context, osTypeSelected string) (result web.ApplicationStackCollectionIterator, err error)
-	GetFunctionAppStacks(ctx context.Context, stackOsType string) (result web.FunctionAppStackCollectionPage, err error)
-	GetFunctionAppStacksComplete(ctx context.Context, stackOsType string) (result web.FunctionAppStackCollectionIterator, err error)
-	GetFunctionAppStacksForLocation(ctx context.Context, location string, stackOsType string) (result web.FunctionAppStackCollectionPage, err error)
-	GetFunctionAppStacksForLocationComplete(ctx context.Context, location string, stackOsType string) (result web.FunctionAppStackCollectionIterator, err error)
-	GetWebAppStacks(ctx context.Context, stackOsType string) (result web.AppStackCollectionPage, err error)
-	GetWebAppStacksComplete(ctx context.Context, stackOsType string) (result web.AppStackCollectionIterator, err error)
-	GetWebAppStacksForLocation(ctx context.Context, location string, stackOsType string) (result web.AppStackCollectionPage, err error)
-	GetWebAppStacksForLocationComplete(ctx context.Context, location string, stackOsType string) (result web.AppStackCollectionIterator, err error)
+	GetAvailableStacks(ctx context.Context, osTypeSelected web.ProviderOsTypeSelected) (result web.ApplicationStackCollectionPage, err error)
+	GetAvailableStacksComplete(ctx context.Context, osTypeSelected web.ProviderOsTypeSelected) (result web.ApplicationStackCollectionIterator, err error)
+	GetAvailableStacksOnPrem(ctx context.Context, osTypeSelected web.ProviderOsTypeSelected) (result web.ApplicationStackCollectionPage, err error)
+	GetAvailableStacksOnPremComplete(ctx context.Context, osTypeSelected web.ProviderOsTypeSelected) (result web.ApplicationStackCollectionIterator, err error)
+	GetFunctionAppStacks(ctx context.Context, stackOsType web.ProviderStackOsType) (result web.FunctionAppStackCollectionPage, err error)
+	GetFunctionAppStacksComplete(ctx context.Context, stackOsType web.ProviderStackOsType) (result web.FunctionAppStackCollectionIterator, err error)
+	GetFunctionAppStacksForLocation(ctx context.Context, location string, stackOsType web.ProviderStackOsType) (result web.FunctionAppStackCollectionPage, err error)
+	GetFunctionAppStacksForLocationComplete(ctx context.Context, location string, stackOsType web.ProviderStackOsType) (result web.FunctionAppStackCollectionIterator, err error)
+	GetWebAppStacks(ctx context.Context, stackOsType web.ProviderStackOsType) (result web.AppStackCollectionPage, err error)
+	GetWebAppStacksComplete(ctx context.Context, stackOsType web.ProviderStackOsType) (result web.AppStackCollectionIterator, err error)
+	GetWebAppStacksForLocation(ctx context.Context, location string, stackOsType web.ProviderStackOsType) (result web.AppStackCollectionPage, err error)
+	GetWebAppStacksForLocationComplete(ctx context.Context, location string, stackOsType web.ProviderStackOsType) (result web.AppStackCollectionIterator, err error)
 	ListOperations(ctx context.Context) (result web.CsmOperationCollectionPage, err error)
 	ListOperationsComplete(ctx context.Context) (result web.CsmOperationCollectionIterator, err error)
 }

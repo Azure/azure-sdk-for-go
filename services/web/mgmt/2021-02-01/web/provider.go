@@ -31,7 +31,7 @@ func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) Provide
 }
 
 // GetAvailableStacks description for Get available application frameworks and their versions
-func (client ProviderClient) GetAvailableStacks(ctx context.Context, osTypeSelected string) (result ApplicationStackCollectionPage, err error) {
+func (client ProviderClient) GetAvailableStacks(ctx context.Context, osTypeSelected ProviderOsTypeSelected) (result ApplicationStackCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetAvailableStacks")
 		defer func() {
@@ -70,7 +70,7 @@ func (client ProviderClient) GetAvailableStacks(ctx context.Context, osTypeSelec
 }
 
 // GetAvailableStacksPreparer prepares the GetAvailableStacks request.
-func (client ProviderClient) GetAvailableStacksPreparer(ctx context.Context, osTypeSelected string) (*http.Request, error) {
+func (client ProviderClient) GetAvailableStacksPreparer(ctx context.Context, osTypeSelected ProviderOsTypeSelected) (*http.Request, error) {
 	const APIVersion = "2021-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -127,7 +127,7 @@ func (client ProviderClient) getAvailableStacksNextResults(ctx context.Context, 
 }
 
 // GetAvailableStacksComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderClient) GetAvailableStacksComplete(ctx context.Context, osTypeSelected string) (result ApplicationStackCollectionIterator, err error) {
+func (client ProviderClient) GetAvailableStacksComplete(ctx context.Context, osTypeSelected ProviderOsTypeSelected) (result ApplicationStackCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetAvailableStacks")
 		defer func() {
@@ -143,7 +143,7 @@ func (client ProviderClient) GetAvailableStacksComplete(ctx context.Context, osT
 }
 
 // GetAvailableStacksOnPrem description for Get available application frameworks and their versions
-func (client ProviderClient) GetAvailableStacksOnPrem(ctx context.Context, osTypeSelected string) (result ApplicationStackCollectionPage, err error) {
+func (client ProviderClient) GetAvailableStacksOnPrem(ctx context.Context, osTypeSelected ProviderOsTypeSelected) (result ApplicationStackCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetAvailableStacksOnPrem")
 		defer func() {
@@ -182,7 +182,7 @@ func (client ProviderClient) GetAvailableStacksOnPrem(ctx context.Context, osTyp
 }
 
 // GetAvailableStacksOnPremPreparer prepares the GetAvailableStacksOnPrem request.
-func (client ProviderClient) GetAvailableStacksOnPremPreparer(ctx context.Context, osTypeSelected string) (*http.Request, error) {
+func (client ProviderClient) GetAvailableStacksOnPremPreparer(ctx context.Context, osTypeSelected ProviderOsTypeSelected) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -243,7 +243,7 @@ func (client ProviderClient) getAvailableStacksOnPremNextResults(ctx context.Con
 }
 
 // GetAvailableStacksOnPremComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderClient) GetAvailableStacksOnPremComplete(ctx context.Context, osTypeSelected string) (result ApplicationStackCollectionIterator, err error) {
+func (client ProviderClient) GetAvailableStacksOnPremComplete(ctx context.Context, osTypeSelected ProviderOsTypeSelected) (result ApplicationStackCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetAvailableStacksOnPrem")
 		defer func() {
@@ -261,7 +261,7 @@ func (client ProviderClient) GetAvailableStacksOnPremComplete(ctx context.Contex
 // GetFunctionAppStacks description for Get available Function app frameworks and their versions
 // Parameters:
 // stackOsType - stack OS Type
-func (client ProviderClient) GetFunctionAppStacks(ctx context.Context, stackOsType string) (result FunctionAppStackCollectionPage, err error) {
+func (client ProviderClient) GetFunctionAppStacks(ctx context.Context, stackOsType ProviderStackOsType) (result FunctionAppStackCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetFunctionAppStacks")
 		defer func() {
@@ -300,7 +300,7 @@ func (client ProviderClient) GetFunctionAppStacks(ctx context.Context, stackOsTy
 }
 
 // GetFunctionAppStacksPreparer prepares the GetFunctionAppStacks request.
-func (client ProviderClient) GetFunctionAppStacksPreparer(ctx context.Context, stackOsType string) (*http.Request, error) {
+func (client ProviderClient) GetFunctionAppStacksPreparer(ctx context.Context, stackOsType ProviderStackOsType) (*http.Request, error) {
 	const APIVersion = "2021-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -357,7 +357,7 @@ func (client ProviderClient) getFunctionAppStacksNextResults(ctx context.Context
 }
 
 // GetFunctionAppStacksComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderClient) GetFunctionAppStacksComplete(ctx context.Context, stackOsType string) (result FunctionAppStackCollectionIterator, err error) {
+func (client ProviderClient) GetFunctionAppStacksComplete(ctx context.Context, stackOsType ProviderStackOsType) (result FunctionAppStackCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetFunctionAppStacks")
 		defer func() {
@@ -377,7 +377,7 @@ func (client ProviderClient) GetFunctionAppStacksComplete(ctx context.Context, s
 // Parameters:
 // location - function App stack location.
 // stackOsType - stack OS Type
-func (client ProviderClient) GetFunctionAppStacksForLocation(ctx context.Context, location string, stackOsType string) (result FunctionAppStackCollectionPage, err error) {
+func (client ProviderClient) GetFunctionAppStacksForLocation(ctx context.Context, location string, stackOsType ProviderStackOsType) (result FunctionAppStackCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetFunctionAppStacksForLocation")
 		defer func() {
@@ -416,7 +416,7 @@ func (client ProviderClient) GetFunctionAppStacksForLocation(ctx context.Context
 }
 
 // GetFunctionAppStacksForLocationPreparer prepares the GetFunctionAppStacksForLocation request.
-func (client ProviderClient) GetFunctionAppStacksForLocationPreparer(ctx context.Context, location string, stackOsType string) (*http.Request, error) {
+func (client ProviderClient) GetFunctionAppStacksForLocationPreparer(ctx context.Context, location string, stackOsType ProviderStackOsType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location": autorest.Encode("path", location),
 	}
@@ -477,7 +477,7 @@ func (client ProviderClient) getFunctionAppStacksForLocationNextResults(ctx cont
 }
 
 // GetFunctionAppStacksForLocationComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderClient) GetFunctionAppStacksForLocationComplete(ctx context.Context, location string, stackOsType string) (result FunctionAppStackCollectionIterator, err error) {
+func (client ProviderClient) GetFunctionAppStacksForLocationComplete(ctx context.Context, location string, stackOsType ProviderStackOsType) (result FunctionAppStackCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetFunctionAppStacksForLocation")
 		defer func() {
@@ -495,7 +495,7 @@ func (client ProviderClient) GetFunctionAppStacksForLocationComplete(ctx context
 // GetWebAppStacks description for Get available Web app frameworks and their versions
 // Parameters:
 // stackOsType - stack OS Type
-func (client ProviderClient) GetWebAppStacks(ctx context.Context, stackOsType string) (result AppStackCollectionPage, err error) {
+func (client ProviderClient) GetWebAppStacks(ctx context.Context, stackOsType ProviderStackOsType) (result AppStackCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetWebAppStacks")
 		defer func() {
@@ -534,7 +534,7 @@ func (client ProviderClient) GetWebAppStacks(ctx context.Context, stackOsType st
 }
 
 // GetWebAppStacksPreparer prepares the GetWebAppStacks request.
-func (client ProviderClient) GetWebAppStacksPreparer(ctx context.Context, stackOsType string) (*http.Request, error) {
+func (client ProviderClient) GetWebAppStacksPreparer(ctx context.Context, stackOsType ProviderStackOsType) (*http.Request, error) {
 	const APIVersion = "2021-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -591,7 +591,7 @@ func (client ProviderClient) getWebAppStacksNextResults(ctx context.Context, las
 }
 
 // GetWebAppStacksComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderClient) GetWebAppStacksComplete(ctx context.Context, stackOsType string) (result AppStackCollectionIterator, err error) {
+func (client ProviderClient) GetWebAppStacksComplete(ctx context.Context, stackOsType ProviderStackOsType) (result AppStackCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetWebAppStacks")
 		defer func() {
@@ -610,7 +610,7 @@ func (client ProviderClient) GetWebAppStacksComplete(ctx context.Context, stackO
 // Parameters:
 // location - web App stack location.
 // stackOsType - stack OS Type
-func (client ProviderClient) GetWebAppStacksForLocation(ctx context.Context, location string, stackOsType string) (result AppStackCollectionPage, err error) {
+func (client ProviderClient) GetWebAppStacksForLocation(ctx context.Context, location string, stackOsType ProviderStackOsType) (result AppStackCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetWebAppStacksForLocation")
 		defer func() {
@@ -649,7 +649,7 @@ func (client ProviderClient) GetWebAppStacksForLocation(ctx context.Context, loc
 }
 
 // GetWebAppStacksForLocationPreparer prepares the GetWebAppStacksForLocation request.
-func (client ProviderClient) GetWebAppStacksForLocationPreparer(ctx context.Context, location string, stackOsType string) (*http.Request, error) {
+func (client ProviderClient) GetWebAppStacksForLocationPreparer(ctx context.Context, location string, stackOsType ProviderStackOsType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location": autorest.Encode("path", location),
 	}
@@ -710,7 +710,7 @@ func (client ProviderClient) getWebAppStacksForLocationNextResults(ctx context.C
 }
 
 // GetWebAppStacksForLocationComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderClient) GetWebAppStacksForLocationComplete(ctx context.Context, location string, stackOsType string) (result AppStackCollectionIterator, err error) {
+func (client ProviderClient) GetWebAppStacksForLocationComplete(ctx context.Context, location string, stackOsType ProviderStackOsType) (result AppStackCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetWebAppStacksForLocation")
 		defer func() {

@@ -15,34 +15,22 @@ import (
 	"time"
 )
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// ClientCheckNameAvailabilityResponse contains the response from method Client.CheckNameAvailability.
+type ClientCheckNameAvailabilityResponse struct {
+	ClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationList
-}
-
-// SignalRCheckNameAvailabilityResponse contains the response from method SignalR.CheckNameAvailability.
-type SignalRCheckNameAvailabilityResponse struct {
-	SignalRCheckNameAvailabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SignalRCheckNameAvailabilityResult contains the result from method SignalR.CheckNameAvailability.
-type SignalRCheckNameAvailabilityResult struct {
+// ClientCheckNameAvailabilityResult contains the result from method Client.CheckNameAvailability.
+type ClientCheckNameAvailabilityResult struct {
 	NameAvailability
 }
 
-// SignalRCreateOrUpdatePollerResponse contains the response from method SignalR.CreateOrUpdate.
-type SignalRCreateOrUpdatePollerResponse struct {
+// ClientCreateOrUpdatePollerResponse contains the response from method Client.CreateOrUpdate.
+type ClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SignalRCreateOrUpdatePoller
+	Poller *ClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,9 +39,9 @@ type SignalRCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SignalRCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SignalRCreateOrUpdateResponse, error) {
-	respType := SignalRCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SignalRResource)
+func (l ClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientCreateOrUpdateResponse, error) {
+	respType := ClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ResourceInfo)
 	if err != nil {
 		return respType, err
 	}
@@ -61,13 +49,13 @@ func (l SignalRCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a SignalRCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *SignalRCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SignalRClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SignalRClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SignalRCreateOrUpdatePoller{
+	poller := &ClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,22 +67,22 @@ func (l *SignalRCreateOrUpdatePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// SignalRCreateOrUpdateResponse contains the response from method SignalR.CreateOrUpdate.
-type SignalRCreateOrUpdateResponse struct {
-	SignalRCreateOrUpdateResult
+// ClientCreateOrUpdateResponse contains the response from method Client.CreateOrUpdate.
+type ClientCreateOrUpdateResponse struct {
+	ClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRCreateOrUpdateResult contains the result from method SignalR.CreateOrUpdate.
-type SignalRCreateOrUpdateResult struct {
-	SignalRResource
+// ClientCreateOrUpdateResult contains the result from method Client.CreateOrUpdate.
+type ClientCreateOrUpdateResult struct {
+	ResourceInfo
 }
 
-// SignalRDeletePollerResponse contains the response from method SignalR.Delete.
-type SignalRDeletePollerResponse struct {
+// ClientDeletePollerResponse contains the response from method Client.Delete.
+type ClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SignalRDeletePoller
+	Poller *ClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -103,8 +91,8 @@ type SignalRDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SignalRDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SignalRDeleteResponse, error) {
-	respType := SignalRDeleteResponse{}
+func (l ClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientDeleteResponse, error) {
+	respType := ClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -113,13 +101,13 @@ func (l SignalRDeletePollerResponse) PollUntilDone(ctx context.Context, freq tim
 	return respType, nil
 }
 
-// Resume rehydrates a SignalRDeletePollerResponse from the provided client and resume token.
-func (l *SignalRDeletePollerResponse) Resume(ctx context.Context, client *SignalRClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SignalRClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ClientDeletePollerResponse from the provided client and resume token.
+func (l *ClientDeletePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SignalRDeletePoller{
+	poller := &ClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -131,76 +119,76 @@ func (l *SignalRDeletePollerResponse) Resume(ctx context.Context, client *Signal
 	return nil
 }
 
-// SignalRDeleteResponse contains the response from method SignalR.Delete.
-type SignalRDeleteResponse struct {
+// ClientDeleteResponse contains the response from method Client.Delete.
+type ClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRGetResponse contains the response from method SignalR.Get.
-type SignalRGetResponse struct {
-	SignalRGetResult
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
+	ClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRGetResult contains the result from method SignalR.Get.
-type SignalRGetResult struct {
-	SignalRResource
+// ClientGetResult contains the result from method Client.Get.
+type ClientGetResult struct {
+	ResourceInfo
 }
 
-// SignalRListByResourceGroupResponse contains the response from method SignalR.ListByResourceGroup.
-type SignalRListByResourceGroupResponse struct {
-	SignalRListByResourceGroupResult
+// ClientListByResourceGroupResponse contains the response from method Client.ListByResourceGroup.
+type ClientListByResourceGroupResponse struct {
+	ClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRListByResourceGroupResult contains the result from method SignalR.ListByResourceGroup.
-type SignalRListByResourceGroupResult struct {
-	SignalRResourceList
+// ClientListByResourceGroupResult contains the result from method Client.ListByResourceGroup.
+type ClientListByResourceGroupResult struct {
+	ResourceInfoList
 }
 
-// SignalRListBySubscriptionResponse contains the response from method SignalR.ListBySubscription.
-type SignalRListBySubscriptionResponse struct {
-	SignalRListBySubscriptionResult
+// ClientListBySubscriptionResponse contains the response from method Client.ListBySubscription.
+type ClientListBySubscriptionResponse struct {
+	ClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRListBySubscriptionResult contains the result from method SignalR.ListBySubscription.
-type SignalRListBySubscriptionResult struct {
-	SignalRResourceList
+// ClientListBySubscriptionResult contains the result from method Client.ListBySubscription.
+type ClientListBySubscriptionResult struct {
+	ResourceInfoList
 }
 
-// SignalRListKeysResponse contains the response from method SignalR.ListKeys.
-type SignalRListKeysResponse struct {
-	SignalRListKeysResult
+// ClientListKeysResponse contains the response from method Client.ListKeys.
+type ClientListKeysResponse struct {
+	ClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRListKeysResult contains the result from method SignalR.ListKeys.
-type SignalRListKeysResult struct {
-	SignalRKeys
+// ClientListKeysResult contains the result from method Client.ListKeys.
+type ClientListKeysResult struct {
+	Keys
 }
 
-// SignalRListSKUsResponse contains the response from method SignalR.ListSKUs.
-type SignalRListSKUsResponse struct {
-	SignalRListSKUsResult
+// ClientListSKUsResponse contains the response from method Client.ListSKUs.
+type ClientListSKUsResponse struct {
+	ClientListSKUsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRListSKUsResult contains the result from method SignalR.ListSKUs.
-type SignalRListSKUsResult struct {
+// ClientListSKUsResult contains the result from method Client.ListSKUs.
+type ClientListSKUsResult struct {
 	SKUList
 }
 
-// SignalRPrivateEndpointConnectionsDeletePollerResponse contains the response from method SignalRPrivateEndpointConnections.Delete.
-type SignalRPrivateEndpointConnectionsDeletePollerResponse struct {
+// ClientRegenerateKeyPollerResponse contains the response from method Client.RegenerateKey.
+type ClientRegenerateKeyPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SignalRPrivateEndpointConnectionsDeletePoller
+	Poller *ClientRegenerateKeyPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -209,9 +197,9 @@ type SignalRPrivateEndpointConnectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SignalRPrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SignalRPrivateEndpointConnectionsDeleteResponse, error) {
-	respType := SignalRPrivateEndpointConnectionsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+func (l ClientRegenerateKeyPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientRegenerateKeyResponse, error) {
+	respType := ClientRegenerateKeyResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Keys)
 	if err != nil {
 		return respType, err
 	}
@@ -219,13 +207,13 @@ func (l SignalRPrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a SignalRPrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *SignalRPrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *SignalRPrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SignalRPrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ClientRegenerateKeyPollerResponse from the provided client and resume token.
+func (l *ClientRegenerateKeyPollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.RegenerateKey", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SignalRPrivateEndpointConnectionsDeletePoller{
+	poller := &ClientRegenerateKeyPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -237,64 +225,226 @@ func (l *SignalRPrivateEndpointConnectionsDeletePollerResponse) Resume(ctx conte
 	return nil
 }
 
-// SignalRPrivateEndpointConnectionsDeleteResponse contains the response from method SignalRPrivateEndpointConnections.Delete.
-type SignalRPrivateEndpointConnectionsDeleteResponse struct {
+// ClientRegenerateKeyResponse contains the response from method Client.RegenerateKey.
+type ClientRegenerateKeyResponse struct {
+	ClientRegenerateKeyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRPrivateEndpointConnectionsGetResponse contains the response from method SignalRPrivateEndpointConnections.Get.
-type SignalRPrivateEndpointConnectionsGetResponse struct {
-	SignalRPrivateEndpointConnectionsGetResult
+// ClientRegenerateKeyResult contains the result from method Client.RegenerateKey.
+type ClientRegenerateKeyResult struct {
+	Keys
+}
+
+// ClientRestartPollerResponse contains the response from method Client.Restart.
+type ClientRestartPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ClientRestartPoller
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRPrivateEndpointConnectionsGetResult contains the result from method SignalRPrivateEndpointConnections.Get.
-type SignalRPrivateEndpointConnectionsGetResult struct {
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ClientRestartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientRestartResponse, error) {
+	respType := ClientRestartResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ClientRestartPollerResponse from the provided client and resume token.
+func (l *ClientRestartPollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.Restart", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ClientRestartPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ClientRestartResponse contains the response from method Client.Restart.
+type ClientRestartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientUpdatePollerResponse contains the response from method Client.Update.
+type ClientUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ClientUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientUpdateResponse, error) {
+	respType := ClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ResourceInfo)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ClientUpdatePollerResponse from the provided client and resume token.
+func (l *ClientUpdatePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.Update", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ClientUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ClientUpdateResponse contains the response from method Client.Update.
+type ClientUpdateResponse struct {
+	ClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientUpdateResult contains the result from method Client.Update.
+type ClientUpdateResult struct {
+	ResourceInfo
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	OperationList
+}
+
+// PrivateEndpointConnectionsClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *PrivateEndpointConnectionsClientDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l PrivateEndpointConnectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsClientDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a PrivateEndpointConnectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &PrivateEndpointConnectionsClientDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// SignalRPrivateEndpointConnectionsListResponse contains the response from method SignalRPrivateEndpointConnections.List.
-type SignalRPrivateEndpointConnectionsListResponse struct {
-	SignalRPrivateEndpointConnectionsListResult
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRPrivateEndpointConnectionsListResult contains the result from method SignalRPrivateEndpointConnections.List.
-type SignalRPrivateEndpointConnectionsListResult struct {
+// PrivateEndpointConnectionsClientListResult contains the result from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResult struct {
 	PrivateEndpointConnectionList
 }
 
-// SignalRPrivateEndpointConnectionsUpdateResponse contains the response from method SignalRPrivateEndpointConnections.Update.
-type SignalRPrivateEndpointConnectionsUpdateResponse struct {
-	SignalRPrivateEndpointConnectionsUpdateResult
+// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdateResponse struct {
+	PrivateEndpointConnectionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRPrivateEndpointConnectionsUpdateResult contains the result from method SignalRPrivateEndpointConnections.Update.
-type SignalRPrivateEndpointConnectionsUpdateResult struct {
+// PrivateEndpointConnectionsClientUpdateResult contains the result from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// SignalRPrivateLinkResourcesListResponse contains the response from method SignalRPrivateLinkResources.List.
-type SignalRPrivateLinkResourcesListResponse struct {
-	SignalRPrivateLinkResourcesListResult
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResponse struct {
+	PrivateLinkResourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRPrivateLinkResourcesListResult contains the result from method SignalRPrivateLinkResources.List.
-type SignalRPrivateLinkResourcesListResult struct {
+// PrivateLinkResourcesClientListResult contains the result from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResult struct {
 	PrivateLinkResourceList
 }
 
-// SignalRRegenerateKeyPollerResponse contains the response from method SignalR.RegenerateKey.
-type SignalRRegenerateKeyPollerResponse struct {
+// SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse contains the response from method SharedPrivateLinkResourcesClient.CreateOrUpdate.
+type SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SignalRRegenerateKeyPoller
+	Poller *SharedPrivateLinkResourcesClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -303,106 +453,8 @@ type SignalRRegenerateKeyPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SignalRRegenerateKeyPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SignalRRegenerateKeyResponse, error) {
-	respType := SignalRRegenerateKeyResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SignalRKeys)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SignalRRegenerateKeyPollerResponse from the provided client and resume token.
-func (l *SignalRRegenerateKeyPollerResponse) Resume(ctx context.Context, client *SignalRClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SignalRClient.RegenerateKey", token, client.pl, client.regenerateKeyHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SignalRRegenerateKeyPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SignalRRegenerateKeyResponse contains the response from method SignalR.RegenerateKey.
-type SignalRRegenerateKeyResponse struct {
-	SignalRRegenerateKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SignalRRegenerateKeyResult contains the result from method SignalR.RegenerateKey.
-type SignalRRegenerateKeyResult struct {
-	SignalRKeys
-}
-
-// SignalRRestartPollerResponse contains the response from method SignalR.Restart.
-type SignalRRestartPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SignalRRestartPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SignalRRestartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SignalRRestartResponse, error) {
-	respType := SignalRRestartResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SignalRRestartPollerResponse from the provided client and resume token.
-func (l *SignalRRestartPollerResponse) Resume(ctx context.Context, client *SignalRClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SignalRClient.Restart", token, client.pl, client.restartHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SignalRRestartPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SignalRRestartResponse contains the response from method SignalR.Restart.
-type SignalRRestartResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SignalRSharedPrivateLinkResourcesCreateOrUpdatePollerResponse contains the response from method SignalRSharedPrivateLinkResources.CreateOrUpdate.
-type SignalRSharedPrivateLinkResourcesCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SignalRSharedPrivateLinkResourcesCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SignalRSharedPrivateLinkResourcesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SignalRSharedPrivateLinkResourcesCreateOrUpdateResponse, error) {
-	respType := SignalRSharedPrivateLinkResourcesCreateOrUpdateResponse{}
+func (l SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SharedPrivateLinkResourcesClientCreateOrUpdateResponse, error) {
+	respType := SharedPrivateLinkResourcesClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SharedPrivateLinkResource)
 	if err != nil {
 		return respType, err
@@ -411,13 +463,13 @@ func (l SignalRSharedPrivateLinkResourcesCreateOrUpdatePollerResponse) PollUntil
 	return respType, nil
 }
 
-// Resume rehydrates a SignalRSharedPrivateLinkResourcesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *SignalRSharedPrivateLinkResourcesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SignalRSharedPrivateLinkResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SignalRSharedPrivateLinkResourcesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *SharedPrivateLinkResourcesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SharedPrivateLinkResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SharedPrivateLinkResourcesClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SignalRSharedPrivateLinkResourcesCreateOrUpdatePoller{
+	poller := &SharedPrivateLinkResourcesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -429,22 +481,22 @@ func (l *SignalRSharedPrivateLinkResourcesCreateOrUpdatePollerResponse) Resume(c
 	return nil
 }
 
-// SignalRSharedPrivateLinkResourcesCreateOrUpdateResponse contains the response from method SignalRSharedPrivateLinkResources.CreateOrUpdate.
-type SignalRSharedPrivateLinkResourcesCreateOrUpdateResponse struct {
-	SignalRSharedPrivateLinkResourcesCreateOrUpdateResult
+// SharedPrivateLinkResourcesClientCreateOrUpdateResponse contains the response from method SharedPrivateLinkResourcesClient.CreateOrUpdate.
+type SharedPrivateLinkResourcesClientCreateOrUpdateResponse struct {
+	SharedPrivateLinkResourcesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRSharedPrivateLinkResourcesCreateOrUpdateResult contains the result from method SignalRSharedPrivateLinkResources.CreateOrUpdate.
-type SignalRSharedPrivateLinkResourcesCreateOrUpdateResult struct {
+// SharedPrivateLinkResourcesClientCreateOrUpdateResult contains the result from method SharedPrivateLinkResourcesClient.CreateOrUpdate.
+type SharedPrivateLinkResourcesClientCreateOrUpdateResult struct {
 	SharedPrivateLinkResource
 }
 
-// SignalRSharedPrivateLinkResourcesDeletePollerResponse contains the response from method SignalRSharedPrivateLinkResources.Delete.
-type SignalRSharedPrivateLinkResourcesDeletePollerResponse struct {
+// SharedPrivateLinkResourcesClientDeletePollerResponse contains the response from method SharedPrivateLinkResourcesClient.Delete.
+type SharedPrivateLinkResourcesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SignalRSharedPrivateLinkResourcesDeletePoller
+	Poller *SharedPrivateLinkResourcesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -453,8 +505,8 @@ type SignalRSharedPrivateLinkResourcesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SignalRSharedPrivateLinkResourcesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SignalRSharedPrivateLinkResourcesDeleteResponse, error) {
-	respType := SignalRSharedPrivateLinkResourcesDeleteResponse{}
+func (l SharedPrivateLinkResourcesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SharedPrivateLinkResourcesClientDeleteResponse, error) {
+	respType := SharedPrivateLinkResourcesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -463,13 +515,13 @@ func (l SignalRSharedPrivateLinkResourcesDeletePollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a SignalRSharedPrivateLinkResourcesDeletePollerResponse from the provided client and resume token.
-func (l *SignalRSharedPrivateLinkResourcesDeletePollerResponse) Resume(ctx context.Context, client *SignalRSharedPrivateLinkResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SignalRSharedPrivateLinkResourcesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SharedPrivateLinkResourcesClientDeletePollerResponse from the provided client and resume token.
+func (l *SharedPrivateLinkResourcesClientDeletePollerResponse) Resume(ctx context.Context, client *SharedPrivateLinkResourcesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SharedPrivateLinkResourcesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SignalRSharedPrivateLinkResourcesDeletePoller{
+	poller := &SharedPrivateLinkResourcesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -481,96 +533,44 @@ func (l *SignalRSharedPrivateLinkResourcesDeletePollerResponse) Resume(ctx conte
 	return nil
 }
 
-// SignalRSharedPrivateLinkResourcesDeleteResponse contains the response from method SignalRSharedPrivateLinkResources.Delete.
-type SignalRSharedPrivateLinkResourcesDeleteResponse struct {
+// SharedPrivateLinkResourcesClientDeleteResponse contains the response from method SharedPrivateLinkResourcesClient.Delete.
+type SharedPrivateLinkResourcesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRSharedPrivateLinkResourcesGetResponse contains the response from method SignalRSharedPrivateLinkResources.Get.
-type SignalRSharedPrivateLinkResourcesGetResponse struct {
-	SignalRSharedPrivateLinkResourcesGetResult
+// SharedPrivateLinkResourcesClientGetResponse contains the response from method SharedPrivateLinkResourcesClient.Get.
+type SharedPrivateLinkResourcesClientGetResponse struct {
+	SharedPrivateLinkResourcesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRSharedPrivateLinkResourcesGetResult contains the result from method SignalRSharedPrivateLinkResources.Get.
-type SignalRSharedPrivateLinkResourcesGetResult struct {
+// SharedPrivateLinkResourcesClientGetResult contains the result from method SharedPrivateLinkResourcesClient.Get.
+type SharedPrivateLinkResourcesClientGetResult struct {
 	SharedPrivateLinkResource
 }
 
-// SignalRSharedPrivateLinkResourcesListResponse contains the response from method SignalRSharedPrivateLinkResources.List.
-type SignalRSharedPrivateLinkResourcesListResponse struct {
-	SignalRSharedPrivateLinkResourcesListResult
+// SharedPrivateLinkResourcesClientListResponse contains the response from method SharedPrivateLinkResourcesClient.List.
+type SharedPrivateLinkResourcesClientListResponse struct {
+	SharedPrivateLinkResourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SignalRSharedPrivateLinkResourcesListResult contains the result from method SignalRSharedPrivateLinkResources.List.
-type SignalRSharedPrivateLinkResourcesListResult struct {
+// SharedPrivateLinkResourcesClientListResult contains the result from method SharedPrivateLinkResourcesClient.List.
+type SharedPrivateLinkResourcesClientListResult struct {
 	SharedPrivateLinkResourceList
 }
 
-// SignalRUpdatePollerResponse contains the response from method SignalR.Update.
-type SignalRUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SignalRUpdatePoller
-
+// UsagesClientListResponse contains the response from method UsagesClient.List.
+type UsagesClientListResponse struct {
+	UsagesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SignalRUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SignalRUpdateResponse, error) {
-	respType := SignalRUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SignalRResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SignalRUpdatePollerResponse from the provided client and resume token.
-func (l *SignalRUpdatePollerResponse) Resume(ctx context.Context, client *SignalRClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SignalRClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SignalRUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SignalRUpdateResponse contains the response from method SignalR.Update.
-type SignalRUpdateResponse struct {
-	SignalRUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SignalRUpdateResult contains the result from method SignalR.Update.
-type SignalRUpdateResult struct {
-	SignalRResource
-}
-
-// UsagesListResponse contains the response from method Usages.List.
-type UsagesListResponse struct {
-	UsagesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UsagesListResult contains the result from method Usages.List.
-type UsagesListResult struct {
-	SignalRUsageList
+// UsagesClientListResult contains the result from method UsagesClient.List.
+type UsagesClientListResult struct {
+	UsageList
 }

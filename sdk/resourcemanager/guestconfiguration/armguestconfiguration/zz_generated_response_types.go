@@ -10,170 +10,170 @@ package armguestconfiguration
 
 import "net/http"
 
-// GuestConfigurationAssignmentReportsGetResponse contains the response from method GuestConfigurationAssignmentReports.Get.
-type GuestConfigurationAssignmentReportsGetResponse struct {
-	GuestConfigurationAssignmentReportsGetResult
+// AssignmentReportsClientGetResponse contains the response from method AssignmentReportsClient.Get.
+type AssignmentReportsClientGetResponse struct {
+	AssignmentReportsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationAssignmentReportsGetResult contains the result from method GuestConfigurationAssignmentReports.Get.
-type GuestConfigurationAssignmentReportsGetResult struct {
-	GuestConfigurationAssignmentReport
+// AssignmentReportsClientGetResult contains the result from method AssignmentReportsClient.Get.
+type AssignmentReportsClientGetResult struct {
+	AssignmentReport
 }
 
-// GuestConfigurationAssignmentReportsListResponse contains the response from method GuestConfigurationAssignmentReports.List.
-type GuestConfigurationAssignmentReportsListResponse struct {
-	GuestConfigurationAssignmentReportsListResult
+// AssignmentReportsClientListResponse contains the response from method AssignmentReportsClient.List.
+type AssignmentReportsClientListResponse struct {
+	AssignmentReportsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationAssignmentReportsListResult contains the result from method GuestConfigurationAssignmentReports.List.
-type GuestConfigurationAssignmentReportsListResult struct {
-	GuestConfigurationAssignmentReportList
+// AssignmentReportsClientListResult contains the result from method AssignmentReportsClient.List.
+type AssignmentReportsClientListResult struct {
+	AssignmentReportList
 }
 
-// GuestConfigurationAssignmentsCreateOrUpdateResponse contains the response from method GuestConfigurationAssignments.CreateOrUpdate.
-type GuestConfigurationAssignmentsCreateOrUpdateResponse struct {
-	GuestConfigurationAssignmentsCreateOrUpdateResult
+// AssignmentsClientCreateOrUpdateResponse contains the response from method AssignmentsClient.CreateOrUpdate.
+type AssignmentsClientCreateOrUpdateResponse struct {
+	AssignmentsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationAssignmentsCreateOrUpdateResult contains the result from method GuestConfigurationAssignments.CreateOrUpdate.
-type GuestConfigurationAssignmentsCreateOrUpdateResult struct {
-	GuestConfigurationAssignment
+// AssignmentsClientCreateOrUpdateResult contains the result from method AssignmentsClient.CreateOrUpdate.
+type AssignmentsClientCreateOrUpdateResult struct {
+	Assignment
 }
 
-// GuestConfigurationAssignmentsDeleteResponse contains the response from method GuestConfigurationAssignments.Delete.
-type GuestConfigurationAssignmentsDeleteResponse struct {
+// AssignmentsClientDeleteResponse contains the response from method AssignmentsClient.Delete.
+type AssignmentsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationAssignmentsGetResponse contains the response from method GuestConfigurationAssignments.Get.
-type GuestConfigurationAssignmentsGetResponse struct {
-	GuestConfigurationAssignmentsGetResult
+// AssignmentsClientGetResponse contains the response from method AssignmentsClient.Get.
+type AssignmentsClientGetResponse struct {
+	AssignmentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationAssignmentsGetResult contains the result from method GuestConfigurationAssignments.Get.
-type GuestConfigurationAssignmentsGetResult struct {
-	GuestConfigurationAssignment
+// AssignmentsClientGetResult contains the result from method AssignmentsClient.Get.
+type AssignmentsClientGetResult struct {
+	Assignment
 }
 
-// GuestConfigurationAssignmentsListResponse contains the response from method GuestConfigurationAssignments.List.
-type GuestConfigurationAssignmentsListResponse struct {
-	GuestConfigurationAssignmentsListResult
+// AssignmentsClientListResponse contains the response from method AssignmentsClient.List.
+type AssignmentsClientListResponse struct {
+	AssignmentsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationAssignmentsListResult contains the result from method GuestConfigurationAssignments.List.
-type GuestConfigurationAssignmentsListResult struct {
-	GuestConfigurationAssignmentList
+// AssignmentsClientListResult contains the result from method AssignmentsClient.List.
+type AssignmentsClientListResult struct {
+	AssignmentList
 }
 
-// GuestConfigurationAssignmentsRGListResponse contains the response from method GuestConfigurationAssignments.RGList.
-type GuestConfigurationAssignmentsRGListResponse struct {
-	GuestConfigurationAssignmentsRGListResult
+// AssignmentsClientRGListResponse contains the response from method AssignmentsClient.RGList.
+type AssignmentsClientRGListResponse struct {
+	AssignmentsClientRGListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationAssignmentsRGListResult contains the result from method GuestConfigurationAssignments.RGList.
-type GuestConfigurationAssignmentsRGListResult struct {
-	GuestConfigurationAssignmentList
+// AssignmentsClientRGListResult contains the result from method AssignmentsClient.RGList.
+type AssignmentsClientRGListResult struct {
+	AssignmentList
 }
 
-// GuestConfigurationAssignmentsSubscriptionListResponse contains the response from method GuestConfigurationAssignments.SubscriptionList.
-type GuestConfigurationAssignmentsSubscriptionListResponse struct {
-	GuestConfigurationAssignmentsSubscriptionListResult
+// AssignmentsClientSubscriptionListResponse contains the response from method AssignmentsClient.SubscriptionList.
+type AssignmentsClientSubscriptionListResponse struct {
+	AssignmentsClientSubscriptionListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationAssignmentsSubscriptionListResult contains the result from method GuestConfigurationAssignments.SubscriptionList.
-type GuestConfigurationAssignmentsSubscriptionListResult struct {
-	GuestConfigurationAssignmentList
+// AssignmentsClientSubscriptionListResult contains the result from method AssignmentsClient.SubscriptionList.
+type AssignmentsClientSubscriptionListResult struct {
+	AssignmentList
 }
 
-// GuestConfigurationHCRPAssignmentReportsGetResponse contains the response from method GuestConfigurationHCRPAssignmentReports.Get.
-type GuestConfigurationHCRPAssignmentReportsGetResponse struct {
-	GuestConfigurationHCRPAssignmentReportsGetResult
+// HCRPAssignmentReportsClientGetResponse contains the response from method HCRPAssignmentReportsClient.Get.
+type HCRPAssignmentReportsClientGetResponse struct {
+	HCRPAssignmentReportsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationHCRPAssignmentReportsGetResult contains the result from method GuestConfigurationHCRPAssignmentReports.Get.
-type GuestConfigurationHCRPAssignmentReportsGetResult struct {
-	GuestConfigurationAssignmentReport
+// HCRPAssignmentReportsClientGetResult contains the result from method HCRPAssignmentReportsClient.Get.
+type HCRPAssignmentReportsClientGetResult struct {
+	AssignmentReport
 }
 
-// GuestConfigurationHCRPAssignmentReportsListResponse contains the response from method GuestConfigurationHCRPAssignmentReports.List.
-type GuestConfigurationHCRPAssignmentReportsListResponse struct {
-	GuestConfigurationHCRPAssignmentReportsListResult
+// HCRPAssignmentReportsClientListResponse contains the response from method HCRPAssignmentReportsClient.List.
+type HCRPAssignmentReportsClientListResponse struct {
+	HCRPAssignmentReportsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationHCRPAssignmentReportsListResult contains the result from method GuestConfigurationHCRPAssignmentReports.List.
-type GuestConfigurationHCRPAssignmentReportsListResult struct {
-	GuestConfigurationAssignmentReportList
+// HCRPAssignmentReportsClientListResult contains the result from method HCRPAssignmentReportsClient.List.
+type HCRPAssignmentReportsClientListResult struct {
+	AssignmentReportList
 }
 
-// GuestConfigurationHCRPAssignmentsCreateOrUpdateResponse contains the response from method GuestConfigurationHCRPAssignments.CreateOrUpdate.
-type GuestConfigurationHCRPAssignmentsCreateOrUpdateResponse struct {
-	GuestConfigurationHCRPAssignmentsCreateOrUpdateResult
+// HCRPAssignmentsClientCreateOrUpdateResponse contains the response from method HCRPAssignmentsClient.CreateOrUpdate.
+type HCRPAssignmentsClientCreateOrUpdateResponse struct {
+	HCRPAssignmentsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationHCRPAssignmentsCreateOrUpdateResult contains the result from method GuestConfigurationHCRPAssignments.CreateOrUpdate.
-type GuestConfigurationHCRPAssignmentsCreateOrUpdateResult struct {
-	GuestConfigurationAssignment
+// HCRPAssignmentsClientCreateOrUpdateResult contains the result from method HCRPAssignmentsClient.CreateOrUpdate.
+type HCRPAssignmentsClientCreateOrUpdateResult struct {
+	Assignment
 }
 
-// GuestConfigurationHCRPAssignmentsDeleteResponse contains the response from method GuestConfigurationHCRPAssignments.Delete.
-type GuestConfigurationHCRPAssignmentsDeleteResponse struct {
+// HCRPAssignmentsClientDeleteResponse contains the response from method HCRPAssignmentsClient.Delete.
+type HCRPAssignmentsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationHCRPAssignmentsGetResponse contains the response from method GuestConfigurationHCRPAssignments.Get.
-type GuestConfigurationHCRPAssignmentsGetResponse struct {
-	GuestConfigurationHCRPAssignmentsGetResult
+// HCRPAssignmentsClientGetResponse contains the response from method HCRPAssignmentsClient.Get.
+type HCRPAssignmentsClientGetResponse struct {
+	HCRPAssignmentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationHCRPAssignmentsGetResult contains the result from method GuestConfigurationHCRPAssignments.Get.
-type GuestConfigurationHCRPAssignmentsGetResult struct {
-	GuestConfigurationAssignment
+// HCRPAssignmentsClientGetResult contains the result from method HCRPAssignmentsClient.Get.
+type HCRPAssignmentsClientGetResult struct {
+	Assignment
 }
 
-// GuestConfigurationHCRPAssignmentsListResponse contains the response from method GuestConfigurationHCRPAssignments.List.
-type GuestConfigurationHCRPAssignmentsListResponse struct {
-	GuestConfigurationHCRPAssignmentsListResult
+// HCRPAssignmentsClientListResponse contains the response from method HCRPAssignmentsClient.List.
+type HCRPAssignmentsClientListResponse struct {
+	HCRPAssignmentsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GuestConfigurationHCRPAssignmentsListResult contains the result from method GuestConfigurationHCRPAssignments.List.
-type GuestConfigurationHCRPAssignmentsListResult struct {
-	GuestConfigurationAssignmentList
+// HCRPAssignmentsClientListResult contains the result from method HCRPAssignmentsClient.List.
+type HCRPAssignmentsClientListResult struct {
+	AssignmentList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }

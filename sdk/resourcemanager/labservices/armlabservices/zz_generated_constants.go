@@ -9,8 +9,8 @@
 package armlabservices
 
 const (
-	module  = "armlabservices"
-	version = "v0.1.0"
+	moduleName    = "armlabservices"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -59,7 +59,8 @@ func (c ConnectionType) ToPtr() *ConnectionType {
 type CreateOption string
 
 const (
-	// CreateOptionImage - An image is used to create all lab user virtual machines. When this option is set, no template VM will be created.
+	// CreateOptionImage - An image is used to create all lab user virtual machines. When this option is set, no template VM will
+	// be created.
 	CreateOptionImage CreateOption = "Image"
 	// CreateOptionTemplateVM - A template VM will be used to create all lab user virtual machines.
 	CreateOptionTemplateVM CreateOption = "TemplateVM"
@@ -238,7 +239,8 @@ func (c OperationStatus) ToPtr() *OperationStatus {
 	return &c
 }
 
-// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
 type Origin string
 
 const (
@@ -319,8 +321,8 @@ const (
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 	// ProvisioningStateFailed - Previous operation on the resource has failed leaving resource in unhealthy state.
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateLocked - The resource is locked and changes are currently blocked. This could be due to maintenance or a scheduled operation. The state
-	// will go back to succeeded once the locking operation has finished.
+	// ProvisioningStateLocked - The resource is locked and changes are currently blocked. This could be due to maintenance or
+	// a scheduled operation. The state will go back to succeeded once the locking operation has finished.
 	ProvisioningStateLocked ProvisioningState = "Locked"
 )
 
@@ -427,7 +429,8 @@ func (c RestrictionType) ToPtr() *RestrictionType {
 	return &c
 }
 
-// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
 type SKUTier string
 
 const (
@@ -486,7 +489,8 @@ const (
 	ShutdownOnIdleModeNone ShutdownOnIdleMode = "None"
 	// ShutdownOnIdleModeUserAbsence - The VM will be considered as idle when there is no keyboard or mouse input.
 	ShutdownOnIdleModeUserAbsence ShutdownOnIdleMode = "UserAbsence"
-	// ShutdownOnIdleModeLowUsage - The VM will be considered as idle when user is absent and the resource (CPU and disk) consumption is low.
+	// ShutdownOnIdleModeLowUsage - The VM will be considered as idle when user is absent and the resource (CPU and disk) consumption
+	// is low.
 	ShutdownOnIdleModeLowUsage ShutdownOnIdleMode = "LowUsage"
 )
 

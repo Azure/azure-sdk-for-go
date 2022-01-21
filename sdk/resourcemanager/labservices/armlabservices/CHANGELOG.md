@@ -1,5 +1,803 @@
 # Release History
 
+## 0.2.0 (2022-01-21)
+### Breaking Changes
+
+- Function `*LabPlansClient.Get` parameter(s) have been changed from `(context.Context, string, string, *LabPlansGetOptions)` to `(context.Context, string, string, *LabPlansClientGetOptions)`
+- Function `*LabPlansClient.Get` return value(s) have been changed from `(LabPlansGetResponse, error)` to `(LabPlansClientGetResponse, error)`
+- Function `*LabPlansClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *LabPlansBeginDeleteOptions)` to `(context.Context, string, string, *LabPlansClientBeginDeleteOptions)`
+- Function `*LabPlansClient.BeginDelete` return value(s) have been changed from `(LabPlansDeletePollerResponse, error)` to `(LabPlansClientDeletePollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginRedeploy` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachinesBeginRedeployOptions)` to `(context.Context, string, string, string, *VirtualMachinesClientBeginRedeployOptions)`
+- Function `*VirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(VirtualMachinesRedeployPollerResponse, error)` to `(VirtualMachinesClientRedeployPollerResponse, error)`
+- Function `*UsersClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *UsersGetOptions)` to `(context.Context, string, string, string, *UsersClientGetOptions)`
+- Function `*UsersClient.Get` return value(s) have been changed from `(UsersGetResponse, error)` to `(UsersClientGetResponse, error)`
+- Function `*LabsClient.ListBySubscription` parameter(s) have been changed from `(*LabsListBySubscriptionOptions)` to `(*LabsClientListBySubscriptionOptions)`
+- Function `*LabsClient.ListBySubscription` return value(s) have been changed from `(*LabsListBySubscriptionPager)` to `(*LabsClientListBySubscriptionPager)`
+- Function `*VirtualMachinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachinesGetOptions)` to `(context.Context, string, string, string, *VirtualMachinesClientGetOptions)`
+- Function `*VirtualMachinesClient.Get` return value(s) have been changed from `(VirtualMachinesGetResponse, error)` to `(VirtualMachinesClientGetResponse, error)`
+- Function `*UsersClient.ListByLab` parameter(s) have been changed from `(string, string, *UsersListByLabOptions)` to `(string, string, *UsersClientListByLabOptions)`
+- Function `*UsersClient.ListByLab` return value(s) have been changed from `(*UsersListByLabPager)` to `(*UsersClientListByLabPager)`
+- Function `*SKUsClient.List` parameter(s) have been changed from `(*SKUsListOptions)` to `(*SKUsClientListOptions)`
+- Function `*SKUsClient.List` return value(s) have been changed from `(*SKUsListPager)` to `(*SKUsClientListPager)`
+- Function `*UsersClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, UserUpdate, *UsersBeginUpdateOptions)` to `(context.Context, string, string, string, UserUpdate, *UsersClientBeginUpdateOptions)`
+- Function `*UsersClient.BeginUpdate` return value(s) have been changed from `(UsersUpdatePollerResponse, error)` to `(UsersClientUpdatePollerResponse, error)`
+- Function `*UsagesClient.ListByLocation` parameter(s) have been changed from `(string, *UsagesListByLocationOptions)` to `(string, *UsagesClientListByLocationOptions)`
+- Function `*UsagesClient.ListByLocation` return value(s) have been changed from `(*UsagesListByLocationPager)` to `(*UsagesClientListByLocationPager)`
+- Function `*VirtualMachinesClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachinesBeginStopOptions)` to `(context.Context, string, string, string, *VirtualMachinesClientBeginStopOptions)`
+- Function `*VirtualMachinesClient.BeginStop` return value(s) have been changed from `(VirtualMachinesStopPollerResponse, error)` to `(VirtualMachinesClientStopPollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*LabsClient.BeginPublish` parameter(s) have been changed from `(context.Context, string, string, *LabsBeginPublishOptions)` to `(context.Context, string, string, *LabsClientBeginPublishOptions)`
+- Function `*LabsClient.BeginPublish` return value(s) have been changed from `(LabsPublishPollerResponse, error)` to `(LabsClientPublishPollerResponse, error)`
+- Function `*UsersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *UsersBeginDeleteOptions)` to `(context.Context, string, string, string, *UsersClientBeginDeleteOptions)`
+- Function `*UsersClient.BeginDelete` return value(s) have been changed from `(UsersDeletePollerResponse, error)` to `(UsersClientDeletePollerResponse, error)`
+- Function `*LabPlansClient.ListByResourceGroup` parameter(s) have been changed from `(string, *LabPlansListByResourceGroupOptions)` to `(string, *LabPlansClientListByResourceGroupOptions)`
+- Function `*LabPlansClient.ListByResourceGroup` return value(s) have been changed from `(*LabPlansListByResourceGroupPager)` to `(*LabPlansClientListByResourceGroupPager)`
+- Function `*LabsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Lab, *LabsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Lab, *LabsClientBeginCreateOrUpdateOptions)`
+- Function `*LabsClient.BeginCreateOrUpdate` return value(s) have been changed from `(LabsCreateOrUpdatePollerResponse, error)` to `(LabsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ImagesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ImagesGetOptions)` to `(context.Context, string, string, string, *ImagesClientGetOptions)`
+- Function `*ImagesClient.Get` return value(s) have been changed from `(ImagesGetResponse, error)` to `(ImagesClientGetResponse, error)`
+- Function `*LabsClient.BeginSyncGroup` parameter(s) have been changed from `(context.Context, string, string, *LabsBeginSyncGroupOptions)` to `(context.Context, string, string, *LabsClientBeginSyncGroupOptions)`
+- Function `*LabsClient.BeginSyncGroup` return value(s) have been changed from `(LabsSyncGroupPollerResponse, error)` to `(LabsClientSyncGroupPollerResponse, error)`
+- Function `*LabsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, LabUpdate, *LabsBeginUpdateOptions)` to `(context.Context, string, string, LabUpdate, *LabsClientBeginUpdateOptions)`
+- Function `*LabsClient.BeginUpdate` return value(s) have been changed from `(LabsUpdatePollerResponse, error)` to `(LabsClientUpdatePollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachinesBeginStartOptions)` to `(context.Context, string, string, string, *VirtualMachinesClientBeginStartOptions)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(VirtualMachinesStartPollerResponse, error)` to `(VirtualMachinesClientStartPollerResponse, error)`
+- Function `*LabPlansClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, LabPlan, *LabPlansBeginCreateOrUpdateOptions)` to `(context.Context, string, string, LabPlan, *LabPlansClientBeginCreateOrUpdateOptions)`
+- Function `*LabPlansClient.BeginCreateOrUpdate` return value(s) have been changed from `(LabPlansCreateOrUpdatePollerResponse, error)` to `(LabPlansClientCreateOrUpdatePollerResponse, error)`
+- Function `*ImagesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Image, *ImagesCreateOrUpdateOptions)` to `(context.Context, string, string, string, Image, *ImagesClientCreateOrUpdateOptions)`
+- Function `*ImagesClient.CreateOrUpdate` return value(s) have been changed from `(ImagesCreateOrUpdateResponse, error)` to `(ImagesClientCreateOrUpdateResponse, error)`
+- Function `*UsersClient.BeginInvite` parameter(s) have been changed from `(context.Context, string, string, string, InviteBody, *UsersBeginInviteOptions)` to `(context.Context, string, string, string, InviteBody, *UsersClientBeginInviteOptions)`
+- Function `*UsersClient.BeginInvite` return value(s) have been changed from `(UsersInvitePollerResponse, error)` to `(UsersClientInvitePollerResponse, error)`
+- Function `*SchedulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SchedulesGetOptions)` to `(context.Context, string, string, string, *SchedulesClientGetOptions)`
+- Function `*SchedulesClient.Get` return value(s) have been changed from `(SchedulesGetResponse, error)` to `(SchedulesClientGetResponse, error)`
+- Function `*ImagesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, ImageUpdate, *ImagesUpdateOptions)` to `(context.Context, string, string, string, ImageUpdate, *ImagesClientUpdateOptions)`
+- Function `*ImagesClient.Update` return value(s) have been changed from `(ImagesUpdateResponse, error)` to `(ImagesClientUpdateResponse, error)`
+- Function `*SchedulesClient.ListByLab` parameter(s) have been changed from `(string, string, *SchedulesListByLabOptions)` to `(string, string, *SchedulesClientListByLabOptions)`
+- Function `*SchedulesClient.ListByLab` return value(s) have been changed from `(*SchedulesListByLabPager)` to `(*SchedulesClientListByLabPager)`
+- Function `*SchedulesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, ScheduleUpdate, *SchedulesUpdateOptions)` to `(context.Context, string, string, string, ScheduleUpdate, *SchedulesClientUpdateOptions)`
+- Function `*SchedulesClient.Update` return value(s) have been changed from `(SchedulesUpdateResponse, error)` to `(SchedulesClientUpdateResponse, error)`
+- Function `*VirtualMachinesClient.BeginResetPassword` parameter(s) have been changed from `(context.Context, string, string, string, ResetPasswordBody, *VirtualMachinesBeginResetPasswordOptions)` to `(context.Context, string, string, string, ResetPasswordBody, *VirtualMachinesClientBeginResetPasswordOptions)`
+- Function `*VirtualMachinesClient.BeginResetPassword` return value(s) have been changed from `(VirtualMachinesResetPasswordPollerResponse, error)` to `(VirtualMachinesClientResetPasswordPollerResponse, error)`
+- Function `*ImagesClient.ListByLabPlan` parameter(s) have been changed from `(string, string, *ImagesListByLabPlanOptions)` to `(string, string, *ImagesClientListByLabPlanOptions)`
+- Function `*ImagesClient.ListByLabPlan` return value(s) have been changed from `(*ImagesListByLabPlanPager)` to `(*ImagesClientListByLabPlanPager)`
+- Function `*LabPlansClient.BeginSaveImage` parameter(s) have been changed from `(context.Context, string, string, SaveImageBody, *LabPlansBeginSaveImageOptions)` to `(context.Context, string, string, SaveImageBody, *LabPlansClientBeginSaveImageOptions)`
+- Function `*LabPlansClient.BeginSaveImage` return value(s) have been changed from `(LabPlansSaveImagePollerResponse, error)` to `(LabPlansClientSaveImagePollerResponse, error)`
+- Function `*OperationResultsClient.Get` parameter(s) have been changed from `(context.Context, string, *OperationResultsGetOptions)` to `(context.Context, string, *OperationResultsClientGetOptions)`
+- Function `*OperationResultsClient.Get` return value(s) have been changed from `(OperationResultsGetResponse, error)` to `(OperationResultsClientGetResponse, error)`
+- Function `*SchedulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Schedule, *SchedulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, Schedule, *SchedulesClientCreateOrUpdateOptions)`
+- Function `*SchedulesClient.CreateOrUpdate` return value(s) have been changed from `(SchedulesCreateOrUpdateResponse, error)` to `(SchedulesClientCreateOrUpdateResponse, error)`
+- Function `*UsersClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, User, *UsersBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, User, *UsersClientBeginCreateOrUpdateOptions)`
+- Function `*UsersClient.BeginCreateOrUpdate` return value(s) have been changed from `(UsersCreateOrUpdatePollerResponse, error)` to `(UsersClientCreateOrUpdatePollerResponse, error)`
+- Function `*VirtualMachinesClient.ListByLab` parameter(s) have been changed from `(string, string, *VirtualMachinesListByLabOptions)` to `(string, string, *VirtualMachinesClientListByLabOptions)`
+- Function `*VirtualMachinesClient.ListByLab` return value(s) have been changed from `(*VirtualMachinesListByLabPager)` to `(*VirtualMachinesClientListByLabPager)`
+- Function `*LabPlansClient.ListBySubscription` parameter(s) have been changed from `(*LabPlansListBySubscriptionOptions)` to `(*LabPlansClientListBySubscriptionOptions)`
+- Function `*LabPlansClient.ListBySubscription` return value(s) have been changed from `(*LabPlansListBySubscriptionPager)` to `(*LabPlansClientListBySubscriptionPager)`
+- Function `*LabPlansClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, LabPlanUpdate, *LabPlansBeginUpdateOptions)` to `(context.Context, string, string, LabPlanUpdate, *LabPlansClientBeginUpdateOptions)`
+- Function `*LabPlansClient.BeginUpdate` return value(s) have been changed from `(LabPlansUpdatePollerResponse, error)` to `(LabPlansClientUpdatePollerResponse, error)`
+- Function `*VirtualMachinesClient.BeginReimage` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualMachinesBeginReimageOptions)` to `(context.Context, string, string, string, *VirtualMachinesClientBeginReimageOptions)`
+- Function `*VirtualMachinesClient.BeginReimage` return value(s) have been changed from `(VirtualMachinesReimagePollerResponse, error)` to `(VirtualMachinesClientReimagePollerResponse, error)`
+- Function `*LabsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *LabsListByResourceGroupOptions)` to `(string, *LabsClientListByResourceGroupOptions)`
+- Function `*LabsClient.ListByResourceGroup` return value(s) have been changed from `(*LabsListByResourceGroupPager)` to `(*LabsClientListByResourceGroupPager)`
+- Function `*LabsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *LabsGetOptions)` to `(context.Context, string, string, *LabsClientGetOptions)`
+- Function `*LabsClient.Get` return value(s) have been changed from `(LabsGetResponse, error)` to `(LabsClientGetResponse, error)`
+- Function `*SchedulesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *SchedulesBeginDeleteOptions)` to `(context.Context, string, string, string, *SchedulesClientBeginDeleteOptions)`
+- Function `*SchedulesClient.BeginDelete` return value(s) have been changed from `(SchedulesDeletePollerResponse, error)` to `(SchedulesClientDeletePollerResponse, error)`
+- Function `*LabsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *LabsBeginDeleteOptions)` to `(context.Context, string, string, *LabsClientBeginDeleteOptions)`
+- Function `*LabsClient.BeginDelete` return value(s) have been changed from `(LabsDeletePollerResponse, error)` to `(LabsClientDeletePollerResponse, error)`
+- Type of `ErrorAdditionalInfo.Info` has been changed from `map[string]interface{}` to `interface{}`
+- Function `*ImagesListByLabPlanPager.NextPage` has been removed
+- Function `*UsersInvitePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesStartPollerResponse.Resume` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*LabsPublishPoller.Poll` has been removed
+- Function `*LabPlansSaveImagePoller.Poll` has been removed
+- Function `*LabsSyncGroupPoller.FinalResponse` has been removed
+- Function `*LabsListBySubscriptionPager.Err` has been removed
+- Function `*SchedulesDeletePoller.ResumeToken` has been removed
+- Function `*UsersListByLabPager.NextPage` has been removed
+- Function `*UsersInvitePollerResponse.Resume` has been removed
+- Function `*LabPlansDeletePollerResponse.Resume` has been removed
+- Function `*LabPlansDeletePoller.Done` has been removed
+- Function `*LabsPublishPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesStartPoller.FinalResponse` has been removed
+- Function `UsersInvitePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesReimagePoller.FinalResponse` has been removed
+- Function `*LabsSyncGroupPoller.Done` has been removed
+- Function `SchedulesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LabsUpdatePoller.Done` has been removed
+- Function `*LabPlansUpdatePoller.Done` has been removed
+- Function `*UsersUpdatePoller.ResumeToken` has been removed
+- Function `*UsagesListByLocationPager.NextPage` has been removed
+- Function `*LabPlansUpdatePollerResponse.Resume` has been removed
+- Function `PagedLabServicesSKUs.MarshalJSON` has been removed
+- Function `*VirtualMachinesStartPoller.Poll` has been removed
+- Function `*LabsDeletePoller.FinalResponse` has been removed
+- Function `*LabsListByResourceGroupPager.PageResponse` has been removed
+- Function `*LabPlansListBySubscriptionPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*UsersDeletePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesRedeployPoller.Poll` has been removed
+- Function `*VirtualMachinesStartPoller.ResumeToken` has been removed
+- Function `*LabsDeletePoller.Poll` has been removed
+- Function `*LabPlansCreateOrUpdatePoller.Poll` has been removed
+- Function `*UsersUpdatePollerResponse.Resume` has been removed
+- Function `*LabsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*UsersUpdatePoller.Done` has been removed
+- Function `*LabsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LabsDeletePollerResponse.Resume` has been removed
+- Function `*LabsSyncGroupPollerResponse.Resume` has been removed
+- Function `LabPlansDeletePollerResponse.PollUntilDone` has been removed
+- Function `UsersUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesStopPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesResetPasswordPoller.FinalResponse` has been removed
+- Function `*VirtualMachinesRedeployPollerResponse.Resume` has been removed
+- Function `*SKUsListPager.NextPage` has been removed
+- Function `*LabPlansUpdatePoller.ResumeToken` has been removed
+- Function `*UsersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*LabPlansListByResourceGroupPager.NextPage` has been removed
+- Function `*UsersListByLabPager.Err` has been removed
+- Function `*LabsSyncGroupPoller.ResumeToken` has been removed
+- Function `*LabPlansUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesReimagePollerResponse.Resume` has been removed
+- Function `*LabsPublishPoller.Done` has been removed
+- Function `*SchedulesDeletePoller.FinalResponse` has been removed
+- Function `*LabsListBySubscriptionPager.PageResponse` has been removed
+- Function `VirtualMachinesResetPasswordPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesStopPollerResponse.Resume` has been removed
+- Function `*ImagesListByLabPlanPager.Err` has been removed
+- Function `*LabsUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesListByLabPager.PageResponse` has been removed
+- Function `ImageUpdateProperties.MarshalJSON` has been removed
+- Function `*LabsListByResourceGroupPager.Err` has been removed
+- Function `*LabsUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesListByLabPager.Err` has been removed
+- Function `*LabPlansSaveImagePollerResponse.Resume` has been removed
+- Function `*UsersCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualMachinesListByLabPager.NextPage` has been removed
+- Function `*VirtualMachinesRedeployPoller.ResumeToken` has been removed
+- Function `*LabsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `LabsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesResetPasswordPoller.ResumeToken` has been removed
+- Function `*SchedulesListByLabPager.PageResponse` has been removed
+- Function `*UsersUpdatePoller.FinalResponse` has been removed
+- Function `*UsagesListByLocationPager.PageResponse` has been removed
+- Function `*LabPlansListBySubscriptionPager.NextPage` has been removed
+- Function `*LabsListByResourceGroupPager.NextPage` has been removed
+- Function `*LabPlansListByResourceGroupPager.PageResponse` has been removed
+- Function `LabsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LabsDeletePoller.Done` has been removed
+- Function `*LabsUpdatePoller.Poll` has been removed
+- Function `*LabsUpdatePoller.ResumeToken` has been removed
+- Function `*UsersCreateOrUpdatePoller.Poll` has been removed
+- Function `*SchedulesDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesResetPasswordPoller.Done` has been removed
+- Function `*LabPlansDeletePoller.ResumeToken` has been removed
+- Function `*LabsSyncGroupPoller.Poll` has been removed
+- Function `UserUpdateProperties.MarshalJSON` has been removed
+- Function `*VirtualMachinesReimagePoller.Poll` has been removed
+- Function `User.MarshalJSON` has been removed
+- Function `*VirtualMachinesReimagePoller.Done` has been removed
+- Function `*VirtualMachinesStopPoller.Poll` has been removed
+- Function `*VirtualMachinesRedeployPoller.FinalResponse` has been removed
+- Function `*SchedulesListByLabPager.Err` has been removed
+- Function `*LabPlansUpdatePoller.Poll` has been removed
+- Function `*LabPlansListByResourceGroupPager.Err` has been removed
+- Function `*LabsCreateOrUpdatePoller.Done` has been removed
+- Function `LabPlansUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SchedulesDeletePollerResponse.Resume` has been removed
+- Function `LabPlansCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*UsersInvitePoller.ResumeToken` has been removed
+- Function `*SchedulesListByLabPager.NextPage` has been removed
+- Function `UsersDeletePollerResponse.PollUntilDone` has been removed
+- Function `*UsersUpdatePoller.Poll` has been removed
+- Function `LabsSyncGroupPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesRedeployPoller.Done` has been removed
+- Function `*VirtualMachinesStartPoller.Done` has been removed
+- Function `*VirtualMachinesStopPoller.ResumeToken` has been removed
+- Function `*SKUsListPager.Err` has been removed
+- Function `LabsPublishPollerResponse.PollUntilDone` has been removed
+- Function `*LabsListBySubscriptionPager.NextPage` has been removed
+- Function `*LabsPublishPollerResponse.Resume` has been removed
+- Function `*UsersListByLabPager.PageResponse` has been removed
+- Function `Schedule.MarshalJSON` has been removed
+- Function `LabServicesSKURestrictions.MarshalJSON` has been removed
+- Function `VirtualMachinesStartPollerResponse.PollUntilDone` has been removed
+- Function `VirtualMachinesStopPollerResponse.PollUntilDone` has been removed
+- Function `*UsersDeletePollerResponse.Resume` has been removed
+- Function `*UsagesListByLocationPager.Err` has been removed
+- Function `*LabPlansDeletePoller.Poll` has been removed
+- Function `*VirtualMachinesResetPasswordPollerResponse.Resume` has been removed
+- Function `*UsersInvitePoller.Done` has been removed
+- Function `*LabsDeletePoller.ResumeToken` has been removed
+- Function `*SchedulesDeletePoller.Done` has been removed
+- Function `*UsersDeletePoller.Poll` has been removed
+- Function `*UserUpdateProperties.UnmarshalJSON` has been removed
+- Function `*UsersInvitePoller.Poll` has been removed
+- Function `LabsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `UsersCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `VirtualMachinesRedeployPollerResponse.PollUntilDone` has been removed
+- Function `*VirtualMachinesResetPasswordPoller.Poll` has been removed
+- Function `LabServicesSKU.MarshalJSON` has been removed
+- Function `*UsersDeletePoller.FinalResponse` has been removed
+- Function `*LabPlansCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LabPlansCreateOrUpdatePoller.Done` has been removed
+- Function `*LabPlansSaveImagePoller.ResumeToken` has been removed
+- Function `*UsersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `LabPlansSaveImagePollerResponse.PollUntilDone` has been removed
+- Function `*LabPlansDeletePoller.FinalResponse` has been removed
+- Function `*LabPlansSaveImagePoller.Done` has been removed
+- Function `*LabsPublishPoller.ResumeToken` has been removed
+- Function `*LabPlansListBySubscriptionPager.PageResponse` has been removed
+- Function `*LabsCreateOrUpdatePoller.Poll` has been removed
+- Function `*LabPlansCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `VirtualMachinesReimagePollerResponse.PollUntilDone` has been removed
+- Function `*LabPlansSaveImagePoller.FinalResponse` has been removed
+- Function `*VirtualMachinesReimagePoller.ResumeToken` has been removed
+- Function `*VirtualMachinesStopPoller.Done` has been removed
+- Function `*UsersCreateOrUpdatePoller.Done` has been removed
+- Function `*ImagesListByLabPlanPager.PageResponse` has been removed
+- Function `VirtualMachine.MarshalJSON` has been removed
+- Function `*UsersDeletePoller.Done` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `Image.MarshalJSON` has been removed
+- Function `*SKUsListPager.PageResponse` has been removed
+- Function `*LabPlansCreateOrUpdatePoller.FinalResponse` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ImagesCreateOrUpdateOptions` has been removed
+- Struct `ImagesCreateOrUpdateResponse` has been removed
+- Struct `ImagesCreateOrUpdateResult` has been removed
+- Struct `ImagesGetOptions` has been removed
+- Struct `ImagesGetResponse` has been removed
+- Struct `ImagesGetResult` has been removed
+- Struct `ImagesListByLabPlanOptions` has been removed
+- Struct `ImagesListByLabPlanPager` has been removed
+- Struct `ImagesListByLabPlanResponse` has been removed
+- Struct `ImagesListByLabPlanResult` has been removed
+- Struct `ImagesUpdateOptions` has been removed
+- Struct `ImagesUpdateResponse` has been removed
+- Struct `ImagesUpdateResult` has been removed
+- Struct `LabPlansBeginCreateOrUpdateOptions` has been removed
+- Struct `LabPlansBeginDeleteOptions` has been removed
+- Struct `LabPlansBeginSaveImageOptions` has been removed
+- Struct `LabPlansBeginUpdateOptions` has been removed
+- Struct `LabPlansCreateOrUpdatePoller` has been removed
+- Struct `LabPlansCreateOrUpdatePollerResponse` has been removed
+- Struct `LabPlansCreateOrUpdateResponse` has been removed
+- Struct `LabPlansCreateOrUpdateResult` has been removed
+- Struct `LabPlansDeletePoller` has been removed
+- Struct `LabPlansDeletePollerResponse` has been removed
+- Struct `LabPlansDeleteResponse` has been removed
+- Struct `LabPlansGetOptions` has been removed
+- Struct `LabPlansGetResponse` has been removed
+- Struct `LabPlansGetResult` has been removed
+- Struct `LabPlansListByResourceGroupOptions` has been removed
+- Struct `LabPlansListByResourceGroupPager` has been removed
+- Struct `LabPlansListByResourceGroupResponse` has been removed
+- Struct `LabPlansListByResourceGroupResult` has been removed
+- Struct `LabPlansListBySubscriptionOptions` has been removed
+- Struct `LabPlansListBySubscriptionPager` has been removed
+- Struct `LabPlansListBySubscriptionResponse` has been removed
+- Struct `LabPlansListBySubscriptionResult` has been removed
+- Struct `LabPlansSaveImagePoller` has been removed
+- Struct `LabPlansSaveImagePollerResponse` has been removed
+- Struct `LabPlansSaveImageResponse` has been removed
+- Struct `LabPlansUpdatePoller` has been removed
+- Struct `LabPlansUpdatePollerResponse` has been removed
+- Struct `LabPlansUpdateResponse` has been removed
+- Struct `LabPlansUpdateResult` has been removed
+- Struct `LabServicesSKU` has been removed
+- Struct `LabServicesSKUCapabilities` has been removed
+- Struct `LabServicesSKUCapacity` has been removed
+- Struct `LabServicesSKUCost` has been removed
+- Struct `LabServicesSKURestrictions` has been removed
+- Struct `LabsBeginCreateOrUpdateOptions` has been removed
+- Struct `LabsBeginDeleteOptions` has been removed
+- Struct `LabsBeginPublishOptions` has been removed
+- Struct `LabsBeginSyncGroupOptions` has been removed
+- Struct `LabsBeginUpdateOptions` has been removed
+- Struct `LabsCreateOrUpdatePoller` has been removed
+- Struct `LabsCreateOrUpdatePollerResponse` has been removed
+- Struct `LabsCreateOrUpdateResponse` has been removed
+- Struct `LabsCreateOrUpdateResult` has been removed
+- Struct `LabsDeletePoller` has been removed
+- Struct `LabsDeletePollerResponse` has been removed
+- Struct `LabsDeleteResponse` has been removed
+- Struct `LabsGetOptions` has been removed
+- Struct `LabsGetResponse` has been removed
+- Struct `LabsGetResult` has been removed
+- Struct `LabsListByResourceGroupOptions` has been removed
+- Struct `LabsListByResourceGroupPager` has been removed
+- Struct `LabsListByResourceGroupResponse` has been removed
+- Struct `LabsListByResourceGroupResult` has been removed
+- Struct `LabsListBySubscriptionOptions` has been removed
+- Struct `LabsListBySubscriptionPager` has been removed
+- Struct `LabsListBySubscriptionResponse` has been removed
+- Struct `LabsListBySubscriptionResult` has been removed
+- Struct `LabsPublishPoller` has been removed
+- Struct `LabsPublishPollerResponse` has been removed
+- Struct `LabsPublishResponse` has been removed
+- Struct `LabsSyncGroupPoller` has been removed
+- Struct `LabsSyncGroupPollerResponse` has been removed
+- Struct `LabsSyncGroupResponse` has been removed
+- Struct `LabsUpdatePoller` has been removed
+- Struct `LabsUpdatePollerResponse` has been removed
+- Struct `LabsUpdateResponse` has been removed
+- Struct `LabsUpdateResult` has been removed
+- Struct `OperationResultsGetOptions` has been removed
+- Struct `OperationResultsGetResponse` has been removed
+- Struct `OperationResultsGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PagedLabServicesSKUs` has been removed
+- Struct `SKUsListOptions` has been removed
+- Struct `SKUsListPager` has been removed
+- Struct `SKUsListResponse` has been removed
+- Struct `SKUsListResult` has been removed
+- Struct `SchedulesBeginDeleteOptions` has been removed
+- Struct `SchedulesCreateOrUpdateOptions` has been removed
+- Struct `SchedulesCreateOrUpdateResponse` has been removed
+- Struct `SchedulesCreateOrUpdateResult` has been removed
+- Struct `SchedulesDeletePoller` has been removed
+- Struct `SchedulesDeletePollerResponse` has been removed
+- Struct `SchedulesDeleteResponse` has been removed
+- Struct `SchedulesGetOptions` has been removed
+- Struct `SchedulesGetResponse` has been removed
+- Struct `SchedulesGetResult` has been removed
+- Struct `SchedulesListByLabOptions` has been removed
+- Struct `SchedulesListByLabPager` has been removed
+- Struct `SchedulesListByLabResponse` has been removed
+- Struct `SchedulesListByLabResult` has been removed
+- Struct `SchedulesUpdateOptions` has been removed
+- Struct `SchedulesUpdateResponse` has been removed
+- Struct `SchedulesUpdateResult` has been removed
+- Struct `UsagesListByLocationOptions` has been removed
+- Struct `UsagesListByLocationPager` has been removed
+- Struct `UsagesListByLocationResponse` has been removed
+- Struct `UsagesListByLocationResult` has been removed
+- Struct `UsersBeginCreateOrUpdateOptions` has been removed
+- Struct `UsersBeginDeleteOptions` has been removed
+- Struct `UsersBeginInviteOptions` has been removed
+- Struct `UsersBeginUpdateOptions` has been removed
+- Struct `UsersCreateOrUpdatePoller` has been removed
+- Struct `UsersCreateOrUpdatePollerResponse` has been removed
+- Struct `UsersCreateOrUpdateResponse` has been removed
+- Struct `UsersCreateOrUpdateResult` has been removed
+- Struct `UsersDeletePoller` has been removed
+- Struct `UsersDeletePollerResponse` has been removed
+- Struct `UsersDeleteResponse` has been removed
+- Struct `UsersGetOptions` has been removed
+- Struct `UsersGetResponse` has been removed
+- Struct `UsersGetResult` has been removed
+- Struct `UsersInvitePoller` has been removed
+- Struct `UsersInvitePollerResponse` has been removed
+- Struct `UsersInviteResponse` has been removed
+- Struct `UsersListByLabOptions` has been removed
+- Struct `UsersListByLabPager` has been removed
+- Struct `UsersListByLabResponse` has been removed
+- Struct `UsersListByLabResult` has been removed
+- Struct `UsersUpdatePoller` has been removed
+- Struct `UsersUpdatePollerResponse` has been removed
+- Struct `UsersUpdateResponse` has been removed
+- Struct `UsersUpdateResult` has been removed
+- Struct `VirtualMachinesBeginRedeployOptions` has been removed
+- Struct `VirtualMachinesBeginReimageOptions` has been removed
+- Struct `VirtualMachinesBeginResetPasswordOptions` has been removed
+- Struct `VirtualMachinesBeginStartOptions` has been removed
+- Struct `VirtualMachinesBeginStopOptions` has been removed
+- Struct `VirtualMachinesGetOptions` has been removed
+- Struct `VirtualMachinesGetResponse` has been removed
+- Struct `VirtualMachinesGetResult` has been removed
+- Struct `VirtualMachinesListByLabOptions` has been removed
+- Struct `VirtualMachinesListByLabPager` has been removed
+- Struct `VirtualMachinesListByLabResponse` has been removed
+- Struct `VirtualMachinesListByLabResult` has been removed
+- Struct `VirtualMachinesRedeployPoller` has been removed
+- Struct `VirtualMachinesRedeployPollerResponse` has been removed
+- Struct `VirtualMachinesRedeployResponse` has been removed
+- Struct `VirtualMachinesReimagePoller` has been removed
+- Struct `VirtualMachinesReimagePollerResponse` has been removed
+- Struct `VirtualMachinesReimageResponse` has been removed
+- Struct `VirtualMachinesResetPasswordPoller` has been removed
+- Struct `VirtualMachinesResetPasswordPollerResponse` has been removed
+- Struct `VirtualMachinesResetPasswordResponse` has been removed
+- Struct `VirtualMachinesStartPoller` has been removed
+- Struct `VirtualMachinesStartPollerResponse` has been removed
+- Struct `VirtualMachinesStartResponse` has been removed
+- Struct `VirtualMachinesStopPoller` has been removed
+- Struct `VirtualMachinesStopPollerResponse` has been removed
+- Struct `VirtualMachinesStopResponse` has been removed
+- Field `ProxyResource` of struct `Schedule` has been removed
+- Field `ProxyResource` of struct `Image` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `LabPlanUpdateProperties` of struct `LabPlanProperties` has been removed
+- Field `TrackedResourceUpdate` of struct `LabPlanUpdate` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `ProxyResource` of struct `VirtualMachine` has been removed
+- Field `ProxyResource` of struct `User` has been removed
+- Field `TrackedResource` of struct `LabPlan` has been removed
+- Field `ScheduleUpdateProperties` of struct `ScheduleProperties` has been removed
+- Field `UserUpdateProperties` of struct `UserProperties` has been removed
+- Field `LabUpdateProperties` of struct `LabProperties` has been removed
+- Field `TrackedResource` of struct `Lab` has been removed
+- Field `ImageUpdateProperties` of struct `ImageProperties` has been removed
+- Field `TrackedResourceUpdate` of struct `LabUpdate` has been removed
+
+### Features Added
+
+- New function `*LabsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*LabPlansClientSaveImagePoller.FinalResponse(context.Context) (LabPlansClientSaveImageResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*SKUsClientListPager.Err() error`
+- New function `LabPlansClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LabPlansClientCreateOrUpdateResponse, error)`
+- New function `*UsersClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabPlansClientListByResourceGroupPager.Err() error`
+- New function `*LabPlansClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*LabsClientSyncGroupPollerResponse.Resume(context.Context, *LabsClient, string) error`
+- New function `*LabPlansClientUpdatePollerResponse.Resume(context.Context, *LabPlansClient, string) error`
+- New function `*LabsClientDeletePollerResponse.Resume(context.Context, *LabsClient, string) error`
+- New function `*UsersClientListByLabPager.PageResponse() UsersClientListByLabResponse`
+- New function `LabsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LabsClientUpdateResponse, error)`
+- New function `*LabPlansClientSaveImagePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabsClientListByResourceGroupPager.Err() error`
+- New function `*UsersClientInvitePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabPlansClientCreateOrUpdatePoller.FinalResponse(context.Context) (LabPlansClientCreateOrUpdateResponse, error)`
+- New function `*LabsClientUpdatePoller.FinalResponse(context.Context) (LabsClientUpdateResponse, error)`
+- New function `*LabPlansClientListByResourceGroupPager.PageResponse() LabPlansClientListByResourceGroupResponse`
+- New function `*LabsClientCreateOrUpdatePoller.Done() bool`
+- New function `*LabPlansClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientStartPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `UsersClientInvitePollerResponse.PollUntilDone(context.Context, time.Duration) (UsersClientInviteResponse, error)`
+- New function `SKURestrictions.MarshalJSON() ([]byte, error)`
+- New function `SKUInfo.MarshalJSON() ([]byte, error)`
+- New function `*UsagesClientListByLocationPager.PageResponse() UsagesClientListByLocationResponse`
+- New function `*VirtualMachinesClientStartPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientResetPasswordPoller.ResumeToken() (string, error)`
+- New function `*LabPlansClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabPlansClientDeletePollerResponse.Resume(context.Context, *LabPlansClient, string) error`
+- New function `*UsersClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*SchedulesClientListByLabPager.NextPage(context.Context) bool`
+- New function `LabsClientPublishPollerResponse.PollUntilDone(context.Context, time.Duration) (LabsClientPublishResponse, error)`
+- New function `*LabsClientListBySubscriptionPager.PageResponse() LabsClientListBySubscriptionResponse`
+- New function `*UsersClientInvitePoller.Done() bool`
+- New function `*UsersClientUpdatePollerResponse.Resume(context.Context, *UsersClient, string) error`
+- New function `*VirtualMachinesClientListByLabPager.PageResponse() VirtualMachinesClientListByLabResponse`
+- New function `*LabsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientListByLabPager.NextPage(context.Context) bool`
+- New function `*SchedulesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*LabPlansClientDeletePoller.Done() bool`
+- New function `*VirtualMachinesClientReimagePoller.Done() bool`
+- New function `*VirtualMachinesClientStopPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*LabsClientCreateOrUpdatePollerResponse.Resume(context.Context, *LabsClient, string) error`
+- New function `*UsersClientCreateOrUpdatePoller.FinalResponse(context.Context) (UsersClientCreateOrUpdateResponse, error)`
+- New function `*LabsClientDeletePoller.FinalResponse(context.Context) (LabsClientDeleteResponse, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `LabPlansClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LabPlansClientUpdateResponse, error)`
+- New function `*SchedulesClientDeletePollerResponse.Resume(context.Context, *SchedulesClient, string) error`
+- New function `*ImagesClientListByLabPlanPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SchedulesClientListByLabPager.PageResponse() SchedulesClientListByLabResponse`
+- New function `*VirtualMachinesClientRedeployPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientResetPasswordPoller.FinalResponse(context.Context) (VirtualMachinesClientResetPasswordResponse, error)`
+- New function `LabsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LabsClientCreateOrUpdateResponse, error)`
+- New function `*LabPlansClientSaveImagePoller.ResumeToken() (string, error)`
+- New function `*LabPlansClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabsClientSyncGroupPoller.Poll(context.Context) (*http.Response, error)`
+- New function `VirtualMachinesClientReimagePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientReimageResponse, error)`
+- New function `*LabsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabPlansClientSaveImagePollerResponse.Resume(context.Context, *LabPlansClient, string) error`
+- New function `*LabPlansClientCreateOrUpdatePollerResponse.Resume(context.Context, *LabPlansClient, string) error`
+- New function `*LabsClientSyncGroupPoller.FinalResponse(context.Context) (LabsClientSyncGroupResponse, error)`
+- New function `VirtualMachinesClientResetPasswordPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientResetPasswordResponse, error)`
+- New function `*LabPlansClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SKUsClientListPager.NextPage(context.Context) bool`
+- New function `*UsersClientUpdatePoller.FinalResponse(context.Context) (UsersClientUpdateResponse, error)`
+- New function `VirtualMachinesClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientStartResponse, error)`
+- New function `*UsagesClientListByLocationPager.Err() error`
+- New function `*LabsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `UsersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (UsersClientDeleteResponse, error)`
+- New function `*LabPlansClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `LabsClientSyncGroupPollerResponse.PollUntilDone(context.Context, time.Duration) (LabsClientSyncGroupResponse, error)`
+- New function `*UsersClientInvitePoller.FinalResponse(context.Context) (UsersClientInviteResponse, error)`
+- New function `*VirtualMachinesClientRedeployPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SchedulesClientListByLabPager.Err() error`
+- New function `*VirtualMachinesClientReimagePoller.ResumeToken() (string, error)`
+- New function `*UsersClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*UsersClientCreateOrUpdatePollerResponse.Resume(context.Context, *UsersClient, string) error`
+- New function `*LabsClientPublishPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabPlansClientCreateOrUpdatePoller.Done() bool`
+- New function `*LabPlansClientSaveImagePoller.Done() bool`
+- New function `*ImagesClientListByLabPlanPager.Err() error`
+- New function `*VirtualMachinesClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabPlansClientUpdatePoller.Done() bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*LabPlansClientDeletePoller.FinalResponse(context.Context) (LabPlansClientDeleteResponse, error)`
+- New function `*UsersClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ImagesClientListByLabPlanPager.PageResponse() ImagesClientListByLabPlanResponse`
+- New function `*VirtualMachinesClientRedeployPoller.FinalResponse(context.Context) (VirtualMachinesClientRedeployResponse, error)`
+- New function `*LabsClientUpdatePoller.Done() bool`
+- New function `*LabsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*LabsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PagedSKUInfos.MarshalJSON() ([]byte, error)`
+- New function `*LabPlansClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientStartPoller.Done() bool`
+- New function `*LabPlansClientListBySubscriptionPager.Err() error`
+- New function `*LabsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientStartPoller.FinalResponse(context.Context) (VirtualMachinesClientStartResponse, error)`
+- New function `*UsersClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualMachinesClientStopPoller.FinalResponse(context.Context) (VirtualMachinesClientStopResponse, error)`
+- New function `*VirtualMachinesClientStopPoller.ResumeToken() (string, error)`
+- New function `*LabsClientPublishPoller.ResumeToken() (string, error)`
+- New function `LabPlansClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (LabPlansClientDeleteResponse, error)`
+- New function `*VirtualMachinesClientReimagePoller.FinalResponse(context.Context) (VirtualMachinesClientReimageResponse, error)`
+- New function `*LabsClientPublishPollerResponse.Resume(context.Context, *LabsClient, string) error`
+- New function `*VirtualMachinesClientResetPasswordPoller.Poll(context.Context) (*http.Response, error)`
+- New function `UsersClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (UsersClientUpdateResponse, error)`
+- New function `*VirtualMachinesClientReimagePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SchedulesClientDeletePoller.FinalResponse(context.Context) (SchedulesClientDeleteResponse, error)`
+- New function `*VirtualMachinesClientRedeployPoller.Done() bool`
+- New function `LabsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (LabsClientDeleteResponse, error)`
+- New function `*LabsClientListByResourceGroupPager.PageResponse() LabsClientListByResourceGroupResponse`
+- New function `*UsagesClientListByLocationPager.NextPage(context.Context) bool`
+- New function `*LabsClientDeletePoller.Done() bool`
+- New function `*VirtualMachinesClientListByLabPager.Err() error`
+- New function `VirtualMachinesClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientStopResponse, error)`
+- New function `UsersClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (UsersClientCreateOrUpdateResponse, error)`
+- New function `*UsersClientDeletePoller.FinalResponse(context.Context) (UsersClientDeleteResponse, error)`
+- New function `*LabsClientPublishPoller.Done() bool`
+- New function `*SchedulesClientDeletePoller.Done() bool`
+- New function `*UsersClientListByLabPager.NextPage(context.Context) bool`
+- New function `*VirtualMachinesClientResetPasswordPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*UsersClientDeletePoller.ResumeToken() (string, error)`
+- New function `*LabsClientListBySubscriptionPager.Err() error`
+- New function `*VirtualMachinesClientRedeployPollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*LabPlansClientUpdatePoller.FinalResponse(context.Context) (LabPlansClientUpdateResponse, error)`
+- New function `*SchedulesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*UsersClientUpdatePoller.Done() bool`
+- New function `*LabPlansClientDeletePoller.ResumeToken() (string, error)`
+- New function `*LabsClientPublishPoller.FinalResponse(context.Context) (LabsClientPublishResponse, error)`
+- New function `*UsersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LabsClientCreateOrUpdatePoller.FinalResponse(context.Context) (LabsClientCreateOrUpdateResponse, error)`
+- New function `*LabsClientUpdatePollerResponse.Resume(context.Context, *LabsClient, string) error`
+- New function `*LabsClientSyncGroupPoller.ResumeToken() (string, error)`
+- New function `*VirtualMachinesClientStopPoller.Done() bool`
+- New function `*UsersClientListByLabPager.Err() error`
+- New function `*UsersClientDeletePoller.Done() bool`
+- New function `*VirtualMachinesClientResetPasswordPoller.Done() bool`
+- New function `*VirtualMachinesClientReimagePollerResponse.Resume(context.Context, *VirtualMachinesClient, string) error`
+- New function `*LabsClientSyncGroupPoller.Done() bool`
+- New function `SchedulesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SchedulesClientDeleteResponse, error)`
+- New function `*UsersClientDeletePollerResponse.Resume(context.Context, *UsersClient, string) error`
+- New function `LabPlansClientSaveImagePollerResponse.PollUntilDone(context.Context, time.Duration) (LabPlansClientSaveImageResponse, error)`
+- New function `*UsersClientInvitePollerResponse.Resume(context.Context, *UsersClient, string) error`
+- New function `*SKUsClientListPager.PageResponse() SKUsClientListResponse`
+- New function `*LabPlansClientListBySubscriptionPager.PageResponse() LabPlansClientListBySubscriptionResponse`
+- New function `*UsersClientInvitePoller.ResumeToken() (string, error)`
+- New function `*LabsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `VirtualMachinesClientRedeployPollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualMachinesClientRedeployResponse, error)`
+- New struct `ImagesClientCreateOrUpdateOptions`
+- New struct `ImagesClientCreateOrUpdateResponse`
+- New struct `ImagesClientCreateOrUpdateResult`
+- New struct `ImagesClientGetOptions`
+- New struct `ImagesClientGetResponse`
+- New struct `ImagesClientGetResult`
+- New struct `ImagesClientListByLabPlanOptions`
+- New struct `ImagesClientListByLabPlanPager`
+- New struct `ImagesClientListByLabPlanResponse`
+- New struct `ImagesClientListByLabPlanResult`
+- New struct `ImagesClientUpdateOptions`
+- New struct `ImagesClientUpdateResponse`
+- New struct `ImagesClientUpdateResult`
+- New struct `LabPlansClientBeginCreateOrUpdateOptions`
+- New struct `LabPlansClientBeginDeleteOptions`
+- New struct `LabPlansClientBeginSaveImageOptions`
+- New struct `LabPlansClientBeginUpdateOptions`
+- New struct `LabPlansClientCreateOrUpdatePoller`
+- New struct `LabPlansClientCreateOrUpdatePollerResponse`
+- New struct `LabPlansClientCreateOrUpdateResponse`
+- New struct `LabPlansClientCreateOrUpdateResult`
+- New struct `LabPlansClientDeletePoller`
+- New struct `LabPlansClientDeletePollerResponse`
+- New struct `LabPlansClientDeleteResponse`
+- New struct `LabPlansClientGetOptions`
+- New struct `LabPlansClientGetResponse`
+- New struct `LabPlansClientGetResult`
+- New struct `LabPlansClientListByResourceGroupOptions`
+- New struct `LabPlansClientListByResourceGroupPager`
+- New struct `LabPlansClientListByResourceGroupResponse`
+- New struct `LabPlansClientListByResourceGroupResult`
+- New struct `LabPlansClientListBySubscriptionOptions`
+- New struct `LabPlansClientListBySubscriptionPager`
+- New struct `LabPlansClientListBySubscriptionResponse`
+- New struct `LabPlansClientListBySubscriptionResult`
+- New struct `LabPlansClientSaveImagePoller`
+- New struct `LabPlansClientSaveImagePollerResponse`
+- New struct `LabPlansClientSaveImageResponse`
+- New struct `LabPlansClientUpdatePoller`
+- New struct `LabPlansClientUpdatePollerResponse`
+- New struct `LabPlansClientUpdateResponse`
+- New struct `LabPlansClientUpdateResult`
+- New struct `LabsClientBeginCreateOrUpdateOptions`
+- New struct `LabsClientBeginDeleteOptions`
+- New struct `LabsClientBeginPublishOptions`
+- New struct `LabsClientBeginSyncGroupOptions`
+- New struct `LabsClientBeginUpdateOptions`
+- New struct `LabsClientCreateOrUpdatePoller`
+- New struct `LabsClientCreateOrUpdatePollerResponse`
+- New struct `LabsClientCreateOrUpdateResponse`
+- New struct `LabsClientCreateOrUpdateResult`
+- New struct `LabsClientDeletePoller`
+- New struct `LabsClientDeletePollerResponse`
+- New struct `LabsClientDeleteResponse`
+- New struct `LabsClientGetOptions`
+- New struct `LabsClientGetResponse`
+- New struct `LabsClientGetResult`
+- New struct `LabsClientListByResourceGroupOptions`
+- New struct `LabsClientListByResourceGroupPager`
+- New struct `LabsClientListByResourceGroupResponse`
+- New struct `LabsClientListByResourceGroupResult`
+- New struct `LabsClientListBySubscriptionOptions`
+- New struct `LabsClientListBySubscriptionPager`
+- New struct `LabsClientListBySubscriptionResponse`
+- New struct `LabsClientListBySubscriptionResult`
+- New struct `LabsClientPublishPoller`
+- New struct `LabsClientPublishPollerResponse`
+- New struct `LabsClientPublishResponse`
+- New struct `LabsClientSyncGroupPoller`
+- New struct `LabsClientSyncGroupPollerResponse`
+- New struct `LabsClientSyncGroupResponse`
+- New struct `LabsClientUpdatePoller`
+- New struct `LabsClientUpdatePollerResponse`
+- New struct `LabsClientUpdateResponse`
+- New struct `LabsClientUpdateResult`
+- New struct `OperationResultsClientGetOptions`
+- New struct `OperationResultsClientGetResponse`
+- New struct `OperationResultsClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PagedSKUInfos`
+- New struct `SKUCapabilities`
+- New struct `SKUCapacity`
+- New struct `SKUCost`
+- New struct `SKUInfo`
+- New struct `SKURestrictions`
+- New struct `SKUsClientListOptions`
+- New struct `SKUsClientListPager`
+- New struct `SKUsClientListResponse`
+- New struct `SKUsClientListResult`
+- New struct `SchedulesClientBeginDeleteOptions`
+- New struct `SchedulesClientCreateOrUpdateOptions`
+- New struct `SchedulesClientCreateOrUpdateResponse`
+- New struct `SchedulesClientCreateOrUpdateResult`
+- New struct `SchedulesClientDeletePoller`
+- New struct `SchedulesClientDeletePollerResponse`
+- New struct `SchedulesClientDeleteResponse`
+- New struct `SchedulesClientGetOptions`
+- New struct `SchedulesClientGetResponse`
+- New struct `SchedulesClientGetResult`
+- New struct `SchedulesClientListByLabOptions`
+- New struct `SchedulesClientListByLabPager`
+- New struct `SchedulesClientListByLabResponse`
+- New struct `SchedulesClientListByLabResult`
+- New struct `SchedulesClientUpdateOptions`
+- New struct `SchedulesClientUpdateResponse`
+- New struct `SchedulesClientUpdateResult`
+- New struct `UsagesClientListByLocationOptions`
+- New struct `UsagesClientListByLocationPager`
+- New struct `UsagesClientListByLocationResponse`
+- New struct `UsagesClientListByLocationResult`
+- New struct `UsersClientBeginCreateOrUpdateOptions`
+- New struct `UsersClientBeginDeleteOptions`
+- New struct `UsersClientBeginInviteOptions`
+- New struct `UsersClientBeginUpdateOptions`
+- New struct `UsersClientCreateOrUpdatePoller`
+- New struct `UsersClientCreateOrUpdatePollerResponse`
+- New struct `UsersClientCreateOrUpdateResponse`
+- New struct `UsersClientCreateOrUpdateResult`
+- New struct `UsersClientDeletePoller`
+- New struct `UsersClientDeletePollerResponse`
+- New struct `UsersClientDeleteResponse`
+- New struct `UsersClientGetOptions`
+- New struct `UsersClientGetResponse`
+- New struct `UsersClientGetResult`
+- New struct `UsersClientInvitePoller`
+- New struct `UsersClientInvitePollerResponse`
+- New struct `UsersClientInviteResponse`
+- New struct `UsersClientListByLabOptions`
+- New struct `UsersClientListByLabPager`
+- New struct `UsersClientListByLabResponse`
+- New struct `UsersClientListByLabResult`
+- New struct `UsersClientUpdatePoller`
+- New struct `UsersClientUpdatePollerResponse`
+- New struct `UsersClientUpdateResponse`
+- New struct `UsersClientUpdateResult`
+- New struct `VirtualMachinesClientBeginRedeployOptions`
+- New struct `VirtualMachinesClientBeginReimageOptions`
+- New struct `VirtualMachinesClientBeginResetPasswordOptions`
+- New struct `VirtualMachinesClientBeginStartOptions`
+- New struct `VirtualMachinesClientBeginStopOptions`
+- New struct `VirtualMachinesClientGetOptions`
+- New struct `VirtualMachinesClientGetResponse`
+- New struct `VirtualMachinesClientGetResult`
+- New struct `VirtualMachinesClientListByLabOptions`
+- New struct `VirtualMachinesClientListByLabPager`
+- New struct `VirtualMachinesClientListByLabResponse`
+- New struct `VirtualMachinesClientListByLabResult`
+- New struct `VirtualMachinesClientRedeployPoller`
+- New struct `VirtualMachinesClientRedeployPollerResponse`
+- New struct `VirtualMachinesClientRedeployResponse`
+- New struct `VirtualMachinesClientReimagePoller`
+- New struct `VirtualMachinesClientReimagePollerResponse`
+- New struct `VirtualMachinesClientReimageResponse`
+- New struct `VirtualMachinesClientResetPasswordPoller`
+- New struct `VirtualMachinesClientResetPasswordPollerResponse`
+- New struct `VirtualMachinesClientResetPasswordResponse`
+- New struct `VirtualMachinesClientStartPoller`
+- New struct `VirtualMachinesClientStartPollerResponse`
+- New struct `VirtualMachinesClientStartResponse`
+- New struct `VirtualMachinesClientStopPoller`
+- New struct `VirtualMachinesClientStopPollerResponse`
+- New struct `VirtualMachinesClientStopResponse`
+- New field `Name` in struct `VirtualMachine`
+- New field `Type` in struct `VirtualMachine`
+- New field `ID` in struct `VirtualMachine`
+- New field `AdditionalUsageQuota` in struct `UserProperties`
+- New field `Tags` in struct `LabUpdate`
+- New field `Name` in struct `Schedule`
+- New field `Type` in struct `Schedule`
+- New field `ID` in struct `Schedule`
+- New field `VirtualMachineProfile` in struct `LabProperties`
+- New field `RosterProfile` in struct `LabProperties`
+- New field `SecurityProfile` in struct `LabProperties`
+- New field `AutoShutdownProfile` in struct `LabProperties`
+- New field `ConnectionProfile` in struct `LabProperties`
+- New field `Description` in struct `LabProperties`
+- New field `LabPlanID` in struct `LabProperties`
+- New field `Title` in struct `LabProperties`
+- New field `ID` in struct `Lab`
+- New field `Name` in struct `Lab`
+- New field `Type` in struct `Lab`
+- New field `Location` in struct `Lab`
+- New field `Tags` in struct `Lab`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `SupportInfo` in struct `LabPlanProperties`
+- New field `AllowedRegions` in struct `LabPlanProperties`
+- New field `DefaultAutoShutdownProfile` in struct `LabPlanProperties`
+- New field `DefaultConnectionProfile` in struct `LabPlanProperties`
+- New field `DefaultNetworkProfile` in struct `LabPlanProperties`
+- New field `LinkedLmsInstance` in struct `LabPlanProperties`
+- New field `SharedGalleryID` in struct `LabPlanProperties`
+- New field `ID` in struct `LabPlan`
+- New field `Name` in struct `LabPlan`
+- New field `Type` in struct `LabPlan`
+- New field `Location` in struct `LabPlan`
+- New field `Tags` in struct `LabPlan`
+- New field `EnabledState` in struct `ImageProperties`
+- New field `RecurrencePattern` in struct `ScheduleProperties`
+- New field `StartAt` in struct `ScheduleProperties`
+- New field `StopAt` in struct `ScheduleProperties`
+- New field `TimeZoneID` in struct `ScheduleProperties`
+- New field `Notes` in struct `ScheduleProperties`
+- New field `ID` in struct `Image`
+- New field `Name` in struct `Image`
+- New field `Type` in struct `Image`
+- New field `Tags` in struct `LabPlanUpdate`
+- New field `ID` in struct `User`
+- New field `Name` in struct `User`
+- New field `Type` in struct `User`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `ProxyResource`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Init release.

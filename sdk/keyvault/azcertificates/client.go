@@ -1539,8 +1539,8 @@ func (l *listDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPag
 	}
 
 	return ListDeletedCertificatesPage{
-		RawResponse: resp.RawResponse,
-		Certificates:       vals,
+		RawResponse:  resp.RawResponse,
+		Certificates: vals,
 	}
 }
 

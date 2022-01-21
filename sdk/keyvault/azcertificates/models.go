@@ -309,10 +309,9 @@ func (c *CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.
 		return nil
 	}
 	var la []*generated.LifetimeAction
-		for _, l := range c.LifetimeActions {
-			la = append(la, l.toGenerated())
-		}
-	
+	for _, l := range c.LifetimeActions {
+		la = append(la, l.toGenerated())
+	}
 
 	return &generated.CertificatePolicy{
 		Attributes:                c.Attributes.toGenerated(),

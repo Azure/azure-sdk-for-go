@@ -11,7 +11,6 @@ package armredis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &PrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // ListByRedisCache - Gets the private link resources that need to be created for a redis cache.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateLinkResourcesClient) ListByRedisCache(ctx context.Context, resourceGroupName string, cacheName string, options *PrivateLinkResourcesListByRedisCacheOptions) (PrivateLinkResourcesListByRedisCacheResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// cacheName - The name of the Redis cache.
+// options - PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByRedisCache
+// method.
+func (client *PrivateLinkResourcesClient) ListByRedisCache(ctx context.Context, resourceGroupName string, cacheName string, options *PrivateLinkResourcesClientListByRedisCacheOptions) (PrivateLinkResourcesClientListByRedisCacheResponse, error) {
 	req, err := client.listByRedisCacheCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return PrivateLinkResourcesListByRedisCacheResponse{}, err
+		return PrivateLinkResourcesClientListByRedisCacheResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesListByRedisCacheResponse{}, err
+		return PrivateLinkResourcesClientListByRedisCacheResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesListByRedisCacheResponse{}, client.listByRedisCacheHandleError(resp)
+		return PrivateLinkResourcesClientListByRedisCacheResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByRedisCacheHandleResponse(resp)
 }
 
 // listByRedisCacheCreateRequest creates the ListByRedisCache request.
-func (client *PrivateLinkResourcesClient) listByRedisCacheCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *PrivateLinkResourcesListByRedisCacheOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesClient) listByRedisCacheCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *PrivateLinkResourcesClientListByRedisCacheOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateLinkResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,35 +86,22 @@ func (client *PrivateLinkResourcesClient) listByRedisCacheCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByRedisCacheHandleResponse handles the ListByRedisCache response.
-func (client *PrivateLinkResourcesClient) listByRedisCacheHandleResponse(resp *http.Response) (PrivateLinkResourcesListByRedisCacheResponse, error) {
-	result := PrivateLinkResourcesListByRedisCacheResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesClient) listByRedisCacheHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByRedisCacheResponse, error) {
+	result := PrivateLinkResourcesClientListByRedisCacheResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinkResourcesListByRedisCacheResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesClientListByRedisCacheResponse{}, err
 	}
 	return result, nil
-}
-
-// listByRedisCacheHandleError handles the ListByRedisCache error response.
-func (client *PrivateLinkResourcesClient) listByRedisCacheHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

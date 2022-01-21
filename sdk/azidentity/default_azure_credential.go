@@ -72,16 +72,9 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errorMessages = append(errorMessages, fmt.Sprintf("AzureCLICredential: %s", err.Error()))
 	}
 
-	errorMessage := strings.Join(errorMessages, "\n\t")
-
-	if len(creds) == 0 {
-		err := errors.New(errorMessage)
-		log.Writef(EventAuthentication, "Azure Identity => ERROR in Default Azure Credential:\n\t%s", err.Error())
+	err = defaultAzureCredentialLogOrThrowError(len(creds), errorMessages)
+	if err != nil {
 		return nil, err
-	}
-
-	if len(errorMessage) != 0 {
-		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:\n\t%s", errorMessage)
 	}
 
 	chain, err := NewChainedTokenCredential(creds, nil)
@@ -97,4 +90,20 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	return c.chain.GetToken(ctx, opts)
+}
+
+func defaultAzureCredentialLogOrThrowError(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
+	errorMessage := "Default Azure Credential:\n\t" + strings.Join(errorMessages, "\n\t")
+
+	if numberOfSuccessfulCredentials == 0 {
+		err := errors.New(errorMessage)
+		log.Writef(EventAuthentication, "Azure Identity => ERROR in %s", err.Error())
+		return err
+	}
+
+	if len(errorMessage) != 0 {
+		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the %s", errorMessage)
+	}
+
+	return nil
 }

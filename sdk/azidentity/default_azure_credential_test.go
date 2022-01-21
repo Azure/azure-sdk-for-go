@@ -24,3 +24,20 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 		t.Fatalf("GetToken error: %v", err)
 	}
 }
+
+func TestDefaultAzureCredential_defaultAzureCredentialLogOrThrowError(t *testing.T) {
+	errorMessages := []string{
+		"<credential-name>: <error-message>",
+		"<credential-name>: <error-message>",
+	}
+	err := defaultAzureCredentialLogOrThrowError(0, errorMessages)
+	if err == nil {
+		t.Fatalf("Expected an error, but received none.")
+	}
+	expectedError := `Default Azure Credential:
+	<credential-name>: <error-message>
+	<credential-name>: <error-message>`
+	if err.Error() != expectedError {
+		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
+	}
+}

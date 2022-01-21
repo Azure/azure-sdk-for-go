@@ -11,7 +11,6 @@ package armvideoanalyzer
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,67 +21,70 @@ import (
 	"strings"
 )
 
-// OperationStatusesClient contains the methods for the OperationStatuses group.
+// OperationStatusesClient contains the methods for the VideoAnalyzerOperationStatuses group.
 // Don't use this type directly, use NewOperationStatusesClient() instead.
 type OperationStatusesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOperationStatusesClient creates a new instance of OperationStatusesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationStatusesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &OperationStatusesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OperationStatusesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// Get - Get private endpoint connection operation status.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OperationStatusesClient) Get(ctx context.Context, resourceGroupName string, accountName string, name string, operationID string, options *OperationStatusesGetOptions) (OperationStatusesGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, name, operationID, options)
+// Get - Get video analyzer operation status.
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - Location name.
+// operationID - Operation Id.
+// options - OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
+func (client *OperationStatusesClient) Get(ctx context.Context, locationName string, operationID string, options *OperationStatusesClientGetOptions) (OperationStatusesClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, locationName, operationID, options)
 	if err != nil {
-		return OperationStatusesGetResponse{}, err
+		return OperationStatusesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OperationStatusesGetResponse{}, err
+		return OperationStatusesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OperationStatusesGetResponse{}, client.getHandleError(resp)
+		return OperationStatusesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, name string, operationID string, options *OperationStatusesGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/privateEndpointConnections/{name}/operationStatuses/{operationId}"
+func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, locationName string, operationID string, options *OperationStatusesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}/videoAnalyzerOperationStatuses/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,23 +96,10 @@ func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationStatusesClient) getHandleResponse(resp *http.Response) (OperationStatusesGetResponse, error) {
-	result := OperationStatusesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VideoAnalyzerPrivateEndpointConnectionOperationStatus); err != nil {
-		return OperationStatusesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *OperationStatusesClient) getHandleResponse(resp *http.Response) (OperationStatusesClientGetResponse, error) {
+	result := OperationStatusesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
+		return OperationStatusesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *OperationStatusesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

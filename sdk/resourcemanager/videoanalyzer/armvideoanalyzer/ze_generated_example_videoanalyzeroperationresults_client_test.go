@@ -17,13 +17,13 @@ import (
 )
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-analyzer-operation-result-by-id.json
-func ExampleVideoAnalyzerOperationResultsClient_Get() {
+func ExampleOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armvideoanalyzer.NewVideoAnalyzerOperationResultsClient("<subscription-id>", cred, nil)
+	client := armvideoanalyzer.NewOperationResultsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<location-name>",
 		"<operation-id>",
@@ -31,5 +31,5 @@ func ExampleVideoAnalyzerOperationResultsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VideoAnalyzer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OperationResultsClientGetResult)
 }

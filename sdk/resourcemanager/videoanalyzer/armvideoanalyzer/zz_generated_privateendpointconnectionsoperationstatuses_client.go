@@ -21,19 +21,19 @@ import (
 	"strings"
 )
 
-// LivePipelineOperationStatusesClient contains the methods for the LivePipelineOperationStatuses group.
-// Don't use this type directly, use NewLivePipelineOperationStatusesClient() instead.
-type LivePipelineOperationStatusesClient struct {
+// PrivateEndpointConnectionsOperationStatusesClient contains the methods for the PrivateEndpointConnectionsOperationStatuses group.
+// Don't use this type directly, use NewPrivateEndpointConnectionsOperationStatusesClient() instead.
+type PrivateEndpointConnectionsOperationStatusesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewLivePipelineOperationStatusesClient creates a new instance of LivePipelineOperationStatusesClient with the specified values.
+// NewPrivateEndpointConnectionsOperationStatusesClient creates a new instance of PrivateEndpointConnectionsOperationStatusesClient with the specified values.
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLivePipelineOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LivePipelineOperationStatusesClient {
+func NewPrivateEndpointConnectionsOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionsOperationStatusesClient {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -41,7 +41,7 @@ func NewLivePipelineOperationStatusesClient(subscriptionID string, credential az
 	if len(ep) == 0 {
 		ep = arm.AzurePublicCloud
 	}
-	client := &LivePipelineOperationStatusesClient{
+	client := &PrivateEndpointConnectionsOperationStatusesClient{
 		subscriptionID: subscriptionID,
 		host:           string(ep),
 		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
@@ -49,32 +49,32 @@ func NewLivePipelineOperationStatusesClient(subscriptionID string, credential az
 	return client
 }
 
-// Get - Get the operation status of a live pipeline.
+// Get - Get private endpoint connection operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The Azure Video Analyzer account name.
-// livePipelineName - Live pipeline unique identifier.
-// operationID - The operation ID.
-// options - LivePipelineOperationStatusesClientGetOptions contains the optional parameters for the LivePipelineOperationStatusesClient.Get
+// accountName - The Video Analyzer account name.
+// name - Private endpoint connection name.
+// operationID - Operation Id.
+// options - PrivateEndpointConnectionsOperationStatusesClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsOperationStatusesClient.Get
 // method.
-func (client *LivePipelineOperationStatusesClient) Get(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, operationID string, options *LivePipelineOperationStatusesClientGetOptions) (LivePipelineOperationStatusesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, operationID, options)
+func (client *PrivateEndpointConnectionsOperationStatusesClient) Get(ctx context.Context, resourceGroupName string, accountName string, name string, operationID string, options *PrivateEndpointConnectionsOperationStatusesClientGetOptions) (PrivateEndpointConnectionsOperationStatusesClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, name, operationID, options)
 	if err != nil {
-		return LivePipelineOperationStatusesClientGetResponse{}, err
+		return PrivateEndpointConnectionsOperationStatusesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LivePipelineOperationStatusesClientGetResponse{}, err
+		return PrivateEndpointConnectionsOperationStatusesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LivePipelineOperationStatusesClientGetResponse{}, runtime.NewResponseError(resp)
+		return PrivateEndpointConnectionsOperationStatusesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LivePipelineOperationStatusesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, operationID string, options *LivePipelineOperationStatusesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/livePipelines/{livePipelineName}/operationStatuses/{operationId}"
+func (client *PrivateEndpointConnectionsOperationStatusesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, name string, operationID string, options *PrivateEndpointConnectionsOperationStatusesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/videoAnalyzers/{accountName}/privateEndpointConnections/{name}/operationStatuses/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -87,10 +87,10 @@ func (client *LivePipelineOperationStatusesClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if livePipelineName == "" {
-		return nil, errors.New("parameter livePipelineName cannot be empty")
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{livePipelineName}", url.PathEscape(livePipelineName))
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
@@ -107,10 +107,10 @@ func (client *LivePipelineOperationStatusesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *LivePipelineOperationStatusesClient) getHandleResponse(resp *http.Response) (LivePipelineOperationStatusesClientGetResponse, error) {
-	result := LivePipelineOperationStatusesClientGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LivePipelineOperationStatus); err != nil {
-		return LivePipelineOperationStatusesClientGetResponse{}, err
+func (client *PrivateEndpointConnectionsOperationStatusesClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsOperationStatusesClientGetResponse, error) {
+	result := PrivateEndpointConnectionsOperationStatusesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionOperationStatus); err != nil {
+		return PrivateEndpointConnectionsOperationStatusesClientGetResponse{}, err
 	}
 	return result, nil
 }

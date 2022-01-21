@@ -11,7 +11,6 @@ package armdataboxedge
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // OrdersClient contains the methods for the Orders group.
 // Don't use this type directly, use NewOrdersClient() instead.
 type OrdersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOrdersClient creates a new instance of OrdersClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOrdersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OrdersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &OrdersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OrdersClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates an order.
-// If the operation fails it returns the *CloudError error type.
-func (client *OrdersClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersBeginCreateOrUpdateOptions) (OrdersCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The order details of a device.
+// resourceGroupName - The resource group name.
+// order - The order to be created or updated.
+// options - OrdersClientBeginCreateOrUpdateOptions contains the optional parameters for the OrdersClient.BeginCreateOrUpdate
+// method.
+func (client *OrdersClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersClientBeginCreateOrUpdateOptions) (OrdersClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, deviceName, resourceGroupName, order, options)
 	if err != nil {
-		return OrdersCreateOrUpdatePollerResponse{}, err
+		return OrdersClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := OrdersCreateOrUpdatePollerResponse{
+	result := OrdersClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("OrdersClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("OrdersClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return OrdersCreateOrUpdatePollerResponse{}, err
+		return OrdersClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &OrdersCreateOrUpdatePoller{
+	result.Poller = &OrdersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an order.
-// If the operation fails it returns the *CloudError error type.
-func (client *OrdersClient) createOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrdersClient) createOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, deviceName, resourceGroupName, order, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *OrdersClient) createOrUpdate(ctx context.Context, deviceName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -94,7 +106,7 @@ func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, dev
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,32 @@ func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, dev
 	return req, runtime.MarshalAsJSON(req, order)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *OrdersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the order related to the device.
-// If the operation fails it returns the *CloudError error type.
-func (client *OrdersClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersBeginDeleteOptions) (OrdersDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - OrdersClientBeginDeleteOptions contains the optional parameters for the OrdersClient.BeginDelete method.
+func (client *OrdersClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientBeginDeleteOptions) (OrdersClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return OrdersDeletePollerResponse{}, err
+		return OrdersClientDeletePollerResponse{}, err
 	}
-	result := OrdersDeletePollerResponse{
+	result := OrdersClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("OrdersClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("OrdersClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return OrdersDeletePollerResponse{}, err
+		return OrdersClientDeletePollerResponse{}, err
 	}
-	result.Poller = &OrdersDeletePoller{
+	result.Poller = &OrdersClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the order related to the device.
-// If the operation fails it returns the *CloudError error type.
-func (client *OrdersClient) deleteOperation(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrdersClient) deleteOperation(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +152,13 @@ func (client *OrdersClient) deleteOperation(ctx context.Context, deviceName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersBeginDeleteOptions) (*policy.Request, error) {
+func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -170,7 +172,7 @@ func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +183,28 @@ func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *OrdersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a specific order by name.
-// If the operation fails it returns the *CloudError error type.
-func (client *OrdersClient) Get(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersGetOptions) (OrdersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - OrdersClientGetOptions contains the optional parameters for the OrdersClient.Get method.
+func (client *OrdersClient) Get(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientGetOptions) (OrdersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return OrdersGetResponse{}, err
+		return OrdersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OrdersGetResponse{}, err
+		return OrdersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OrdersGetResponse{}, client.getHandleError(resp)
+		return OrdersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OrdersClient) getCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersGetOptions) (*policy.Request, error) {
+func (client *OrdersClient) getCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -226,7 +218,7 @@ func (client *OrdersClient) getCreateRequest(ctx context.Context, deviceName str
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,43 +230,34 @@ func (client *OrdersClient) getCreateRequest(ctx context.Context, deviceName str
 }
 
 // getHandleResponse handles the Get response.
-func (client *OrdersClient) getHandleResponse(resp *http.Response) (OrdersGetResponse, error) {
-	result := OrdersGetResponse{RawResponse: resp}
+func (client *OrdersClient) getHandleResponse(resp *http.Response) (OrdersClientGetResponse, error) {
+	result := OrdersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Order); err != nil {
-		return OrdersGetResponse{}, runtime.NewResponseError(err, resp)
+		return OrdersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *OrdersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByDataBoxEdgeDevice - Lists all the orders related to a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *OrdersClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *OrdersListByDataBoxEdgeDeviceOptions) *OrdersListByDataBoxEdgeDevicePager {
-	return &OrdersListByDataBoxEdgeDevicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - OrdersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the OrdersClient.ListByDataBoxEdgeDevice
+// method.
+func (client *OrdersClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *OrdersClientListByDataBoxEdgeDeviceOptions) *OrdersClientListByDataBoxEdgeDevicePager {
+	return &OrdersClientListByDataBoxEdgeDevicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp OrdersListByDataBoxEdgeDeviceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp OrdersClientListByDataBoxEdgeDeviceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OrderList.NextLink)
 		},
 	}
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
-func (client *OrdersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
+func (client *OrdersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -288,7 +271,7 @@ func (client *OrdersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -300,46 +283,36 @@ func (client *OrdersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Con
 }
 
 // listByDataBoxEdgeDeviceHandleResponse handles the ListByDataBoxEdgeDevice response.
-func (client *OrdersClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (OrdersListByDataBoxEdgeDeviceResponse, error) {
-	result := OrdersListByDataBoxEdgeDeviceResponse{RawResponse: resp}
+func (client *OrdersClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (OrdersClientListByDataBoxEdgeDeviceResponse, error) {
+	result := OrdersClientListByDataBoxEdgeDeviceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrderList); err != nil {
-		return OrdersListByDataBoxEdgeDeviceResponse{}, runtime.NewResponseError(err, resp)
+		return OrdersClientListByDataBoxEdgeDeviceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByDataBoxEdgeDeviceHandleError handles the ListByDataBoxEdgeDevice error response.
-func (client *OrdersClient) listByDataBoxEdgeDeviceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListDCAccessCode - Gets the DCAccess Code
-// If the operation fails it returns the *CloudError error type.
-func (client *OrdersClient) ListDCAccessCode(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersListDCAccessCodeOptions) (OrdersListDCAccessCodeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name
+// resourceGroupName - The resource group name.
+// options - OrdersClientListDCAccessCodeOptions contains the optional parameters for the OrdersClient.ListDCAccessCode method.
+func (client *OrdersClient) ListDCAccessCode(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientListDCAccessCodeOptions) (OrdersClientListDCAccessCodeResponse, error) {
 	req, err := client.listDCAccessCodeCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
-		return OrdersListDCAccessCodeResponse{}, err
+		return OrdersClientListDCAccessCodeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OrdersListDCAccessCodeResponse{}, err
+		return OrdersClientListDCAccessCodeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OrdersListDCAccessCodeResponse{}, client.listDCAccessCodeHandleError(resp)
+		return OrdersClientListDCAccessCodeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listDCAccessCodeHandleResponse(resp)
 }
 
 // listDCAccessCodeCreateRequest creates the ListDCAccessCode request.
-func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersListDCAccessCodeOptions) (*policy.Request, error) {
+func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientListDCAccessCodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default/listDCAccessCode"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -353,7 +326,7 @@ func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, d
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -365,23 +338,10 @@ func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, d
 }
 
 // listDCAccessCodeHandleResponse handles the ListDCAccessCode response.
-func (client *OrdersClient) listDCAccessCodeHandleResponse(resp *http.Response) (OrdersListDCAccessCodeResponse, error) {
-	result := OrdersListDCAccessCodeResponse{RawResponse: resp}
+func (client *OrdersClient) listDCAccessCodeHandleResponse(resp *http.Response) (OrdersClientListDCAccessCodeResponse, error) {
+	result := OrdersClientListDCAccessCodeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DCAccessCode); err != nil {
-		return OrdersListDCAccessCodeResponse{}, runtime.NewResponseError(err, resp)
+		return OrdersClientListDCAccessCodeResponse{}, err
 	}
 	return result, nil
-}
-
-// listDCAccessCodeHandleError handles the ListDCAccessCode error response.
-func (client *OrdersClient) listDCAccessCodeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

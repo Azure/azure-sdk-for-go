@@ -31,12 +31,16 @@ func ExampleAddonsClient_ListByRole() {
 		"<role-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AddonClassification.GetAddon().ID: %s\n", *v.GetAddon().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -58,7 +62,7 @@ func ExampleAddonsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AddonClassification.GetAddon().ID: %s\n", *res.GetAddon().ID)
+	log.Printf("Response result: %#v\n", res.AddonsClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/PutAddons.json
@@ -75,9 +79,7 @@ func ExampleAddonsClient_BeginCreateOrUpdate() {
 		"<addon-name>",
 		"<resource-group-name>",
 		&armdataboxedge.ArcAddon{
-			Addon: armdataboxedge.Addon{
-				Kind: armdataboxedge.AddonTypeArcForKubernetes.ToPtr(),
-			},
+			Kind: armdataboxedge.AddonType("ArcForKubernetes").ToPtr(),
 			Properties: &armdataboxedge.ArcAddonProperties{
 				ResourceGroupName: to.StringPtr("<resource-group-name>"),
 				ResourceLocation:  to.StringPtr("<resource-location>"),
@@ -93,7 +95,7 @@ func ExampleAddonsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AddonClassification.GetAddon().ID: %s\n", *res.GetAddon().ID)
+	log.Printf("Response result: %#v\n", res.AddonsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/DeleteAddons.json

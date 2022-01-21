@@ -9,9 +9,32 @@
 package armappservice
 
 const (
-	module  = "armappservice"
-	version = "v0.1.0"
+	moduleName    = "armappservice"
+	moduleVersion = "v0.2.0"
 )
+
+// ActiveRevisionsMode - ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple
+// revisions can be active. If no value if provided, this is the defaultSingle: Only one revision
+// can be active at a time. Revision weights can not be used in this mode
+type ActiveRevisionsMode string
+
+const (
+	ActiveRevisionsModeMultiple ActiveRevisionsMode = "multiple"
+	ActiveRevisionsModeSingle   ActiveRevisionsMode = "single"
+)
+
+// PossibleActiveRevisionsModeValues returns the possible values for the ActiveRevisionsMode const type.
+func PossibleActiveRevisionsModeValues() []ActiveRevisionsMode {
+	return []ActiveRevisionsMode{
+		ActiveRevisionsModeMultiple,
+		ActiveRevisionsModeSingle,
+	}
+}
+
+// ToPtr returns a *ActiveRevisionsMode pointing to the current value.
+func (c ActiveRevisionsMode) ToPtr() *ActiveRevisionsMode {
+	return &c
+}
 
 type AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem string
 
@@ -271,8 +294,8 @@ func (c BuildStatus) ToPtr() *BuildStatus {
 	return &c
 }
 
-// BuiltInAuthenticationProvider - The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple
-// providers are configured and the unauthenticated client action is set to
+// BuiltInAuthenticationProvider - The default authentication provider to use when multiple providers are configured. This
+// setting is only needed if multiple providers are configured and the unauthenticated client action is set to
 // "RedirectToLoginPage".
 type BuiltInAuthenticationProvider string
 
@@ -576,6 +599,31 @@ func (c ConnectionStringType) ToPtr() *ConnectionStringType {
 	return &c
 }
 
+// ContainerAppProvisioningState - Provisioning state of the Container App.
+type ContainerAppProvisioningState string
+
+const (
+	ContainerAppProvisioningStateCanceled   ContainerAppProvisioningState = "Canceled"
+	ContainerAppProvisioningStateFailed     ContainerAppProvisioningState = "Failed"
+	ContainerAppProvisioningStateInProgress ContainerAppProvisioningState = "InProgress"
+	ContainerAppProvisioningStateSucceeded  ContainerAppProvisioningState = "Succeeded"
+)
+
+// PossibleContainerAppProvisioningStateValues returns the possible values for the ContainerAppProvisioningState const type.
+func PossibleContainerAppProvisioningStateValues() []ContainerAppProvisioningState {
+	return []ContainerAppProvisioningState{
+		ContainerAppProvisioningStateCanceled,
+		ContainerAppProvisioningStateFailed,
+		ContainerAppProvisioningStateInProgress,
+		ContainerAppProvisioningStateSucceeded,
+	}
+}
+
+// ToPtr returns a *ContainerAppProvisioningState pointing to the current value.
+func (c ContainerAppProvisioningState) ToPtr() *ContainerAppProvisioningState {
+	return &c
+}
+
 // ContinuousWebJobStatus - Job status.
 type ContinuousWebJobStatus string
 
@@ -869,8 +917,8 @@ func (c DomainStatus) ToPtr() *DomainStatus {
 	return &c
 }
 
-// DomainType - Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this domain will simply
-// restore it and this operation will not cost anything.
+// DomainType - Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing
+// this domain will simply restore it and this operation will not cost anything.
 type DomainType string
 
 const (
@@ -888,6 +936,171 @@ func PossibleDomainTypeValues() []DomainType {
 
 // ToPtr returns a *DomainType pointing to the current value.
 func (c DomainType) ToPtr() *DomainType {
+	return &c
+}
+
+// EnterpriseGradeCdnStatus - State indicating the status of the enterprise grade CDN serving traffic to the static web app.
+type EnterpriseGradeCdnStatus string
+
+const (
+	EnterpriseGradeCdnStatusDisabled  EnterpriseGradeCdnStatus = "Disabled"
+	EnterpriseGradeCdnStatusDisabling EnterpriseGradeCdnStatus = "Disabling"
+	EnterpriseGradeCdnStatusEnabled   EnterpriseGradeCdnStatus = "Enabled"
+	EnterpriseGradeCdnStatusEnabling  EnterpriseGradeCdnStatus = "Enabling"
+)
+
+// PossibleEnterpriseGradeCdnStatusValues returns the possible values for the EnterpriseGradeCdnStatus const type.
+func PossibleEnterpriseGradeCdnStatusValues() []EnterpriseGradeCdnStatus {
+	return []EnterpriseGradeCdnStatus{
+		EnterpriseGradeCdnStatusDisabled,
+		EnterpriseGradeCdnStatusDisabling,
+		EnterpriseGradeCdnStatusEnabled,
+		EnterpriseGradeCdnStatusEnabling,
+	}
+}
+
+// ToPtr returns a *EnterpriseGradeCdnStatus pointing to the current value.
+func (c EnterpriseGradeCdnStatus) ToPtr() *EnterpriseGradeCdnStatus {
+	return &c
+}
+
+type Enum15 string
+
+const (
+	Enum15All              Enum15 = "All"
+	Enum15Linux            Enum15 = "Linux"
+	Enum15LinuxFunctions   Enum15 = "LinuxFunctions"
+	Enum15Windows          Enum15 = "Windows"
+	Enum15WindowsFunctions Enum15 = "WindowsFunctions"
+)
+
+// PossibleEnum15Values returns the possible values for the Enum15 const type.
+func PossibleEnum15Values() []Enum15 {
+	return []Enum15{
+		Enum15All,
+		Enum15Linux,
+		Enum15LinuxFunctions,
+		Enum15Windows,
+		Enum15WindowsFunctions,
+	}
+}
+
+// ToPtr returns a *Enum15 pointing to the current value.
+func (c Enum15) ToPtr() *Enum15 {
+	return &c
+}
+
+type Enum16 string
+
+const (
+	Enum16All     Enum16 = "All"
+	Enum16Linux   Enum16 = "Linux"
+	Enum16Windows Enum16 = "Windows"
+)
+
+// PossibleEnum16Values returns the possible values for the Enum16 const type.
+func PossibleEnum16Values() []Enum16 {
+	return []Enum16{
+		Enum16All,
+		Enum16Linux,
+		Enum16Windows,
+	}
+}
+
+// ToPtr returns a *Enum16 pointing to the current value.
+func (c Enum16) ToPtr() *Enum16 {
+	return &c
+}
+
+type Enum17 string
+
+const (
+	Enum17All     Enum17 = "All"
+	Enum17Linux   Enum17 = "Linux"
+	Enum17Windows Enum17 = "Windows"
+)
+
+// PossibleEnum17Values returns the possible values for the Enum17 const type.
+func PossibleEnum17Values() []Enum17 {
+	return []Enum17{
+		Enum17All,
+		Enum17Linux,
+		Enum17Windows,
+	}
+}
+
+// ToPtr returns a *Enum17 pointing to the current value.
+func (c Enum17) ToPtr() *Enum17 {
+	return &c
+}
+
+type Enum18 string
+
+const (
+	Enum18All     Enum18 = "All"
+	Enum18Linux   Enum18 = "Linux"
+	Enum18Windows Enum18 = "Windows"
+)
+
+// PossibleEnum18Values returns the possible values for the Enum18 const type.
+func PossibleEnum18Values() []Enum18 {
+	return []Enum18{
+		Enum18All,
+		Enum18Linux,
+		Enum18Windows,
+	}
+}
+
+// ToPtr returns a *Enum18 pointing to the current value.
+func (c Enum18) ToPtr() *Enum18 {
+	return &c
+}
+
+type Enum19 string
+
+const (
+	Enum19All     Enum19 = "All"
+	Enum19Linux   Enum19 = "Linux"
+	Enum19Windows Enum19 = "Windows"
+)
+
+// PossibleEnum19Values returns the possible values for the Enum19 const type.
+func PossibleEnum19Values() []Enum19 {
+	return []Enum19{
+		Enum19All,
+		Enum19Linux,
+		Enum19Windows,
+	}
+}
+
+// ToPtr returns a *Enum19 pointing to the current value.
+func (c Enum19) ToPtr() *Enum19 {
+	return &c
+}
+
+type Enum20 string
+
+const (
+	Enum20All              Enum20 = "All"
+	Enum20Linux            Enum20 = "Linux"
+	Enum20LinuxFunctions   Enum20 = "LinuxFunctions"
+	Enum20Windows          Enum20 = "Windows"
+	Enum20WindowsFunctions Enum20 = "WindowsFunctions"
+)
+
+// PossibleEnum20Values returns the possible values for the Enum20 const type.
+func PossibleEnum20Values() []Enum20 {
+	return []Enum20{
+		Enum20All,
+		Enum20Linux,
+		Enum20LinuxFunctions,
+		Enum20Windows,
+		Enum20WindowsFunctions,
+	}
+}
+
+// ToPtr returns a *Enum20 pointing to the current value.
+func (c Enum20) ToPtr() *Enum20 {
 	return &c
 }
 
@@ -914,8 +1127,8 @@ func (c ForwardProxyConvention) ToPtr() *ForwardProxyConvention {
 	return &c
 }
 
-// FrequencyUnit - The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day and FrequencyInterval
-// should be set to 7)
+// FrequencyUnit - The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set
+// to Day and FrequencyInterval should be set to 7)
 type FrequencyUnit string
 
 const (
@@ -1069,8 +1282,8 @@ func (c IPFilterTag) ToPtr() *IPFilterTag {
 	return &c
 }
 
-// InAvailabilityReasonType - Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists indicates that the
-// name is already in use and is therefore unavailable.
+// InAvailabilityReasonType - Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists
+// indicates that the name is already in use and is therefore unavailable.
 type InAvailabilityReasonType string
 
 const (
@@ -1088,6 +1301,29 @@ func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 
 // ToPtr returns a *InAvailabilityReasonType pointing to the current value.
 func (c InAvailabilityReasonType) ToPtr() *InAvailabilityReasonType {
+	return &c
+}
+
+// IngressTransportMethod - Ingress transport protocol
+type IngressTransportMethod string
+
+const (
+	IngressTransportMethodAuto  IngressTransportMethod = "auto"
+	IngressTransportMethodHTTP  IngressTransportMethod = "http"
+	IngressTransportMethodHTTP2 IngressTransportMethod = "http2"
+)
+
+// PossibleIngressTransportMethodValues returns the possible values for the IngressTransportMethod const type.
+func PossibleIngressTransportMethodValues() []IngressTransportMethod {
+	return []IngressTransportMethod{
+		IngressTransportMethodAuto,
+		IngressTransportMethodHTTP,
+		IngressTransportMethodHTTP2,
+	}
+}
+
+// ToPtr returns a *IngressTransportMethod pointing to the current value.
+func (c IngressTransportMethod) ToPtr() *IngressTransportMethod {
 	return &c
 }
 
@@ -1448,54 +1684,6 @@ func (c OperationStatus) ToPtr() *OperationStatus {
 	return &c
 }
 
-type ProviderOsTypeSelected string
-
-const (
-	ProviderOsTypeSelectedAll              ProviderOsTypeSelected = "All"
-	ProviderOsTypeSelectedLinux            ProviderOsTypeSelected = "Linux"
-	ProviderOsTypeSelectedLinuxFunctions   ProviderOsTypeSelected = "LinuxFunctions"
-	ProviderOsTypeSelectedWindows          ProviderOsTypeSelected = "Windows"
-	ProviderOsTypeSelectedWindowsFunctions ProviderOsTypeSelected = "WindowsFunctions"
-)
-
-// PossibleProviderOsTypeSelectedValues returns the possible values for the ProviderOsTypeSelected const type.
-func PossibleProviderOsTypeSelectedValues() []ProviderOsTypeSelected {
-	return []ProviderOsTypeSelected{
-		ProviderOsTypeSelectedAll,
-		ProviderOsTypeSelectedLinux,
-		ProviderOsTypeSelectedLinuxFunctions,
-		ProviderOsTypeSelectedWindows,
-		ProviderOsTypeSelectedWindowsFunctions,
-	}
-}
-
-// ToPtr returns a *ProviderOsTypeSelected pointing to the current value.
-func (c ProviderOsTypeSelected) ToPtr() *ProviderOsTypeSelected {
-	return &c
-}
-
-type ProviderStackOsType string
-
-const (
-	ProviderStackOsTypeAll     ProviderStackOsType = "All"
-	ProviderStackOsTypeLinux   ProviderStackOsType = "Linux"
-	ProviderStackOsTypeWindows ProviderStackOsType = "Windows"
-)
-
-// PossibleProviderStackOsTypeValues returns the possible values for the ProviderStackOsType const type.
-func PossibleProviderStackOsTypeValues() []ProviderStackOsType {
-	return []ProviderStackOsType{
-		ProviderStackOsTypeAll,
-		ProviderStackOsTypeLinux,
-		ProviderStackOsTypeWindows,
-	}
-}
-
-// ToPtr returns a *ProviderStackOsType pointing to the current value.
-func (c ProviderStackOsType) ToPtr() *ProviderStackOsType {
-	return &c
-}
-
 // ProvisioningState - Status of certificate order.
 type ProvisioningState string
 
@@ -1724,8 +1912,58 @@ func (c ResourceScopeType) ToPtr() *ResourceScopeType {
 	return &c
 }
 
-// RouteType - The type of route this is: DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918 INHERITED - Routes
-// inherited from the real Virtual Network routes STATIC - Static
+// RevisionHealthState - Current health State of the revision
+type RevisionHealthState string
+
+const (
+	RevisionHealthStateHealthy   RevisionHealthState = "Healthy"
+	RevisionHealthStateNone      RevisionHealthState = "None"
+	RevisionHealthStateUnhealthy RevisionHealthState = "Unhealthy"
+)
+
+// PossibleRevisionHealthStateValues returns the possible values for the RevisionHealthState const type.
+func PossibleRevisionHealthStateValues() []RevisionHealthState {
+	return []RevisionHealthState{
+		RevisionHealthStateHealthy,
+		RevisionHealthStateNone,
+		RevisionHealthStateUnhealthy,
+	}
+}
+
+// ToPtr returns a *RevisionHealthState pointing to the current value.
+func (c RevisionHealthState) ToPtr() *RevisionHealthState {
+	return &c
+}
+
+// RevisionProvisioningState - Current provisioning State of the revision
+type RevisionProvisioningState string
+
+const (
+	RevisionProvisioningStateDeprovisioned  RevisionProvisioningState = "Deprovisioned"
+	RevisionProvisioningStateDeprovisioning RevisionProvisioningState = "Deprovisioning"
+	RevisionProvisioningStateFailed         RevisionProvisioningState = "Failed"
+	RevisionProvisioningStateProvisioned    RevisionProvisioningState = "Provisioned"
+	RevisionProvisioningStateProvisioning   RevisionProvisioningState = "Provisioning"
+)
+
+// PossibleRevisionProvisioningStateValues returns the possible values for the RevisionProvisioningState const type.
+func PossibleRevisionProvisioningStateValues() []RevisionProvisioningState {
+	return []RevisionProvisioningState{
+		RevisionProvisioningStateDeprovisioned,
+		RevisionProvisioningStateDeprovisioning,
+		RevisionProvisioningStateFailed,
+		RevisionProvisioningStateProvisioned,
+		RevisionProvisioningStateProvisioning,
+	}
+}
+
+// ToPtr returns a *RevisionProvisioningState pointing to the current value.
+func (c RevisionProvisioningState) ToPtr() *RevisionProvisioningState {
+	return &c
+}
+
+// RouteType - The type of route this is: DEFAULT - By default, every app has routes to the local address ranges specified
+// by RFC1918 INHERITED - Routes inherited from the real Virtual Network routes STATIC - Static
 // route set on the app only
 // These values will be used for syncing an app's routes with those from a Virtual Network.
 type RouteType string
@@ -1792,7 +2030,7 @@ func (c SKUName) ToPtr() *SKUName {
 	return &c
 }
 
-// SSLState - SSL type.
+// SSLState - SSL type
 type SSLState string
 
 const (

@@ -531,7 +531,7 @@ func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 func checkReceiverMode(receiveMode ReceiveMode) error {
 	if receiveMode == ReceiveModePeekLock || receiveMode == ReceiveModeReceiveAndDelete {
 		return nil
-	} else {
-		return fmt.Errorf("invalid receive mode %d, must be either azservicebus.PeekLock or azservicebus.ReceiveAndDelete", receiveMode)
 	}
+
+	return fmt.Errorf("invalid receive mode %d, must be either azservicebus.PeekLock or azservicebus.ReceiveAndDelete", receiveMode)
 }

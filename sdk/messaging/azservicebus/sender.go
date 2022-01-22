@@ -147,7 +147,7 @@ type newSenderArgs struct {
 	retryOptions   RetryOptions
 }
 
-func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
+func newSender(args newSenderArgs) (*Sender, error) {
 	sender := &Sender{
 		queueOrTopic:   args.queueOrTopic,
 		cleanupOnClose: args.cleanupOnClose,

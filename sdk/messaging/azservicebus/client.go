@@ -60,7 +60,7 @@ type ClientOptions struct {
 
 // RetryOptions controls how often operations are retried from this client and any
 // Receivers and Senders created from this client.
-type RetryOptions utils.RetryOptions
+type RetryOptions = utils.RetryOptions
 
 // NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
 type NewWebSocketConnArgs = internal.NewWebSocketConnArgs

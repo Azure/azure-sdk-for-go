@@ -255,11 +255,11 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 			if cast, ok := rawStatusCode.(int32); ok {
 				statusCode = int(cast)
 				break
-			} else {
-				err := errors.New("status code was not of expected type int32")
-				tab.For(ctx).Error(err)
-				return nil, err
 			}
+
+			err := errors.New("status code was not of expected type int32")
+			tab.For(ctx).Error(err)
+			return nil, err
 		}
 	}
 	if statusCode == 0 {

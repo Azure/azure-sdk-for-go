@@ -9,6 +9,7 @@ import (
 	"crypto/rsa"
 	"crypto/sha1"
 	"crypto/x509"
+	"fmt"
 
 	"encoding/base64"
 	"encoding/pem"
@@ -20,6 +21,8 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"golang.org/x/crypto/pkcs12"
 )
+
+var clientCertificateTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/serviceprincipalauthentication/troubleshoot"
 
 // ClientCertificateCredentialOptions contains optional parameters for ClientCertificateCredential.
 type ClientCertificateCredentialOptions struct {
@@ -61,7 +64,8 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
-		logCredentialError("Client Certificate Credential", err)
+		error := fmt.Errorf("%s%s", err.Error(), clientCertificateTroubleshootMessage)
+		logCredentialError("Client Certificate Credential", error)
 		return nil, err
 	}
 	cert, err := newCertContents(certs, pk, options.SendCertificateChain)
@@ -98,7 +102,8 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Client Certificate Credential", err, true)
+		error := fmt.Errorf("%s%s", err.Error(), clientCertificateTroubleshootMessage)
+		addGetTokenFailureLogs("Client Certificate Credential", error, true)
 		return nil, newAuthenticationFailedError(err, nil)
 	}
 	logGetTokenSuccess(c, opts)
@@ -155,7 +160,7 @@ func ParseCertificates(certData []byte, password []byte) ([]*x509.Certificate, c
 		return nil, nil, errors.New("found no certificate")
 	}
 	if pk == nil {
-		return nil, nil, errors.New("found no private key")
+		return nil, nil, errors.New("found no certificate")
 	}
 	return certs, pk, nil
 }

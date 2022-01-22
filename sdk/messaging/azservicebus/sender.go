@@ -144,14 +144,13 @@ type newSenderArgs struct {
 	ns             internal.NamespaceWithNewAMQPLinks
 	queueOrTopic   string
 	cleanupOnClose func()
-	retryOptions   RetryOptions
 }
 
-func newSender(args newSenderArgs) (*Sender, error) {
+func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
 	sender := &Sender{
 		queueOrTopic:   args.queueOrTopic,
 		cleanupOnClose: args.cleanupOnClose,
-		retryOptions:   utils.RetryOptions(args.retryOptions),
+		retryOptions:   utils.RetryOptions(retryOptions),
 	}
 
 	sender.links = args.ns.NewAMQPLinks(args.queueOrTopic, sender.createSenderLink)

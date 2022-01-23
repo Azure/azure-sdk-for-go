@@ -6,8 +6,15 @@ if [ -z $1 ]; then
 fi
 echo $1
 
+outputFile=$1
+
+if [ "$2" ]; then
+  echo $2
+  outputFile=$2
+fi
 set -x
 set -e
+echo "$outputFile"
 
 TMPDIR="/tmp"
 if [ ! "$(go version | awk '{print $3}' | cut -c 3-6)" = "1.16" ]
@@ -42,11 +49,11 @@ cp generator $GOPATH/bin/
 export PATH=$GOPATH/bin:$PATH
 cd $DIRECTORY
 
-if [ ! -f "$GOPATH/bin/pwsh.exe" ]; then
+if [ ! -L "$GOPATH/bin/pwsh.exe" ]; then
   ln -s /usr/bin/pwsh $GOPATH/bin/pwsh.exe
 fi
 
-cat > $1 << EOF
+cat > "${outputFile}" << EOF
 {
   "envs": {
     "PATH": "$GOPATH:$PATH",

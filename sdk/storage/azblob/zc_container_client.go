@@ -232,7 +232,7 @@ func (c ContainerClient) ListBlobsHierarchy(delimiter string, listOptions *Conta
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c ContainerClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+func (c ContainerClient) GetSASToken(permissions ContainerSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	urlParts := NewBlobURLParts(c.URL())
 
 	// Containers do not have snapshots, nor versions.

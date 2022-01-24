@@ -28,8 +28,8 @@ const (
 
 // constants for this file
 const (
-	envHostString              = "https://mock.com/"
-	customHostString           = "https://custommock.com/"
+	envHostString           = "https://mock.com/"
+	customHostString        = "https://custommock.com/"
 	tenantDiscoveryResponse = `{
 		"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",
 		"token_endpoint_auth_methods_supported": [

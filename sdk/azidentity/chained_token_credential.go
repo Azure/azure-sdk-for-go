@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -97,7 +98,7 @@ func createChainedErrorMessage(errList []credentialUnavailableError) string {
 }
 
 func extractCredentialName(credential azcore.TokenCredential) string {
-	return fmt.Sprintf("%T", credential)[len("*azidentity."):]
+	return strings.TrimPrefix(fmt.Sprintf("%T", credential), "*azidentity.")
 }
 
 var _ azcore.TokenCredential = (*ChainedTokenCredential)(nil)

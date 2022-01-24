@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Updated the errors on all of the provided credentials to point to the troubleshooting guide.
+
 ## 0.13.0 (2022-01-11)
 
 ### Breaking Changes

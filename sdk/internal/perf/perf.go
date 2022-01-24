@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"text/tabwriter"
 	"time"
 
 	"github.com/spf13/pflag"
@@ -102,26 +103,33 @@ func runTest(p PerfTest, c chan runResult) {
 	}
 
 	start := time.Now()
-	count := 0
+	totalCount := 0
 	lastPrint := 1.0
 	perSecondCount := make([]int, 0)
+	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight|tabwriter.Debug)
 	for time.Since(start).Seconds() < float64(Duration) {
 		err := p.Run(context.Background())
 		if err != nil {
 			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
-		count += 1
+		totalCount += 1
 
 		// Every second (roughly) we print out an update
-		if time.Since(start).Seconds() > (float64(lastPrint) + 1.0) {
-			perSecondCount = append(perSecondCount, count-sumInts(perSecondCount))
-			fmt.Printf(
-				"%s\t%s\t%.2f\n",
-				commaIze(perSecondCount[len(perSecondCount)-1]),
-				commaIze(count),
+		if time.Since(start).Seconds() > float64(lastPrint) {
+			thisCount := totalCount - sumInts(perSecondCount)
+			perSecondCount = append(perSecondCount, thisCount)
+			_, err = fmt.Fprintf(
+				w,
+				"%s\t%s\t%.2f\t\n",
+				commaIze(thisCount),
+				commaIze(totalCount),
 				float64(sumInts(perSecondCount))/time.Since(start).Seconds(),
 			)
-			lastPrint = time.Since(start).Seconds()
+			if err != nil {
+				c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
+			}
+			lastPrint = time.Since(start).Seconds() + 1.0
+			w.Flush()
 		}
 	}
 
@@ -130,7 +138,7 @@ func runTest(p PerfTest, c chan runResult) {
 	// Stop the proxy now
 	stop(p.GetMetadata().Name, nil)
 	setRecordingMode("live")
-	c <- runResult{count: count, timeInSeconds: elapsed, err: nil}
+	c <- runResult{count: totalCount, timeInSeconds: elapsed, err: nil}
 }
 
 // runCleanup takes care of the semantics for tearing down a single iteration of a performance test.
@@ -166,9 +174,15 @@ func runPerfTest(p NewPerfTest) error {
 	var perfTests []PerfTest
 
 	fmt.Println("=== Test ===")
-	fmt.Println("Current\t\tTotal\t\tAverage")
-	for idx := 0; idx < Parallel; idx++ {
 
+	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight)
+	fmt.Fprintln(w, "Current\tTotal\tAverage\t")
+	err = w.Flush()
+	if err != nil {
+		return err
+	}
+
+	for idx := 0; idx < Parallel; idx++ {
 		var transporter *RecordingHTTPClient
 		var err error
 		if TestProxy != "" {
@@ -211,7 +225,7 @@ func runPerfTest(p NewPerfTest) error {
 
 	// Run Cleanup on each parallel instance
 	for _, pTest := range perfTests {
-		err := pTest.Cleanup(context.Background())
+		err = runCleanup(pTest)
 		if err != nil {
 			return err
 		}

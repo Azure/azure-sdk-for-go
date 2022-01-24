@@ -33,11 +33,11 @@ func commaIze(i int) string {
 	}
 
 	copy := i
-	ret := ""
+	ret := leftPad(copy % 1000)
+	copy /= 1000
 	for copy >= 1000 {
-		temp := copy % 1000
-		tempS := leftPad(temp)
-		ret = fmt.Sprintf("%s,%s", ret, tempS)
+		temp := leftPad(copy % 1000)
+		ret = fmt.Sprintf("%s,%s", temp, ret)
 
 		copy /= 1000
 	}
@@ -46,5 +46,5 @@ func commaIze(i int) string {
 		return ret
 	}
 
-	return fmt.Sprintf("%d%s", copy, ret)
+	return fmt.Sprintf("%d,%s", copy, ret)
 }

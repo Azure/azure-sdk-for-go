@@ -1,0 +1,128 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/definition1375258847?api-version=2021-06-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/definition1375258847?api-version=2021-06-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "432",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armpolicy/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": "{\u0022properties\u0022:{\u0022description\u0022:\u0022test case\u0022,\u0022parameters\u0022:{\u0022prefix\u0022:{\u0022metadata\u0022:{\u0022description\u0022:\u0022prefix description\u0022,\u0022displayName\u0022:\u0022test case prefix\u0022},\u0022type\u0022:\u0022String\u0022},\u0022suffix\u0022:{\u0022metadata\u0022:{\u0022description\u0022:\u0022suffix description\u0022,\u0022displayName\u0022:\u0022test case suffix\u0022},\u0022type\u0022:\u0022String\u0022}},\u0022policyRule\u0022:{\u0022if\u0022:{\u0022not\u0022:{\u0022field\u0022:\u0022name\u0022,\u0022like\u0022:\u0022[concat(parameters(\u0027prefix\u0027), \u0027*\u0027, parameters(\u0027suffix\u0027))]\u0022}},\u0022then\u0022:{\u0022effect\u0022:\u0022deny\u0022}},\u0022policyType\u0022:\u0022Custom\u0022}}",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1140",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 06 Jan 2022 04:00:24 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Kestrel",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "918b676a-205d-40d6-acfd-392c1cef5ca1",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "918b676a-205d-40d6-acfd-392c1cef5ca1",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220106T040024Z:918b676a-205d-40d6-acfd-392c1cef5ca1"
+      },
+      "ResponseBody": {
+        "properties": {
+          "policyType": "Custom",
+          "mode": "Indexed",
+          "description": "test case",
+          "metadata": {
+            "createdBy": "81fa2eb4-9d84-4df5-ad32-6c22e2feb57e",
+            "createdOn": "2022-01-06T02:39:10.778073Z",
+            "updatedBy": "81fa2eb4-9d84-4df5-ad32-6c22e2feb57e",
+            "updatedOn": "2022-01-06T04:00:24.7318802Z"
+          },
+          "parameters": {
+            "prefix": {
+              "type": "String",
+              "metadata": {
+                "description": "prefix description",
+                "displayName": "test case prefix"
+              }
+            },
+            "suffix": {
+              "type": "String",
+              "metadata": {
+                "description": "suffix description",
+                "displayName": "test case suffix"
+              }
+            }
+          },
+          "policyRule": {
+            "if": {
+              "not": {
+                "field": "name",
+                "like": "[concat(parameters(\u0027prefix\u0027), \u0027*\u0027, parameters(\u0027suffix\u0027))]"
+              }
+            },
+            "then": {
+              "effect": "deny"
+            }
+          }
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/definition1375258847",
+        "type": "Microsoft.Authorization/policyDefinitions",
+        "name": "definition1375258847",
+        "systemData": {
+          "createdBy": "a1fc368b-7f40-4802-8fa1-260d3a6ec34b",
+          "createdByType": "Application",
+          "createdAt": "2022-01-06T02:39:10.7421205Z",
+          "lastModifiedBy": "a1fc368b-7f40-4802-8fa1-260d3a6ec34b",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-01-06T04:00:24.7322432Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policySetDefinitions/policyset1375258847?api-version=2021-06-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policySetDefinitions/policyset1375258847?api-version=2021-06-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "390",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armpolicy/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": "{\u0022properties\u0022:{\u0022parameters\u0022:{\u0022namePrefix\u0022:{\u0022type\u0022:\u0022String\u0022}},\u0022policyDefinitions\u0022:[{\u0022parameters\u0022:{\u0022prefix\u0022:{\u0022value\u0022:{\u0022value\u0022:\u0022[parameters(\u0027namePrefix\u0027)]\u0022}},\u0022suffix\u0022:{\u0022value\u0022:{\u0022value\u0022:\u0022-LC\u0022}}},\u0022policyDefinitionId\u0022:\u0022/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/definition1375258847\u0022,\u0022policyDefinitionReferenceId\u0022:\u0022Resource_Naming\u0022}]}}",
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "289",
+        "Content-Type": "application/json",
+        "Date": "Thu, 06 Jan 2022 04:00:25 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Kestrel",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "058bb137-c090-4fcb-83cb-6309e188e442",
+        "x-ms-ratelimit-remaining-subscription-writes": "1198",
+        "x-ms-request-id": "058bb137-c090-4fcb-83cb-6309e188e442",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220106T040026Z:058bb137-c090-4fcb-83cb-6309e188e442"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidPolicyParameterType",
+          "message": "The policy parameter \u0027prefix\u0027 does not match the expected parameter type defined in the policy definition \u0027definition1375258847\u0027. Details \u0027The expected policy parameter type: \u0027String\u0027. The actual policy parameter type \u0027Object\u0027.\u0027."
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

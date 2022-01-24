@@ -1,0 +1,89 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/definition2465224889?api-version=2021-06-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/definition2465224889?api-version=2021-06-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "432",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armpolicy/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": "{\u0022properties\u0022:{\u0022description\u0022:\u0022test case\u0022,\u0022parameters\u0022:{\u0022prefix\u0022:{\u0022metadata\u0022:{\u0022description\u0022:\u0022prefix description\u0022,\u0022displayName\u0022:\u0022test case prefix\u0022},\u0022type\u0022:\u0022String\u0022},\u0022suffix\u0022:{\u0022metadata\u0022:{\u0022description\u0022:\u0022suffix description\u0022,\u0022displayName\u0022:\u0022test case suffix\u0022},\u0022type\u0022:\u0022String\u0022}},\u0022policyRule\u0022:{\u0022if\u0022:{\u0022not\u0022:{\u0022field\u0022:\u0022name\u0022,\u0022like\u0022:\u0022[concat(parameters(\u0027prefix\u0027), \u0027*\u0027, parameters(\u0027suffix\u0027))]\u0022}},\u0022then\u0022:{\u0022effect\u0022:\u0022deny\u0022}},\u0022policyType\u0022:\u0022Custom\u0022}}",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1141",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 06 Jan 2022 05:36:33 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Kestrel",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "b498145e-27e7-4182-8529-0993c8925416",
+        "x-ms-ratelimit-remaining-subscription-writes": "1196",
+        "x-ms-request-id": "b498145e-27e7-4182-8529-0993c8925416",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220106T053633Z:b498145e-27e7-4182-8529-0993c8925416"
+      },
+      "ResponseBody": {
+        "properties": {
+          "policyType": "Custom",
+          "mode": "Indexed",
+          "description": "test case",
+          "metadata": {
+            "createdBy": "81fa2eb4-9d84-4df5-ad32-6c22e2feb57e",
+            "createdOn": "2022-01-06T01:57:16.4984532Z",
+            "updatedBy": "81fa2eb4-9d84-4df5-ad32-6c22e2feb57e",
+            "updatedOn": "2022-01-06T05:36:33.5265529Z"
+          },
+          "parameters": {
+            "prefix": {
+              "type": "String",
+              "metadata": {
+                "description": "prefix description",
+                "displayName": "test case prefix"
+              }
+            },
+            "suffix": {
+              "type": "String",
+              "metadata": {
+                "description": "suffix description",
+                "displayName": "test case suffix"
+              }
+            }
+          },
+          "policyRule": {
+            "if": {
+              "not": {
+                "field": "name",
+                "like": "[concat(parameters(\u0027prefix\u0027), \u0027*\u0027, parameters(\u0027suffix\u0027))]"
+              }
+            },
+            "then": {
+              "effect": "deny"
+            }
+          }
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/definition2465224889",
+        "type": "Microsoft.Authorization/policyDefinitions",
+        "name": "definition2465224889",
+        "systemData": {
+          "createdBy": "a1fc368b-7f40-4802-8fa1-260d3a6ec34b",
+          "createdByType": "Application",
+          "createdAt": "2022-01-06T01:57:16.3221956Z",
+          "lastModifiedBy": "a1fc368b-7f40-4802-8fa1-260d3a6ec34b",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-01-06T05:36:33.4840109Z"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

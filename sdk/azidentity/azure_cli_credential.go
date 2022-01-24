@@ -132,7 +132,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 				// if there's no output in stderr report the error message instead
 				msg = err.Error()
 			}
-			troubleshootMessage := fmt.Sprintf("%s%s", msg, azureCliTroubleshootMessage)
+			troubleshootMessage := fmt.Sprintf("%s%s", msg, azureCliCredentialTroubleshootMessage)
 			return nil, newCredentialUnavailableError("Azure CLI Credential", troubleshootMessage)
 		}
 

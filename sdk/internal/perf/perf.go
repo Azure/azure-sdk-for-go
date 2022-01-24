@@ -38,11 +38,6 @@ type PerfTest interface {
 	GlobalCleanup(context.Context) error
 }
 
-func getLimitedContext(t time.Duration) (context.Context, context.CancelFunc) {
-	ctx := context.Background()
-	return context.WithTimeout(ctx, t)
-}
-
 func runGlobalSetup(p PerfTest) error {
 	fmt.Println("Running `GlobalSetup`")
 
@@ -213,7 +208,13 @@ func runPerfTest(p PerfTest) error {
 
 	secondsPerOp := 1.0 / opsPerSecond
 	weightedAvgSec := float64(totalOperations) / opsPerSecond
-	fmt.Printf("Completed %d operations in a weighted-average of %.2fs (%d ops/s, %.3f s/op)", totalOperations, weightedAvgSec, int(opsPerSecond), secondsPerOp)
+	fmt.Printf(
+		"Completed %s operations in a weighted-average of %.2fs (%s ops/s, %.3f s/op)",
+		commaIze(totalOperations),
+		weightedAvgSec,
+		commaIze(int(opsPerSecond)),
+		secondsPerOp,
+	)
 
 	return err
 }

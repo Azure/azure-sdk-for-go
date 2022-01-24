@@ -4,6 +4,8 @@ go 1.17
 
 replace github.com/Azure/azure-sdk-for-go/sdk/internal => ../../../../internal
 
+replace github.com/Azure/azure-sdk-for-go/sdk/storage/azblob => ../../.
+
 require github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v0.2.0
 
 require (

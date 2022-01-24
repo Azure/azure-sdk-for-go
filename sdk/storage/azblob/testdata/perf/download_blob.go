@@ -14,21 +14,22 @@ import (
 )
 
 type downloadPerfTest struct {
+	perf.PerfTestOptions
 	blobName        string
 	containerClient azblob.ContainerClient
 	blobClient      azblob.BlockBlobClient
 	data            string
 }
 
-func (m *downloadPerfTest) GlobalSetup(ctx context.Context) error {
-	m.blobName = "downloadtest"
+func (d *downloadPerfTest) GlobalSetup(ctx context.Context) error {
+	d.blobName = "downloadtest"
 
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
 		return fmt.Errorf("the environment variable 'AZBLOB_CONNECTION_STRING' could not be found")
 	}
 
-	t, err := perf.NewProxyTransport(&perf.TransportOptions{TestName: m.GetMetadata()})
+	t, err := perf.NewProxyTransport(&perf.TransportOptions{TestName: d.GetMetadata().Name})
 	if err != nil {
 		return err
 	}
@@ -36,39 +37,49 @@ func (m *downloadPerfTest) GlobalSetup(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	m.containerClient = containerClient
-	_, err = m.containerClient.Create(context.Background(), nil)
+	d.containerClient = containerClient
+	_, err = d.containerClient.Create(context.Background(), nil)
 	if err != nil {
 		return err
 	}
 
-	m.blobClient = m.containerClient.NewBlockBlobClient(m.blobName)
+	d.blobClient = d.containerClient.NewBlockBlobClient(d.blobName)
 
-	m.data = "This is all placeholder random data for now. This is all placeholder random data for now. This is all placeholder random data for now."
+	d.data = "This is all placeholder random data for now. This is all placeholder random data for now. This is all placeholder random data for now."
 
-	_, err = m.blobClient.Upload(context.Background(), NopCloser(bytes.NewReader([]byte(m.data))), nil)
+	_, err = d.blobClient.Upload(context.Background(), NopCloser(bytes.NewReader([]byte(d.data))), nil)
 
 	return err
 }
 
-func (m *downloadPerfTest) GlobalTearDown(ctx context.Context) error {
-	_, err := m.containerClient.Delete(context.Background(), nil)
+func (d *downloadPerfTest) GlobalCleanup(ctx context.Context) error {
+	_, err := d.containerClient.Delete(context.Background(), nil)
 	return err
 }
 
-func (m *downloadPerfTest) Setup(ctx context.Context) error {
+func (d *downloadPerfTest) Setup(ctx context.Context) error {
 	return nil
 }
 
-func (m *downloadPerfTest) Run(ctx context.Context) error {
-	_, err := m.blobClient.Download(ctx, nil)
+func (d *downloadPerfTest) Run(ctx context.Context) error {
+	_, err := d.blobClient.Download(ctx, nil)
 	return err
 }
 
-func (m *downloadPerfTest) TearDown(ctx context.Context) error {
+func (d *downloadPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
-func (m *downloadPerfTest) GetMetadata() string {
-	return "BlobDownloadTest"
+func (d *downloadPerfTest) GetMetadata() perf.PerfTestOptions {
+	return d.PerfTestOptions
+}
+
+func NewDownloadTest(options *perf.PerfTestOptions) perf.PerfTest {
+	if options == nil {
+		options = &perf.PerfTestOptions{}
+	}
+	options.Name = "BlobDownloadTest"
+	return &downloadPerfTest{
+		PerfTestOptions: *options,
+	}
 }

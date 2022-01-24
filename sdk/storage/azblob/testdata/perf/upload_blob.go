@@ -9,10 +9,12 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
 type uploadPerfTest struct {
+	perf.PerfTestOptions
 	blobName        string
 	containerClient azblob.ContainerClient
 	blobClient      azblob.BlockBlobClient
@@ -20,6 +22,7 @@ type uploadPerfTest struct {
 }
 
 func (m *uploadPerfTest) GlobalSetup(ctx context.Context) error {
+	fmt.Println("Running GlobalSetup")
 	m.blobName = "uploadtest"
 
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
@@ -44,7 +47,7 @@ func (m *uploadPerfTest) GlobalSetup(ctx context.Context) error {
 	return nil
 }
 
-func (m *uploadPerfTest) GlobalTearDown(ctx context.Context) error {
+func (m *uploadPerfTest) GlobalCleanup(ctx context.Context) error {
 	_, err := m.containerClient.Delete(context.Background(), nil)
 	return err
 }
@@ -58,14 +61,20 @@ func (m *uploadPerfTest) Run(ctx context.Context) error {
 	return err
 }
 
-func (m *uploadPerfTest) TearDown(ctx context.Context) error {
+func (m *uploadPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
-func (m *uploadPerfTest) GetMetadata() string {
-	return "BlobUploadTest"
+func (m *uploadPerfTest) GetMetadata() perf.PerfTestOptions {
+	return m.PerfTestOptions
 }
 
-func (m *uploadPerfTest) Arguments() {
-
+func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
+	if options == nil {
+		options = &perf.PerfTestOptions{}
+	}
+	options.Name = "BlobUploadTest"
+	return &uploadPerfTest{
+		PerfTestOptions: *options,
+	}
 }

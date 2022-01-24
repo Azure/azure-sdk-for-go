@@ -10,10 +10,12 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
 type listBlobPerfTest struct {
+	perf.PerfTestOptions
 	containerName   string
 	blobName        string
 	containerClient azblob.ContainerClient
@@ -55,7 +57,7 @@ func (m *listBlobPerfTest) GlobalSetup(ctx context.Context) error {
 	return nil
 }
 
-func (m *listBlobPerfTest) GlobalTearDown(ctx context.Context) error {
+func (m *listBlobPerfTest) GlobalCleanup(ctx context.Context) error {
 	_, err := m.containerClient.Delete(context.Background(), nil)
 	return err
 }
@@ -73,10 +75,20 @@ func (m *listBlobPerfTest) Run(ctx context.Context) error {
 	return pager.Err()
 }
 
-func (m *listBlobPerfTest) TearDown(ctx context.Context) error {
+func (m *listBlobPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
-func (m *listBlobPerfTest) GetMetadata() string {
-	return "BlobListTest"
+func (m *listBlobPerfTest) GetMetadata() perf.PerfTestOptions {
+	return m.PerfTestOptions
+}
+
+func NewListTest(options *perf.PerfTestOptions) perf.PerfTest {
+	if options == nil {
+		options = &perf.PerfTestOptions{}
+	}
+	options.Name = "BlobListTest"
+	return &listBlobPerfTest{
+		PerfTestOptions: *options,
+	}
 }

@@ -120,14 +120,25 @@ func ExampleClient_UpdateCertificateProperties() {
 	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", &azcertificates.UpdateCertificatePropertiesOptions{
 		Version: "myNewVersion",
 		CertificateAttributes: &azcertificates.CertificateAttributes{
-			Attributes: azcertificates.Attributes{Enabled: to.BoolPtr(false)},
+			Attributes: azcertificates.Attributes{
+				Enabled: to.BoolPtr(false),
+				Expires: to.TimePtr(time.Now().Add(72 * time.Hour)),
+			},
 		},
+		CertificatePolicy: &azcertificates.CertificatePolicy{
+			IssuerParameters: &azcertificates.IssuerParameters{
+				Name: to.StringPtr("Self"),
+			},
+		},
+		Tags: map[string]string{"Tag1": "Val1"},
 	})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(*resp.ID)
 	fmt.Println(*resp.CertificateBundle.Attributes.Enabled)
+	fmt.Println(resp.Tags)
+	fmt.Println(*resp.Policy.IssuerParameters.Name)
 }
 
 func ExampleClient_ListCertificates() {
@@ -155,4 +166,32 @@ func ExampleClient_ListCertificates() {
 	if poller.Err() != nil {
 		panic(err)
 	}
+}
+
+func ExampleClient_BeginDeleteCertificate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	vaultURL, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
+	if !ok {
+		log.Fatalf("Could not find 'AZURE_KEYVAULT_URL' in environment variables")
+	}
+
+	client, err := azcertificates.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	pollerResp, err := client.BeginDeleteCertificate(context.TODO(), "certToDelete", nil)
+	if err != nil {
+		panic(err)
+	}
+	finalResp, err := pollerResp.PollUntilDone(context.TODO(), time.Second)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Deleted certificate with ID: ", *finalResp.ID)
 }

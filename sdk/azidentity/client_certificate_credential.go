@@ -160,7 +160,7 @@ func ParseCertificates(certData []byte, password []byte) ([]*x509.Certificate, c
 		return nil, nil, errors.New("found no certificate")
 	}
 	if pk == nil {
-		return nil, nil, errors.New("found no certificate")
+		return nil, nil, errors.New("found no private key")
 	}
 	return certs, pk, nil
 }

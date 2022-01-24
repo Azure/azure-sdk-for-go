@@ -96,25 +96,24 @@ const (
 		"cloud_graph_host_name": "graph.windows.net",
 		"msgraph_host": "graph.microsoft.com",
 		"rbac_url": "https://pas.windows.net"
-		}
+		}`
 )
 
 func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.ResponsePredicate {
 	return func(req *http.Request) bool {
 		body, err := ioutil.ReadAll(req.Body)
-		if err == nil {
-			bodystr := string(body)
-			kvps := strings.Split(bodystr, "&")
-			assertion := strings.Split(kvps[0], "=")
-			token, _ := jwt.Parse(assertion[1], nil)
-			if token == nil {
-				t.Fatalf("Failed to parse the JWT token: %s.", assertion[1])
-			}
-			if _, ok := token.Header[headerName]; !ok {
-				t.Fatalf("JWT did not contain the %s header", headerName)
-			}
-		} else {
+		if err != nil {
 			t.Fatal("Expected a request with the JWT in the body.")
+		}
+		bodystr := string(body)
+		kvps := strings.Split(bodystr, "&")
+		assertion := strings.Split(kvps[0], "=")
+		token, _ := jwt.Parse(assertion[1], nil)
+		if token == nil {
+			t.Fatalf("Failed to parse the JWT token: %s.", assertion[1])
+		}
+		if _, ok := token.Header[headerName]; !ok {
+			t.Fatalf("JWT did not contain the %s header", headerName)
 		}
 		return true
 	}

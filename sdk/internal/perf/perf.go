@@ -88,6 +88,16 @@ func runTest(p PerfTest, c chan runResult) {
 		start(p.GetMetadata(), nil)
 	}
 
+	if WarmUp > 0 {
+		warmUpStart := time.Now()
+		for time.Since(warmUpStart).Seconds() < float64(WarmUp) {
+			err := p.Run(context.Background())
+			if err != nil {
+				c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
+			}
+		}
+	}
+
 	start := time.Now()
 	count := 0
 	for time.Since(start).Seconds() < float64(Duration) {

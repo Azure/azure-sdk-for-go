@@ -30,7 +30,7 @@ const (
 const (
 	envHostString              = "https://mock.com/"
 	customHostString           = "https://custommock.com/"
-	getTenantDiscoveryResponse = `{
+	tenantDiscoveryResponse = `{
 		"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",
 		"token_endpoint_auth_methods_supported": [
 		"client_secret_post",
@@ -97,22 +97,6 @@ const (
 		"msgraph_host": "graph.microsoft.com",
 		"rbac_url": "https://pas.windows.net"
 		}
-		},
-		{
-		"RequestUri": "https://login.microsoftonline.com/fake-tenant/oauth2/v2.0/token",
-		"RequestMethod": "POST",
-		"RequestHeaders": {
-		":authority": "localhost:5001",
-		":method": "POST",
-		":path": "/fake-tenant/oauth2/v2.0/token",
-		":scheme": "https",
-		"Accept-Encoding": "gzip",
-		"Content-Length": "2",
-		"Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-		"User-Agent": "azsdk-go-azidentity/v0.12.1 azsdk-go-azcore/v0.21.0 (go1.16.7; linux)"
-		},
-		"RequestBody": {},
-		"StatusCode": 400,`
 )
 
 func validateJWTRequestContainsHeader(t *testing.T, headerName string) mock.ResponsePredicate {

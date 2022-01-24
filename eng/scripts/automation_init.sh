@@ -1,5 +1,3 @@
-#!/bin/bash
-
 if [ -z $1 ]; then
     echo "Please input outputfile"
     exit 1
@@ -12,9 +10,11 @@ if [ "$2" ]; then
   echo $2
   outputFile=$2
 fi
+
 set -x
 set -e
-echo "$outputFile"
+outputFile="$(realpath $outputFile)"
+echo "output json file: $outputFile"
 
 TMPDIR="/tmp"
 if [ ! "$(go version | awk '{print $3}' | cut -c 3-6)" = "1.16" ]
@@ -53,7 +53,7 @@ if [ ! -L "$GOPATH/bin/pwsh.exe" ]; then
   ln -s /usr/bin/pwsh $GOPATH/bin/pwsh.exe
 fi
 
-cat > "${outputFile}" << EOF
+cat > $outputFile << EOF
 {
   "envs": {
     "PATH": "$GOPATH:$PATH",

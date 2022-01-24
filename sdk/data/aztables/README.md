@@ -301,12 +301,12 @@ To obtain more detailed logging, including request/response bodies and header va
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
-log.SetListener(func(cls log.Classification, msg string) {
+azlog.SetListener(func(cls log.Classification, msg string) {
 		fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs
-log.SetClassifications(log.Request, log.Response)
+azlog.SetClassifications(log.Request, log.Response)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.

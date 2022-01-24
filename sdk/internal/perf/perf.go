@@ -10,7 +10,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/spf13/pflag"
 )
 
@@ -26,7 +25,7 @@ var (
 type PerfTest interface {
 	// GetMetadata returns the name of the test
 	// TODO: Add local flags to the GetMetadata
-	GetMetadata() string
+	GetMetadata() PerfTestOptions
 
 	GlobalSetup(context.Context) error
 
@@ -38,6 +37,14 @@ type PerfTest interface {
 
 	GlobalCleanup(context.Context) error
 }
+
+type PerfTestOptions struct {
+	ParallelIndex int
+	ProxyInstance *RecordingHTTPClient
+	Name          string
+}
+
+type NewPerfTest func(options *PerfTestOptions) PerfTest
 
 func runGlobalSetup(p PerfTest) error {
 	setRecordingMode("live")
@@ -72,16 +79,16 @@ func runTest(p PerfTest, c chan runResult) {
 
 		// 2nd request goes through in Record mode
 		setRecordingMode("record")
-		start(p.GetMetadata(), nil)
+		start(p.GetMetadata().Name, nil)
 		err = p.Run(context.Background())
 		if err != nil {
 			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
-		stop(p.GetMetadata(), nil)
+		stop(p.GetMetadata().Name, nil)
 
 		// All ensuing requests go through in Playback mode
 		setRecordingMode("playback")
-		start(p.GetMetadata(), nil)
+		start(p.GetMetadata().Name, nil)
 	}
 
 	if WarmUp > 0 {
@@ -96,7 +103,7 @@ func runTest(p PerfTest, c chan runResult) {
 
 	start := time.Now()
 	count := 0
-	lastPrint := 1
+	lastPrint := 1.0
 	perSecondCount := make([]int, 0)
 	for time.Since(start).Seconds() < float64(Duration) {
 		err := p.Run(context.Background())
@@ -105,22 +112,23 @@ func runTest(p PerfTest, c chan runResult) {
 		}
 		count += 1
 
-		if time.Since(start).Seconds() > float64(lastPrint) {
+		// Every second (roughly) we print out an update
+		if time.Since(start).Seconds() > (float64(lastPrint) + 1.0) {
 			perSecondCount = append(perSecondCount, count-sumInts(perSecondCount))
 			fmt.Printf(
 				"%s\t%s\t%.2f\n",
 				commaIze(perSecondCount[len(perSecondCount)-1]),
 				commaIze(count),
-				float64(sumInts(perSecondCount))/float64(len(perSecondCount)),
+				float64(sumInts(perSecondCount))/time.Since(start).Seconds(),
 			)
-			lastPrint += 1
+			lastPrint = time.Since(start).Seconds()
 		}
 	}
 
 	elapsed := time.Since(start).Seconds()
 
 	// Stop the proxy now
-	stop(p.GetMetadata(), nil)
+	stop(p.GetMetadata().Name, nil)
 	setRecordingMode("live")
 	c <- runResult{count: count, timeInSeconds: elapsed, err: nil}
 }
@@ -148,23 +156,42 @@ type runResult struct {
 	err           error
 }
 
-func runPerfTest(p PerfTest) error {
-	err := runGlobalSetup(p)
+func runPerfTest(p NewPerfTest) error {
+	err := runGlobalSetup(p(nil))
 	if err != nil {
 		return err
 	}
 
-	runSetup(p)
-
 	var channels []chan runResult
+	var perfTests []PerfTest
 
 	fmt.Println("=== Test ===")
 	fmt.Println("Current\t\tTotal\t\tAverage")
 	for idx := 0; idx < Parallel; idx++ {
+
+		var transporter *RecordingHTTPClient
+		var err error
+		if TestProxy != "" {
+			transporter, err = NewProxyTransport(nil)
+			if err != nil {
+				return err
+			}
+		}
+
+		perfTest := p(&PerfTestOptions{
+			ParallelIndex: idx,
+			ProxyInstance: transporter,
+		})
+		perfTests = append(perfTests, perfTest)
+
+		// Run the setup for a single instance
+		runSetup(perfTest)
+
+		// Create a thread for running a single test
 		wg.Add(1)
 		c := make(chan runResult, 1) // Create a buffered channel
 		channels = append(channels, c)
-		go runTest(p, c)
+		go runTest(perfTest, c)
 	}
 
 	wg.Wait()
@@ -182,12 +209,15 @@ func runPerfTest(p PerfTest) error {
 		totalOperations += result.count
 	}
 
-	err = runCleanup(p)
-	if err != nil {
-		return err
+	// Run Cleanup on each parallel instance
+	for _, pTest := range perfTests {
+		err := pTest.Cleanup(context.Background())
+		if err != nil {
+			return err
+		}
 	}
 
-	err = runGlobalCleanup(p)
+	err = runGlobalCleanup(p(nil))
 
 	fmt.Println("\n=== Results ===")
 	secondsPerOp := 1.0 / opsPerSecond
@@ -204,13 +234,14 @@ func runPerfTest(p PerfTest) error {
 }
 
 // testsToRun trims the slice of PerfTest to only those that are flagged as running.
-func testsToRun(registered []PerfTest) PerfTest {
-	var ret []PerfTest
+func testsToRun(registered []NewPerfTest) NewPerfTest {
+	var ret []NewPerfTest
 
 	args := os.Args[1:]
 	for _, r := range registered {
+		p := r(nil)
 		for _, arg := range args {
-			if r.GetMetadata() == arg {
+			if p.GetMetadata().Name == arg {
 				ret = append(ret, r)
 			}
 		}
@@ -227,7 +258,7 @@ func testsToRun(registered []PerfTest) PerfTest {
 }
 
 // Run runs all individual tests
-func Run(perfTests []PerfTest) {
+func Run(perfTests []NewPerfTest) {
 	// Start with adding all of our arguments
 	pflag.IntVarP(&Duration, "duration", "d", 10, "Duration of the test in seconds. Default is 10.")
 	pflag.StringVarP(&TestProxy, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
@@ -246,12 +277,13 @@ func Run(perfTests []PerfTest) {
 	if perfTestToRun == nil {
 		fmt.Println("Available performance tests:")
 		for _, p := range perfTests {
-			fmt.Printf("\t%s\n", p.GetMetadata())
+			c := p(nil)
+			fmt.Printf("\t%s\n", c.GetMetadata().Name)
 		}
 		return
 	}
 
-	fmt.Printf("\tRunning %s\n", perfTestToRun.GetMetadata())
+	fmt.Printf("\tRunning %s\n", perfTestToRun(nil).GetMetadata().Name)
 
 	err := runPerfTest(perfTestToRun)
 	if err != nil {

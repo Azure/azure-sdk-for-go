@@ -1,8 +1,14 @@
 package main
 
-import "context"
+import (
+	"context"
 
-type noOpPerfTest struct{}
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
+)
+
+type noOpPerfTest struct {
+	perf.PerfTestOptions
+}
 
 func (n *noOpPerfTest) GlobalSetup(ctx context.Context) error {
 	return nil
@@ -24,6 +30,16 @@ func (n *noOpPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
-func (n *noOpPerfTest) GetMetadata() string {
-	return "NoOpTest"
+func (n *noOpPerfTest) GetMetadata() perf.PerfTestOptions {
+	return n.PerfTestOptions
+}
+
+func NewNoOpTest(options *perf.PerfTestOptions) perf.PerfTest {
+	if options == nil {
+		options = &perf.PerfTestOptions{}
+	}
+	options.Name = "NoOpTest"
+	return &noOpPerfTest{
+		PerfTestOptions: *options,
+	}
 }

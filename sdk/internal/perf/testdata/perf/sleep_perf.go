@@ -4,16 +4,16 @@ import (
 	"context"
 	"math"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 )
 
 type sleepPerfTest struct {
-	InstanceCount int
-	secondsPerOp  int
+	perf.PerfTestOptions
+	secondsPerOp int
 }
 
 func (s *sleepPerfTest) GlobalSetup(ctx context.Context) error {
-	s.InstanceCount += 1
-	s.secondsPerOp = int(math.Pow(2.0, float64(s.InstanceCount)))
 	return nil
 }
 
@@ -22,6 +22,7 @@ func (s *sleepPerfTest) GlobalCleanup(ctx context.Context) error {
 }
 
 func (s *sleepPerfTest) Setup(ctx context.Context) error {
+	s.secondsPerOp = int(math.Pow(2.0, float64(s.ParallelIndex)))
 	return nil
 }
 
@@ -34,6 +35,17 @@ func (s *sleepPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
-func (s *sleepPerfTest) GetMetadata() string {
-	return "SleepTest"
+func (s *sleepPerfTest) GetMetadata() perf.PerfTestOptions {
+	return s.PerfTestOptions
+}
+
+
+func NewSleepTest(options *perf.PerfTestOptions) perf.PerfTest {
+	if options == nil {
+		options = &perf.PerfTestOptions{}
+	}
+	options.Name = "SleepTest"
+	return &sleepPerfTest{
+		PerfTestOptions: *options,
+	}
 }

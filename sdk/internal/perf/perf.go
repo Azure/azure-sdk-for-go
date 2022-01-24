@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/spf13/pflag"
 )
 
@@ -39,8 +40,6 @@ type PerfTest interface {
 }
 
 func runGlobalSetup(p PerfTest) error {
-	fmt.Println("Running `GlobalSetup`")
-
 	setRecordingMode("live")
 	err := p.GlobalSetup(context.Background())
 	if err != nil {
@@ -50,8 +49,6 @@ func runGlobalSetup(p PerfTest) error {
 }
 
 func runSetup(p PerfTest) error {
-	fmt.Println("Running `Setup`")
-
 	err := p.Setup(context.Background())
 	if err != nil {
 		return err
@@ -63,7 +60,6 @@ func runSetup(p PerfTest) error {
 // of seconds the test ran as a float64, and any errors.
 func runTest(p PerfTest, c chan runResult) {
 	defer wg.Done()
-	fmt.Println("Beginning `Run`")
 
 	// If we are using the test proxy need to set up the in-memory recording.
 	if TestProxy != "" {
@@ -100,12 +96,25 @@ func runTest(p PerfTest, c chan runResult) {
 
 	start := time.Now()
 	count := 0
+	lastPrint := 1
+	perSecondCount := make([]int, 0)
 	for time.Since(start).Seconds() < float64(Duration) {
 		err := p.Run(context.Background())
 		if err != nil {
 			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
 		count += 1
+
+		if time.Since(start).Seconds() > float64(lastPrint) {
+			perSecondCount = append(perSecondCount, count-sumInts(perSecondCount))
+			fmt.Printf(
+				"%s\t%s\t%.2f\n",
+				commaIze(perSecondCount[len(perSecondCount)-1]),
+				commaIze(count),
+				float64(sumInts(perSecondCount))/float64(len(perSecondCount)),
+			)
+			lastPrint += 1
+		}
 	}
 
 	elapsed := time.Since(start).Seconds()
@@ -118,8 +127,6 @@ func runTest(p PerfTest, c chan runResult) {
 
 // runCleanup takes care of the semantics for tearing down a single iteration of a performance test.
 func runCleanup(p PerfTest) error {
-	fmt.Println("Running `Cleanup`")
-
 	err := p.Cleanup(context.Background())
 	if err != nil {
 		return err
@@ -128,8 +135,6 @@ func runCleanup(p PerfTest) error {
 }
 
 func runGlobalCleanup(p PerfTest) error {
-	fmt.Println("Running `GlobalCleanup`")
-
 	err := p.GlobalCleanup(context.Background())
 	if err != nil {
 		return err
@@ -143,39 +148,6 @@ type runResult struct {
 	err           error
 }
 
-func leftPad(i int) string {
-	if i >= 100 {
-		return fmt.Sprintf("%d", i)
-	} else if i >= 10 {
-		return fmt.Sprintf("0%d", i)
-	} else if i > 0 {
-		return fmt.Sprintf("00%d", i)
-	}
-	return "000"
-}
-
-func commaIze(i int) string {
-	if i < 1000 {
-		return fmt.Sprintf("%d", i)
-	}
-
-	copy := i
-	ret := ""
-	for copy >= 1000 {
-		temp := copy % 1000
-		tempS := leftPad(temp)
-		ret = fmt.Sprintf("%s,%s", ret, tempS)
-
-		copy /= 1000
-	}
-
-	if copy == 0 {
-		return ret
-	}
-
-	return fmt.Sprintf("%d%s", copy, ret)
-}
-
 func runPerfTest(p PerfTest) error {
 	err := runGlobalSetup(p)
 	if err != nil {
@@ -186,6 +158,8 @@ func runPerfTest(p PerfTest) error {
 
 	var channels []chan runResult
 
+	fmt.Println("=== Test ===")
+	fmt.Println("Current\t\tTotal\t\tAverage")
 	for idx := 0; idx < Parallel; idx++ {
 		wg.Add(1)
 		c := make(chan runResult, 1) // Create a buffered channel
@@ -198,12 +172,11 @@ func runPerfTest(p PerfTest) error {
 	opsPerSecond := 0.0
 	totalOperations := 0
 	// Get the results from the channels
-	for idx, channel := range channels {
+	for _, channel := range channels {
 		result := <-channel
 		if err != nil {
 			return err
 		}
-		printIteration(idx, result.timeInSeconds, result.count)
 
 		opsPerSecond += float64(result.count) / result.timeInSeconds
 		totalOperations += result.count
@@ -216,6 +189,7 @@ func runPerfTest(p PerfTest) error {
 
 	err = runGlobalCleanup(p)
 
+	fmt.Println("\n=== Results ===")
 	secondsPerOp := 1.0 / opsPerSecond
 	weightedAvgSec := float64(totalOperations) / opsPerSecond
 	fmt.Printf(
@@ -229,13 +203,8 @@ func runPerfTest(p PerfTest) error {
 	return err
 }
 
-func printIteration(idx int, t float64, count int) {
-	perSecond := float64(count) / t
-	fmt.Printf("Thread #%d: Completed %d operations in %.4f seconds. Averaged %.4f operations per second.\n", idx+1, count, t, perSecond)
-}
-
 // testsToRun trims the slice of PerfTest to only those that are flagged as running.
-func testsToRun(registered []PerfTest) []PerfTest {
+func testsToRun(registered []PerfTest) PerfTest {
 	var ret []PerfTest
 
 	args := os.Args[1:]
@@ -250,9 +219,11 @@ func testsToRun(registered []PerfTest) []PerfTest {
 	if len(ret) > 1 {
 		fmt.Println("Performance only supports running one test per process. Run the performance multiple times per performance for each test you want to run.")
 		os.Exit(1)
+	} else if len(ret) == 0 {
+		return nil
 	}
 
-	return ret
+	return ret[0]
 }
 
 // Run runs all individual tests
@@ -266,13 +237,13 @@ func Run(perfTests []PerfTest) {
 	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
 	pflag.CommandLine.MarkHidden("debug")
 
-	// Need to add individual performance tests local flags
+	// TODO: add individual performance tests local flags
 
 	pflag.Parse()
 
-	perfTestsToRun := testsToRun(perfTests)
+	perfTestToRun := testsToRun(perfTests)
 
-	if len(perfTestsToRun) == 0 {
+	if perfTestToRun == nil {
 		fmt.Println("Available performance tests:")
 		for _, p := range perfTests {
 			fmt.Printf("\t%s\n", p.GetMetadata())
@@ -280,16 +251,10 @@ func Run(perfTests []PerfTest) {
 		return
 	}
 
-	fmt.Println("======= Pre Run Summary =======")
-	for _, p := range perfTestsToRun {
-		fmt.Printf("\tRunning %s\n", p.GetMetadata())
-	}
-	fmt.Printf("===============================\n\n")
+	fmt.Printf("\tRunning %s\n", perfTestToRun.GetMetadata())
 
-	for _, p := range perfTestsToRun {
-		err := runPerfTest(p)
-		if err != nil {
-			panic(err)
-		}
+	err := runPerfTest(perfTestToRun)
+	if err != nil {
+		panic(err)
 	}
 }

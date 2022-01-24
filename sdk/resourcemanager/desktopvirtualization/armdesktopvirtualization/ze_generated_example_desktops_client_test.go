@@ -33,7 +33,7 @@ func ExampleDesktopsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Desktop.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DesktopsClientGetResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Desktop_Update.json
@@ -48,7 +48,7 @@ func ExampleDesktopsClient_Update() {
 		"<resource-group-name>",
 		"<application-group-name>",
 		"<desktop-name>",
-		&armdesktopvirtualization.DesktopsUpdateOptions{Desktop: &armdesktopvirtualization.DesktopPatch{
+		&armdesktopvirtualization.DesktopsClientUpdateOptions{Desktop: &armdesktopvirtualization.DesktopPatch{
 			Properties: &armdesktopvirtualization.DesktopPatchProperties{
 				Description:  to.StringPtr("<description>"),
 				FriendlyName: to.StringPtr("<friendly-name>"),
@@ -58,7 +58,7 @@ func ExampleDesktopsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Desktop.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DesktopsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Desktop_List.json
@@ -72,12 +72,16 @@ func ExampleDesktopsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<application-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Desktop.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

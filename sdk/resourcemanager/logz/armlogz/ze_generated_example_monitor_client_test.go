@@ -24,34 +24,14 @@ func ExampleMonitorClient_VMHostPayload() {
 	}
 	ctx := context.Background()
 	client := armlogz.NewMonitorClient("<subscription-id>", cred, nil)
-	_, err = client.VMHostPayload(ctx,
+	res, err := client.VMHostPayload(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-// x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/MainAccount_VMHosts_Update.json
-func ExampleMonitorClient_ListVMHostUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armlogz.NewMonitorClient("<subscription-id>", cred, nil)
-	pager := client.ListVMHostUpdate("<resource-group-name>",
-		"<monitor-name>",
-		&armlogz.MonitorListVMHostUpdateOptions{Body: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("VMResources.ID: %s\n", *v.ID)
-		}
-	}
+	log.Printf("Response result: %#v\n", res.MonitorClientVMHostPayloadResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/MainAccount_VMHosts_List.json
@@ -65,12 +45,16 @@ func ExampleMonitorClient_ListVMHosts() {
 	pager := client.ListVMHosts("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VMResources.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

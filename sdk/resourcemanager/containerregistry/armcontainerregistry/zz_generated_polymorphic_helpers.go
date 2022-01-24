@@ -34,44 +34,6 @@ func unmarshalRunRequestClassification(rawMsg json.RawMessage) (RunRequestClassi
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalRunRequestClassificationArray(rawMsg json.RawMessage) ([]RunRequestClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]RunRequestClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalRunRequestClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalRunRequestClassificationMap(rawMsg json.RawMessage) (map[string]RunRequestClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]RunRequestClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalRunRequestClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalTaskStepPropertiesClassification(rawMsg json.RawMessage) (TaskStepPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -94,44 +56,6 @@ func unmarshalTaskStepPropertiesClassification(rawMsg json.RawMessage) (TaskStep
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalTaskStepPropertiesClassificationArray(rawMsg json.RawMessage) ([]TaskStepPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]TaskStepPropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalTaskStepPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalTaskStepPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]TaskStepPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]TaskStepPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalTaskStepPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalTaskStepUpdateParametersClassification(rawMsg json.RawMessage) (TaskStepUpdateParametersClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -152,42 +76,4 @@ func unmarshalTaskStepUpdateParametersClassification(rawMsg json.RawMessage) (Ta
 		b = &TaskStepUpdateParameters{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalTaskStepUpdateParametersClassificationArray(rawMsg json.RawMessage) ([]TaskStepUpdateParametersClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]TaskStepUpdateParametersClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalTaskStepUpdateParametersClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalTaskStepUpdateParametersClassificationMap(rawMsg json.RawMessage) (map[string]TaskStepUpdateParametersClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]TaskStepUpdateParametersClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalTaskStepUpdateParametersClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

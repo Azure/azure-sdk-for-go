@@ -34,7 +34,7 @@ func ExampleRegistrationDefinitionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RegistrationDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RegistrationDefinitionsClientGetResult)
 }
 
 // x-ms-original-file: specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2020-02-01-preview/examples/DeleteRegistrationDefinition.json
@@ -96,7 +96,7 @@ func ExampleRegistrationDefinitionsClient_BeginCreateOrUpdate() {
 									PrincipalIDDisplayName: to.StringPtr("<principal-iddisplay-name>"),
 								}},
 							MaximumActivationDuration: to.StringPtr("<maximum-activation-duration>"),
-							MultiFactorAuthProvider:   armmanagedservices.MultiFactorAuthProviderAzure.ToPtr(),
+							MultiFactorAuthProvider:   armmanagedservices.MultiFactorAuthProvider("Azure").ToPtr(),
 						},
 						PrincipalID:            to.StringPtr("<principal-id>"),
 						PrincipalIDDisplayName: to.StringPtr("<principal-iddisplay-name>"),
@@ -114,7 +114,7 @@ func ExampleRegistrationDefinitionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RegistrationDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RegistrationDefinitionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2020-02-01-preview/examples/GetRegistrationDefinitions.json
@@ -127,12 +127,16 @@ func ExampleRegistrationDefinitionsClient_List() {
 	client := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
 	pager := client.List("<scope>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RegistrationDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

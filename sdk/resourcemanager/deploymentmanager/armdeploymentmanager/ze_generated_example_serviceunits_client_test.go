@@ -33,30 +33,25 @@ func ExampleServiceUnitsClient_BeginCreateOrUpdate() {
 		"<service-name>",
 		"<service-unit-name>",
 		armdeploymentmanager.ServiceUnitResource{
-			TrackedResource: armdeploymentmanager.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.ServiceUnitResourceProperties{
-				ServiceUnitProperties: armdeploymentmanager.ServiceUnitProperties{
-					Artifacts: &armdeploymentmanager.ServiceUnitArtifacts{
-						ParametersURI: to.StringPtr("<parameters-uri>"),
-						TemplateURI:   to.StringPtr("<template-uri>"),
-					},
-					DeploymentMode:      armdeploymentmanager.DeploymentModeIncremental.ToPtr(),
-					TargetResourceGroup: to.StringPtr("<target-resource-group>"),
+				Artifacts: &armdeploymentmanager.ServiceUnitArtifacts{
+					ParametersURI: to.StringPtr("<parameters-uri>"),
+					TemplateURI:   to.StringPtr("<template-uri>"),
 				},
+				DeploymentMode:      armdeploymentmanager.DeploymentModeIncremental.ToPtr(),
+				TargetResourceGroup: to.StringPtr("<target-resource-group>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServiceUnitResource.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/serviceunit_get.json
@@ -76,7 +71,7 @@ func ExampleServiceUnitsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServiceUnitResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServiceUnitsClientGetResult)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/serviceunit_delete.json
@@ -106,7 +101,7 @@ func ExampleServiceUnitsClient_List() {
 	}
 	ctx := context.Background()
 	client := armdeploymentmanager.NewServiceUnitsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<service-topology-name>",
 		"<service-name>",
@@ -114,4 +109,5 @@ func ExampleServiceUnitsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServiceUnitsClientListResult)
 }

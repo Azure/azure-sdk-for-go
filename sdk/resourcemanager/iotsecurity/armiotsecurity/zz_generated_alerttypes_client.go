@@ -11,7 +11,6 @@ package armiotsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,52 @@ import (
 // AlertTypesClient contains the methods for the AlertTypes group.
 // Don't use this type directly, use NewAlertTypesClient() instead.
 type AlertTypesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAlertTypesClient creates a new instance of AlertTypesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAlertTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertTypesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AlertTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AlertTypesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get IoT alert type
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AlertTypesClient) Get(ctx context.Context, alertTypeName string, options *AlertTypesGetOptions) (AlertTypesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertTypeName - Name of the alert type
+// options - AlertTypesClientGetOptions contains the optional parameters for the AlertTypesClient.Get method.
+func (client *AlertTypesClient) Get(ctx context.Context, alertTypeName string, options *AlertTypesClientGetOptions) (AlertTypesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, alertTypeName, options)
 	if err != nil {
-		return AlertTypesGetResponse{}, err
+		return AlertTypesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertTypesGetResponse{}, err
+		return AlertTypesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AlertTypesGetResponse{}, client.getHandleError(resp)
+		return AlertTypesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertTypesClient) getCreateRequest(ctx context.Context, alertTypeName string, options *AlertTypesGetOptions) (*policy.Request, error) {
+func (client *AlertTypesClient) getCreateRequest(ctx context.Context, alertTypeName string, options *AlertTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/alertTypes/{alertTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +79,7 @@ func (client *AlertTypesClient) getCreateRequest(ctx context.Context, alertTypeN
 		return nil, errors.New("parameter alertTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertTypeName}", url.PathEscape(alertTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,52 +91,40 @@ func (client *AlertTypesClient) getCreateRequest(ctx context.Context, alertTypeN
 }
 
 // getHandleResponse handles the Get response.
-func (client *AlertTypesClient) getHandleResponse(resp *http.Response) (AlertTypesGetResponse, error) {
-	result := AlertTypesGetResponse{RawResponse: resp}
+func (client *AlertTypesClient) getHandleResponse(resp *http.Response) (AlertTypesClientGetResponse, error) {
+	result := AlertTypesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertType); err != nil {
-		return AlertTypesGetResponse{}, runtime.NewResponseError(err, resp)
+		return AlertTypesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AlertTypesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List IoT alert types
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AlertTypesClient) List(ctx context.Context, options *AlertTypesListOptions) (AlertTypesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AlertTypesClientListOptions contains the optional parameters for the AlertTypesClient.List method.
+func (client *AlertTypesClient) List(ctx context.Context, options *AlertTypesClientListOptions) (AlertTypesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return AlertTypesListResponse{}, err
+		return AlertTypesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertTypesListResponse{}, err
+		return AlertTypesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AlertTypesListResponse{}, client.listHandleError(resp)
+		return AlertTypesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *AlertTypesClient) listCreateRequest(ctx context.Context, options *AlertTypesListOptions) (*policy.Request, error) {
+func (client *AlertTypesClient) listCreateRequest(ctx context.Context, options *AlertTypesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/alertTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,23 +136,10 @@ func (client *AlertTypesClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *AlertTypesClient) listHandleResponse(resp *http.Response) (AlertTypesListResponse, error) {
-	result := AlertTypesListResponse{RawResponse: resp}
+func (client *AlertTypesClient) listHandleResponse(resp *http.Response) (AlertTypesClientListResponse, error) {
+	result := AlertTypesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertTypeList); err != nil {
-		return AlertTypesListResponse{}, runtime.NewResponseError(err, resp)
+		return AlertTypesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AlertTypesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

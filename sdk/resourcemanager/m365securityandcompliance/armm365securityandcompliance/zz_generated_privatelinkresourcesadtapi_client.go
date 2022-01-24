@@ -11,7 +11,6 @@ package armm365securityandcompliance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // PrivateLinkResourcesAdtAPIClient contains the methods for the PrivateLinkResourcesAdtAPI group.
 // Don't use this type directly, use NewPrivateLinkResourcesAdtAPIClient() instead.
 type PrivateLinkResourcesAdtAPIClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesAdtAPIClient creates a new instance of PrivateLinkResourcesAdtAPIClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkResourcesAdtAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesAdtAPIClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkResourcesAdtAPIClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkResourcesAdtAPIClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a private link resource that need to be created for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkResourcesAdtAPIClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesAdtAPIGetOptions) (PrivateLinkResourcesAdtAPIGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// groupName - The name of the private link resource group.
+// options - PrivateLinkResourcesAdtAPIClientGetOptions contains the optional parameters for the PrivateLinkResourcesAdtAPIClient.Get
+// method.
+func (client *PrivateLinkResourcesAdtAPIClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesAdtAPIClientGetOptions) (PrivateLinkResourcesAdtAPIClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, groupName, options)
 	if err != nil {
-		return PrivateLinkResourcesAdtAPIGetResponse{}, err
+		return PrivateLinkResourcesAdtAPIClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesAdtAPIGetResponse{}, err
+		return PrivateLinkResourcesAdtAPIClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesAdtAPIGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkResourcesAdtAPIClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkResourcesAdtAPIClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesAdtAPIGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesAdtAPIClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesAdtAPIClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForO365ManagementActivityAPI/{resourceName}/privateLinkResources/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *PrivateLinkResourcesAdtAPIClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter groupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +102,37 @@ func (client *PrivateLinkResourcesAdtAPIClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesAdtAPIClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesAdtAPIGetResponse, error) {
-	result := PrivateLinkResourcesAdtAPIGetResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesAdtAPIClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesAdtAPIClientGetResponse, error) {
+	result := PrivateLinkResourcesAdtAPIClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
-		return PrivateLinkResourcesAdtAPIGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesAdtAPIClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateLinkResourcesAdtAPIClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByService - Gets the private link resources that need to be created for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkResourcesAdtAPIClient) ListByService(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesAdtAPIListByServiceOptions) (PrivateLinkResourcesAdtAPIListByServiceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// options - PrivateLinkResourcesAdtAPIClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesAdtAPIClient.ListByService
+// method.
+func (client *PrivateLinkResourcesAdtAPIClient) ListByService(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesAdtAPIClientListByServiceOptions) (PrivateLinkResourcesAdtAPIClientListByServiceResponse, error) {
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return PrivateLinkResourcesAdtAPIListByServiceResponse{}, err
+		return PrivateLinkResourcesAdtAPIClientListByServiceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesAdtAPIListByServiceResponse{}, err
+		return PrivateLinkResourcesAdtAPIClientListByServiceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesAdtAPIListByServiceResponse{}, client.listByServiceHandleError(resp)
+		return PrivateLinkResourcesAdtAPIClientListByServiceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServiceHandleResponse(resp)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *PrivateLinkResourcesAdtAPIClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesAdtAPIListByServiceOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesAdtAPIClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesAdtAPIClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForO365ManagementActivityAPI/{resourceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -143,7 +146,7 @@ func (client *PrivateLinkResourcesAdtAPIClient) listByServiceCreateRequest(ctx c
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,23 +158,10 @@ func (client *PrivateLinkResourcesAdtAPIClient) listByServiceCreateRequest(ctx c
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *PrivateLinkResourcesAdtAPIClient) listByServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesAdtAPIListByServiceResponse, error) {
-	result := PrivateLinkResourcesAdtAPIListByServiceResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesAdtAPIClient) listByServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesAdtAPIClientListByServiceResponse, error) {
+	result := PrivateLinkResourcesAdtAPIClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinkResourcesAdtAPIListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesAdtAPIClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *PrivateLinkResourcesAdtAPIClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -38,20 +38,38 @@ type AddressProperties struct {
 
 // AddressResource - Address Resource.
 type AddressResource struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Properties of an address.
 	Properties *AddressProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Represents resource creation and update time
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AddressResource.
 func (a AddressResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -77,7 +95,8 @@ type AddressUpdateParameter struct {
 	// Properties of a address to be updated.
 	Properties *AddressUpdateProperties `json:"properties,omitempty"`
 
-	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
+	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
+	// resource groups).
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
@@ -134,17 +153,13 @@ type BasicInformation struct {
 // MarshalJSON implements the json.Marshaller interface for type BasicInformation.
 func (b BasicInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (b BasicInformation) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "availabilityInformation", b.AvailabilityInformation)
 	populate(objectMap, "costInformation", b.CostInformation)
 	populate(objectMap, "description", b.Description)
 	populate(objectMap, "displayName", b.DisplayName)
 	populate(objectMap, "hierarchyInformation", b.HierarchyInformation)
 	populate(objectMap, "imageInformation", b.ImageInformation)
+	return json.Marshal(objectMap)
 }
 
 // BillingMeterDetails - Holds billing meter details for each type of billing
@@ -209,21 +224,39 @@ type CancellationReason struct {
 
 // CommonProperties - Represents common properties across product hierarchy
 type CommonProperties struct {
-	BasicInformation
+	// READ-ONLY; Availability information of the product system.
+	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Cost information for the product system.
+	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description related to the product system.
+	Description *Description `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; Display Name for the product system.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
 	// READ-ONLY; list of filters supported for a product
 	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Hierarchy information of a product.
+	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Image information for the product system.
+	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CommonProperties.
 func (c CommonProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (c CommonProperties) marshalInternal(objectMap map[string]interface{}) {
-	c.BasicInformation.marshalInternal(objectMap)
+	populate(objectMap, "availabilityInformation", c.AvailabilityInformation)
+	populate(objectMap, "costInformation", c.CostInformation)
+	populate(objectMap, "description", c.Description)
+	populate(objectMap, "displayName", c.DisplayName)
 	populate(objectMap, "filterableProperties", c.FilterableProperties)
+	populate(objectMap, "hierarchyInformation", c.HierarchyInformation)
+	populate(objectMap, "imageInformation", c.ImageInformation)
+	return json.Marshal(objectMap)
 }
 
 // Configuration object.
@@ -251,9 +284,29 @@ func (c ConfigurationFilters) MarshalJSON() ([]byte, error) {
 
 // ConfigurationProperties - Properties of configuration
 type ConfigurationProperties struct {
-	CommonProperties
+	// READ-ONLY; Availability information of the product system.
+	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Cost information for the product system.
+	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description related to the product system.
+	Description *Description `json:"description,omitempty" azure:"ro"`
+
 	// READ-ONLY; Dimensions of the configuration
 	Dimensions *Dimensions `json:"dimensions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Display Name for the product system.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; list of filters supported for a product
+	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Hierarchy information of a product.
+	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Image information for the product system.
+	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifications of the configuration
 	Specifications []*Specification `json:"specifications,omitempty" azure:"ro"`
@@ -262,8 +315,14 @@ type ConfigurationProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ConfigurationProperties.
 func (c ConfigurationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.CommonProperties.marshalInternal(objectMap)
+	populate(objectMap, "availabilityInformation", c.AvailabilityInformation)
+	populate(objectMap, "costInformation", c.CostInformation)
+	populate(objectMap, "description", c.Description)
 	populate(objectMap, "dimensions", c.Dimensions)
+	populate(objectMap, "displayName", c.DisplayName)
+	populate(objectMap, "filterableProperties", c.FilterableProperties)
+	populate(objectMap, "hierarchyInformation", c.HierarchyInformation)
+	populate(objectMap, "imageInformation", c.ImageInformation)
 	populate(objectMap, "specifications", c.Specifications)
 	return json.Marshal(objectMap)
 }
@@ -290,7 +349,8 @@ type ConfigurationsRequest struct {
 	// REQUIRED; Holds details about product hierarchy information and filterable property.
 	ConfigurationFilters []*ConfigurationFilters `json:"configurationFilters,omitempty"`
 
-	// Customer subscription properties. Clients can display available products to unregistered customers by explicitly passing subscription details
+	// Customer subscription properties. Clients can display available products to unregistered customers by explicitly passing
+	// subscription details
 	CustomerSubscriptionDetails *CustomerSubscriptionDetails `json:"customerSubscriptionDetails,omitempty"`
 }
 
@@ -348,8 +408,8 @@ func (c CostInformation) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CustomerSubscriptionDetails - Holds Customer subscription details. Clients can display available products to unregistered customers by explicitly passing
-// subscription details
+// CustomerSubscriptionDetails - Holds Customer subscription details. Clients can display available products to unregistered
+// customers by explicitly passing subscription details
 type CustomerSubscriptionDetails struct {
 	// REQUIRED; Quota ID of a subscription
 	QuotaID *string `json:"quotaId,omitempty"`
@@ -457,155 +517,10 @@ type DisplayInfo struct {
 	ProductFamilyDisplayName *string `json:"productFamilyDisplayName,omitempty" azure:"ro"`
 }
 
-// EdgeOrderManagementClientBeginCreateAddressOptions contains the optional parameters for the EdgeOrderManagementClient.BeginCreateAddress method.
-type EdgeOrderManagementClientBeginCreateAddressOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientBeginCreateOrderItemOptions contains the optional parameters for the EdgeOrderManagementClient.BeginCreateOrderItem method.
-type EdgeOrderManagementClientBeginCreateOrderItemOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientBeginDeleteAddressByNameOptions contains the optional parameters for the EdgeOrderManagementClient.BeginDeleteAddressByName
-// method.
-type EdgeOrderManagementClientBeginDeleteAddressByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientBeginDeleteOrderItemByNameOptions contains the optional parameters for the EdgeOrderManagementClient.BeginDeleteOrderItemByName
-// method.
-type EdgeOrderManagementClientBeginDeleteOrderItemByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientBeginReturnOrderItemOptions contains the optional parameters for the EdgeOrderManagementClient.BeginReturnOrderItem method.
-type EdgeOrderManagementClientBeginReturnOrderItemOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientBeginUpdateAddressOptions contains the optional parameters for the EdgeOrderManagementClient.BeginUpdateAddress method.
-type EdgeOrderManagementClientBeginUpdateAddressOptions struct {
-	// Defines the If-Match condition. The patch will be performed only if the ETag of the job on the server matches this value.
-	IfMatch *string
-}
-
-// EdgeOrderManagementClientBeginUpdateOrderItemOptions contains the optional parameters for the EdgeOrderManagementClient.BeginUpdateOrderItem method.
-type EdgeOrderManagementClientBeginUpdateOrderItemOptions struct {
-	// Defines the If-Match condition. The patch will be performed only if the ETag of the order on the server matches this value.
-	IfMatch *string
-}
-
-// EdgeOrderManagementClientCancelOrderItemOptions contains the optional parameters for the EdgeOrderManagementClient.CancelOrderItem method.
-type EdgeOrderManagementClientCancelOrderItemOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientGetAddressByNameOptions contains the optional parameters for the EdgeOrderManagementClient.GetAddressByName method.
-type EdgeOrderManagementClientGetAddressByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientGetOrderByNameOptions contains the optional parameters for the EdgeOrderManagementClient.GetOrderByName method.
-type EdgeOrderManagementClientGetOrderByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientGetOrderItemByNameOptions contains the optional parameters for the EdgeOrderManagementClient.GetOrderItemByName method.
-type EdgeOrderManagementClientGetOrderItemByNameOptions struct {
-	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these can be provided as a comma separated
-	// list. Device Details for order item provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-	// shipping details respectively.
-	Expand *string
-}
-
-// EdgeOrderManagementClientListAddressesAtResourceGroupLevelOptions contains the optional parameters for the EdgeOrderManagementClient.ListAddressesAtResourceGroupLevel
-// method.
-type EdgeOrderManagementClientListAddressesAtResourceGroupLevelOptions struct {
-	// $filter is supported to filter based on shipping address properties. Filter supports only equals operation.
-	Filter *string
-	// $skipToken is supported on Get list of addresses, which provides the next page in the list of address.
-	SkipToken *string
-}
-
-// EdgeOrderManagementClientListAddressesAtSubscriptionLevelOptions contains the optional parameters for the EdgeOrderManagementClient.ListAddressesAtSubscriptionLevel
-// method.
-type EdgeOrderManagementClientListAddressesAtSubscriptionLevelOptions struct {
-	// $filter is supported to filter based on shipping address properties. Filter supports only equals operation.
-	Filter *string
-	// $skipToken is supported on Get list of addresses, which provides the next page in the list of addresses.
-	SkipToken *string
-}
-
-// EdgeOrderManagementClientListConfigurationsOptions contains the optional parameters for the EdgeOrderManagementClient.ListConfigurations method.
-type EdgeOrderManagementClientListConfigurationsOptions struct {
-	// $skipToken is supported on list of configurations, which provides the next page in the list of configurations.
-	SkipToken *string
-}
-
-// EdgeOrderManagementClientListOperationsOptions contains the optional parameters for the EdgeOrderManagementClient.ListOperations method.
-type EdgeOrderManagementClientListOperationsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderManagementClientListOrderAtResourceGroupLevelOptions contains the optional parameters for the EdgeOrderManagementClient.ListOrderAtResourceGroupLevel
-// method.
-type EdgeOrderManagementClientListOrderAtResourceGroupLevelOptions struct {
-	// $skipToken is supported on Get list of order, which provides the next page in the list of order.
-	SkipToken *string
-}
-
-// EdgeOrderManagementClientListOrderAtSubscriptionLevelOptions contains the optional parameters for the EdgeOrderManagementClient.ListOrderAtSubscriptionLevel
-// method.
-type EdgeOrderManagementClientListOrderAtSubscriptionLevelOptions struct {
-	// $skipToken is supported on Get list of order, which provides the next page in the list of order.
-	SkipToken *string
-}
-
-// EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelOptions contains the optional parameters for the EdgeOrderManagementClient.ListOrderItemsAtResourceGroupLevel
-// method.
-type EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelOptions struct {
-	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these can be provided as a comma separated
-	// list. Device Details for order item provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-	// shipping details respectively.
-	Expand *string
-	// $filter is supported to filter based on order id. Filter supports only equals operation.
-	Filter *string
-	// $skipToken is supported on Get list of order items, which provides the next page in the list of order items.
-	SkipToken *string
-}
-
-// EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelOptions contains the optional parameters for the EdgeOrderManagementClient.ListOrderItemsAtSubscriptionLevel
-// method.
-type EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelOptions struct {
-	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these can be provided as a comma separated
-	// list. Device Details for order item provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-	// shipping details respectively.
-	Expand *string
-	// $filter is supported to filter based on order id. Filter supports only equals operation.
-	Filter *string
-	// $skipToken is supported on Get list of order items, which provides the next page in the list of order items.
-	SkipToken *string
-}
-
-// EdgeOrderManagementClientListProductFamiliesMetadataOptions contains the optional parameters for the EdgeOrderManagementClient.ListProductFamiliesMetadata
-// method.
-type EdgeOrderManagementClientListProductFamiliesMetadataOptions struct {
-	// $skipToken is supported on list of product families metadata, which provides the next page in the list of product families metadata.
-	SkipToken *string
-}
-
-// EdgeOrderManagementClientListProductFamiliesOptions contains the optional parameters for the EdgeOrderManagementClient.ListProductFamilies method.
-type EdgeOrderManagementClientListProductFamiliesOptions struct {
-	// $expand is supported on configurations parameter for product, which provides details on the configurations for the product.
-	Expand *string
-	// $skipToken is supported on list of product families, which provides the next page in the list of product families.
-	SkipToken *string
-}
-
 // EncryptionPreferences - Preferences related to the double encryption
 type EncryptionPreferences struct {
-	// Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled' policy is configured.
+	// Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled'
+	// policy is configured.
 	DoubleEncryptionStatus *DoubleEncryptionStatus `json:"doubleEncryptionStatus,omitempty"`
 }
 
@@ -647,19 +562,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // FilterableProperty - Different types of filters supported and its values.
@@ -727,6 +634,164 @@ type Link struct {
 	LinkURL *string `json:"linkUrl,omitempty" azure:"ro"`
 }
 
+// ManagementClientBeginCreateAddressOptions contains the optional parameters for the ManagementClient.BeginCreateAddress
+// method.
+type ManagementClientBeginCreateAddressOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientBeginCreateOrderItemOptions contains the optional parameters for the ManagementClient.BeginCreateOrderItem
+// method.
+type ManagementClientBeginCreateOrderItemOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientBeginDeleteAddressByNameOptions contains the optional parameters for the ManagementClient.BeginDeleteAddressByName
+// method.
+type ManagementClientBeginDeleteAddressByNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientBeginDeleteOrderItemByNameOptions contains the optional parameters for the ManagementClient.BeginDeleteOrderItemByName
+// method.
+type ManagementClientBeginDeleteOrderItemByNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientBeginReturnOrderItemOptions contains the optional parameters for the ManagementClient.BeginReturnOrderItem
+// method.
+type ManagementClientBeginReturnOrderItemOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientBeginUpdateAddressOptions contains the optional parameters for the ManagementClient.BeginUpdateAddress
+// method.
+type ManagementClientBeginUpdateAddressOptions struct {
+	// Defines the If-Match condition. The patch will be performed only if the ETag of the job on the server matches this value.
+	IfMatch *string
+}
+
+// ManagementClientBeginUpdateOrderItemOptions contains the optional parameters for the ManagementClient.BeginUpdateOrderItem
+// method.
+type ManagementClientBeginUpdateOrderItemOptions struct {
+	// Defines the If-Match condition. The patch will be performed only if the ETag of the order on the server matches this value.
+	IfMatch *string
+}
+
+// ManagementClientCancelOrderItemOptions contains the optional parameters for the ManagementClient.CancelOrderItem method.
+type ManagementClientCancelOrderItemOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientGetAddressByNameOptions contains the optional parameters for the ManagementClient.GetAddressByName method.
+type ManagementClientGetAddressByNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientGetOrderByNameOptions contains the optional parameters for the ManagementClient.GetOrderByName method.
+type ManagementClientGetOrderByNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientGetOrderItemByNameOptions contains the optional parameters for the ManagementClient.GetOrderItemByName
+// method.
+type ManagementClientGetOrderItemByNameOptions struct {
+	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these
+	// can be provided as a comma separated list. Device Details for order item
+	// provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+	// details respectively.
+	Expand *string
+}
+
+// ManagementClientListAddressesAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListAddressesAtResourceGroupLevel
+// method.
+type ManagementClientListAddressesAtResourceGroupLevelOptions struct {
+	// $filter is supported to filter based on shipping address properties. Filter supports only equals operation.
+	Filter *string
+	// $skipToken is supported on Get list of addresses, which provides the next page in the list of address.
+	SkipToken *string
+}
+
+// ManagementClientListAddressesAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListAddressesAtSubscriptionLevel
+// method.
+type ManagementClientListAddressesAtSubscriptionLevelOptions struct {
+	// $filter is supported to filter based on shipping address properties. Filter supports only equals operation.
+	Filter *string
+	// $skipToken is supported on Get list of addresses, which provides the next page in the list of addresses.
+	SkipToken *string
+}
+
+// ManagementClientListConfigurationsOptions contains the optional parameters for the ManagementClient.ListConfigurations
+// method.
+type ManagementClientListConfigurationsOptions struct {
+	// $skipToken is supported on list of configurations, which provides the next page in the list of configurations.
+	SkipToken *string
+}
+
+// ManagementClientListOperationsOptions contains the optional parameters for the ManagementClient.ListOperations method.
+type ManagementClientListOperationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientListOrderAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListOrderAtResourceGroupLevel
+// method.
+type ManagementClientListOrderAtResourceGroupLevelOptions struct {
+	// $skipToken is supported on Get list of order, which provides the next page in the list of order.
+	SkipToken *string
+}
+
+// ManagementClientListOrderAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListOrderAtSubscriptionLevel
+// method.
+type ManagementClientListOrderAtSubscriptionLevelOptions struct {
+	// $skipToken is supported on Get list of order, which provides the next page in the list of order.
+	SkipToken *string
+}
+
+// ManagementClientListOrderItemsAtResourceGroupLevelOptions contains the optional parameters for the ManagementClient.ListOrderItemsAtResourceGroupLevel
+// method.
+type ManagementClientListOrderItemsAtResourceGroupLevelOptions struct {
+	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these
+	// can be provided as a comma separated list. Device Details for order item
+	// provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+	// details respectively.
+	Expand *string
+	// $filter is supported to filter based on order id. Filter supports only equals operation.
+	Filter *string
+	// $skipToken is supported on Get list of order items, which provides the next page in the list of order items.
+	SkipToken *string
+}
+
+// ManagementClientListOrderItemsAtSubscriptionLevelOptions contains the optional parameters for the ManagementClient.ListOrderItemsAtSubscriptionLevel
+// method.
+type ManagementClientListOrderItemsAtSubscriptionLevelOptions struct {
+	// $expand is supported on device details, forward shipping details and reverse shipping details parameters. Each of these
+	// can be provided as a comma separated list. Device Details for order item
+	// provides details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+	// details respectively.
+	Expand *string
+	// $filter is supported to filter based on order id. Filter supports only equals operation.
+	Filter *string
+	// $skipToken is supported on Get list of order items, which provides the next page in the list of order items.
+	SkipToken *string
+}
+
+// ManagementClientListProductFamiliesMetadataOptions contains the optional parameters for the ManagementClient.ListProductFamiliesMetadata
+// method.
+type ManagementClientListProductFamiliesMetadataOptions struct {
+	// $skipToken is supported on list of product families metadata, which provides the next page in the list of product families
+	// metadata.
+	SkipToken *string
+}
+
+// ManagementClientListProductFamiliesOptions contains the optional parameters for the ManagementClient.ListProductFamilies
+// method.
+type ManagementClientListProductFamiliesOptions struct {
+	// $expand is supported on configurations parameter for product, which provides details on the configurations for the product.
+	Expand *string
+	// $skipToken is supported on list of product families, which provides the next page in the list of product families.
+	SkipToken *string
+}
+
 // ManagementResourcePreferences - Management resource preference to link device
 type ManagementResourcePreferences struct {
 	// Customer preferred Management resource ARM ID
@@ -757,43 +822,6 @@ type MeterDetails struct {
 // GetMeterDetails implements the MeterDetailsClassification interface for type MeterDetails.
 func (m *MeterDetails) GetMeterDetails() *MeterDetails { return m }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type MeterDetails.
-func (m *MeterDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return m.unmarshalInternal(rawMsg)
-}
-
-func (m MeterDetails) marshalInternal(objectMap map[string]interface{}, discValue BillingType) {
-	m.BillingType = &discValue
-	objectMap["billingType"] = m.BillingType
-	populate(objectMap, "chargingType", m.ChargingType)
-	populate(objectMap, "multiplier", m.Multiplier)
-}
-
-func (m *MeterDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "billingType":
-			err = unpopulate(val, &m.BillingType)
-			delete(rawMsg, key)
-		case "chargingType":
-			err = unpopulate(val, &m.ChargingType)
-			delete(rawMsg, key)
-		case "multiplier":
-			err = unpopulate(val, &m.Multiplier)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // NotificationPreference - Notification preference for a job stage.
 type NotificationPreference struct {
 	// REQUIRED; Notification is required or not.
@@ -811,13 +839,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -826,18 +857,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -983,20 +1017,38 @@ func (o *OrderItemProperties) UnmarshalJSON(data []byte) error {
 
 // OrderItemResource - Represents order item contract
 type OrderItemResource struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Order item properties
 	Properties *OrderItemProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Represents resource creation and update time
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OrderItemResource.
 func (o OrderItemResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", o.ID)
+	populate(objectMap, "location", o.Location)
+	populate(objectMap, "name", o.Name)
 	populate(objectMap, "properties", o.Properties)
 	populate(objectMap, "systemData", o.SystemData)
+	populate(objectMap, "tags", o.Tags)
+	populate(objectMap, "type", o.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1022,7 +1074,8 @@ type OrderItemUpdateParameter struct {
 	// Order item update properties
 	Properties *OrderItemUpdateProperties `json:"properties,omitempty"`
 
-	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
+	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
+	// resource groups).
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
@@ -1078,21 +1131,20 @@ func (o OrderProperties) MarshalJSON() ([]byte, error) {
 
 // OrderResource - Specifies the properties or parameters for an order. Order is a grouping of one or more order items.
 type OrderResource struct {
-	ProxyResource
 	// REQUIRED; Order properties
 	Properties *OrderProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Represents resource creation and update time
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type OrderResource.
-func (o OrderResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OrderResourceList - List of orders.
@@ -1114,16 +1166,35 @@ func (o OrderResourceList) MarshalJSON() ([]byte, error) {
 
 // Pav2MeterDetails - Billing type PAV2 meter details
 type Pav2MeterDetails struct {
-	MeterDetails
+	// REQUIRED; Represents billing type.
+	BillingType *BillingType `json:"billingType,omitempty"`
+
+	// READ-ONLY; Charging type.
+	ChargingType *ChargingType `json:"chargingType,omitempty" azure:"ro"`
+
 	// READ-ONLY; Validation status of requested data center and transport.
 	MeterGUID *string `json:"meterGuid,omitempty" azure:"ro"`
+
+	// READ-ONLY; Billing unit applicable for Pav2 billing
+	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
+}
+
+// GetMeterDetails implements the MeterDetailsClassification interface for type Pav2MeterDetails.
+func (p *Pav2MeterDetails) GetMeterDetails() *MeterDetails {
+	return &MeterDetails{
+		BillingType:  p.BillingType,
+		Multiplier:   p.Multiplier,
+		ChargingType: p.ChargingType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Pav2MeterDetails.
 func (p Pav2MeterDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.MeterDetails.marshalInternal(objectMap, BillingTypePav2)
+	objectMap["billingType"] = BillingTypePav2
+	populate(objectMap, "chargingType", p.ChargingType)
 	populate(objectMap, "meterGuid", p.MeterGUID)
+	populate(objectMap, "multiplier", p.Multiplier)
 	return json.Marshal(objectMap)
 }
 
@@ -1136,16 +1207,22 @@ func (p *Pav2MeterDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "billingType":
+			err = unpopulate(val, &p.BillingType)
+			delete(rawMsg, key)
+		case "chargingType":
+			err = unpopulate(val, &p.ChargingType)
+			delete(rawMsg, key)
 		case "meterGuid":
 			err = unpopulate(val, &p.MeterGUID)
+			delete(rawMsg, key)
+		case "multiplier":
+			err = unpopulate(val, &p.Multiplier)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := p.MeterDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1255,7 +1332,8 @@ type ProductFamiliesRequest struct {
 	// REQUIRED; Dictionary of filterable properties on product family.
 	FilterableProperties map[string][]*FilterableProperty `json:"filterableProperties,omitempty"`
 
-	// Customer subscription properties. Clients can display available products to unregistered customers by explicitly passing subscription details
+	// Customer subscription properties. Clients can display available products to unregistered customers by explicitly passing
+	// subscription details
 	CustomerSubscriptionDetails *CustomerSubscriptionDetails `json:"customerSubscriptionDetails,omitempty"`
 }
 
@@ -1275,9 +1353,29 @@ type ProductFamily struct {
 
 // ProductFamilyProperties - Properties of product family
 type ProductFamilyProperties struct {
-	CommonProperties
 	// Contains details related to resource provider
 	ResourceProviderDetails []*ResourceProviderDetails `json:"resourceProviderDetails,omitempty"`
+
+	// READ-ONLY; Availability information of the product system.
+	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Cost information for the product system.
+	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description related to the product system.
+	Description *Description `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; Display Name for the product system.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; list of filters supported for a product
+	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Hierarchy information of a product.
+	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Image information for the product system.
+	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of product lines supported in the product family
 	ProductLines []*ProductLine `json:"productLines,omitempty" azure:"ro"`
@@ -1286,7 +1384,13 @@ type ProductFamilyProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ProductFamilyProperties.
 func (p ProductFamilyProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.CommonProperties.marshalInternal(objectMap)
+	populate(objectMap, "availabilityInformation", p.AvailabilityInformation)
+	populate(objectMap, "costInformation", p.CostInformation)
+	populate(objectMap, "description", p.Description)
+	populate(objectMap, "displayName", p.DisplayName)
+	populate(objectMap, "filterableProperties", p.FilterableProperties)
+	populate(objectMap, "hierarchyInformation", p.HierarchyInformation)
+	populate(objectMap, "imageInformation", p.ImageInformation)
 	populate(objectMap, "productLines", p.ProductLines)
 	populate(objectMap, "resourceProviderDetails", p.ResourceProviderDetails)
 	return json.Marshal(objectMap)
@@ -1300,7 +1404,27 @@ type ProductLine struct {
 
 // ProductLineProperties - Properties of product line
 type ProductLineProperties struct {
-	CommonProperties
+	// READ-ONLY; Availability information of the product system.
+	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Cost information for the product system.
+	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description related to the product system.
+	Description *Description `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; Display Name for the product system.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; list of filters supported for a product
+	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Hierarchy information of a product.
+	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Image information for the product system.
+	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
+
 	// READ-ONLY; List of products in the product line
 	Products []*Product `json:"products,omitempty" azure:"ro"`
 }
@@ -1308,38 +1432,82 @@ type ProductLineProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ProductLineProperties.
 func (p ProductLineProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.CommonProperties.marshalInternal(objectMap)
+	populate(objectMap, "availabilityInformation", p.AvailabilityInformation)
+	populate(objectMap, "costInformation", p.CostInformation)
+	populate(objectMap, "description", p.Description)
+	populate(objectMap, "displayName", p.DisplayName)
+	populate(objectMap, "filterableProperties", p.FilterableProperties)
+	populate(objectMap, "hierarchyInformation", p.HierarchyInformation)
+	populate(objectMap, "imageInformation", p.ImageInformation)
 	populate(objectMap, "products", p.Products)
 	return json.Marshal(objectMap)
 }
 
 // ProductProperties - Properties of products
 type ProductProperties struct {
-	CommonProperties
+	// READ-ONLY; Availability information of the product system.
+	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+
 	// READ-ONLY; List of configurations for the product
 	Configurations []*Configuration `json:"configurations,omitempty" azure:"ro"`
+
+	// READ-ONLY; Cost information for the product system.
+	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description related to the product system.
+	Description *Description `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; Display Name for the product system.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; list of filters supported for a product
+	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Hierarchy information of a product.
+	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Image information for the product system.
+	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ProductProperties.
 func (p ProductProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.CommonProperties.marshalInternal(objectMap)
+	populate(objectMap, "availabilityInformation", p.AvailabilityInformation)
 	populate(objectMap, "configurations", p.Configurations)
+	populate(objectMap, "costInformation", p.CostInformation)
+	populate(objectMap, "description", p.Description)
+	populate(objectMap, "displayName", p.DisplayName)
+	populate(objectMap, "filterableProperties", p.FilterableProperties)
+	populate(objectMap, "hierarchyInformation", p.HierarchyInformation)
+	populate(objectMap, "imageInformation", p.ImageInformation)
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PurchaseMeterDetails - Billing type Purchase meter details
 type PurchaseMeterDetails struct {
-	MeterDetails
+	// REQUIRED; Represents billing type.
+	BillingType *BillingType `json:"billingType,omitempty"`
+
+	// READ-ONLY; Charging type.
+	ChargingType *ChargingType `json:"chargingType,omitempty" azure:"ro"`
+
+	// READ-ONLY; Billing unit applicable for Pav2 billing
+	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
+
 	// READ-ONLY; Product Id
 	ProductID *string `json:"productId,omitempty" azure:"ro"`
 
@@ -1350,10 +1518,21 @@ type PurchaseMeterDetails struct {
 	TermID *string `json:"termId,omitempty" azure:"ro"`
 }
 
+// GetMeterDetails implements the MeterDetailsClassification interface for type PurchaseMeterDetails.
+func (p *PurchaseMeterDetails) GetMeterDetails() *MeterDetails {
+	return &MeterDetails{
+		BillingType:  p.BillingType,
+		Multiplier:   p.Multiplier,
+		ChargingType: p.ChargingType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type PurchaseMeterDetails.
 func (p PurchaseMeterDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.MeterDetails.marshalInternal(objectMap, BillingTypePurchase)
+	objectMap["billingType"] = BillingTypePurchase
+	populate(objectMap, "chargingType", p.ChargingType)
+	populate(objectMap, "multiplier", p.Multiplier)
 	populate(objectMap, "productId", p.ProductID)
 	populate(objectMap, "skuId", p.SKUID)
 	populate(objectMap, "termId", p.TermID)
@@ -1369,6 +1548,15 @@ func (p *PurchaseMeterDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "billingType":
+			err = unpopulate(val, &p.BillingType)
+			delete(rawMsg, key)
+		case "chargingType":
+			err = unpopulate(val, &p.ChargingType)
+			delete(rawMsg, key)
+		case "multiplier":
+			err = unpopulate(val, &p.Multiplier)
+			delete(rawMsg, key)
 		case "productId":
 			err = unpopulate(val, &p.ProductID)
 			delete(rawMsg, key)
@@ -1383,9 +1571,6 @@ func (p *PurchaseMeterDetails) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := p.MeterDetails.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -1399,19 +1584,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourceIdentity - Msi identity details of the resource
@@ -1644,27 +1816,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // TransportPreferences - Preferences related to the shipment logistics of the sku

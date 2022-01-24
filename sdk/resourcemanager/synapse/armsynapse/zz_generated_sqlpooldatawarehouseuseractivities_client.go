@@ -24,42 +24,56 @@ import (
 // SQLPoolDataWarehouseUserActivitiesClient contains the methods for the SQLPoolDataWarehouseUserActivities group.
 // Don't use this type directly, use NewSQLPoolDataWarehouseUserActivitiesClient() instead.
 type SQLPoolDataWarehouseUserActivitiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolDataWarehouseUserActivitiesClient creates a new instance of SQLPoolDataWarehouseUserActivitiesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolDataWarehouseUserActivitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolDataWarehouseUserActivitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolDataWarehouseUserActivitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolDataWarehouseUserActivitiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the user activities of a SQL pool which includes running and suspended queries
-// If the operation fails it returns a generic error.
-func (client *SQLPoolDataWarehouseUserActivitiesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataWarehouseUserActivityName DataWarehouseUserActivityName, options *SQLPoolDataWarehouseUserActivitiesGetOptions) (SQLPoolDataWarehouseUserActivitiesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// dataWarehouseUserActivityName - The activity name of the Sql pool.
+// options - SQLPoolDataWarehouseUserActivitiesClientGetOptions contains the optional parameters for the SQLPoolDataWarehouseUserActivitiesClient.Get
+// method.
+func (client *SQLPoolDataWarehouseUserActivitiesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataWarehouseUserActivityName DataWarehouseUserActivityName, options *SQLPoolDataWarehouseUserActivitiesClientGetOptions) (SQLPoolDataWarehouseUserActivitiesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName, options)
 	if err != nil {
-		return SQLPoolDataWarehouseUserActivitiesGetResponse{}, err
+		return SQLPoolDataWarehouseUserActivitiesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolDataWarehouseUserActivitiesGetResponse{}, err
+		return SQLPoolDataWarehouseUserActivitiesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolDataWarehouseUserActivitiesGetResponse{}, client.getHandleError(resp)
+		return SQLPoolDataWarehouseUserActivitiesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolDataWarehouseUserActivitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataWarehouseUserActivityName DataWarehouseUserActivityName, options *SQLPoolDataWarehouseUserActivitiesGetOptions) (*policy.Request, error) {
+func (client *SQLPoolDataWarehouseUserActivitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataWarehouseUserActivityName DataWarehouseUserActivityName, options *SQLPoolDataWarehouseUserActivitiesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataWarehouseUserActivities/{dataWarehouseUserActivityName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +95,7 @@ func (client *SQLPoolDataWarehouseUserActivitiesClient) getCreateRequest(ctx con
 		return nil, errors.New("parameter dataWarehouseUserActivityName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataWarehouseUserActivityName}", url.PathEscape(string(dataWarehouseUserActivityName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,22 +107,10 @@ func (client *SQLPoolDataWarehouseUserActivitiesClient) getCreateRequest(ctx con
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolDataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Response) (SQLPoolDataWarehouseUserActivitiesGetResponse, error) {
-	result := SQLPoolDataWarehouseUserActivitiesGetResponse{RawResponse: resp}
+func (client *SQLPoolDataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Response) (SQLPoolDataWarehouseUserActivitiesClientGetResponse, error) {
+	result := SQLPoolDataWarehouseUserActivitiesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataWarehouseUserActivities); err != nil {
-		return SQLPoolDataWarehouseUserActivitiesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolDataWarehouseUserActivitiesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SQLPoolDataWarehouseUserActivitiesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -29,12 +29,16 @@ func ExampleAutoscaleSettingsClient_ListByResourceGroup() {
 	client := armmonitor.NewAutoscaleSettingsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AutoscaleSettingResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,10 +55,8 @@ func ExampleAutoscaleSettingsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<autoscale-setting-name>",
 		armmonitor.AutoscaleSettingResource{
-			Resource: armmonitor.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.AutoscaleSetting{
 				Enabled: to.BoolPtr(true),
 				Notifications: []*armmonitor.AutoscaleNotification{
@@ -192,7 +194,7 @@ func ExampleAutoscaleSettingsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AutoscaleSettingResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AutoscaleSettingsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/deleteAutoscaleSetting.json
@@ -227,7 +229,7 @@ func ExampleAutoscaleSettingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AutoscaleSettingResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AutoscaleSettingsClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/patchAutoscaleSetting.json
@@ -382,7 +384,7 @@ func ExampleAutoscaleSettingsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AutoscaleSettingResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AutoscaleSettingsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/listAutoscaleSettingBySubscription.json
@@ -394,12 +396,16 @@ func ExampleAutoscaleSettingsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmonitor.NewAutoscaleSettingsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AutoscaleSettingResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

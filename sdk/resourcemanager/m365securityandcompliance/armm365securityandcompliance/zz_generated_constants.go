@@ -9,8 +9,8 @@
 package armm365securityandcompliance
 
 const (
-	module  = "armm365securityandcompliance"
-	version = "v0.1.0"
+	moduleName    = "armm365securityandcompliance"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

@@ -838,6 +838,7 @@ const (
 	TypeBasicActivityTypeExecuteSSISPackage       TypeBasicActivity = original.TypeBasicActivityTypeExecuteSSISPackage
 	TypeBasicActivityTypeExecuteWranglingDataflow TypeBasicActivity = original.TypeBasicActivityTypeExecuteWranglingDataflow
 	TypeBasicActivityTypeExecution                TypeBasicActivity = original.TypeBasicActivityTypeExecution
+	TypeBasicActivityTypeFail                     TypeBasicActivity = original.TypeBasicActivityTypeFail
 	TypeBasicActivityTypeFilter                   TypeBasicActivity = original.TypeBasicActivityTypeFilter
 	TypeBasicActivityTypeForEach                  TypeBasicActivity = original.TypeBasicActivityTypeForEach
 	TypeBasicActivityTypeGetMetadata              TypeBasicActivity = original.TypeBasicActivityTypeGetMetadata
@@ -1832,6 +1833,8 @@ type FactoryRepoConfiguration = original.FactoryRepoConfiguration
 type FactoryRepoUpdate = original.FactoryRepoUpdate
 type FactoryUpdateParameters = original.FactoryUpdateParameters
 type FactoryVSTSConfiguration = original.FactoryVSTSConfiguration
+type FailActivity = original.FailActivity
+type FailActivityTypeProperties = original.FailActivityTypeProperties
 type FileServerLinkedService = original.FileServerLinkedService
 type FileServerLinkedServiceTypeProperties = original.FileServerLinkedServiceTypeProperties
 type FileServerLocation = original.FileServerLocation

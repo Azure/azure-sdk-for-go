@@ -16,16 +16,34 @@ import (
 
 // AccountResource - The response to an account resource GET request.
 type AccountResource struct {
-	Resource
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// Resource properties.
 	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Unique identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccountResource.
 func (a AccountResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -84,33 +102,34 @@ func (a AccountTagRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AccountsCheckNameAvailabilityOptions contains the optional parameters for the Accounts.CheckNameAvailability method.
-type AccountsCheckNameAvailabilityOptions struct {
+// AccountsClientCheckNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckNameAvailability
+// method.
+type AccountsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsCreateOrUpdateOptions contains the optional parameters for the Accounts.CreateOrUpdate method.
-type AccountsCreateOrUpdateOptions struct {
+// AccountsClientCreateOrUpdateOptions contains the optional parameters for the AccountsClient.CreateOrUpdate method.
+type AccountsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsDeleteOptions contains the optional parameters for the Accounts.Delete method.
-type AccountsDeleteOptions struct {
+// AccountsClientDeleteOptions contains the optional parameters for the AccountsClient.Delete method.
+type AccountsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsGetOptions contains the optional parameters for the Accounts.Get method.
-type AccountsGetOptions struct {
+// AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListByResourceGroupOptions contains the optional parameters for the Accounts.ListByResourceGroup method.
-type AccountsListByResourceGroupOptions struct {
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+type AccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsUpdateOptions contains the optional parameters for the Accounts.Update method.
-type AccountsUpdateOptions struct {
+// AccountsClientUpdateOptions contains the optional parameters for the AccountsClient.Update method.
+type AccountsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -134,20 +153,38 @@ type CheckNameAvailabilityResult struct {
 
 // ExtensionResource - The response to an extension resource GET request.
 type ExtensionResource struct {
-	Resource
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The extension plan that was purchased.
 	Plan *ExtensionResourcePlan `json:"plan,omitempty"`
 
 	// Resource properties.
 	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Unique identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ExtensionResource.
 func (e ExtensionResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", e.ID)
+	populate(objectMap, "location", e.Location)
+	populate(objectMap, "name", e.Name)
 	populate(objectMap, "plan", e.Plan)
 	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "tags", e.Tags)
+	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -207,28 +244,28 @@ func (e ExtensionResourceRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ExtensionsCreateOptions contains the optional parameters for the Extensions.Create method.
-type ExtensionsCreateOptions struct {
+// ExtensionsClientCreateOptions contains the optional parameters for the ExtensionsClient.Create method.
+type ExtensionsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsDeleteOptions contains the optional parameters for the Extensions.Delete method.
-type ExtensionsDeleteOptions struct {
+// ExtensionsClientDeleteOptions contains the optional parameters for the ExtensionsClient.Delete method.
+type ExtensionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsGetOptions contains the optional parameters for the Extensions.Get method.
-type ExtensionsGetOptions struct {
+// ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
+type ExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsListByAccountOptions contains the optional parameters for the Extensions.ListByAccount method.
-type ExtensionsListByAccountOptions struct {
+// ExtensionsClientListByAccountOptions contains the optional parameters for the ExtensionsClient.ListByAccount method.
+type ExtensionsClientListByAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsUpdateOptions contains the optional parameters for the Extensions.Update method.
-type ExtensionsUpdateOptions struct {
+// ExtensionsClientUpdateOptions contains the optional parameters for the ExtensionsClient.Update method.
+type ExtensionsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -269,23 +306,41 @@ type OperationProperties struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ProjectResource - A Visual Studio Team Services project resource.
 type ProjectResource struct {
-	Resource
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// Key/value pair of resource properties.
 	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Unique identifier of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ProjectResource.
 func (p ProjectResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -302,30 +357,30 @@ func (p ProjectResourceListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProjectsBeginCreateOptions contains the optional parameters for the Projects.BeginCreate method.
-type ProjectsBeginCreateOptions struct {
+// ProjectsClientBeginCreateOptions contains the optional parameters for the ProjectsClient.BeginCreate method.
+type ProjectsClientBeginCreateOptions struct {
 	// This parameter is ignored and should be set to an empty string.
 	Validating *string
 }
 
-// ProjectsGetJobStatusOptions contains the optional parameters for the Projects.GetJobStatus method.
-type ProjectsGetJobStatusOptions struct {
+// ProjectsClientGetJobStatusOptions contains the optional parameters for the ProjectsClient.GetJobStatus method.
+type ProjectsClientGetJobStatusOptions struct {
 	// The job identifier.
 	JobID *string
 }
 
-// ProjectsGetOptions contains the optional parameters for the Projects.Get method.
-type ProjectsGetOptions struct {
+// ProjectsClientGetOptions contains the optional parameters for the ProjectsClient.Get method.
+type ProjectsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectsListByResourceGroupOptions contains the optional parameters for the Projects.ListByResourceGroup method.
-type ProjectsListByResourceGroupOptions struct {
+// ProjectsClientListByResourceGroupOptions contains the optional parameters for the ProjectsClient.ListByResourceGroup method.
+type ProjectsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectsUpdateOptions contains the optional parameters for the Projects.Update method.
-type ProjectsUpdateOptions struct {
+// ProjectsClientUpdateOptions contains the optional parameters for the ProjectsClient.Update method.
+type ProjectsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -350,16 +405,12 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

@@ -24,44 +24,58 @@ import (
 // ReplicationEventsClient contains the methods for the ReplicationEvents group.
 // Don't use this type directly, use NewReplicationEventsClient() instead.
 type ReplicationEventsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationEventsClient creates a new instance of ReplicationEventsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationEventsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationEventsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationEventsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationEventsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - The operation to get the details of an Azure Site recovery event.
-// If the operation fails it returns a generic error.
-func (client *ReplicationEventsClient) Get(ctx context.Context, eventName string, options *ReplicationEventsGetOptions) (ReplicationEventsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// eventName - The name of the Azure Site Recovery event.
+// options - ReplicationEventsClientGetOptions contains the optional parameters for the ReplicationEventsClient.Get method.
+func (client *ReplicationEventsClient) Get(ctx context.Context, eventName string, options *ReplicationEventsClientGetOptions) (ReplicationEventsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, eventName, options)
 	if err != nil {
-		return ReplicationEventsGetResponse{}, err
+		return ReplicationEventsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationEventsGetResponse{}, err
+		return ReplicationEventsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationEventsGetResponse{}, client.getHandleError(resp)
+		return ReplicationEventsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationEventsClient) getCreateRequest(ctx context.Context, eventName string, options *ReplicationEventsGetOptions) (*policy.Request, error) {
+func (client *ReplicationEventsClient) getCreateRequest(ctx context.Context, eventName string, options *ReplicationEventsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationEvents/{eventName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -79,54 +93,43 @@ func (client *ReplicationEventsClient) getCreateRequest(ctx context.Context, eve
 		return nil, errors.New("parameter eventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{eventName}", url.PathEscape(eventName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationEventsClient) getHandleResponse(resp *http.Response) (ReplicationEventsGetResponse, error) {
-	result := ReplicationEventsGetResponse{RawResponse: resp}
+func (client *ReplicationEventsClient) getHandleResponse(resp *http.Response) (ReplicationEventsClientGetResponse, error) {
+	result := ReplicationEventsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Event); err != nil {
-		return ReplicationEventsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationEventsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationEventsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets the list of Azure Site Recovery events for the vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationEventsClient) List(options *ReplicationEventsListOptions) *ReplicationEventsListPager {
-	return &ReplicationEventsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationEventsClientListOptions contains the optional parameters for the ReplicationEventsClient.List method.
+func (client *ReplicationEventsClient) List(options *ReplicationEventsClientListOptions) *ReplicationEventsClientListPager {
+	return &ReplicationEventsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationEventsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationEventsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationEventsClient) listCreateRequest(ctx context.Context, options *ReplicationEventsListOptions) (*policy.Request, error) {
+func (client *ReplicationEventsClient) listCreateRequest(ctx context.Context, options *ReplicationEventsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationEvents"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -140,12 +143,12 @@ func (client *ReplicationEventsClient) listCreateRequest(ctx context.Context, op
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -155,22 +158,10 @@ func (client *ReplicationEventsClient) listCreateRequest(ctx context.Context, op
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationEventsClient) listHandleResponse(resp *http.Response) (ReplicationEventsListResponse, error) {
-	result := ReplicationEventsListResponse{RawResponse: resp}
+func (client *ReplicationEventsClient) listHandleResponse(resp *http.Response) (ReplicationEventsClientListResponse, error) {
+	result := ReplicationEventsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventCollection); err != nil {
-		return ReplicationEventsListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationEventsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ReplicationEventsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

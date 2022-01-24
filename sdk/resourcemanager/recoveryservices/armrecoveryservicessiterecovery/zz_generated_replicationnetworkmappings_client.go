@@ -24,48 +24,66 @@ import (
 // ReplicationNetworkMappingsClient contains the methods for the ReplicationNetworkMappings group.
 // Don't use this type directly, use NewReplicationNetworkMappingsClient() instead.
 type ReplicationNetworkMappingsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationNetworkMappingsClient creates a new instance of ReplicationNetworkMappingsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationNetworkMappingsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationNetworkMappingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationNetworkMappingsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationNetworkMappingsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - The operation to create an ASR network mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) BeginCreate(ctx context.Context, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, options *ReplicationNetworkMappingsBeginCreateOptions) (ReplicationNetworkMappingsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Primary fabric name.
+// networkName - Primary network name.
+// networkMappingName - Network mapping name.
+// input - Create network mapping input.
+// options - ReplicationNetworkMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginCreate
+// method.
+func (client *ReplicationNetworkMappingsClient) BeginCreate(ctx context.Context, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginCreateOptions) (ReplicationNetworkMappingsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, fabricName, networkName, networkMappingName, input, options)
 	if err != nil {
-		return ReplicationNetworkMappingsCreatePollerResponse{}, err
+		return ReplicationNetworkMappingsClientCreatePollerResponse{}, err
 	}
-	result := ReplicationNetworkMappingsCreatePollerResponse{
+	result := ReplicationNetworkMappingsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ReplicationNetworkMappingsCreatePollerResponse{}, err
+		return ReplicationNetworkMappingsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationNetworkMappingsCreatePoller{
+	result.Poller = &ReplicationNetworkMappingsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - The operation to create an ASR network mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) create(ctx context.Context, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, options *ReplicationNetworkMappingsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationNetworkMappingsClient) create(ctx context.Context, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, networkName, networkMappingName, input, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +93,13 @@ func (client *ReplicationNetworkMappingsClient) create(ctx context.Context, fabr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationNetworkMappingsClient) createCreateRequest(ctx context.Context, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, options *ReplicationNetworkMappingsBeginCreateOptions) (*policy.Request, error) {
+func (client *ReplicationNetworkMappingsClient) createCreateRequest(ctx context.Context, fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -107,52 +125,45 @@ func (client *ReplicationNetworkMappingsClient) createCreateRequest(ctx context.
 		return nil, errors.New("parameter networkMappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkMappingName}", url.PathEscape(networkMappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
 }
 
-// createHandleError handles the Create error response.
-func (client *ReplicationNetworkMappingsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - The operation to delete a network mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) BeginDelete(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsBeginDeleteOptions) (ReplicationNetworkMappingsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Primary fabric name.
+// networkName - Primary network name.
+// networkMappingName - ARM Resource Name for network mapping.
+// options - ReplicationNetworkMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginDelete
+// method.
+func (client *ReplicationNetworkMappingsClient) BeginDelete(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsClientBeginDeleteOptions) (ReplicationNetworkMappingsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, fabricName, networkName, networkMappingName, options)
 	if err != nil {
-		return ReplicationNetworkMappingsDeletePollerResponse{}, err
+		return ReplicationNetworkMappingsClientDeletePollerResponse{}, err
 	}
-	result := ReplicationNetworkMappingsDeletePollerResponse{
+	result := ReplicationNetworkMappingsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ReplicationNetworkMappingsDeletePollerResponse{}, err
+		return ReplicationNetworkMappingsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ReplicationNetworkMappingsDeletePoller{
+	result.Poller = &ReplicationNetworkMappingsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - The operation to delete a network mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) deleteOperation(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationNetworkMappingsClient) deleteOperation(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, networkName, networkMappingName, options)
 	if err != nil {
 		return nil, err
@@ -162,13 +173,13 @@ func (client *ReplicationNetworkMappingsClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationNetworkMappingsClient) deleteCreateRequest(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ReplicationNetworkMappingsClient) deleteCreateRequest(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -194,47 +205,40 @@ func (client *ReplicationNetworkMappingsClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter networkMappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkMappingName}", url.PathEscape(networkMappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ReplicationNetworkMappingsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of an ASR network mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) Get(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsGetOptions) (ReplicationNetworkMappingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Primary fabric name.
+// networkName - Primary network name.
+// networkMappingName - Network mapping name.
+// options - ReplicationNetworkMappingsClientGetOptions contains the optional parameters for the ReplicationNetworkMappingsClient.Get
+// method.
+func (client *ReplicationNetworkMappingsClient) Get(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsClientGetOptions) (ReplicationNetworkMappingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, networkName, networkMappingName, options)
 	if err != nil {
-		return ReplicationNetworkMappingsGetResponse{}, err
+		return ReplicationNetworkMappingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationNetworkMappingsGetResponse{}, err
+		return ReplicationNetworkMappingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationNetworkMappingsGetResponse{}, client.getHandleError(resp)
+		return ReplicationNetworkMappingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationNetworkMappingsClient) getCreateRequest(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsGetOptions) (*policy.Request, error) {
+func (client *ReplicationNetworkMappingsClient) getCreateRequest(ctx context.Context, fabricName string, networkName string, networkMappingName string, options *ReplicationNetworkMappingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -260,54 +264,44 @@ func (client *ReplicationNetworkMappingsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter networkMappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkMappingName}", url.PathEscape(networkMappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationNetworkMappingsClient) getHandleResponse(resp *http.Response) (ReplicationNetworkMappingsGetResponse, error) {
-	result := ReplicationNetworkMappingsGetResponse{RawResponse: resp}
+func (client *ReplicationNetworkMappingsClient) getHandleResponse(resp *http.Response) (ReplicationNetworkMappingsClientGetResponse, error) {
+	result := ReplicationNetworkMappingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMapping); err != nil {
-		return ReplicationNetworkMappingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationNetworkMappingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationNetworkMappingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists all ASR network mappings in the vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) List(options *ReplicationNetworkMappingsListOptions) *ReplicationNetworkMappingsListPager {
-	return &ReplicationNetworkMappingsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationNetworkMappingsClientListOptions contains the optional parameters for the ReplicationNetworkMappingsClient.List
+// method.
+func (client *ReplicationNetworkMappingsClient) List(options *ReplicationNetworkMappingsClientListOptions) *ReplicationNetworkMappingsClientListPager {
+	return &ReplicationNetworkMappingsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationNetworkMappingsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationNetworkMappingsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkMappingCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationNetworkMappingsClient) listCreateRequest(ctx context.Context, options *ReplicationNetworkMappingsListOptions) (*policy.Request, error) {
+func (client *ReplicationNetworkMappingsClient) listCreateRequest(ctx context.Context, options *ReplicationNetworkMappingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationNetworkMappings"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -321,54 +315,46 @@ func (client *ReplicationNetworkMappingsClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationNetworkMappingsClient) listHandleResponse(resp *http.Response) (ReplicationNetworkMappingsListResponse, error) {
-	result := ReplicationNetworkMappingsListResponse{RawResponse: resp}
+func (client *ReplicationNetworkMappingsClient) listHandleResponse(resp *http.Response) (ReplicationNetworkMappingsClientListResponse, error) {
+	result := ReplicationNetworkMappingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMappingCollection); err != nil {
-		return ReplicationNetworkMappingsListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationNetworkMappingsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ReplicationNetworkMappingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByReplicationNetworks - Lists all ASR network mappings for the specified network.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) ListByReplicationNetworks(fabricName string, networkName string, options *ReplicationNetworkMappingsListByReplicationNetworksOptions) *ReplicationNetworkMappingsListByReplicationNetworksPager {
-	return &ReplicationNetworkMappingsListByReplicationNetworksPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Primary fabric name.
+// networkName - Primary network name.
+// options - ReplicationNetworkMappingsClientListByReplicationNetworksOptions contains the optional parameters for the ReplicationNetworkMappingsClient.ListByReplicationNetworks
+// method.
+func (client *ReplicationNetworkMappingsClient) ListByReplicationNetworks(fabricName string, networkName string, options *ReplicationNetworkMappingsClientListByReplicationNetworksOptions) *ReplicationNetworkMappingsClientListByReplicationNetworksPager {
+	return &ReplicationNetworkMappingsClientListByReplicationNetworksPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByReplicationNetworksCreateRequest(ctx, fabricName, networkName, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationNetworkMappingsListByReplicationNetworksResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationNetworkMappingsClientListByReplicationNetworksResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkMappingCollection.NextLink)
 		},
 	}
 }
 
 // listByReplicationNetworksCreateRequest creates the ListByReplicationNetworks request.
-func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksCreateRequest(ctx context.Context, fabricName string, networkName string, options *ReplicationNetworkMappingsListByReplicationNetworksOptions) (*policy.Request, error) {
+func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksCreateRequest(ctx context.Context, fabricName string, networkName string, options *ReplicationNetworkMappingsClientListByReplicationNetworksOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -390,61 +376,55 @@ func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksCreateR
 		return nil, errors.New("parameter networkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkName}", url.PathEscape(networkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByReplicationNetworksHandleResponse handles the ListByReplicationNetworks response.
-func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksHandleResponse(resp *http.Response) (ReplicationNetworkMappingsListByReplicationNetworksResponse, error) {
-	result := ReplicationNetworkMappingsListByReplicationNetworksResponse{RawResponse: resp}
+func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksHandleResponse(resp *http.Response) (ReplicationNetworkMappingsClientListByReplicationNetworksResponse, error) {
+	result := ReplicationNetworkMappingsClientListByReplicationNetworksResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkMappingCollection); err != nil {
-		return ReplicationNetworkMappingsListByReplicationNetworksResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationNetworkMappingsClientListByReplicationNetworksResponse{}, err
 	}
 	return result, nil
 }
 
-// listByReplicationNetworksHandleError handles the ListByReplicationNetworks error response.
-func (client *ReplicationNetworkMappingsClient) listByReplicationNetworksHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - The operation to update an ASR network mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) BeginUpdate(ctx context.Context, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsBeginUpdateOptions) (ReplicationNetworkMappingsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Primary fabric name.
+// networkName - Primary network name.
+// networkMappingName - Network mapping name.
+// input - Update network mapping input.
+// options - ReplicationNetworkMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginUpdate
+// method.
+func (client *ReplicationNetworkMappingsClient) BeginUpdate(ctx context.Context, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (ReplicationNetworkMappingsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, fabricName, networkName, networkMappingName, input, options)
 	if err != nil {
-		return ReplicationNetworkMappingsUpdatePollerResponse{}, err
+		return ReplicationNetworkMappingsClientUpdatePollerResponse{}, err
 	}
-	result := ReplicationNetworkMappingsUpdatePollerResponse{
+	result := ReplicationNetworkMappingsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ReplicationNetworkMappingsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ReplicationNetworkMappingsUpdatePollerResponse{}, err
+		return ReplicationNetworkMappingsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationNetworkMappingsUpdatePoller{
+	result.Poller = &ReplicationNetworkMappingsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - The operation to update an ASR network mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationNetworkMappingsClient) update(ctx context.Context, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationNetworkMappingsClient) update(ctx context.Context, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, fabricName, networkName, networkMappingName, input, options)
 	if err != nil {
 		return nil, err
@@ -454,13 +434,13 @@ func (client *ReplicationNetworkMappingsClient) update(ctx context.Context, fabr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReplicationNetworkMappingsClient) updateCreateRequest(ctx context.Context, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsBeginUpdateOptions) (*policy.Request, error) {
+func (client *ReplicationNetworkMappingsClient) updateCreateRequest(ctx context.Context, fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, options *ReplicationNetworkMappingsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -486,25 +466,13 @@ func (client *ReplicationNetworkMappingsClient) updateCreateRequest(ctx context.
 		return nil, errors.New("parameter networkMappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkMappingName}", url.PathEscape(networkMappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ReplicationNetworkMappingsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

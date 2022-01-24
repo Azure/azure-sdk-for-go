@@ -11,7 +11,6 @@ package armpeering
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // PeeringsClient contains the methods for the Peerings group.
 // Don't use this type directly, use NewPeeringsClient() instead.
 type PeeringsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPeeringsClient creates a new instance of PeeringsClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PeeringsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PeeringsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PeeringsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - Creates a new peering or updates an existing peering with the specified name under the given subscription and resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering Peering, options *PeeringsCreateOrUpdateOptions) (PeeringsCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Creates a new peering or updates an existing peering with the specified name under the given subscription
+// and resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// peeringName - The name of the peering.
+// peering - The properties needed to create or update a peering.
+// options - PeeringsClientCreateOrUpdateOptions contains the optional parameters for the PeeringsClient.CreateOrUpdate method.
+func (client *PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering Peering, options *PeeringsClientCreateOrUpdateOptions) (PeeringsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, peeringName, peering, options)
 	if err != nil {
-		return PeeringsCreateOrUpdateResponse{}, err
+		return PeeringsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PeeringsCreateOrUpdateResponse{}, err
+		return PeeringsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return PeeringsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return PeeringsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, peering Peering, options *PeeringsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, peering Peering, options *PeeringsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +86,7 @@ func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +98,36 @@ func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PeeringsClient) createOrUpdateHandleResponse(resp *http.Response) (PeeringsCreateOrUpdateResponse, error) {
-	result := PeeringsCreateOrUpdateResponse{RawResponse: resp}
+func (client *PeeringsClient) createOrUpdateHandleResponse(resp *http.Response) (PeeringsClientCreateOrUpdateResponse, error) {
+	result := PeeringsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Peering); err != nil {
-		return PeeringsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PeeringsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PeeringsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an existing peering with the specified name under the given subscription and resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeeringsClient) Delete(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsDeleteOptions) (PeeringsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// peeringName - The name of the peering.
+// options - PeeringsClientDeleteOptions contains the optional parameters for the PeeringsClient.Delete method.
+func (client *PeeringsClient) Delete(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsClientDeleteOptions) (PeeringsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, peeringName, options)
 	if err != nil {
-		return PeeringsDeleteResponse{}, err
+		return PeeringsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PeeringsDeleteResponse{}, err
+		return PeeringsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PeeringsDeleteResponse{}, client.deleteHandleError(resp)
+		return PeeringsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PeeringsDeleteResponse{RawResponse: resp}, nil
+	return PeeringsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsDeleteOptions) (*policy.Request, error) {
+func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -139,7 +141,7 @@ func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +152,28 @@ func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PeeringsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an existing peering with the specified name under the given subscription and resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeeringsClient) Get(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsGetOptions) (PeeringsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// peeringName - The name of the peering.
+// options - PeeringsClientGetOptions contains the optional parameters for the PeeringsClient.Get method.
+func (client *PeeringsClient) Get(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsClientGetOptions) (PeeringsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, peeringName, options)
 	if err != nil {
-		return PeeringsGetResponse{}, err
+		return PeeringsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PeeringsGetResponse{}, err
+		return PeeringsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PeeringsGetResponse{}, client.getHandleError(resp)
+		return PeeringsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsGetOptions) (*policy.Request, error) {
+func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, options *PeeringsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -195,7 +187,7 @@ func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,43 +199,33 @@ func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *PeeringsClient) getHandleResponse(resp *http.Response) (PeeringsGetResponse, error) {
-	result := PeeringsGetResponse{RawResponse: resp}
+func (client *PeeringsClient) getHandleResponse(resp *http.Response) (PeeringsClientGetResponse, error) {
+	result := PeeringsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Peering); err != nil {
-		return PeeringsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PeeringsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PeeringsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists all of the peerings under the given subscription and resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeeringsClient) ListByResourceGroup(resourceGroupName string, options *PeeringsListByResourceGroupOptions) *PeeringsListByResourceGroupPager {
-	return &PeeringsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - PeeringsClientListByResourceGroupOptions contains the optional parameters for the PeeringsClient.ListByResourceGroup
+// method.
+func (client *PeeringsClient) ListByResourceGroup(resourceGroupName string, options *PeeringsClientListByResourceGroupOptions) *PeeringsClientListByResourceGroupPager {
+	return &PeeringsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp PeeringsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PeeringListResult.NextLink)
+		advancer: func(ctx context.Context, resp PeeringsClientListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PeeringsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PeeringsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -253,7 +235,7 @@ func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,49 +247,38 @@ func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PeeringsClient) listByResourceGroupHandleResponse(resp *http.Response) (PeeringsListByResourceGroupResponse, error) {
-	result := PeeringsListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PeeringListResult); err != nil {
-		return PeeringsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *PeeringsClient) listByResourceGroupHandleResponse(resp *http.Response) (PeeringsClientListByResourceGroupResponse, error) {
+	result := PeeringsClientListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+		return PeeringsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *PeeringsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists all of the peerings under the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeeringsClient) ListBySubscription(options *PeeringsListBySubscriptionOptions) *PeeringsListBySubscriptionPager {
-	return &PeeringsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PeeringsClientListBySubscriptionOptions contains the optional parameters for the PeeringsClient.ListBySubscription
+// method.
+func (client *PeeringsClient) ListBySubscription(options *PeeringsClientListBySubscriptionOptions) *PeeringsClientListBySubscriptionPager {
+	return &PeeringsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PeeringsListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PeeringListResult.NextLink)
+		advancer: func(ctx context.Context, resp PeeringsClientListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PeeringsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PeeringsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,46 +290,37 @@ func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Contex
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PeeringsClient) listBySubscriptionHandleResponse(resp *http.Response) (PeeringsListBySubscriptionResponse, error) {
-	result := PeeringsListBySubscriptionResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PeeringListResult); err != nil {
-		return PeeringsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+func (client *PeeringsClient) listBySubscriptionHandleResponse(resp *http.Response) (PeeringsClientListBySubscriptionResponse, error) {
+	result := PeeringsClientListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+		return PeeringsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *PeeringsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates tags for a peering with the specified name under the given subscription and resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeeringsClient) Update(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags, options *PeeringsUpdateOptions) (PeeringsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// peeringName - The name of the peering.
+// tags - The resource tags.
+// options - PeeringsClientUpdateOptions contains the optional parameters for the PeeringsClient.Update method.
+func (client *PeeringsClient) Update(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags, options *PeeringsClientUpdateOptions) (PeeringsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, peeringName, tags, options)
 	if err != nil {
-		return PeeringsUpdateResponse{}, err
+		return PeeringsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PeeringsUpdateResponse{}, err
+		return PeeringsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PeeringsUpdateResponse{}, client.updateHandleError(resp)
+		return PeeringsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags, options *PeeringsUpdateOptions) (*policy.Request, error) {
+func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags, options *PeeringsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -372,7 +334,7 @@ func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -384,23 +346,10 @@ func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PeeringsClient) updateHandleResponse(resp *http.Response) (PeeringsUpdateResponse, error) {
-	result := PeeringsUpdateResponse{RawResponse: resp}
+func (client *PeeringsClient) updateHandleResponse(resp *http.Response) (PeeringsClientUpdateResponse, error) {
+	result := PeeringsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Peering); err != nil {
-		return PeeringsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PeeringsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *PeeringsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

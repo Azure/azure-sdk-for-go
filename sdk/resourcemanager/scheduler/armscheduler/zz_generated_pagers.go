@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// JobCollectionsListByResourceGroupPager provides operations for iterating over paged responses.
-type JobCollectionsListByResourceGroupPager struct {
+// JobCollectionsClientListByResourceGroupPager provides operations for iterating over paged responses.
+type JobCollectionsClientListByResourceGroupPager struct {
 	client    *JobCollectionsClient
-	current   JobCollectionsListByResourceGroupResponse
+	current   JobCollectionsClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, JobCollectionsListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, JobCollectionsClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *JobCollectionsListByResourceGroupPager) Err() error {
+func (p *JobCollectionsClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *JobCollectionsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *JobCollectionsClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *JobCollectionsListByResourceGroupPager) NextPage(ctx context.Context) b
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *JobCollectionsListByResourceGroupPager) NextPage(ctx context.Context) b
 	return true
 }
 
-// PageResponse returns the current JobCollectionsListByResourceGroupResponse page.
-func (p *JobCollectionsListByResourceGroupPager) PageResponse() JobCollectionsListByResourceGroupResponse {
+// PageResponse returns the current JobCollectionsClientListByResourceGroupResponse page.
+func (p *JobCollectionsClientListByResourceGroupPager) PageResponse() JobCollectionsClientListByResourceGroupResponse {
 	return p.current
 }
 
-// JobCollectionsListBySubscriptionPager provides operations for iterating over paged responses.
-type JobCollectionsListBySubscriptionPager struct {
+// JobCollectionsClientListBySubscriptionPager provides operations for iterating over paged responses.
+type JobCollectionsClientListBySubscriptionPager struct {
 	client    *JobCollectionsClient
-	current   JobCollectionsListBySubscriptionResponse
+	current   JobCollectionsClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, JobCollectionsListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, JobCollectionsClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *JobCollectionsListBySubscriptionPager) Err() error {
+func (p *JobCollectionsClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *JobCollectionsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *JobCollectionsClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *JobCollectionsListBySubscriptionPager) NextPage(ctx context.Context) bo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *JobCollectionsListBySubscriptionPager) NextPage(ctx context.Context) bo
 	return true
 }
 
-// PageResponse returns the current JobCollectionsListBySubscriptionResponse page.
-func (p *JobCollectionsListBySubscriptionPager) PageResponse() JobCollectionsListBySubscriptionResponse {
+// PageResponse returns the current JobCollectionsClientListBySubscriptionResponse page.
+func (p *JobCollectionsClientListBySubscriptionPager) PageResponse() JobCollectionsClientListBySubscriptionResponse {
 	return p.current
 }
 
-// JobsListJobHistoryPager provides operations for iterating over paged responses.
-type JobsListJobHistoryPager struct {
+// JobsClientListJobHistoryPager provides operations for iterating over paged responses.
+type JobsClientListJobHistoryPager struct {
 	client    *JobsClient
-	current   JobsListJobHistoryResponse
+	current   JobsClientListJobHistoryResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, JobsListJobHistoryResponse) (*policy.Request, error)
+	advancer  func(context.Context, JobsClientListJobHistoryResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *JobsListJobHistoryPager) Err() error {
+func (p *JobsClientListJobHistoryPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *JobsListJobHistoryPager) NextPage(ctx context.Context) bool {
+func (p *JobsClientListJobHistoryPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *JobsListJobHistoryPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listJobHistoryHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listJobHistoryHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *JobsListJobHistoryPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current JobsListJobHistoryResponse page.
-func (p *JobsListJobHistoryPager) PageResponse() JobsListJobHistoryResponse {
+// PageResponse returns the current JobsClientListJobHistoryResponse page.
+func (p *JobsClientListJobHistoryPager) PageResponse() JobsClientListJobHistoryResponse {
 	return p.current
 }
 
-// JobsListPager provides operations for iterating over paged responses.
-type JobsListPager struct {
+// JobsClientListPager provides operations for iterating over paged responses.
+type JobsClientListPager struct {
 	client    *JobsClient
-	current   JobsListResponse
+	current   JobsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, JobsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, JobsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *JobsListPager) Err() error {
+func (p *JobsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *JobsListPager) NextPage(ctx context.Context) bool {
+func (p *JobsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *JobsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -227,7 +227,7 @@ func (p *JobsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current JobsListResponse page.
-func (p *JobsListPager) PageResponse() JobsListResponse {
+// PageResponse returns the current JobsClientListResponse page.
+func (p *JobsClientListPager) PageResponse() JobsClientListResponse {
 	return p.current
 }

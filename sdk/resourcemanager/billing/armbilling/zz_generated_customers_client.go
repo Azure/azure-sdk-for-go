@@ -11,7 +11,6 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,51 @@ import (
 // CustomersClient contains the methods for the Customers group.
 // Don't use this type directly, use NewCustomersClient() instead.
 type CustomersClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewCustomersClient creates a new instance of CustomersClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCustomersClient(credential azcore.TokenCredential, options *arm.ClientOptions) *CustomersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CustomersClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CustomersClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Get - Gets a customer by its ID. The operation is supported only for billing accounts with agreement type Microsoft Partner Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomersClient) Get(ctx context.Context, billingAccountName string, customerName string, options *CustomersGetOptions) (CustomersGetResponse, error) {
+// Get - Gets a customer by its ID. The operation is supported only for billing accounts with agreement type Microsoft Partner
+// Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountName - The ID that uniquely identifies a billing account.
+// customerName - The ID that uniquely identifies a customer.
+// options - CustomersClientGetOptions contains the optional parameters for the CustomersClient.Get method.
+func (client *CustomersClient) Get(ctx context.Context, billingAccountName string, customerName string, options *CustomersClientGetOptions) (CustomersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, customerName, options)
 	if err != nil {
-		return CustomersGetResponse{}, err
+		return CustomersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomersGetResponse{}, err
+		return CustomersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CustomersGetResponse{}, client.getHandleError(resp)
+		return CustomersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *CustomersGetOptions) (*policy.Request, error) {
+func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *CustomersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -69,7 +78,7 @@ func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAcco
 		return nil, errors.New("parameter customerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -84,50 +93,40 @@ func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAcco
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomersClient) getHandleResponse(resp *http.Response) (CustomersGetResponse, error) {
-	result := CustomersGetResponse{RawResponse: resp}
+func (client *CustomersClient) getHandleResponse(resp *http.Response) (CustomersClientGetResponse, error) {
+	result := CustomersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Customer); err != nil {
-		return CustomersGetResponse{}, runtime.NewResponseError(err, resp)
+		return CustomersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CustomersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByBillingAccount - Lists the customers that are billed to a billing account. The operation is supported only for billing accounts with agreement
-// type Microsoft Partner Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomersClient) ListByBillingAccount(billingAccountName string, options *CustomersListByBillingAccountOptions) *CustomersListByBillingAccountPager {
-	return &CustomersListByBillingAccountPager{
+// ListByBillingAccount - Lists the customers that are billed to a billing account. The operation is supported only for billing
+// accounts with agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountName - The ID that uniquely identifies a billing account.
+// options - CustomersClientListByBillingAccountOptions contains the optional parameters for the CustomersClient.ListByBillingAccount
+// method.
+func (client *CustomersClient) ListByBillingAccount(billingAccountName string, options *CustomersClientListByBillingAccountOptions) *CustomersClientListByBillingAccountPager {
+	return &CustomersClientListByBillingAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp CustomersListByBillingAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CustomersClientListByBillingAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomerListResult.NextLink)
 		},
 	}
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *CustomersClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *CustomersListByBillingAccountOptions) (*policy.Request, error) {
+func (client *CustomersClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *CustomersClientListByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,44 +144,35 @@ func (client *CustomersClient) listByBillingAccountCreateRequest(ctx context.Con
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *CustomersClient) listByBillingAccountHandleResponse(resp *http.Response) (CustomersListByBillingAccountResponse, error) {
-	result := CustomersListByBillingAccountResponse{RawResponse: resp}
+func (client *CustomersClient) listByBillingAccountHandleResponse(resp *http.Response) (CustomersClientListByBillingAccountResponse, error) {
+	result := CustomersClientListByBillingAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomerListResult); err != nil {
-		return CustomersListByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
+		return CustomersClientListByBillingAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBillingAccountHandleError handles the ListByBillingAccount error response.
-func (client *CustomersClient) listByBillingAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByBillingProfile - Lists the customers that are billed to a billing profile. The operation is supported only for billing accounts with agreement
-// type Microsoft Partner Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomersClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *CustomersListByBillingProfileOptions) *CustomersListByBillingProfilePager {
-	return &CustomersListByBillingProfilePager{
+// ListByBillingProfile - Lists the customers that are billed to a billing profile. The operation is supported only for billing
+// accounts with agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountName - The ID that uniquely identifies a billing account.
+// billingProfileName - The ID that uniquely identifies a billing profile.
+// options - CustomersClientListByBillingProfileOptions contains the optional parameters for the CustomersClient.ListByBillingProfile
+// method.
+func (client *CustomersClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *CustomersClientListByBillingProfileOptions) *CustomersClientListByBillingProfilePager {
+	return &CustomersClientListByBillingProfilePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
 		},
-		advancer: func(ctx context.Context, resp CustomersListByBillingProfileResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CustomersClientListByBillingProfileResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomerListResult.NextLink)
 		},
 	}
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *CustomersClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *CustomersListByBillingProfileOptions) (*policy.Request, error) {
+func (client *CustomersClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *CustomersClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -192,7 +182,7 @@ func (client *CustomersClient) listByBillingProfileCreateRequest(ctx context.Con
 		return nil, errors.New("parameter billingProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -210,23 +200,10 @@ func (client *CustomersClient) listByBillingProfileCreateRequest(ctx context.Con
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *CustomersClient) listByBillingProfileHandleResponse(resp *http.Response) (CustomersListByBillingProfileResponse, error) {
-	result := CustomersListByBillingProfileResponse{RawResponse: resp}
+func (client *CustomersClient) listByBillingProfileHandleResponse(resp *http.Response) (CustomersClientListByBillingProfileResponse, error) {
+	result := CustomersClientListByBillingProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomerListResult); err != nil {
-		return CustomersListByBillingProfileResponse{}, runtime.NewResponseError(err, resp)
+		return CustomersClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
-}
-
-// listByBillingProfileHandleError handles the ListByBillingProfile error response.
-func (client *CustomersClient) listByBillingProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

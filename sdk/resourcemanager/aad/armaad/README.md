@@ -38,7 +38,7 @@ For more information on authentication, please see the documentation for `aziden
 Azure Active Directory modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armaad.{{NewClientName}}(<subscription ID>, cred, nil)
+client := armaad.NewDiagnosticSettingsClient(cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -47,7 +47,7 @@ You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/az
 options = arm.ClientOptions{
     Host: arm.AzureChina,
 }
-client := armaad.{{NewClientName}}(<subscription ID>, cred, &options)
+client := armaad.NewDiagnosticSettingsClient(cred, &options)
 ```
 
 ## Provide Feedback

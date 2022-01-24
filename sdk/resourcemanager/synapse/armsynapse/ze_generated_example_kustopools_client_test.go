@@ -19,21 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
 )
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListSkus.json
-func ExampleKustoPoolsClient_ListSKUs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armsynapse.NewKustoPoolsClient("<subscription-id>", cred, nil)
-	_, err = client.ListSKUs(ctx,
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsCheckNameAvailability.json
 func ExampleKustoPoolsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -42,7 +27,7 @@ func ExampleKustoPoolsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armsynapse.KustoPoolCheckNameRequest{
 			Name: to.StringPtr("<name>"),
@@ -52,6 +37,7 @@ func ExampleKustoPoolsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListByWorkspace.json
@@ -62,13 +48,14 @@ func ExampleKustoPoolsClient_ListByWorkspace() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByWorkspace(ctx,
+	res, err := client.ListByWorkspace(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolsClientListByWorkspaceResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsGet.json
@@ -87,7 +74,7 @@ func ExampleKustoPoolsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("KustoPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsCreateOrUpdate.json
@@ -103,21 +90,19 @@ func ExampleKustoPoolsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<kusto-pool-name>",
 		armsynapse.KustoPool{
-			TrackedResource: armsynapse.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armsynapse.KustoPoolProperties{
 				EnablePurge:           to.BoolPtr(true),
 				EnableStreamingIngest: to.BoolPtr(true),
 				WorkspaceUID:          to.StringPtr("<workspace-uid>"),
 			},
 			SKU: &armsynapse.AzureSKU{
-				Name:     armsynapse.SKUNameStorageOptimized.ToPtr(),
+				Name:     armsynapse.SKUName("Storage optimized").ToPtr(),
 				Capacity: to.Int32Ptr(2),
-				Size:     armsynapse.SKUSizeMedium.ToPtr(),
+				Size:     armsynapse.SKUSize("Medium").ToPtr(),
 			},
 		},
-		&armsynapse.KustoPoolsBeginCreateOrUpdateOptions{IfMatch: nil,
+		&armsynapse.KustoPoolsClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
 		})
 	if err != nil {
@@ -127,7 +112,7 @@ func ExampleKustoPoolsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("KustoPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsUpdate.json
@@ -149,12 +134,12 @@ func ExampleKustoPoolsClient_BeginUpdate() {
 				WorkspaceUID:          to.StringPtr("<workspace-uid>"),
 			},
 			SKU: &armsynapse.AzureSKU{
-				Name:     armsynapse.SKUNameStorageOptimized.ToPtr(),
+				Name:     armsynapse.SKUName("Storage optimized").ToPtr(),
 				Capacity: to.Int32Ptr(2),
-				Size:     armsynapse.SKUSizeMedium.ToPtr(),
+				Size:     armsynapse.SKUSize("Medium").ToPtr(),
 			},
 		},
-		&armsynapse.KustoPoolsBeginUpdateOptions{IfMatch: nil})
+		&armsynapse.KustoPoolsClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -162,7 +147,7 @@ func ExampleKustoPoolsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("KustoPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsDelete.json
@@ -231,24 +216,6 @@ func ExampleKustoPoolsClient_BeginStart() {
 	}
 }
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListResourceSkus.json
-func ExampleKustoPoolsClient_ListSKUsByResource() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armsynapse.NewKustoPoolsClient("<subscription-id>", cred, nil)
-	_, err = client.ListSKUsByResource(ctx,
-		"<workspace-name>",
-		"<kusto-pool-name>",
-		"<resource-group-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsList.json
 func ExampleKustoPoolsClient_ListLanguageExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -257,7 +224,7 @@ func ExampleKustoPoolsClient_ListLanguageExtensions() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolsClient("<subscription-id>", cred, nil)
-	_, err = client.ListLanguageExtensions(ctx,
+	res, err := client.ListLanguageExtensions(ctx,
 		"<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
@@ -265,6 +232,7 @@ func ExampleKustoPoolsClient_ListLanguageExtensions() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolsClientListLanguageExtensionsResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsAdd.json
@@ -282,10 +250,10 @@ func ExampleKustoPoolsClient_BeginAddLanguageExtensions() {
 		armsynapse.LanguageExtensionsList{
 			Value: []*armsynapse.LanguageExtension{
 				{
-					LanguageExtensionName: armsynapse.LanguageExtensionNamePYTHON.ToPtr(),
+					LanguageExtensionName: armsynapse.LanguageExtensionName("PYTHON").ToPtr(),
 				},
 				{
-					LanguageExtensionName: armsynapse.LanguageExtensionNameR.ToPtr(),
+					LanguageExtensionName: armsynapse.LanguageExtensionName("R").ToPtr(),
 				}},
 		},
 		nil)
@@ -313,10 +281,10 @@ func ExampleKustoPoolsClient_BeginRemoveLanguageExtensions() {
 		armsynapse.LanguageExtensionsList{
 			Value: []*armsynapse.LanguageExtension{
 				{
-					LanguageExtensionName: armsynapse.LanguageExtensionNamePYTHON.ToPtr(),
+					LanguageExtensionName: armsynapse.LanguageExtensionName("PYTHON").ToPtr(),
 				},
 				{
-					LanguageExtensionName: armsynapse.LanguageExtensionNameR.ToPtr(),
+					LanguageExtensionName: armsynapse.LanguageExtensionName("R").ToPtr(),
 				}},
 		},
 		nil)
@@ -337,7 +305,7 @@ func ExampleKustoPoolsClient_ListFollowerDatabases() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolsClient("<subscription-id>", cred, nil)
-	_, err = client.ListFollowerDatabases(ctx,
+	res, err := client.ListFollowerDatabases(ctx,
 		"<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
@@ -345,6 +313,7 @@ func ExampleKustoPoolsClient_ListFollowerDatabases() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolsClientListFollowerDatabasesResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolFollowerDatabasesDetach.json

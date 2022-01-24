@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// ADCCatalogsDeletePoller provides polling facilities until the operation reaches a terminal state.
-type ADCCatalogsDeletePoller struct {
+// ADCCatalogsClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type ADCCatalogsClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *ADCCatalogsDeletePoller) Done() bool {
+func (p *ADCCatalogsClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *ADCCatalogsDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *ADCCatalogsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ADCCatalogsClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final ADCCatalogsDeleteResponse will be returned.
-func (p *ADCCatalogsDeletePoller) FinalResponse(ctx context.Context) (ADCCatalogsDeleteResponse, error) {
-	respType := ADCCatalogsDeleteResponse{}
+// If the final GET succeeded then the final ADCCatalogsClientDeleteResponse will be returned.
+func (p *ADCCatalogsClientDeletePoller) FinalResponse(ctx context.Context) (ADCCatalogsClientDeleteResponse, error) {
+	respType := ADCCatalogsClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return ADCCatalogsDeleteResponse{}, err
+		return ADCCatalogsClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *ADCCatalogsDeletePoller) FinalResponse(ctx context.Context) (ADCCatalog
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *ADCCatalogsDeletePoller) ResumeToken() (string, error) {
+func (p *ADCCatalogsClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

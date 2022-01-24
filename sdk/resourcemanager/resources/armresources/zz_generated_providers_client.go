@@ -11,7 +11,6 @@ package armresources
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,52 @@ import (
 // ProvidersClient contains the methods for the Providers group.
 // Don't use this type directly, use NewProvidersClient() instead.
 type ProvidersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProvidersClient creates a new instance of ProvidersClient with the specified values.
+// subscriptionID - The Microsoft Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProvidersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProvidersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProvidersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the specified resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (ProvidersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceProviderNamespace - The namespace of the resource provider.
+// options - ProvidersClientGetOptions contains the optional parameters for the ProvidersClient.Get method.
+func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientGetOptions) (ProvidersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return ProvidersGetResponse{}, err
+		return ProvidersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProvidersGetResponse{}, err
+		return ProvidersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProvidersGetResponse{}, client.getHandleError(resp)
+		return ProvidersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*policy.Request, error) {
+func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}"
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -70,7 +79,7 @@ func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourcePro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,52 +94,42 @@ func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourcePro
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProvidersClient) getHandleResponse(resp *http.Response) (ProvidersGetResponse, error) {
-	result := ProvidersGetResponse{RawResponse: resp}
+func (client *ProvidersClient) getHandleResponse(resp *http.Response) (ProvidersClientGetResponse, error) {
+	result := ProvidersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
-		return ProvidersGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProvidersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProvidersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAtTenantScope - Gets the specified resource provider at the tenant level.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (ProvidersGetAtTenantScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceProviderNamespace - The namespace of the resource provider.
+// options - ProvidersClientGetAtTenantScopeOptions contains the optional parameters for the ProvidersClient.GetAtTenantScope
+// method.
+func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientGetAtTenantScopeOptions) (ProvidersClientGetAtTenantScopeResponse, error) {
 	req, err := client.getAtTenantScopeCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return ProvidersGetAtTenantScopeResponse{}, err
+		return ProvidersClientGetAtTenantScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProvidersGetAtTenantScopeResponse{}, err
+		return ProvidersClientGetAtTenantScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProvidersGetAtTenantScopeResponse{}, client.getAtTenantScopeHandleError(resp)
+		return ProvidersClientGetAtTenantScopeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAtTenantScopeHandleResponse(resp)
 }
 
 // getAtTenantScopeCreateRequest creates the GetAtTenantScope request.
-func (client *ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*policy.Request, error) {
+func (client *ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientGetAtTenantScopeOptions) (*policy.Request, error) {
 	urlPath := "/providers/{resourceProviderNamespace}"
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,49 +144,37 @@ func (client *ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context
 }
 
 // getAtTenantScopeHandleResponse handles the GetAtTenantScope response.
-func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Response) (ProvidersGetAtTenantScopeResponse, error) {
-	result := ProvidersGetAtTenantScopeResponse{RawResponse: resp}
+func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Response) (ProvidersClientGetAtTenantScopeResponse, error) {
+	result := ProvidersClientGetAtTenantScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
-		return ProvidersGetAtTenantScopeResponse{}, runtime.NewResponseError(err, resp)
+		return ProvidersClientGetAtTenantScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// getAtTenantScopeHandleError handles the GetAtTenantScope error response.
-func (client *ProvidersClient) getAtTenantScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets all resource providers for a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProvidersClient) List(options *ProvidersListOptions) *ProvidersListPager {
-	return &ProvidersListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.List method.
+func (client *ProvidersClient) List(options *ProvidersClientListOptions) *ProvidersClientListPager {
+	return &ProvidersClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ProvidersListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ProvidersClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProviderListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ProvidersClient) listCreateRequest(ctx context.Context, options *ProvidersListOptions) (*policy.Request, error) {
+func (client *ProvidersClient) listCreateRequest(ctx context.Context, options *ProvidersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,45 +189,34 @@ func (client *ProvidersClient) listCreateRequest(ctx context.Context, options *P
 }
 
 // listHandleResponse handles the List response.
-func (client *ProvidersClient) listHandleResponse(resp *http.Response) (ProvidersListResponse, error) {
-	result := ProvidersListResponse{RawResponse: resp}
+func (client *ProvidersClient) listHandleResponse(resp *http.Response) (ProvidersClientListResponse, error) {
+	result := ProvidersClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
-		return ProvidersListResponse{}, runtime.NewResponseError(err, resp)
+		return ProvidersClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ProvidersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAtTenantScope - Gets all resource providers for the tenant.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProvidersClient) ListAtTenantScope(options *ProvidersListAtTenantScopeOptions) *ProvidersListAtTenantScopePager {
-	return &ProvidersListAtTenantScopePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.ListAtTenantScope
+// method.
+func (client *ProvidersClient) ListAtTenantScope(options *ProvidersClientListAtTenantScopeOptions) *ProvidersClientListAtTenantScopePager {
+	return &ProvidersClientListAtTenantScopePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAtTenantScopeCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ProvidersListAtTenantScopeResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ProvidersClientListAtTenantScopeResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProviderListResult.NextLink)
 		},
 	}
 }
 
 // listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
-func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context, options *ProvidersListAtTenantScopeOptions) (*policy.Request, error) {
+func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context, options *ProvidersClientListAtTenantScopeOptions) (*policy.Request, error) {
 	urlPath := "/providers"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,46 +231,36 @@ func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Contex
 }
 
 // listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
-func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *http.Response) (ProvidersListAtTenantScopeResponse, error) {
-	result := ProvidersListAtTenantScopeResponse{RawResponse: resp}
+func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *http.Response) (ProvidersClientListAtTenantScopeResponse, error) {
+	result := ProvidersClientListAtTenantScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
-		return ProvidersListAtTenantScopeResponse{}, runtime.NewResponseError(err, resp)
+		return ProvidersClientListAtTenantScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// listAtTenantScopeHandleError handles the ListAtTenantScope error response.
-func (client *ProvidersClient) listAtTenantScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ProviderPermissions - Get the provider permissions.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProvidersClient) ProviderPermissions(ctx context.Context, resourceProviderNamespace string, options *ProvidersProviderPermissionsOptions) (ProvidersProviderPermissionsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceProviderNamespace - The namespace of the resource provider.
+// options - ProvidersClientProviderPermissionsOptions contains the optional parameters for the ProvidersClient.ProviderPermissions
+// method.
+func (client *ProvidersClient) ProviderPermissions(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientProviderPermissionsOptions) (ProvidersClientProviderPermissionsResponse, error) {
 	req, err := client.providerPermissionsCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return ProvidersProviderPermissionsResponse{}, err
+		return ProvidersClientProviderPermissionsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProvidersProviderPermissionsResponse{}, err
+		return ProvidersClientProviderPermissionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProvidersProviderPermissionsResponse{}, client.providerPermissionsHandleError(resp)
+		return ProvidersClientProviderPermissionsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.providerPermissionsHandleResponse(resp)
 }
 
 // providerPermissionsCreateRequest creates the ProviderPermissions request.
-func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersProviderPermissionsOptions) (*policy.Request, error) {
+func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientProviderPermissionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/providerPermissions"
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -304,7 +270,7 @@ func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -316,46 +282,35 @@ func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Cont
 }
 
 // providerPermissionsHandleResponse handles the ProviderPermissions response.
-func (client *ProvidersClient) providerPermissionsHandleResponse(resp *http.Response) (ProvidersProviderPermissionsResponse, error) {
-	result := ProvidersProviderPermissionsResponse{RawResponse: resp}
+func (client *ProvidersClient) providerPermissionsHandleResponse(resp *http.Response) (ProvidersClientProviderPermissionsResponse, error) {
+	result := ProvidersClientProviderPermissionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderPermissionListResult); err != nil {
-		return ProvidersProviderPermissionsResponse{}, runtime.NewResponseError(err, resp)
+		return ProvidersClientProviderPermissionsResponse{}, err
 	}
 	return result, nil
 }
 
-// providerPermissionsHandleError handles the ProviderPermissions error response.
-func (client *ProvidersClient) providerPermissionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Register - Registers a subscription with a resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (ProvidersRegisterResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceProviderNamespace - The namespace of the resource provider to register.
+// options - ProvidersClientRegisterOptions contains the optional parameters for the ProvidersClient.Register method.
+func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientRegisterOptions) (ProvidersClientRegisterResponse, error) {
 	req, err := client.registerCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return ProvidersRegisterResponse{}, err
+		return ProvidersClientRegisterResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProvidersRegisterResponse{}, err
+		return ProvidersClientRegisterResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProvidersRegisterResponse{}, client.registerHandleError(resp)
+		return ProvidersClientRegisterResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.registerHandleResponse(resp)
 }
 
 // registerCreateRequest creates the Register request.
-func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*policy.Request, error) {
+func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientRegisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register"
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -365,7 +320,7 @@ func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -380,46 +335,37 @@ func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resour
 }
 
 // registerHandleResponse handles the Register response.
-func (client *ProvidersClient) registerHandleResponse(resp *http.Response) (ProvidersRegisterResponse, error) {
-	result := ProvidersRegisterResponse{RawResponse: resp}
+func (client *ProvidersClient) registerHandleResponse(resp *http.Response) (ProvidersClientRegisterResponse, error) {
+	result := ProvidersClientRegisterResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
-		return ProvidersRegisterResponse{}, runtime.NewResponseError(err, resp)
+		return ProvidersClientRegisterResponse{}, err
 	}
 	return result, nil
 }
 
-// registerHandleError handles the Register error response.
-func (client *ProvidersClient) registerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegisterAtManagementGroupScope - Registers a management group with a resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Context, resourceProviderNamespace string, groupID string, options *ProvidersRegisterAtManagementGroupScopeOptions) (ProvidersRegisterAtManagementGroupScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceProviderNamespace - The namespace of the resource provider to register.
+// groupID - The management group ID.
+// options - ProvidersClientRegisterAtManagementGroupScopeOptions contains the optional parameters for the ProvidersClient.RegisterAtManagementGroupScope
+// method.
+func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Context, resourceProviderNamespace string, groupID string, options *ProvidersClientRegisterAtManagementGroupScopeOptions) (ProvidersClientRegisterAtManagementGroupScopeResponse, error) {
 	req, err := client.registerAtManagementGroupScopeCreateRequest(ctx, resourceProviderNamespace, groupID, options)
 	if err != nil {
-		return ProvidersRegisterAtManagementGroupScopeResponse{}, err
+		return ProvidersClientRegisterAtManagementGroupScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProvidersRegisterAtManagementGroupScopeResponse{}, err
+		return ProvidersClientRegisterAtManagementGroupScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProvidersRegisterAtManagementGroupScopeResponse{}, client.registerAtManagementGroupScopeHandleError(resp)
+		return ProvidersClientRegisterAtManagementGroupScopeResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProvidersRegisterAtManagementGroupScopeResponse{RawResponse: resp}, nil
+	return ProvidersClientRegisterAtManagementGroupScopeResponse{RawResponse: resp}, nil
 }
 
 // registerAtManagementGroupScopeCreateRequest creates the RegisterAtManagementGroupScope request.
-func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, groupID string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*policy.Request, error) {
+func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, groupID string, options *ProvidersClientRegisterAtManagementGroupScopeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/{resourceProviderNamespace}/register"
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -429,7 +375,7 @@ func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx c
 		return nil, errors.New("parameter groupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -440,38 +386,27 @@ func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx c
 	return req, nil
 }
 
-// registerAtManagementGroupScopeHandleError handles the RegisterAtManagementGroupScope error response.
-func (client *ProvidersClient) registerAtManagementGroupScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Unregister - Unregisters a subscription from a resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (ProvidersUnregisterResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceProviderNamespace - The namespace of the resource provider to unregister.
+// options - ProvidersClientUnregisterOptions contains the optional parameters for the ProvidersClient.Unregister method.
+func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientUnregisterOptions) (ProvidersClientUnregisterResponse, error) {
 	req, err := client.unregisterCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return ProvidersUnregisterResponse{}, err
+		return ProvidersClientUnregisterResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProvidersUnregisterResponse{}, err
+		return ProvidersClientUnregisterResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProvidersUnregisterResponse{}, client.unregisterHandleError(resp)
+		return ProvidersClientUnregisterResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.unregisterHandleResponse(resp)
 }
 
 // unregisterCreateRequest creates the Unregister request.
-func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*policy.Request, error) {
+func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientUnregisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister"
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -481,7 +416,7 @@ func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -493,23 +428,10 @@ func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, reso
 }
 
 // unregisterHandleResponse handles the Unregister response.
-func (client *ProvidersClient) unregisterHandleResponse(resp *http.Response) (ProvidersUnregisterResponse, error) {
-	result := ProvidersUnregisterResponse{RawResponse: resp}
+func (client *ProvidersClient) unregisterHandleResponse(resp *http.Response) (ProvidersClientUnregisterResponse, error) {
+	result := ProvidersClientUnregisterResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
-		return ProvidersUnregisterResponse{}, runtime.NewResponseError(err, resp)
+		return ProvidersClientUnregisterResponse{}, err
 	}
 	return result, nil
-}
-
-// unregisterHandleError handles the Unregister error response.
-func (client *ProvidersClient) unregisterHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

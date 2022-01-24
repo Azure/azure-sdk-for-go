@@ -44,10 +44,10 @@ type FilesystemList struct {
 // Path ...
 type Path struct {
 	Name          *string `json:"name,omitempty"`
-	IsDirectory   *bool   `json:"isDirectory,omitempty"`
+	IsDirectory   *string `json:"isDirectory,omitempty"`
 	LastModified  *string `json:"lastModified,omitempty"`
 	ETag          *string `json:"eTag,omitempty"`
-	ContentLength *int64  `json:"contentLength,omitempty"`
+	ContentLength *string `json:"contentLength,omitempty"`
 	Owner         *string `json:"owner,omitempty"`
 	Group         *string `json:"group,omitempty"`
 	Permissions   *string `json:"permissions,omitempty"`

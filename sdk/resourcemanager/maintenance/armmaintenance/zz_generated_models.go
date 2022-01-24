@@ -17,21 +17,25 @@ import (
 
 // ApplyUpdate - Apply Update request
 type ApplyUpdate struct {
-	Resource
 	// Properties of the apply update
 	Properties *ApplyUpdateProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified identifier of the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplyUpdate.
-func (a ApplyUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// ApplyUpdateForResourceGroupListOptions contains the optional parameters for the ApplyUpdateForResourceGroup.List method.
-type ApplyUpdateForResourceGroupListOptions struct {
+// ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.List
+// method.
+type ApplyUpdateForResourceGroupClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -82,48 +86,88 @@ func (a *ApplyUpdateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ApplyUpdatesCreateOrUpdateOptions contains the optional parameters for the ApplyUpdates.CreateOrUpdate method.
-type ApplyUpdatesCreateOrUpdateOptions struct {
+// ApplyUpdatesClientCreateOrUpdateOptions contains the optional parameters for the ApplyUpdatesClient.CreateOrUpdate method.
+type ApplyUpdatesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplyUpdatesCreateOrUpdateParentOptions contains the optional parameters for the ApplyUpdates.CreateOrUpdateParent method.
-type ApplyUpdatesCreateOrUpdateParentOptions struct {
+// ApplyUpdatesClientCreateOrUpdateParentOptions contains the optional parameters for the ApplyUpdatesClient.CreateOrUpdateParent
+// method.
+type ApplyUpdatesClientCreateOrUpdateParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplyUpdatesGetOptions contains the optional parameters for the ApplyUpdates.Get method.
-type ApplyUpdatesGetOptions struct {
+// ApplyUpdatesClientGetOptions contains the optional parameters for the ApplyUpdatesClient.Get method.
+type ApplyUpdatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplyUpdatesGetParentOptions contains the optional parameters for the ApplyUpdates.GetParent method.
-type ApplyUpdatesGetParentOptions struct {
+// ApplyUpdatesClientGetParentOptions contains the optional parameters for the ApplyUpdatesClient.GetParent method.
+type ApplyUpdatesClientGetParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplyUpdatesListOptions contains the optional parameters for the ApplyUpdates.List method.
-type ApplyUpdatesListOptions struct {
+// ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.List method.
+type ApplyUpdatesClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Configuration - Maintenance configuration record type
+type Configuration struct {
+	// Gets or sets location of the resource
+	Location *string `json:"location,omitempty"`
+
+	// Gets or sets properties of the resource
+	Properties *ConfigurationProperties `json:"properties,omitempty"`
+
+	// Gets or sets tags of the resource
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified identifier of the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Configuration.
+func (c Configuration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
+	return json.Marshal(objectMap)
 }
 
 // ConfigurationAssignment - Configuration Assignment
 type ConfigurationAssignment struct {
-	Resource
 	// Location of the resource
 	Location *string `json:"location,omitempty"`
 
 	// Properties of the configuration assignment
 	Properties *ConfigurationAssignmentProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationAssignment.
-func (c ConfigurationAssignment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified identifier of the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ConfigurationAssignmentProperties - Properties for configuration assignment
@@ -135,49 +179,128 @@ type ConfigurationAssignmentProperties struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// ConfigurationAssignmentsCreateOrUpdateOptions contains the optional parameters for the ConfigurationAssignments.CreateOrUpdate method.
-type ConfigurationAssignmentsCreateOrUpdateOptions struct {
+// ConfigurationAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdate
+// method.
+type ConfigurationAssignmentsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsCreateOrUpdateParentOptions contains the optional parameters for the ConfigurationAssignments.CreateOrUpdateParent method.
-type ConfigurationAssignmentsCreateOrUpdateParentOptions struct {
+// ConfigurationAssignmentsClientCreateOrUpdateParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdateParent
+// method.
+type ConfigurationAssignmentsClientCreateOrUpdateParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsDeleteOptions contains the optional parameters for the ConfigurationAssignments.Delete method.
-type ConfigurationAssignmentsDeleteOptions struct {
+// ConfigurationAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationAssignmentsClient.Delete
+// method.
+type ConfigurationAssignmentsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsDeleteParentOptions contains the optional parameters for the ConfigurationAssignments.DeleteParent method.
-type ConfigurationAssignmentsDeleteParentOptions struct {
+// ConfigurationAssignmentsClientDeleteParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.DeleteParent
+// method.
+type ConfigurationAssignmentsClientDeleteParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsGetOptions contains the optional parameters for the ConfigurationAssignments.Get method.
-type ConfigurationAssignmentsGetOptions struct {
+// ConfigurationAssignmentsClientGetOptions contains the optional parameters for the ConfigurationAssignmentsClient.Get method.
+type ConfigurationAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsGetParentOptions contains the optional parameters for the ConfigurationAssignments.GetParent method.
-type ConfigurationAssignmentsGetParentOptions struct {
+// ConfigurationAssignmentsClientGetParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.GetParent
+// method.
+type ConfigurationAssignmentsClientGetParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsListOptions contains the optional parameters for the ConfigurationAssignments.List method.
-type ConfigurationAssignmentsListOptions struct {
+// ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.List
+// method.
+type ConfigurationAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsListParentOptions contains the optional parameters for the ConfigurationAssignments.ListParent method.
-type ConfigurationAssignmentsListParentOptions struct {
+// ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.ListParent
+// method.
+type ConfigurationAssignmentsClientListParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsWithinSubscriptionListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscription.List method.
-type ConfigurationAssignmentsWithinSubscriptionListOptions struct {
+// ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.List
+// method.
+type ConfigurationAssignmentsWithinSubscriptionClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ConfigurationProperties - Properties for maintenance configuration
+type ConfigurationProperties struct {
+	// Gets or sets extensionProperties of the maintenanceConfiguration
+	ExtensionProperties map[string]*string `json:"extensionProperties,omitempty"`
+
+	// The input parameters to be passed to the patch run operation.
+	InstallPatches *InputPatchConfiguration `json:"installPatches,omitempty"`
+
+	// Gets or sets maintenanceScope of the configuration
+	MaintenanceScope *MaintenanceScope `json:"maintenanceScope,omitempty"`
+
+	// Definition of a MaintenanceWindow
+	MaintenanceWindow *Window `json:"maintenanceWindow,omitempty"`
+
+	// Gets or sets namespace of the resource
+	Namespace *string `json:"namespace,omitempty"`
+
+	// Gets or sets the visibility of the configuration. The default value is 'Custom'
+	Visibility *Visibility `json:"visibility,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationProperties.
+func (c ConfigurationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "extensionProperties", c.ExtensionProperties)
+	populate(objectMap, "installPatches", c.InstallPatches)
+	populate(objectMap, "maintenanceScope", c.MaintenanceScope)
+	populate(objectMap, "maintenanceWindow", c.MaintenanceWindow)
+	populate(objectMap, "namespace", c.Namespace)
+	populate(objectMap, "visibility", c.Visibility)
+	return json.Marshal(objectMap)
+}
+
+// ConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.CreateOrUpdate
+// method.
+type ConfigurationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationsClientDeleteOptions contains the optional parameters for the ConfigurationsClient.Delete method.
+type ConfigurationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
+type ConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
+type ConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationsClientUpdateOptions contains the optional parameters for the ConfigurationsClient.Update method.
+type ConfigurationsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.List
+// method.
+type ConfigurationsForResourceGroupClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Error - An error response received from the Azure Maintenance service.
+type Error struct {
+	// Details of the error
+	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 // ErrorDetails - An error response details received from the Azure Maintenance service.
@@ -215,7 +338,8 @@ type InputPatchConfiguration struct {
 	// Input parameters specific to patching Linux machine. For Windows machines, do not pass this property.
 	LinuxParameters *InputLinuxParameters `json:"linuxParameters,omitempty"`
 
-	// Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or not after the patch operation is completed.
+	// Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or not after
+	// the patch operation is completed.
 	RebootSetting *RebootOptions `json:"rebootSetting,omitempty"`
 
 	// Tasks information for the Software update configuration.
@@ -279,7 +403,7 @@ func (l ListConfigurationAssignmentsResult) MarshalJSON() ([]byte, error) {
 // ListMaintenanceConfigurationsResult - Response for MaintenanceConfigurations list
 type ListMaintenanceConfigurationsResult struct {
 	// The list of maintenance Configurations
-	Value []*MaintenanceConfiguration `json:"value,omitempty"`
+	Value []*Configuration `json:"value,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ListMaintenanceConfigurationsResult.
@@ -300,140 +424,6 @@ func (l ListUpdatesResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", l.Value)
 	return json.Marshal(objectMap)
-}
-
-// MaintenanceConfiguration - Maintenance configuration record type
-type MaintenanceConfiguration struct {
-	Resource
-	// Gets or sets location of the resource
-	Location *string `json:"location,omitempty"`
-
-	// Gets or sets properties of the resource
-	Properties *MaintenanceConfigurationProperties `json:"properties,omitempty"`
-
-	// Gets or sets tags of the resource
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MaintenanceConfiguration.
-func (m MaintenanceConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "tags", m.Tags)
-	return json.Marshal(objectMap)
-}
-
-// MaintenanceConfigurationProperties - Properties for maintenance configuration
-type MaintenanceConfigurationProperties struct {
-	// Gets or sets extensionProperties of the maintenanceConfiguration
-	ExtensionProperties map[string]*string `json:"extensionProperties,omitempty"`
-
-	// The input parameters to be passed to the patch run operation.
-	InstallPatches *InputPatchConfiguration `json:"installPatches,omitempty"`
-
-	// Gets or sets maintenanceScope of the configuration
-	MaintenanceScope *MaintenanceScope `json:"maintenanceScope,omitempty"`
-
-	// Definition of a MaintenanceWindow
-	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
-
-	// Gets or sets namespace of the resource
-	Namespace *string `json:"namespace,omitempty"`
-
-	// Gets or sets the visibility of the configuration. The default value is 'Custom'
-	Visibility *Visibility `json:"visibility,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MaintenanceConfigurationProperties.
-func (m MaintenanceConfigurationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "extensionProperties", m.ExtensionProperties)
-	populate(objectMap, "installPatches", m.InstallPatches)
-	populate(objectMap, "maintenanceScope", m.MaintenanceScope)
-	populate(objectMap, "maintenanceWindow", m.MaintenanceWindow)
-	populate(objectMap, "namespace", m.Namespace)
-	populate(objectMap, "visibility", m.Visibility)
-	return json.Marshal(objectMap)
-}
-
-// MaintenanceConfigurationsCreateOrUpdateOptions contains the optional parameters for the MaintenanceConfigurations.CreateOrUpdate method.
-type MaintenanceConfigurationsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MaintenanceConfigurationsDeleteOptions contains the optional parameters for the MaintenanceConfigurations.Delete method.
-type MaintenanceConfigurationsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MaintenanceConfigurationsForResourceGroupListOptions contains the optional parameters for the MaintenanceConfigurationsForResourceGroup.List method.
-type MaintenanceConfigurationsForResourceGroupListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MaintenanceConfigurationsGetOptions contains the optional parameters for the MaintenanceConfigurations.Get method.
-type MaintenanceConfigurationsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MaintenanceConfigurationsListOptions contains the optional parameters for the MaintenanceConfigurations.List method.
-type MaintenanceConfigurationsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MaintenanceConfigurationsUpdateOptions contains the optional parameters for the MaintenanceConfigurations.Update method.
-type MaintenanceConfigurationsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MaintenanceError - An error response received from the Azure Maintenance service.
-// Implements the error and azcore.HTTPResponse interfaces.
-type MaintenanceError struct {
-	raw string
-	// Details of the error
-	InnerError *ErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type MaintenanceError.
-// The contents of the error text are not contractual and subject to change.
-func (e MaintenanceError) Error() string {
-	return e.raw
-}
-
-// MaintenanceWindow - Definition of a MaintenanceWindow
-type MaintenanceWindow struct {
-	// Duration of the maintenance window in HH:mm format. If not provided, default value will be used based on maintenance scope provided. Example: 05:00.
-	Duration *string `json:"duration,omitempty"`
-
-	// Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm format. The window will be created in the time zone provided and adjusted to
-	// daylight savings according to that time zone.
-	// Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime 9999-12-31 23:59:59.
-	ExpirationDateTime *string `json:"expirationDateTime,omitempty"`
-
-	// Rate at which a Maintenance window is expected to recur. The rate can be expressed as daily, weekly, or monthly schedules. Daily schedule are formatted
-	// as recurEvery: [Frequency as integer]['Day(s)'].
-	// If no frequency is provided, the default frequency is 1. Daily schedule examples are recurEvery: Day, recurEvery: 3Days. Weekly schedule are formatted
-	// as recurEvery: [Frequency as integer]['Week(s)']
-	// [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly
-	// schedules are formatted as [Frequency as
-	// integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)]
-	// [Weekday Monday-Sunday] [Optional Offset(No. of
-	// days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
-	// recurEvery: Month Last Sunday, recurEvery:
-	// Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery: Month Third Sunday Offset6.
-	RecurEvery *string `json:"recurEvery,omitempty"`
-
-	// Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The start date can be set to either the current date or future date. The window
-	// will be created in the time zone provided and
-	// adjusted to daylight savings according to that time zone.
-	StartDateTime *string `json:"startDateTime,omitempty"`
-
-	// Name of the timezone. List of timezones can be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard
-	// Time, UTC, W. Europe Standard Time, Korea
-	// Standard Time, Cen. Australia Standard Time.
-	TimeZone *string `json:"timeZone,omitempty"`
 }
 
 // Operation - Represents an operation returned by the GetOperations request
@@ -469,8 +459,8 @@ type OperationInfo struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -487,13 +477,15 @@ func (o OperationsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PublicMaintenanceConfigurationsGetOptions contains the optional parameters for the PublicMaintenanceConfigurations.Get method.
-type PublicMaintenanceConfigurationsGetOptions struct {
+// PublicMaintenanceConfigurationsClientGetOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.Get
+// method.
+type PublicMaintenanceConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicMaintenanceConfigurationsListOptions contains the optional parameters for the PublicMaintenanceConfigurations.List method.
-type PublicMaintenanceConfigurationsListOptions struct {
+// PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.List
+// method.
+type PublicMaintenanceConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -510,20 +502,6 @@ type Resource struct {
 
 	// READ-ONLY; Type of the resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "type", r.Type)
 }
 
 // SoftwareUpdateConfigurationTasks - Task properties of the software update configuration.
@@ -706,14 +684,49 @@ type UpdateProperties struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// UpdatesListOptions contains the optional parameters for the Updates.List method.
-type UpdatesListOptions struct {
+// UpdatesClientListOptions contains the optional parameters for the UpdatesClient.List method.
+type UpdatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdatesListParentOptions contains the optional parameters for the Updates.ListParent method.
-type UpdatesListParentOptions struct {
+// UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.ListParent method.
+type UpdatesClientListParentOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Window - Definition of a MaintenanceWindow
+type Window struct {
+	// Duration of the maintenance window in HH:mm format. If not provided, default value will be used based on maintenance scope
+	// provided. Example: 05:00.
+	Duration *string `json:"duration,omitempty"`
+
+	// Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm format. The window will be created in the time
+	// zone provided and adjusted to daylight savings according to that time zone.
+	// Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime 9999-12-31 23:59:59.
+	ExpirationDateTime *string `json:"expirationDateTime,omitempty"`
+
+	// Rate at which a Maintenance window is expected to recur. The rate can be expressed as daily, weekly, or monthly schedules.
+	// Daily schedule are formatted as recurEvery: [Frequency as integer]['Day(s)'].
+	// If no frequency is provided, the default frequency is 1. Daily schedule examples are recurEvery: Day, recurEvery: 3Days.
+	// Weekly schedule are formatted as recurEvery: [Frequency as integer]['Week(s)']
+	// [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are recurEvery: 3Weeks, recurEvery:
+	// Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
+	// integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month (First,
+	// Second, Third, Fourth, Last)] [Weekday Monday-Sunday] [Optional Offset(No. of
+	// days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months,
+	// recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery:
+	// Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery: Month Third Sunday Offset6.
+	RecurEvery *string `json:"recurEvery,omitempty"`
+
+	// Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The start date can be set to either the current
+	// date or future date. The window will be created in the time zone provided and
+	// adjusted to daylight savings according to that time zone.
+	StartDateTime *string `json:"startDateTime,omitempty"`
+
+	// Name of the timezone. List of timezones can be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+	// Example: Pacific Standard Time, UTC, W. Europe Standard Time, Korea
+	// Standard Time, Cen. Australia Standard Time.
+	TimeZone *string `json:"timeZone,omitempty"`
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

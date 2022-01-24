@@ -25,20 +25,16 @@ func ExampleAssignmentsClient_CreateOrUpdate() {
 	}
 	ctx := context.Background()
 	client := armblueprint.NewAssignmentsClient(cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	_, err = client.CreateOrUpdate(ctx,
 		"<resource-scope>",
 		"<assignment-name>",
 		armblueprint.Assignment{
-			TrackedResource: armblueprint.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armblueprint.ManagedServiceIdentity{
-				Type: armblueprint.ManagedServiceIdentityTypeSystemAssigned.ToPtr(),
+				Type: armblueprint.ManagedServiceIdentityType("SystemAssigned").ToPtr(),
 			},
 			Properties: &armblueprint.AssignmentProperties{
-				BlueprintResourcePropertiesBase: armblueprint.BlueprintResourcePropertiesBase{
-					Description: to.StringPtr("<description>"),
-				},
+				Description: to.StringPtr("<description>"),
 				BlueprintID: to.StringPtr("<blueprint-id>"),
 				Parameters: map[string]*armblueprint.ParameterValue{
 					"costCenter": {
@@ -115,7 +111,6 @@ func ExampleAssignmentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Assignment.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_Get.json
@@ -133,7 +128,7 @@ func ExampleAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Assignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssignmentsClientGetResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_Delete.json
@@ -144,14 +139,13 @@ func ExampleAssignmentsClient_Delete() {
 	}
 	ctx := context.Background()
 	client := armblueprint.NewAssignmentsClient(cred, nil)
-	res, err := client.Delete(ctx,
+	_, err = client.Delete(ctx,
 		"<resource-scope>",
 		"<assignment-name>",
-		&armblueprint.AssignmentsDeleteOptions{DeleteBehavior: nil})
+		&armblueprint.AssignmentsClientDeleteOptions{DeleteBehavior: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Assignment.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/WhoIsBlueprint_Action.json
@@ -162,13 +156,14 @@ func ExampleAssignmentsClient_WhoIsBlueprint() {
 	}
 	ctx := context.Background()
 	client := armblueprint.NewAssignmentsClient(cred, nil)
-	_, err = client.WhoIsBlueprint(ctx,
+	res, err := client.WhoIsBlueprint(ctx,
 		"<resource-scope>",
 		"<assignment-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AssignmentsClientWhoIsBlueprintResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPAssignment/BlueprintAssignment_List.json
@@ -181,12 +176,16 @@ func ExampleAssignmentsClient_List() {
 	client := armblueprint.NewAssignmentsClient(cred, nil)
 	pager := client.List("<resource-scope>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Assignment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

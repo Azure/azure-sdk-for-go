@@ -31,13 +31,9 @@ func ExampleEndpointsClient_Update() {
 		"<endpoint-type>",
 		"<endpoint-name>",
 		armtrafficmanager.Endpoint{
-			ProxyResource: armtrafficmanager.ProxyResource{
-				Resource: armtrafficmanager.Resource{
-					Name: to.StringPtr("<name>"),
-					Type: to.StringPtr("<type>"),
-					ID:   to.StringPtr("<id>"),
-				},
-			},
+			Name: to.StringPtr("<name>"),
+			Type: to.StringPtr("<type>"),
+			ID:   to.StringPtr("<id>"),
 			Properties: &armtrafficmanager.EndpointProperties{
 				Target: to.StringPtr("<target>"),
 			},
@@ -46,7 +42,7 @@ func ExampleEndpointsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Endpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Endpoint-GET-External-WithGeoMapping.json
@@ -66,7 +62,7 @@ func ExampleEndpointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Endpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointsClientGetResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Endpoint-PUT-External-WithCustomHeaders.json
@@ -83,12 +79,8 @@ func ExampleEndpointsClient_CreateOrUpdate() {
 		"<endpoint-type>",
 		"<endpoint-name>",
 		armtrafficmanager.Endpoint{
-			ProxyResource: armtrafficmanager.ProxyResource{
-				Resource: armtrafficmanager.Resource{
-					Name: to.StringPtr("<name>"),
-					Type: to.StringPtr("<type>"),
-				},
-			},
+			Name: to.StringPtr("<name>"),
+			Type: to.StringPtr("<type>"),
 			Properties: &armtrafficmanager.EndpointProperties{
 				CustomHeaders: []*armtrafficmanager.EndpointPropertiesCustomHeadersItem{
 					{
@@ -100,7 +92,7 @@ func ExampleEndpointsClient_CreateOrUpdate() {
 						Value: to.StringPtr("<value>"),
 					}},
 				EndpointLocation: to.StringPtr("<endpoint-location>"),
-				EndpointStatus:   armtrafficmanager.EndpointStatusEnabled.ToPtr(),
+				EndpointStatus:   armtrafficmanager.EndpointStatus("Enabled").ToPtr(),
 				Target:           to.StringPtr("<target>"),
 			},
 		},
@@ -108,7 +100,7 @@ func ExampleEndpointsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Endpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Endpoint-DELETE-External.json
@@ -119,7 +111,7 @@ func ExampleEndpointsClient_Delete() {
 	}
 	ctx := context.Background()
 	client := armtrafficmanager.NewEndpointsClient("<subscription-id>", cred, nil)
-	_, err = client.Delete(ctx,
+	res, err := client.Delete(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		"<endpoint-type>",
@@ -128,4 +120,5 @@ func ExampleEndpointsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.EndpointsClientDeleteResult)
 }

@@ -9,8 +9,8 @@
 package armsqlvirtualmachine
 
 const (
-	module  = "armsqlvirtualmachine"
-	version = "v0.1.0"
+	moduleName    = "armsqlvirtualmachine"
+	moduleVersion = "v0.2.0"
 )
 
 // BackupScheduleType - Backup schedule type.
@@ -53,7 +53,8 @@ func (c ClusterConfiguration) ToPtr() *ClusterConfiguration {
 	return &c
 }
 
-// ClusterManagerType - Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the group and the OS type.
+// ClusterManagerType - Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the
+// group and the OS type.
 type ClusterManagerType string
 
 const (
@@ -170,8 +171,8 @@ func (c FullBackupFrequencyType) ToPtr() *FullBackupFrequencyType {
 	return &c
 }
 
-// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the
-// resource.
+// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
+// Directory principal for the resource.
 type IdentityType string
 
 const (

@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // PackagesClient contains the methods for the Packages group.
 // Don't use this type directly, use NewPackagesClient() instead.
 type PackagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPackagesClient creates a new instance of PackagesClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPackagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PackagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PackagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PackagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create or replace (overwrite/recreate, with potential downtime) a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) BeginCreate(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageResource, options *PackagesBeginCreateOptions) (PackagesCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// parameters - Parameters supplied to create a Test Base Package.
+// options - PackagesClientBeginCreateOptions contains the optional parameters for the PackagesClient.BeginCreate method.
+func (client *PackagesClient) BeginCreate(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageResource, options *PackagesClientBeginCreateOptions) (PackagesClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, testBaseAccountName, packageName, parameters, options)
 	if err != nil {
-		return PackagesCreatePollerResponse{}, err
+		return PackagesClientCreatePollerResponse{}, err
 	}
-	result := PackagesCreatePollerResponse{
+	result := PackagesClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PackagesClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("PackagesClient.Create", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return PackagesCreatePollerResponse{}, err
+		return PackagesClientCreatePollerResponse{}, err
 	}
-	result.Poller = &PackagesCreatePoller{
+	result.Poller = &PackagesClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create or replace (overwrite/recreate, with potential downtime) a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) create(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageResource, options *PackagesBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PackagesClient) create(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageResource, options *PackagesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *PackagesClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *PackagesClient) createCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageResource, options *PackagesBeginCreateOptions) (*policy.Request, error) {
+func (client *PackagesClient) createCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageResource, options *PackagesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +110,7 @@ func (client *PackagesClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +121,33 @@ func (client *PackagesClient) createCreateRequest(ctx context.Context, resourceG
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *PackagesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) BeginDelete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesBeginDeleteOptions) (PackagesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// options - PackagesClientBeginDeleteOptions contains the optional parameters for the PackagesClient.BeginDelete method.
+func (client *PackagesClient) BeginDelete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientBeginDeleteOptions) (PackagesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 	if err != nil {
-		return PackagesDeletePollerResponse{}, err
+		return PackagesClientDeletePollerResponse{}, err
 	}
-	result := PackagesDeletePollerResponse{
+	result := PackagesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PackagesClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("PackagesClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return PackagesDeletePollerResponse{}, err
+		return PackagesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &PackagesDeletePoller{
+	result.Poller = &PackagesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) deleteOperation(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PackagesClient) deleteOperation(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +157,13 @@ func (client *PackagesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PackagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesBeginDeleteOptions) (*policy.Request, error) {
+func (client *PackagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +181,7 @@ func (client *PackagesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +192,29 @@ func (client *PackagesClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PackagesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesGetOptions) (PackagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// options - PackagesClientGetOptions contains the optional parameters for the PackagesClient.Get method.
+func (client *PackagesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientGetOptions) (PackagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 	if err != nil {
-		return PackagesGetResponse{}, err
+		return PackagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PackagesGetResponse{}, err
+		return PackagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PackagesGetResponse{}, client.getHandleError(resp)
+		return PackagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PackagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesGetOptions) (*policy.Request, error) {
+func (client *PackagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +232,7 @@ func (client *PackagesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,46 +244,37 @@ func (client *PackagesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *PackagesClient) getHandleResponse(resp *http.Response) (PackagesGetResponse, error) {
-	result := PackagesGetResponse{RawResponse: resp}
+func (client *PackagesClient) getHandleResponse(resp *http.Response) (PackagesClientGetResponse, error) {
+	result := PackagesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PackageResource); err != nil {
-		return PackagesGetResponse{}, runtime.NewResponseError(err, resp)
+		return PackagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PackagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetDownloadURL - Gets the download URL of a package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) GetDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesGetDownloadURLOptions) (PackagesGetDownloadURLResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// options - PackagesClientGetDownloadURLOptions contains the optional parameters for the PackagesClient.GetDownloadURL method.
+func (client *PackagesClient) GetDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientGetDownloadURLOptions) (PackagesClientGetDownloadURLResponse, error) {
 	req, err := client.getDownloadURLCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 	if err != nil {
-		return PackagesGetDownloadURLResponse{}, err
+		return PackagesClientGetDownloadURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PackagesGetDownloadURLResponse{}, err
+		return PackagesClientGetDownloadURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PackagesGetDownloadURLResponse{}, client.getDownloadURLHandleError(resp)
+		return PackagesClientGetDownloadURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDownloadURLHandleResponse(resp)
 }
 
 // getDownloadURLCreateRequest creates the GetDownloadURL request.
-func (client *PackagesClient) getDownloadURLCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesGetDownloadURLOptions) (*policy.Request, error) {
+func (client *PackagesClient) getDownloadURLCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientGetDownloadURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/getDownloadUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -307,7 +292,7 @@ func (client *PackagesClient) getDownloadURLCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,50 +304,42 @@ func (client *PackagesClient) getDownloadURLCreateRequest(ctx context.Context, r
 }
 
 // getDownloadURLHandleResponse handles the GetDownloadURL response.
-func (client *PackagesClient) getDownloadURLHandleResponse(resp *http.Response) (PackagesGetDownloadURLResponse, error) {
-	result := PackagesGetDownloadURLResponse{RawResponse: resp}
+func (client *PackagesClient) getDownloadURLHandleResponse(resp *http.Response) (PackagesClientGetDownloadURLResponse, error) {
+	result := PackagesClientGetDownloadURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DownloadURLResponse); err != nil {
-		return PackagesGetDownloadURLResponse{}, runtime.NewResponseError(err, resp)
+		return PackagesClientGetDownloadURLResponse{}, err
 	}
 	return result, nil
 }
 
-// getDownloadURLHandleError handles the GetDownloadURL error response.
-func (client *PackagesClient) getDownloadURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginHardDelete - Hard Delete a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) BeginHardDelete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesBeginHardDeleteOptions) (PackagesHardDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// options - PackagesClientBeginHardDeleteOptions contains the optional parameters for the PackagesClient.BeginHardDelete
+// method.
+func (client *PackagesClient) BeginHardDelete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientBeginHardDeleteOptions) (PackagesClientHardDeletePollerResponse, error) {
 	resp, err := client.hardDelete(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 	if err != nil {
-		return PackagesHardDeletePollerResponse{}, err
+		return PackagesClientHardDeletePollerResponse{}, err
 	}
-	result := PackagesHardDeletePollerResponse{
+	result := PackagesClientHardDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PackagesClient.HardDelete", "azure-async-operation", resp, client.pl, client.hardDeleteHandleError)
+	pt, err := armruntime.NewPoller("PackagesClient.HardDelete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return PackagesHardDeletePollerResponse{}, err
+		return PackagesClientHardDeletePollerResponse{}, err
 	}
-	result.Poller = &PackagesHardDeletePoller{
+	result.Poller = &PackagesClientHardDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // HardDelete - Hard Delete a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) hardDelete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesBeginHardDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PackagesClient) hardDelete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientBeginHardDeleteOptions) (*http.Response, error) {
 	req, err := client.hardDeleteCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 	if err != nil {
 		return nil, err
@@ -372,13 +349,13 @@ func (client *PackagesClient) hardDelete(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.hardDeleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // hardDeleteCreateRequest creates the HardDelete request.
-func (client *PackagesClient) hardDeleteCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesBeginHardDeleteOptions) (*policy.Request, error) {
+func (client *PackagesClient) hardDeleteCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientBeginHardDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/hardDelete"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -396,7 +373,7 @@ func (client *PackagesClient) hardDeleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -407,35 +384,26 @@ func (client *PackagesClient) hardDeleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// hardDeleteHandleError handles the HardDelete error response.
-func (client *PackagesClient) hardDeleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByTestBaseAccount - Lists all the packages under a Test Base Account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) ListByTestBaseAccount(resourceGroupName string, testBaseAccountName string, options *PackagesListByTestBaseAccountOptions) *PackagesListByTestBaseAccountPager {
-	return &PackagesListByTestBaseAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// options - PackagesClientListByTestBaseAccountOptions contains the optional parameters for the PackagesClient.ListByTestBaseAccount
+// method.
+func (client *PackagesClient) ListByTestBaseAccount(resourceGroupName string, testBaseAccountName string, options *PackagesClientListByTestBaseAccountOptions) *PackagesClientListByTestBaseAccountPager {
+	return &PackagesClientListByTestBaseAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByTestBaseAccountCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp PackagesListByTestBaseAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PackagesClientListByTestBaseAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PackageListResult.NextLink)
 		},
 	}
 }
 
 // listByTestBaseAccountCreateRequest creates the ListByTestBaseAccount request.
-func (client *PackagesClient) listByTestBaseAccountCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *PackagesListByTestBaseAccountOptions) (*policy.Request, error) {
+func (client *PackagesClient) listByTestBaseAccountCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *PackagesClientListByTestBaseAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -449,7 +417,7 @@ func (client *PackagesClient) listByTestBaseAccountCreateRequest(ctx context.Con
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -461,50 +429,42 @@ func (client *PackagesClient) listByTestBaseAccountCreateRequest(ctx context.Con
 }
 
 // listByTestBaseAccountHandleResponse handles the ListByTestBaseAccount response.
-func (client *PackagesClient) listByTestBaseAccountHandleResponse(resp *http.Response) (PackagesListByTestBaseAccountResponse, error) {
-	result := PackagesListByTestBaseAccountResponse{RawResponse: resp}
+func (client *PackagesClient) listByTestBaseAccountHandleResponse(resp *http.Response) (PackagesClientListByTestBaseAccountResponse, error) {
+	result := PackagesClientListByTestBaseAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PackageListResult); err != nil {
-		return PackagesListByTestBaseAccountResponse{}, runtime.NewResponseError(err, resp)
+		return PackagesClientListByTestBaseAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByTestBaseAccountHandleError handles the ListByTestBaseAccount error response.
-func (client *PackagesClient) listByTestBaseAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update an existing Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageUpdateParameters, options *PackagesBeginUpdateOptions) (PackagesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// parameters - Parameters supplied to update a Test Base Package.
+// options - PackagesClientBeginUpdateOptions contains the optional parameters for the PackagesClient.BeginUpdate method.
+func (client *PackagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageUpdateParameters, options *PackagesClientBeginUpdateOptions) (PackagesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, testBaseAccountName, packageName, parameters, options)
 	if err != nil {
-		return PackagesUpdatePollerResponse{}, err
+		return PackagesClientUpdatePollerResponse{}, err
 	}
-	result := PackagesUpdatePollerResponse{
+	result := PackagesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PackagesClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("PackagesClient.Update", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return PackagesUpdatePollerResponse{}, err
+		return PackagesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &PackagesUpdatePoller{
+	result.Poller = &PackagesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update an existing Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PackagesClient) update(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageUpdateParameters, options *PackagesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PackagesClient) update(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageUpdateParameters, options *PackagesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -514,13 +474,13 @@ func (client *PackagesClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PackagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageUpdateParameters, options *PackagesBeginUpdateOptions) (*policy.Request, error) {
+func (client *PackagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageUpdateParameters, options *PackagesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -538,7 +498,7 @@ func (client *PackagesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -547,17 +507,4 @@ func (client *PackagesClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *PackagesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

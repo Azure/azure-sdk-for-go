@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // PrivateEndpointClient contains the methods for the PrivateEndpoint group.
 // Don't use this type directly, use NewPrivateEndpointClient() instead.
 type PrivateEndpointClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateEndpointClient creates a new instance of PrivateEndpointClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateEndpointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateEndpointClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateEndpointClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetOperationStatus - Gets the operation status for a private endpoint connection.
-// If the operation fails it returns the *NewErrorResponse error type.
-func (client *PrivateEndpointClient) GetOperationStatus(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, operationID string, options *PrivateEndpointGetOperationStatusOptions) (PrivateEndpointGetOperationStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// privateEndpointConnectionName - The name of the private endpoint connection.
+// operationID - Operation id
+// options - PrivateEndpointClientGetOperationStatusOptions contains the optional parameters for the PrivateEndpointClient.GetOperationStatus
+// method.
+func (client *PrivateEndpointClient) GetOperationStatus(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, operationID string, options *PrivateEndpointClientGetOperationStatusOptions) (PrivateEndpointClientGetOperationStatusResponse, error) {
 	req, err := client.getOperationStatusCreateRequest(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, operationID, options)
 	if err != nil {
-		return PrivateEndpointGetOperationStatusResponse{}, err
+		return PrivateEndpointClientGetOperationStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointGetOperationStatusResponse{}, err
+		return PrivateEndpointClientGetOperationStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointGetOperationStatusResponse{}, client.getOperationStatusHandleError(resp)
+		return PrivateEndpointClientGetOperationStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getOperationStatusHandleResponse(resp)
 }
 
 // getOperationStatusCreateRequest creates the GetOperationStatus request.
-func (client *PrivateEndpointClient) getOperationStatusCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, operationID string, options *PrivateEndpointGetOperationStatusOptions) (*policy.Request, error) {
+func (client *PrivateEndpointClient) getOperationStatusCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, operationID string, options *PrivateEndpointClientGetOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}/operationsStatus/{operationId}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -82,35 +95,22 @@ func (client *PrivateEndpointClient) getOperationStatusCreateRequest(ctx context
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getOperationStatusHandleResponse handles the GetOperationStatus response.
-func (client *PrivateEndpointClient) getOperationStatusHandleResponse(resp *http.Response) (PrivateEndpointGetOperationStatusResponse, error) {
-	result := PrivateEndpointGetOperationStatusResponse{RawResponse: resp}
+func (client *PrivateEndpointClient) getOperationStatusHandleResponse(resp *http.Response) (PrivateEndpointClientGetOperationStatusResponse, error) {
+	result := PrivateEndpointClientGetOperationStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
-		return PrivateEndpointGetOperationStatusResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointClientGetOperationStatusResponse{}, err
 	}
 	return result, nil
-}
-
-// getOperationStatusHandleError handles the GetOperationStatus error response.
-func (client *PrivateEndpointClient) getOperationStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := NewErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

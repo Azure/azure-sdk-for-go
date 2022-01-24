@@ -9,8 +9,8 @@
 package armtrafficmanager
 
 const (
-	module  = "armtrafficmanager"
-	version = "v0.1.0"
+	moduleName    = "armtrafficmanager"
+	moduleVersion = "v0.2.0"
 )
 
 // AllowedEndpointRecordType - The allowed type DNS record types for this profile.
@@ -67,7 +67,8 @@ func (c EndpointMonitorStatus) ToPtr() *EndpointMonitorStatus {
 	return &c
 }
 
-// EndpointStatus - The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included in the traffic routing method.
+// EndpointStatus - The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included
+// in the traffic routing method.
 type EndpointStatus string
 
 const (
@@ -206,8 +207,8 @@ func (c TrafficRoutingMethod) ToPtr() *TrafficRoutingMethod {
 	return &c
 }
 
-// TrafficViewEnrollmentStatus - Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'.
-// Enabling this feature will increase the cost of the Traffic Manage profile.
+// TrafficViewEnrollmentStatus - Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile.
+// Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile.
 type TrafficViewEnrollmentStatus string
 
 const (

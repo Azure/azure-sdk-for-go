@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // KustoPoolChildResourceClient contains the methods for the KustoPoolChildResource group.
 // Don't use this type directly, use NewKustoPoolChildResourceClient() instead.
 type KustoPoolChildResourceClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewKustoPoolChildResourceClient creates a new instance of KustoPoolChildResourceClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKustoPoolChildResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KustoPoolChildResourceClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KustoPoolChildResourceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KustoPoolChildResourceClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Checks that the Kusto Pool child resource name is valid and is not already in use.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolChildResourceClient) CheckNameAvailability(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, resourceName DatabaseCheckNameRequest, options *KustoPoolChildResourceCheckNameAvailabilityOptions) (KustoPoolChildResourceCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Kusto Pool child resource.
+// options - KustoPoolChildResourceClientCheckNameAvailabilityOptions contains the optional parameters for the KustoPoolChildResourceClient.CheckNameAvailability
+// method.
+func (client *KustoPoolChildResourceClient) CheckNameAvailability(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, resourceName DatabaseCheckNameRequest, options *KustoPoolChildResourceClientCheckNameAvailabilityOptions) (KustoPoolChildResourceClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, resourceName, options)
 	if err != nil {
-		return KustoPoolChildResourceCheckNameAvailabilityResponse{}, err
+		return KustoPoolChildResourceClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolChildResourceCheckNameAvailabilityResponse{}, err
+		return KustoPoolChildResourceClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolChildResourceCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return KustoPoolChildResourceClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *KustoPoolChildResourceClient) checkNameAvailabilityCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, resourceName DatabaseCheckNameRequest, options *KustoPoolChildResourceCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *KustoPoolChildResourceClient) checkNameAvailabilityCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, resourceName DatabaseCheckNameRequest, options *KustoPoolChildResourceClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/checkNameAvailability"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -78,7 +91,7 @@ func (client *KustoPoolChildResourceClient) checkNameAvailabilityCreateRequest(c
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +103,10 @@ func (client *KustoPoolChildResourceClient) checkNameAvailabilityCreateRequest(c
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *KustoPoolChildResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolChildResourceCheckNameAvailabilityResponse, error) {
-	result := KustoPoolChildResourceCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *KustoPoolChildResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolChildResourceClientCheckNameAvailabilityResponse, error) {
+	result := KustoPoolChildResourceClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
-		return KustoPoolChildResourceCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolChildResourceClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *KustoPoolChildResourceClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

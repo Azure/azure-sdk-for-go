@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// OpenShiftClustersCreateOrUpdatePollerResponse contains the response from method OpenShiftClusters.CreateOrUpdate.
-type OpenShiftClustersCreateOrUpdatePollerResponse struct {
+// OpenShiftClustersClientCreateOrUpdatePollerResponse contains the response from method OpenShiftClustersClient.CreateOrUpdate.
+type OpenShiftClustersClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *OpenShiftClustersCreateOrUpdatePoller
+	Poller *OpenShiftClustersClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type OpenShiftClustersCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l OpenShiftClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OpenShiftClustersCreateOrUpdateResponse, error) {
-	respType := OpenShiftClustersCreateOrUpdateResponse{}
+func (l OpenShiftClustersClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OpenShiftClustersClientCreateOrUpdateResponse, error) {
+	respType := OpenShiftClustersClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OpenShiftCluster)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l OpenShiftClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a OpenShiftClustersCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *OpenShiftClustersCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *OpenShiftClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("OpenShiftClustersClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a OpenShiftClustersClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *OpenShiftClustersClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *OpenShiftClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OpenShiftClustersClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &OpenShiftClustersCreateOrUpdatePoller{
+	poller := &OpenShiftClustersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *OpenShiftClustersCreateOrUpdatePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// OpenShiftClustersCreateOrUpdateResponse contains the response from method OpenShiftClusters.CreateOrUpdate.
-type OpenShiftClustersCreateOrUpdateResponse struct {
-	OpenShiftClustersCreateOrUpdateResult
+// OpenShiftClustersClientCreateOrUpdateResponse contains the response from method OpenShiftClustersClient.CreateOrUpdate.
+type OpenShiftClustersClientCreateOrUpdateResponse struct {
+	OpenShiftClustersClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenShiftClustersCreateOrUpdateResult contains the result from method OpenShiftClusters.CreateOrUpdate.
-type OpenShiftClustersCreateOrUpdateResult struct {
+// OpenShiftClustersClientCreateOrUpdateResult contains the result from method OpenShiftClustersClient.CreateOrUpdate.
+type OpenShiftClustersClientCreateOrUpdateResult struct {
 	OpenShiftCluster
 }
 
-// OpenShiftClustersDeletePollerResponse contains the response from method OpenShiftClusters.Delete.
-type OpenShiftClustersDeletePollerResponse struct {
+// OpenShiftClustersClientDeletePollerResponse contains the response from method OpenShiftClustersClient.Delete.
+type OpenShiftClustersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *OpenShiftClustersDeletePoller
+	Poller *OpenShiftClustersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type OpenShiftClustersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l OpenShiftClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OpenShiftClustersDeleteResponse, error) {
-	respType := OpenShiftClustersDeleteResponse{}
+func (l OpenShiftClustersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OpenShiftClustersClientDeleteResponse, error) {
+	respType := OpenShiftClustersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l OpenShiftClustersDeletePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a OpenShiftClustersDeletePollerResponse from the provided client and resume token.
-func (l *OpenShiftClustersDeletePollerResponse) Resume(ctx context.Context, client *OpenShiftClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("OpenShiftClustersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a OpenShiftClustersClientDeletePollerResponse from the provided client and resume token.
+func (l *OpenShiftClustersClientDeletePollerResponse) Resume(ctx context.Context, client *OpenShiftClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OpenShiftClustersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &OpenShiftClustersDeletePoller{
+	poller := &OpenShiftClustersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,64 +107,64 @@ func (l *OpenShiftClustersDeletePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// OpenShiftClustersDeleteResponse contains the response from method OpenShiftClusters.Delete.
-type OpenShiftClustersDeleteResponse struct {
+// OpenShiftClustersClientDeleteResponse contains the response from method OpenShiftClustersClient.Delete.
+type OpenShiftClustersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenShiftClustersGetResponse contains the response from method OpenShiftClusters.Get.
-type OpenShiftClustersGetResponse struct {
-	OpenShiftClustersGetResult
+// OpenShiftClustersClientGetResponse contains the response from method OpenShiftClustersClient.Get.
+type OpenShiftClustersClientGetResponse struct {
+	OpenShiftClustersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenShiftClustersGetResult contains the result from method OpenShiftClusters.Get.
-type OpenShiftClustersGetResult struct {
+// OpenShiftClustersClientGetResult contains the result from method OpenShiftClustersClient.Get.
+type OpenShiftClustersClientGetResult struct {
 	OpenShiftCluster
 }
 
-// OpenShiftClustersListByResourceGroupResponse contains the response from method OpenShiftClusters.ListByResourceGroup.
-type OpenShiftClustersListByResourceGroupResponse struct {
-	OpenShiftClustersListByResourceGroupResult
+// OpenShiftClustersClientListByResourceGroupResponse contains the response from method OpenShiftClustersClient.ListByResourceGroup.
+type OpenShiftClustersClientListByResourceGroupResponse struct {
+	OpenShiftClustersClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenShiftClustersListByResourceGroupResult contains the result from method OpenShiftClusters.ListByResourceGroup.
-type OpenShiftClustersListByResourceGroupResult struct {
+// OpenShiftClustersClientListByResourceGroupResult contains the result from method OpenShiftClustersClient.ListByResourceGroup.
+type OpenShiftClustersClientListByResourceGroupResult struct {
 	OpenShiftClusterList
 }
 
-// OpenShiftClustersListCredentialsResponse contains the response from method OpenShiftClusters.ListCredentials.
-type OpenShiftClustersListCredentialsResponse struct {
-	OpenShiftClustersListCredentialsResult
+// OpenShiftClustersClientListCredentialsResponse contains the response from method OpenShiftClustersClient.ListCredentials.
+type OpenShiftClustersClientListCredentialsResponse struct {
+	OpenShiftClustersClientListCredentialsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenShiftClustersListCredentialsResult contains the result from method OpenShiftClusters.ListCredentials.
-type OpenShiftClustersListCredentialsResult struct {
+// OpenShiftClustersClientListCredentialsResult contains the result from method OpenShiftClustersClient.ListCredentials.
+type OpenShiftClustersClientListCredentialsResult struct {
 	OpenShiftClusterCredentials
 }
 
-// OpenShiftClustersListResponse contains the response from method OpenShiftClusters.List.
-type OpenShiftClustersListResponse struct {
-	OpenShiftClustersListResult
+// OpenShiftClustersClientListResponse contains the response from method OpenShiftClustersClient.List.
+type OpenShiftClustersClientListResponse struct {
+	OpenShiftClustersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenShiftClustersListResult contains the result from method OpenShiftClusters.List.
-type OpenShiftClustersListResult struct {
+// OpenShiftClustersClientListResult contains the result from method OpenShiftClustersClient.List.
+type OpenShiftClustersClientListResult struct {
 	OpenShiftClusterList
 }
 
-// OpenShiftClustersUpdatePollerResponse contains the response from method OpenShiftClusters.Update.
-type OpenShiftClustersUpdatePollerResponse struct {
+// OpenShiftClustersClientUpdatePollerResponse contains the response from method OpenShiftClustersClient.Update.
+type OpenShiftClustersClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *OpenShiftClustersUpdatePoller
+	Poller *OpenShiftClustersClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -173,8 +173,8 @@ type OpenShiftClustersUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l OpenShiftClustersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OpenShiftClustersUpdateResponse, error) {
-	respType := OpenShiftClustersUpdateResponse{}
+func (l OpenShiftClustersClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OpenShiftClustersClientUpdateResponse, error) {
+	respType := OpenShiftClustersClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OpenShiftCluster)
 	if err != nil {
 		return respType, err
@@ -183,13 +183,13 @@ func (l OpenShiftClustersUpdatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a OpenShiftClustersUpdatePollerResponse from the provided client and resume token.
-func (l *OpenShiftClustersUpdatePollerResponse) Resume(ctx context.Context, client *OpenShiftClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("OpenShiftClustersClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a OpenShiftClustersClientUpdatePollerResponse from the provided client and resume token.
+func (l *OpenShiftClustersClientUpdatePollerResponse) Resume(ctx context.Context, client *OpenShiftClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OpenShiftClustersClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &OpenShiftClustersUpdatePoller{
+	poller := &OpenShiftClustersClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -201,26 +201,26 @@ func (l *OpenShiftClustersUpdatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// OpenShiftClustersUpdateResponse contains the response from method OpenShiftClusters.Update.
-type OpenShiftClustersUpdateResponse struct {
-	OpenShiftClustersUpdateResult
+// OpenShiftClustersClientUpdateResponse contains the response from method OpenShiftClustersClient.Update.
+type OpenShiftClustersClientUpdateResponse struct {
+	OpenShiftClustersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OpenShiftClustersUpdateResult contains the result from method OpenShiftClusters.Update.
-type OpenShiftClustersUpdateResult struct {
+// OpenShiftClustersClientUpdateResult contains the result from method OpenShiftClustersClient.Update.
+type OpenShiftClustersClientUpdateResult struct {
 	OpenShiftCluster
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }

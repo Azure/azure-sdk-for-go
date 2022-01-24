@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // StatisticsClient contains the methods for the Statistics group.
 // Don't use this type directly, use NewStatisticsClient() instead.
 type StatisticsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStatisticsClient creates a new instance of StatisticsClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StatisticsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &StatisticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StatisticsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByAutomationAccount - Retrieve the statistics for the account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *StatisticsClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, options *StatisticsListByAutomationAccountOptions) (StatisticsListByAutomationAccountResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - StatisticsClientListByAutomationAccountOptions contains the optional parameters for the StatisticsClient.ListByAutomationAccount
+// method.
+func (client *StatisticsClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, options *StatisticsClientListByAutomationAccountOptions) (StatisticsClientListByAutomationAccountResponse, error) {
 	req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
-		return StatisticsListByAutomationAccountResponse{}, err
+		return StatisticsClientListByAutomationAccountResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StatisticsListByAutomationAccountResponse{}, err
+		return StatisticsClientListByAutomationAccountResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StatisticsListByAutomationAccountResponse{}, client.listByAutomationAccountHandleError(resp)
+		return StatisticsClientListByAutomationAccountResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByAutomationAccountHandleResponse(resp)
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *StatisticsClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *StatisticsListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *StatisticsClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *StatisticsClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/statistics"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +86,7 @@ func (client *StatisticsClient) listByAutomationAccountCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,23 +101,10 @@ func (client *StatisticsClient) listByAutomationAccountCreateRequest(ctx context
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *StatisticsClient) listByAutomationAccountHandleResponse(resp *http.Response) (StatisticsListByAutomationAccountResponse, error) {
-	result := StatisticsListByAutomationAccountResponse{RawResponse: resp}
+func (client *StatisticsClient) listByAutomationAccountHandleResponse(resp *http.Response) (StatisticsClientListByAutomationAccountResponse, error) {
+	result := StatisticsClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StatisticsListResult); err != nil {
-		return StatisticsListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return StatisticsClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *StatisticsClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

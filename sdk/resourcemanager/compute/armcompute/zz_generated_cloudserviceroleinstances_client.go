@@ -11,7 +11,6 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,58 @@ import (
 // CloudServiceRoleInstancesClient contains the methods for the CloudServiceRoleInstances group.
 // Don't use this type directly, use NewCloudServiceRoleInstancesClient() instead.
 type CloudServiceRoleInstancesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCloudServiceRoleInstancesClient creates a new instance of CloudServiceRoleInstancesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCloudServiceRoleInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServiceRoleInstancesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CloudServiceRoleInstancesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CloudServiceRoleInstancesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginDelete - Deletes a role instance from a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginDeleteOptions) (CloudServiceRoleInstancesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleInstanceName - Name of the role instance.
+// options - CloudServiceRoleInstancesClientBeginDeleteOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginDelete
+// method.
+func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginDeleteOptions) (CloudServiceRoleInstancesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceRoleInstancesDeletePollerResponse{}, err
+		return CloudServiceRoleInstancesClientDeletePollerResponse{}, err
 	}
-	result := CloudServiceRoleInstancesDeletePollerResponse{
+	result := CloudServiceRoleInstancesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServiceRoleInstancesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("CloudServiceRoleInstancesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return CloudServiceRoleInstancesDeletePollerResponse{}, err
+		return CloudServiceRoleInstancesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &CloudServiceRoleInstancesDeletePoller{
+	result.Poller = &CloudServiceRoleInstancesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a role instance from a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) deleteOperation(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServiceRoleInstancesClient) deleteOperation(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +85,13 @@ func (client *CloudServiceRoleInstancesClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CloudServiceRoleInstancesClient) deleteCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginDeleteOptions) (*policy.Request, error) {
+func (client *CloudServiceRoleInstancesClient) deleteCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}"
 	if roleInstanceName == "" {
 		return nil, errors.New("parameter roleInstanceName cannot be empty")
@@ -98,7 +109,7 @@ func (client *CloudServiceRoleInstancesClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,38 +120,28 @@ func (client *CloudServiceRoleInstancesClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CloudServiceRoleInstancesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a role instance from a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) Get(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetOptions) (CloudServiceRoleInstancesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleInstanceName - Name of the role instance.
+// options - CloudServiceRoleInstancesClientGetOptions contains the optional parameters for the CloudServiceRoleInstancesClient.Get
+// method.
+func (client *CloudServiceRoleInstancesClient) Get(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetOptions) (CloudServiceRoleInstancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceRoleInstancesGetResponse{}, err
+		return CloudServiceRoleInstancesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudServiceRoleInstancesGetResponse{}, err
+		return CloudServiceRoleInstancesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CloudServiceRoleInstancesGetResponse{}, client.getHandleError(resp)
+		return CloudServiceRoleInstancesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CloudServiceRoleInstancesClient) getCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetOptions) (*policy.Request, error) {
+func (client *CloudServiceRoleInstancesClient) getCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}"
 	if roleInstanceName == "" {
 		return nil, errors.New("parameter roleInstanceName cannot be empty")
@@ -158,7 +159,7 @@ func (client *CloudServiceRoleInstancesClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,46 +174,36 @@ func (client *CloudServiceRoleInstancesClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudServiceRoleInstancesClient) getHandleResponse(resp *http.Response) (CloudServiceRoleInstancesGetResponse, error) {
-	result := CloudServiceRoleInstancesGetResponse{RawResponse: resp}
+func (client *CloudServiceRoleInstancesClient) getHandleResponse(resp *http.Response) (CloudServiceRoleInstancesClientGetResponse, error) {
+	result := CloudServiceRoleInstancesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleInstance); err != nil {
-		return CloudServiceRoleInstancesGetResponse{}, runtime.NewResponseError(err, resp)
+		return CloudServiceRoleInstancesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CloudServiceRoleInstancesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetInstanceView - Retrieves information about the run-time state of a role instance in a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) GetInstanceView(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetInstanceViewOptions) (CloudServiceRoleInstancesGetInstanceViewResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleInstanceName - Name of the role instance.
+// options - CloudServiceRoleInstancesClientGetInstanceViewOptions contains the optional parameters for the CloudServiceRoleInstancesClient.GetInstanceView
+// method.
+func (client *CloudServiceRoleInstancesClient) GetInstanceView(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetInstanceViewOptions) (CloudServiceRoleInstancesClientGetInstanceViewResponse, error) {
 	req, err := client.getInstanceViewCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceRoleInstancesGetInstanceViewResponse{}, err
+		return CloudServiceRoleInstancesClientGetInstanceViewResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudServiceRoleInstancesGetInstanceViewResponse{}, err
+		return CloudServiceRoleInstancesClientGetInstanceViewResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CloudServiceRoleInstancesGetInstanceViewResponse{}, client.getInstanceViewHandleError(resp)
+		return CloudServiceRoleInstancesClientGetInstanceViewResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getInstanceViewHandleResponse(resp)
 }
 
 // getInstanceViewCreateRequest creates the GetInstanceView request.
-func (client *CloudServiceRoleInstancesClient) getInstanceViewCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetInstanceViewOptions) (*policy.Request, error) {
+func (client *CloudServiceRoleInstancesClient) getInstanceViewCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetInstanceViewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/instanceView"
 	if roleInstanceName == "" {
 		return nil, errors.New("parameter roleInstanceName cannot be empty")
@@ -230,7 +221,7 @@ func (client *CloudServiceRoleInstancesClient) getInstanceViewCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,46 +233,36 @@ func (client *CloudServiceRoleInstancesClient) getInstanceViewCreateRequest(ctx 
 }
 
 // getInstanceViewHandleResponse handles the GetInstanceView response.
-func (client *CloudServiceRoleInstancesClient) getInstanceViewHandleResponse(resp *http.Response) (CloudServiceRoleInstancesGetInstanceViewResponse, error) {
-	result := CloudServiceRoleInstancesGetInstanceViewResponse{RawResponse: resp}
+func (client *CloudServiceRoleInstancesClient) getInstanceViewHandleResponse(resp *http.Response) (CloudServiceRoleInstancesClientGetInstanceViewResponse, error) {
+	result := CloudServiceRoleInstancesClientGetInstanceViewResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleInstanceView); err != nil {
-		return CloudServiceRoleInstancesGetInstanceViewResponse{}, runtime.NewResponseError(err, resp)
+		return CloudServiceRoleInstancesClientGetInstanceViewResponse{}, err
 	}
 	return result, nil
 }
 
-// getInstanceViewHandleError handles the GetInstanceView error response.
-func (client *CloudServiceRoleInstancesClient) getInstanceViewHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetRemoteDesktopFile - Gets a remote desktop file for a role instance in a cloud service.
-// If the operation fails it returns a generic error.
-func (client *CloudServiceRoleInstancesClient) GetRemoteDesktopFile(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetRemoteDesktopFileOptions) (CloudServiceRoleInstancesGetRemoteDesktopFileResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleInstanceName - Name of the role instance.
+// options - CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions contains the optional parameters for the CloudServiceRoleInstancesClient.GetRemoteDesktopFile
+// method.
+func (client *CloudServiceRoleInstancesClient) GetRemoteDesktopFile(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions) (CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse, error) {
 	req, err := client.getRemoteDesktopFileCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceRoleInstancesGetRemoteDesktopFileResponse{}, err
+		return CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudServiceRoleInstancesGetRemoteDesktopFileResponse{}, err
+		return CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CloudServiceRoleInstancesGetRemoteDesktopFileResponse{}, client.getRemoteDesktopFileHandleError(resp)
+		return CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse{}, runtime.NewResponseError(resp)
 	}
-	return CloudServiceRoleInstancesGetRemoteDesktopFileResponse{RawResponse: resp}, nil
+	return CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse{RawResponse: resp}, nil
 }
 
 // getRemoteDesktopFileCreateRequest creates the GetRemoteDesktopFile request.
-func (client *CloudServiceRoleInstancesClient) getRemoteDesktopFileCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetRemoteDesktopFileOptions) (*policy.Request, error) {
+func (client *CloudServiceRoleInstancesClient) getRemoteDesktopFileCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/remoteDesktopFile"
 	if roleInstanceName == "" {
 		return nil, errors.New("parameter roleInstanceName cannot be empty")
@@ -299,47 +280,37 @@ func (client *CloudServiceRoleInstancesClient) getRemoteDesktopFileCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	req.Raw().Header.Set("Accept", "application/x-rdp")
 	return req, nil
 }
 
-// getRemoteDesktopFileHandleError handles the GetRemoteDesktopFile error response.
-func (client *CloudServiceRoleInstancesClient) getRemoteDesktopFileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// List - Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next page of role instances. Do this
-// till nextLink is null to fetch all the role instances.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesListOptions) *CloudServiceRoleInstancesListPager {
-	return &CloudServiceRoleInstancesListPager{
+// List - Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next page
+// of role instances. Do this till nextLink is null to fetch all the role instances.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - CloudServiceRoleInstancesClientListOptions contains the optional parameters for the CloudServiceRoleInstancesClient.List
+// method.
+func (client *CloudServiceRoleInstancesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientListOptions) *CloudServiceRoleInstancesClientListPager {
+	return &CloudServiceRoleInstancesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 		},
-		advancer: func(ctx context.Context, resp CloudServiceRoleInstancesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServiceRoleInstancesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleInstanceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CloudServiceRoleInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesListOptions) (*policy.Request, error) {
+func (client *CloudServiceRoleInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -353,7 +324,7 @@ func (client *CloudServiceRoleInstancesClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -368,54 +339,44 @@ func (client *CloudServiceRoleInstancesClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *CloudServiceRoleInstancesClient) listHandleResponse(resp *http.Response) (CloudServiceRoleInstancesListResponse, error) {
-	result := CloudServiceRoleInstancesListResponse{RawResponse: resp}
+func (client *CloudServiceRoleInstancesClient) listHandleResponse(resp *http.Response) (CloudServiceRoleInstancesClientListResponse, error) {
+	result := CloudServiceRoleInstancesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleInstanceListResult); err != nil {
-		return CloudServiceRoleInstancesListResponse{}, runtime.NewResponseError(err, resp)
+		return CloudServiceRoleInstancesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *CloudServiceRoleInstancesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginRebuild - The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or worker roles and initializes
-// the storage resources that are used by them. If you do not
+// BeginRebuild - The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles
+// or worker roles and initializes the storage resources that are used by them. If you do not
 // want to initialize storage resources, you can use Reimage Role Instance.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRebuildOptions) (CloudServiceRoleInstancesRebuildPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleInstanceName - Name of the role instance.
+// options - CloudServiceRoleInstancesClientBeginRebuildOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginRebuild
+// method.
+func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRebuildOptions) (CloudServiceRoleInstancesClientRebuildPollerResponse, error) {
 	resp, err := client.rebuild(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceRoleInstancesRebuildPollerResponse{}, err
+		return CloudServiceRoleInstancesClientRebuildPollerResponse{}, err
 	}
-	result := CloudServiceRoleInstancesRebuildPollerResponse{
+	result := CloudServiceRoleInstancesClientRebuildPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServiceRoleInstancesClient.Rebuild", "", resp, client.pl, client.rebuildHandleError)
+	pt, err := armruntime.NewPoller("CloudServiceRoleInstancesClient.Rebuild", "", resp, client.pl)
 	if err != nil {
-		return CloudServiceRoleInstancesRebuildPollerResponse{}, err
+		return CloudServiceRoleInstancesClientRebuildPollerResponse{}, err
 	}
-	result.Poller = &CloudServiceRoleInstancesRebuildPoller{
+	result.Poller = &CloudServiceRoleInstancesClientRebuildPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Rebuild - The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or worker roles and initializes
-// the storage resources that are used by them. If you do not
+// Rebuild - The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
+// worker roles and initializes the storage resources that are used by them. If you do not
 // want to initialize storage resources, you can use Reimage Role Instance.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) rebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRebuildOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServiceRoleInstancesClient) rebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRebuildOptions) (*http.Response, error) {
 	req, err := client.rebuildCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -425,13 +386,13 @@ func (client *CloudServiceRoleInstancesClient) rebuild(ctx context.Context, role
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.rebuildHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // rebuildCreateRequest creates the Rebuild request.
-func (client *CloudServiceRoleInstancesClient) rebuildCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRebuildOptions) (*policy.Request, error) {
+func (client *CloudServiceRoleInstancesClient) rebuildCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRebuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/rebuild"
 	if roleInstanceName == "" {
 		return nil, errors.New("parameter roleInstanceName cannot be empty")
@@ -449,7 +410,7 @@ func (client *CloudServiceRoleInstancesClient) rebuildCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -460,42 +421,34 @@ func (client *CloudServiceRoleInstancesClient) rebuildCreateRequest(ctx context.
 	return req, nil
 }
 
-// rebuildHandleError handles the Rebuild error response.
-func (client *CloudServiceRoleInstancesClient) rebuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginReimage - The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginReimageOptions) (CloudServiceRoleInstancesReimagePollerResponse, error) {
+// BeginReimage - The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles
+// or worker roles.
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleInstanceName - Name of the role instance.
+// options - CloudServiceRoleInstancesClientBeginReimageOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginReimage
+// method.
+func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginReimageOptions) (CloudServiceRoleInstancesClientReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceRoleInstancesReimagePollerResponse{}, err
+		return CloudServiceRoleInstancesClientReimagePollerResponse{}, err
 	}
-	result := CloudServiceRoleInstancesReimagePollerResponse{
+	result := CloudServiceRoleInstancesClientReimagePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServiceRoleInstancesClient.Reimage", "", resp, client.pl, client.reimageHandleError)
+	pt, err := armruntime.NewPoller("CloudServiceRoleInstancesClient.Reimage", "", resp, client.pl)
 	if err != nil {
-		return CloudServiceRoleInstancesReimagePollerResponse{}, err
+		return CloudServiceRoleInstancesClientReimagePollerResponse{}, err
 	}
-	result.Poller = &CloudServiceRoleInstancesReimagePoller{
+	result.Poller = &CloudServiceRoleInstancesClientReimagePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Reimage - The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) reimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginReimageOptions) (*http.Response, error) {
+// Reimage - The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
+// worker roles.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServiceRoleInstancesClient) reimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginReimageOptions) (*http.Response, error) {
 	req, err := client.reimageCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -505,13 +458,13 @@ func (client *CloudServiceRoleInstancesClient) reimage(ctx context.Context, role
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.reimageHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // reimageCreateRequest creates the Reimage request.
-func (client *CloudServiceRoleInstancesClient) reimageCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginReimageOptions) (*policy.Request, error) {
+func (client *CloudServiceRoleInstancesClient) reimageCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginReimageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/reimage"
 	if roleInstanceName == "" {
 		return nil, errors.New("parameter roleInstanceName cannot be empty")
@@ -529,7 +482,7 @@ func (client *CloudServiceRoleInstancesClient) reimageCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -540,42 +493,32 @@ func (client *CloudServiceRoleInstancesClient) reimageCreateRequest(ctx context.
 	return req, nil
 }
 
-// reimageHandleError handles the Reimage error response.
-func (client *CloudServiceRoleInstancesClient) reimageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRestart - The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRestartOptions) (CloudServiceRoleInstancesRestartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleInstanceName - Name of the role instance.
+// options - CloudServiceRoleInstancesClientBeginRestartOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginRestart
+// method.
+func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRestartOptions) (CloudServiceRoleInstancesClientRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceRoleInstancesRestartPollerResponse{}, err
+		return CloudServiceRoleInstancesClientRestartPollerResponse{}, err
 	}
-	result := CloudServiceRoleInstancesRestartPollerResponse{
+	result := CloudServiceRoleInstancesClientRestartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServiceRoleInstancesClient.Restart", "", resp, client.pl, client.restartHandleError)
+	pt, err := armruntime.NewPoller("CloudServiceRoleInstancesClient.Restart", "", resp, client.pl)
 	if err != nil {
-		return CloudServiceRoleInstancesRestartPollerResponse{}, err
+		return CloudServiceRoleInstancesClientRestartPollerResponse{}, err
 	}
-	result.Poller = &CloudServiceRoleInstancesRestartPoller{
+	result.Poller = &CloudServiceRoleInstancesClientRestartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Restart - The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) restart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRestartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServiceRoleInstancesClient) restart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -585,13 +528,13 @@ func (client *CloudServiceRoleInstancesClient) restart(ctx context.Context, role
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.restartHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *CloudServiceRoleInstancesClient) restartCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRestartOptions) (*policy.Request, error) {
+func (client *CloudServiceRoleInstancesClient) restartCreateRequest(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/restart"
 	if roleInstanceName == "" {
 		return nil, errors.New("parameter roleInstanceName cannot be empty")
@@ -609,7 +552,7 @@ func (client *CloudServiceRoleInstancesClient) restartCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -618,17 +561,4 @@ func (client *CloudServiceRoleInstancesClient) restartCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// restartHandleError handles the Restart error response.
-func (client *CloudServiceRoleInstancesClient) restartHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

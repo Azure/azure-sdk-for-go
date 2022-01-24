@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // LibraryClient contains the methods for the Library group.
 // Don't use this type directly, use NewLibraryClient() instead.
 type LibraryClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLibraryClient creates a new instance of LibraryClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLibraryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LibraryClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LibraryClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LibraryClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get library by name in a workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LibraryClient) Get(ctx context.Context, resourceGroupName string, libraryName string, workspaceName string, options *LibraryGetOptions) (LibraryGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// libraryName - Library name
+// workspaceName - The name of the workspace.
+// options - LibraryClientGetOptions contains the optional parameters for the LibraryClient.Get method.
+func (client *LibraryClient) Get(ctx context.Context, resourceGroupName string, libraryName string, workspaceName string, options *LibraryClientGetOptions) (LibraryClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, libraryName, workspaceName, options)
 	if err != nil {
-		return LibraryGetResponse{}, err
+		return LibraryClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LibraryGetResponse{}, err
+		return LibraryClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LibraryGetResponse{}, client.getHandleError(resp)
+		return LibraryClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LibraryClient) getCreateRequest(ctx context.Context, resourceGroupName string, libraryName string, workspaceName string, options *LibraryGetOptions) (*policy.Request, error) {
+func (client *LibraryClient) getCreateRequest(ctx context.Context, resourceGroupName string, libraryName string, workspaceName string, options *LibraryClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/libraries/{libraryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *LibraryClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +101,10 @@ func (client *LibraryClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *LibraryClient) getHandleResponse(resp *http.Response) (LibraryGetResponse, error) {
-	result := LibraryGetResponse{RawResponse: resp}
+func (client *LibraryClient) getHandleResponse(resp *http.Response) (LibraryClientGetResponse, error) {
+	result := LibraryClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LibraryResource); err != nil {
-		return LibraryGetResponse{}, runtime.NewResponseError(err, resp)
+		return LibraryClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *LibraryClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

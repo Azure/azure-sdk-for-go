@@ -27,13 +27,17 @@ func ExampleAccessPoliciesClient_List() {
 	client := armvideoanalyzer.NewAccessPoliciesClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<account-name>",
-		&armvideoanalyzer.AccessPoliciesListOptions{Top: to.Int32Ptr(2)})
-	for pager.NextPage(ctx) {
+		&armvideoanalyzer.AccessPoliciesClientListOptions{Top: to.Int32Ptr(2)})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AccessPolicyEntity.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExampleAccessPoliciesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AccessPolicyEntity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccessPoliciesClientGetResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/access-policy-create.json
@@ -72,9 +76,7 @@ func ExampleAccessPoliciesClient_CreateOrUpdate() {
 		armvideoanalyzer.AccessPolicyEntity{
 			Properties: &armvideoanalyzer.AccessPolicyProperties{
 				Authentication: &armvideoanalyzer.JwtAuthentication{
-					AuthenticationBase: armvideoanalyzer.AuthenticationBase{
-						Type: to.StringPtr("<type>"),
-					},
+					Type: to.StringPtr("<type>"),
 					Audiences: []*string{
 						to.StringPtr("audience1")},
 					Claims: []*armvideoanalyzer.TokenClaim{
@@ -91,22 +93,18 @@ func ExampleAccessPoliciesClient_CreateOrUpdate() {
 						to.StringPtr("issuer2")},
 					Keys: []armvideoanalyzer.TokenKeyClassification{
 						&armvideoanalyzer.RsaTokenKey{
-							TokenKey: armvideoanalyzer.TokenKey{
-								Type: to.StringPtr("<type>"),
-								Kid:  to.StringPtr("<kid>"),
-							},
-							Alg: armvideoanalyzer.AccessPolicyRsaAlgoRS256.ToPtr(),
-							E:   to.StringPtr("<e>"),
-							N:   to.StringPtr("<n>"),
+							Type: to.StringPtr("<type>"),
+							Kid:  to.StringPtr("<kid>"),
+							Alg:  armvideoanalyzer.AccessPolicyRsaAlgo("RS256").ToPtr(),
+							E:    to.StringPtr("<e>"),
+							N:    to.StringPtr("<n>"),
 						},
 						&armvideoanalyzer.EccTokenKey{
-							TokenKey: armvideoanalyzer.TokenKey{
-								Type: to.StringPtr("<type>"),
-								Kid:  to.StringPtr("<kid>"),
-							},
-							Alg: armvideoanalyzer.AccessPolicyEccAlgoES256.ToPtr(),
-							X:   to.StringPtr("<x>"),
-							Y:   to.StringPtr("<y>"),
+							Type: to.StringPtr("<type>"),
+							Kid:  to.StringPtr("<kid>"),
+							Alg:  armvideoanalyzer.AccessPolicyEccAlgo("ES256").ToPtr(),
+							X:    to.StringPtr("<x>"),
+							Y:    to.StringPtr("<y>"),
 						}},
 				},
 			},
@@ -115,7 +113,7 @@ func ExampleAccessPoliciesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AccessPolicyEntity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccessPoliciesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/access-policy-delete.json
@@ -151,9 +149,7 @@ func ExampleAccessPoliciesClient_Update() {
 		armvideoanalyzer.AccessPolicyEntity{
 			Properties: &armvideoanalyzer.AccessPolicyProperties{
 				Authentication: &armvideoanalyzer.JwtAuthentication{
-					AuthenticationBase: armvideoanalyzer.AuthenticationBase{
-						Type: to.StringPtr("<type>"),
-					},
+					Type: to.StringPtr("<type>"),
 					Audiences: []*string{
 						to.StringPtr("audience1")},
 					Claims: []*armvideoanalyzer.TokenClaim{
@@ -170,22 +166,18 @@ func ExampleAccessPoliciesClient_Update() {
 						to.StringPtr("issuer2")},
 					Keys: []armvideoanalyzer.TokenKeyClassification{
 						&armvideoanalyzer.RsaTokenKey{
-							TokenKey: armvideoanalyzer.TokenKey{
-								Type: to.StringPtr("<type>"),
-								Kid:  to.StringPtr("<kid>"),
-							},
-							Alg: armvideoanalyzer.AccessPolicyRsaAlgoRS256.ToPtr(),
-							E:   to.StringPtr("<e>"),
-							N:   to.StringPtr("<n>"),
+							Type: to.StringPtr("<type>"),
+							Kid:  to.StringPtr("<kid>"),
+							Alg:  armvideoanalyzer.AccessPolicyRsaAlgo("RS256").ToPtr(),
+							E:    to.StringPtr("<e>"),
+							N:    to.StringPtr("<n>"),
 						},
 						&armvideoanalyzer.EccTokenKey{
-							TokenKey: armvideoanalyzer.TokenKey{
-								Type: to.StringPtr("<type>"),
-								Kid:  to.StringPtr("<kid>"),
-							},
-							Alg: armvideoanalyzer.AccessPolicyEccAlgoES256.ToPtr(),
-							X:   to.StringPtr("<x>"),
-							Y:   to.StringPtr("<y>"),
+							Type: to.StringPtr("<type>"),
+							Kid:  to.StringPtr("<kid>"),
+							Alg:  armvideoanalyzer.AccessPolicyEccAlgo("ES256").ToPtr(),
+							X:    to.StringPtr("<x>"),
+							Y:    to.StringPtr("<y>"),
 						}},
 				},
 			},
@@ -194,5 +186,5 @@ func ExampleAccessPoliciesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AccessPolicyEntity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccessPoliciesClientUpdateResult)
 }

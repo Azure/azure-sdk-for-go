@@ -1,14 +1,411 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*WCFRelaysClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, RegenerateAccessKeyParameters, *WCFRelaysRegenerateKeysOptions)` to `(context.Context, string, string, string, string, RegenerateAccessKeyParameters, *WCFRelaysClientRegenerateKeysOptions)`
+- Function `*WCFRelaysClient.RegenerateKeys` return value(s) have been changed from `(WCFRelaysRegenerateKeysResponse, error)` to `(WCFRelaysClientRegenerateKeysResponse, error)`
+- Function `*NamespacesClient.DeleteAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesDeleteAuthorizationRuleOptions)` to `(context.Context, string, string, string, *NamespacesClientDeleteAuthorizationRuleOptions)`
+- Function `*NamespacesClient.DeleteAuthorizationRule` return value(s) have been changed from `(NamespacesDeleteAuthorizationRuleResponse, error)` to `(NamespacesClientDeleteAuthorizationRuleResponse, error)`
+- Function `*WCFRelaysClient.CreateOrUpdateAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, AuthorizationRule, *WCFRelaysCreateOrUpdateAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, AuthorizationRule, *WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions)`
+- Function `*WCFRelaysClient.CreateOrUpdateAuthorizationRule` return value(s) have been changed from `(WCFRelaysCreateOrUpdateAuthorizationRuleResponse, error)` to `(WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse, error)`
+- Function `*HybridConnectionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *HybridConnectionsDeleteOptions)` to `(context.Context, string, string, string, *HybridConnectionsClientDeleteOptions)`
+- Function `*HybridConnectionsClient.Delete` return value(s) have been changed from `(HybridConnectionsDeleteResponse, error)` to `(HybridConnectionsClientDeleteResponse, error)`
+- Function `*HybridConnectionsClient.DeleteAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *HybridConnectionsDeleteAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *HybridConnectionsClientDeleteAuthorizationRuleOptions)`
+- Function `*HybridConnectionsClient.DeleteAuthorizationRule` return value(s) have been changed from `(HybridConnectionsDeleteAuthorizationRuleResponse, error)` to `(HybridConnectionsClientDeleteAuthorizationRuleResponse, error)`
+- Function `*WCFRelaysClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *WCFRelaysGetOptions)` to `(context.Context, string, string, string, *WCFRelaysClientGetOptions)`
+- Function `*WCFRelaysClient.Get` return value(s) have been changed from `(WCFRelaysGetResponse, error)` to `(WCFRelaysClientGetResponse, error)`
+- Function `*NamespacesClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesListKeysOptions)` to `(context.Context, string, string, string, *NamespacesClientListKeysOptions)`
+- Function `*NamespacesClient.ListKeys` return value(s) have been changed from `(NamespacesListKeysResponse, error)` to `(NamespacesClientListKeysResponse, error)`
+- Function `*HybridConnectionsClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, *HybridConnectionsListKeysOptions)` to `(context.Context, string, string, string, string, *HybridConnectionsClientListKeysOptions)`
+- Function `*HybridConnectionsClient.ListKeys` return value(s) have been changed from `(HybridConnectionsListKeysResponse, error)` to `(HybridConnectionsClientListKeysResponse, error)`
+- Function `*NamespacesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *NamespacesListByResourceGroupOptions)` to `(string, *NamespacesClientListByResourceGroupOptions)`
+- Function `*NamespacesClient.ListByResourceGroup` return value(s) have been changed from `(*NamespacesListByResourceGroupPager)` to `(*NamespacesClientListByResourceGroupPager)`
+- Function `*NamespacesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *NamespacesBeginDeleteOptions)` to `(context.Context, string, string, *NamespacesClientBeginDeleteOptions)`
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(NamespacesDeletePollerResponse, error)` to `(NamespacesClientDeletePollerResponse, error)`
+- Function `*WCFRelaysClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *WCFRelaysDeleteOptions)` to `(context.Context, string, string, string, *WCFRelaysClientDeleteOptions)`
+- Function `*WCFRelaysClient.Delete` return value(s) have been changed from `(WCFRelaysDeleteResponse, error)` to `(WCFRelaysClientDeleteResponse, error)`
+- Function `*WCFRelaysClient.ListAuthorizationRules` parameter(s) have been changed from `(string, string, string, *WCFRelaysListAuthorizationRulesOptions)` to `(string, string, string, *WCFRelaysClientListAuthorizationRulesOptions)`
+- Function `*WCFRelaysClient.ListAuthorizationRules` return value(s) have been changed from `(*WCFRelaysListAuthorizationRulesPager)` to `(*WCFRelaysClientListAuthorizationRulesPager)`
+- Function `*NamespacesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *NamespacesGetOptions)` to `(context.Context, string, string, *NamespacesClientGetOptions)`
+- Function `*NamespacesClient.Get` return value(s) have been changed from `(NamespacesGetResponse, error)` to `(NamespacesClientGetResponse, error)`
+- Function `*HybridConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *HybridConnectionsGetOptions)` to `(context.Context, string, string, string, *HybridConnectionsClientGetOptions)`
+- Function `*HybridConnectionsClient.Get` return value(s) have been changed from `(HybridConnectionsGetResponse, error)` to `(HybridConnectionsClientGetResponse, error)`
+- Function `*NamespacesClient.List` parameter(s) have been changed from `(*NamespacesListOptions)` to `(*NamespacesClientListOptions)`
+- Function `*NamespacesClient.List` return value(s) have been changed from `(*NamespacesListPager)` to `(*NamespacesClientListPager)`
+- Function `*NamespacesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, RelayNamespace, *NamespacesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Namespace, *NamespacesClientBeginCreateOrUpdateOptions)`
+- Function `*NamespacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(NamespacesCreateOrUpdatePollerResponse, error)` to `(NamespacesClientCreateOrUpdatePollerResponse, error)`
+- Function `*WCFRelaysClient.DeleteAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *WCFRelaysDeleteAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *WCFRelaysClientDeleteAuthorizationRuleOptions)`
+- Function `*WCFRelaysClient.DeleteAuthorizationRule` return value(s) have been changed from `(WCFRelaysDeleteAuthorizationRuleResponse, error)` to `(WCFRelaysClientDeleteAuthorizationRuleResponse, error)`
+- Function `*HybridConnectionsClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, RegenerateAccessKeyParameters, *HybridConnectionsRegenerateKeysOptions)` to `(context.Context, string, string, string, string, RegenerateAccessKeyParameters, *HybridConnectionsClientRegenerateKeysOptions)`
+- Function `*HybridConnectionsClient.RegenerateKeys` return value(s) have been changed from `(HybridConnectionsRegenerateKeysResponse, error)` to `(HybridConnectionsClientRegenerateKeysResponse, error)`
+- Function `*HybridConnectionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, HybridConnection, *HybridConnectionsCreateOrUpdateOptions)` to `(context.Context, string, string, string, HybridConnection, *HybridConnectionsClientCreateOrUpdateOptions)`
+- Function `*HybridConnectionsClient.CreateOrUpdate` return value(s) have been changed from `(HybridConnectionsCreateOrUpdateResponse, error)` to `(HybridConnectionsClientCreateOrUpdateResponse, error)`
+- Function `*WCFRelaysClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, WcfRelay, *WCFRelaysCreateOrUpdateOptions)` to `(context.Context, string, string, string, WcfRelay, *WCFRelaysClientCreateOrUpdateOptions)`
+- Function `*WCFRelaysClient.CreateOrUpdate` return value(s) have been changed from `(WCFRelaysCreateOrUpdateResponse, error)` to `(WCFRelaysClientCreateOrUpdateResponse, error)`
+- Function `*NamespacesClient.CreateOrUpdateAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, AuthorizationRule, *NamespacesCreateOrUpdateAuthorizationRuleOptions)` to `(context.Context, string, string, string, AuthorizationRule, *NamespacesClientCreateOrUpdateAuthorizationRuleOptions)`
+- Function `*NamespacesClient.CreateOrUpdateAuthorizationRule` return value(s) have been changed from `(NamespacesCreateOrUpdateAuthorizationRuleResponse, error)` to `(NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error)`
+- Function `*NamespacesClient.GetAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesGetAuthorizationRuleOptions)` to `(context.Context, string, string, string, *NamespacesClientGetAuthorizationRuleOptions)`
+- Function `*NamespacesClient.GetAuthorizationRule` return value(s) have been changed from `(NamespacesGetAuthorizationRuleResponse, error)` to `(NamespacesClientGetAuthorizationRuleResponse, error)`
+- Function `*HybridConnectionsClient.ListAuthorizationRules` parameter(s) have been changed from `(string, string, string, *HybridConnectionsListAuthorizationRulesOptions)` to `(string, string, string, *HybridConnectionsClientListAuthorizationRulesOptions)`
+- Function `*HybridConnectionsClient.ListAuthorizationRules` return value(s) have been changed from `(*HybridConnectionsListAuthorizationRulesPager)` to `(*HybridConnectionsClientListAuthorizationRulesPager)`
+- Function `*WCFRelaysClient.GetAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *WCFRelaysGetAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *WCFRelaysClientGetAuthorizationRuleOptions)`
+- Function `*WCFRelaysClient.GetAuthorizationRule` return value(s) have been changed from `(WCFRelaysGetAuthorizationRuleResponse, error)` to `(WCFRelaysClientGetAuthorizationRuleResponse, error)`
+- Function `*NamespacesClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, CheckNameAvailability, *NamespacesCheckNameAvailabilityOptions)` to `(context.Context, CheckNameAvailability, *NamespacesClientCheckNameAvailabilityOptions)`
+- Function `*NamespacesClient.CheckNameAvailability` return value(s) have been changed from `(NamespacesCheckNameAvailabilityResponse, error)` to `(NamespacesClientCheckNameAvailabilityResponse, error)`
+- Function `*NamespacesClient.Update` parameter(s) have been changed from `(context.Context, string, string, RelayUpdateParameters, *NamespacesUpdateOptions)` to `(context.Context, string, string, UpdateParameters, *NamespacesClientUpdateOptions)`
+- Function `*NamespacesClient.Update` return value(s) have been changed from `(NamespacesUpdateResponse, error)` to `(NamespacesClientUpdateResponse, error)`
+- Function `*HybridConnectionsClient.CreateOrUpdateAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, AuthorizationRule, *HybridConnectionsCreateOrUpdateAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, AuthorizationRule, *HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions)`
+- Function `*HybridConnectionsClient.CreateOrUpdateAuthorizationRule` return value(s) have been changed from `(HybridConnectionsCreateOrUpdateAuthorizationRuleResponse, error)` to `(HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse, error)`
+- Function `*HybridConnectionsClient.GetAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *HybridConnectionsGetAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *HybridConnectionsClientGetAuthorizationRuleOptions)`
+- Function `*HybridConnectionsClient.GetAuthorizationRule` return value(s) have been changed from `(HybridConnectionsGetAuthorizationRuleResponse, error)` to `(HybridConnectionsClientGetAuthorizationRuleResponse, error)`
+- Function `*WCFRelaysClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, *WCFRelaysListKeysOptions)` to `(context.Context, string, string, string, string, *WCFRelaysClientListKeysOptions)`
+- Function `*WCFRelaysClient.ListKeys` return value(s) have been changed from `(WCFRelaysListKeysResponse, error)` to `(WCFRelaysClientListKeysResponse, error)`
+- Function `*HybridConnectionsClient.ListByNamespace` parameter(s) have been changed from `(string, string, *HybridConnectionsListByNamespaceOptions)` to `(string, string, *HybridConnectionsClientListByNamespaceOptions)`
+- Function `*HybridConnectionsClient.ListByNamespace` return value(s) have been changed from `(*HybridConnectionsListByNamespacePager)` to `(*HybridConnectionsClientListByNamespacePager)`
+- Function `*NamespacesClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, string, RegenerateAccessKeyParameters, *NamespacesRegenerateKeysOptions)` to `(context.Context, string, string, string, RegenerateAccessKeyParameters, *NamespacesClientRegenerateKeysOptions)`
+- Function `*NamespacesClient.RegenerateKeys` return value(s) have been changed from `(NamespacesRegenerateKeysResponse, error)` to `(NamespacesClientRegenerateKeysResponse, error)`
+- Function `*NamespacesClient.ListAuthorizationRules` parameter(s) have been changed from `(string, string, *NamespacesListAuthorizationRulesOptions)` to `(string, string, *NamespacesClientListAuthorizationRulesOptions)`
+- Function `*NamespacesClient.ListAuthorizationRules` return value(s) have been changed from `(*NamespacesListAuthorizationRulesPager)` to `(*NamespacesClientListAuthorizationRulesPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*WCFRelaysClient.ListByNamespace` parameter(s) have been changed from `(string, string, *WCFRelaysListByNamespaceOptions)` to `(string, string, *WCFRelaysClientListByNamespaceOptions)`
+- Function `*WCFRelaysClient.ListByNamespace` return value(s) have been changed from `(*WCFRelaysListByNamespacePager)` to `(*WCFRelaysClientListByNamespacePager)`
+- Function `*NamespacesListByResourceGroupPager.Err` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesListByResourceGroupPager.NextPage` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*NamespacesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NamespacesDeletePoller.Done` has been removed
+- Function `*NamespacesListPager.Err` has been removed
+- Function `HybridConnection.MarshalJSON` has been removed
+- Function `RelayUpdateParameters.MarshalJSON` has been removed
+- Function `*WCFRelaysListByNamespacePager.Err` has been removed
+- Function `*WCFRelaysListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*WCFRelaysListByNamespacePager.NextPage` has been removed
+- Function `*NamespacesDeletePoller.FinalResponse` has been removed
+- Function `*HybridConnectionsListByNamespacePager.NextPage` has been removed
+- Function `*HybridConnectionsListAuthorizationRulesPager.Err` has been removed
+- Function `*WCFRelaysListAuthorizationRulesPager.NextPage` has been removed
+- Function `AuthorizationRule.MarshalJSON` has been removed
+- Function `*NamespacesDeletePollerResponse.Resume` has been removed
+- Function `RelayNamespaceListResult.MarshalJSON` has been removed
+- Function `*NamespacesCreateOrUpdatePoller.Done` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*NamespacesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*HybridConnectionsListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.NextPage` has been removed
+- Function `*HybridConnectionsListByNamespacePager.Err` has been removed
+- Function `NamespacesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*WCFRelaysListAuthorizationRulesPager.Err` has been removed
+- Function `RelayNamespace.MarshalJSON` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*HybridConnectionsListAuthorizationRulesPager.NextPage` has been removed
+- Function `*RelayNamespaceProperties.UnmarshalJSON` has been removed
+- Function `*HybridConnectionsListByNamespacePager.PageResponse` has been removed
+- Function `*NamespacesListPager.NextPage` has been removed
+- Function `*NamespacesListByResourceGroupPager.PageResponse` has been removed
+- Function `*NamespacesDeletePoller.Poll` has been removed
+- Function `*WCFRelaysListByNamespacePager.PageResponse` has been removed
+- Function `WcfRelay.MarshalJSON` has been removed
+- Function `NamespacesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*NamespacesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*NamespacesCreateOrUpdatePoller.Poll` has been removed
+- Function `*NamespacesListPager.PageResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `RelayNamespaceProperties.MarshalJSON` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.Err` has been removed
+- Function `*NamespacesDeletePoller.ResumeToken` has been removed
+- Struct `HybridConnectionsCreateOrUpdateAuthorizationRuleOptions` has been removed
+- Struct `HybridConnectionsCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Struct `HybridConnectionsCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `HybridConnectionsCreateOrUpdateOptions` has been removed
+- Struct `HybridConnectionsCreateOrUpdateResponse` has been removed
+- Struct `HybridConnectionsCreateOrUpdateResult` has been removed
+- Struct `HybridConnectionsDeleteAuthorizationRuleOptions` has been removed
+- Struct `HybridConnectionsDeleteAuthorizationRuleResponse` has been removed
+- Struct `HybridConnectionsDeleteOptions` has been removed
+- Struct `HybridConnectionsDeleteResponse` has been removed
+- Struct `HybridConnectionsGetAuthorizationRuleOptions` has been removed
+- Struct `HybridConnectionsGetAuthorizationRuleResponse` has been removed
+- Struct `HybridConnectionsGetAuthorizationRuleResult` has been removed
+- Struct `HybridConnectionsGetOptions` has been removed
+- Struct `HybridConnectionsGetResponse` has been removed
+- Struct `HybridConnectionsGetResult` has been removed
+- Struct `HybridConnectionsListAuthorizationRulesOptions` has been removed
+- Struct `HybridConnectionsListAuthorizationRulesPager` has been removed
+- Struct `HybridConnectionsListAuthorizationRulesResponse` has been removed
+- Struct `HybridConnectionsListAuthorizationRulesResult` has been removed
+- Struct `HybridConnectionsListByNamespaceOptions` has been removed
+- Struct `HybridConnectionsListByNamespacePager` has been removed
+- Struct `HybridConnectionsListByNamespaceResponse` has been removed
+- Struct `HybridConnectionsListByNamespaceResult` has been removed
+- Struct `HybridConnectionsListKeysOptions` has been removed
+- Struct `HybridConnectionsListKeysResponse` has been removed
+- Struct `HybridConnectionsListKeysResult` has been removed
+- Struct `HybridConnectionsRegenerateKeysOptions` has been removed
+- Struct `HybridConnectionsRegenerateKeysResponse` has been removed
+- Struct `HybridConnectionsRegenerateKeysResult` has been removed
+- Struct `NamespacesBeginCreateOrUpdateOptions` has been removed
+- Struct `NamespacesBeginDeleteOptions` has been removed
+- Struct `NamespacesCheckNameAvailabilityOptions` has been removed
+- Struct `NamespacesCheckNameAvailabilityResponse` has been removed
+- Struct `NamespacesCheckNameAvailabilityResult` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleOptions` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `NamespacesCreateOrUpdatePoller` has been removed
+- Struct `NamespacesCreateOrUpdatePollerResponse` has been removed
+- Struct `NamespacesCreateOrUpdateResponse` has been removed
+- Struct `NamespacesCreateOrUpdateResult` has been removed
+- Struct `NamespacesDeleteAuthorizationRuleOptions` has been removed
+- Struct `NamespacesDeleteAuthorizationRuleResponse` has been removed
+- Struct `NamespacesDeletePoller` has been removed
+- Struct `NamespacesDeletePollerResponse` has been removed
+- Struct `NamespacesDeleteResponse` has been removed
+- Struct `NamespacesGetAuthorizationRuleOptions` has been removed
+- Struct `NamespacesGetAuthorizationRuleResponse` has been removed
+- Struct `NamespacesGetAuthorizationRuleResult` has been removed
+- Struct `NamespacesGetOptions` has been removed
+- Struct `NamespacesGetResponse` has been removed
+- Struct `NamespacesGetResult` has been removed
+- Struct `NamespacesListAuthorizationRulesOptions` has been removed
+- Struct `NamespacesListAuthorizationRulesPager` has been removed
+- Struct `NamespacesListAuthorizationRulesResponse` has been removed
+- Struct `NamespacesListAuthorizationRulesResult` has been removed
+- Struct `NamespacesListByResourceGroupOptions` has been removed
+- Struct `NamespacesListByResourceGroupPager` has been removed
+- Struct `NamespacesListByResourceGroupResponse` has been removed
+- Struct `NamespacesListByResourceGroupResult` has been removed
+- Struct `NamespacesListKeysOptions` has been removed
+- Struct `NamespacesListKeysResponse` has been removed
+- Struct `NamespacesListKeysResult` has been removed
+- Struct `NamespacesListOptions` has been removed
+- Struct `NamespacesListPager` has been removed
+- Struct `NamespacesListResponse` has been removed
+- Struct `NamespacesListResult` has been removed
+- Struct `NamespacesRegenerateKeysOptions` has been removed
+- Struct `NamespacesRegenerateKeysResponse` has been removed
+- Struct `NamespacesRegenerateKeysResult` has been removed
+- Struct `NamespacesUpdateOptions` has been removed
+- Struct `NamespacesUpdateResponse` has been removed
+- Struct `NamespacesUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `RelayNamespace` has been removed
+- Struct `RelayNamespaceListResult` has been removed
+- Struct `RelayNamespaceProperties` has been removed
+- Struct `RelayUpdateParameters` has been removed
+- Struct `WCFRelaysCreateOrUpdateAuthorizationRuleOptions` has been removed
+- Struct `WCFRelaysCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Struct `WCFRelaysCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `WCFRelaysCreateOrUpdateOptions` has been removed
+- Struct `WCFRelaysCreateOrUpdateResponse` has been removed
+- Struct `WCFRelaysCreateOrUpdateResult` has been removed
+- Struct `WCFRelaysDeleteAuthorizationRuleOptions` has been removed
+- Struct `WCFRelaysDeleteAuthorizationRuleResponse` has been removed
+- Struct `WCFRelaysDeleteOptions` has been removed
+- Struct `WCFRelaysDeleteResponse` has been removed
+- Struct `WCFRelaysGetAuthorizationRuleOptions` has been removed
+- Struct `WCFRelaysGetAuthorizationRuleResponse` has been removed
+- Struct `WCFRelaysGetAuthorizationRuleResult` has been removed
+- Struct `WCFRelaysGetOptions` has been removed
+- Struct `WCFRelaysGetResponse` has been removed
+- Struct `WCFRelaysGetResult` has been removed
+- Struct `WCFRelaysListAuthorizationRulesOptions` has been removed
+- Struct `WCFRelaysListAuthorizationRulesPager` has been removed
+- Struct `WCFRelaysListAuthorizationRulesResponse` has been removed
+- Struct `WCFRelaysListAuthorizationRulesResult` has been removed
+- Struct `WCFRelaysListByNamespaceOptions` has been removed
+- Struct `WCFRelaysListByNamespacePager` has been removed
+- Struct `WCFRelaysListByNamespaceResponse` has been removed
+- Struct `WCFRelaysListByNamespaceResult` has been removed
+- Struct `WCFRelaysListKeysOptions` has been removed
+- Struct `WCFRelaysListKeysResponse` has been removed
+- Struct `WCFRelaysListKeysResult` has been removed
+- Struct `WCFRelaysRegenerateKeysOptions` has been removed
+- Struct `WCFRelaysRegenerateKeysResponse` has been removed
+- Struct `WCFRelaysRegenerateKeysResult` has been removed
+- Field `Resource` of struct `WcfRelay` has been removed
+- Field `Resource` of struct `AuthorizationRule` has been removed
+- Field `Resource` of struct `HybridConnection` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Resource` of struct `ResourceNamespacePatch` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*WCFRelaysClientListByNamespacePager.PageResponse() WCFRelaysClientListByNamespaceResponse`
+- New function `*NamespacesClientListByResourceGroupPager.Err() error`
+- New function `*NamespacesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*HybridConnectionsClientListByNamespacePager.PageResponse() HybridConnectionsClientListByNamespaceResponse`
+- New function `*NamespacesClientCreateOrUpdatePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*NamespacesClientListAuthorizationRulesPager.Err() error`
+- New function `*WCFRelaysClientListAuthorizationRulesPager.PageResponse() WCFRelaysClientListAuthorizationRulesResponse`
+- New function `*NamespacesClientListAuthorizationRulesPager.PageResponse() NamespacesClientListAuthorizationRulesResponse`
+- New function `*NamespacesClientDeletePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*HybridConnectionsClientListAuthorizationRulesPager.Err() error`
+- New function `*NamespacesClientDeletePoller.FinalResponse(context.Context) (NamespacesClientDeleteResponse, error)`
+- New function `NamespaceProperties.MarshalJSON() ([]byte, error)`
+- New function `*WCFRelaysClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*NamespacesClientCreateOrUpdatePoller.FinalResponse(context.Context) (NamespacesClientCreateOrUpdateResponse, error)`
+- New function `*HybridConnectionsClientListByNamespacePager.NextPage(context.Context) bool`
+- New function `Namespace.MarshalJSON() ([]byte, error)`
+- New function `*HybridConnectionsClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*WCFRelaysClientListByNamespacePager.NextPage(context.Context) bool`
+- New function `*NamespacesClientCreateOrUpdatePoller.Done() bool`
+- New function `*NamespacesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `NamespacesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesClientDeleteResponse, error)`
+- New function `NamespacesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesClientCreateOrUpdateResponse, error)`
+- New function `*NamespacesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*NamespacesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*NamespacesClientDeletePoller.Done() bool`
+- New function `*NamespacesClientListPager.PageResponse() NamespacesClientListResponse`
+- New function `*HybridConnectionsClientListByNamespacePager.Err() error`
+- New function `UpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*NamespacesClientListPager.Err() error`
+- New function `*HybridConnectionsClientListAuthorizationRulesPager.PageResponse() HybridConnectionsClientListAuthorizationRulesResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*WCFRelaysClientListByNamespacePager.Err() error`
+- New function `*NamespacesClientListPager.NextPage(context.Context) bool`
+- New function `NamespaceListResult.MarshalJSON() ([]byte, error)`
+- New function `*NamespacesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*NamespaceProperties.UnmarshalJSON([]byte) error`
+- New function `*WCFRelaysClientListAuthorizationRulesPager.Err() error`
+- New function `*NamespacesClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*NamespacesClientListByResourceGroupPager.PageResponse() NamespacesClientListByResourceGroupResponse`
+- New struct `HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions`
+- New struct `HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse`
+- New struct `HybridConnectionsClientCreateOrUpdateAuthorizationRuleResult`
+- New struct `HybridConnectionsClientCreateOrUpdateOptions`
+- New struct `HybridConnectionsClientCreateOrUpdateResponse`
+- New struct `HybridConnectionsClientCreateOrUpdateResult`
+- New struct `HybridConnectionsClientDeleteAuthorizationRuleOptions`
+- New struct `HybridConnectionsClientDeleteAuthorizationRuleResponse`
+- New struct `HybridConnectionsClientDeleteOptions`
+- New struct `HybridConnectionsClientDeleteResponse`
+- New struct `HybridConnectionsClientGetAuthorizationRuleOptions`
+- New struct `HybridConnectionsClientGetAuthorizationRuleResponse`
+- New struct `HybridConnectionsClientGetAuthorizationRuleResult`
+- New struct `HybridConnectionsClientGetOptions`
+- New struct `HybridConnectionsClientGetResponse`
+- New struct `HybridConnectionsClientGetResult`
+- New struct `HybridConnectionsClientListAuthorizationRulesOptions`
+- New struct `HybridConnectionsClientListAuthorizationRulesPager`
+- New struct `HybridConnectionsClientListAuthorizationRulesResponse`
+- New struct `HybridConnectionsClientListAuthorizationRulesResult`
+- New struct `HybridConnectionsClientListByNamespaceOptions`
+- New struct `HybridConnectionsClientListByNamespacePager`
+- New struct `HybridConnectionsClientListByNamespaceResponse`
+- New struct `HybridConnectionsClientListByNamespaceResult`
+- New struct `HybridConnectionsClientListKeysOptions`
+- New struct `HybridConnectionsClientListKeysResponse`
+- New struct `HybridConnectionsClientListKeysResult`
+- New struct `HybridConnectionsClientRegenerateKeysOptions`
+- New struct `HybridConnectionsClientRegenerateKeysResponse`
+- New struct `HybridConnectionsClientRegenerateKeysResult`
+- New struct `Namespace`
+- New struct `NamespaceListResult`
+- New struct `NamespaceProperties`
+- New struct `NamespacesClientBeginCreateOrUpdateOptions`
+- New struct `NamespacesClientBeginDeleteOptions`
+- New struct `NamespacesClientCheckNameAvailabilityOptions`
+- New struct `NamespacesClientCheckNameAvailabilityResponse`
+- New struct `NamespacesClientCheckNameAvailabilityResult`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleOptions`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleResult`
+- New struct `NamespacesClientCreateOrUpdatePoller`
+- New struct `NamespacesClientCreateOrUpdatePollerResponse`
+- New struct `NamespacesClientCreateOrUpdateResponse`
+- New struct `NamespacesClientCreateOrUpdateResult`
+- New struct `NamespacesClientDeleteAuthorizationRuleOptions`
+- New struct `NamespacesClientDeleteAuthorizationRuleResponse`
+- New struct `NamespacesClientDeletePoller`
+- New struct `NamespacesClientDeletePollerResponse`
+- New struct `NamespacesClientDeleteResponse`
+- New struct `NamespacesClientGetAuthorizationRuleOptions`
+- New struct `NamespacesClientGetAuthorizationRuleResponse`
+- New struct `NamespacesClientGetAuthorizationRuleResult`
+- New struct `NamespacesClientGetOptions`
+- New struct `NamespacesClientGetResponse`
+- New struct `NamespacesClientGetResult`
+- New struct `NamespacesClientListAuthorizationRulesOptions`
+- New struct `NamespacesClientListAuthorizationRulesPager`
+- New struct `NamespacesClientListAuthorizationRulesResponse`
+- New struct `NamespacesClientListAuthorizationRulesResult`
+- New struct `NamespacesClientListByResourceGroupOptions`
+- New struct `NamespacesClientListByResourceGroupPager`
+- New struct `NamespacesClientListByResourceGroupResponse`
+- New struct `NamespacesClientListByResourceGroupResult`
+- New struct `NamespacesClientListKeysOptions`
+- New struct `NamespacesClientListKeysResponse`
+- New struct `NamespacesClientListKeysResult`
+- New struct `NamespacesClientListOptions`
+- New struct `NamespacesClientListPager`
+- New struct `NamespacesClientListResponse`
+- New struct `NamespacesClientListResult`
+- New struct `NamespacesClientRegenerateKeysOptions`
+- New struct `NamespacesClientRegenerateKeysResponse`
+- New struct `NamespacesClientRegenerateKeysResult`
+- New struct `NamespacesClientUpdateOptions`
+- New struct `NamespacesClientUpdateResponse`
+- New struct `NamespacesClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `UpdateParameters`
+- New struct `WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions`
+- New struct `WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse`
+- New struct `WCFRelaysClientCreateOrUpdateAuthorizationRuleResult`
+- New struct `WCFRelaysClientCreateOrUpdateOptions`
+- New struct `WCFRelaysClientCreateOrUpdateResponse`
+- New struct `WCFRelaysClientCreateOrUpdateResult`
+- New struct `WCFRelaysClientDeleteAuthorizationRuleOptions`
+- New struct `WCFRelaysClientDeleteAuthorizationRuleResponse`
+- New struct `WCFRelaysClientDeleteOptions`
+- New struct `WCFRelaysClientDeleteResponse`
+- New struct `WCFRelaysClientGetAuthorizationRuleOptions`
+- New struct `WCFRelaysClientGetAuthorizationRuleResponse`
+- New struct `WCFRelaysClientGetAuthorizationRuleResult`
+- New struct `WCFRelaysClientGetOptions`
+- New struct `WCFRelaysClientGetResponse`
+- New struct `WCFRelaysClientGetResult`
+- New struct `WCFRelaysClientListAuthorizationRulesOptions`
+- New struct `WCFRelaysClientListAuthorizationRulesPager`
+- New struct `WCFRelaysClientListAuthorizationRulesResponse`
+- New struct `WCFRelaysClientListAuthorizationRulesResult`
+- New struct `WCFRelaysClientListByNamespaceOptions`
+- New struct `WCFRelaysClientListByNamespacePager`
+- New struct `WCFRelaysClientListByNamespaceResponse`
+- New struct `WCFRelaysClientListByNamespaceResult`
+- New struct `WCFRelaysClientListKeysOptions`
+- New struct `WCFRelaysClientListKeysResponse`
+- New struct `WCFRelaysClientListKeysResult`
+- New struct `WCFRelaysClientRegenerateKeysOptions`
+- New struct `WCFRelaysClientRegenerateKeysResponse`
+- New struct `WCFRelaysClientRegenerateKeysResult`
+- New field `Type` in struct `HybridConnection`
+- New field `ID` in struct `HybridConnection`
+- New field `Name` in struct `HybridConnection`
+- New field `ID` in struct `ResourceNamespacePatch`
+- New field `Name` in struct `ResourceNamespacePatch`
+- New field `Type` in struct `ResourceNamespacePatch`
+- New field `ID` in struct `AuthorizationRule`
+- New field `Name` in struct `AuthorizationRule`
+- New field `Type` in struct `AuthorizationRule`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `WcfRelay`
+- New field `Name` in struct `WcfRelay`
+- New field `Type` in struct `WcfRelay`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

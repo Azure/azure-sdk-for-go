@@ -11,7 +11,6 @@ package armpowerbiprivatelinks
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,59 @@ import (
 // PrivateLinkServiceResourceOperationResultsClient contains the methods for the PrivateLinkServiceResourceOperationResults group.
 // Don't use this type directly, use NewPrivateLinkServiceResourceOperationResultsClient() instead.
 type PrivateLinkServiceResourceOperationResultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
 	operationID    string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkServiceResourceOperationResultsClient creates a new instance of PrivateLinkServiceResourceOperationResultsClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// operationID - The id of Azure async operation.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkServiceResourceOperationResultsClient(subscriptionID string, operationID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkServiceResourceOperationResultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkServiceResourceOperationResultsClient{subscriptionID: subscriptionID, operationID: operationID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkServiceResourceOperationResultsClient{
+		subscriptionID: subscriptionID,
+		operationID:    operationID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginGet - Gets operation result of Private Link Service Resources for Power BI.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateLinkServiceResourceOperationResultsClient) BeginGet(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsBeginGetOptions) (PrivateLinkServiceResourceOperationResultsGetPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PrivateLinkServiceResourceOperationResultsClientBeginGetOptions contains the optional parameters for the PrivateLinkServiceResourceOperationResultsClient.BeginGet
+// method.
+func (client *PrivateLinkServiceResourceOperationResultsClient) BeginGet(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsClientBeginGetOptions) (PrivateLinkServiceResourceOperationResultsClientGetPollerResponse, error) {
 	resp, err := client.get(ctx, options)
 	if err != nil {
-		return PrivateLinkServiceResourceOperationResultsGetPollerResponse{}, err
+		return PrivateLinkServiceResourceOperationResultsClientGetPollerResponse{}, err
 	}
-	result := PrivateLinkServiceResourceOperationResultsGetPollerResponse{
+	result := PrivateLinkServiceResourceOperationResultsClientGetPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateLinkServiceResourceOperationResultsClient.Get", "azure-async-operation", resp, client.pl, client.getHandleError)
+	pt, err := armruntime.NewPoller("PrivateLinkServiceResourceOperationResultsClient.Get", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return PrivateLinkServiceResourceOperationResultsGetPollerResponse{}, err
+		return PrivateLinkServiceResourceOperationResultsClientGetPollerResponse{}, err
 	}
-	result.Poller = &PrivateLinkServiceResourceOperationResultsGetPoller{
+	result.Poller = &PrivateLinkServiceResourceOperationResultsClientGetPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Get - Gets operation result of Private Link Service Resources for Power BI.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateLinkServiceResourceOperationResultsClient) get(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsBeginGetOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateLinkServiceResourceOperationResultsClient) get(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsClientBeginGetOptions) (*http.Response, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +86,13 @@ func (client *PrivateLinkServiceResourceOperationResultsClient) get(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.getHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkServiceResourceOperationResultsClient) getCreateRequest(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsBeginGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkServiceResourceOperationResultsClient) getCreateRequest(ctx context.Context, options *PrivateLinkServiceResourceOperationResultsClientBeginGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBI/operationResults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -91,7 +102,7 @@ func (client *PrivateLinkServiceResourceOperationResultsClient) getCreateRequest
 		return nil, errors.New("parameter client.operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(client.operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -100,17 +111,4 @@ func (client *PrivateLinkServiceResourceOperationResultsClient) getCreateRequest
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *PrivateLinkServiceResourceOperationResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

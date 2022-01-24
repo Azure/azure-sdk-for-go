@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,57 @@ import (
 // ExternalSecuritySolutionsClient contains the methods for the ExternalSecuritySolutions group.
 // Don't use this type directly, use NewExternalSecuritySolutionsClient() instead.
 type ExternalSecuritySolutionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
 	ascLocation    string
+	pl             runtime.Pipeline
 }
 
 // NewExternalSecuritySolutionsClient creates a new instance of ExternalSecuritySolutionsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExternalSecuritySolutionsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExternalSecuritySolutionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &ExternalSecuritySolutionsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExternalSecuritySolutionsClient{
+		subscriptionID: subscriptionID,
+		ascLocation:    ascLocation,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Get - Gets a specific external Security Solution.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExternalSecuritySolutionsClient) Get(ctx context.Context, resourceGroupName string, externalSecuritySolutionsName string, options *ExternalSecuritySolutionsGetOptions) (ExternalSecuritySolutionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// externalSecuritySolutionsName - Name of an external security solution.
+// options - ExternalSecuritySolutionsClientGetOptions contains the optional parameters for the ExternalSecuritySolutionsClient.Get
+// method.
+func (client *ExternalSecuritySolutionsClient) Get(ctx context.Context, resourceGroupName string, externalSecuritySolutionsName string, options *ExternalSecuritySolutionsClientGetOptions) (ExternalSecuritySolutionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, externalSecuritySolutionsName, options)
 	if err != nil {
-		return ExternalSecuritySolutionsGetResponse{}, err
+		return ExternalSecuritySolutionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExternalSecuritySolutionsGetResponse{}, err
+		return ExternalSecuritySolutionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExternalSecuritySolutionsGetResponse{}, client.getHandleError(resp)
+		return ExternalSecuritySolutionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, externalSecuritySolutionsName string, options *ExternalSecuritySolutionsGetOptions) (*policy.Request, error) {
+func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, externalSecuritySolutionsName string, options *ExternalSecuritySolutionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions/{externalSecuritySolutionsName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter externalSecuritySolutionsName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{externalSecuritySolutionsName}", url.PathEscape(externalSecuritySolutionsName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,49 +104,38 @@ func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExternalSecuritySolutionsClient) getHandleResponse(resp *http.Response) (ExternalSecuritySolutionsGetResponse, error) {
-	result := ExternalSecuritySolutionsGetResponse{RawResponse: resp}
+func (client *ExternalSecuritySolutionsClient) getHandleResponse(resp *http.Response) (ExternalSecuritySolutionsClientGetResponse, error) {
+	result := ExternalSecuritySolutionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolution); err != nil {
-		return ExternalSecuritySolutionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ExternalSecuritySolutionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ExternalSecuritySolutionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of external security solutions for the subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExternalSecuritySolutionsClient) List(options *ExternalSecuritySolutionsListOptions) *ExternalSecuritySolutionsListPager {
-	return &ExternalSecuritySolutionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ExternalSecuritySolutionsClientListOptions contains the optional parameters for the ExternalSecuritySolutionsClient.List
+// method.
+func (client *ExternalSecuritySolutionsClient) List(options *ExternalSecuritySolutionsClientListOptions) *ExternalSecuritySolutionsClientListPager {
+	return &ExternalSecuritySolutionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ExternalSecuritySolutionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ExternalSecuritySolutionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExternalSecuritySolutionList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Context, options *ExternalSecuritySolutionsListOptions) (*policy.Request, error) {
+func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Context, options *ExternalSecuritySolutionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,43 +147,32 @@ func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *ExternalSecuritySolutionsClient) listHandleResponse(resp *http.Response) (ExternalSecuritySolutionsListResponse, error) {
-	result := ExternalSecuritySolutionsListResponse{RawResponse: resp}
+func (client *ExternalSecuritySolutionsClient) listHandleResponse(resp *http.Response) (ExternalSecuritySolutionsClientListResponse, error) {
+	result := ExternalSecuritySolutionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolutionList); err != nil {
-		return ExternalSecuritySolutionsListResponse{}, runtime.NewResponseError(err, resp)
+		return ExternalSecuritySolutionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ExternalSecuritySolutionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByHomeRegion - Gets a list of external Security Solutions for the subscription and location.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExternalSecuritySolutionsClient) ListByHomeRegion(options *ExternalSecuritySolutionsListByHomeRegionOptions) *ExternalSecuritySolutionsListByHomeRegionPager {
-	return &ExternalSecuritySolutionsListByHomeRegionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ExternalSecuritySolutionsClientListByHomeRegionOptions contains the optional parameters for the ExternalSecuritySolutionsClient.ListByHomeRegion
+// method.
+func (client *ExternalSecuritySolutionsClient) ListByHomeRegion(options *ExternalSecuritySolutionsClientListByHomeRegionOptions) *ExternalSecuritySolutionsClientListByHomeRegionPager {
+	return &ExternalSecuritySolutionsClientListByHomeRegionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByHomeRegionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ExternalSecuritySolutionsListByHomeRegionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ExternalSecuritySolutionsClientListByHomeRegionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExternalSecuritySolutionList.NextLink)
 		},
 	}
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx context.Context, options *ExternalSecuritySolutionsListByHomeRegionOptions) (*policy.Request, error) {
+func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx context.Context, options *ExternalSecuritySolutionsClientListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -191,7 +182,7 @@ func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,23 +194,10 @@ func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *ExternalSecuritySolutionsClient) listByHomeRegionHandleResponse(resp *http.Response) (ExternalSecuritySolutionsListByHomeRegionResponse, error) {
-	result := ExternalSecuritySolutionsListByHomeRegionResponse{RawResponse: resp}
+func (client *ExternalSecuritySolutionsClient) listByHomeRegionHandleResponse(resp *http.Response) (ExternalSecuritySolutionsClientListByHomeRegionResponse, error) {
+	result := ExternalSecuritySolutionsClientListByHomeRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolutionList); err != nil {
-		return ExternalSecuritySolutionsListByHomeRegionResponse{}, runtime.NewResponseError(err, resp)
+		return ExternalSecuritySolutionsClientListByHomeRegionResponse{}, err
 	}
 	return result, nil
-}
-
-// listByHomeRegionHandleError handles the ListByHomeRegion error response.
-func (client *ExternalSecuritySolutionsClient) listByHomeRegionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

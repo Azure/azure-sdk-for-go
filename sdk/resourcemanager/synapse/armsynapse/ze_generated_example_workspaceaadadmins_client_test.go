@@ -34,7 +34,7 @@ func ExampleWorkspaceAADAdminsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkspaceAADAdminInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceAADAdminsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateWorkspaceAadAdmin.json
@@ -64,7 +64,7 @@ func ExampleWorkspaceAADAdminsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkspaceAADAdminInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceAADAdminsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspaceAadAdmin.json

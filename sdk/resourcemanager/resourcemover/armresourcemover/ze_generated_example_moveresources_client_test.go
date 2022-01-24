@@ -29,13 +29,17 @@ func ExampleMoveResourcesClient_List() {
 	client := armresourcemover.NewMoveResourcesClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.MoveResourcesListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armresourcemover.MoveResourcesClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MoveResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,7 +56,7 @@ func ExampleMoveResourcesClient_BeginCreate() {
 		"<resource-group-name>",
 		"<move-collection-name>",
 		"<move-resource-name>",
-		&armresourcemover.MoveResourcesBeginCreateOptions{Body: &armresourcemover.MoveResource{
+		&armresourcemover.MoveResourcesClientBeginCreateOptions{Body: &armresourcemover.MoveResource{
 			Properties: &armresourcemover.MoveResourceProperties{
 				DependsOnOverrides: []*armresourcemover.MoveResourceDependencyOverride{
 					{
@@ -60,13 +64,10 @@ func ExampleMoveResourcesClient_BeginCreate() {
 						TargetID: to.StringPtr("<target-id>"),
 					}},
 				ResourceSettings: &armresourcemover.VirtualMachineResourceSettings{
-					ResourceSettings: armresourcemover.ResourceSettings{
-						ResourceType:       to.StringPtr("<resource-type>"),
-						TargetResourceName: to.StringPtr("<target-resource-name>"),
-					},
+					ResourceType:            to.StringPtr("<resource-type>"),
+					TargetResourceName:      to.StringPtr("<target-resource-name>"),
 					TargetAvailabilitySetID: to.StringPtr("<target-availability-set-id>"),
-					TargetAvailabilityZone:  armresourcemover.TargetAvailabilityZoneTwo.ToPtr(),
-					TargetVMSize:            to.StringPtr("<target-vmsize>"),
+					TargetAvailabilityZone:  armresourcemover.TargetAvailabilityZone("2").ToPtr(),
 					UserManagedIdentities: []*string{
 						to.StringPtr("/subscriptions/subid/resourceGroups/eastusRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/umi1")},
 				},
@@ -81,7 +82,7 @@ func ExampleMoveResourcesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MoveResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveResourcesClientCreateResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveResources_Delete.json
@@ -104,7 +105,7 @@ func ExampleMoveResourcesClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveResourcesClientDeleteResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveResources_Get.json
@@ -123,5 +124,5 @@ func ExampleMoveResourcesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MoveResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveResourcesClientGetResult)
 }

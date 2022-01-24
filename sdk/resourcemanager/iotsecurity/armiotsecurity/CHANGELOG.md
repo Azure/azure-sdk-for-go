@@ -1,5 +1,459 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*IotAlertsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *IotAlertsGetOptions)` to `(context.Context, string, string, *IotAlertsClientGetOptions)`
+- Function `*IotAlertsClient.Get` return value(s) have been changed from `(IotAlertsGetResponse, error)` to `(IotAlertsClientGetResponse, error)`
+- Function `*DefenderSettingsClient.PackageDownloads` parameter(s) have been changed from `(context.Context, *DefenderSettingsPackageDownloadsOptions)` to `(context.Context, *DefenderSettingsClientPackageDownloadsOptions)`
+- Function `*DefenderSettingsClient.PackageDownloads` return value(s) have been changed from `(DefenderSettingsPackageDownloadsResponse, error)` to `(DefenderSettingsClientPackageDownloadsResponse, error)`
+- Function `*DevicesClient.List` parameter(s) have been changed from `(string, *DevicesListOptions)` to `(string, *DevicesClientListOptions)`
+- Function `*DevicesClient.List` return value(s) have been changed from `(*DevicesListPager)` to `(*DevicesClientListPager)`
+- Function `*AlertTypesClient.List` parameter(s) have been changed from `(context.Context, *AlertTypesListOptions)` to `(context.Context, *AlertTypesClientListOptions)`
+- Function `*AlertTypesClient.List` return value(s) have been changed from `(AlertTypesListResponse, error)` to `(AlertTypesClientListResponse, error)`
+- Function `*DevicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DevicesGetOptions)` to `(context.Context, string, string, *DevicesClientGetOptions)`
+- Function `*DevicesClient.Get` return value(s) have been changed from `(DevicesGetResponse, error)` to `(DevicesClientGetResponse, error)`
+- Function `*AlertTypesClient.Get` parameter(s) have been changed from `(context.Context, string, *AlertTypesGetOptions)` to `(context.Context, string, *AlertTypesClientGetOptions)`
+- Function `*AlertTypesClient.Get` return value(s) have been changed from `(AlertTypesGetResponse, error)` to `(AlertTypesClientGetResponse, error)`
+- Function `*DefenderSettingsClient.Get` parameter(s) have been changed from `(context.Context, *DefenderSettingsGetOptions)` to `(context.Context, *DefenderSettingsClientGetOptions)`
+- Function `*DefenderSettingsClient.Get` return value(s) have been changed from `(DefenderSettingsGetResponse, error)` to `(DefenderSettingsClientGetResponse, error)`
+- Function `*OnPremiseSensorsClient.DownloadResetPassword` parameter(s) have been changed from `(context.Context, string, ResetPasswordInput, *OnPremiseSensorsDownloadResetPasswordOptions)` to `(context.Context, string, ResetPasswordInput, *OnPremiseSensorsClientDownloadResetPasswordOptions)`
+- Function `*OnPremiseSensorsClient.DownloadResetPassword` return value(s) have been changed from `(OnPremiseSensorsDownloadResetPasswordResponse, error)` to `(OnPremiseSensorsClientDownloadResetPasswordResponse, error)`
+- Function `*DeviceGroupsClient.Delete` parameter(s) have been changed from `(context.Context, string, *DeviceGroupsDeleteOptions)` to `(context.Context, string, *DeviceGroupsClientDeleteOptions)`
+- Function `*DeviceGroupsClient.Delete` return value(s) have been changed from `(DeviceGroupsDeleteResponse, error)` to `(DeviceGroupsClientDeleteResponse, error)`
+- Function `*DefenderSettingsClient.DownloadManagerActivation` parameter(s) have been changed from `(context.Context, *DefenderSettingsDownloadManagerActivationOptions)` to `(context.Context, *DefenderSettingsClientDownloadManagerActivationOptions)`
+- Function `*DefenderSettingsClient.DownloadManagerActivation` return value(s) have been changed from `(DefenderSettingsDownloadManagerActivationResponse, error)` to `(DefenderSettingsClientDownloadManagerActivationResponse, error)`
+- Function `*SitesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, SiteModel, *SitesCreateOrUpdateOptions)` to `(context.Context, string, SiteModel, *SitesClientCreateOrUpdateOptions)`
+- Function `*SitesClient.CreateOrUpdate` return value(s) have been changed from `(SitesCreateOrUpdateResponse, error)` to `(SitesClientCreateOrUpdateResponse, error)`
+- Function `*OnPremiseSensorsClient.List` parameter(s) have been changed from `(context.Context, *OnPremiseSensorsListOptions)` to `(context.Context, *OnPremiseSensorsClientListOptions)`
+- Function `*OnPremiseSensorsClient.List` return value(s) have been changed from `(OnPremiseSensorsListResponse, error)` to `(OnPremiseSensorsClientListResponse, error)`
+- Function `*IotDeviceVulnerabilityClient.List` parameter(s) have been changed from `(string, *IotDeviceVulnerabilityListOptions)` to `(string, *IotDeviceVulnerabilityClientListOptions)`
+- Function `*IotDeviceVulnerabilityClient.List` return value(s) have been changed from `(*IotDeviceVulnerabilityListPager)` to `(*IotDeviceVulnerabilityClientListPager)`
+- Function `*IotRecommendationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *IotRecommendationsGetOptions)` to `(context.Context, string, string, *IotRecommendationsClientGetOptions)`
+- Function `*IotRecommendationsClient.Get` return value(s) have been changed from `(IotRecommendationsGetResponse, error)` to `(IotRecommendationsClientGetResponse, error)`
+- Function `*SensorsClient.DownloadResetPassword` parameter(s) have been changed from `(context.Context, string, string, ResetPasswordInput, *SensorsDownloadResetPasswordOptions)` to `(context.Context, string, string, ResetPasswordInput, *SensorsClientDownloadResetPasswordOptions)`
+- Function `*SensorsClient.DownloadResetPassword` return value(s) have been changed from `(SensorsDownloadResetPasswordResponse, error)` to `(SensorsClientDownloadResetPasswordResponse, error)`
+- Function `*IotDeviceVulnerabilityClient.Get` parameter(s) have been changed from `(context.Context, string, string, *IotDeviceVulnerabilityGetOptions)` to `(context.Context, string, string, *IotDeviceVulnerabilityClientGetOptions)`
+- Function `*IotDeviceVulnerabilityClient.Get` return value(s) have been changed from `(IotDeviceVulnerabilityGetResponse, error)` to `(IotDeviceVulnerabilityClientGetResponse, error)`
+- Function `*DeviceGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, *DeviceGroupsGetOptions)` to `(context.Context, string, *DeviceGroupsClientGetOptions)`
+- Function `*DeviceGroupsClient.Get` return value(s) have been changed from `(DeviceGroupsGetResponse, error)` to `(DeviceGroupsClientGetResponse, error)`
+- Function `*DefenderSettingsClient.List` parameter(s) have been changed from `(context.Context, *DefenderSettingsListOptions)` to `(context.Context, *DefenderSettingsClientListOptions)`
+- Function `*DefenderSettingsClient.List` return value(s) have been changed from `(DefenderSettingsListResponse, error)` to `(DefenderSettingsClientListResponse, error)`
+- Function `*RecommendationTypesClient.List` parameter(s) have been changed from `(context.Context, *RecommendationTypesListOptions)` to `(context.Context, *RecommendationTypesClientListOptions)`
+- Function `*RecommendationTypesClient.List` return value(s) have been changed from `(RecommendationTypesListResponse, error)` to `(RecommendationTypesClientListResponse, error)`
+- Function `*SensorsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, SensorModel, *SensorsCreateOrUpdateOptions)` to `(context.Context, string, string, SensorModel, *SensorsClientCreateOrUpdateOptions)`
+- Function `*SensorsClient.CreateOrUpdate` return value(s) have been changed from `(SensorsCreateOrUpdateResponse, error)` to `(SensorsClientCreateOrUpdateResponse, error)`
+- Function `*DefenderSettingsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, DefenderSettingsModel, *DefenderSettingsCreateOrUpdateOptions)` to `(context.Context, DefenderSettingsModel, *DefenderSettingsClientCreateOrUpdateOptions)`
+- Function `*DefenderSettingsClient.CreateOrUpdate` return value(s) have been changed from `(DefenderSettingsCreateOrUpdateResponse, error)` to `(DefenderSettingsClientCreateOrUpdateResponse, error)`
+- Function `*DeviceGroupsClient.List` parameter(s) have been changed from `(*DeviceGroupsListOptions)` to `(*DeviceGroupsClientListOptions)`
+- Function `*DeviceGroupsClient.List` return value(s) have been changed from `(*DeviceGroupsListPager)` to `(*DeviceGroupsClientListPager)`
+- Function `*OnPremiseSensorsClient.DownloadActivation` parameter(s) have been changed from `(context.Context, string, *OnPremiseSensorsDownloadActivationOptions)` to `(context.Context, string, *OnPremiseSensorsClientDownloadActivationOptions)`
+- Function `*OnPremiseSensorsClient.DownloadActivation` return value(s) have been changed from `(OnPremiseSensorsDownloadActivationResponse, error)` to `(OnPremiseSensorsClientDownloadActivationResponse, error)`
+- Function `*OnPremiseSensorsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, *OnPremiseSensorsCreateOrUpdateOptions)` to `(context.Context, string, *OnPremiseSensorsClientCreateOrUpdateOptions)`
+- Function `*OnPremiseSensorsClient.CreateOrUpdate` return value(s) have been changed from `(OnPremiseSensorsCreateOrUpdateResponse, error)` to `(OnPremiseSensorsClientCreateOrUpdateResponse, error)`
+- Function `*SensorsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SensorsGetOptions)` to `(context.Context, string, string, *SensorsClientGetOptions)`
+- Function `*SensorsClient.Get` return value(s) have been changed from `(SensorsGetResponse, error)` to `(SensorsClientGetResponse, error)`
+- Function `*SitesClient.List` parameter(s) have been changed from `(context.Context, string, *SitesListOptions)` to `(context.Context, string, *SitesClientListOptions)`
+- Function `*SitesClient.List` return value(s) have been changed from `(SitesListResponse, error)` to `(SitesClientListResponse, error)`
+- Function `*SensorsClient.List` parameter(s) have been changed from `(context.Context, string, *SensorsListOptions)` to `(context.Context, string, *SensorsClientListOptions)`
+- Function `*SensorsClient.List` return value(s) have been changed from `(SensorsListResponse, error)` to `(SensorsClientListResponse, error)`
+- Function `*OnPremiseSensorsClient.Delete` parameter(s) have been changed from `(context.Context, string, *OnPremiseSensorsDeleteOptions)` to `(context.Context, string, *OnPremiseSensorsClientDeleteOptions)`
+- Function `*OnPremiseSensorsClient.Delete` return value(s) have been changed from `(OnPremiseSensorsDeleteResponse, error)` to `(OnPremiseSensorsClientDeleteResponse, error)`
+- Function `*LocationsClient.List` parameter(s) have been changed from `(*LocationsListOptions)` to `(*LocationsClientListOptions)`
+- Function `*LocationsClient.List` return value(s) have been changed from `(*LocationsListPager)` to `(*LocationsClientListPager)`
+- Function `*IotRecommendationsClient.List` parameter(s) have been changed from `(string, *IotRecommendationsListOptions)` to `(string, *IotRecommendationsClientListOptions)`
+- Function `*IotRecommendationsClient.List` return value(s) have been changed from `(*IotRecommendationsListPager)` to `(*IotRecommendationsClientListPager)`
+- Function `*SensorsClient.TriggerTiPackageUpdate` parameter(s) have been changed from `(context.Context, string, string, *SensorsTriggerTiPackageUpdateOptions)` to `(context.Context, string, string, *SensorsClientTriggerTiPackageUpdateOptions)`
+- Function `*SensorsClient.TriggerTiPackageUpdate` return value(s) have been changed from `(SensorsTriggerTiPackageUpdateResponse, error)` to `(SensorsClientTriggerTiPackageUpdateResponse, error)`
+- Function `*IotAlertsClient.List` parameter(s) have been changed from `(string, *IotAlertsListOptions)` to `(string, *IotAlertsClientListOptions)`
+- Function `*IotAlertsClient.List` return value(s) have been changed from `(*IotAlertsListPager)` to `(*IotAlertsClientListPager)`
+- Function `*LocationsClient.Get` parameter(s) have been changed from `(context.Context, *LocationsGetOptions)` to `(context.Context, *LocationsClientGetOptions)`
+- Function `*LocationsClient.Get` return value(s) have been changed from `(LocationsGetResponse, error)` to `(LocationsClientGetResponse, error)`
+- Function `*DeviceGroupsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, DeviceGroupModel, *DeviceGroupsCreateOrUpdateOptions)` to `(context.Context, string, DeviceGroupModel, *DeviceGroupsClientCreateOrUpdateOptions)`
+- Function `*DeviceGroupsClient.CreateOrUpdate` return value(s) have been changed from `(DeviceGroupsCreateOrUpdateResponse, error)` to `(DeviceGroupsClientCreateOrUpdateResponse, error)`
+- Function `*DefenderSettingsClient.Delete` parameter(s) have been changed from `(context.Context, *DefenderSettingsDeleteOptions)` to `(context.Context, *DefenderSettingsClientDeleteOptions)`
+- Function `*DefenderSettingsClient.Delete` return value(s) have been changed from `(DefenderSettingsDeleteResponse, error)` to `(DefenderSettingsClientDeleteResponse, error)`
+- Function `*OnPremiseSensorsClient.Get` parameter(s) have been changed from `(context.Context, string, *OnPremiseSensorsGetOptions)` to `(context.Context, string, *OnPremiseSensorsClientGetOptions)`
+- Function `*OnPremiseSensorsClient.Get` return value(s) have been changed from `(OnPremiseSensorsGetResponse, error)` to `(OnPremiseSensorsClientGetResponse, error)`
+- Function `*IotAlertsClient.Patch` parameter(s) have been changed from `(context.Context, string, string, AlertPatchPropertiesModel, *IotAlertsPatchOptions)` to `(context.Context, string, string, AlertPatchPropertiesModel, *IotAlertsClientPatchOptions)`
+- Function `*IotAlertsClient.Patch` return value(s) have been changed from `(IotAlertsPatchResponse, error)` to `(IotAlertsClientPatchResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*SitesClient.Delete` parameter(s) have been changed from `(context.Context, string, *SitesDeleteOptions)` to `(context.Context, string, *SitesClientDeleteOptions)`
+- Function `*SitesClient.Delete` return value(s) have been changed from `(SitesDeleteResponse, error)` to `(SitesClientDeleteResponse, error)`
+- Function `*SensorsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *SensorsDeleteOptions)` to `(context.Context, string, string, *SensorsClientDeleteOptions)`
+- Function `*SensorsClient.Delete` return value(s) have been changed from `(SensorsDeleteResponse, error)` to `(SensorsClientDeleteResponse, error)`
+- Function `*SitesClient.Get` parameter(s) have been changed from `(context.Context, string, *SitesGetOptions)` to `(context.Context, string, *SitesClientGetOptions)`
+- Function `*SitesClient.Get` return value(s) have been changed from `(SitesGetResponse, error)` to `(SitesClientGetResponse, error)`
+- Function `*RecommendationTypesClient.Get` parameter(s) have been changed from `(context.Context, string, *RecommendationTypesGetOptions)` to `(context.Context, string, *RecommendationTypesClientGetOptions)`
+- Function `*RecommendationTypesClient.Get` return value(s) have been changed from `(RecommendationTypesGetResponse, error)` to `(RecommendationTypesClientGetResponse, error)`
+- Function `*SensorsClient.DownloadActivation` parameter(s) have been changed from `(context.Context, string, string, *SensorsDownloadActivationOptions)` to `(context.Context, string, string, *SensorsClientDownloadActivationOptions)`
+- Function `*SensorsClient.DownloadActivation` return value(s) have been changed from `(SensorsDownloadActivationResponse, error)` to `(SensorsClientDownloadActivationResponse, error)`
+- Function `ErrorResponse.Error` has been removed
+- Function `*IotAlertsListPager.PageResponse` has been removed
+- Function `*LocationsListPager.NextPage` has been removed
+- Function `*DevicesListPager.NextPage` has been removed
+- Function `*DevicesListPager.Err` has been removed
+- Function `*IotAlertsListPager.Err` has been removed
+- Function `*IotAlertsListPager.NextPage` has been removed
+- Function `*IotDeviceVulnerabilityListPager.PageResponse` has been removed
+- Function `*IotDeviceVulnerabilityListPager.Err` has been removed
+- Function `*LocationsListPager.Err` has been removed
+- Function `ErrorResponseModel.Error` has been removed
+- Function `*IotRecommendationsListPager.NextPage` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*IotRecommendationsListPager.Err` has been removed
+- Function `*DeviceGroupsListPager.PageResponse` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*IotRecommendationsListPager.PageResponse` has been removed
+- Function `*DeviceGroupsListPager.Err` has been removed
+- Function `*DeviceGroupsListPager.NextPage` has been removed
+- Function `*IotDeviceVulnerabilityListPager.NextPage` has been removed
+- Function `*LocationsListPager.PageResponse` has been removed
+- Function `*DevicesListPager.PageResponse` has been removed
+- Struct `AlertTypesGetOptions` has been removed
+- Struct `AlertTypesGetResponse` has been removed
+- Struct `AlertTypesGetResult` has been removed
+- Struct `AlertTypesListOptions` has been removed
+- Struct `AlertTypesListResponse` has been removed
+- Struct `AlertTypesListResult` has been removed
+- Struct `DefenderSettingsCreateOrUpdateOptions` has been removed
+- Struct `DefenderSettingsCreateOrUpdateResponse` has been removed
+- Struct `DefenderSettingsCreateOrUpdateResult` has been removed
+- Struct `DefenderSettingsDeleteOptions` has been removed
+- Struct `DefenderSettingsDeleteResponse` has been removed
+- Struct `DefenderSettingsDownloadManagerActivationOptions` has been removed
+- Struct `DefenderSettingsDownloadManagerActivationResponse` has been removed
+- Struct `DefenderSettingsGetOptions` has been removed
+- Struct `DefenderSettingsGetResponse` has been removed
+- Struct `DefenderSettingsGetResult` has been removed
+- Struct `DefenderSettingsListOptions` has been removed
+- Struct `DefenderSettingsListResponse` has been removed
+- Struct `DefenderSettingsListResult` has been removed
+- Struct `DefenderSettingsPackageDownloadsOptions` has been removed
+- Struct `DefenderSettingsPackageDownloadsResponse` has been removed
+- Struct `DefenderSettingsPackageDownloadsResult` has been removed
+- Struct `DeviceGroupsCreateOrUpdateOptions` has been removed
+- Struct `DeviceGroupsCreateOrUpdateResponse` has been removed
+- Struct `DeviceGroupsCreateOrUpdateResult` has been removed
+- Struct `DeviceGroupsDeleteOptions` has been removed
+- Struct `DeviceGroupsDeleteResponse` has been removed
+- Struct `DeviceGroupsGetOptions` has been removed
+- Struct `DeviceGroupsGetResponse` has been removed
+- Struct `DeviceGroupsGetResult` has been removed
+- Struct `DeviceGroupsListOptions` has been removed
+- Struct `DeviceGroupsListPager` has been removed
+- Struct `DeviceGroupsListResponse` has been removed
+- Struct `DeviceGroupsListResult` has been removed
+- Struct `DevicesGetOptions` has been removed
+- Struct `DevicesGetResponse` has been removed
+- Struct `DevicesGetResult` has been removed
+- Struct `DevicesListOptions` has been removed
+- Struct `DevicesListPager` has been removed
+- Struct `DevicesListResponse` has been removed
+- Struct `DevicesListResult` has been removed
+- Struct `IotAlertsGetOptions` has been removed
+- Struct `IotAlertsGetResponse` has been removed
+- Struct `IotAlertsGetResult` has been removed
+- Struct `IotAlertsListOptions` has been removed
+- Struct `IotAlertsListPager` has been removed
+- Struct `IotAlertsListResponse` has been removed
+- Struct `IotAlertsListResult` has been removed
+- Struct `IotAlertsPatchOptions` has been removed
+- Struct `IotAlertsPatchResponse` has been removed
+- Struct `IotAlertsPatchResult` has been removed
+- Struct `IotDeviceVulnerabilityGetOptions` has been removed
+- Struct `IotDeviceVulnerabilityGetResponse` has been removed
+- Struct `IotDeviceVulnerabilityGetResult` has been removed
+- Struct `IotDeviceVulnerabilityListOptions` has been removed
+- Struct `IotDeviceVulnerabilityListPager` has been removed
+- Struct `IotDeviceVulnerabilityListResponse` has been removed
+- Struct `IotDeviceVulnerabilityListResult` has been removed
+- Struct `IotRecommendationsGetOptions` has been removed
+- Struct `IotRecommendationsGetResponse` has been removed
+- Struct `IotRecommendationsGetResult` has been removed
+- Struct `IotRecommendationsListOptions` has been removed
+- Struct `IotRecommendationsListPager` has been removed
+- Struct `IotRecommendationsListResponse` has been removed
+- Struct `IotRecommendationsListResult` has been removed
+- Struct `LocationsGetOptions` has been removed
+- Struct `LocationsGetResponse` has been removed
+- Struct `LocationsGetResult` has been removed
+- Struct `LocationsListOptions` has been removed
+- Struct `LocationsListPager` has been removed
+- Struct `LocationsListResponse` has been removed
+- Struct `LocationsListResult` has been removed
+- Struct `OnPremiseSensorsCreateOrUpdateOptions` has been removed
+- Struct `OnPremiseSensorsCreateOrUpdateResponse` has been removed
+- Struct `OnPremiseSensorsCreateOrUpdateResult` has been removed
+- Struct `OnPremiseSensorsDeleteOptions` has been removed
+- Struct `OnPremiseSensorsDeleteResponse` has been removed
+- Struct `OnPremiseSensorsDownloadActivationOptions` has been removed
+- Struct `OnPremiseSensorsDownloadActivationResponse` has been removed
+- Struct `OnPremiseSensorsDownloadResetPasswordOptions` has been removed
+- Struct `OnPremiseSensorsDownloadResetPasswordResponse` has been removed
+- Struct `OnPremiseSensorsGetOptions` has been removed
+- Struct `OnPremiseSensorsGetResponse` has been removed
+- Struct `OnPremiseSensorsGetResult` has been removed
+- Struct `OnPremiseSensorsListOptions` has been removed
+- Struct `OnPremiseSensorsListResponse` has been removed
+- Struct `OnPremiseSensorsListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `RecommendationTypesGetOptions` has been removed
+- Struct `RecommendationTypesGetResponse` has been removed
+- Struct `RecommendationTypesGetResult` has been removed
+- Struct `RecommendationTypesListOptions` has been removed
+- Struct `RecommendationTypesListResponse` has been removed
+- Struct `RecommendationTypesListResult` has been removed
+- Struct `SensorsCreateOrUpdateOptions` has been removed
+- Struct `SensorsCreateOrUpdateResponse` has been removed
+- Struct `SensorsCreateOrUpdateResult` has been removed
+- Struct `SensorsDeleteOptions` has been removed
+- Struct `SensorsDeleteResponse` has been removed
+- Struct `SensorsDownloadActivationOptions` has been removed
+- Struct `SensorsDownloadActivationResponse` has been removed
+- Struct `SensorsDownloadResetPasswordOptions` has been removed
+- Struct `SensorsDownloadResetPasswordResponse` has been removed
+- Struct `SensorsGetOptions` has been removed
+- Struct `SensorsGetResponse` has been removed
+- Struct `SensorsGetResult` has been removed
+- Struct `SensorsListOptions` has been removed
+- Struct `SensorsListResponse` has been removed
+- Struct `SensorsListResult` has been removed
+- Struct `SensorsTriggerTiPackageUpdateOptions` has been removed
+- Struct `SensorsTriggerTiPackageUpdateResponse` has been removed
+- Struct `SitesCreateOrUpdateOptions` has been removed
+- Struct `SitesCreateOrUpdateResponse` has been removed
+- Struct `SitesCreateOrUpdateResult` has been removed
+- Struct `SitesDeleteOptions` has been removed
+- Struct `SitesDeleteResponse` has been removed
+- Struct `SitesGetOptions` has been removed
+- Struct `SitesGetResponse` has been removed
+- Struct `SitesGetResult` has been removed
+- Struct `SitesListOptions` has been removed
+- Struct `SitesListResponse` has been removed
+- Struct `SitesListResult` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `PackageDownloadInfo` of struct `UpgradePackageDownloadInfo` has been removed
+- Field `ProxyResource` of struct `SiteModel` has been removed
+- Field `ProxyResource` of struct `DeviceGroupModel` has been removed
+- Field `ProxyResource` of struct `AlertType` has been removed
+- Field `Resource` of struct `SensorModel` has been removed
+- Field `ErrorModel` of struct `ErrorResponseModelError` has been removed
+- Field `ProxyResource` of struct `AlertModel` has been removed
+- Field `ProxyResource` of struct `DefenderSettingsModel` has been removed
+- Field `ProxyResource` of struct `RecommendationModel` has been removed
+- Field `ProxyResource` of struct `RecommendationType` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ProxyResource` of struct `DeviceVulnerabilityModel` has been removed
+- Field `ProxyResource` of struct `OnPremiseSensor` has been removed
+- Field `InnerError` of struct `ErrorResponseModel` has been removed
+- Field `ProxyResource` of struct `LocationModel` has been removed
+- Field `ProxyResource` of struct `DeviceModel` has been removed
+
+### Features Added
+
+- New function `*OperationsClientListPager.Err() error`
+- New function `*DeviceGroupsClientListPager.PageResponse() DeviceGroupsClientListResponse`
+- New function `*LocationsClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*DeviceGroupsClientListPager.Err() error`
+- New function `*DevicesClientListPager.PageResponse() DevicesClientListResponse`
+- New function `*DeviceGroupsClientListPager.NextPage(context.Context) bool`
+- New function `*IotAlertsClientListPager.NextPage(context.Context) bool`
+- New function `*IotRecommendationsClientListPager.Err() error`
+- New function `*LocationsClientListPager.PageResponse() LocationsClientListResponse`
+- New function `*DevicesClientListPager.NextPage(context.Context) bool`
+- New function `*IotDeviceVulnerabilityClientListPager.NextPage(context.Context) bool`
+- New function `*IotDeviceVulnerabilityClientListPager.PageResponse() IotDeviceVulnerabilityClientListResponse`
+- New function `*DevicesClientListPager.Err() error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*LocationsClientListPager.Err() error`
+- New function `*IotRecommendationsClientListPager.NextPage(context.Context) bool`
+- New function `*IotAlertsClientListPager.Err() error`
+- New function `*IotAlertsClientListPager.PageResponse() IotAlertsClientListResponse`
+- New function `*IotRecommendationsClientListPager.PageResponse() IotRecommendationsClientListResponse`
+- New function `ErrorResponseModelError.MarshalJSON() ([]byte, error)`
+- New function `*IotDeviceVulnerabilityClientListPager.Err() error`
+- New struct `AlertTypesClientGetOptions`
+- New struct `AlertTypesClientGetResponse`
+- New struct `AlertTypesClientGetResult`
+- New struct `AlertTypesClientListOptions`
+- New struct `AlertTypesClientListResponse`
+- New struct `AlertTypesClientListResult`
+- New struct `DefenderSettingsClientCreateOrUpdateOptions`
+- New struct `DefenderSettingsClientCreateOrUpdateResponse`
+- New struct `DefenderSettingsClientCreateOrUpdateResult`
+- New struct `DefenderSettingsClientDeleteOptions`
+- New struct `DefenderSettingsClientDeleteResponse`
+- New struct `DefenderSettingsClientDownloadManagerActivationOptions`
+- New struct `DefenderSettingsClientDownloadManagerActivationResponse`
+- New struct `DefenderSettingsClientGetOptions`
+- New struct `DefenderSettingsClientGetResponse`
+- New struct `DefenderSettingsClientGetResult`
+- New struct `DefenderSettingsClientListOptions`
+- New struct `DefenderSettingsClientListResponse`
+- New struct `DefenderSettingsClientListResult`
+- New struct `DefenderSettingsClientPackageDownloadsOptions`
+- New struct `DefenderSettingsClientPackageDownloadsResponse`
+- New struct `DefenderSettingsClientPackageDownloadsResult`
+- New struct `DeviceGroupsClientCreateOrUpdateOptions`
+- New struct `DeviceGroupsClientCreateOrUpdateResponse`
+- New struct `DeviceGroupsClientCreateOrUpdateResult`
+- New struct `DeviceGroupsClientDeleteOptions`
+- New struct `DeviceGroupsClientDeleteResponse`
+- New struct `DeviceGroupsClientGetOptions`
+- New struct `DeviceGroupsClientGetResponse`
+- New struct `DeviceGroupsClientGetResult`
+- New struct `DeviceGroupsClientListOptions`
+- New struct `DeviceGroupsClientListPager`
+- New struct `DeviceGroupsClientListResponse`
+- New struct `DeviceGroupsClientListResult`
+- New struct `DevicesClientGetOptions`
+- New struct `DevicesClientGetResponse`
+- New struct `DevicesClientGetResult`
+- New struct `DevicesClientListOptions`
+- New struct `DevicesClientListPager`
+- New struct `DevicesClientListResponse`
+- New struct `DevicesClientListResult`
+- New struct `IotAlertsClientGetOptions`
+- New struct `IotAlertsClientGetResponse`
+- New struct `IotAlertsClientGetResult`
+- New struct `IotAlertsClientListOptions`
+- New struct `IotAlertsClientListPager`
+- New struct `IotAlertsClientListResponse`
+- New struct `IotAlertsClientListResult`
+- New struct `IotAlertsClientPatchOptions`
+- New struct `IotAlertsClientPatchResponse`
+- New struct `IotAlertsClientPatchResult`
+- New struct `IotDeviceVulnerabilityClientGetOptions`
+- New struct `IotDeviceVulnerabilityClientGetResponse`
+- New struct `IotDeviceVulnerabilityClientGetResult`
+- New struct `IotDeviceVulnerabilityClientListOptions`
+- New struct `IotDeviceVulnerabilityClientListPager`
+- New struct `IotDeviceVulnerabilityClientListResponse`
+- New struct `IotDeviceVulnerabilityClientListResult`
+- New struct `IotRecommendationsClientGetOptions`
+- New struct `IotRecommendationsClientGetResponse`
+- New struct `IotRecommendationsClientGetResult`
+- New struct `IotRecommendationsClientListOptions`
+- New struct `IotRecommendationsClientListPager`
+- New struct `IotRecommendationsClientListResponse`
+- New struct `IotRecommendationsClientListResult`
+- New struct `LocationsClientGetOptions`
+- New struct `LocationsClientGetResponse`
+- New struct `LocationsClientGetResult`
+- New struct `LocationsClientListOptions`
+- New struct `LocationsClientListPager`
+- New struct `LocationsClientListResponse`
+- New struct `LocationsClientListResult`
+- New struct `OnPremiseSensorsClientCreateOrUpdateOptions`
+- New struct `OnPremiseSensorsClientCreateOrUpdateResponse`
+- New struct `OnPremiseSensorsClientCreateOrUpdateResult`
+- New struct `OnPremiseSensorsClientDeleteOptions`
+- New struct `OnPremiseSensorsClientDeleteResponse`
+- New struct `OnPremiseSensorsClientDownloadActivationOptions`
+- New struct `OnPremiseSensorsClientDownloadActivationResponse`
+- New struct `OnPremiseSensorsClientDownloadResetPasswordOptions`
+- New struct `OnPremiseSensorsClientDownloadResetPasswordResponse`
+- New struct `OnPremiseSensorsClientGetOptions`
+- New struct `OnPremiseSensorsClientGetResponse`
+- New struct `OnPremiseSensorsClientGetResult`
+- New struct `OnPremiseSensorsClientListOptions`
+- New struct `OnPremiseSensorsClientListResponse`
+- New struct `OnPremiseSensorsClientListResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `RecommendationTypesClientGetOptions`
+- New struct `RecommendationTypesClientGetResponse`
+- New struct `RecommendationTypesClientGetResult`
+- New struct `RecommendationTypesClientListOptions`
+- New struct `RecommendationTypesClientListResponse`
+- New struct `RecommendationTypesClientListResult`
+- New struct `SensorsClientCreateOrUpdateOptions`
+- New struct `SensorsClientCreateOrUpdateResponse`
+- New struct `SensorsClientCreateOrUpdateResult`
+- New struct `SensorsClientDeleteOptions`
+- New struct `SensorsClientDeleteResponse`
+- New struct `SensorsClientDownloadActivationOptions`
+- New struct `SensorsClientDownloadActivationResponse`
+- New struct `SensorsClientDownloadResetPasswordOptions`
+- New struct `SensorsClientDownloadResetPasswordResponse`
+- New struct `SensorsClientGetOptions`
+- New struct `SensorsClientGetResponse`
+- New struct `SensorsClientGetResult`
+- New struct `SensorsClientListOptions`
+- New struct `SensorsClientListResponse`
+- New struct `SensorsClientListResult`
+- New struct `SensorsClientTriggerTiPackageUpdateOptions`
+- New struct `SensorsClientTriggerTiPackageUpdateResponse`
+- New struct `SitesClientCreateOrUpdateOptions`
+- New struct `SitesClientCreateOrUpdateResponse`
+- New struct `SitesClientCreateOrUpdateResult`
+- New struct `SitesClientDeleteOptions`
+- New struct `SitesClientDeleteResponse`
+- New struct `SitesClientGetOptions`
+- New struct `SitesClientGetResponse`
+- New struct `SitesClientGetResult`
+- New struct `SitesClientListOptions`
+- New struct `SitesClientListResponse`
+- New struct `SitesClientListResult`
+- New field `ID` in struct `DeviceVulnerabilityModel`
+- New field `Name` in struct `DeviceVulnerabilityModel`
+- New field `Type` in struct `DeviceVulnerabilityModel`
+- New field `ID` in struct `DeviceModel`
+- New field `Name` in struct `DeviceModel`
+- New field `Type` in struct `DeviceModel`
+- New field `ID` in struct `AlertModel`
+- New field `Name` in struct `AlertModel`
+- New field `Type` in struct `AlertModel`
+- New field `ID` in struct `SiteModel`
+- New field `Name` in struct `SiteModel`
+- New field `Type` in struct `SiteModel`
+- New field `Name` in struct `RecommendationType`
+- New field `Type` in struct `RecommendationType`
+- New field `ID` in struct `RecommendationType`
+- New field `ID` in struct `OnPremiseSensor`
+- New field `Name` in struct `OnPremiseSensor`
+- New field `Type` in struct `OnPremiseSensor`
+- New field `Type` in struct `LocationModel`
+- New field `ID` in struct `LocationModel`
+- New field `Name` in struct `LocationModel`
+- New field `ID` in struct `SensorModel`
+- New field `Name` in struct `SensorModel`
+- New field `Type` in struct `SensorModel`
+- New field `Code` in struct `ErrorResponseModelError`
+- New field `Details` in struct `ErrorResponseModelError`
+- New field `Message` in struct `ErrorResponseModelError`
+- New field `Target` in struct `ErrorResponseModelError`
+- New field `ID` in struct `DeviceGroupModel`
+- New field `Name` in struct `DeviceGroupModel`
+- New field `Type` in struct `DeviceGroupModel`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `Error` in struct `ErrorResponse`
+- New field `VersionKind` in struct `UpgradePackageDownloadInfo`
+- New field `Link` in struct `UpgradePackageDownloadInfo`
+- New field `Version` in struct `UpgradePackageDownloadInfo`
+- New field `Error` in struct `ErrorResponseModel`
+- New field `Type` in struct `AlertType`
+- New field `ID` in struct `AlertType`
+- New field `Name` in struct `AlertType`
+- New field `Name` in struct `DefenderSettingsModel`
+- New field `Type` in struct `DefenderSettingsModel`
+- New field `ID` in struct `DefenderSettingsModel`
+- New field `Type` in struct `RecommendationModel`
+- New field `ID` in struct `RecommendationModel`
+- New field `Name` in struct `RecommendationModel`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Init release.

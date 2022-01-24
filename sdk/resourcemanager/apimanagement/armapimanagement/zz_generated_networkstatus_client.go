@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,58 @@ import (
 // NetworkStatusClient contains the methods for the NetworkStatus group.
 // Don't use this type directly, use NewNetworkStatusClient() instead.
 type NetworkStatusClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewNetworkStatusClient creates a new instance of NetworkStatusClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewNetworkStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NetworkStatusClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &NetworkStatusClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &NetworkStatusClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// ListByLocation - Gets the Connectivity Status to the external resources on which the Api Management service depends from inside the Cloud Service. This
-// also returns the DNS Servers as visible to the CloudService.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkStatusClient) ListByLocation(ctx context.Context, resourceGroupName string, serviceName string, locationName string, options *NetworkStatusListByLocationOptions) (NetworkStatusListByLocationResponse, error) {
+// ListByLocation - Gets the Connectivity Status to the external resources on which the Api Management service depends from
+// inside the Cloud Service. This also returns the DNS Servers as visible to the CloudService.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// locationName - Location in which the API Management service is deployed. This is one of the Azure Regions like West US,
+// East US, South Central US.
+// options - NetworkStatusClientListByLocationOptions contains the optional parameters for the NetworkStatusClient.ListByLocation
+// method.
+func (client *NetworkStatusClient) ListByLocation(ctx context.Context, resourceGroupName string, serviceName string, locationName string, options *NetworkStatusClientListByLocationOptions) (NetworkStatusClientListByLocationResponse, error) {
 	req, err := client.listByLocationCreateRequest(ctx, resourceGroupName, serviceName, locationName, options)
 	if err != nil {
-		return NetworkStatusListByLocationResponse{}, err
+		return NetworkStatusClientListByLocationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NetworkStatusListByLocationResponse{}, err
+		return NetworkStatusClientListByLocationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NetworkStatusListByLocationResponse{}, client.listByLocationHandleError(resp)
+		return NetworkStatusClientListByLocationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByLocationHandleResponse(resp)
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *NetworkStatusClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, locationName string, options *NetworkStatusListByLocationOptions) (*policy.Request, error) {
+func (client *NetworkStatusClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, locationName string, options *NetworkStatusClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/locations/{locationName}/networkstatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +93,7 @@ func (client *NetworkStatusClient) listByLocationCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,47 +105,38 @@ func (client *NetworkStatusClient) listByLocationCreateRequest(ctx context.Conte
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *NetworkStatusClient) listByLocationHandleResponse(resp *http.Response) (NetworkStatusListByLocationResponse, error) {
-	result := NetworkStatusListByLocationResponse{RawResponse: resp}
+func (client *NetworkStatusClient) listByLocationHandleResponse(resp *http.Response) (NetworkStatusClientListByLocationResponse, error) {
+	result := NetworkStatusClientListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkStatusContract); err != nil {
-		return NetworkStatusListByLocationResponse{}, runtime.NewResponseError(err, resp)
+		return NetworkStatusClientListByLocationResponse{}, err
 	}
 	return result, nil
 }
 
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *NetworkStatusClient) listByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByService - Gets the Connectivity Status to the external resources on which the Api Management service depends from inside the Cloud Service. This
-// also returns the DNS Servers as visible to the CloudService.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkStatusClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, options *NetworkStatusListByServiceOptions) (NetworkStatusListByServiceResponse, error) {
+// ListByService - Gets the Connectivity Status to the external resources on which the Api Management service depends from
+// inside the Cloud Service. This also returns the DNS Servers as visible to the CloudService.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - NetworkStatusClientListByServiceOptions contains the optional parameters for the NetworkStatusClient.ListByService
+// method.
+func (client *NetworkStatusClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, options *NetworkStatusClientListByServiceOptions) (NetworkStatusClientListByServiceResponse, error) {
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
-		return NetworkStatusListByServiceResponse{}, err
+		return NetworkStatusClientListByServiceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NetworkStatusListByServiceResponse{}, err
+		return NetworkStatusClientListByServiceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NetworkStatusListByServiceResponse{}, client.listByServiceHandleError(resp)
+		return NetworkStatusClientListByServiceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServiceHandleResponse(resp)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *NetworkStatusClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *NetworkStatusListByServiceOptions) (*policy.Request, error) {
+func (client *NetworkStatusClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *NetworkStatusClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/networkstatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -145,7 +150,7 @@ func (client *NetworkStatusClient) listByServiceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -157,23 +162,10 @@ func (client *NetworkStatusClient) listByServiceCreateRequest(ctx context.Contex
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *NetworkStatusClient) listByServiceHandleResponse(resp *http.Response) (NetworkStatusListByServiceResponse, error) {
-	result := NetworkStatusListByServiceResponse{RawResponse: resp}
+func (client *NetworkStatusClient) listByServiceHandleResponse(resp *http.Response) (NetworkStatusClientListByServiceResponse, error) {
+	result := NetworkStatusClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkStatusContractByLocationArray); err != nil {
-		return NetworkStatusListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return NetworkStatusClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *NetworkStatusClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

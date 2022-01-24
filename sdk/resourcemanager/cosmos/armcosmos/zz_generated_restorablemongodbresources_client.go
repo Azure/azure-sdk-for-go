@@ -11,7 +11,6 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,56 @@ import (
 // RestorableMongodbResourcesClient contains the methods for the RestorableMongodbResources group.
 // Don't use this type directly, use NewRestorableMongodbResourcesClient() instead.
 type RestorableMongodbResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRestorableMongodbResourcesClient creates a new instance of RestorableMongodbResourcesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRestorableMongodbResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableMongodbResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RestorableMongodbResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RestorableMongodbResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - Return a list of database and collection combo that exist on the account at the given timestamp and location. This helps in scenarios to validate
-// what resources exist at given timestamp and location.
+// List - Return a list of database and collection combo that exist on the account at the given timestamp and location. This
+// helps in scenarios to validate what resources exist at given timestamp and location.
 // This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorableMongodbResourcesClient) List(ctx context.Context, location string, instanceID string, options *RestorableMongodbResourcesListOptions) (RestorableMongodbResourcesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Cosmos DB region, with spaces between words and each word capitalized.
+// instanceID - The instanceId GUID of a restorable database account.
+// options - RestorableMongodbResourcesClientListOptions contains the optional parameters for the RestorableMongodbResourcesClient.List
+// method.
+func (client *RestorableMongodbResourcesClient) List(ctx context.Context, location string, instanceID string, options *RestorableMongodbResourcesClientListOptions) (RestorableMongodbResourcesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, instanceID, options)
 	if err != nil {
-		return RestorableMongodbResourcesListResponse{}, err
+		return RestorableMongodbResourcesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RestorableMongodbResourcesListResponse{}, err
+		return RestorableMongodbResourcesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableMongodbResourcesListResponse{}, client.listHandleError(resp)
+		return RestorableMongodbResourcesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableMongodbResourcesListOptions) (*policy.Request, error) {
+func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableMongodbResourcesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -76,7 +87,7 @@ func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter instanceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,23 +105,10 @@ func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableMongodbResourcesClient) listHandleResponse(resp *http.Response) (RestorableMongodbResourcesListResponse, error) {
-	result := RestorableMongodbResourcesListResponse{RawResponse: resp}
+func (client *RestorableMongodbResourcesClient) listHandleResponse(resp *http.Response) (RestorableMongodbResourcesClientListResponse, error) {
+	result := RestorableMongodbResourcesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableMongodbResourcesListResult); err != nil {
-		return RestorableMongodbResourcesListResponse{}, runtime.NewResponseError(err, resp)
+		return RestorableMongodbResourcesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RestorableMongodbResourcesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

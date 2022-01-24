@@ -31,7 +31,7 @@ func ExamplePeerAsnsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PeerAsn.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PeerAsnsClientGetResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreatePeerAsn.json
@@ -61,7 +61,7 @@ func ExamplePeerAsnsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PeerAsn.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PeerAsnsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeerAsn.json
@@ -89,12 +89,16 @@ func ExamplePeerAsnsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armpeering.NewPeerAsnsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PeerAsn.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

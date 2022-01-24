@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // IntegrationAccountPartnersClient contains the methods for the IntegrationAccountPartners group.
 // Don't use this type directly, use NewIntegrationAccountPartnersClient() instead.
 type IntegrationAccountPartnersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationAccountPartnersClient creates a new instance of IntegrationAccountPartnersClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationAccountPartnersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountPartnersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationAccountPartnersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationAccountPartnersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates an integration account partner.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountPartnersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, partner IntegrationAccountPartner, options *IntegrationAccountPartnersCreateOrUpdateOptions) (IntegrationAccountPartnersCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// partnerName - The integration account partner name.
+// partner - The integration account partner.
+// options - IntegrationAccountPartnersClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountPartnersClient.CreateOrUpdate
+// method.
+func (client *IntegrationAccountPartnersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, partner IntegrationAccountPartner, options *IntegrationAccountPartnersClientCreateOrUpdateOptions) (IntegrationAccountPartnersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, integrationAccountName, partnerName, partner, options)
 	if err != nil {
-		return IntegrationAccountPartnersCreateOrUpdateResponse{}, err
+		return IntegrationAccountPartnersClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountPartnersCreateOrUpdateResponse{}, err
+		return IntegrationAccountPartnersClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return IntegrationAccountPartnersCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return IntegrationAccountPartnersClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationAccountPartnersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, partner IntegrationAccountPartner, options *IntegrationAccountPartnersCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationAccountPartnersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, partner IntegrationAccountPartner, options *IntegrationAccountPartnersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/partners/{partnerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *IntegrationAccountPartnersClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter partnerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerName}", url.PathEscape(partnerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,38 @@ func (client *IntegrationAccountPartnersClient) createOrUpdateCreateRequest(ctx 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationAccountPartnersClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountPartnersCreateOrUpdateResponse, error) {
-	result := IntegrationAccountPartnersCreateOrUpdateResponse{RawResponse: resp}
+func (client *IntegrationAccountPartnersClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountPartnersClientCreateOrUpdateResponse, error) {
+	result := IntegrationAccountPartnersClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountPartner); err != nil {
-		return IntegrationAccountPartnersCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountPartnersClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationAccountPartnersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an integration account partner.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountPartnersClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, options *IntegrationAccountPartnersDeleteOptions) (IntegrationAccountPartnersDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// partnerName - The integration account partner name.
+// options - IntegrationAccountPartnersClientDeleteOptions contains the optional parameters for the IntegrationAccountPartnersClient.Delete
+// method.
+func (client *IntegrationAccountPartnersClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, options *IntegrationAccountPartnersClientDeleteOptions) (IntegrationAccountPartnersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, integrationAccountName, partnerName, options)
 	if err != nil {
-		return IntegrationAccountPartnersDeleteResponse{}, err
+		return IntegrationAccountPartnersClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountPartnersDeleteResponse{}, err
+		return IntegrationAccountPartnersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IntegrationAccountPartnersDeleteResponse{}, client.deleteHandleError(resp)
+		return IntegrationAccountPartnersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationAccountPartnersDeleteResponse{RawResponse: resp}, nil
+	return IntegrationAccountPartnersClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationAccountPartnersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, options *IntegrationAccountPartnersDeleteOptions) (*policy.Request, error) {
+func (client *IntegrationAccountPartnersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, options *IntegrationAccountPartnersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/partners/{partnerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +153,7 @@ func (client *IntegrationAccountPartnersClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter partnerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerName}", url.PathEscape(partnerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +164,30 @@ func (client *IntegrationAccountPartnersClient) deleteCreateRequest(ctx context.
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IntegrationAccountPartnersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an integration account partner.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountPartnersClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, options *IntegrationAccountPartnersGetOptions) (IntegrationAccountPartnersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// partnerName - The integration account partner name.
+// options - IntegrationAccountPartnersClientGetOptions contains the optional parameters for the IntegrationAccountPartnersClient.Get
+// method.
+func (client *IntegrationAccountPartnersClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, options *IntegrationAccountPartnersClientGetOptions) (IntegrationAccountPartnersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, integrationAccountName, partnerName, options)
 	if err != nil {
-		return IntegrationAccountPartnersGetResponse{}, err
+		return IntegrationAccountPartnersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountPartnersGetResponse{}, err
+		return IntegrationAccountPartnersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountPartnersGetResponse{}, client.getHandleError(resp)
+		return IntegrationAccountPartnersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationAccountPartnersClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, options *IntegrationAccountPartnersGetOptions) (*policy.Request, error) {
+func (client *IntegrationAccountPartnersClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, options *IntegrationAccountPartnersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/partners/{partnerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +205,7 @@ func (client *IntegrationAccountPartnersClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter partnerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerName}", url.PathEscape(partnerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +217,34 @@ func (client *IntegrationAccountPartnersClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationAccountPartnersClient) getHandleResponse(resp *http.Response) (IntegrationAccountPartnersGetResponse, error) {
-	result := IntegrationAccountPartnersGetResponse{RawResponse: resp}
+func (client *IntegrationAccountPartnersClient) getHandleResponse(resp *http.Response) (IntegrationAccountPartnersClientGetResponse, error) {
+	result := IntegrationAccountPartnersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountPartner); err != nil {
-		return IntegrationAccountPartnersGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountPartnersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IntegrationAccountPartnersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of integration account partners.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountPartnersClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountPartnersListOptions) *IntegrationAccountPartnersListPager {
-	return &IntegrationAccountPartnersListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// options - IntegrationAccountPartnersClientListOptions contains the optional parameters for the IntegrationAccountPartnersClient.List
+// method.
+func (client *IntegrationAccountPartnersClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountPartnersClientListOptions) *IntegrationAccountPartnersClientListPager {
+	return &IntegrationAccountPartnersClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp IntegrationAccountPartnersListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IntegrationAccountPartnersClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationAccountPartnerListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationAccountPartnersClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountPartnersListOptions) (*policy.Request, error) {
+func (client *IntegrationAccountPartnersClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountPartnersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/partners"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +258,7 @@ func (client *IntegrationAccountPartnersClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter integrationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationAccountName}", url.PathEscape(integrationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,46 +276,38 @@ func (client *IntegrationAccountPartnersClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationAccountPartnersClient) listHandleResponse(resp *http.Response) (IntegrationAccountPartnersListResponse, error) {
-	result := IntegrationAccountPartnersListResponse{RawResponse: resp}
+func (client *IntegrationAccountPartnersClient) listHandleResponse(resp *http.Response) (IntegrationAccountPartnersClientListResponse, error) {
+	result := IntegrationAccountPartnersClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountPartnerListResult); err != nil {
-		return IntegrationAccountPartnersListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountPartnersClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *IntegrationAccountPartnersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListContentCallbackURL - Get the content callback url.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountPartnersClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountPartnersListContentCallbackURLOptions) (IntegrationAccountPartnersListContentCallbackURLResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// partnerName - The integration account partner name.
+// options - IntegrationAccountPartnersClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountPartnersClient.ListContentCallbackURL
+// method.
+func (client *IntegrationAccountPartnersClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountPartnersClientListContentCallbackURLOptions) (IntegrationAccountPartnersClientListContentCallbackURLResponse, error) {
 	req, err := client.listContentCallbackURLCreateRequest(ctx, resourceGroupName, integrationAccountName, partnerName, listContentCallbackURL, options)
 	if err != nil {
-		return IntegrationAccountPartnersListContentCallbackURLResponse{}, err
+		return IntegrationAccountPartnersClientListContentCallbackURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountPartnersListContentCallbackURLResponse{}, err
+		return IntegrationAccountPartnersClientListContentCallbackURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountPartnersListContentCallbackURLResponse{}, client.listContentCallbackURLHandleError(resp)
+		return IntegrationAccountPartnersClientListContentCallbackURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listContentCallbackURLHandleResponse(resp)
 }
 
 // listContentCallbackURLCreateRequest creates the ListContentCallbackURL request.
-func (client *IntegrationAccountPartnersClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountPartnersListContentCallbackURLOptions) (*policy.Request, error) {
+func (client *IntegrationAccountPartnersClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, partnerName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountPartnersClientListContentCallbackURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/partners/{partnerName}/listContentCallbackUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -345,7 +325,7 @@ func (client *IntegrationAccountPartnersClient) listContentCallbackURLCreateRequ
 		return nil, errors.New("parameter partnerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerName}", url.PathEscape(partnerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,23 +337,10 @@ func (client *IntegrationAccountPartnersClient) listContentCallbackURLCreateRequ
 }
 
 // listContentCallbackURLHandleResponse handles the ListContentCallbackURL response.
-func (client *IntegrationAccountPartnersClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountPartnersListContentCallbackURLResponse, error) {
-	result := IntegrationAccountPartnersListContentCallbackURLResponse{RawResponse: resp}
+func (client *IntegrationAccountPartnersClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountPartnersClientListContentCallbackURLResponse, error) {
+	result := IntegrationAccountPartnersClientListContentCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountPartnersListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountPartnersClientListContentCallbackURLResponse{}, err
 	}
 	return result, nil
-}
-
-// listContentCallbackURLHandleError handles the ListContentCallbackURL error response.
-func (client *IntegrationAccountPartnersClient) listContentCallbackURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -82,7 +82,7 @@ type CreateKeyOptions struct {
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert CreateKeyOptions to *generated.KeyVaultClientCreateKeyOptions
@@ -97,7 +97,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		attribs = c.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
+	var ops []*generated.JSONWebKeyOperation
 	for _, o := range c.KeyOps {
 		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
 	}
@@ -109,7 +109,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		KeyOps:         ops,
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Tags:           convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -127,7 +127,7 @@ func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse)
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(g.Attributes),
 			Key:        jsonWebKeyFromGenerated(g.Key),
-			Tags:       g.Tags,
+			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
 	}
@@ -155,7 +155,7 @@ type CreateECKeyOptions struct {
 	CurveName *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// Whether to create an EC key with HSM protection
 	HardwareProtected bool
@@ -166,7 +166,7 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 	return generated.KeyCreateParameters{
 		Kty:   keyType.toGenerated(),
 		Curve: (*generated.JSONWebKeyCurveName)(c.CurveName),
-		Tags:  c.Tags,
+		Tags:  convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -184,7 +184,7 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(g.Attributes),
 			Key:        jsonWebKeyFromGenerated(g.Key),
-			Tags:       g.Tags,
+			Tags:       convertGeneratedMap(g.Tags),
 			Managed:    g.Managed,
 		},
 	}
@@ -219,7 +219,7 @@ type CreateOCTKeyOptions struct {
 	KeySize *int32 `json:"key_size,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // conver the CreateOCTKeyOptions to generated.KeyCreateParameters
@@ -227,7 +227,7 @@ func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 	return generated.KeyCreateParameters{
 		Kty:     keyType.toGenerated(),
 		KeySize: c.KeySize,
-		Tags:    c.Tags,
+		Tags:    convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -245,7 +245,7 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -283,7 +283,7 @@ type CreateRSAKeyOptions struct {
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
@@ -292,7 +292,7 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 		Kty:            k.toGenerated(),
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Tags:           convertToGeneratedMap(c.Tags),
 	}
 }
 
@@ -310,7 +310,7 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -438,7 +438,7 @@ func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKe
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -482,7 +482,7 @@ func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyR
 			KeyBundle: KeyBundle{
 				Attributes: keyAttributesFromGenerated(i.Attributes),
 				Key:        jsonWebKeyFromGenerated(i.Key),
-				Tags:       i.Tags,
+				Tags:       convertGeneratedMap(i.Tags),
 				Managed:    i.Managed,
 			},
 			RecoveryID:         i.RecoveryID,
@@ -816,7 +816,7 @@ func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDel
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -881,7 +881,7 @@ type UpdateKeyPropertiesOptions struct {
 	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert the options to generated.KeyUpdateParameters struct
@@ -891,7 +891,7 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateP
 		attribs = u.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
+	var ops []*generated.JSONWebKeyOperation
 	for _, o := range u.KeyOps {
 		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
 	}
@@ -899,7 +899,7 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateP
 	return generated.KeyUpdateParameters{
 		KeyOps:        ops,
 		KeyAttributes: attribs,
-		Tags:          u.Tags,
+		Tags:          convertToGeneratedMap(u.Tags),
 	}
 }
 
@@ -922,7 +922,7 @@ func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyRespons
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1144,7 +1144,7 @@ func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyR
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1174,7 +1174,7 @@ type ImportKeyOptions struct {
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
@@ -1186,7 +1186,7 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 		Key:           key.toGenerated(),
 		Hsm:           i.Hsm,
 		KeyAttributes: attribs,
-		Tags:          i.Tags,
+		Tags:          convertToGeneratedMap(i.Tags),
 	}
 }
 
@@ -1204,7 +1204,7 @@ func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse)
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
 			Key:        jsonWebKeyFromGenerated(i.Key),
-			Tags:       i.Tags,
+			Tags:       convertGeneratedMap(i.Tags),
 			Managed:    i.Managed,
 		},
 	}
@@ -1299,7 +1299,7 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 			Attributes:    keyAttributesFromGenerated(resp.Attributes),
 			Key:           jsonWebKeyFromGenerated(resp.Key),
 			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
-			Tags:          resp.Tags,
+			Tags:          convertGeneratedMap(resp.Tags),
 			Managed:       resp.Managed,
 		},
 	}, nil

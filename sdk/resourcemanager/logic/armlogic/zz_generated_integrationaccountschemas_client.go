@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // IntegrationAccountSchemasClient contains the methods for the IntegrationAccountSchemas group.
 // Don't use this type directly, use NewIntegrationAccountSchemasClient() instead.
 type IntegrationAccountSchemasClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationAccountSchemasClient creates a new instance of IntegrationAccountSchemasClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationAccountSchemasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountSchemasClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationAccountSchemasClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationAccountSchemasClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates an integration account schema.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountSchemasClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, schema IntegrationAccountSchema, options *IntegrationAccountSchemasCreateOrUpdateOptions) (IntegrationAccountSchemasCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// schemaName - The integration account schema name.
+// schema - The integration account schema.
+// options - IntegrationAccountSchemasClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountSchemasClient.CreateOrUpdate
+// method.
+func (client *IntegrationAccountSchemasClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, schema IntegrationAccountSchema, options *IntegrationAccountSchemasClientCreateOrUpdateOptions) (IntegrationAccountSchemasClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, integrationAccountName, schemaName, schema, options)
 	if err != nil {
-		return IntegrationAccountSchemasCreateOrUpdateResponse{}, err
+		return IntegrationAccountSchemasClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountSchemasCreateOrUpdateResponse{}, err
+		return IntegrationAccountSchemasClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return IntegrationAccountSchemasCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return IntegrationAccountSchemasClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, schema IntegrationAccountSchema, options *IntegrationAccountSchemasCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, schema IntegrationAccountSchema, options *IntegrationAccountSchemasClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,38 @@ func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationAccountSchemasClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountSchemasCreateOrUpdateResponse, error) {
-	result := IntegrationAccountSchemasCreateOrUpdateResponse{RawResponse: resp}
+func (client *IntegrationAccountSchemasClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountSchemasClientCreateOrUpdateResponse, error) {
+	result := IntegrationAccountSchemasClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchema); err != nil {
-		return IntegrationAccountSchemasCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountSchemasClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationAccountSchemasClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an integration account schema.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountSchemasClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasDeleteOptions) (IntegrationAccountSchemasDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// schemaName - The integration account schema name.
+// options - IntegrationAccountSchemasClientDeleteOptions contains the optional parameters for the IntegrationAccountSchemasClient.Delete
+// method.
+func (client *IntegrationAccountSchemasClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasClientDeleteOptions) (IntegrationAccountSchemasClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, integrationAccountName, schemaName, options)
 	if err != nil {
-		return IntegrationAccountSchemasDeleteResponse{}, err
+		return IntegrationAccountSchemasClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountSchemasDeleteResponse{}, err
+		return IntegrationAccountSchemasClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IntegrationAccountSchemasDeleteResponse{}, client.deleteHandleError(resp)
+		return IntegrationAccountSchemasClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationAccountSchemasDeleteResponse{RawResponse: resp}, nil
+	return IntegrationAccountSchemasClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationAccountSchemasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasDeleteOptions) (*policy.Request, error) {
+func (client *IntegrationAccountSchemasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +153,7 @@ func (client *IntegrationAccountSchemasClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +164,30 @@ func (client *IntegrationAccountSchemasClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IntegrationAccountSchemasClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an integration account schema.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountSchemasClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasGetOptions) (IntegrationAccountSchemasGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// schemaName - The integration account schema name.
+// options - IntegrationAccountSchemasClientGetOptions contains the optional parameters for the IntegrationAccountSchemasClient.Get
+// method.
+func (client *IntegrationAccountSchemasClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasClientGetOptions) (IntegrationAccountSchemasClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, integrationAccountName, schemaName, options)
 	if err != nil {
-		return IntegrationAccountSchemasGetResponse{}, err
+		return IntegrationAccountSchemasClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountSchemasGetResponse{}, err
+		return IntegrationAccountSchemasClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountSchemasGetResponse{}, client.getHandleError(resp)
+		return IntegrationAccountSchemasClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasGetOptions) (*policy.Request, error) {
+func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +205,7 @@ func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +217,34 @@ func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationAccountSchemasClient) getHandleResponse(resp *http.Response) (IntegrationAccountSchemasGetResponse, error) {
-	result := IntegrationAccountSchemasGetResponse{RawResponse: resp}
+func (client *IntegrationAccountSchemasClient) getHandleResponse(resp *http.Response) (IntegrationAccountSchemasClientGetResponse, error) {
+	result := IntegrationAccountSchemasClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchema); err != nil {
-		return IntegrationAccountSchemasGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountSchemasClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IntegrationAccountSchemasClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of integration account schemas.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountSchemasClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasListOptions) *IntegrationAccountSchemasListPager {
-	return &IntegrationAccountSchemasListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// options - IntegrationAccountSchemasClientListOptions contains the optional parameters for the IntegrationAccountSchemasClient.List
+// method.
+func (client *IntegrationAccountSchemasClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasClientListOptions) *IntegrationAccountSchemasClientListPager {
+	return &IntegrationAccountSchemasClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp IntegrationAccountSchemasListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IntegrationAccountSchemasClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationAccountSchemaListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasListOptions) (*policy.Request, error) {
+func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +258,7 @@ func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter integrationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationAccountName}", url.PathEscape(integrationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,46 +276,38 @@ func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationAccountSchemasClient) listHandleResponse(resp *http.Response) (IntegrationAccountSchemasListResponse, error) {
-	result := IntegrationAccountSchemasListResponse{RawResponse: resp}
+func (client *IntegrationAccountSchemasClient) listHandleResponse(resp *http.Response) (IntegrationAccountSchemasClientListResponse, error) {
+	result := IntegrationAccountSchemasClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchemaListResult); err != nil {
-		return IntegrationAccountSchemasListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountSchemasClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *IntegrationAccountSchemasClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListContentCallbackURL - Get the content callback url.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountSchemasClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountSchemasListContentCallbackURLOptions) (IntegrationAccountSchemasListContentCallbackURLResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// schemaName - The integration account schema name.
+// options - IntegrationAccountSchemasClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountSchemasClient.ListContentCallbackURL
+// method.
+func (client *IntegrationAccountSchemasClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountSchemasClientListContentCallbackURLOptions) (IntegrationAccountSchemasClientListContentCallbackURLResponse, error) {
 	req, err := client.listContentCallbackURLCreateRequest(ctx, resourceGroupName, integrationAccountName, schemaName, listContentCallbackURL, options)
 	if err != nil {
-		return IntegrationAccountSchemasListContentCallbackURLResponse{}, err
+		return IntegrationAccountSchemasClientListContentCallbackURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountSchemasListContentCallbackURLResponse{}, err
+		return IntegrationAccountSchemasClientListContentCallbackURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountSchemasListContentCallbackURLResponse{}, client.listContentCallbackURLHandleError(resp)
+		return IntegrationAccountSchemasClientListContentCallbackURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listContentCallbackURLHandleResponse(resp)
 }
 
 // listContentCallbackURLCreateRequest creates the ListContentCallbackURL request.
-func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountSchemasListContentCallbackURLOptions) (*policy.Request, error) {
+func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountSchemasClientListContentCallbackURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}/listContentCallbackUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -345,7 +325,7 @@ func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateReque
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,23 +337,10 @@ func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateReque
 }
 
 // listContentCallbackURLHandleResponse handles the ListContentCallbackURL response.
-func (client *IntegrationAccountSchemasClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountSchemasListContentCallbackURLResponse, error) {
-	result := IntegrationAccountSchemasListContentCallbackURLResponse{RawResponse: resp}
+func (client *IntegrationAccountSchemasClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountSchemasClientListContentCallbackURLResponse, error) {
+	result := IntegrationAccountSchemasClientListContentCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountSchemasListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountSchemasClientListContentCallbackURLResponse{}, err
 	}
 	return result, nil
-}
-
-// listContentCallbackURLHandleError handles the ListContentCallbackURL error response.
-func (client *IntegrationAccountSchemasClient) listContentCallbackURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

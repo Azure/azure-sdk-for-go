@@ -9,8 +9,8 @@
 package armrecoveryservicessiterecovery
 
 const (
-	module  = "armrecoveryservicessiterecovery"
-	version = "v0.1.0"
+	moduleName    = "armrecoveryservicessiterecovery"
+	moduleVersion = "v0.2.0"
 )
 
 // A2ARecoveryAvailabilityType - The recovery availability type of the virtual machine.
@@ -349,6 +349,25 @@ func PossibleExportJobOutputSerializationTypeValues() []ExportJobOutputSerializa
 
 // ToPtr returns a *ExportJobOutputSerializationType pointing to the current value.
 func (c ExportJobOutputSerializationType) ToPtr() *ExportJobOutputSerializationType {
+	return &c
+}
+
+// ExtendedLocationType - The extended location type.
+type ExtendedLocationType string
+
+const (
+	ExtendedLocationTypeEdgeZone ExtendedLocationType = "EdgeZone"
+)
+
+// PossibleExtendedLocationTypeValues returns the possible values for the ExtendedLocationType const type.
+func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
+	return []ExtendedLocationType{
+		ExtendedLocationTypeEdgeZone,
+	}
+}
+
+// ToPtr returns a *ExtendedLocationType pointing to the current value.
+func (c ExtendedLocationType) ToPtr() *ExtendedLocationType {
 	return &c
 }
 
@@ -727,7 +746,8 @@ func (c PossibleOperationsDirections) ToPtr() *PossibleOperationsDirections {
 	return &c
 }
 
-// PresenceStatus - A value indicating whether the VM has a physical disk attached. String value of SrsDataContract.PresenceStatus enum.
+// PresenceStatus - A value indicating whether the VM has a physical disk attached. String value of SrsDataContract.PresenceStatus
+// enum.
 type PresenceStatus string
 
 const (
@@ -890,8 +910,8 @@ func (c RecoveryPointSyncType) ToPtr() *RecoveryPointSyncType {
 	return &c
 }
 
-// RecoveryPointType - The recovery point type. Values from LatestTime, LatestTag or Custom. In the case of custom, the recovery point provided by RecoveryPointId
-// will be used. In the other two cases, recovery point id will
+// RecoveryPointType - The recovery point type. Values from LatestTime, LatestTag or Custom. In the case of custom, the recovery
+// point provided by RecoveryPointId will be used. In the other two cases, recovery point id will
 // be ignored.
 type RecoveryPointType string
 

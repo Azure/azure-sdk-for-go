@@ -27,13 +27,14 @@ func ExampleBackupPoliciesClient_List() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewBackupPoliciesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BackupPoliciesClientListResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/BackupPolicies_Get.json
@@ -52,7 +53,7 @@ func ExampleBackupPoliciesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupPoliciesClientGetResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/BackupPolicies_Create.json
@@ -84,7 +85,7 @@ func ExampleBackupPoliciesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupPoliciesClientCreateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/BackupPolicies_Update.json
@@ -116,7 +117,7 @@ func ExampleBackupPoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupPoliciesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/BackupPolicies_Delete.json

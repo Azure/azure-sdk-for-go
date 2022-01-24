@@ -11,7 +11,6 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // SharedGalleryImagesClient contains the methods for the SharedGalleryImages group.
 // Don't use this type directly, use NewSharedGalleryImagesClient() instead.
 type SharedGalleryImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSharedGalleryImagesClient creates a new instance of SharedGalleryImagesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSharedGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SharedGalleryImagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SharedGalleryImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SharedGalleryImagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get a shared gallery image by subscription id or tenant id.
-// If the operation fails it returns the *CloudError error type.
-func (client *SharedGalleryImagesClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (SharedGalleryImagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Resource location.
+// galleryUniqueName - The unique name of the Shared Gallery.
+// galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
+// options - SharedGalleryImagesClientGetOptions contains the optional parameters for the SharedGalleryImagesClient.Get method.
+func (client *SharedGalleryImagesClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesClientGetOptions) (SharedGalleryImagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, galleryUniqueName, galleryImageName, options)
 	if err != nil {
-		return SharedGalleryImagesGetResponse{}, err
+		return SharedGalleryImagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SharedGalleryImagesGetResponse{}, err
+		return SharedGalleryImagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SharedGalleryImagesGetResponse{}, client.getHandleError(resp)
+		return SharedGalleryImagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (*policy.Request, error) {
+func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images/{galleryImageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, l
 		return nil, errors.New("parameter galleryImageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +102,34 @@ func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client *SharedGalleryImagesClient) getHandleResponse(resp *http.Response) (SharedGalleryImagesGetResponse, error) {
-	result := SharedGalleryImagesGetResponse{RawResponse: resp}
+func (client *SharedGalleryImagesClient) getHandleResponse(resp *http.Response) (SharedGalleryImagesClientGetResponse, error) {
+	result := SharedGalleryImagesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedGalleryImage); err != nil {
-		return SharedGalleryImagesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SharedGalleryImagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SharedGalleryImagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List shared gallery images by subscription id or tenant id.
-// If the operation fails it returns the *CloudError error type.
-func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) *SharedGalleryImagesListPager {
-	return &SharedGalleryImagesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Resource location.
+// galleryUniqueName - The unique name of the Shared Gallery.
+// options - SharedGalleryImagesClientListOptions contains the optional parameters for the SharedGalleryImagesClient.List
+// method.
+func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesClientListOptions) *SharedGalleryImagesClientListPager {
+	return &SharedGalleryImagesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, galleryUniqueName, options)
 		},
-		advancer: func(ctx context.Context, resp SharedGalleryImagesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SharedGalleryImagesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SharedGalleryImageList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) (*policy.Request, error) {
+func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleryImagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +143,7 @@ func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter galleryUniqueName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryUniqueName}", url.PathEscape(galleryUniqueName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,23 +158,10 @@ func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *SharedGalleryImagesClient) listHandleResponse(resp *http.Response) (SharedGalleryImagesListResponse, error) {
-	result := SharedGalleryImagesListResponse{RawResponse: resp}
+func (client *SharedGalleryImagesClient) listHandleResponse(resp *http.Response) (SharedGalleryImagesClientListResponse, error) {
+	result := SharedGalleryImagesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedGalleryImageList); err != nil {
-		return SharedGalleryImagesListResponse{}, runtime.NewResponseError(err, resp)
+		return SharedGalleryImagesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SharedGalleryImagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

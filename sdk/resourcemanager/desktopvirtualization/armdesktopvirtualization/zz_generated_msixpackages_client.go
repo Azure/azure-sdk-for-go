@@ -11,7 +11,6 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // MSIXPackagesClient contains the methods for the MSIXPackages group.
 // Don't use this type directly, use NewMSIXPackagesClient() instead.
 type MSIXPackagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMSIXPackagesClient creates a new instance of MSIXPackagesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMSIXPackagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MSIXPackagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MSIXPackagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MSIXPackagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a MSIX package.
-// If the operation fails it returns the *CloudError error type.
-func (client *MSIXPackagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, msixPackage MSIXPackage, options *MSIXPackagesCreateOrUpdateOptions) (MSIXPackagesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// msixPackageFullName - The version specific package full name of the MSIX package within specified hostpool
+// msixPackage - Object containing MSIX Package definitions.
+// options - MSIXPackagesClientCreateOrUpdateOptions contains the optional parameters for the MSIXPackagesClient.CreateOrUpdate
+// method.
+func (client *MSIXPackagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, msixPackage MSIXPackage, options *MSIXPackagesClientCreateOrUpdateOptions) (MSIXPackagesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, hostPoolName, msixPackageFullName, msixPackage, options)
 	if err != nil {
-		return MSIXPackagesCreateOrUpdateResponse{}, err
+		return MSIXPackagesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MSIXPackagesCreateOrUpdateResponse{}, err
+		return MSIXPackagesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return MSIXPackagesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return MSIXPackagesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MSIXPackagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, msixPackage MSIXPackage, options *MSIXPackagesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *MSIXPackagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, msixPackage MSIXPackage, options *MSIXPackagesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *MSIXPackagesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter msixPackageFullName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{msixPackageFullName}", url.PathEscape(msixPackageFullName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,37 @@ func (client *MSIXPackagesClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MSIXPackagesClient) createOrUpdateHandleResponse(resp *http.Response) (MSIXPackagesCreateOrUpdateResponse, error) {
-	result := MSIXPackagesCreateOrUpdateResponse{RawResponse: resp}
+func (client *MSIXPackagesClient) createOrUpdateHandleResponse(resp *http.Response) (MSIXPackagesClientCreateOrUpdateResponse, error) {
+	result := MSIXPackagesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSIXPackage); err != nil {
-		return MSIXPackagesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MSIXPackagesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *MSIXPackagesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Remove an MSIX Package.
-// If the operation fails it returns the *CloudError error type.
-func (client *MSIXPackagesClient) Delete(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesDeleteOptions) (MSIXPackagesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// msixPackageFullName - The version specific package full name of the MSIX package within specified hostpool
+// options - MSIXPackagesClientDeleteOptions contains the optional parameters for the MSIXPackagesClient.Delete method.
+func (client *MSIXPackagesClient) Delete(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesClientDeleteOptions) (MSIXPackagesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostPoolName, msixPackageFullName, options)
 	if err != nil {
-		return MSIXPackagesDeleteResponse{}, err
+		return MSIXPackagesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MSIXPackagesDeleteResponse{}, err
+		return MSIXPackagesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return MSIXPackagesDeleteResponse{}, client.deleteHandleError(resp)
+		return MSIXPackagesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MSIXPackagesDeleteResponse{RawResponse: resp}, nil
+	return MSIXPackagesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MSIXPackagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesDeleteOptions) (*policy.Request, error) {
+func (client *MSIXPackagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +151,7 @@ func (client *MSIXPackagesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter msixPackageFullName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{msixPackageFullName}", url.PathEscape(msixPackageFullName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +162,29 @@ func (client *MSIXPackagesClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *MSIXPackagesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a msixpackage.
-// If the operation fails it returns the *CloudError error type.
-func (client *MSIXPackagesClient) Get(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesGetOptions) (MSIXPackagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// msixPackageFullName - The version specific package full name of the MSIX package within specified hostpool
+// options - MSIXPackagesClientGetOptions contains the optional parameters for the MSIXPackagesClient.Get method.
+func (client *MSIXPackagesClient) Get(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesClientGetOptions) (MSIXPackagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostPoolName, msixPackageFullName, options)
 	if err != nil {
-		return MSIXPackagesGetResponse{}, err
+		return MSIXPackagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MSIXPackagesGetResponse{}, err
+		return MSIXPackagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MSIXPackagesGetResponse{}, client.getHandleError(resp)
+		return MSIXPackagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MSIXPackagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesGetOptions) (*policy.Request, error) {
+func (client *MSIXPackagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,7 +202,7 @@ func (client *MSIXPackagesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter msixPackageFullName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{msixPackageFullName}", url.PathEscape(msixPackageFullName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +214,33 @@ func (client *MSIXPackagesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *MSIXPackagesClient) getHandleResponse(resp *http.Response) (MSIXPackagesGetResponse, error) {
-	result := MSIXPackagesGetResponse{RawResponse: resp}
+func (client *MSIXPackagesClient) getHandleResponse(resp *http.Response) (MSIXPackagesClientGetResponse, error) {
+	result := MSIXPackagesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSIXPackage); err != nil {
-		return MSIXPackagesGetResponse{}, runtime.NewResponseError(err, resp)
+		return MSIXPackagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MSIXPackagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List MSIX packages in hostpool.
-// If the operation fails it returns the *CloudError error type.
-func (client *MSIXPackagesClient) List(resourceGroupName string, hostPoolName string, options *MSIXPackagesListOptions) *MSIXPackagesListPager {
-	return &MSIXPackagesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// options - MSIXPackagesClientListOptions contains the optional parameters for the MSIXPackagesClient.List method.
+func (client *MSIXPackagesClient) List(resourceGroupName string, hostPoolName string, options *MSIXPackagesClientListOptions) *MSIXPackagesClientListPager {
+	return &MSIXPackagesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, hostPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp MSIXPackagesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MSIXPackagesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MSIXPackageList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *MSIXPackagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *MSIXPackagesListOptions) (*policy.Request, error) {
+func (client *MSIXPackagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *MSIXPackagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,7 +254,7 @@ func (client *MSIXPackagesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,46 +266,37 @@ func (client *MSIXPackagesClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *MSIXPackagesClient) listHandleResponse(resp *http.Response) (MSIXPackagesListResponse, error) {
-	result := MSIXPackagesListResponse{RawResponse: resp}
+func (client *MSIXPackagesClient) listHandleResponse(resp *http.Response) (MSIXPackagesClientListResponse, error) {
+	result := MSIXPackagesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSIXPackageList); err != nil {
-		return MSIXPackagesListResponse{}, runtime.NewResponseError(err, resp)
+		return MSIXPackagesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *MSIXPackagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update an MSIX Package.
-// If the operation fails it returns the *CloudError error type.
-func (client *MSIXPackagesClient) Update(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesUpdateOptions) (MSIXPackagesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// msixPackageFullName - The version specific package full name of the MSIX package within specified hostpool
+// options - MSIXPackagesClientUpdateOptions contains the optional parameters for the MSIXPackagesClient.Update method.
+func (client *MSIXPackagesClient) Update(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesClientUpdateOptions) (MSIXPackagesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostPoolName, msixPackageFullName, options)
 	if err != nil {
-		return MSIXPackagesUpdateResponse{}, err
+		return MSIXPackagesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MSIXPackagesUpdateResponse{}, err
+		return MSIXPackagesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MSIXPackagesUpdateResponse{}, client.updateHandleError(resp)
+		return MSIXPackagesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MSIXPackagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesUpdateOptions) (*policy.Request, error) {
+func (client *MSIXPackagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixPackageFullName string, options *MSIXPackagesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -338,7 +314,7 @@ func (client *MSIXPackagesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter msixPackageFullName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{msixPackageFullName}", url.PathEscape(msixPackageFullName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -353,23 +329,10 @@ func (client *MSIXPackagesClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *MSIXPackagesClient) updateHandleResponse(resp *http.Response) (MSIXPackagesUpdateResponse, error) {
-	result := MSIXPackagesUpdateResponse{RawResponse: resp}
+func (client *MSIXPackagesClient) updateHandleResponse(resp *http.Response) (MSIXPackagesClientUpdateResponse, error) {
+	result := MSIXPackagesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSIXPackage); err != nil {
-		return MSIXPackagesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MSIXPackagesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *MSIXPackagesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -32,5 +32,5 @@ func ExampleSparkConfigurationClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SparkConfigurationResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SparkConfigurationClientGetResult)
 }

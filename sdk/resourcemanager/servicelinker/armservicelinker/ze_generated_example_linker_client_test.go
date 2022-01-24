@@ -29,12 +29,16 @@ func ExampleLinkerClient_List() {
 	client := armservicelinker.NewLinkerClient(cred, nil)
 	pager := client.List("<resource-uri>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LinkerResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExampleLinkerClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LinkerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LinkerClientGetResult)
 }
 
 // x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2021-11-01-preview/examples/PutLink.json
@@ -71,11 +75,9 @@ func ExampleLinkerClient_BeginCreateOrUpdate() {
 		armservicelinker.LinkerResource{
 			Properties: &armservicelinker.LinkerProperties{
 				AuthInfo: &armservicelinker.SecretAuthInfo{
-					AuthInfoBase: armservicelinker.AuthInfoBase{
-						AuthType: armservicelinker.AuthTypeSecret.ToPtr(),
-					},
-					Name:   to.StringPtr("<name>"),
-					Secret: to.StringPtr("<secret>"),
+					AuthType: armservicelinker.AuthType("secret").ToPtr(),
+					Name:     to.StringPtr("<name>"),
+					Secret:   to.StringPtr("<secret>"),
 				},
 				TargetID: to.StringPtr("<target-id>"),
 			},
@@ -88,7 +90,7 @@ func ExampleLinkerClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LinkerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LinkerClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2021-11-01-preview/examples/DeleteLink.json
@@ -126,9 +128,7 @@ func ExampleLinkerClient_BeginUpdate() {
 		armservicelinker.LinkerPatch{
 			Properties: &armservicelinker.LinkerProperties{
 				AuthInfo: &armservicelinker.ServicePrincipalSecretAuthInfo{
-					AuthInfoBase: armservicelinker.AuthInfoBase{
-						AuthType: armservicelinker.AuthTypeServicePrincipalSecret.ToPtr(),
-					},
+					AuthType:    armservicelinker.AuthType("servicePrincipalSecret").ToPtr(),
 					ClientID:    to.StringPtr("<client-id>"),
 					PrincipalID: to.StringPtr("<principal-id>"),
 					Secret:      to.StringPtr("<secret>"),
@@ -144,7 +144,7 @@ func ExampleLinkerClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LinkerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LinkerClientUpdateResult)
 }
 
 // x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2021-11-01-preview/examples/ValidateLinkFailure.json
@@ -162,10 +162,11 @@ func ExampleLinkerClient_BeginValidate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LinkerClientValidateResult)
 }
 
 // x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2021-11-01-preview/examples/GetConfigurations.json
@@ -176,11 +177,12 @@ func ExampleLinkerClient_ListConfigurations() {
 	}
 	ctx := context.Background()
 	client := armservicelinker.NewLinkerClient(cred, nil)
-	_, err = client.ListConfigurations(ctx,
+	res, err := client.ListConfigurations(ctx,
 		"<resource-uri>",
 		"<linker-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LinkerClientListConfigurationsResult)
 }

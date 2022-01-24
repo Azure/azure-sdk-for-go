@@ -27,21 +27,20 @@ func ExampleReservationOrderClient_Calculate() {
 	}
 	ctx := context.Background()
 	client := armreservations.NewReservationOrderClient(cred, nil)
-	_, err = client.Calculate(ctx,
+	res, err := client.Calculate(ctx,
 		armreservations.PurchaseRequest{
 			Location: to.StringPtr("<location>"),
 			Properties: &armreservations.PurchaseRequestProperties{
-				AppliedScopeType: armreservations.AppliedScopeTypeShared.ToPtr(),
-				AppliedScopes:    []*string{},
-				BillingPlan:      armreservations.ReservationBillingPlanMonthly.ToPtr(),
+				AppliedScopeType: armreservations.AppliedScopeType("Shared").ToPtr(),
+				BillingPlan:      armreservations.ReservationBillingPlan("Monthly").ToPtr(),
 				BillingScopeID:   to.StringPtr("<billing-scope-id>"),
 				DisplayName:      to.StringPtr("<display-name>"),
 				Quantity:         to.Int32Ptr(1),
 				ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
-					InstanceFlexibility: armreservations.InstanceFlexibilityOn.ToPtr(),
+					InstanceFlexibility: armreservations.InstanceFlexibility("On").ToPtr(),
 				},
-				ReservedResourceType: armreservations.ReservedResourceTypeVirtualMachines.ToPtr(),
-				Term:                 armreservations.ReservationTermP1Y.ToPtr(),
+				ReservedResourceType: armreservations.ReservedResourceType("VirtualMachines").ToPtr(),
+				Term:                 armreservations.ReservationTerm("P1Y").ToPtr(),
 			},
 			SKU: &armreservations.SKUName{
 				Name: to.StringPtr("<name>"),
@@ -51,6 +50,7 @@ func ExampleReservationOrderClient_Calculate() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ReservationOrderClientCalculateResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationOrders.json
@@ -62,12 +62,16 @@ func ExampleReservationOrderClient_List() {
 	ctx := context.Background()
 	client := armreservations.NewReservationOrderClient(cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReservationOrderResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -85,18 +89,17 @@ func ExampleReservationOrderClient_BeginPurchase() {
 		armreservations.PurchaseRequest{
 			Location: to.StringPtr("<location>"),
 			Properties: &armreservations.PurchaseRequestProperties{
-				AppliedScopeType: armreservations.AppliedScopeTypeShared.ToPtr(),
-				AppliedScopes:    []*string{},
-				BillingPlan:      armreservations.ReservationBillingPlanMonthly.ToPtr(),
+				AppliedScopeType: armreservations.AppliedScopeType("Shared").ToPtr(),
+				BillingPlan:      armreservations.ReservationBillingPlan("Monthly").ToPtr(),
 				BillingScopeID:   to.StringPtr("<billing-scope-id>"),
 				DisplayName:      to.StringPtr("<display-name>"),
 				Quantity:         to.Int32Ptr(1),
 				Renew:            to.BoolPtr(false),
 				ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
-					InstanceFlexibility: armreservations.InstanceFlexibilityOn.ToPtr(),
+					InstanceFlexibility: armreservations.InstanceFlexibility("On").ToPtr(),
 				},
-				ReservedResourceType: armreservations.ReservedResourceTypeVirtualMachines.ToPtr(),
-				Term:                 armreservations.ReservationTermP1Y.ToPtr(),
+				ReservedResourceType: armreservations.ReservedResourceType("VirtualMachines").ToPtr(),
+				Term:                 armreservations.ReservationTerm("P1Y").ToPtr(),
 			},
 			SKU: &armreservations.SKUName{
 				Name: to.StringPtr("<name>"),
@@ -110,7 +113,7 @@ func ExampleReservationOrderClient_BeginPurchase() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReservationOrderResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReservationOrderClientPurchaseResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationOrderDetails.json
@@ -123,11 +126,11 @@ func ExampleReservationOrderClient_Get() {
 	client := armreservations.NewReservationOrderClient(cred, nil)
 	res, err := client.Get(ctx,
 		"<reservation-order-id>",
-		&armreservations.ReservationOrderGetOptions{Expand: nil})
+		&armreservations.ReservationOrderClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReservationOrderResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReservationOrderClientGetResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/ChangeDirectoryReservationOrder.json
@@ -138,7 +141,7 @@ func ExampleReservationOrderClient_ChangeDirectory() {
 	}
 	ctx := context.Background()
 	client := armreservations.NewReservationOrderClient(cred, nil)
-	_, err = client.ChangeDirectory(ctx,
+	res, err := client.ChangeDirectory(ctx,
 		"<reservation-order-id>",
 		armreservations.ChangeDirectoryRequest{
 			DestinationTenantID: to.StringPtr("<destination-tenant-id>"),
@@ -147,4 +150,5 @@ func ExampleReservationOrderClient_ChangeDirectory() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ReservationOrderClientChangeDirectoryResult)
 }

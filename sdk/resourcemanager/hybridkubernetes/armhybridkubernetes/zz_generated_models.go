@@ -18,52 +18,94 @@ import (
 
 // ConnectedCluster - Represents a connected cluster.
 type ConnectedCluster struct {
-	TrackedResource
 	// REQUIRED; The identity of the connected cluster.
 	Identity *ConnectedClusterIdentity `json:"identity,omitempty"`
+
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; Describes the connected cluster resource properties.
 	Properties *ConnectedClusterProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ConnectedCluster.
 func (c ConnectedCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
-// ConnectedClusterBeginCreateOptions contains the optional parameters for the ConnectedCluster.BeginCreate method.
-type ConnectedClusterBeginCreateOptions struct {
+// ConnectedClusterClientBeginCreateOptions contains the optional parameters for the ConnectedClusterClient.BeginCreate method.
+type ConnectedClusterClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectedClusterBeginDeleteOptions contains the optional parameters for the ConnectedCluster.BeginDelete method.
-type ConnectedClusterBeginDeleteOptions struct {
+// ConnectedClusterClientBeginDeleteOptions contains the optional parameters for the ConnectedClusterClient.BeginDelete method.
+type ConnectedClusterClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectedClusterGetOptions contains the optional parameters for the ConnectedCluster.Get method.
-type ConnectedClusterGetOptions struct {
+// ConnectedClusterClientGetOptions contains the optional parameters for the ConnectedClusterClient.Get method.
+type ConnectedClusterClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedClusterClientListByResourceGroupOptions contains the optional parameters for the ConnectedClusterClient.ListByResourceGroup
+// method.
+type ConnectedClusterClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedClusterClientListBySubscriptionOptions contains the optional parameters for the ConnectedClusterClient.ListBySubscription
+// method.
+type ConnectedClusterClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedClusterClientListClusterUserCredentialOptions contains the optional parameters for the ConnectedClusterClient.ListClusterUserCredential
+// method.
+type ConnectedClusterClientListClusterUserCredentialOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedClusterClientUpdateOptions contains the optional parameters for the ConnectedClusterClient.Update method.
+type ConnectedClusterClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ConnectedClusterIdentity - Identity for the connected cluster.
 type ConnectedClusterIdentity struct {
-	// REQUIRED; The type of identity used for the connected cluster. The type 'SystemAssigned, includes a system created identity. The type 'None' means no
-	// identity is assigned to the connected cluster.
+	// REQUIRED; The type of identity used for the connected cluster. The type 'SystemAssigned, includes a system created identity.
+	// The type 'None' means no identity is assigned to the connected cluster.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
 	// READ-ONLY; The principal id of connected cluster identity. This property will only be provided for a system assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The tenant id associated with the connected cluster. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The tenant id associated with the connected cluster. This property will only be provided for a system assigned
+	// identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
@@ -82,21 +124,6 @@ func (c ConnectedClusterList) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", c.NextLink)
 	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
-}
-
-// ConnectedClusterListByResourceGroupOptions contains the optional parameters for the ConnectedCluster.ListByResourceGroup method.
-type ConnectedClusterListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectedClusterListBySubscriptionOptions contains the optional parameters for the ConnectedCluster.ListBySubscription method.
-type ConnectedClusterListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectedClusterListClusterUserCredentialOptions contains the optional parameters for the ConnectedCluster.ListClusterUserCredential method.
-type ConnectedClusterListClusterUserCredentialOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ConnectedClusterPatch - Object containing updates for patch operations.
@@ -226,11 +253,6 @@ func (c *ConnectedClusterProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ConnectedClusterUpdateOptions contains the optional parameters for the ConnectedCluster.Update method.
-type ConnectedClusterUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CredentialResult - The credential result response.
 type CredentialResult struct {
 	// READ-ONLY; The name of the credential.
@@ -326,19 +348,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // HybridConnectionConfig - Contains the REP (rendezvous endpoint) and “Sender” access token.
@@ -405,8 +419,8 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsGetOptions contains the optional parameters for the Operations.Get method.
-type OperationsGetOptions struct {
+// OperationsClientGetOptions contains the optional parameters for the OperationsClient.Get method.
+type OperationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -420,19 +434,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -503,27 +504,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

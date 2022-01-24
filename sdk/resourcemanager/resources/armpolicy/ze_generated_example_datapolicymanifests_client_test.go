@@ -30,7 +30,7 @@ func ExampleDataPolicyManifestsClient_GetByPolicyMode() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataPolicyManifest.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataPolicyManifestsClientGetByPolicyModeResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifests.json
@@ -41,13 +41,17 @@ func ExampleDataPolicyManifestsClient_List() {
 	}
 	ctx := context.Background()
 	client := armpolicy.NewDataPolicyManifestsClient(cred, nil)
-	pager := client.List(&armpolicy.DataPolicyManifestsListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armpolicy.DataPolicyManifestsClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataPolicyManifest.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

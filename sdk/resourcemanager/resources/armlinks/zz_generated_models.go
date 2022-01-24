@@ -38,8 +38,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -56,8 +56,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -111,31 +111,34 @@ func (r ResourceLinkResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceLinksCreateOrUpdateOptions contains the optional parameters for the ResourceLinks.CreateOrUpdate method.
-type ResourceLinksCreateOrUpdateOptions struct {
+// ResourceLinksClientCreateOrUpdateOptions contains the optional parameters for the ResourceLinksClient.CreateOrUpdate method.
+type ResourceLinksClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceLinksDeleteOptions contains the optional parameters for the ResourceLinks.Delete method.
-type ResourceLinksDeleteOptions struct {
+// ResourceLinksClientDeleteOptions contains the optional parameters for the ResourceLinksClient.Delete method.
+type ResourceLinksClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceLinksGetOptions contains the optional parameters for the ResourceLinks.Get method.
-type ResourceLinksGetOptions struct {
+// ResourceLinksClientGetOptions contains the optional parameters for the ResourceLinksClient.Get method.
+type ResourceLinksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceLinksListAtSourceScopeOptions contains the optional parameters for the ResourceLinks.ListAtSourceScope method.
-type ResourceLinksListAtSourceScopeOptions struct {
-	// The filter to apply when getting resource links. To get links only at the specified scope (not below the scope), use Filter.atScope().
+// ResourceLinksClientListAtSourceScopeOptions contains the optional parameters for the ResourceLinksClient.ListAtSourceScope
+// method.
+type ResourceLinksClientListAtSourceScopeOptions struct {
+	// The filter to apply when getting resource links. To get links only at the specified scope (not below the scope), use Filter.atScope()..
+	// Specifying any value will set the value to atScope().
 	Filter *string
 }
 
-// ResourceLinksListAtSubscriptionOptions contains the optional parameters for the ResourceLinks.ListAtSubscription method.
-type ResourceLinksListAtSubscriptionOptions struct {
-	// The filter to apply on the list resource links operation. The supported filter for list resource links is targetId. For example, $filter=targetId eq
-	// {value}
+// ResourceLinksClientListAtSubscriptionOptions contains the optional parameters for the ResourceLinksClient.ListAtSubscription
+// method.
+type ResourceLinksClientListAtSubscriptionOptions struct {
+	// The filter to apply on the list resource links operation. The supported filter for list resource links is targetId. For
+	// example, $filter=targetId eq {value}
 	Filter *string
 }
 

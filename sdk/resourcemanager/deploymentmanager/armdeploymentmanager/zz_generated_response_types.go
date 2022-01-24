@@ -15,77 +15,77 @@ import (
 	"time"
 )
 
-// ArtifactSourcesCreateOrUpdateResponse contains the response from method ArtifactSources.CreateOrUpdate.
-type ArtifactSourcesCreateOrUpdateResponse struct {
-	ArtifactSourcesCreateOrUpdateResult
+// ArtifactSourcesClientCreateOrUpdateResponse contains the response from method ArtifactSourcesClient.CreateOrUpdate.
+type ArtifactSourcesClientCreateOrUpdateResponse struct {
+	ArtifactSourcesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArtifactSourcesCreateOrUpdateResult contains the result from method ArtifactSources.CreateOrUpdate.
-type ArtifactSourcesCreateOrUpdateResult struct {
+// ArtifactSourcesClientCreateOrUpdateResult contains the result from method ArtifactSourcesClient.CreateOrUpdate.
+type ArtifactSourcesClientCreateOrUpdateResult struct {
 	ArtifactSource
 }
 
-// ArtifactSourcesDeleteResponse contains the response from method ArtifactSources.Delete.
-type ArtifactSourcesDeleteResponse struct {
+// ArtifactSourcesClientDeleteResponse contains the response from method ArtifactSourcesClient.Delete.
+type ArtifactSourcesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArtifactSourcesGetResponse contains the response from method ArtifactSources.Get.
-type ArtifactSourcesGetResponse struct {
-	ArtifactSourcesGetResult
+// ArtifactSourcesClientGetResponse contains the response from method ArtifactSourcesClient.Get.
+type ArtifactSourcesClientGetResponse struct {
+	ArtifactSourcesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArtifactSourcesGetResult contains the result from method ArtifactSources.Get.
-type ArtifactSourcesGetResult struct {
+// ArtifactSourcesClientGetResult contains the result from method ArtifactSourcesClient.Get.
+type ArtifactSourcesClientGetResult struct {
 	ArtifactSource
 }
 
-// ArtifactSourcesListResponse contains the response from method ArtifactSources.List.
-type ArtifactSourcesListResponse struct {
-	ArtifactSourcesListResult
+// ArtifactSourcesClientListResponse contains the response from method ArtifactSourcesClient.List.
+type ArtifactSourcesClientListResponse struct {
+	ArtifactSourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArtifactSourcesListResult contains the result from method ArtifactSources.List.
-type ArtifactSourcesListResult struct {
+// ArtifactSourcesClientListResult contains the result from method ArtifactSourcesClient.List.
+type ArtifactSourcesClientListResult struct {
 	// The list of artifact sources.
 	ArtifactSourceArray []*ArtifactSource
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationsList
 }
 
-// RolloutsCancelResponse contains the response from method Rollouts.Cancel.
-type RolloutsCancelResponse struct {
-	RolloutsCancelResult
+// RolloutsClientCancelResponse contains the response from method RolloutsClient.Cancel.
+type RolloutsClientCancelResponse struct {
+	RolloutsClientCancelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RolloutsCancelResult contains the result from method Rollouts.Cancel.
-type RolloutsCancelResult struct {
+// RolloutsClientCancelResult contains the result from method RolloutsClient.Cancel.
+type RolloutsClientCancelResult struct {
 	Rollout
 }
 
-// RolloutsCreateOrUpdatePollerResponse contains the response from method Rollouts.CreateOrUpdate.
-type RolloutsCreateOrUpdatePollerResponse struct {
+// RolloutsClientCreateOrUpdatePollerResponse contains the response from method RolloutsClient.CreateOrUpdate.
+type RolloutsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *RolloutsCreateOrUpdatePoller
+	Poller *RolloutsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -94,8 +94,8 @@ type RolloutsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RolloutsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RolloutsCreateOrUpdateResponse, error) {
-	respType := RolloutsCreateOrUpdateResponse{}
+func (l RolloutsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RolloutsClientCreateOrUpdateResponse, error) {
+	respType := RolloutsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RolloutRequest)
 	if err != nil {
 		return respType, err
@@ -104,13 +104,13 @@ func (l RolloutsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a RolloutsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *RolloutsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *RolloutsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RolloutsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a RolloutsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *RolloutsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *RolloutsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RolloutsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &RolloutsCreateOrUpdatePoller{
+	poller := &RolloutsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -122,108 +122,108 @@ func (l *RolloutsCreateOrUpdatePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// RolloutsCreateOrUpdateResponse contains the response from method Rollouts.CreateOrUpdate.
-type RolloutsCreateOrUpdateResponse struct {
-	RolloutsCreateOrUpdateResult
+// RolloutsClientCreateOrUpdateResponse contains the response from method RolloutsClient.CreateOrUpdate.
+type RolloutsClientCreateOrUpdateResponse struct {
+	RolloutsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RolloutsCreateOrUpdateResult contains the result from method Rollouts.CreateOrUpdate.
-type RolloutsCreateOrUpdateResult struct {
+// RolloutsClientCreateOrUpdateResult contains the result from method RolloutsClient.CreateOrUpdate.
+type RolloutsClientCreateOrUpdateResult struct {
 	RolloutRequest
 }
 
-// RolloutsDeleteResponse contains the response from method Rollouts.Delete.
-type RolloutsDeleteResponse struct {
+// RolloutsClientDeleteResponse contains the response from method RolloutsClient.Delete.
+type RolloutsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RolloutsGetResponse contains the response from method Rollouts.Get.
-type RolloutsGetResponse struct {
-	RolloutsGetResult
+// RolloutsClientGetResponse contains the response from method RolloutsClient.Get.
+type RolloutsClientGetResponse struct {
+	RolloutsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RolloutsGetResult contains the result from method Rollouts.Get.
-type RolloutsGetResult struct {
+// RolloutsClientGetResult contains the result from method RolloutsClient.Get.
+type RolloutsClientGetResult struct {
 	Rollout
 }
 
-// RolloutsListResponse contains the response from method Rollouts.List.
-type RolloutsListResponse struct {
-	RolloutsListResult
+// RolloutsClientListResponse contains the response from method RolloutsClient.List.
+type RolloutsClientListResponse struct {
+	RolloutsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RolloutsListResult contains the result from method Rollouts.List.
-type RolloutsListResult struct {
+// RolloutsClientListResult contains the result from method RolloutsClient.List.
+type RolloutsClientListResult struct {
 	// The list of rollouts.
 	RolloutArray []*Rollout
 }
 
-// RolloutsRestartResponse contains the response from method Rollouts.Restart.
-type RolloutsRestartResponse struct {
-	RolloutsRestartResult
+// RolloutsClientRestartResponse contains the response from method RolloutsClient.Restart.
+type RolloutsClientRestartResponse struct {
+	RolloutsClientRestartResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RolloutsRestartResult contains the result from method Rollouts.Restart.
-type RolloutsRestartResult struct {
+// RolloutsClientRestartResult contains the result from method RolloutsClient.Restart.
+type RolloutsClientRestartResult struct {
 	Rollout
 }
 
-// ServiceTopologiesCreateOrUpdateResponse contains the response from method ServiceTopologies.CreateOrUpdate.
-type ServiceTopologiesCreateOrUpdateResponse struct {
-	ServiceTopologiesCreateOrUpdateResult
+// ServiceTopologiesClientCreateOrUpdateResponse contains the response from method ServiceTopologiesClient.CreateOrUpdate.
+type ServiceTopologiesClientCreateOrUpdateResponse struct {
+	ServiceTopologiesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceTopologiesCreateOrUpdateResult contains the result from method ServiceTopologies.CreateOrUpdate.
-type ServiceTopologiesCreateOrUpdateResult struct {
+// ServiceTopologiesClientCreateOrUpdateResult contains the result from method ServiceTopologiesClient.CreateOrUpdate.
+type ServiceTopologiesClientCreateOrUpdateResult struct {
 	ServiceTopologyResource
 }
 
-// ServiceTopologiesDeleteResponse contains the response from method ServiceTopologies.Delete.
-type ServiceTopologiesDeleteResponse struct {
+// ServiceTopologiesClientDeleteResponse contains the response from method ServiceTopologiesClient.Delete.
+type ServiceTopologiesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceTopologiesGetResponse contains the response from method ServiceTopologies.Get.
-type ServiceTopologiesGetResponse struct {
-	ServiceTopologiesGetResult
+// ServiceTopologiesClientGetResponse contains the response from method ServiceTopologiesClient.Get.
+type ServiceTopologiesClientGetResponse struct {
+	ServiceTopologiesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceTopologiesGetResult contains the result from method ServiceTopologies.Get.
-type ServiceTopologiesGetResult struct {
+// ServiceTopologiesClientGetResult contains the result from method ServiceTopologiesClient.Get.
+type ServiceTopologiesClientGetResult struct {
 	ServiceTopologyResource
 }
 
-// ServiceTopologiesListResponse contains the response from method ServiceTopologies.List.
-type ServiceTopologiesListResponse struct {
-	ServiceTopologiesListResult
+// ServiceTopologiesClientListResponse contains the response from method ServiceTopologiesClient.List.
+type ServiceTopologiesClientListResponse struct {
+	ServiceTopologiesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceTopologiesListResult contains the result from method ServiceTopologies.List.
-type ServiceTopologiesListResult struct {
+// ServiceTopologiesClientListResult contains the result from method ServiceTopologiesClient.List.
+type ServiceTopologiesClientListResult struct {
 	// The list of service topologies.
 	ServiceTopologyResourceArray []*ServiceTopologyResource
 }
 
-// ServiceUnitsCreateOrUpdatePollerResponse contains the response from method ServiceUnits.CreateOrUpdate.
-type ServiceUnitsCreateOrUpdatePollerResponse struct {
+// ServiceUnitsClientCreateOrUpdatePollerResponse contains the response from method ServiceUnitsClient.CreateOrUpdate.
+type ServiceUnitsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServiceUnitsCreateOrUpdatePoller
+	Poller *ServiceUnitsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -232,8 +232,8 @@ type ServiceUnitsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServiceUnitsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceUnitsCreateOrUpdateResponse, error) {
-	respType := ServiceUnitsCreateOrUpdateResponse{}
+func (l ServiceUnitsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceUnitsClientCreateOrUpdateResponse, error) {
+	respType := ServiceUnitsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceUnitResource)
 	if err != nil {
 		return respType, err
@@ -242,13 +242,13 @@ func (l ServiceUnitsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a ServiceUnitsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ServiceUnitsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ServiceUnitsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServiceUnitsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ServiceUnitsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ServiceUnitsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ServiceUnitsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceUnitsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServiceUnitsCreateOrUpdatePoller{
+	poller := &ServiceUnitsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -260,131 +260,131 @@ func (l *ServiceUnitsCreateOrUpdatePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// ServiceUnitsCreateOrUpdateResponse contains the response from method ServiceUnits.CreateOrUpdate.
-type ServiceUnitsCreateOrUpdateResponse struct {
-	ServiceUnitsCreateOrUpdateResult
+// ServiceUnitsClientCreateOrUpdateResponse contains the response from method ServiceUnitsClient.CreateOrUpdate.
+type ServiceUnitsClientCreateOrUpdateResponse struct {
+	ServiceUnitsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceUnitsCreateOrUpdateResult contains the result from method ServiceUnits.CreateOrUpdate.
-type ServiceUnitsCreateOrUpdateResult struct {
+// ServiceUnitsClientCreateOrUpdateResult contains the result from method ServiceUnitsClient.CreateOrUpdate.
+type ServiceUnitsClientCreateOrUpdateResult struct {
 	ServiceUnitResource
 }
 
-// ServiceUnitsDeleteResponse contains the response from method ServiceUnits.Delete.
-type ServiceUnitsDeleteResponse struct {
+// ServiceUnitsClientDeleteResponse contains the response from method ServiceUnitsClient.Delete.
+type ServiceUnitsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceUnitsGetResponse contains the response from method ServiceUnits.Get.
-type ServiceUnitsGetResponse struct {
-	ServiceUnitsGetResult
+// ServiceUnitsClientGetResponse contains the response from method ServiceUnitsClient.Get.
+type ServiceUnitsClientGetResponse struct {
+	ServiceUnitsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceUnitsGetResult contains the result from method ServiceUnits.Get.
-type ServiceUnitsGetResult struct {
+// ServiceUnitsClientGetResult contains the result from method ServiceUnitsClient.Get.
+type ServiceUnitsClientGetResult struct {
 	ServiceUnitResource
 }
 
-// ServiceUnitsListResponse contains the response from method ServiceUnits.List.
-type ServiceUnitsListResponse struct {
-	ServiceUnitsListResult
+// ServiceUnitsClientListResponse contains the response from method ServiceUnitsClient.List.
+type ServiceUnitsClientListResponse struct {
+	ServiceUnitsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceUnitsListResult contains the result from method ServiceUnits.List.
-type ServiceUnitsListResult struct {
+// ServiceUnitsClientListResult contains the result from method ServiceUnitsClient.List.
+type ServiceUnitsClientListResult struct {
 	// The list of service units.
 	ServiceUnitResourceArray []*ServiceUnitResource
 }
 
-// ServicesCreateOrUpdateResponse contains the response from method Services.CreateOrUpdate.
-type ServicesCreateOrUpdateResponse struct {
-	ServicesCreateOrUpdateResult
+// ServicesClientCreateOrUpdateResponse contains the response from method ServicesClient.CreateOrUpdate.
+type ServicesClientCreateOrUpdateResponse struct {
+	ServicesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesCreateOrUpdateResult contains the result from method Services.CreateOrUpdate.
-type ServicesCreateOrUpdateResult struct {
+// ServicesClientCreateOrUpdateResult contains the result from method ServicesClient.CreateOrUpdate.
+type ServicesClientCreateOrUpdateResult struct {
 	ServiceResource
 }
 
-// ServicesDeleteResponse contains the response from method Services.Delete.
-type ServicesDeleteResponse struct {
+// ServicesClientDeleteResponse contains the response from method ServicesClient.Delete.
+type ServicesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesGetResponse contains the response from method Services.Get.
-type ServicesGetResponse struct {
-	ServicesGetResult
+// ServicesClientGetResponse contains the response from method ServicesClient.Get.
+type ServicesClientGetResponse struct {
+	ServicesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesGetResult contains the result from method Services.Get.
-type ServicesGetResult struct {
+// ServicesClientGetResult contains the result from method ServicesClient.Get.
+type ServicesClientGetResult struct {
 	ServiceResource
 }
 
-// ServicesListResponse contains the response from method Services.List.
-type ServicesListResponse struct {
-	ServicesListResult
+// ServicesClientListResponse contains the response from method ServicesClient.List.
+type ServicesClientListResponse struct {
+	ServicesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServicesListResult contains the result from method Services.List.
-type ServicesListResult struct {
+// ServicesClientListResult contains the result from method ServicesClient.List.
+type ServicesClientListResult struct {
 	// The list of services.
 	ServiceResourceArray []*ServiceResource
 }
 
-// StepsCreateOrUpdateResponse contains the response from method Steps.CreateOrUpdate.
-type StepsCreateOrUpdateResponse struct {
-	StepsCreateOrUpdateResult
+// StepsClientCreateOrUpdateResponse contains the response from method StepsClient.CreateOrUpdate.
+type StepsClientCreateOrUpdateResponse struct {
+	StepsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StepsCreateOrUpdateResult contains the result from method Steps.CreateOrUpdate.
-type StepsCreateOrUpdateResult struct {
+// StepsClientCreateOrUpdateResult contains the result from method StepsClient.CreateOrUpdate.
+type StepsClientCreateOrUpdateResult struct {
 	StepResource
 }
 
-// StepsDeleteResponse contains the response from method Steps.Delete.
-type StepsDeleteResponse struct {
+// StepsClientDeleteResponse contains the response from method StepsClient.Delete.
+type StepsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StepsGetResponse contains the response from method Steps.Get.
-type StepsGetResponse struct {
-	StepsGetResult
+// StepsClientGetResponse contains the response from method StepsClient.Get.
+type StepsClientGetResponse struct {
+	StepsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StepsGetResult contains the result from method Steps.Get.
-type StepsGetResult struct {
+// StepsClientGetResult contains the result from method StepsClient.Get.
+type StepsClientGetResult struct {
 	StepResource
 }
 
-// StepsListResponse contains the response from method Steps.List.
-type StepsListResponse struct {
-	StepsListResult
+// StepsClientListResponse contains the response from method StepsClient.List.
+type StepsClientListResponse struct {
+	StepsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StepsListResult contains the result from method Steps.List.
-type StepsListResult struct {
+// StepsClientListResult contains the result from method StepsClient.List.
+type StepsClientListResult struct {
 	// The list of steps.
 	StepResourceArray []*StepResource
 }

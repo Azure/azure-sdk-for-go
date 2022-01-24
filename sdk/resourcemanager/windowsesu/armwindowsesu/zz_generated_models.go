@@ -37,31 +37,41 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // MultipleActivationKey - MAK key details.
 type MultipleActivationKey struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// MAK key specific properties.
 	Properties *MultipleActivationKeyProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MultipleActivationKey.
 func (m MultipleActivationKey) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "name", m.Name)
 	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "tags", m.Tags)
+	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -90,8 +100,8 @@ type MultipleActivationKeyProperties struct {
 	// Number of activations/servers using the MAK key.
 	InstalledServerNumber *int32 `json:"installedServerNumber,omitempty"`
 
-	// true if user has eligible on-premises Windows physical or virtual machines, and that the requested key will only be used in their organization; false
-	// otherwise.
+	// true if user has eligible on-premises Windows physical or virtual machines, and that the requested key will only be used
+	// in their organization; false otherwise.
 	IsEligible *bool `json:"isEligible,omitempty"`
 
 	// Type of OS for which the key is requested.
@@ -178,33 +188,37 @@ func (m MultipleActivationKeyUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MultipleActivationKeysBeginCreateOptions contains the optional parameters for the MultipleActivationKeys.BeginCreate method.
-type MultipleActivationKeysBeginCreateOptions struct {
+// MultipleActivationKeysClientBeginCreateOptions contains the optional parameters for the MultipleActivationKeysClient.BeginCreate
+// method.
+type MultipleActivationKeysClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MultipleActivationKeysDeleteOptions contains the optional parameters for the MultipleActivationKeys.Delete method.
-type MultipleActivationKeysDeleteOptions struct {
+// MultipleActivationKeysClientDeleteOptions contains the optional parameters for the MultipleActivationKeysClient.Delete
+// method.
+type MultipleActivationKeysClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MultipleActivationKeysGetOptions contains the optional parameters for the MultipleActivationKeys.Get method.
-type MultipleActivationKeysGetOptions struct {
+// MultipleActivationKeysClientGetOptions contains the optional parameters for the MultipleActivationKeysClient.Get method.
+type MultipleActivationKeysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MultipleActivationKeysListByResourceGroupOptions contains the optional parameters for the MultipleActivationKeys.ListByResourceGroup method.
-type MultipleActivationKeysListByResourceGroupOptions struct {
+// MultipleActivationKeysClientListByResourceGroupOptions contains the optional parameters for the MultipleActivationKeysClient.ListByResourceGroup
+// method.
+type MultipleActivationKeysClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MultipleActivationKeysListOptions contains the optional parameters for the MultipleActivationKeys.List method.
-type MultipleActivationKeysListOptions struct {
+// MultipleActivationKeysClientListOptions contains the optional parameters for the MultipleActivationKeysClient.List method.
+type MultipleActivationKeysClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MultipleActivationKeysUpdateOptions contains the optional parameters for the MultipleActivationKeys.Update method.
-type MultipleActivationKeysUpdateOptions struct {
+// MultipleActivationKeysClientUpdateOptions contains the optional parameters for the MultipleActivationKeysClient.Update
+// method.
+type MultipleActivationKeysClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -242,8 +256,8 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -259,40 +273,34 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

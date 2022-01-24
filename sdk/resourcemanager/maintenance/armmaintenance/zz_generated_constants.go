@@ -9,8 +9,8 @@
 package armmaintenance
 
 const (
-	module  = "armmaintenance"
-	version = "v0.1.0"
+	moduleName    = "armmaintenance"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -73,7 +73,8 @@ type MaintenanceScope string
 const (
 	// MaintenanceScopeExtension - This maintenance scope controls extension installation on VM/VMSS
 	MaintenanceScopeExtension MaintenanceScope = "Extension"
-	// MaintenanceScopeHost - This maintenance scope controls installation of azure platform updates i.e. services on physical nodes hosting customer VMs.
+	// MaintenanceScopeHost - This maintenance scope controls installation of azure platform updates i.e. services on physical
+	// nodes hosting customer VMs.
 	MaintenanceScopeHost MaintenanceScope = "Host"
 	// MaintenanceScopeInGuestPatch - This maintenance scope controls installation of windows and linux packages on VM/VMSS
 	MaintenanceScopeInGuestPatch MaintenanceScope = "InGuestPatch"
@@ -102,8 +103,8 @@ func (c MaintenanceScope) ToPtr() *MaintenanceScope {
 	return &c
 }
 
-// RebootOptions - Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or not after the patch operation
-// is completed.
+// RebootOptions - Possible reboot preference as defined by the user based on which it would be decided to reboot the machine
+// or not after the patch operation is completed.
 type RebootOptions string
 
 const (

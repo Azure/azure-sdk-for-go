@@ -11,7 +11,6 @@ package armstoragesync
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // SyncGroupsClient contains the methods for the SyncGroups group.
 // Don't use this type directly, use NewSyncGroupsClient() instead.
 type SyncGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSyncGroupsClient creates a new instance of SyncGroupsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SyncGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SyncGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a new SyncGroup.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *SyncGroupsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, parameters SyncGroupCreateParameters, options *SyncGroupsCreateOptions) (SyncGroupsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// parameters - Sync Group Body
+// options - SyncGroupsClientCreateOptions contains the optional parameters for the SyncGroupsClient.Create method.
+func (client *SyncGroupsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, parameters SyncGroupCreateParameters, options *SyncGroupsClientCreateOptions) (SyncGroupsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, parameters, options)
 	if err != nil {
-		return SyncGroupsCreateResponse{}, err
+		return SyncGroupsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncGroupsCreateResponse{}, err
+		return SyncGroupsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncGroupsCreateResponse{}, client.createHandleError(resp)
+		return SyncGroupsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, parameters SyncGroupCreateParameters, options *SyncGroupsCreateOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, parameters SyncGroupCreateParameters, options *SyncGroupsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter syncGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{syncGroupName}", url.PathEscape(syncGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,8 +102,8 @@ func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourc
 }
 
 // createHandleResponse handles the Create response.
-func (client *SyncGroupsClient) createHandleResponse(resp *http.Response) (SyncGroupsCreateResponse, error) {
-	result := SyncGroupsCreateResponse{RawResponse: resp}
+func (client *SyncGroupsClient) createHandleResponse(resp *http.Response) (SyncGroupsClientCreateResponse, error) {
+	result := SyncGroupsClientCreateResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -99,43 +111,34 @@ func (client *SyncGroupsClient) createHandleResponse(resp *http.Response) (SyncG
 		result.XMSCorrelationRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroup); err != nil {
-		return SyncGroupsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SyncGroupsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SyncGroupsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a given SyncGroup.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *SyncGroupsClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsDeleteOptions) (SyncGroupsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// options - SyncGroupsClientDeleteOptions contains the optional parameters for the SyncGroupsClient.Delete method.
+func (client *SyncGroupsClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsClientDeleteOptions) (SyncGroupsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, options)
 	if err != nil {
-		return SyncGroupsDeleteResponse{}, err
+		return SyncGroupsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncGroupsDeleteResponse{}, err
+		return SyncGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SyncGroupsDeleteResponse{}, client.deleteHandleError(resp)
+		return SyncGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsDeleteOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -153,7 +156,7 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter syncGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{syncGroupName}", url.PathEscape(syncGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,8 +168,8 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *SyncGroupsClient) deleteHandleResponse(resp *http.Response) (SyncGroupsDeleteResponse, error) {
-	result := SyncGroupsDeleteResponse{RawResponse: resp}
+func (client *SyncGroupsClient) deleteHandleResponse(resp *http.Response) (SyncGroupsClientDeleteResponse, error) {
+	result := SyncGroupsClientDeleteResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -176,38 +179,29 @@ func (client *SyncGroupsClient) deleteHandleResponse(resp *http.Response) (SyncG
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SyncGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a given SyncGroup.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsGetOptions) (SyncGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// options - SyncGroupsClientGetOptions contains the optional parameters for the SyncGroupsClient.Get method.
+func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsClientGetOptions) (SyncGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, options)
 	if err != nil {
-		return SyncGroupsGetResponse{}, err
+		return SyncGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncGroupsGetResponse{}, err
+		return SyncGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncGroupsGetResponse{}, client.getHandleError(resp)
+		return SyncGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsGetOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *SyncGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -225,7 +219,7 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter syncGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{syncGroupName}", url.PathEscape(syncGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -237,8 +231,8 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGroupsGetResponse, error) {
-	result := SyncGroupsGetResponse{RawResponse: resp}
+func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGroupsClientGetResponse, error) {
+	result := SyncGroupsClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -246,43 +240,34 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 		result.XMSCorrelationRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroup); err != nil {
-		return SyncGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SyncGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SyncGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByStorageSyncService - Get a SyncGroup List.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *SyncGroupsClient) ListByStorageSyncService(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *SyncGroupsListByStorageSyncServiceOptions) (SyncGroupsListByStorageSyncServiceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// options - SyncGroupsClientListByStorageSyncServiceOptions contains the optional parameters for the SyncGroupsClient.ListByStorageSyncService
+// method.
+func (client *SyncGroupsClient) ListByStorageSyncService(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *SyncGroupsClientListByStorageSyncServiceOptions) (SyncGroupsClientListByStorageSyncServiceResponse, error) {
 	req, err := client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
 	if err != nil {
-		return SyncGroupsListByStorageSyncServiceResponse{}, err
+		return SyncGroupsClientListByStorageSyncServiceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncGroupsListByStorageSyncServiceResponse{}, err
+		return SyncGroupsClientListByStorageSyncServiceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncGroupsListByStorageSyncServiceResponse{}, client.listByStorageSyncServiceHandleError(resp)
+		return SyncGroupsClientListByStorageSyncServiceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByStorageSyncServiceHandleResponse(resp)
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
-func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *SyncGroupsListByStorageSyncServiceOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *SyncGroupsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -296,7 +281,7 @@ func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx contex
 		return nil, errors.New("parameter storageSyncServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageSyncServiceName}", url.PathEscape(storageSyncServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,8 +293,8 @@ func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx contex
 }
 
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
-func (client *SyncGroupsClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (SyncGroupsListByStorageSyncServiceResponse, error) {
-	result := SyncGroupsListByStorageSyncServiceResponse{RawResponse: resp}
+func (client *SyncGroupsClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (SyncGroupsClientListByStorageSyncServiceResponse, error) {
+	result := SyncGroupsClientListByStorageSyncServiceResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -317,20 +302,7 @@ func (client *SyncGroupsClient) listByStorageSyncServiceHandleResponse(resp *htt
 		result.XMSCorrelationRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroupArray); err != nil {
-		return SyncGroupsListByStorageSyncServiceResponse{}, runtime.NewResponseError(err, resp)
+		return SyncGroupsClientListByStorageSyncServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByStorageSyncServiceHandleError handles the ListByStorageSyncService error response.
-func (client *SyncGroupsClient) listByStorageSyncServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

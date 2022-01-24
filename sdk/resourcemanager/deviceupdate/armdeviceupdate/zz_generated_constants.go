@@ -9,8 +9,8 @@
 package armdeviceupdate
 
 const (
-	module  = "armdeviceupdate"
-	version = "v0.1.0"
+	moduleName    = "armdeviceupdate"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -145,7 +145,8 @@ func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
 	return &c
 }
 
-// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
 type Origin string
 
 const (
@@ -270,7 +271,7 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// PublicNetworkAccess - Whether or not public network access is allowed for the container registry.
+// PublicNetworkAccess - Whether or not public network access is allowed for the account.
 type PublicNetworkAccess string
 
 const (

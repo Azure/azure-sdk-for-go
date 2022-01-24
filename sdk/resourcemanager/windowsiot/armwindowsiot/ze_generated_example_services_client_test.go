@@ -32,7 +32,7 @@ func ExampleServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeviceService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/windowsiot/resource-manager/Microsoft.WindowsIoT/stable/2019-06-01/examples/Service_Create.json
@@ -47,9 +47,7 @@ func ExampleServicesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<device-name>",
 		armwindowsiot.DeviceService{
-			TrackedResource: armwindowsiot.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armwindowsiot.DeviceServiceProperties{
 				AdminDomainName:   to.StringPtr("<admin-domain-name>"),
 				BillingDomainName: to.StringPtr("<billing-domain-name>"),
@@ -57,11 +55,11 @@ func ExampleServicesClient_CreateOrUpdate() {
 				Quantity:          to.Int64Ptr(1000000),
 			},
 		},
-		&armwindowsiot.ServicesCreateOrUpdateOptions{IfMatch: nil})
+		&armwindowsiot.ServicesClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeviceService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/windowsiot/resource-manager/Microsoft.WindowsIoT/stable/2019-06-01/examples/Service_Update.json
@@ -76,9 +74,7 @@ func ExampleServicesClient_Update() {
 		"<resource-group-name>",
 		"<device-name>",
 		armwindowsiot.DeviceService{
-			TrackedResource: armwindowsiot.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armwindowsiot.DeviceServiceProperties{
 				AdminDomainName:   to.StringPtr("<admin-domain-name>"),
 				BillingDomainName: to.StringPtr("<billing-domain-name>"),
@@ -86,11 +82,11 @@ func ExampleServicesClient_Update() {
 				Quantity:          to.Int64Ptr(1000000),
 			},
 		},
-		&armwindowsiot.ServicesUpdateOptions{IfMatch: nil})
+		&armwindowsiot.ServicesClientUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeviceService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/windowsiot/resource-manager/Microsoft.WindowsIoT/stable/2019-06-01/examples/Service_Delete.json
@@ -108,7 +104,7 @@ func ExampleServicesClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeviceService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientDeleteResult)
 }
 
 // x-ms-original-file: specification/windowsiot/resource-manager/Microsoft.WindowsIoT/stable/2019-06-01/examples/Service_ListByResourceGroup.json
@@ -121,12 +117,16 @@ func ExampleServicesClient_ListByResourceGroup() {
 	client := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DeviceService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -140,12 +140,16 @@ func ExampleServicesClient_List() {
 	ctx := context.Background()
 	client := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DeviceService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -158,7 +162,7 @@ func ExampleServicesClient_CheckDeviceServiceNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armwindowsiot.NewServicesClient("<subscription-id>", cred, nil)
-	_, err = client.CheckDeviceServiceNameAvailability(ctx,
+	res, err := client.CheckDeviceServiceNameAvailability(ctx,
 		armwindowsiot.DeviceServiceCheckNameAvailabilityParameters{
 			Name: to.StringPtr("<name>"),
 		},
@@ -166,4 +170,5 @@ func ExampleServicesClient_CheckDeviceServiceNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServicesClientCheckDeviceServiceNameAvailabilityResult)
 }

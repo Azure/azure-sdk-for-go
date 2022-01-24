@@ -24,42 +24,55 @@ import (
 // RegisteredIdentitiesClient contains the methods for the RegisteredIdentities group.
 // Don't use this type directly, use NewRegisteredIdentitiesClient() instead.
 type RegisteredIdentitiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRegisteredIdentitiesClient creates a new instance of RegisteredIdentitiesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRegisteredIdentitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegisteredIdentitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RegisteredIdentitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RegisteredIdentitiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Delete - Unregisters the given container from your Recovery Services vault.
-// If the operation fails it returns a generic error.
-func (client *RegisteredIdentitiesClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, identityName string, options *RegisteredIdentitiesDeleteOptions) (RegisteredIdentitiesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// vaultName - The name of the recovery services vault.
+// identityName - Name of the protection container to unregister.
+// options - RegisteredIdentitiesClientDeleteOptions contains the optional parameters for the RegisteredIdentitiesClient.Delete
+// method.
+func (client *RegisteredIdentitiesClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, identityName string, options *RegisteredIdentitiesClientDeleteOptions) (RegisteredIdentitiesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, identityName, options)
 	if err != nil {
-		return RegisteredIdentitiesDeleteResponse{}, err
+		return RegisteredIdentitiesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RegisteredIdentitiesDeleteResponse{}, err
+		return RegisteredIdentitiesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return RegisteredIdentitiesDeleteResponse{}, client.deleteHandleError(resp)
+		return RegisteredIdentitiesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RegisteredIdentitiesDeleteResponse{RawResponse: resp}, nil
+	return RegisteredIdentitiesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RegisteredIdentitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, identityName string, options *RegisteredIdentitiesDeleteOptions) (*policy.Request, error) {
+func (client *RegisteredIdentitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, identityName string, options *RegisteredIdentitiesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/registeredIdentities/{identityName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,24 +90,12 @@ func (client *RegisteredIdentitiesClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter identityName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{identityName}", url.PathEscape(identityName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
-}
-
-// deleteHandleError handles the Delete error response.
-func (client *RegisteredIdentitiesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

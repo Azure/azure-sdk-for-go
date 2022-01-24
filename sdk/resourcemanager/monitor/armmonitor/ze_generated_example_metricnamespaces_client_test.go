@@ -25,10 +25,11 @@ func ExampleMetricNamespacesClient_List() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewMetricNamespacesClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-uri>",
-		&armmonitor.MetricNamespacesListOptions{StartTime: to.StringPtr("<start-time>")})
+		&armmonitor.MetricNamespacesClientListOptions{StartTime: to.StringPtr("<start-time>")})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MetricNamespacesClientListResult)
 }

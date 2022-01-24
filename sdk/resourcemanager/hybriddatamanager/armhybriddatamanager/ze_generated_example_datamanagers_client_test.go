@@ -27,11 +27,12 @@ func ExampleDataManagersClient_List() {
 	}
 	ctx := context.Background()
 	client := armhybriddatamanager.NewDataManagersClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DataManagersClientListResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/DataManagers_ListByResourceGroup-GET-example-31.json
@@ -42,12 +43,13 @@ func ExampleDataManagersClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armhybriddatamanager.NewDataManagersClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DataManagersClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/DataManagers_Get-GET-example-41.json
@@ -65,7 +67,7 @@ func ExampleDataManagersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataManager.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataManagersClientGetResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/DataManagers_Create-PUT-example-41.json
@@ -80,9 +82,7 @@ func ExampleDataManagersClient_BeginCreate() {
 		"<resource-group-name>",
 		"<data-manager-name>",
 		armhybriddatamanager.DataManager{
-			Resource: armhybriddatamanager.Resource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 		},
 		nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleDataManagersClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataManager.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataManagersClientCreateResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/DataManagers_Delete-DELETE-example-41.json
@@ -136,7 +136,7 @@ func ExampleDataManagersClient_BeginUpdate() {
 				"UpdateDateTime": to.StringPtr("05-Feb-20 2:17:22 PM"),
 			},
 		},
-		&armhybriddatamanager.DataManagersBeginUpdateOptions{IfMatch: nil})
+		&armhybriddatamanager.DataManagersClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -144,5 +144,5 @@ func ExampleDataManagersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataManager.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataManagersClientUpdateResult)
 }

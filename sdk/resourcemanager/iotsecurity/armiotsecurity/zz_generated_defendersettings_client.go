@@ -11,7 +11,6 @@ package armiotsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,59 @@ import (
 // DefenderSettingsClient contains the methods for the DefenderSettings group.
 // Don't use this type directly, use NewDefenderSettingsClient() instead.
 type DefenderSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDefenderSettingsClient creates a new instance of DefenderSettingsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDefenderSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DefenderSettingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DefenderSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DefenderSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update IoT Defender settings
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefenderSettingsClient) CreateOrUpdate(ctx context.Context, defenderSettingsModel DefenderSettingsModel, options *DefenderSettingsCreateOrUpdateOptions) (DefenderSettingsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// defenderSettingsModel - The IoT defender settings model
+// options - DefenderSettingsClientCreateOrUpdateOptions contains the optional parameters for the DefenderSettingsClient.CreateOrUpdate
+// method.
+func (client *DefenderSettingsClient) CreateOrUpdate(ctx context.Context, defenderSettingsModel DefenderSettingsModel, options *DefenderSettingsClientCreateOrUpdateOptions) (DefenderSettingsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, defenderSettingsModel, options)
 	if err != nil {
-		return DefenderSettingsCreateOrUpdateResponse{}, err
+		return DefenderSettingsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefenderSettingsCreateOrUpdateResponse{}, err
+		return DefenderSettingsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DefenderSettingsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DefenderSettingsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DefenderSettingsClient) createOrUpdateCreateRequest(ctx context.Context, defenderSettingsModel DefenderSettingsModel, options *DefenderSettingsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DefenderSettingsClient) createOrUpdateCreateRequest(ctx context.Context, defenderSettingsModel DefenderSettingsModel, options *DefenderSettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/defenderSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,52 +88,40 @@ func (client *DefenderSettingsClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DefenderSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (DefenderSettingsCreateOrUpdateResponse, error) {
-	result := DefenderSettingsCreateOrUpdateResponse{RawResponse: resp}
+func (client *DefenderSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (DefenderSettingsClientCreateOrUpdateResponse, error) {
+	result := DefenderSettingsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefenderSettingsModel); err != nil {
-		return DefenderSettingsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DefenderSettingsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DefenderSettingsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete IoT Defender settings
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefenderSettingsClient) Delete(ctx context.Context, options *DefenderSettingsDeleteOptions) (DefenderSettingsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DefenderSettingsClientDeleteOptions contains the optional parameters for the DefenderSettingsClient.Delete method.
+func (client *DefenderSettingsClient) Delete(ctx context.Context, options *DefenderSettingsClientDeleteOptions) (DefenderSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
-		return DefenderSettingsDeleteResponse{}, err
+		return DefenderSettingsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefenderSettingsDeleteResponse{}, err
+		return DefenderSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DefenderSettingsDeleteResponse{}, client.deleteHandleError(resp)
+		return DefenderSettingsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DefenderSettingsDeleteResponse{RawResponse: resp}, nil
+	return DefenderSettingsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DefenderSettingsClient) deleteCreateRequest(ctx context.Context, options *DefenderSettingsDeleteOptions) (*policy.Request, error) {
+func (client *DefenderSettingsClient) deleteCreateRequest(ctx context.Context, options *DefenderSettingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/defenderSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,92 +132,70 @@ func (client *DefenderSettingsClient) deleteCreateRequest(ctx context.Context, o
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DefenderSettingsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DownloadManagerActivation - Download manager activation data defined for this subscription
-// If the operation fails it returns a generic error.
-func (client *DefenderSettingsClient) DownloadManagerActivation(ctx context.Context, options *DefenderSettingsDownloadManagerActivationOptions) (DefenderSettingsDownloadManagerActivationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DefenderSettingsClientDownloadManagerActivationOptions contains the optional parameters for the DefenderSettingsClient.DownloadManagerActivation
+// method.
+func (client *DefenderSettingsClient) DownloadManagerActivation(ctx context.Context, options *DefenderSettingsClientDownloadManagerActivationOptions) (DefenderSettingsClientDownloadManagerActivationResponse, error) {
 	req, err := client.downloadManagerActivationCreateRequest(ctx, options)
 	if err != nil {
-		return DefenderSettingsDownloadManagerActivationResponse{}, err
+		return DefenderSettingsClientDownloadManagerActivationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefenderSettingsDownloadManagerActivationResponse{}, err
+		return DefenderSettingsClientDownloadManagerActivationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DefenderSettingsDownloadManagerActivationResponse{}, client.downloadManagerActivationHandleError(resp)
+		return DefenderSettingsClientDownloadManagerActivationResponse{}, runtime.NewResponseError(resp)
 	}
-	return DefenderSettingsDownloadManagerActivationResponse{RawResponse: resp}, nil
+	return DefenderSettingsClientDownloadManagerActivationResponse{RawResponse: resp}, nil
 }
 
 // downloadManagerActivationCreateRequest creates the DownloadManagerActivation request.
-func (client *DefenderSettingsClient) downloadManagerActivationCreateRequest(ctx context.Context, options *DefenderSettingsDownloadManagerActivationOptions) (*policy.Request, error) {
+func (client *DefenderSettingsClient) downloadManagerActivationCreateRequest(ctx context.Context, options *DefenderSettingsClientDownloadManagerActivationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/defenderSettings/default/downloadManagerActivation"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	req.Raw().Header.Set("Accept", "application/zip")
 	return req, nil
 }
 
-// downloadManagerActivationHandleError handles the DownloadManagerActivation error response.
-func (client *DefenderSettingsClient) downloadManagerActivationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get IoT Defender Settings
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefenderSettingsClient) Get(ctx context.Context, options *DefenderSettingsGetOptions) (DefenderSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DefenderSettingsClientGetOptions contains the optional parameters for the DefenderSettingsClient.Get method.
+func (client *DefenderSettingsClient) Get(ctx context.Context, options *DefenderSettingsClientGetOptions) (DefenderSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
-		return DefenderSettingsGetResponse{}, err
+		return DefenderSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefenderSettingsGetResponse{}, err
+		return DefenderSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DefenderSettingsGetResponse{}, client.getHandleError(resp)
+		return DefenderSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DefenderSettingsClient) getCreateRequest(ctx context.Context, options *DefenderSettingsGetOptions) (*policy.Request, error) {
+func (client *DefenderSettingsClient) getCreateRequest(ctx context.Context, options *DefenderSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/defenderSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,52 +207,40 @@ func (client *DefenderSettingsClient) getCreateRequest(ctx context.Context, opti
 }
 
 // getHandleResponse handles the Get response.
-func (client *DefenderSettingsClient) getHandleResponse(resp *http.Response) (DefenderSettingsGetResponse, error) {
-	result := DefenderSettingsGetResponse{RawResponse: resp}
+func (client *DefenderSettingsClient) getHandleResponse(resp *http.Response) (DefenderSettingsClientGetResponse, error) {
+	result := DefenderSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefenderSettingsModel); err != nil {
-		return DefenderSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DefenderSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DefenderSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List IoT Defender Settings
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefenderSettingsClient) List(ctx context.Context, options *DefenderSettingsListOptions) (DefenderSettingsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DefenderSettingsClientListOptions contains the optional parameters for the DefenderSettingsClient.List method.
+func (client *DefenderSettingsClient) List(ctx context.Context, options *DefenderSettingsClientListOptions) (DefenderSettingsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return DefenderSettingsListResponse{}, err
+		return DefenderSettingsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefenderSettingsListResponse{}, err
+		return DefenderSettingsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DefenderSettingsListResponse{}, client.listHandleError(resp)
+		return DefenderSettingsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *DefenderSettingsClient) listCreateRequest(ctx context.Context, options *DefenderSettingsListOptions) (*policy.Request, error) {
+func (client *DefenderSettingsClient) listCreateRequest(ctx context.Context, options *DefenderSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/defenderSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,52 +252,41 @@ func (client *DefenderSettingsClient) listCreateRequest(ctx context.Context, opt
 }
 
 // listHandleResponse handles the List response.
-func (client *DefenderSettingsClient) listHandleResponse(resp *http.Response) (DefenderSettingsListResponse, error) {
-	result := DefenderSettingsListResponse{RawResponse: resp}
+func (client *DefenderSettingsClient) listHandleResponse(resp *http.Response) (DefenderSettingsClientListResponse, error) {
+	result := DefenderSettingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefenderSettingsList); err != nil {
-		return DefenderSettingsListResponse{}, runtime.NewResponseError(err, resp)
+		return DefenderSettingsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DefenderSettingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // PackageDownloads - Information about downloadable packages
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefenderSettingsClient) PackageDownloads(ctx context.Context, options *DefenderSettingsPackageDownloadsOptions) (DefenderSettingsPackageDownloadsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DefenderSettingsClientPackageDownloadsOptions contains the optional parameters for the DefenderSettingsClient.PackageDownloads
+// method.
+func (client *DefenderSettingsClient) PackageDownloads(ctx context.Context, options *DefenderSettingsClientPackageDownloadsOptions) (DefenderSettingsClientPackageDownloadsResponse, error) {
 	req, err := client.packageDownloadsCreateRequest(ctx, options)
 	if err != nil {
-		return DefenderSettingsPackageDownloadsResponse{}, err
+		return DefenderSettingsClientPackageDownloadsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefenderSettingsPackageDownloadsResponse{}, err
+		return DefenderSettingsClientPackageDownloadsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DefenderSettingsPackageDownloadsResponse{}, client.packageDownloadsHandleError(resp)
+		return DefenderSettingsClientPackageDownloadsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.packageDownloadsHandleResponse(resp)
 }
 
 // packageDownloadsCreateRequest creates the PackageDownloads request.
-func (client *DefenderSettingsClient) packageDownloadsCreateRequest(ctx context.Context, options *DefenderSettingsPackageDownloadsOptions) (*policy.Request, error) {
+func (client *DefenderSettingsClient) packageDownloadsCreateRequest(ctx context.Context, options *DefenderSettingsClientPackageDownloadsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/defenderSettings/default/packageDownloads"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -345,23 +298,10 @@ func (client *DefenderSettingsClient) packageDownloadsCreateRequest(ctx context.
 }
 
 // packageDownloadsHandleResponse handles the PackageDownloads response.
-func (client *DefenderSettingsClient) packageDownloadsHandleResponse(resp *http.Response) (DefenderSettingsPackageDownloadsResponse, error) {
-	result := DefenderSettingsPackageDownloadsResponse{RawResponse: resp}
+func (client *DefenderSettingsClient) packageDownloadsHandleResponse(resp *http.Response) (DefenderSettingsClientPackageDownloadsResponse, error) {
+	result := DefenderSettingsClientPackageDownloadsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PackageDownloads); err != nil {
-		return DefenderSettingsPackageDownloadsResponse{}, runtime.NewResponseError(err, resp)
+		return DefenderSettingsClientPackageDownloadsResponse{}, err
 	}
 	return result, nil
-}
-
-// packageDownloadsHandleError handles the PackageDownloads error response.
-func (client *DefenderSettingsClient) packageDownloadsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

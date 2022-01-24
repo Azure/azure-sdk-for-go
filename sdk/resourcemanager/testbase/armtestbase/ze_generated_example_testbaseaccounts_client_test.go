@@ -20,67 +20,73 @@ import (
 )
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestBaseAccountsListBySubscription.json
-func ExampleTestBaseAccountsClient_ListBySubscription() {
+func ExampleAccountsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armtestbase.TestBaseAccountsListBySubscriptionOptions{GetDeleted: nil})
-	for pager.NextPage(ctx) {
+	client := armtestbase.NewAccountsClient("<subscription-id>", cred, nil)
+	pager := client.ListBySubscription(&armtestbase.AccountsClientListBySubscriptionOptions{GetDeleted: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TestBaseAccountResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestBaseAccountsList.json
-func ExampleTestBaseAccountsClient_ListByResourceGroup() {
+func ExampleAccountsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
+	client := armtestbase.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armtestbase.TestBaseAccountsListByResourceGroupOptions{GetDeleted: nil})
-	for pager.NextPage(ctx) {
+		&armtestbase.AccountsClientListByResourceGroupOptions{GetDeleted: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TestBaseAccountResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestBaseAccountCreate.json
-func ExampleTestBaseAccountsClient_BeginCreate() {
+func ExampleAccountsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
+	client := armtestbase.NewAccountsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
-		armtestbase.TestBaseAccountResource{
-			TrackedResource: armtestbase.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
-			Properties: &armtestbase.TestBaseAccountResourceProperties{
-				SKU: &armtestbase.TestBaseAccountSKU{
+		armtestbase.AccountResource{
+			Location: to.StringPtr("<location>"),
+			Properties: &armtestbase.AccountResourceProperties{
+				SKU: &armtestbase.AccountSKU{
 					Name: to.StringPtr("<name>"),
-					Tier: armtestbase.TierStandard.ToPtr(),
+					Tier: armtestbase.Tier("Standard").ToPtr(),
 				},
 			},
 		},
-		&armtestbase.TestBaseAccountsBeginCreateOptions{Restore: nil})
+		&armtestbase.AccountsClientBeginCreateOptions{Restore: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -88,25 +94,25 @@ func ExampleTestBaseAccountsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TestBaseAccountResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientCreateResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestBaseAccountUpdate.json
-func ExampleTestBaseAccountsClient_BeginUpdate() {
+func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
+	client := armtestbase.NewAccountsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
-		armtestbase.TestBaseAccountUpdateParameters{
-			Properties: &armtestbase.TestBaseAccountUpdateParameterProperties{
-				SKU: &armtestbase.TestBaseAccountSKU{
+		armtestbase.AccountUpdateParameters{
+			Properties: &armtestbase.AccountUpdateParameterProperties{
+				SKU: &armtestbase.AccountSKU{
 					Name: to.StringPtr("<name>"),
-					Tier: armtestbase.TierStandard.ToPtr(),
+					Tier: armtestbase.Tier("Standard").ToPtr(),
 				},
 			},
 		},
@@ -118,17 +124,17 @@ func ExampleTestBaseAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TestBaseAccountResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestBaseAccountDelete.json
-func ExampleTestBaseAccountsClient_BeginDelete() {
+func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
+	client := armtestbase.NewAccountsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
@@ -143,13 +149,13 @@ func ExampleTestBaseAccountsClient_BeginDelete() {
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestBaseAccountGet.json
-func ExampleTestBaseAccountsClient_Get() {
+func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
+	client := armtestbase.NewAccountsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
@@ -157,17 +163,17 @@ func ExampleTestBaseAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TestBaseAccountResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestBaseAccountOffboard.json
-func ExampleTestBaseAccountsClient_BeginOffboard() {
+func ExampleAccountsClient_BeginOffboard() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
+	client := armtestbase.NewAccountsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginOffboard(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
@@ -181,35 +187,15 @@ func ExampleTestBaseAccountsClient_BeginOffboard() {
 	}
 }
 
-// x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestBaseAccountGetFileUploadUrl.json
-func ExampleTestBaseAccountsClient_GetFileUploadURL() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.GetFileUploadURL(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		&armtestbase.TestBaseAccountsGetFileUploadURLOptions{Parameters: &armtestbase.GetFileUploadURLParameters{
-			BlobName: to.StringPtr("<blob-name>"),
-		},
-		})
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/CheckPackageNameAvailability.json
-func ExampleTestBaseAccountsClient_CheckPackageNameAvailability() {
+func ExampleAccountsClient_CheckPackageNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtestbase.NewTestBaseAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckPackageNameAvailability(ctx,
+	client := armtestbase.NewAccountsClient("<subscription-id>", cred, nil)
+	res, err := client.CheckPackageNameAvailability(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
 		armtestbase.PackageCheckNameAvailabilityParameters{
@@ -222,4 +208,5 @@ func ExampleTestBaseAccountsClient_CheckPackageNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientCheckPackageNameAvailabilityResult)
 }

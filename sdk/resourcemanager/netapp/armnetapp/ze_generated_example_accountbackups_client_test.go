@@ -26,13 +26,14 @@ func ExampleAccountBackupsClient_List() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewAccountBackupsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountBackupsClientListResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Backups_Account_Get.json
@@ -51,7 +52,7 @@ func ExampleAccountBackupsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Backup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountBackupsClientGetResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Backups_Account_Delete.json

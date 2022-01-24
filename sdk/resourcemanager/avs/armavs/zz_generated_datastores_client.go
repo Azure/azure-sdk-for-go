@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // DatastoresClient contains the methods for the Datastores group.
 // Don't use this type directly, use NewDatastoresClient() instead.
 type DatastoresClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatastoresClient creates a new instance of DatastoresClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatastoresClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DatastoresClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DatastoresClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a datastore in a private cloud cluster
-// If the operation fails it returns the *CloudError error type.
-func (client *DatastoresClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresBeginCreateOrUpdateOptions) (DatastoresCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// clusterName - Name of the cluster in the private cloud
+// datastoreName - Name of the datastore in the private cloud cluster
+// datastore - A datastore in a private cloud cluster
+// options - DatastoresClientBeginCreateOrUpdateOptions contains the optional parameters for the DatastoresClient.BeginCreateOrUpdate
+// method.
+func (client *DatastoresClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresClientBeginCreateOrUpdateOptions) (DatastoresClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, datastore, options)
 	if err != nil {
-		return DatastoresCreateOrUpdatePollerResponse{}, err
+		return DatastoresClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DatastoresCreateOrUpdatePollerResponse{
+	result := DatastoresClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatastoresClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DatastoresClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return DatastoresCreateOrUpdatePollerResponse{}, err
+		return DatastoresClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DatastoresCreateOrUpdatePoller{
+	result.Poller = &DatastoresClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a datastore in a private cloud cluster
-// If the operation fails it returns the *CloudError error type.
-func (client *DatastoresClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatastoresClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, datastore, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *DatastoresClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +116,7 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter datastoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datastoreName}", url.PathEscape(datastoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,42 +127,34 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, datastore)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DatastoresClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a datastore in a private cloud cluster
-// If the operation fails it returns the *CloudError error type.
-func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresBeginDeleteOptions) (DatastoresDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// clusterName - Name of the cluster in the private cloud
+// datastoreName - Name of the datastore in the private cloud cluster
+// options - DatastoresClientBeginDeleteOptions contains the optional parameters for the DatastoresClient.BeginDelete method.
+func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (DatastoresClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, options)
 	if err != nil {
-		return DatastoresDeletePollerResponse{}, err
+		return DatastoresClientDeletePollerResponse{}, err
 	}
-	result := DatastoresDeletePollerResponse{
+	result := DatastoresClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatastoresClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DatastoresClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return DatastoresDeletePollerResponse{}, err
+		return DatastoresClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DatastoresDeletePoller{
+	result.Poller = &DatastoresClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a datastore in a private cloud cluster
-// If the operation fails it returns the *CloudError error type.
-func (client *DatastoresClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatastoresClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +164,13 @@ func (client *DatastoresClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresBeginDeleteOptions) (*policy.Request, error) {
+func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -186,7 +192,7 @@ func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter datastoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datastoreName}", url.PathEscape(datastoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,38 +203,30 @@ func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DatastoresClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a datastore in a private cloud cluster
-// If the operation fails it returns the *CloudError error type.
-func (client *DatastoresClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresGetOptions) (DatastoresGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// clusterName - Name of the cluster in the private cloud
+// datastoreName - Name of the datastore in the private cloud cluster
+// options - DatastoresClientGetOptions contains the optional parameters for the DatastoresClient.Get method.
+func (client *DatastoresClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientGetOptions) (DatastoresClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, options)
 	if err != nil {
-		return DatastoresGetResponse{}, err
+		return DatastoresClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatastoresGetResponse{}, err
+		return DatastoresClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatastoresGetResponse{}, client.getHandleError(resp)
+		return DatastoresClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresGetOptions) (*policy.Request, error) {
+func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -250,7 +248,7 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter datastoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{datastoreName}", url.PathEscape(datastoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,43 +260,34 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatastoresClient) getHandleResponse(resp *http.Response) (DatastoresGetResponse, error) {
-	result := DatastoresGetResponse{RawResponse: resp}
+func (client *DatastoresClient) getHandleResponse(resp *http.Response) (DatastoresClientGetResponse, error) {
+	result := DatastoresClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Datastore); err != nil {
-		return DatastoresGetResponse{}, runtime.NewResponseError(err, resp)
+		return DatastoresClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DatastoresClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List datastores in a private cloud cluster
-// If the operation fails it returns the *CloudError error type.
-func (client *DatastoresClient) List(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresListOptions) *DatastoresListPager {
-	return &DatastoresListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// clusterName - Name of the cluster in the private cloud
+// options - DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
+func (client *DatastoresClient) List(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) *DatastoresClientListPager {
+	return &DatastoresClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, options)
 		},
-		advancer: func(ctx context.Context, resp DatastoresListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DatastoresClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatastoreList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresListOptions) (*policy.Request, error) {
+func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -316,7 +305,7 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -328,23 +317,10 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 }
 
 // listHandleResponse handles the List response.
-func (client *DatastoresClient) listHandleResponse(resp *http.Response) (DatastoresListResponse, error) {
-	result := DatastoresListResponse{RawResponse: resp}
+func (client *DatastoresClient) listHandleResponse(resp *http.Response) (DatastoresClientListResponse, error) {
+	result := DatastoresClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatastoreList); err != nil {
-		return DatastoresListResponse{}, runtime.NewResponseError(err, resp)
+		return DatastoresClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *DatastoresClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

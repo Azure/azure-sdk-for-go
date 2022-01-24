@@ -1,5 +1,206 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*RecordSetsClient.ListAllByDNSZone` parameter(s) have been changed from `(string, string, *RecordSetsListAllByDNSZoneOptions)` to `(string, string, *RecordSetsClientListAllByDNSZoneOptions)`
+- Function `*RecordSetsClient.ListAllByDNSZone` return value(s) have been changed from `(*RecordSetsListAllByDNSZonePager)` to `(*RecordSetsClientListAllByDNSZonePager)`
+- Function `*RecordSetsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, RecordType, *RecordSetsDeleteOptions)` to `(context.Context, string, string, string, RecordType, *RecordSetsClientDeleteOptions)`
+- Function `*RecordSetsClient.Delete` return value(s) have been changed from `(RecordSetsDeleteResponse, error)` to `(RecordSetsClientDeleteResponse, error)`
+- Function `*RecordSetsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, RecordType, RecordSet, *RecordSetsUpdateOptions)` to `(context.Context, string, string, string, RecordType, RecordSet, *RecordSetsClientUpdateOptions)`
+- Function `*RecordSetsClient.Update` return value(s) have been changed from `(RecordSetsUpdateResponse, error)` to `(RecordSetsClientUpdateResponse, error)`
+- Function `*ZonesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Zone, *ZonesCreateOrUpdateOptions)` to `(context.Context, string, string, Zone, *ZonesClientCreateOrUpdateOptions)`
+- Function `*ZonesClient.CreateOrUpdate` return value(s) have been changed from `(ZonesCreateOrUpdateResponse, error)` to `(ZonesClientCreateOrUpdateResponse, error)`
+- Function `*RecordSetsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, RecordType, RecordSet, *RecordSetsCreateOrUpdateOptions)` to `(context.Context, string, string, string, RecordType, RecordSet, *RecordSetsClientCreateOrUpdateOptions)`
+- Function `*RecordSetsClient.CreateOrUpdate` return value(s) have been changed from `(RecordSetsCreateOrUpdateResponse, error)` to `(RecordSetsClientCreateOrUpdateResponse, error)`
+- Function `*RecordSetsClient.ListByDNSZone` parameter(s) have been changed from `(string, string, *RecordSetsListByDNSZoneOptions)` to `(string, string, *RecordSetsClientListByDNSZoneOptions)`
+- Function `*RecordSetsClient.ListByDNSZone` return value(s) have been changed from `(*RecordSetsListByDNSZonePager)` to `(*RecordSetsClientListByDNSZonePager)`
+- Function `*RecordSetsClient.ListByType` parameter(s) have been changed from `(string, string, RecordType, *RecordSetsListByTypeOptions)` to `(string, string, RecordType, *RecordSetsClientListByTypeOptions)`
+- Function `*RecordSetsClient.ListByType` return value(s) have been changed from `(*RecordSetsListByTypePager)` to `(*RecordSetsClientListByTypePager)`
+- Function `*ZonesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ZonesListByResourceGroupOptions)` to `(string, *ZonesClientListByResourceGroupOptions)`
+- Function `*ZonesClient.ListByResourceGroup` return value(s) have been changed from `(*ZonesListByResourceGroupPager)` to `(*ZonesClientListByResourceGroupPager)`
+- Function `*RecordSetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, RecordType, *RecordSetsGetOptions)` to `(context.Context, string, string, string, RecordType, *RecordSetsClientGetOptions)`
+- Function `*RecordSetsClient.Get` return value(s) have been changed from `(RecordSetsGetResponse, error)` to `(RecordSetsClientGetResponse, error)`
+- Function `*ZonesClient.Update` parameter(s) have been changed from `(context.Context, string, string, ZoneUpdate, *ZonesUpdateOptions)` to `(context.Context, string, string, ZoneUpdate, *ZonesClientUpdateOptions)`
+- Function `*ZonesClient.Update` return value(s) have been changed from `(ZonesUpdateResponse, error)` to `(ZonesClientUpdateResponse, error)`
+- Function `*ZonesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ZonesGetOptions)` to `(context.Context, string, string, *ZonesClientGetOptions)`
+- Function `*ZonesClient.Get` return value(s) have been changed from `(ZonesGetResponse, error)` to `(ZonesClientGetResponse, error)`
+- Function `*ZonesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ZonesBeginDeleteOptions)` to `(context.Context, string, string, *ZonesClientBeginDeleteOptions)`
+- Function `*ZonesClient.BeginDelete` return value(s) have been changed from `(ZonesDeletePollerResponse, error)` to `(ZonesClientDeletePollerResponse, error)`
+- Function `*ZonesClient.List` parameter(s) have been changed from `(*ZonesListOptions)` to `(*ZonesClientListOptions)`
+- Function `*ZonesClient.List` return value(s) have been changed from `(*ZonesListPager)` to `(*ZonesClientListPager)`
+- Function `*ZonesDeletePollerResponse.Resume` has been removed
+- Function `*ZonesDeletePoller.Done` has been removed
+- Function `NewDNSResourceReferenceClient` has been removed
+- Function `*ZonesListByResourceGroupPager.PageResponse` has been removed
+- Function `*RecordSetsListByDNSZonePager.Err` has been removed
+- Function `*ZonesListByResourceGroupPager.NextPage` has been removed
+- Function `DNSResourceReferenceRequestProperties.MarshalJSON` has been removed
+- Function `*RecordSetsListByDNSZonePager.PageResponse` has been removed
+- Function `*ZonesListPager.PageResponse` has been removed
+- Function `*RecordSetsListByDNSZonePager.NextPage` has been removed
+- Function `*RecordSetsListAllByDNSZonePager.NextPage` has been removed
+- Function `*RecordSetsListByTypePager.Err` has been removed
+- Function `*RecordSetsListByTypePager.NextPage` has been removed
+- Function `*RecordSetsListAllByDNSZonePager.Err` has been removed
+- Function `*DNSResourceReferenceClient.GetByTargetResources` has been removed
+- Function `*ZonesListPager.NextPage` has been removed
+- Function `*RecordSetsListByTypePager.PageResponse` has been removed
+- Function `DNSResourceReference.MarshalJSON` has been removed
+- Function `*ZonesListPager.Err` has been removed
+- Function `*ZonesDeletePoller.ResumeToken` has been removed
+- Function `ZonesDeletePollerResponse.PollUntilDone` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*ZonesDeletePoller.Poll` has been removed
+- Function `*RecordSetsListAllByDNSZonePager.PageResponse` has been removed
+- Function `DNSResourceReferenceResultProperties.MarshalJSON` has been removed
+- Function `*ZonesDeletePoller.FinalResponse` has been removed
+- Function `*ZonesListByResourceGroupPager.Err` has been removed
+- Struct `DNSResourceReference` has been removed
+- Struct `DNSResourceReferenceClient` has been removed
+- Struct `DNSResourceReferenceGetByTargetResourcesOptions` has been removed
+- Struct `DNSResourceReferenceGetByTargetResourcesResponse` has been removed
+- Struct `DNSResourceReferenceGetByTargetResourcesResult` has been removed
+- Struct `DNSResourceReferenceRequest` has been removed
+- Struct `DNSResourceReferenceRequestProperties` has been removed
+- Struct `DNSResourceReferenceResult` has been removed
+- Struct `DNSResourceReferenceResultProperties` has been removed
+- Struct `RecordSetsCreateOrUpdateOptions` has been removed
+- Struct `RecordSetsCreateOrUpdateResponse` has been removed
+- Struct `RecordSetsCreateOrUpdateResult` has been removed
+- Struct `RecordSetsDeleteOptions` has been removed
+- Struct `RecordSetsDeleteResponse` has been removed
+- Struct `RecordSetsGetOptions` has been removed
+- Struct `RecordSetsGetResponse` has been removed
+- Struct `RecordSetsGetResult` has been removed
+- Struct `RecordSetsListAllByDNSZoneOptions` has been removed
+- Struct `RecordSetsListAllByDNSZonePager` has been removed
+- Struct `RecordSetsListAllByDNSZoneResponse` has been removed
+- Struct `RecordSetsListAllByDNSZoneResult` has been removed
+- Struct `RecordSetsListByDNSZoneOptions` has been removed
+- Struct `RecordSetsListByDNSZonePager` has been removed
+- Struct `RecordSetsListByDNSZoneResponse` has been removed
+- Struct `RecordSetsListByDNSZoneResult` has been removed
+- Struct `RecordSetsListByTypeOptions` has been removed
+- Struct `RecordSetsListByTypePager` has been removed
+- Struct `RecordSetsListByTypeResponse` has been removed
+- Struct `RecordSetsListByTypeResult` has been removed
+- Struct `RecordSetsUpdateOptions` has been removed
+- Struct `RecordSetsUpdateResponse` has been removed
+- Struct `RecordSetsUpdateResult` has been removed
+- Struct `ZonesBeginDeleteOptions` has been removed
+- Struct `ZonesCreateOrUpdateOptions` has been removed
+- Struct `ZonesCreateOrUpdateResponse` has been removed
+- Struct `ZonesCreateOrUpdateResult` has been removed
+- Struct `ZonesDeletePoller` has been removed
+- Struct `ZonesDeletePollerResponse` has been removed
+- Struct `ZonesDeleteResponse` has been removed
+- Struct `ZonesGetOptions` has been removed
+- Struct `ZonesGetResponse` has been removed
+- Struct `ZonesGetResult` has been removed
+- Struct `ZonesListByResourceGroupOptions` has been removed
+- Struct `ZonesListByResourceGroupPager` has been removed
+- Struct `ZonesListByResourceGroupResponse` has been removed
+- Struct `ZonesListByResourceGroupResult` has been removed
+- Struct `ZonesListOptions` has been removed
+- Struct `ZonesListPager` has been removed
+- Struct `ZonesListResponse` has been removed
+- Struct `ZonesListResult` has been removed
+- Struct `ZonesUpdateOptions` has been removed
+- Struct `ZonesUpdateResponse` has been removed
+- Struct `ZonesUpdateResult` has been removed
+- Field `Resource` of struct `Zone` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+
+### Features Added
+
+- New function `*ZonesClientListPager.PageResponse() ZonesClientListResponse`
+- New function `*ZonesClientListPager.NextPage(context.Context) bool`
+- New function `ResourceReferenceResultProperties.MarshalJSON() ([]byte, error)`
+- New function `ZonesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ZonesClientDeleteResponse, error)`
+- New function `*ZonesClientDeletePollerResponse.Resume(context.Context, *ZonesClient, string) error`
+- New function `*RecordSetsClientListByDNSZonePager.PageResponse() RecordSetsClientListByDNSZoneResponse`
+- New function `*ZonesClientDeletePoller.FinalResponse(context.Context) (ZonesClientDeleteResponse, error)`
+- New function `*ZonesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*RecordSetsClientListAllByDNSZonePager.Err() error`
+- New function `*RecordSetsClientListByDNSZonePager.NextPage(context.Context) bool`
+- New function `*RecordSetsClientListByTypePager.Err() error`
+- New function `*ZonesClientListPager.Err() error`
+- New function `*RecordSetsClientListByTypePager.PageResponse() RecordSetsClientListByTypeResponse`
+- New function `*ZonesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ZonesClientListByResourceGroupPager.PageResponse() ZonesClientListByResourceGroupResponse`
+- New function `*RecordSetsClientListByTypePager.NextPage(context.Context) bool`
+- New function `*ZonesClientDeletePoller.ResumeToken() (string, error)`
+- New function `ResourceReference.MarshalJSON() ([]byte, error)`
+- New function `ResourceReferenceRequestProperties.MarshalJSON() ([]byte, error)`
+- New function `*RecordSetsClientListAllByDNSZonePager.NextPage(context.Context) bool`
+- New function `*ZonesClientListByResourceGroupPager.Err() error`
+- New function `NewResourceReferenceClient(string, azcore.TokenCredential, *arm.ClientOptions) *ResourceReferenceClient`
+- New function `*ResourceReferenceClient.GetByTargetResources(context.Context, ResourceReferenceRequest, *ResourceReferenceClientGetByTargetResourcesOptions) (ResourceReferenceClientGetByTargetResourcesResponse, error)`
+- New function `*RecordSetsClientListAllByDNSZonePager.PageResponse() RecordSetsClientListAllByDNSZoneResponse`
+- New function `*RecordSetsClientListByDNSZonePager.Err() error`
+- New function `*ZonesClientDeletePoller.Done() bool`
+- New struct `RecordSetsClientCreateOrUpdateOptions`
+- New struct `RecordSetsClientCreateOrUpdateResponse`
+- New struct `RecordSetsClientCreateOrUpdateResult`
+- New struct `RecordSetsClientDeleteOptions`
+- New struct `RecordSetsClientDeleteResponse`
+- New struct `RecordSetsClientGetOptions`
+- New struct `RecordSetsClientGetResponse`
+- New struct `RecordSetsClientGetResult`
+- New struct `RecordSetsClientListAllByDNSZoneOptions`
+- New struct `RecordSetsClientListAllByDNSZonePager`
+- New struct `RecordSetsClientListAllByDNSZoneResponse`
+- New struct `RecordSetsClientListAllByDNSZoneResult`
+- New struct `RecordSetsClientListByDNSZoneOptions`
+- New struct `RecordSetsClientListByDNSZonePager`
+- New struct `RecordSetsClientListByDNSZoneResponse`
+- New struct `RecordSetsClientListByDNSZoneResult`
+- New struct `RecordSetsClientListByTypeOptions`
+- New struct `RecordSetsClientListByTypePager`
+- New struct `RecordSetsClientListByTypeResponse`
+- New struct `RecordSetsClientListByTypeResult`
+- New struct `RecordSetsClientUpdateOptions`
+- New struct `RecordSetsClientUpdateResponse`
+- New struct `RecordSetsClientUpdateResult`
+- New struct `ResourceReference`
+- New struct `ResourceReferenceClient`
+- New struct `ResourceReferenceClientGetByTargetResourcesOptions`
+- New struct `ResourceReferenceClientGetByTargetResourcesResponse`
+- New struct `ResourceReferenceClientGetByTargetResourcesResult`
+- New struct `ResourceReferenceRequest`
+- New struct `ResourceReferenceRequestProperties`
+- New struct `ResourceReferenceResult`
+- New struct `ResourceReferenceResultProperties`
+- New struct `ZonesClientBeginDeleteOptions`
+- New struct `ZonesClientCreateOrUpdateOptions`
+- New struct `ZonesClientCreateOrUpdateResponse`
+- New struct `ZonesClientCreateOrUpdateResult`
+- New struct `ZonesClientDeletePoller`
+- New struct `ZonesClientDeletePollerResponse`
+- New struct `ZonesClientDeleteResponse`
+- New struct `ZonesClientGetOptions`
+- New struct `ZonesClientGetResponse`
+- New struct `ZonesClientGetResult`
+- New struct `ZonesClientListByResourceGroupOptions`
+- New struct `ZonesClientListByResourceGroupPager`
+- New struct `ZonesClientListByResourceGroupResponse`
+- New struct `ZonesClientListByResourceGroupResult`
+- New struct `ZonesClientListOptions`
+- New struct `ZonesClientListPager`
+- New struct `ZonesClientListResponse`
+- New struct `ZonesClientListResult`
+- New struct `ZonesClientUpdateOptions`
+- New struct `ZonesClientUpdateResponse`
+- New struct `ZonesClientUpdateResult`
+- New field `Name` in struct `Zone`
+- New field `Type` in struct `Zone`
+- New field `Location` in struct `Zone`
+- New field `Tags` in struct `Zone`
+- New field `ID` in struct `Zone`
+- New field `Error` in struct `CloudError`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Initial preview release.

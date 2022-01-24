@@ -24,42 +24,57 @@ import (
 // SQLPoolSecurityAlertPoliciesClient contains the methods for the SQLPoolSecurityAlertPolicies group.
 // Don't use this type directly, use NewSQLPoolSecurityAlertPoliciesClient() instead.
 type SQLPoolSecurityAlertPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolSecurityAlertPoliciesClient creates a new instance of SQLPoolSecurityAlertPoliciesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolSecurityAlertPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolSecurityAlertPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolSecurityAlertPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a Sql pool's security alert policy.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, securityAlertPolicyName SecurityAlertPolicyName, parameters SQLPoolSecurityAlertPolicy, options *SQLPoolSecurityAlertPoliciesCreateOrUpdateOptions) (SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// securityAlertPolicyName - The name of the security alert policy.
+// parameters - The Sql pool security alert policy.
+// options - SQLPoolSecurityAlertPoliciesClientCreateOrUpdateOptions contains the optional parameters for the SQLPoolSecurityAlertPoliciesClient.CreateOrUpdate
+// method.
+func (client *SQLPoolSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, securityAlertPolicyName SecurityAlertPolicyName, parameters SQLPoolSecurityAlertPolicy, options *SQLPoolSecurityAlertPoliciesClientCreateOrUpdateOptions) (SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, parameters, options)
 	if err != nil {
-		return SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse{}, err
+		return SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse{}, err
+		return SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, securityAlertPolicyName SecurityAlertPolicyName, parameters SQLPoolSecurityAlertPolicy, options *SQLPoolSecurityAlertPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, securityAlertPolicyName SecurityAlertPolicyName, parameters SQLPoolSecurityAlertPolicy, options *SQLPoolSecurityAlertPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +96,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter securityAlertPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityAlertPolicyName}", url.PathEscape(string(securityAlertPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,45 +108,39 @@ func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ct
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse, error) {
-	result := SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse, error) {
+	result := SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolSecurityAlertPolicy); err != nil {
-		return SQLPoolSecurityAlertPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get a Sql pool's security alert policy.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, securityAlertPolicyName SecurityAlertPolicyName, options *SQLPoolSecurityAlertPoliciesGetOptions) (SQLPoolSecurityAlertPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// securityAlertPolicyName - The name of the security alert policy.
+// options - SQLPoolSecurityAlertPoliciesClientGetOptions contains the optional parameters for the SQLPoolSecurityAlertPoliciesClient.Get
+// method.
+func (client *SQLPoolSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, securityAlertPolicyName SecurityAlertPolicyName, options *SQLPoolSecurityAlertPoliciesClientGetOptions) (SQLPoolSecurityAlertPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, options)
 	if err != nil {
-		return SQLPoolSecurityAlertPoliciesGetResponse{}, err
+		return SQLPoolSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolSecurityAlertPoliciesGetResponse{}, err
+		return SQLPoolSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolSecurityAlertPoliciesGetResponse{}, client.getHandleError(resp)
+		return SQLPoolSecurityAlertPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, securityAlertPolicyName SecurityAlertPolicyName, options *SQLPoolSecurityAlertPoliciesGetOptions) (*policy.Request, error) {
+func (client *SQLPoolSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, securityAlertPolicyName SecurityAlertPolicyName, options *SQLPoolSecurityAlertPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -153,7 +162,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter securityAlertPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityAlertPolicyName}", url.PathEscape(string(securityAlertPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,42 +174,35 @@ func (client *SQLPoolSecurityAlertPoliciesClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (SQLPoolSecurityAlertPoliciesGetResponse, error) {
-	result := SQLPoolSecurityAlertPoliciesGetResponse{RawResponse: resp}
+func (client *SQLPoolSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (SQLPoolSecurityAlertPoliciesClientGetResponse, error) {
+	result := SQLPoolSecurityAlertPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolSecurityAlertPolicy); err != nil {
-		return SQLPoolSecurityAlertPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLPoolSecurityAlertPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Get a list of Sql pool's security alert policies.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolSecurityAlertPoliciesClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSecurityAlertPoliciesListOptions) *SQLPoolSecurityAlertPoliciesListPager {
-	return &SQLPoolSecurityAlertPoliciesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolSecurityAlertPoliciesClientListOptions contains the optional parameters for the SQLPoolSecurityAlertPoliciesClient.List
+// method.
+func (client *SQLPoolSecurityAlertPoliciesClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSecurityAlertPoliciesClientListOptions) *SQLPoolSecurityAlertPoliciesClientListPager {
+	return &SQLPoolSecurityAlertPoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolSecurityAlertPoliciesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolSecurityAlertPoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListSQLPoolSecurityAlertPolicies.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLPoolSecurityAlertPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSecurityAlertPoliciesListOptions) (*policy.Request, error) {
+func (client *SQLPoolSecurityAlertPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSecurityAlertPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/securityAlertPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -218,7 +220,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,22 +232,10 @@ func (client *SQLPoolSecurityAlertPoliciesClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLPoolSecurityAlertPoliciesClient) listHandleResponse(resp *http.Response) (SQLPoolSecurityAlertPoliciesListResponse, error) {
-	result := SQLPoolSecurityAlertPoliciesListResponse{RawResponse: resp}
+func (client *SQLPoolSecurityAlertPoliciesClient) listHandleResponse(resp *http.Response) (SQLPoolSecurityAlertPoliciesClientListResponse, error) {
+	result := SQLPoolSecurityAlertPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListSQLPoolSecurityAlertPolicies); err != nil {
-		return SQLPoolSecurityAlertPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolSecurityAlertPoliciesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SQLPoolSecurityAlertPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

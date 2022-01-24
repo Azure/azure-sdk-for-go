@@ -19,13 +19,13 @@ import (
 )
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/OperationResults/Get.json
-func ExampleSaaSOperationClient_BeginGet() {
+func ExampleOperationClient_BeginGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaaSOperationClient(cred, nil)
+	client := armsaas.NewOperationClient(cred, nil)
 	poller, err := client.BeginGet(ctx,
 		"<operation-id>",
 		nil)
@@ -36,5 +36,5 @@ func ExampleSaaSOperationClient_BeginGet() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SaasResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OperationClientGetResult)
 }

@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,39 +25,52 @@ import (
 // ReportsClient contains the methods for the Reports group.
 // Don't use this type directly, use NewReportsClient() instead.
 type ReportsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewReportsClient creates a new instance of ReportsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReportsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReportsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReportsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByAPI - Lists report records by API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) ListByAPI(resourceGroupName string, serviceName string, filter string, options *ReportsListByAPIOptions) *ReportsListByAPIPager {
-	return &ReportsListByAPIPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// filter - The filter to apply on the operation.
+// options - ReportsClientListByAPIOptions contains the optional parameters for the ReportsClient.ListByAPI method.
+func (client *ReportsClient) ListByAPI(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) *ReportsClientListByAPIPager {
+	return &ReportsClientListByAPIPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, filter, options)
 		},
-		advancer: func(ctx context.Context, resp ReportsListByAPIResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReportsClientListByAPIResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
 		},
 	}
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
-func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsListByAPIOptions) (*policy.Request, error) {
+func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byApi"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -72,7 +84,7 @@ func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,43 +106,58 @@ func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourc
 }
 
 // listByAPIHandleResponse handles the ListByAPI response.
-func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (ReportsListByAPIResponse, error) {
-	result := ReportsListByAPIResponse{RawResponse: resp}
+func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (ReportsClientListByAPIResponse, error) {
+	result := ReportsClientListByAPIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByAPIResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientListByAPIResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAPIHandleError handles the ListByAPI error response.
-func (client *ReportsClient) listByAPIHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByGeo - Lists report records by geography.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) ListByGeo(resourceGroupName string, serviceName string, filter string, options *ReportsListByGeoOptions) *ReportsListByGeoPager {
-	return &ReportsListByGeoPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// filter - | Field | Usage | Supported operators | Supported functions |
+// |-------------|-------------|-------------|-------------|
+// | timestamp | filter | ge, le | |
+// | country | select | | |
+// | region | select | | |
+// | zip | select | | |
+// | apiRegion | filter | eq | |
+// | userId | filter | eq | |
+// | productId | filter | eq | |
+// | subscriptionId | filter | eq | |
+// | apiId | filter | eq | |
+// | operationId | filter | eq | |
+// | callCountSuccess | select | | |
+// | callCountBlocked | select | | |
+// | callCountFailed | select | | |
+// | callCountOther | select | | |
+// | bandwidth | select, orderBy | | |
+// | cacheHitsCount | select | | |
+// | cacheMissCount | select | | |
+// | apiTimeAvg | select | | |
+// | apiTimeMin | select | | |
+// | apiTimeMax | select | | |
+// | serviceTimeAvg | select | | |
+// | serviceTimeMin | select | | |
+// | serviceTimeMax | select | | |
+// options - ReportsClientListByGeoOptions contains the optional parameters for the ReportsClient.ListByGeo method.
+func (client *ReportsClient) ListByGeo(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) *ReportsClientListByGeoPager {
+	return &ReportsClientListByGeoPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByGeoCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
 		},
-		advancer: func(ctx context.Context, resp ReportsListByGeoResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReportsClientListByGeoResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
 		},
 	}
 }
 
 // listByGeoCreateRequest creates the ListByGeo request.
-func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsListByGeoOptions) (*policy.Request, error) {
+func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byGeo"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -144,7 +171,7 @@ func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,43 +190,57 @@ func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourc
 }
 
 // listByGeoHandleResponse handles the ListByGeo response.
-func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (ReportsListByGeoResponse, error) {
-	result := ReportsListByGeoResponse{RawResponse: resp}
+func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (ReportsClientListByGeoResponse, error) {
+	result := ReportsClientListByGeoResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByGeoResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientListByGeoResponse{}, err
 	}
 	return result, nil
 }
 
-// listByGeoHandleError handles the ListByGeo error response.
-func (client *ReportsClient) listByGeoHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByOperation - Lists report records by API Operations.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) ListByOperation(resourceGroupName string, serviceName string, filter string, options *ReportsListByOperationOptions) *ReportsListByOperationPager {
-	return &ReportsListByOperationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// filter - | Field | Usage | Supported operators | Supported functions |
+// |-------------|-------------|-------------|-------------|
+// | timestamp | filter | ge, le | |
+// | displayName | select, orderBy | | |
+// | apiRegion | filter | eq | |
+// | userId | filter | eq | |
+// | productId | filter | eq | |
+// | subscriptionId | filter | eq | |
+// | apiId | filter | eq | |
+// | operationId | select, filter | eq | |
+// | callCountSuccess | select, orderBy | | |
+// | callCountBlocked | select, orderBy | | |
+// | callCountFailed | select, orderBy | | |
+// | callCountOther | select, orderBy | | |
+// | callCountTotal | select, orderBy | | |
+// | bandwidth | select, orderBy | | |
+// | cacheHitsCount | select | | |
+// | cacheMissCount | select | | |
+// | apiTimeAvg | select, orderBy | | |
+// | apiTimeMin | select | | |
+// | apiTimeMax | select | | |
+// | serviceTimeAvg | select | | |
+// | serviceTimeMin | select | | |
+// | serviceTimeMax | select | | |
+// options - ReportsClientListByOperationOptions contains the optional parameters for the ReportsClient.ListByOperation method.
+func (client *ReportsClient) ListByOperation(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) *ReportsClientListByOperationPager {
+	return &ReportsClientListByOperationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
 		},
-		advancer: func(ctx context.Context, resp ReportsListByOperationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReportsClientListByOperationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
 		},
 	}
 }
 
 // listByOperationCreateRequest creates the ListByOperation request.
-func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsListByOperationOptions) (*policy.Request, error) {
+func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byOperation"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -213,7 +254,7 @@ func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,43 +276,55 @@ func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, r
 }
 
 // listByOperationHandleResponse handles the ListByOperation response.
-func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) (ReportsListByOperationResponse, error) {
-	result := ReportsListByOperationResponse{RawResponse: resp}
+func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) (ReportsClientListByOperationResponse, error) {
+	result := ReportsClientListByOperationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByOperationResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientListByOperationResponse{}, err
 	}
 	return result, nil
 }
 
-// listByOperationHandleError handles the ListByOperation error response.
-func (client *ReportsClient) listByOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProduct - Lists report records by Product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) ListByProduct(resourceGroupName string, serviceName string, filter string, options *ReportsListByProductOptions) *ReportsListByProductPager {
-	return &ReportsListByProductPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// filter - | Field | Usage | Supported operators | Supported functions |
+// |-------------|-------------|-------------|-------------|
+// | timestamp | filter | ge, le | |
+// | displayName | select, orderBy | | |
+// | apiRegion | filter | eq | |
+// | userId | filter | eq | |
+// | productId | select, filter | eq | |
+// | subscriptionId | filter | eq | |
+// | callCountSuccess | select, orderBy | | |
+// | callCountBlocked | select, orderBy | | |
+// | callCountFailed | select, orderBy | | |
+// | callCountOther | select, orderBy | | |
+// | callCountTotal | select, orderBy | | |
+// | bandwidth | select, orderBy | | |
+// | cacheHitsCount | select | | |
+// | cacheMissCount | select | | |
+// | apiTimeAvg | select, orderBy | | |
+// | apiTimeMin | select | | |
+// | apiTimeMax | select | | |
+// | serviceTimeAvg | select | | |
+// | serviceTimeMin | select | | |
+// | serviceTimeMax | select | | |
+// options - ReportsClientListByProductOptions contains the optional parameters for the ReportsClient.ListByProduct method.
+func (client *ReportsClient) ListByProduct(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) *ReportsClientListByProductPager {
+	return &ReportsClientListByProductPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
 		},
-		advancer: func(ctx context.Context, resp ReportsListByProductResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReportsClientListByProductResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
 		},
 	}
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
-func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsListByProductOptions) (*policy.Request, error) {
+func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byProduct"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -285,7 +338,7 @@ func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,46 +360,45 @@ func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, res
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (ReportsListByProductResponse, error) {
-	result := ReportsListByProductResponse{RawResponse: resp}
+func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (ReportsClientListByProductResponse, error) {
+	result := ReportsClientListByProductResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByProductResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientListByProductResponse{}, err
 	}
 	return result, nil
 }
 
-// listByProductHandleError handles the ListByProduct error response.
-func (client *ReportsClient) listByProductHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByRequest - Lists report records by Request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) ListByRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsListByRequestOptions) (ReportsListByRequestResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// filter - | Field | Usage | Supported operators | Supported functions |
+// |-------------|-------------|-------------|-------------|
+// | timestamp | filter | ge, le | |
+// | apiId | filter | eq | |
+// | operationId | filter | eq | |
+// | productId | filter | eq | |
+// | userId | filter | eq | |
+// | apiRegion | filter | eq | |
+// | subscriptionId | filter | eq | |
+// options - ReportsClientListByRequestOptions contains the optional parameters for the ReportsClient.ListByRequest method.
+func (client *ReportsClient) ListByRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) (ReportsClientListByRequestResponse, error) {
 	req, err := client.listByRequestCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
 	if err != nil {
-		return ReportsListByRequestResponse{}, err
+		return ReportsClientListByRequestResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReportsListByRequestResponse{}, err
+		return ReportsClientListByRequestResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReportsListByRequestResponse{}, client.listByRequestHandleError(resp)
+		return ReportsClientListByRequestResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByRequestHandleResponse(resp)
 }
 
 // listByRequestCreateRequest creates the ListByRequest request.
-func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsListByRequestOptions) (*policy.Request, error) {
+func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byRequest"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -360,7 +412,7 @@ func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -379,43 +431,56 @@ func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, res
 }
 
 // listByRequestHandleResponse handles the ListByRequest response.
-func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (ReportsListByRequestResponse, error) {
-	result := ReportsListByRequestResponse{RawResponse: resp}
+func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (ReportsClientListByRequestResponse, error) {
+	result := ReportsClientListByRequestResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestReportCollection); err != nil {
-		return ReportsListByRequestResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientListByRequestResponse{}, err
 	}
 	return result, nil
 }
 
-// listByRequestHandleError handles the ListByRequest error response.
-func (client *ReportsClient) listByRequestHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists report records by subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) ListBySubscription(resourceGroupName string, serviceName string, filter string, options *ReportsListBySubscriptionOptions) *ReportsListBySubscriptionPager {
-	return &ReportsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// filter - | Field | Usage | Supported operators | Supported functions |
+// |-------------|-------------|-------------|-------------|
+// | timestamp | filter | ge, le | |
+// | displayName | select, orderBy | | |
+// | apiRegion | filter | eq | |
+// | userId | select, filter | eq | |
+// | productId | select, filter | eq | |
+// | subscriptionId | select, filter | eq | |
+// | callCountSuccess | select, orderBy | | |
+// | callCountBlocked | select, orderBy | | |
+// | callCountFailed | select, orderBy | | |
+// | callCountOther | select, orderBy | | |
+// | callCountTotal | select, orderBy | | |
+// | bandwidth | select, orderBy | | |
+// | cacheHitsCount | select | | |
+// | cacheMissCount | select | | |
+// | apiTimeAvg | select, orderBy | | |
+// | apiTimeMin | select | | |
+// | apiTimeMax | select | | |
+// | serviceTimeAvg | select | | |
+// | serviceTimeMin | select | | |
+// | serviceTimeMax | select | | |
+// options - ReportsClientListBySubscriptionOptions contains the optional parameters for the ReportsClient.ListBySubscription
+// method.
+func (client *ReportsClient) ListBySubscription(resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) *ReportsClientListBySubscriptionPager {
+	return &ReportsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
 		},
-		advancer: func(ctx context.Context, resp ReportsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReportsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/bySubscription"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -429,7 +494,7 @@ func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -451,43 +516,59 @@ func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Response) (ReportsListBySubscriptionResponse, error) {
-	result := ReportsListBySubscriptionResponse{RawResponse: resp}
+func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Response) (ReportsClientListBySubscriptionResponse, error) {
+	result := ReportsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ReportsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByTime - Lists report records by Time.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) ListByTime(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsListByTimeOptions) *ReportsListByTimePager {
-	return &ReportsListByTimePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// filter - | Field | Usage | Supported operators | Supported functions |
+// |-------------|-------------|-------------|-------------|
+// | timestamp | filter, select | ge, le | |
+// | interval | select | | |
+// | apiRegion | filter | eq | |
+// | userId | filter | eq | |
+// | productId | filter | eq | |
+// | subscriptionId | filter | eq | |
+// | apiId | filter | eq | |
+// | operationId | filter | eq | |
+// | callCountSuccess | select | | |
+// | callCountBlocked | select | | |
+// | callCountFailed | select | | |
+// | callCountOther | select | | |
+// | bandwidth | select, orderBy | | |
+// | cacheHitsCount | select | | |
+// | cacheMissCount | select | | |
+// | apiTimeAvg | select | | |
+// | apiTimeMin | select | | |
+// | apiTimeMax | select | | |
+// | serviceTimeAvg | select | | |
+// | serviceTimeMin | select | | |
+// | serviceTimeMax | select | | |
+// interval - By time interval. Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601
+// format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
+// TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
+// options - ReportsClientListByTimeOptions contains the optional parameters for the ReportsClient.ListByTime method.
+func (client *ReportsClient) ListByTime(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) *ReportsClientListByTimePager {
+	return &ReportsClientListByTimePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByTimeCreateRequest(ctx, resourceGroupName, serviceName, filter, interval, options)
 		},
-		advancer: func(ctx context.Context, resp ReportsListByTimeResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReportsClientListByTimeResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
 		},
 	}
 }
 
 // listByTimeCreateRequest creates the ListByTime request.
-func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, interval string, options *ReportsListByTimeOptions) (*policy.Request, error) {
+func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byTime"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -501,7 +582,7 @@ func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -524,43 +605,57 @@ func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resour
 }
 
 // listByTimeHandleResponse handles the ListByTime response.
-func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (ReportsListByTimeResponse, error) {
-	result := ReportsListByTimeResponse{RawResponse: resp}
+func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (ReportsClientListByTimeResponse, error) {
+	result := ReportsClientListByTimeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByTimeResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientListByTimeResponse{}, err
 	}
 	return result, nil
 }
 
-// listByTimeHandleError handles the ListByTime error response.
-func (client *ReportsClient) listByTimeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByUser - Lists report records by User.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReportsClient) ListByUser(resourceGroupName string, serviceName string, filter string, options *ReportsListByUserOptions) *ReportsListByUserPager {
-	return &ReportsListByUserPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// filter - | Field | Usage | Supported operators | Supported functions |
+// |-------------|-------------|-------------|-------------|
+// | timestamp | filter | ge, le | |
+// | displayName | select, orderBy | | |
+// | userId | select, filter | eq | |
+// | apiRegion | filter | eq | |
+// | productId | filter | eq | |
+// | subscriptionId | filter | eq | |
+// | apiId | filter | eq | |
+// | operationId | filter | eq | |
+// | callCountSuccess | select, orderBy | | |
+// | callCountBlocked | select, orderBy | | |
+// | callCountFailed | select, orderBy | | |
+// | callCountOther | select, orderBy | | |
+// | callCountTotal | select, orderBy | | |
+// | bandwidth | select, orderBy | | |
+// | cacheHitsCount | select | | |
+// | cacheMissCount | select | | |
+// | apiTimeAvg | select, orderBy | | |
+// | apiTimeMin | select | | |
+// | apiTimeMax | select | | |
+// | serviceTimeAvg | select | | |
+// | serviceTimeMin | select | | |
+// | serviceTimeMax | select | | |
+// options - ReportsClientListByUserOptions contains the optional parameters for the ReportsClient.ListByUser method.
+func (client *ReportsClient) ListByUser(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) *ReportsClientListByUserPager {
+	return &ReportsClientListByUserPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByUserCreateRequest(ctx, resourceGroupName, serviceName, filter, options)
 		},
-		advancer: func(ctx context.Context, resp ReportsListByUserResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReportsClientListByUserResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReportCollection.NextLink)
 		},
 	}
 }
 
 // listByUserCreateRequest creates the ListByUser request.
-func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsListByUserOptions) (*policy.Request, error) {
+func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byUser"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -574,7 +669,7 @@ func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -596,23 +691,10 @@ func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resour
 }
 
 // listByUserHandleResponse handles the ListByUser response.
-func (client *ReportsClient) listByUserHandleResponse(resp *http.Response) (ReportsListByUserResponse, error) {
-	result := ReportsListByUserResponse{RawResponse: resp}
+func (client *ReportsClient) listByUserHandleResponse(resp *http.Response) (ReportsClientListByUserResponse, error) {
+	result := ReportsClientListByUserResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByUserResponse{}, runtime.NewResponseError(err, resp)
+		return ReportsClientListByUserResponse{}, err
 	}
 	return result, nil
-}
-
-// listByUserHandleError handles the ListByUser error response.
-func (client *ReportsClient) listByUserHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

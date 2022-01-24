@@ -11,7 +11,6 @@ package armtrafficmanager
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,56 @@ import (
 // ProfilesClient contains the methods for the Profiles group.
 // Don't use this type directly, use NewProfilesClient() instead.
 type ProfilesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProfilesClient creates a new instance of ProfilesClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProfilesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProfilesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProfilesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckTrafficManagerRelativeDNSNameAvailability - Checks the availability of a Traffic Manager Relative DNS name.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailability(ctx context.Context, parameters CheckTrafficManagerRelativeDNSNameAvailabilityParameters, options *ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityOptions) (ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// parameters - The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
+// options - ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions contains the optional parameters for the
+// ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability method.
+func (client *ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailability(ctx context.Context, parameters CheckTrafficManagerRelativeDNSNameAvailabilityParameters, options *ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions) (ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse, error) {
 	req, err := client.checkTrafficManagerRelativeDNSNameAvailabilityCreateRequest(ctx, parameters, options)
 	if err != nil {
-		return ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, err
+		return ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, err
+		return ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, client.checkTrafficManagerRelativeDNSNameAvailabilityHandleError(resp)
+		return ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkTrafficManagerRelativeDNSNameAvailabilityHandleResponse(resp)
 }
 
 // checkTrafficManagerRelativeDNSNameAvailabilityCreateRequest creates the CheckTrafficManagerRelativeDNSNameAvailability request.
-func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityCreateRequest(ctx context.Context, parameters CheckTrafficManagerRelativeDNSNameAvailabilityParameters, options *ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityCreateRequest(ctx context.Context, parameters CheckTrafficManagerRelativeDNSNameAvailabilityParameters, options *ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Network/checkTrafficManagerNameAvailability"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -74,46 +85,37 @@ func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityCrea
 }
 
 // checkTrafficManagerRelativeDNSNameAvailabilityHandleResponse handles the CheckTrafficManagerRelativeDNSNameAvailability response.
-func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityHandleResponse(resp *http.Response) (ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse, error) {
-	result := ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TrafficManagerNameAvailability); err != nil {
-		return ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityHandleResponse(resp *http.Response) (ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse, error) {
+	result := ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
+		return ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkTrafficManagerRelativeDNSNameAvailabilityHandleError handles the CheckTrafficManagerRelativeDNSNameAvailability error response.
-func (client *ProfilesClient) checkTrafficManagerRelativeDNSNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdate - Create or update a Traffic Manager profile.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProfilesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesCreateOrUpdateOptions) (ProfilesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Traffic Manager profile.
+// profileName - The name of the Traffic Manager profile.
+// parameters - The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
+// options - ProfilesClientCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.CreateOrUpdate method.
+func (client *ProfilesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesClientCreateOrUpdateOptions) (ProfilesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, profileName, parameters, options)
 	if err != nil {
-		return ProfilesCreateOrUpdateResponse{}, err
+		return ProfilesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProfilesCreateOrUpdateResponse{}, err
+		return ProfilesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ProfilesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ProfilesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -127,7 +129,7 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,46 +141,36 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ProfilesClient) createOrUpdateHandleResponse(resp *http.Response) (ProfilesCreateOrUpdateResponse, error) {
-	result := ProfilesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ProfilesClient) createOrUpdateHandleResponse(resp *http.Response) (ProfilesClientCreateOrUpdateResponse, error) {
+	result := ProfilesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
-		return ProfilesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ProfilesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ProfilesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a Traffic Manager profile.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProfilesClient) Delete(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesDeleteOptions) (ProfilesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Traffic Manager profile to be deleted.
+// profileName - The name of the Traffic Manager profile to be deleted.
+// options - ProfilesClientDeleteOptions contains the optional parameters for the ProfilesClient.Delete method.
+func (client *ProfilesClient) Delete(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientDeleteOptions) (ProfilesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
-		return ProfilesDeleteResponse{}, err
+		return ProfilesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProfilesDeleteResponse{}, err
+		return ProfilesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ProfilesDeleteResponse{}, client.deleteHandleError(resp)
+		return ProfilesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesDeleteOptions) (*policy.Request, error) {
+func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -192,7 +184,7 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,46 +196,36 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ProfilesClient) deleteHandleResponse(resp *http.Response) (ProfilesDeleteResponse, error) {
-	result := ProfilesDeleteResponse{RawResponse: resp}
+func (client *ProfilesClient) deleteHandleResponse(resp *http.Response) (ProfilesClientDeleteResponse, error) {
+	result := ProfilesClientDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeleteOperationResult); err != nil {
-		return ProfilesDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return ProfilesClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ProfilesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a Traffic Manager profile.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProfilesClient) Get(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesGetOptions) (ProfilesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Traffic Manager profile.
+// profileName - The name of the Traffic Manager profile.
+// options - ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
+func (client *ProfilesClient) Get(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientGetOptions) (ProfilesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, options)
 	if err != nil {
-		return ProfilesGetResponse{}, err
+		return ProfilesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProfilesGetResponse{}, err
+		return ProfilesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProfilesGetResponse{}, client.getHandleError(resp)
+		return ProfilesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesGetOptions) (*policy.Request, error) {
+func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -257,7 +239,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,46 +251,36 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesGetResponse, error) {
-	result := ProfilesGetResponse{RawResponse: resp}
+func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesClientGetResponse, error) {
+	result := ProfilesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
-		return ProfilesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProfilesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProfilesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists all Traffic Manager profiles within a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProfilesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ProfilesListByResourceGroupOptions) (ProfilesListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Traffic Manager profiles to be listed.
+// options - ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.ListByResourceGroup
+// method.
+func (client *ProfilesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ProfilesClientListByResourceGroupOptions) (ProfilesClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return ProfilesListByResourceGroupResponse{}, err
+		return ProfilesClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProfilesListByResourceGroupResponse{}, err
+		return ProfilesClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProfilesListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return ProfilesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ProfilesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ProfilesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -318,7 +290,7 @@ func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -330,52 +302,41 @@ func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Response) (ProfilesListByResourceGroupResponse, error) {
-	result := ProfilesListByResourceGroupResponse{RawResponse: resp}
+func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Response) (ProfilesClientListByResourceGroupResponse, error) {
+	result := ProfilesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
-		return ProfilesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ProfilesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ProfilesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists all Traffic Manager profiles within a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProfilesClient) ListBySubscription(ctx context.Context, options *ProfilesListBySubscriptionOptions) (ProfilesListBySubscriptionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ProfilesClientListBySubscriptionOptions contains the optional parameters for the ProfilesClient.ListBySubscription
+// method.
+func (client *ProfilesClient) ListBySubscription(ctx context.Context, options *ProfilesClientListBySubscriptionOptions) (ProfilesClientListBySubscriptionResponse, error) {
 	req, err := client.listBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
-		return ProfilesListBySubscriptionResponse{}, err
+		return ProfilesClientListBySubscriptionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProfilesListBySubscriptionResponse{}, err
+		return ProfilesClientListBySubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProfilesListBySubscriptionResponse{}, client.listBySubscriptionHandleError(resp)
+		return ProfilesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBySubscriptionHandleResponse(resp)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ProfilesClient) listBySubscriptionCreateRequest(ctx context.Context, options *ProfilesListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ProfilesClient) listBySubscriptionCreateRequest(ctx context.Context, options *ProfilesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficmanagerprofiles"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -387,46 +348,37 @@ func (client *ProfilesClient) listBySubscriptionCreateRequest(ctx context.Contex
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ProfilesClient) listBySubscriptionHandleResponse(resp *http.Response) (ProfilesListBySubscriptionResponse, error) {
-	result := ProfilesListBySubscriptionResponse{RawResponse: resp}
+func (client *ProfilesClient) listBySubscriptionHandleResponse(resp *http.Response) (ProfilesClientListBySubscriptionResponse, error) {
+	result := ProfilesClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
-		return ProfilesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ProfilesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ProfilesClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a Traffic Manager profile.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProfilesClient) Update(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesUpdateOptions) (ProfilesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the Traffic Manager profile.
+// profileName - The name of the Traffic Manager profile.
+// parameters - The Traffic Manager profile parameters supplied to the Update operation.
+// options - ProfilesClientUpdateOptions contains the optional parameters for the ProfilesClient.Update method.
+func (client *ProfilesClient) Update(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesClientUpdateOptions) (ProfilesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, parameters, options)
 	if err != nil {
-		return ProfilesUpdateResponse{}, err
+		return ProfilesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProfilesUpdateResponse{}, err
+		return ProfilesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProfilesUpdateResponse{}, client.updateHandleError(resp)
+		return ProfilesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesUpdateOptions) (*policy.Request, error) {
+func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, parameters Profile, options *ProfilesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -440,7 +392,7 @@ func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -452,23 +404,10 @@ func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProfilesClient) updateHandleResponse(resp *http.Response) (ProfilesUpdateResponse, error) {
-	result := ProfilesUpdateResponse{RawResponse: resp}
+func (client *ProfilesClient) updateHandleResponse(resp *http.Response) (ProfilesClientUpdateResponse, error) {
+	result := ProfilesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
-		return ProfilesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ProfilesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ProfilesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

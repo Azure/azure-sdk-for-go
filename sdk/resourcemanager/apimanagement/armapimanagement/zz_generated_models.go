@@ -15,10 +15,72 @@ import (
 	"time"
 )
 
-// APIBeginCreateOrUpdateOptions contains the optional parameters for the API.BeginCreateOrUpdate method.
-type APIBeginCreateOrUpdateOptions struct {
+// APIClientBeginCreateOrUpdateOptions contains the optional parameters for the APIClient.BeginCreateOrUpdate method.
+type APIClientBeginCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
+}
+
+// APIClientDeleteOptions contains the optional parameters for the APIClient.Delete method.
+type APIClientDeleteOptions struct {
+	// Delete all revisions of the Api.
+	DeleteRevisions *bool
+}
+
+// APIClientGetEntityTagOptions contains the optional parameters for the APIClient.GetEntityTag method.
+type APIClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIClientGetOptions contains the optional parameters for the APIClient.Get method.
+type APIClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIClientListByServiceOptions contains the optional parameters for the APIClient.ListByService method.
+type APIClientListByServiceOptions struct {
+	// Include full ApiVersionSet resource in response
+	ExpandAPIVersionSet *bool
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | isCurrent | filter | eq, ne | |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Include tags in the response.
+	Tags *string
+	// Number of records to return.
+	Top *int32
+}
+
+// APIClientListByTagsOptions contains the optional parameters for the APIClient.ListByTags method.
+type APIClientListByTagsOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | isCurrent | filter | eq | |
+	Filter *string
+	// Include not tagged APIs.
+	IncludeNotTaggedApis *bool
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// APIClientUpdateOptions contains the optional parameters for the APIClient.Update method.
+type APIClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // APICollection - Paged API list representation.
@@ -56,32 +118,64 @@ type APIContactInformation struct {
 
 // APIContract - API details.
 type APIContract struct {
-	Resource
 	// API entity contract properties.
 	Properties *APIContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type APIContract.
-func (a APIContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // APIContractProperties - API Entity Properties
 type APIContractProperties struct {
-	APIEntityBaseContract
-	// REQUIRED; Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the
-	// API endpoint base URL specified during the service instance
+	// REQUIRED; Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance.
+	// It is appended to the API endpoint base URL specified during the service instance
 	// creation to form a public URL for this API.
 	Path *string `json:"path,omitempty"`
+
+	// Describes the revision of the API. If no value is provided, default revision 1 is created
+	APIRevision *string `json:"apiRevision,omitempty"`
+
+	// Description of the API Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+
+	// Type of API.
+	APIType *APIType `json:"type,omitempty"`
+
+	// Indicates the version identifier of the API if the API is versioned
+	APIVersion *string `json:"apiVersion,omitempty"`
+
+	// Description of the API Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 
 	// Version set details
 	APIVersionSet *APIVersionSetContractDetails `json:"apiVersionSet,omitempty"`
 
+	// A resource identifier for the related ApiVersionSet.
+	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+
+	// Collection of authentication settings included into this API.
+	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+
+	// Contact information for the API.
+	Contact *APIContactInformation `json:"contact,omitempty"`
+
+	// Description of the API. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
 	// API name. Must be 1 to 300 characters long.
 	DisplayName *string `json:"displayName,omitempty"`
+
+	// Indicates if API revision is current api revision.
+	IsCurrent *bool `json:"isCurrent,omitempty"`
+
+	// License information for the API.
+	License *APILicenseInformation `json:"license,omitempty"`
 
 	// Describes on which protocols the operations in this API can be invoked.
 	Protocols []*Protocol `json:"protocols,omitempty"`
@@ -91,33 +185,87 @@ type APIContractProperties struct {
 
 	// API identifier of the source API.
 	SourceAPIID *string `json:"sourceApiId,omitempty"`
+
+	// Protocols over which API is made available.
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+
+	// Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+
+	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
+	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+
+	// READ-ONLY; Indicates if API revision is accessible via the gateway.
+	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type APIContractProperties.
 func (a APIContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (a APIContractProperties) marshalInternal(objectMap map[string]interface{}) {
-	a.APIEntityBaseContract.marshalInternal(objectMap)
+	populate(objectMap, "apiRevision", a.APIRevision)
+	populate(objectMap, "apiRevisionDescription", a.APIRevisionDescription)
+	populate(objectMap, "type", a.APIType)
+	populate(objectMap, "apiVersion", a.APIVersion)
+	populate(objectMap, "apiVersionDescription", a.APIVersionDescription)
 	populate(objectMap, "apiVersionSet", a.APIVersionSet)
+	populate(objectMap, "apiVersionSetId", a.APIVersionSetID)
+	populate(objectMap, "authenticationSettings", a.AuthenticationSettings)
+	populate(objectMap, "contact", a.Contact)
+	populate(objectMap, "description", a.Description)
 	populate(objectMap, "displayName", a.DisplayName)
+	populate(objectMap, "isCurrent", a.IsCurrent)
+	populate(objectMap, "isOnline", a.IsOnline)
+	populate(objectMap, "license", a.License)
 	populate(objectMap, "path", a.Path)
 	populate(objectMap, "protocols", a.Protocols)
 	populate(objectMap, "serviceUrl", a.ServiceURL)
 	populate(objectMap, "sourceApiId", a.SourceAPIID)
+	populate(objectMap, "subscriptionKeyParameterNames", a.SubscriptionKeyParameterNames)
+	populate(objectMap, "subscriptionRequired", a.SubscriptionRequired)
+	populate(objectMap, "termsOfServiceUrl", a.TermsOfServiceURL)
+	return json.Marshal(objectMap)
 }
 
 // APIContractUpdateProperties - API update contract properties.
 type APIContractUpdateProperties struct {
-	APIEntityBaseContract
+	// Describes the revision of the API. If no value is provided, default revision 1 is created
+	APIRevision *string `json:"apiRevision,omitempty"`
+
+	// Description of the API Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+
+	// Type of API.
+	APIType *APIType `json:"type,omitempty"`
+
+	// Indicates the version identifier of the API if the API is versioned
+	APIVersion *string `json:"apiVersion,omitempty"`
+
+	// Description of the API Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
+
+	// A resource identifier for the related ApiVersionSet.
+	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+
+	// Collection of authentication settings included into this API.
+	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+
+	// Contact information for the API.
+	Contact *APIContactInformation `json:"contact,omitempty"`
+
+	// Description of the API. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
 	// API name.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint
-	// base URL specified during the service instance
+	// Indicates if API revision is current api revision.
+	IsCurrent *bool `json:"isCurrent,omitempty"`
+
+	// License information for the API.
+	License *APILicenseInformation `json:"license,omitempty"`
+
+	// Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It
+	// is appended to the API endpoint base URL specified during the service instance
 	// creation to form a public URL for this API.
 	Path *string `json:"path,omitempty"`
 
@@ -126,16 +274,42 @@ type APIContractUpdateProperties struct {
 
 	// Absolute URL of the backend service implementing this API.
 	ServiceURL *string `json:"serviceUrl,omitempty"`
+
+	// Protocols over which API is made available.
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+
+	// Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+
+	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
+	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+
+	// READ-ONLY; Indicates if API revision is accessible via the gateway.
+	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type APIContractUpdateProperties.
 func (a APIContractUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.APIEntityBaseContract.marshalInternal(objectMap)
+	populate(objectMap, "apiRevision", a.APIRevision)
+	populate(objectMap, "apiRevisionDescription", a.APIRevisionDescription)
+	populate(objectMap, "type", a.APIType)
+	populate(objectMap, "apiVersion", a.APIVersion)
+	populate(objectMap, "apiVersionDescription", a.APIVersionDescription)
+	populate(objectMap, "apiVersionSetId", a.APIVersionSetID)
+	populate(objectMap, "authenticationSettings", a.AuthenticationSettings)
+	populate(objectMap, "contact", a.Contact)
+	populate(objectMap, "description", a.Description)
 	populate(objectMap, "displayName", a.DisplayName)
+	populate(objectMap, "isCurrent", a.IsCurrent)
+	populate(objectMap, "isOnline", a.IsOnline)
+	populate(objectMap, "license", a.License)
 	populate(objectMap, "path", a.Path)
 	populate(objectMap, "protocols", a.Protocols)
 	populate(objectMap, "serviceUrl", a.ServiceURL)
+	populate(objectMap, "subscriptionKeyParameterNames", a.SubscriptionKeyParameterNames)
+	populate(objectMap, "subscriptionRequired", a.SubscriptionRequired)
+	populate(objectMap, "termsOfServiceUrl", a.TermsOfServiceURL)
 	return json.Marshal(objectMap)
 }
 
@@ -147,9 +321,58 @@ type APICreateOrUpdateParameter struct {
 
 // APICreateOrUpdateProperties - API Create or Update Properties.
 type APICreateOrUpdateProperties struct {
-	APIContractProperties
+	// REQUIRED; Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance.
+	// It is appended to the API endpoint base URL specified during the service instance
+	// creation to form a public URL for this API.
+	Path *string `json:"path,omitempty"`
+
+	// Describes the revision of the API. If no value is provided, default revision 1 is created
+	APIRevision *string `json:"apiRevision,omitempty"`
+
+	// Description of the API Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+
+	// Type of API.
+	APIType *APIType `json:"type,omitempty"`
+
+	// Indicates the version identifier of the API if the API is versioned
+	APIVersion *string `json:"apiVersion,omitempty"`
+
+	// Description of the API Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
+
+	// Version set details
+	APIVersionSet *APIVersionSetContractDetails `json:"apiVersionSet,omitempty"`
+
+	// A resource identifier for the related ApiVersionSet.
+	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+
+	// Collection of authentication settings included into this API.
+	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+
+	// Contact information for the API.
+	Contact *APIContactInformation `json:"contact,omitempty"`
+
+	// Description of the API. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
+	// API name. Must be 1 to 300 characters long.
+	DisplayName *string `json:"displayName,omitempty"`
+
 	// Format of the Content in which the API is getting imported.
 	Format *ContentFormat `json:"format,omitempty"`
+
+	// Indicates if API revision is current api revision.
+	IsCurrent *bool `json:"isCurrent,omitempty"`
+
+	// License information for the API.
+	License *APILicenseInformation `json:"license,omitempty"`
+
+	// Describes on which protocols the operations in this API can be invoked.
+	Protocols []*Protocol `json:"protocols,omitempty"`
+
+	// Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long.
+	ServiceURL *string `json:"serviceUrl,omitempty"`
 
 	// Type of API to create.
 	// * http creates a REST API
@@ -158,19 +381,54 @@ type APICreateOrUpdateProperties struct {
 	// * graphql creates GraphQL API.
 	SoapAPIType *SoapAPIType `json:"apiType,omitempty"`
 
+	// API identifier of the source API.
+	SourceAPIID *string `json:"sourceApiId,omitempty"`
+
+	// Protocols over which API is made available.
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+
+	// Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+
+	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
+	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+
 	// Content value when Importing an API.
 	Value *string `json:"value,omitempty"`
 
 	// Criteria to limit import of WSDL to a subset of the document.
 	WsdlSelector *APICreateOrUpdatePropertiesWsdlSelector `json:"wsdlSelector,omitempty"`
+
+	// READ-ONLY; Indicates if API revision is accessible via the gateway.
+	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type APICreateOrUpdateProperties.
 func (a APICreateOrUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.APIContractProperties.marshalInternal(objectMap)
+	populate(objectMap, "apiRevision", a.APIRevision)
+	populate(objectMap, "apiRevisionDescription", a.APIRevisionDescription)
+	populate(objectMap, "type", a.APIType)
+	populate(objectMap, "apiVersion", a.APIVersion)
+	populate(objectMap, "apiVersionDescription", a.APIVersionDescription)
+	populate(objectMap, "apiVersionSet", a.APIVersionSet)
+	populate(objectMap, "apiVersionSetId", a.APIVersionSetID)
+	populate(objectMap, "authenticationSettings", a.AuthenticationSettings)
+	populate(objectMap, "contact", a.Contact)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "displayName", a.DisplayName)
 	populate(objectMap, "format", a.Format)
+	populate(objectMap, "isCurrent", a.IsCurrent)
+	populate(objectMap, "isOnline", a.IsOnline)
+	populate(objectMap, "license", a.License)
+	populate(objectMap, "path", a.Path)
+	populate(objectMap, "protocols", a.Protocols)
+	populate(objectMap, "serviceUrl", a.ServiceURL)
 	populate(objectMap, "apiType", a.SoapAPIType)
+	populate(objectMap, "sourceApiId", a.SourceAPIID)
+	populate(objectMap, "subscriptionKeyParameterNames", a.SubscriptionKeyParameterNames)
+	populate(objectMap, "subscriptionRequired", a.SubscriptionRequired)
+	populate(objectMap, "termsOfServiceUrl", a.TermsOfServiceURL)
 	populate(objectMap, "value", a.Value)
 	populate(objectMap, "wsdlSelector", a.WsdlSelector)
 	return json.Marshal(objectMap)
@@ -185,37 +443,32 @@ type APICreateOrUpdatePropertiesWsdlSelector struct {
 	WsdlServiceName *string `json:"wsdlServiceName,omitempty"`
 }
 
-// APIDeleteOptions contains the optional parameters for the API.Delete method.
-type APIDeleteOptions struct {
-	// Delete all revisions of the Api.
-	DeleteRevisions *bool
-}
-
-// APIDiagnosticCreateOrUpdateOptions contains the optional parameters for the APIDiagnostic.CreateOrUpdate method.
-type APIDiagnosticCreateOrUpdateOptions struct {
+// APIDiagnosticClientCreateOrUpdateOptions contains the optional parameters for the APIDiagnosticClient.CreateOrUpdate method.
+type APIDiagnosticClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// APIDiagnosticDeleteOptions contains the optional parameters for the APIDiagnostic.Delete method.
-type APIDiagnosticDeleteOptions struct {
+// APIDiagnosticClientDeleteOptions contains the optional parameters for the APIDiagnosticClient.Delete method.
+type APIDiagnosticClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIDiagnosticGetEntityTagOptions contains the optional parameters for the APIDiagnostic.GetEntityTag method.
-type APIDiagnosticGetEntityTagOptions struct {
+// APIDiagnosticClientGetEntityTagOptions contains the optional parameters for the APIDiagnosticClient.GetEntityTag method.
+type APIDiagnosticClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIDiagnosticGetOptions contains the optional parameters for the APIDiagnostic.Get method.
-type APIDiagnosticGetOptions struct {
+// APIDiagnosticClientGetOptions contains the optional parameters for the APIDiagnosticClient.Get method.
+type APIDiagnosticClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIDiagnosticListByServiceOptions contains the optional parameters for the APIDiagnostic.ListByService method.
-type APIDiagnosticListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
+// APIDiagnosticClientListByServiceOptions contains the optional parameters for the APIDiagnosticClient.ListByService method.
+type APIDiagnosticClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -223,8 +476,8 @@ type APIDiagnosticListByServiceOptions struct {
 	Top *int32
 }
 
-// APIDiagnosticUpdateOptions contains the optional parameters for the APIDiagnostic.Update method.
-type APIDiagnosticUpdateOptions struct {
+// APIDiagnosticClientUpdateOptions contains the optional parameters for the APIDiagnosticClient.Update method.
+type APIDiagnosticClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -276,33 +529,8 @@ type APIEntityBaseContract struct {
 	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type APIEntityBaseContract.
-func (a APIEntityBaseContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (a APIEntityBaseContract) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "apiRevision", a.APIRevision)
-	populate(objectMap, "apiRevisionDescription", a.APIRevisionDescription)
-	populate(objectMap, "type", a.APIType)
-	populate(objectMap, "apiVersion", a.APIVersion)
-	populate(objectMap, "apiVersionDescription", a.APIVersionDescription)
-	populate(objectMap, "apiVersionSetId", a.APIVersionSetID)
-	populate(objectMap, "authenticationSettings", a.AuthenticationSettings)
-	populate(objectMap, "contact", a.Contact)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "isCurrent", a.IsCurrent)
-	populate(objectMap, "isOnline", a.IsOnline)
-	populate(objectMap, "license", a.License)
-	populate(objectMap, "subscriptionKeyParameterNames", a.SubscriptionKeyParameterNames)
-	populate(objectMap, "subscriptionRequired", a.SubscriptionRequired)
-	populate(objectMap, "termsOfServiceUrl", a.TermsOfServiceURL)
-}
-
-// APIExportGetOptions contains the optional parameters for the APIExport.Get method.
-type APIExportGetOptions struct {
+// APIExportClientGetOptions contains the optional parameters for the APIExportClient.Get method.
+type APIExportClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -324,42 +552,36 @@ type APIExportResultValue struct {
 	Link *string `json:"link,omitempty"`
 }
 
-// APIGetEntityTagOptions contains the optional parameters for the API.GetEntityTag method.
-type APIGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIGetOptions contains the optional parameters for the API.Get method.
-type APIGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIIssueAttachmentCreateOrUpdateOptions contains the optional parameters for the APIIssueAttachment.CreateOrUpdate method.
-type APIIssueAttachmentCreateOrUpdateOptions struct {
+// APIIssueAttachmentClientCreateOrUpdateOptions contains the optional parameters for the APIIssueAttachmentClient.CreateOrUpdate
+// method.
+type APIIssueAttachmentClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// APIIssueAttachmentDeleteOptions contains the optional parameters for the APIIssueAttachment.Delete method.
-type APIIssueAttachmentDeleteOptions struct {
+// APIIssueAttachmentClientDeleteOptions contains the optional parameters for the APIIssueAttachmentClient.Delete method.
+type APIIssueAttachmentClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIIssueAttachmentGetEntityTagOptions contains the optional parameters for the APIIssueAttachment.GetEntityTag method.
-type APIIssueAttachmentGetEntityTagOptions struct {
+// APIIssueAttachmentClientGetEntityTagOptions contains the optional parameters for the APIIssueAttachmentClient.GetEntityTag
+// method.
+type APIIssueAttachmentClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIIssueAttachmentGetOptions contains the optional parameters for the APIIssueAttachment.Get method.
-type APIIssueAttachmentGetOptions struct {
+// APIIssueAttachmentClientGetOptions contains the optional parameters for the APIIssueAttachmentClient.Get method.
+type APIIssueAttachmentClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIIssueAttachmentListByServiceOptions contains the optional parameters for the APIIssueAttachment.ListByService method.
-type APIIssueAttachmentListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
+// APIIssueAttachmentClientListByServiceOptions contains the optional parameters for the APIIssueAttachmentClient.ListByService
+// method.
+type APIIssueAttachmentClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -367,68 +589,37 @@ type APIIssueAttachmentListByServiceOptions struct {
 	Top *int32
 }
 
-// APIIssueCommentCreateOrUpdateOptions contains the optional parameters for the APIIssueComment.CreateOrUpdate method.
-type APIIssueCommentCreateOrUpdateOptions struct {
+// APIIssueClientCreateOrUpdateOptions contains the optional parameters for the APIIssueClient.CreateOrUpdate method.
+type APIIssueClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// APIIssueCommentDeleteOptions contains the optional parameters for the APIIssueComment.Delete method.
-type APIIssueCommentDeleteOptions struct {
+// APIIssueClientDeleteOptions contains the optional parameters for the APIIssueClient.Delete method.
+type APIIssueClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIIssueCommentGetEntityTagOptions contains the optional parameters for the APIIssueComment.GetEntityTag method.
-type APIIssueCommentGetEntityTagOptions struct {
+// APIIssueClientGetEntityTagOptions contains the optional parameters for the APIIssueClient.GetEntityTag method.
+type APIIssueClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIIssueCommentGetOptions contains the optional parameters for the APIIssueComment.Get method.
-type APIIssueCommentGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIIssueCommentListByServiceOptions contains the optional parameters for the APIIssueComment.ListByService method.
-type APIIssueCommentListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// APIIssueCreateOrUpdateOptions contains the optional parameters for the APIIssue.CreateOrUpdate method.
-type APIIssueCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// APIIssueDeleteOptions contains the optional parameters for the APIIssue.Delete method.
-type APIIssueDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIIssueGetEntityTagOptions contains the optional parameters for the APIIssue.GetEntityTag method.
-type APIIssueGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIIssueGetOptions contains the optional parameters for the APIIssue.Get method.
-type APIIssueGetOptions struct {
+// APIIssueClientGetOptions contains the optional parameters for the APIIssueClient.Get method.
+type APIIssueClientGetOptions struct {
 	// Expand the comment attachments.
 	ExpandCommentsAttachments *bool
 }
 
-// APIIssueListByServiceOptions contains the optional parameters for the APIIssue.ListByService method.
-type APIIssueListByServiceOptions struct {
+// APIIssueClientListByServiceOptions contains the optional parameters for the APIIssueClient.ListByService method.
+type APIIssueClientListByServiceOptions struct {
 	// Expand the comment attachments.
 	ExpandCommentsAttachments *bool
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| state | filter | eq | |</br>
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | state | filter | eq | |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -436,9 +627,45 @@ type APIIssueListByServiceOptions struct {
 	Top *int32
 }
 
-// APIIssueUpdateOptions contains the optional parameters for the APIIssue.Update method.
-type APIIssueUpdateOptions struct {
+// APIIssueClientUpdateOptions contains the optional parameters for the APIIssueClient.Update method.
+type APIIssueClientUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// APIIssueCommentClientCreateOrUpdateOptions contains the optional parameters for the APIIssueCommentClient.CreateOrUpdate
+// method.
+type APIIssueCommentClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// APIIssueCommentClientDeleteOptions contains the optional parameters for the APIIssueCommentClient.Delete method.
+type APIIssueCommentClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIIssueCommentClientGetEntityTagOptions contains the optional parameters for the APIIssueCommentClient.GetEntityTag method.
+type APIIssueCommentClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIIssueCommentClientGetOptions contains the optional parameters for the APIIssueCommentClient.Get method.
+type APIIssueCommentClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIIssueCommentClientListByServiceOptions contains the optional parameters for the APIIssueCommentClient.ListByService
+// method.
+type APIIssueCommentClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
 }
 
 // APILicenseInformation - API license information
@@ -450,15 +677,36 @@ type APILicenseInformation struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// APIListByServiceOptions contains the optional parameters for the API.ListByService method.
-type APIListByServiceOptions struct {
-	// Include full ApiVersionSet resource in response
-	ExpandAPIVersionSet *bool
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| serviceUrl | filter | ge, le, eq,
-	// ne, gt, lt | substringof, contains, startswith, endswith |</br>| path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-	// |</br>| isCurrent | filter | eq, ne | |</br>
+// APIOperationClientCreateOrUpdateOptions contains the optional parameters for the APIOperationClient.CreateOrUpdate method.
+type APIOperationClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// APIOperationClientDeleteOptions contains the optional parameters for the APIOperationClient.Delete method.
+type APIOperationClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIOperationClientGetEntityTagOptions contains the optional parameters for the APIOperationClient.GetEntityTag method.
+type APIOperationClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIOperationClientGetOptions contains the optional parameters for the APIOperationClient.Get method.
+type APIOperationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIOperationClientListByAPIOptions contains the optional parameters for the APIOperationClient.ListByAPI method.
+type APIOperationClientListByAPIOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -468,928 +716,116 @@ type APIListByServiceOptions struct {
 	Top *int32
 }
 
-// APIListByTagsOptions contains the optional parameters for the API.ListByTags method.
-type APIListByTagsOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| path | filter | ge, le, eq, ne,
-	// gt, lt | substringof, contains, startswith, endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-	// |</br>| serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| isCurrent | filter | eq | |</br>
-	Filter *string
-	// Include not tagged APIs.
-	IncludeNotTaggedApis *bool
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
+// APIOperationClientUpdateOptions contains the optional parameters for the APIOperationClient.Update method.
+type APIOperationClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// APIManagementClientBeginPerformConnectivityCheckAsyncOptions contains the optional parameters for the APIManagementClient.BeginPerformConnectivityCheckAsync
+// APIOperationPolicyClientCreateOrUpdateOptions contains the optional parameters for the APIOperationPolicyClient.CreateOrUpdate
 // method.
-type APIManagementClientBeginPerformConnectivityCheckAsyncOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementOperationsListOptions contains the optional parameters for the APIManagementOperations.List method.
-type APIManagementOperationsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementSKU - Describes an available ApiManagement SKU.
-type APIManagementSKU struct {
-	// READ-ONLY; The api versions that support this SKU.
-	APIVersions []*string `json:"apiVersions,omitempty" azure:"ro"`
-
-	// READ-ONLY; A name value pair to describe the capability.
-	Capabilities []*APIManagementSKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
-
-	// READ-ONLY; Specifies the number of virtual machines in the scale set.
-	Capacity *APIManagementSKUCapacity `json:"capacity,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata for retrieving price info.
-	Costs []*APIManagementSKUCosts `json:"costs,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Family of this particular SKU.
-	Family *string `json:"family,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Kind of resources that are supported in this SKU.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of locations and availability zones in those locations where the SKU is available.
-	LocationInfo []*APIManagementSKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The set of locations that the SKU is available.
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of SKU.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of resource the SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
-
-	// READ-ONLY; The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
-	Restrictions []*APIManagementSKURestrictions `json:"restrictions,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Size of the SKU.
-	Size *string `json:"size,omitempty" azure:"ro"`
-
-	// READ-ONLY; Specifies the tier of virtual machines in a scale set.
-	// Possible Values:
-	// Standard
-	// Basic
-	Tier *string `json:"tier,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementSKU.
-func (a APIManagementSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiVersions", a.APIVersions)
-	populate(objectMap, "capabilities", a.Capabilities)
-	populate(objectMap, "capacity", a.Capacity)
-	populate(objectMap, "costs", a.Costs)
-	populate(objectMap, "family", a.Family)
-	populate(objectMap, "kind", a.Kind)
-	populate(objectMap, "locationInfo", a.LocationInfo)
-	populate(objectMap, "locations", a.Locations)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "resourceType", a.ResourceType)
-	populate(objectMap, "restrictions", a.Restrictions)
-	populate(objectMap, "size", a.Size)
-	populate(objectMap, "tier", a.Tier)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementSKUCapabilities - Describes The SKU capabilities object.
-type APIManagementSKUCapabilities struct {
-	// READ-ONLY; An invariant to describe the feature.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; An invariant if the feature is measured by quantity.
-	Value *string `json:"value,omitempty" azure:"ro"`
-}
-
-// APIManagementSKUCapacity - Describes scaling information of a SKU.
-type APIManagementSKUCapacity struct {
-	// READ-ONLY; The default capacity.
-	Default *int32 `json:"default,omitempty" azure:"ro"`
-
-	// READ-ONLY; The maximum capacity that can be set.
-	Maximum *int32 `json:"maximum,omitempty" azure:"ro"`
-
-	// READ-ONLY; The minimum capacity.
-	Minimum *int32 `json:"minimum,omitempty" azure:"ro"`
-
-	// READ-ONLY; The scale type applicable to the sku.
-	ScaleType *APIManagementSKUCapacityScaleType `json:"scaleType,omitempty" azure:"ro"`
-}
-
-// APIManagementSKUCosts - Describes metadata for retrieving price info.
-type APIManagementSKUCosts struct {
-	// READ-ONLY; An invariant to show the extended unit.
-	ExtendedUnit *string `json:"extendedUnit,omitempty" azure:"ro"`
-
-	// READ-ONLY; Used for querying price from commerce.
-	MeterID *string `json:"meterID,omitempty" azure:"ro"`
-
-	// READ-ONLY; The multiplier is needed to extend the base metered cost.
-	Quantity *int64 `json:"quantity,omitempty" azure:"ro"`
-}
-
-type APIManagementSKULocationInfo struct {
-	// READ-ONLY; Location of the SKU
-	Location *string `json:"location,omitempty" azure:"ro"`
-
-	// READ-ONLY; Details of capabilities available to a SKU in specific zones.
-	ZoneDetails []*APIManagementSKUZoneDetails `json:"zoneDetails,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of availability zones where the SKU is supported.
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementSKULocationInfo.
-func (a APIManagementSKULocationInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "zoneDetails", a.ZoneDetails)
-	populate(objectMap, "zones", a.Zones)
-	return json.Marshal(objectMap)
-}
-
-type APIManagementSKURestrictionInfo struct {
-	// READ-ONLY; Locations where the SKU is restricted
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of availability zones where the SKU is restricted.
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementSKURestrictionInfo.
-func (a APIManagementSKURestrictionInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "locations", a.Locations)
-	populate(objectMap, "zones", a.Zones)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementSKURestrictions - Describes scaling information of a SKU.
-type APIManagementSKURestrictions struct {
-	// READ-ONLY; The reason for restriction.
-	ReasonCode *APIManagementSKURestrictionsReasonCode `json:"reasonCode,omitempty" azure:"ro"`
-
-	// READ-ONLY; The information about the restriction where the SKU cannot be used.
-	RestrictionInfo *APIManagementSKURestrictionInfo `json:"restrictionInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of restrictions.
-	Type *APIManagementSKURestrictionsType `json:"type,omitempty" azure:"ro"`
-
-	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
-	Values []*string `json:"values,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementSKURestrictions.
-func (a APIManagementSKURestrictions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "reasonCode", a.ReasonCode)
-	populate(objectMap, "restrictionInfo", a.RestrictionInfo)
-	populate(objectMap, "type", a.Type)
-	populate(objectMap, "values", a.Values)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementSKUZoneDetails - Describes The zonal capabilities of a SKU.
-type APIManagementSKUZoneDetails struct {
-	// READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
-	Capabilities []*APIManagementSKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
-
-	// READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
-	Name []*string `json:"name,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementSKUZoneDetails.
-func (a APIManagementSKUZoneDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capabilities", a.Capabilities)
-	populate(objectMap, "name", a.Name)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementSKUsListOptions contains the optional parameters for the APIManagementSKUs.List method.
-type APIManagementSKUsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementSKUsResult - The List Resource Skus operation response.
-type APIManagementSKUsResult struct {
-	// REQUIRED; The list of skus available for the subscription.
-	Value []*APIManagementSKU `json:"value,omitempty"`
-
-	// READ-ONLY; The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource Skus
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementSKUsResult.
-func (a APIManagementSKUsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementServiceApplyNetworkConfigurationParameters - Parameter supplied to the Apply Network configuration operation.
-type APIManagementServiceApplyNetworkConfigurationParameters struct {
-	// Location of the Api Management service to update for a multi-region service. For a service deployed in a single region, this parameter is not required.
-	Location *string `json:"location,omitempty"`
-}
-
-// APIManagementServiceBackupRestoreParameters - Parameters supplied to the Backup/Restore of an API Management service operation.
-type APIManagementServiceBackupRestoreParameters struct {
-	// REQUIRED; The name of the backup file to create/retrieve.
-	BackupName *string `json:"backupName,omitempty"`
-
-	// REQUIRED; The name of the blob container (used to place/retrieve the backup).
-	ContainerName *string `json:"containerName,omitempty"`
-
-	// REQUIRED; The name of the Azure storage account (used to place/retrieve the backup).
-	StorageAccount *string `json:"storageAccount,omitempty"`
-
-	// Storage account access key. Required only if accessType is set to AccessKey.
-	AccessKey *string `json:"accessKey,omitempty"`
-
-	// The type of access to be used for the storage account.
-	AccessType *AccessType `json:"accessType,omitempty"`
-
-	// The Client ID of user assigned managed identity. Required only if accessType is set to UserAssignedManagedIdentity.
-	ClientID *string `json:"clientId,omitempty"`
-}
-
-// APIManagementServiceBaseProperties - Base Properties of an API Management service resource description.
-type APIManagementServiceBaseProperties struct {
-	// Control Plane Apis version constraint for the API Management service.
-	APIVersionConstraint *APIVersionConstraint `json:"apiVersionConstraint,omitempty"`
-
-	// Additional datacenter locations of the API Management service.
-	AdditionalLocations []*AdditionalLocation `json:"additionalLocations,omitempty"`
-
-	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.
-	Certificates []*CertificateConfiguration `json:"certificates,omitempty"`
-
-	// Custom properties of the API Management service.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA for all TLS(1.0, 1.1
-	// and 1.2).
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API Management service.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1 for communications with backends.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for communications with backends.
-	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an API Management service.
-	// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For all the settings except Http2
-	// the default value is True if the service was
-	// created on or before April 1st 2018 and False otherwise. Http2 setting's default value is False.
-	// You can disable any of next ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]: TLSECDHEECDSAWITHAES256CBCSHA,
-	// TLSECDHEECDSAWITHAES128CBCSHA, TLS
-	// ECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256, TLSRSAWITHAES256CBCSHA,
-	// TLSRSAWITHAES128CBCSHA. For example,
-	// Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default value is true for them. Note: next ciphers
-	// can't be disabled since they are required by
-	// Azure CloudService internal components: TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCMSHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBC
-	// SHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256,TLSRSAWITHAES256GCMSHA384
-	CustomProperties map[string]*string `json:"customProperties,omitempty"`
-
-	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway in master region.
-	DisableGateway *bool `json:"disableGateway,omitempty"`
-
-	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also
-	// enables the ability to authenticate the
-	// certificate in the policy on the gateway.
-	EnableClientCertificate *bool `json:"enableClientCertificate,omitempty"`
-
-	// Custom hostname configuration of the API Management service.
-	HostnameConfigurations []*HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
-
-	// Email address from which the notification will be sent.
-	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
-
-	// List of Private Endpoint Connections of this service.
-	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper `json:"privateEndpointConnections,omitempty"`
-
-	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported only for Developer and Premium
-	// SKU being deployed in Virtual Network.
-	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
-
-	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
-	// If 'Disabled', private endpoints are the
-	// exclusive access method. Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.
-	Restore *bool `json:"restore,omitempty"`
-
-	// Virtual network configuration of the API Management service.
-	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
-
-	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual
-	// Network, External means the API Management
-	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a
-	// Virtual Network having an Intranet Facing Endpoint
-	// only.
-	VirtualNetworkType *VirtualNetworkType `json:"virtualNetworkType,omitempty"`
-
-	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
-	// standard.
-	CreatedAtUTC *time.Time `json:"createdAtUtc,omitempty" azure:"ro"`
-
-	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
-	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gateway URL of the API Management service in the Default Region.
-	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gateway URL of the API Management service.
-	GatewayURL *string `json:"gatewayUrl,omitempty" azure:"ro"`
-
-	// READ-ONLY; Management API endpoint URL of the API Management service.
-	ManagementAPIURL *string `json:"managementApiUrl,omitempty" azure:"ro"`
-
-	// READ-ONLY; Compute Platform Version running the service in this location.
-	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
-
-	// READ-ONLY; Publisher portal endpoint Url of the API Management service.
-	PortalURL *string `json:"portalUrl,omitempty" azure:"ro"`
-
-	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed in an Internal Virtual Network.
-	// Available only for Basic, Standard, Premium and Isolated
-	// SKU.
-	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
-
-	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for Basic, Standard, Premium and
-	// Isolated SKU.
-	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
-
-	// READ-ONLY; SCM endpoint URL of the API Management service.
-	ScmURL *string `json:"scmUrl,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
-	TargetProvisioningState *string `json:"targetProvisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementServiceBaseProperties.
-func (a APIManagementServiceBaseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type APIManagementServiceBaseProperties.
-func (a *APIManagementServiceBaseProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a APIManagementServiceBaseProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "apiVersionConstraint", a.APIVersionConstraint)
-	populate(objectMap, "additionalLocations", a.AdditionalLocations)
-	populate(objectMap, "certificates", a.Certificates)
-	populateTimeRFC3339(objectMap, "createdAtUtc", a.CreatedAtUTC)
-	populate(objectMap, "customProperties", a.CustomProperties)
-	populate(objectMap, "developerPortalUrl", a.DeveloperPortalURL)
-	populate(objectMap, "disableGateway", a.DisableGateway)
-	populate(objectMap, "enableClientCertificate", a.EnableClientCertificate)
-	populate(objectMap, "gatewayRegionalUrl", a.GatewayRegionalURL)
-	populate(objectMap, "gatewayUrl", a.GatewayURL)
-	populate(objectMap, "hostnameConfigurations", a.HostnameConfigurations)
-	populate(objectMap, "managementApiUrl", a.ManagementAPIURL)
-	populate(objectMap, "notificationSenderEmail", a.NotificationSenderEmail)
-	populate(objectMap, "platformVersion", a.PlatformVersion)
-	populate(objectMap, "portalUrl", a.PortalURL)
-	populate(objectMap, "privateEndpointConnections", a.PrivateEndpointConnections)
-	populate(objectMap, "privateIPAddresses", a.PrivateIPAddresses)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "publicIpAddressId", a.PublicIPAddressID)
-	populate(objectMap, "publicIPAddresses", a.PublicIPAddresses)
-	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
-	populate(objectMap, "restore", a.Restore)
-	populate(objectMap, "scmUrl", a.ScmURL)
-	populate(objectMap, "targetProvisioningState", a.TargetProvisioningState)
-	populate(objectMap, "virtualNetworkConfiguration", a.VirtualNetworkConfiguration)
-	populate(objectMap, "virtualNetworkType", a.VirtualNetworkType)
-}
-
-func (a *APIManagementServiceBaseProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "apiVersionConstraint":
-			err = unpopulate(val, &a.APIVersionConstraint)
-			delete(rawMsg, key)
-		case "additionalLocations":
-			err = unpopulate(val, &a.AdditionalLocations)
-			delete(rawMsg, key)
-		case "certificates":
-			err = unpopulate(val, &a.Certificates)
-			delete(rawMsg, key)
-		case "createdAtUtc":
-			err = unpopulateTimeRFC3339(val, &a.CreatedAtUTC)
-			delete(rawMsg, key)
-		case "customProperties":
-			err = unpopulate(val, &a.CustomProperties)
-			delete(rawMsg, key)
-		case "developerPortalUrl":
-			err = unpopulate(val, &a.DeveloperPortalURL)
-			delete(rawMsg, key)
-		case "disableGateway":
-			err = unpopulate(val, &a.DisableGateway)
-			delete(rawMsg, key)
-		case "enableClientCertificate":
-			err = unpopulate(val, &a.EnableClientCertificate)
-			delete(rawMsg, key)
-		case "gatewayRegionalUrl":
-			err = unpopulate(val, &a.GatewayRegionalURL)
-			delete(rawMsg, key)
-		case "gatewayUrl":
-			err = unpopulate(val, &a.GatewayURL)
-			delete(rawMsg, key)
-		case "hostnameConfigurations":
-			err = unpopulate(val, &a.HostnameConfigurations)
-			delete(rawMsg, key)
-		case "managementApiUrl":
-			err = unpopulate(val, &a.ManagementAPIURL)
-			delete(rawMsg, key)
-		case "notificationSenderEmail":
-			err = unpopulate(val, &a.NotificationSenderEmail)
-			delete(rawMsg, key)
-		case "platformVersion":
-			err = unpopulate(val, &a.PlatformVersion)
-			delete(rawMsg, key)
-		case "portalUrl":
-			err = unpopulate(val, &a.PortalURL)
-			delete(rawMsg, key)
-		case "privateEndpointConnections":
-			err = unpopulate(val, &a.PrivateEndpointConnections)
-			delete(rawMsg, key)
-		case "privateIPAddresses":
-			err = unpopulate(val, &a.PrivateIPAddresses)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "publicIpAddressId":
-			err = unpopulate(val, &a.PublicIPAddressID)
-			delete(rawMsg, key)
-		case "publicIPAddresses":
-			err = unpopulate(val, &a.PublicIPAddresses)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &a.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "restore":
-			err = unpopulate(val, &a.Restore)
-			delete(rawMsg, key)
-		case "scmUrl":
-			err = unpopulate(val, &a.ScmURL)
-			delete(rawMsg, key)
-		case "targetProvisioningState":
-			err = unpopulate(val, &a.TargetProvisioningState)
-			delete(rawMsg, key)
-		case "virtualNetworkConfiguration":
-			err = unpopulate(val, &a.VirtualNetworkConfiguration)
-			delete(rawMsg, key)
-		case "virtualNetworkType":
-			err = unpopulate(val, &a.VirtualNetworkType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// APIManagementServiceBeginApplyNetworkConfigurationUpdatesOptions contains the optional parameters for the APIManagementService.BeginApplyNetworkConfigurationUpdates
-// method.
-type APIManagementServiceBeginApplyNetworkConfigurationUpdatesOptions struct {
-	// Parameters supplied to the Apply Network Configuration operation. If the parameters are empty, all the regions in which the Api Management service is
-	// deployed will be updated sequentially without incurring downtime in the region.
-	Parameters *APIManagementServiceApplyNetworkConfigurationParameters
-}
-
-// APIManagementServiceBeginBackupOptions contains the optional parameters for the APIManagementService.BeginBackup method.
-type APIManagementServiceBeginBackupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceBeginCreateOrUpdateOptions contains the optional parameters for the APIManagementService.BeginCreateOrUpdate method.
-type APIManagementServiceBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceBeginDeleteOptions contains the optional parameters for the APIManagementService.BeginDelete method.
-type APIManagementServiceBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceBeginRestoreOptions contains the optional parameters for the APIManagementService.BeginRestore method.
-type APIManagementServiceBeginRestoreOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceBeginUpdateOptions contains the optional parameters for the APIManagementService.BeginUpdate method.
-type APIManagementServiceBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceCheckNameAvailabilityOptions contains the optional parameters for the APIManagementService.CheckNameAvailability method.
-type APIManagementServiceCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceCheckNameAvailabilityParameters - Parameters supplied to the CheckNameAvailability operation.
-type APIManagementServiceCheckNameAvailabilityParameters struct {
-	// REQUIRED; The name to check for availability.
-	Name *string `json:"name,omitempty"`
-}
-
-// APIManagementServiceGetDomainOwnershipIdentifierOptions contains the optional parameters for the APIManagementService.GetDomainOwnershipIdentifier method.
-type APIManagementServiceGetDomainOwnershipIdentifierOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceGetDomainOwnershipIdentifierResult - Response of the GetDomainOwnershipIdentifier operation.
-type APIManagementServiceGetDomainOwnershipIdentifierResult struct {
-	// READ-ONLY; The domain ownership identifier value.
-	DomainOwnershipIdentifier *string `json:"domainOwnershipIdentifier,omitempty" azure:"ro"`
-}
-
-// APIManagementServiceGetOptions contains the optional parameters for the APIManagementService.Get method.
-type APIManagementServiceGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceGetSsoTokenOptions contains the optional parameters for the APIManagementService.GetSsoToken method.
-type APIManagementServiceGetSsoTokenOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceGetSsoTokenResult - The response of the GetSsoToken operation.
-type APIManagementServiceGetSsoTokenResult struct {
-	// Redirect URL to the Publisher Portal containing the SSO token.
-	RedirectURI *string `json:"redirectUri,omitempty"`
-}
-
-// APIManagementServiceIdentity - Identity properties of the Api Management service resource.
-type APIManagementServiceIdentity struct {
-	// REQUIRED; The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set
-	// of user assigned identities. The type 'None' will remove any
-	// identities from the service.
-	Type *ApimIdentityType `json:"type,omitempty"`
-
-	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities,omitempty"`
-
-	// READ-ONLY; The principal id of the identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The client tenant id of the identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementServiceIdentity.
-func (a APIManagementServiceIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", a.PrincipalID)
-	populate(objectMap, "tenantId", a.TenantID)
-	populate(objectMap, "type", a.Type)
-	populate(objectMap, "userAssignedIdentities", a.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementServiceListByResourceGroupOptions contains the optional parameters for the APIManagementService.ListByResourceGroup method.
-type APIManagementServiceListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceListOptions contains the optional parameters for the APIManagementService.List method.
-type APIManagementServiceListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceListResult - The response of the List API Management services operation.
-type APIManagementServiceListResult struct {
-	// REQUIRED; Result of the List API Management services operation.
-	Value []*APIManagementServiceResource `json:"value,omitempty"`
-
-	// Link to the next set of results. Not empty if Value contains incomplete list of API Management services.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementServiceListResult.
-func (a APIManagementServiceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementServiceNameAvailabilityResult - Response of the CheckNameAvailability operation.
-type APIManagementServiceNameAvailabilityResult struct {
-	// Invalid indicates the name provided does not match the resource provider’s naming requirements (incorrect length, unsupported characters, etc.) AlreadyExists
-	// indicates that the name is already in use
-	// and is therefore unavailable.
-	Reason *NameAvailabilityReason `json:"reason,omitempty"`
-
-	// READ-ONLY; If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements so that
-	// the user can select a valid name. If reason == AlreadyExists,
-	// explain that is already in use, and direct them to select a different name.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the name is available and can be used to create a new API Management service; otherwise false.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
-}
-
-// APIManagementServiceProperties - Properties of an API Management service resource description.
-type APIManagementServiceProperties struct {
-	APIManagementServiceBaseProperties
-	// REQUIRED; Publisher email.
-	PublisherEmail *string `json:"publisherEmail,omitempty"`
-
-	// REQUIRED; Publisher name.
-	PublisherName *string `json:"publisherName,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementServiceProperties.
-func (a APIManagementServiceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.APIManagementServiceBaseProperties.marshalInternal(objectMap)
-	populate(objectMap, "publisherEmail", a.PublisherEmail)
-	populate(objectMap, "publisherName", a.PublisherName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type APIManagementServiceProperties.
-func (a *APIManagementServiceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "publisherEmail":
-			err = unpopulate(val, &a.PublisherEmail)
-			delete(rawMsg, key)
-		case "publisherName":
-			err = unpopulate(val, &a.PublisherName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.APIManagementServiceBaseProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// APIManagementServiceResource - A single API Management service resource in List or Get response.
-type APIManagementServiceResource struct {
-	ApimResource
-	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
-
-	// REQUIRED; Properties of the API Management service.
-	Properties *APIManagementServiceProperties `json:"properties,omitempty"`
-
-	// REQUIRED; SKU properties of the API Management service.
-	SKU *APIManagementServiceSKUProperties `json:"sku,omitempty"`
-
-	// Managed service identity of the Api Management service.
-	Identity *APIManagementServiceIdentity `json:"identity,omitempty"`
-
-	// A list of availability zones denoting where the resource needs to come from.
-	Zones []*string `json:"zones,omitempty"`
-
-	// READ-ONLY; ETag of the resource.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementServiceResource.
-func (a APIManagementServiceResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ApimResource.marshalInternal(objectMap)
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "sku", a.SKU)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "zones", a.Zones)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementServiceSKUProperties - API Management service resource SKU properties.
-type APIManagementServiceSKUProperties struct {
-	// REQUIRED; Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU capacity must be specified as 0.
-	Capacity *int32 `json:"capacity,omitempty"`
-
-	// REQUIRED; Name of the Sku.
-	Name *SKUType `json:"name,omitempty"`
-}
-
-// APIManagementServiceSKUsListAvailableServiceSKUsOptions contains the optional parameters for the APIManagementServiceSKUs.ListAvailableServiceSKUs method.
-type APIManagementServiceSKUsListAvailableServiceSKUsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIManagementServiceUpdateParameters - Parameter supplied to Update Api Management Service.
-type APIManagementServiceUpdateParameters struct {
-	ApimResource
-	// Managed service identity of the Api Management service.
-	Identity *APIManagementServiceIdentity `json:"identity,omitempty"`
-
-	// Properties of the API Management service.
-	Properties *APIManagementServiceUpdateProperties `json:"properties,omitempty"`
-
-	// SKU properties of the API Management service.
-	SKU *APIManagementServiceSKUProperties `json:"sku,omitempty"`
-
-	// A list of availability zones denoting where the resource needs to come from.
-	Zones []*string `json:"zones,omitempty"`
-
-	// READ-ONLY; ETag of the resource.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementServiceUpdateParameters.
-func (a APIManagementServiceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ApimResource.marshalInternal(objectMap)
-	populate(objectMap, "etag", a.Etag)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "sku", a.SKU)
-	populate(objectMap, "zones", a.Zones)
-	return json.Marshal(objectMap)
-}
-
-// APIManagementServiceUpdateProperties - Properties of an API Management service resource description.
-type APIManagementServiceUpdateProperties struct {
-	APIManagementServiceBaseProperties
-	// Publisher email.
-	PublisherEmail *string `json:"publisherEmail,omitempty"`
-
-	// Publisher name.
-	PublisherName *string `json:"publisherName,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIManagementServiceUpdateProperties.
-func (a APIManagementServiceUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.APIManagementServiceBaseProperties.marshalInternal(objectMap)
-	populate(objectMap, "publisherEmail", a.PublisherEmail)
-	populate(objectMap, "publisherName", a.PublisherName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type APIManagementServiceUpdateProperties.
-func (a *APIManagementServiceUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "publisherEmail":
-			err = unpopulate(val, &a.PublisherEmail)
-			delete(rawMsg, key)
-		case "publisherName":
-			err = unpopulate(val, &a.PublisherName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.APIManagementServiceBaseProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// APIOperationCreateOrUpdateOptions contains the optional parameters for the APIOperation.CreateOrUpdate method.
-type APIOperationCreateOrUpdateOptions struct {
+type APIOperationPolicyClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// APIOperationDeleteOptions contains the optional parameters for the APIOperation.Delete method.
-type APIOperationDeleteOptions struct {
+// APIOperationPolicyClientDeleteOptions contains the optional parameters for the APIOperationPolicyClient.Delete method.
+type APIOperationPolicyClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIOperationGetEntityTagOptions contains the optional parameters for the APIOperation.GetEntityTag method.
-type APIOperationGetEntityTagOptions struct {
+// APIOperationPolicyClientGetEntityTagOptions contains the optional parameters for the APIOperationPolicyClient.GetEntityTag
+// method.
+type APIOperationPolicyClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIOperationGetOptions contains the optional parameters for the APIOperation.Get method.
-type APIOperationGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIOperationListByAPIOptions contains the optional parameters for the APIOperation.ListByAPI method.
-type APIOperationListByAPIOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| description | filter | ge, le, eq, ne,
-	// gt, lt | substringof, contains, startswith, endswith |</br>| urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-	// |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Include tags in the response.
-	Tags *string
-	// Number of records to return.
-	Top *int32
-}
-
-// APIOperationPolicyCreateOrUpdateOptions contains the optional parameters for the APIOperationPolicy.CreateOrUpdate method.
-type APIOperationPolicyCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// APIOperationPolicyDeleteOptions contains the optional parameters for the APIOperationPolicy.Delete method.
-type APIOperationPolicyDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIOperationPolicyGetEntityTagOptions contains the optional parameters for the APIOperationPolicy.GetEntityTag method.
-type APIOperationPolicyGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIOperationPolicyGetOptions contains the optional parameters for the APIOperationPolicy.Get method.
-type APIOperationPolicyGetOptions struct {
+// APIOperationPolicyClientGetOptions contains the optional parameters for the APIOperationPolicyClient.Get method.
+type APIOperationPolicyClientGetOptions struct {
 	// Policy Export Format.
 	Format *PolicyExportFormat
 }
 
-// APIOperationPolicyListByOperationOptions contains the optional parameters for the APIOperationPolicy.ListByOperation method.
-type APIOperationPolicyListByOperationOptions struct {
+// APIOperationPolicyClientListByOperationOptions contains the optional parameters for the APIOperationPolicyClient.ListByOperation
+// method.
+type APIOperationPolicyClientListByOperationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIOperationUpdateOptions contains the optional parameters for the APIOperation.Update method.
-type APIOperationUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIPolicyCreateOrUpdateOptions contains the optional parameters for the APIPolicy.CreateOrUpdate method.
-type APIPolicyCreateOrUpdateOptions struct {
+// APIPolicyClientCreateOrUpdateOptions contains the optional parameters for the APIPolicyClient.CreateOrUpdate method.
+type APIPolicyClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// APIPolicyDeleteOptions contains the optional parameters for the APIPolicy.Delete method.
-type APIPolicyDeleteOptions struct {
+// APIPolicyClientDeleteOptions contains the optional parameters for the APIPolicyClient.Delete method.
+type APIPolicyClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIPolicyGetEntityTagOptions contains the optional parameters for the APIPolicy.GetEntityTag method.
-type APIPolicyGetEntityTagOptions struct {
+// APIPolicyClientGetEntityTagOptions contains the optional parameters for the APIPolicyClient.GetEntityTag method.
+type APIPolicyClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIPolicyGetOptions contains the optional parameters for the APIPolicy.Get method.
-type APIPolicyGetOptions struct {
+// APIPolicyClientGetOptions contains the optional parameters for the APIPolicyClient.Get method.
+type APIPolicyClientGetOptions struct {
 	// Policy Export Format.
 	Format *PolicyExportFormat
 }
 
-// APIPolicyListByAPIOptions contains the optional parameters for the APIPolicy.ListByAPI method.
-type APIPolicyListByAPIOptions struct {
+// APIPolicyClientListByAPIOptions contains the optional parameters for the APIPolicyClient.ListByAPI method.
+type APIPolicyClientListByAPIOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIProductListByApisOptions contains the optional parameters for the APIProduct.ListByApis method.
-type APIProductListByApisOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| displayName | filter
-	// | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
+// APIProductClientListByApisOptions contains the optional parameters for the APIProductClient.ListByApis method.
+type APIProductClientListByApisOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
 	// Number of records to return.
 	Top *int32
+}
+
+// APIReleaseClientCreateOrUpdateOptions contains the optional parameters for the APIReleaseClient.CreateOrUpdate method.
+type APIReleaseClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// APIReleaseClientDeleteOptions contains the optional parameters for the APIReleaseClient.Delete method.
+type APIReleaseClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIReleaseClientGetEntityTagOptions contains the optional parameters for the APIReleaseClient.GetEntityTag method.
+type APIReleaseClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIReleaseClientGetOptions contains the optional parameters for the APIReleaseClient.Get method.
+type APIReleaseClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIReleaseClientListByServiceOptions contains the optional parameters for the APIReleaseClient.ListByService method.
+type APIReleaseClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | notes | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// APIReleaseClientUpdateOptions contains the optional parameters for the APIReleaseClient.Update method.
+type APIReleaseClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // APIReleaseCollection - Paged ApiRelease list representation.
@@ -1415,16 +851,26 @@ func (a APIReleaseCollection) MarshalJSON() ([]byte, error) {
 
 // APIReleaseContract - ApiRelease details.
 type APIReleaseContract struct {
-	Resource
 	// ApiRelease entity contract properties.
 	Properties *APIReleaseContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type APIReleaseContract.
 func (a APIReleaseContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1436,7 +882,8 @@ type APIReleaseContractProperties struct {
 	// Release Notes
 	Notes *string `json:"notes,omitempty"`
 
-	// READ-ONLY; The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// READ-ONLY; The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time the API release was updated.
@@ -1482,41 +929,16 @@ func (a *APIReleaseContractProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// APIReleaseCreateOrUpdateOptions contains the optional parameters for the APIRelease.CreateOrUpdate method.
-type APIReleaseCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// APIReleaseDeleteOptions contains the optional parameters for the APIRelease.Delete method.
-type APIReleaseDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIReleaseGetEntityTagOptions contains the optional parameters for the APIRelease.GetEntityTag method.
-type APIReleaseGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIReleaseGetOptions contains the optional parameters for the APIRelease.Get method.
-type APIReleaseGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIReleaseListByServiceOptions contains the optional parameters for the APIRelease.ListByService method.
-type APIReleaseListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| notes | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
+// APIRevisionClientListByServiceOptions contains the optional parameters for the APIRevisionClient.ListByService method.
+type APIRevisionClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
 	// Number of records to return.
 	Top *int32
-}
-
-// APIReleaseUpdateOptions contains the optional parameters for the APIRelease.Update method.
-type APIReleaseUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // APIRevisionCollection - Paged API Revision list representation.
@@ -1548,7 +970,8 @@ type APIRevisionContract struct {
 	// READ-ONLY; Revision number of API.
 	APIRevision *string `json:"apiRevision,omitempty" azure:"ro"`
 
-	// READ-ONLY; The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// READ-ONLY; The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Description of the API Revision.
@@ -1563,7 +986,8 @@ type APIRevisionContract struct {
 	// READ-ONLY; Gateway URL for accessing the non-current API Revision.
 	PrivateURL *string `json:"privateUrl,omitempty" azure:"ro"`
 
-	// READ-ONLY; The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// READ-ONLY; The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	UpdatedDateTime *time.Time `json:"updatedDateTime,omitempty" azure:"ro"`
 }
 
@@ -1637,43 +1061,34 @@ type APIRevisionInfoContract struct {
 	SourceAPIID *string `json:"sourceApiId,omitempty"`
 }
 
-// APIRevisionListByServiceOptions contains the optional parameters for the APIRevision.ListByService method.
-type APIRevisionListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| apiRevision | filter
-	// | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// APISchemaBeginCreateOrUpdateOptions contains the optional parameters for the APISchema.BeginCreateOrUpdate method.
-type APISchemaBeginCreateOrUpdateOptions struct {
+// APISchemaClientBeginCreateOrUpdateOptions contains the optional parameters for the APISchemaClient.BeginCreateOrUpdate
+// method.
+type APISchemaClientBeginCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// APISchemaDeleteOptions contains the optional parameters for the APISchema.Delete method.
-type APISchemaDeleteOptions struct {
+// APISchemaClientDeleteOptions contains the optional parameters for the APISchemaClient.Delete method.
+type APISchemaClientDeleteOptions struct {
 	// If true removes all references to the schema before deleting it.
 	Force *bool
 }
 
-// APISchemaGetEntityTagOptions contains the optional parameters for the APISchema.GetEntityTag method.
-type APISchemaGetEntityTagOptions struct {
+// APISchemaClientGetEntityTagOptions contains the optional parameters for the APISchemaClient.GetEntityTag method.
+type APISchemaClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APISchemaGetOptions contains the optional parameters for the APISchema.Get method.
-type APISchemaGetOptions struct {
+// APISchemaClientGetOptions contains the optional parameters for the APISchemaClient.Get method.
+type APISchemaClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APISchemaListByAPIOptions contains the optional parameters for the APISchema.ListByAPI method.
-type APISchemaListByAPIOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| contentType | filter
-	// | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
+// APISchemaClientListByAPIOptions contains the optional parameters for the APISchemaClient.ListByAPI method.
+type APISchemaClientListByAPIOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | contentType | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -1681,32 +1096,36 @@ type APISchemaListByAPIOptions struct {
 	Top *int32
 }
 
-// APITagDescriptionCreateOrUpdateOptions contains the optional parameters for the APITagDescription.CreateOrUpdate method.
-type APITagDescriptionCreateOrUpdateOptions struct {
+// APITagDescriptionClientCreateOrUpdateOptions contains the optional parameters for the APITagDescriptionClient.CreateOrUpdate
+// method.
+type APITagDescriptionClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// APITagDescriptionDeleteOptions contains the optional parameters for the APITagDescription.Delete method.
-type APITagDescriptionDeleteOptions struct {
+// APITagDescriptionClientDeleteOptions contains the optional parameters for the APITagDescriptionClient.Delete method.
+type APITagDescriptionClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APITagDescriptionGetEntityTagOptions contains the optional parameters for the APITagDescription.GetEntityTag method.
-type APITagDescriptionGetEntityTagOptions struct {
+// APITagDescriptionClientGetEntityTagOptions contains the optional parameters for the APITagDescriptionClient.GetEntityTag
+// method.
+type APITagDescriptionClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APITagDescriptionGetOptions contains the optional parameters for the APITagDescription.Get method.
-type APITagDescriptionGetOptions struct {
+// APITagDescriptionClientGetOptions contains the optional parameters for the APITagDescriptionClient.Get method.
+type APITagDescriptionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APITagDescriptionListByServiceOptions contains the optional parameters for the APITagDescription.ListByService method.
-type APITagDescriptionListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| displayName | filter
-	// | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
+// APITagDescriptionClientListByServiceOptions contains the optional parameters for the APITagDescriptionClient.ListByService
+// method.
+type APITagDescriptionClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -1716,15 +1135,47 @@ type APITagDescriptionListByServiceOptions struct {
 
 // APITagResourceContractProperties - API contract properties for the Tag Resources.
 type APITagResourceContractProperties struct {
-	APIEntityBaseContract
+	// Describes the revision of the API. If no value is provided, default revision 1 is created
+	APIRevision *string `json:"apiRevision,omitempty"`
+
+	// Description of the API Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+
+	// Type of API.
+	APIType *APIType `json:"type,omitempty"`
+
+	// Indicates the version identifier of the API if the API is versioned
+	APIVersion *string `json:"apiVersion,omitempty"`
+
+	// Description of the API Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
+
+	// A resource identifier for the related ApiVersionSet.
+	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+
+	// Collection of authentication settings included into this API.
+	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+
+	// Contact information for the API.
+	Contact *APIContactInformation `json:"contact,omitempty"`
+
+	// Description of the API. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
 	// API identifier in the form /apis/{apiId}.
 	ID *string `json:"id,omitempty"`
+
+	// Indicates if API revision is current api revision.
+	IsCurrent *bool `json:"isCurrent,omitempty"`
+
+	// License information for the API.
+	License *APILicenseInformation `json:"license,omitempty"`
 
 	// API name.
 	Name *string `json:"name,omitempty"`
 
-	// Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint
-	// base URL specified during the service instance
+	// Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It
+	// is appended to the API endpoint base URL specified during the service instance
 	// creation to form a public URL for this API.
 	Path *string `json:"path,omitempty"`
 
@@ -1733,17 +1184,43 @@ type APITagResourceContractProperties struct {
 
 	// Absolute URL of the backend service implementing this API.
 	ServiceURL *string `json:"serviceUrl,omitempty"`
+
+	// Protocols over which API is made available.
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+
+	// Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+
+	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
+	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+
+	// READ-ONLY; Indicates if API revision is accessible via the gateway.
+	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type APITagResourceContractProperties.
 func (a APITagResourceContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.APIEntityBaseContract.marshalInternal(objectMap)
+	populate(objectMap, "apiRevision", a.APIRevision)
+	populate(objectMap, "apiRevisionDescription", a.APIRevisionDescription)
+	populate(objectMap, "type", a.APIType)
+	populate(objectMap, "apiVersion", a.APIVersion)
+	populate(objectMap, "apiVersionDescription", a.APIVersionDescription)
+	populate(objectMap, "apiVersionSetId", a.APIVersionSetID)
+	populate(objectMap, "authenticationSettings", a.AuthenticationSettings)
+	populate(objectMap, "contact", a.Contact)
+	populate(objectMap, "description", a.Description)
 	populate(objectMap, "id", a.ID)
+	populate(objectMap, "isCurrent", a.IsCurrent)
+	populate(objectMap, "isOnline", a.IsOnline)
+	populate(objectMap, "license", a.License)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "path", a.Path)
 	populate(objectMap, "protocols", a.Protocols)
 	populate(objectMap, "serviceUrl", a.ServiceURL)
+	populate(objectMap, "subscriptionKeyParameterNames", a.SubscriptionKeyParameterNames)
+	populate(objectMap, "subscriptionRequired", a.SubscriptionRequired)
+	populate(objectMap, "termsOfServiceUrl", a.TermsOfServiceURL)
 	return json.Marshal(objectMap)
 }
 
@@ -1760,15 +1237,47 @@ func (a APIUpdateContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// APIUpdateOptions contains the optional parameters for the API.Update method.
-type APIUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // APIVersionConstraint - Control Plane Apis version constraint for the API Management service.
 type APIVersionConstraint struct {
 	// Limit control plane API calls to API Management service with version equal to or newer than this value.
 	MinAPIVersion *string `json:"minApiVersion,omitempty"`
+}
+
+// APIVersionSetClientCreateOrUpdateOptions contains the optional parameters for the APIVersionSetClient.CreateOrUpdate method.
+type APIVersionSetClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// APIVersionSetClientDeleteOptions contains the optional parameters for the APIVersionSetClient.Delete method.
+type APIVersionSetClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIVersionSetClientGetEntityTagOptions contains the optional parameters for the APIVersionSetClient.GetEntityTag method.
+type APIVersionSetClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIVersionSetClientGetOptions contains the optional parameters for the APIVersionSetClient.Get method.
+type APIVersionSetClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIVersionSetClientListByServiceOptions contains the optional parameters for the APIVersionSetClient.ListByService method.
+type APIVersionSetClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// APIVersionSetClientUpdateOptions contains the optional parameters for the APIVersionSetClient.Update method.
+type APIVersionSetClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // APIVersionSetCollection - Paged API Version Set list representation.
@@ -1794,17 +1303,17 @@ func (a APIVersionSetCollection) MarshalJSON() ([]byte, error) {
 
 // APIVersionSetContract - API Version Set Contract details.
 type APIVersionSetContract struct {
-	Resource
 	// API VersionSet contract properties.
 	Properties *APIVersionSetContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type APIVersionSetContract.
-func (a APIVersionSetContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // APIVersionSetContractDetails - An API Version Set contains the common configuration for a set of API Versions relating
@@ -1830,23 +1339,20 @@ type APIVersionSetContractDetails struct {
 
 // APIVersionSetContractProperties - Properties of an API Version Set.
 type APIVersionSetContractProperties struct {
-	APIVersionSetEntityBase
 	// REQUIRED; Name of API Version Set
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// REQUIRED; An value that determines where the API Version identifier will be located in a HTTP request.
 	VersioningScheme *VersioningScheme `json:"versioningScheme,omitempty"`
-}
 
-// APIVersionSetCreateOrUpdateOptions contains the optional parameters for the APIVersionSet.CreateOrUpdate method.
-type APIVersionSetCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
+	// Description of API Version Set.
+	Description *string `json:"description,omitempty"`
 
-// APIVersionSetDeleteOptions contains the optional parameters for the APIVersionSet.Delete method.
-type APIVersionSetDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Name of HTTP header parameter that indicates the API Version if versioningScheme is set to header.
+	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
+
+	// Name of query parameter that indicates the API Version if versioningScheme is set to query.
+	VersionQueryName *string `json:"versionQueryName,omitempty"`
 }
 
 // APIVersionSetEntityBase - API Version set base parameters
@@ -1859,31 +1365,6 @@ type APIVersionSetEntityBase struct {
 
 	// Name of query parameter that indicates the API Version if versioningScheme is set to query.
 	VersionQueryName *string `json:"versionQueryName,omitempty"`
-}
-
-// APIVersionSetGetEntityTagOptions contains the optional parameters for the APIVersionSet.GetEntityTag method.
-type APIVersionSetGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIVersionSetGetOptions contains the optional parameters for the APIVersionSet.Get method.
-type APIVersionSetGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// APIVersionSetListByServiceOptions contains the optional parameters for the APIVersionSet.ListByService method.
-type APIVersionSetListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// APIVersionSetUpdateOptions contains the optional parameters for the APIVersionSet.Update method.
-type APIVersionSetUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // APIVersionSetUpdateParameters - Parameters to update or create an API Version Set Contract.
@@ -1901,9 +1382,17 @@ func (a APIVersionSetUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // APIVersionSetUpdateParametersProperties - Properties used to create or update an API Version Set.
 type APIVersionSetUpdateParametersProperties struct {
-	APIVersionSetEntityBase
+	// Description of API Version Set.
+	Description *string `json:"description,omitempty"`
+
 	// Name of API Version Set
 	DisplayName *string `json:"displayName,omitempty"`
+
+	// Name of HTTP header parameter that indicates the API Version if versioningScheme is set to header.
+	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
+
+	// Name of query parameter that indicates the API Version if versioningScheme is set to query.
+	VersionQueryName *string `json:"versionQueryName,omitempty"`
 
 	// An value that determines where the API Version identifier will be located in a HTTP request.
 	VersioningScheme *VersioningScheme `json:"versioningScheme,omitempty"`
@@ -1932,17 +1421,17 @@ func (a AccessInformationCollection) MarshalJSON() ([]byte, error) {
 
 // AccessInformationContract - Tenant Settings.
 type AccessInformationContract struct {
-	Resource
 	// AccessInformation entity contract properties.
 	Properties *AccessInformationContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AccessInformationContract.
-func (a AccessInformationContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AccessInformationContractProperties - Tenant access information contract of the API Management service.
@@ -1968,7 +1457,8 @@ type AccessInformationCreateParameterProperties struct {
 	// Principal (User) Identifier.
 	PrincipalID *string `json:"principalId,omitempty"`
 
-	// Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	// Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the
+	// value.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
@@ -1992,7 +1482,8 @@ type AccessInformationSecretsContract struct {
 	// Principal (User) Identifier.
 	PrincipalID *string `json:"principalId,omitempty"`
 
-	// Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	// Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the
+	// value.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
@@ -2021,13 +1512,14 @@ type AdditionalLocation struct {
 	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; SKU properties of the API Management service.
-	SKU *APIManagementServiceSKUProperties `json:"sku,omitempty"`
+	SKU *ServiceSKUProperties `json:"sku,omitempty"`
 
-	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway in this additional location.
+	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
+	// in this additional location.
 	DisableGateway *bool `json:"disableGateway,omitempty"`
 
-	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the location. Supported only for Premium SKU being
-	// deployed in Virtual Network.
+	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the location. Supported
+	// only for Premium SKU being deployed in Virtual Network.
 	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
 
 	// Virtual network configuration for the location.
@@ -2042,13 +1534,13 @@ type AdditionalLocation struct {
 	// READ-ONLY; Compute Platform Version running the service.
 	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
 
-	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual Network in a particular additional
-	// location. Available only for Basic, Standard,
+	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual
+	// Network in a particular additional location. Available only for Basic, Standard,
 	// Premium and Isolated SKU.
 	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
 
-	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in the additional location. Available only for Basic, Standard, Premium
-	// and Isolated SKU.
+	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in the additional location. Available
+	// only for Basic, Standard, Premium and Isolated SKU.
 	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
 }
 
@@ -2086,15 +1578,11 @@ type ApimResource struct {
 // MarshalJSON implements the json.Marshaller interface for type ApimResource.
 func (a ApimResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (a ApimResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "tags", a.Tags)
 	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
 }
 
 // ArmIDWrapper - A wrapper for an ARM resource id
@@ -2105,17 +1593,17 @@ type ArmIDWrapper struct {
 
 // AssociationContract - Association entity details.
 type AssociationContract struct {
-	Resource
 	// Association entity contract properties.
 	Properties *AssociationContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AssociationContract.
-func (a AssociationContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AssociationContractProperties - Association entity contract properties.
@@ -2131,6 +1619,54 @@ type AuthenticationSettingsContract struct {
 
 	// OpenID Connect Authentication Settings
 	Openid *OpenIDAuthenticationSettingsContract `json:"openid,omitempty"`
+}
+
+// AuthorizationServerClientCreateOrUpdateOptions contains the optional parameters for the AuthorizationServerClient.CreateOrUpdate
+// method.
+type AuthorizationServerClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// AuthorizationServerClientDeleteOptions contains the optional parameters for the AuthorizationServerClient.Delete method.
+type AuthorizationServerClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthorizationServerClientGetEntityTagOptions contains the optional parameters for the AuthorizationServerClient.GetEntityTag
+// method.
+type AuthorizationServerClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthorizationServerClientGetOptions contains the optional parameters for the AuthorizationServerClient.Get method.
+type AuthorizationServerClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthorizationServerClientListByServiceOptions contains the optional parameters for the AuthorizationServerClient.ListByService
+// method.
+type AuthorizationServerClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// AuthorizationServerClientListSecretsOptions contains the optional parameters for the AuthorizationServerClient.ListSecrets
+// method.
+type AuthorizationServerClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthorizationServerClientUpdateOptions contains the optional parameters for the AuthorizationServerClient.Update method.
+type AuthorizationServerClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // AuthorizationServerCollection - Paged OAuth2 Authorization Servers list representation.
@@ -2156,17 +1692,17 @@ func (a AuthorizationServerCollection) MarshalJSON() ([]byte, error) {
 
 // AuthorizationServerContract - External OAuth authorization server settings.
 type AuthorizationServerContract struct {
-	Resource
 	// Properties of the External OAuth authorization server Contract.
 	Properties *AuthorizationServerContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AuthorizationServerContract.
-func (a AuthorizationServerContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AuthorizationServerContractBaseProperties - External OAuth authorization server Update settings contract.
@@ -2177,30 +1713,32 @@ type AuthorizationServerContractBaseProperties struct {
 	// Specifies the mechanism by which access token is passed to the API.
 	BearerTokenSendingMethods []*BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
 
-	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified,
-	// client credentials and other parameters are passed
+	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
+	// Body. When Body is specified, client credentials and other parameters are passed
 	// within the request body in the application/x-www-form-urlencoded format.
 	ClientAuthenticationMethod []*ClientAuthenticationMethod `json:"clientAuthenticationMethod,omitempty"`
 
-	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing
-	// space-delimited values.
+	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
+	// the form of a string containing space-delimited values.
 	DefaultScope *string `json:"defaultScope,omitempty"`
 
 	// Description of the authorization server. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
 
-	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
+	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
+	// resource owner password.
 	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
 
-	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
+	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
+	// resource owner username.
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 
-	// If true, authorization server will include state parameter from the authorization request to its response. Client may use state parameter to raise protocol
-	// security.
+	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
+	// state parameter to raise protocol security.
 	SupportState *bool `json:"supportState,omitempty"`
 
-	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string
-	// properties, i.e. {"name" : "name value", "value":
+	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
+	// with name and value string properties, i.e. {"name" : "name value", "value":
 	// "a value"}.
 	TokenBodyParameters []*TokenBodyParameterContract `json:"tokenBodyParameters,omitempty"`
 
@@ -2211,11 +1749,6 @@ type AuthorizationServerContractBaseProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type AuthorizationServerContractBaseProperties.
 func (a AuthorizationServerContractBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (a AuthorizationServerContractBaseProperties) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "authorizationMethods", a.AuthorizationMethods)
 	populate(objectMap, "bearerTokenSendingMethods", a.BearerTokenSendingMethods)
 	populate(objectMap, "clientAuthenticationMethod", a.ClientAuthenticationMethod)
@@ -2226,19 +1759,19 @@ func (a AuthorizationServerContractBaseProperties) marshalInternal(objectMap map
 	populate(objectMap, "supportState", a.SupportState)
 	populate(objectMap, "tokenBodyParameters", a.TokenBodyParameters)
 	populate(objectMap, "tokenEndpoint", a.TokenEndpoint)
+	return json.Marshal(objectMap)
 }
 
 // AuthorizationServerContractProperties - External OAuth authorization server settings Properties.
 type AuthorizationServerContractProperties struct {
-	AuthorizationServerContractBaseProperties
 	// REQUIRED; OAuth authorization endpoint. See http://tools.ietf.org/html/rfc6749#section-3.2.
 	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
 
 	// REQUIRED; Client or app id registered with this authorization server.
 	ClientID *string `json:"clientId,omitempty"`
 
-	// REQUIRED; Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being
-	// referenced.
+	// REQUIRED; Optional reference to a page where client or app registration for this authorization server is performed. Contains
+	// absolute URL to entity being referenced.
 	ClientRegistrationEndpoint *string `json:"clientRegistrationEndpoint,omitempty"`
 
 	// REQUIRED; User-friendly authorization server name.
@@ -2247,60 +1780,69 @@ type AuthorizationServerContractProperties struct {
 	// REQUIRED; Form of an authorization grant, which the client uses to request the access token.
 	GrantTypes []*GrantType `json:"grantTypes,omitempty"`
 
-	// Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request
-	// to get the value.
+	// HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
+	AuthorizationMethods []*AuthorizationMethod `json:"authorizationMethods,omitempty"`
+
+	// Specifies the mechanism by which access token is passed to the API.
+	BearerTokenSendingMethods []*BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
+
+	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
+	// Body. When Body is specified, client credentials and other parameters are passed
+	// within the request body in the application/x-www-form-urlencoded format.
+	ClientAuthenticationMethod []*ClientAuthenticationMethod `json:"clientAuthenticationMethod,omitempty"`
+
+	// Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use
+	// '/listSecrets' POST request to get the value.
 	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
+	// the form of a string containing space-delimited values.
+	DefaultScope *string `json:"defaultScope,omitempty"`
+
+	// Description of the authorization server. Can contain HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
+	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
+	// resource owner password.
+	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
+
+	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
+	// resource owner username.
+	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
+
+	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
+	// state parameter to raise protocol security.
+	SupportState *bool `json:"supportState,omitempty"`
+
+	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
+	// with name and value string properties, i.e. {"name" : "name value", "value":
+	// "a value"}.
+	TokenBodyParameters []*TokenBodyParameterContract `json:"tokenBodyParameters,omitempty"`
+
+	// OAuth token endpoint. Contains absolute URI to entity being referenced.
+	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AuthorizationServerContractProperties.
 func (a AuthorizationServerContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AuthorizationServerContractBaseProperties.marshalInternal(objectMap)
 	populate(objectMap, "authorizationEndpoint", a.AuthorizationEndpoint)
+	populate(objectMap, "authorizationMethods", a.AuthorizationMethods)
+	populate(objectMap, "bearerTokenSendingMethods", a.BearerTokenSendingMethods)
+	populate(objectMap, "clientAuthenticationMethod", a.ClientAuthenticationMethod)
 	populate(objectMap, "clientId", a.ClientID)
 	populate(objectMap, "clientRegistrationEndpoint", a.ClientRegistrationEndpoint)
 	populate(objectMap, "clientSecret", a.ClientSecret)
+	populate(objectMap, "defaultScope", a.DefaultScope)
+	populate(objectMap, "description", a.Description)
 	populate(objectMap, "displayName", a.DisplayName)
 	populate(objectMap, "grantTypes", a.GrantTypes)
+	populate(objectMap, "resourceOwnerPassword", a.ResourceOwnerPassword)
+	populate(objectMap, "resourceOwnerUsername", a.ResourceOwnerUsername)
+	populate(objectMap, "supportState", a.SupportState)
+	populate(objectMap, "tokenBodyParameters", a.TokenBodyParameters)
+	populate(objectMap, "tokenEndpoint", a.TokenEndpoint)
 	return json.Marshal(objectMap)
-}
-
-// AuthorizationServerCreateOrUpdateOptions contains the optional parameters for the AuthorizationServer.CreateOrUpdate method.
-type AuthorizationServerCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// AuthorizationServerDeleteOptions contains the optional parameters for the AuthorizationServer.Delete method.
-type AuthorizationServerDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AuthorizationServerGetEntityTagOptions contains the optional parameters for the AuthorizationServer.GetEntityTag method.
-type AuthorizationServerGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AuthorizationServerGetOptions contains the optional parameters for the AuthorizationServer.Get method.
-type AuthorizationServerGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AuthorizationServerListByServiceOptions contains the optional parameters for the AuthorizationServer.ListByService method.
-type AuthorizationServerListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// AuthorizationServerListSecretsOptions contains the optional parameters for the AuthorizationServer.ListSecrets method.
-type AuthorizationServerListSecretsOptions struct {
-	// placeholder for future optional parameters
 }
 
 // AuthorizationServerSecretsContract - OAuth Server Secrets Contract.
@@ -2308,67 +1850,121 @@ type AuthorizationServerSecretsContract struct {
 	// oAuth Authorization Server Secrets.
 	ClientSecret *string `json:"clientSecret,omitempty"`
 
-	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
+	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
+	// resource owner password.
 	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
 
-	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
+	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
+	// resource owner username.
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 }
 
 // AuthorizationServerUpdateContract - External OAuth authorization server settings.
 type AuthorizationServerUpdateContract struct {
-	Resource
 	// Properties of the External OAuth authorization server update Contract.
 	Properties *AuthorizationServerUpdateContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AuthorizationServerUpdateContract.
 func (a AuthorizationServerUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
 // AuthorizationServerUpdateContractProperties - External OAuth authorization server Update settings contract.
 type AuthorizationServerUpdateContractProperties struct {
-	AuthorizationServerContractBaseProperties
 	// OAuth authorization endpoint. See http://tools.ietf.org/html/rfc6749#section-3.2.
 	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
+
+	// HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
+	AuthorizationMethods []*AuthorizationMethod `json:"authorizationMethods,omitempty"`
+
+	// Specifies the mechanism by which access token is passed to the API.
+	BearerTokenSendingMethods []*BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
+
+	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
+	// Body. When Body is specified, client credentials and other parameters are passed
+	// within the request body in the application/x-www-form-urlencoded format.
+	ClientAuthenticationMethod []*ClientAuthenticationMethod `json:"clientAuthenticationMethod,omitempty"`
 
 	// Client or app id registered with this authorization server.
 	ClientID *string `json:"clientId,omitempty"`
 
-	// Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced.
+	// Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute
+	// URL to entity being referenced.
 	ClientRegistrationEndpoint *string `json:"clientRegistrationEndpoint,omitempty"`
 
-	// Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request
-	// to get the value.
+	// Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use
+	// '/listSecrets' POST request to get the value.
 	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
+	// the form of a string containing space-delimited values.
+	DefaultScope *string `json:"defaultScope,omitempty"`
+
+	// Description of the authorization server. Can contain HTML formatting tags.
+	Description *string `json:"description,omitempty"`
 
 	// User-friendly authorization server name.
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Form of an authorization grant, which the client uses to request the access token.
 	GrantTypes []*GrantType `json:"grantTypes,omitempty"`
+
+	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
+	// resource owner password.
+	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
+
+	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
+	// resource owner username.
+	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
+
+	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
+	// state parameter to raise protocol security.
+	SupportState *bool `json:"supportState,omitempty"`
+
+	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
+	// with name and value string properties, i.e. {"name" : "name value", "value":
+	// "a value"}.
+	TokenBodyParameters []*TokenBodyParameterContract `json:"tokenBodyParameters,omitempty"`
+
+	// OAuth token endpoint. Contains absolute URI to entity being referenced.
+	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AuthorizationServerUpdateContractProperties.
 func (a AuthorizationServerUpdateContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AuthorizationServerContractBaseProperties.marshalInternal(objectMap)
 	populate(objectMap, "authorizationEndpoint", a.AuthorizationEndpoint)
+	populate(objectMap, "authorizationMethods", a.AuthorizationMethods)
+	populate(objectMap, "bearerTokenSendingMethods", a.BearerTokenSendingMethods)
+	populate(objectMap, "clientAuthenticationMethod", a.ClientAuthenticationMethod)
 	populate(objectMap, "clientId", a.ClientID)
 	populate(objectMap, "clientRegistrationEndpoint", a.ClientRegistrationEndpoint)
 	populate(objectMap, "clientSecret", a.ClientSecret)
+	populate(objectMap, "defaultScope", a.DefaultScope)
+	populate(objectMap, "description", a.Description)
 	populate(objectMap, "displayName", a.DisplayName)
 	populate(objectMap, "grantTypes", a.GrantTypes)
+	populate(objectMap, "resourceOwnerPassword", a.ResourceOwnerPassword)
+	populate(objectMap, "resourceOwnerUsername", a.ResourceOwnerUsername)
+	populate(objectMap, "supportState", a.SupportState)
+	populate(objectMap, "tokenBodyParameters", a.TokenBodyParameters)
+	populate(objectMap, "tokenEndpoint", a.TokenEndpoint)
 	return json.Marshal(objectMap)
-}
-
-// AuthorizationServerUpdateOptions contains the optional parameters for the AuthorizationServer.Update method.
-type AuthorizationServerUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // BackendAuthorizationHeaderCredentials - Authorization header information.
@@ -2394,7 +1990,8 @@ type BackendBaseParameters struct {
 	// Backend Proxy Contract Properties
 	Proxy *BackendProxyContract `json:"proxy,omitempty"`
 
-	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or API Apps.
+	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or
+	// API Apps.
 	ResourceID *string `json:"resourceId,omitempty"`
 
 	// Backend TLS Properties
@@ -2402,6 +1999,52 @@ type BackendBaseParameters struct {
 
 	// Backend Title.
 	Title *string `json:"title,omitempty"`
+}
+
+// BackendClientCreateOrUpdateOptions contains the optional parameters for the BackendClient.CreateOrUpdate method.
+type BackendClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// BackendClientDeleteOptions contains the optional parameters for the BackendClient.Delete method.
+type BackendClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackendClientGetEntityTagOptions contains the optional parameters for the BackendClient.GetEntityTag method.
+type BackendClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackendClientGetOptions contains the optional parameters for the BackendClient.Get method.
+type BackendClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackendClientListByServiceOptions contains the optional parameters for the BackendClient.ListByService method.
+type BackendClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | title | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | url | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// BackendClientReconnectOptions contains the optional parameters for the BackendClient.Reconnect method.
+type BackendClientReconnectOptions struct {
+	// Reconnect request parameters.
+	Parameters *BackendReconnectContract
+}
+
+// BackendClientUpdateOptions contains the optional parameters for the BackendClient.Update method.
+type BackendClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // BackendCollection - Paged Backend list representation.
@@ -2427,33 +2070,48 @@ func (b BackendCollection) MarshalJSON() ([]byte, error) {
 
 // BackendContract - Backend details.
 type BackendContract struct {
-	Resource
 	// Backend entity contract properties.
 	Properties *BackendContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type BackendContract.
-func (b BackendContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BackendContractProperties - Parameters supplied to the Create Backend operation.
 type BackendContractProperties struct {
-	BackendBaseParameters
 	// REQUIRED; Backend communication protocol.
 	Protocol *BackendProtocol `json:"protocol,omitempty"`
 
 	// REQUIRED; Runtime Url of the Backend.
 	URL *string `json:"url,omitempty"`
-}
 
-// BackendCreateOrUpdateOptions contains the optional parameters for the Backend.CreateOrUpdate method.
-type BackendCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
+	// Backend Credentials Contract Properties
+	Credentials *BackendCredentialsContract `json:"credentials,omitempty"`
+
+	// Backend Description.
+	Description *string `json:"description,omitempty"`
+
+	// Backend Properties contract
+	Properties *BackendProperties `json:"properties,omitempty"`
+
+	// Backend Proxy Contract Properties
+	Proxy *BackendProxyContract `json:"proxy,omitempty"`
+
+	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or
+	// API Apps.
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// Backend TLS Properties
+	TLS *BackendTLSProperties `json:"tls,omitempty"`
+
+	// Backend Title.
+	Title *string `json:"title,omitempty"`
 }
 
 // BackendCredentialsContract - Details of the Credentials used to connect to Backend.
@@ -2485,33 +2143,6 @@ func (b BackendCredentialsContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BackendDeleteOptions contains the optional parameters for the Backend.Delete method.
-type BackendDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BackendGetEntityTagOptions contains the optional parameters for the Backend.GetEntityTag method.
-type BackendGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BackendGetOptions contains the optional parameters for the Backend.Get method.
-type BackendGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BackendListByServiceOptions contains the optional parameters for the Backend.ListByService method.
-type BackendListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| title | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| url | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
 // BackendProperties - Properties specific to the Backend Type.
 type BackendProperties struct {
 	// Backend Service Fabric Cluster Properties
@@ -2520,7 +2151,8 @@ type BackendProperties struct {
 
 // BackendProxyContract - Details of the Backend WebProxy Server to use in the Request to Backend.
 type BackendProxyContract struct {
-	// REQUIRED; WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all fragments and query strings.
+	// REQUIRED; WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all
+	// fragments and query strings.
 	URL *string `json:"url,omitempty"`
 
 	// Password to connect to the WebProxy Server
@@ -2532,23 +2164,17 @@ type BackendProxyContract struct {
 
 // BackendReconnectContract - Reconnect request parameters.
 type BackendReconnectContract struct {
-	Resource
 	// Reconnect request properties.
 	Properties *BackendReconnectProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type BackendReconnectContract.
-func (b BackendReconnectContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// BackendReconnectOptions contains the optional parameters for the Backend.Reconnect method.
-type BackendReconnectOptions struct {
-	// Reconnect request parameters.
-	Parameters *BackendReconnectContract
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BackendReconnectProperties - Properties to control reconnect requests.
@@ -2592,23 +2218,41 @@ func (b BackendServiceFabricClusterProperties) MarshalJSON() ([]byte, error) {
 
 // BackendTLSProperties - Properties controlling TLS Certificate Validation.
 type BackendTLSProperties struct {
-	// Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for this backend host.
+	// Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for this backend
+	// host.
 	ValidateCertificateChain *bool `json:"validateCertificateChain,omitempty"`
 
-	// Flag indicating whether SSL certificate name validation should be done when using self-signed certificates for this backend host.
+	// Flag indicating whether SSL certificate name validation should be done when using self-signed certificates for this backend
+	// host.
 	ValidateCertificateName *bool `json:"validateCertificateName,omitempty"`
-}
-
-// BackendUpdateOptions contains the optional parameters for the Backend.Update method.
-type BackendUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // BackendUpdateParameterProperties - Parameters supplied to the Update Backend operation.
 type BackendUpdateParameterProperties struct {
-	BackendBaseParameters
+	// Backend Credentials Contract Properties
+	Credentials *BackendCredentialsContract `json:"credentials,omitempty"`
+
+	// Backend Description.
+	Description *string `json:"description,omitempty"`
+
+	// Backend Properties contract
+	Properties *BackendProperties `json:"properties,omitempty"`
+
 	// Backend communication protocol.
 	Protocol *BackendProtocol `json:"protocol,omitempty"`
+
+	// Backend Proxy Contract Properties
+	Proxy *BackendProxyContract `json:"proxy,omitempty"`
+
+	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or
+	// API Apps.
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// Backend TLS Properties
+	TLS *BackendTLSProperties `json:"tls,omitempty"`
+
+	// Backend Title.
+	Title *string `json:"title,omitempty"`
 
 	// Runtime Url of the Backend.
 	URL *string `json:"url,omitempty"`
@@ -2631,6 +2275,40 @@ func (b BackendUpdateParameters) MarshalJSON() ([]byte, error) {
 type BodyDiagnosticSettings struct {
 	// Number of request body bytes to log.
 	Bytes *int32 `json:"bytes,omitempty"`
+}
+
+// CacheClientCreateOrUpdateOptions contains the optional parameters for the CacheClient.CreateOrUpdate method.
+type CacheClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// CacheClientDeleteOptions contains the optional parameters for the CacheClient.Delete method.
+type CacheClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CacheClientGetEntityTagOptions contains the optional parameters for the CacheClient.GetEntityTag method.
+type CacheClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CacheClientGetOptions contains the optional parameters for the CacheClient.Get method.
+type CacheClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CacheClientListByServiceOptions contains the optional parameters for the CacheClient.ListByService method.
+type CacheClientListByServiceOptions struct {
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// CacheClientUpdateOptions contains the optional parameters for the CacheClient.Update method.
+type CacheClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // CacheCollection - Paged Caches list representation.
@@ -2656,17 +2334,17 @@ func (c CacheCollection) MarshalJSON() ([]byte, error) {
 
 // CacheContract - Cache details.
 type CacheContract struct {
-	Resource
 	// Cache properties details.
 	Properties *CacheContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CacheContract.
-func (c CacheContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CacheContractProperties - Properties of the Cache contract.
@@ -2682,40 +2360,6 @@ type CacheContractProperties struct {
 
 	// Original uri of entity in external system cache points to
 	ResourceID *string `json:"resourceId,omitempty"`
-}
-
-// CacheCreateOrUpdateOptions contains the optional parameters for the Cache.CreateOrUpdate method.
-type CacheCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// CacheDeleteOptions contains the optional parameters for the Cache.Delete method.
-type CacheDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheGetEntityTagOptions contains the optional parameters for the Cache.GetEntityTag method.
-type CacheGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheGetOptions contains the optional parameters for the Cache.Get method.
-type CacheGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheListByServiceOptions contains the optional parameters for the Cache.ListByService method.
-type CacheListByServiceOptions struct {
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// CacheUpdateOptions contains the optional parameters for the Cache.Update method.
-type CacheUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // CacheUpdateParameters - Cache update details.
@@ -2746,6 +2390,49 @@ type CacheUpdateProperties struct {
 	UseFromLocation *string `json:"useFromLocation,omitempty"`
 }
 
+// CertificateClientCreateOrUpdateOptions contains the optional parameters for the CertificateClient.CreateOrUpdate method.
+type CertificateClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// CertificateClientDeleteOptions contains the optional parameters for the CertificateClient.Delete method.
+type CertificateClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateClientGetEntityTagOptions contains the optional parameters for the CertificateClient.GetEntityTag method.
+type CertificateClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
+type CertificateClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateClientListByServiceOptions contains the optional parameters for the CertificateClient.ListByService method.
+type CertificateClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | subject | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | thumbprint | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | expirationDate | filter | ge, le, eq, ne, gt, lt | |
+	Filter *string
+	// When set to true, the response contains only certificates entities which failed refresh.
+	IsKeyVaultRefreshFailed *bool
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// CertificateClientRefreshSecretOptions contains the optional parameters for the CertificateClient.RefreshSecret method.
+type CertificateClientRefreshSecretOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CertificateCollection - Paged Certificates list representation.
 type CertificateCollection struct {
 	// Total record count number across all pages.
@@ -2769,7 +2456,8 @@ func (c CertificateCollection) MarshalJSON() ([]byte, error) {
 
 // CertificateConfiguration - Certificate configuration which consist of non-trusted intermediates and root certificates.
 type CertificateConfiguration struct {
-	// REQUIRED; The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and CertificateAuthority are valid locations.
+	// REQUIRED; The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and CertificateAuthority
+	// are valid locations.
 	StoreName *CertificateConfigurationStoreName `json:"storeName,omitempty"`
 
 	// Certificate information.
@@ -2784,22 +2472,23 @@ type CertificateConfiguration struct {
 
 // CertificateContract - Certificate details.
 type CertificateContract struct {
-	Resource
 	// Certificate properties details.
 	Properties *CertificateContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateContract.
-func (c CertificateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CertificateContractProperties - Properties of the Certificate contract.
 type CertificateContractProperties struct {
-	// REQUIRED; Expiration date of the certificate. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// REQUIRED; Expiration date of the certificate. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
 
 	// REQUIRED; Subject attribute of the certificate.
@@ -2851,12 +2540,6 @@ func (c *CertificateContractProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CertificateCreateOrUpdateOptions contains the optional parameters for the Certificate.CreateOrUpdate method.
-type CertificateCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
 // CertificateCreateOrUpdateParameters - Certificate create or update details.
 type CertificateCreateOrUpdateParameters struct {
 	// Certificate create or update properties details.
@@ -2875,24 +2558,10 @@ type CertificateCreateOrUpdateProperties struct {
 	Password *string `json:"password,omitempty"`
 }
 
-// CertificateDeleteOptions contains the optional parameters for the Certificate.Delete method.
-type CertificateDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CertificateGetEntityTagOptions contains the optional parameters for the Certificate.GetEntityTag method.
-type CertificateGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CertificateGetOptions contains the optional parameters for the Certificate.Get method.
-type CertificateGetOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CertificateInformation - SSL certificate information.
 type CertificateInformation struct {
-	// REQUIRED; Expiration date of the certificate. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// REQUIRED; Expiration date of the certificate. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	Expiry *time.Time `json:"expiry,omitempty"`
 
 	// REQUIRED; Subject of the certificate.
@@ -2937,23 +2606,9 @@ func (c *CertificateInformation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CertificateListByServiceOptions contains the optional parameters for the Certificate.ListByService method.
-type CertificateListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| subject | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| thumbprint | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| expirationDate | filter | ge, le,
-	// eq, ne, gt, lt | |</br>
-	Filter *string
-	// When set to true, the response contains only certificates entities which failed refresh.
-	IsKeyVaultRefreshFailed *bool
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// CertificateRefreshSecretOptions contains the optional parameters for the Certificate.RefreshSecret method.
-type CertificateRefreshSecretOptions struct {
+// ClientBeginPerformConnectivityCheckAsyncOptions contains the optional parameters for the Client.BeginPerformConnectivityCheckAsync
+// method.
+type ClientBeginPerformConnectivityCheckAsyncOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2974,8 +2629,8 @@ type ConnectivityCheckRequest struct {
 	// The IP version to be used. Only IPv4 is supported for now.
 	PreferredIPVersion *PreferredIPVersion `json:"preferredIPVersion,omitempty"`
 
-	// The request's protocol. Specific protocol configuration can be available based on this selection. The specified destination address must be coherent
-	// with this value.
+	// The request's protocol. Specific protocol configuration can be available based on this selection. The specified destination
+	// address must be coherent with this value.
 	Protocol *ConnectivityCheckProtocol `json:"protocol,omitempty"`
 
 	// Protocol-specific configuration.
@@ -3127,19 +2782,19 @@ type ConnectivityStatusContract struct {
 	// REQUIRED; Whether this is optional.
 	IsOptional *bool `json:"isOptional,omitempty"`
 
-	// REQUIRED; The date when the resource connectivity status last Changed from success to failure or vice-versa. The date conforms to the following format:
-	// yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
+	// REQUIRED; The date when the resource connectivity status last Changed from success to failure or vice-versa. The date conforms
+	// to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
 	// standard.
 	LastStatusChange *time.Time `json:"lastStatusChange,omitempty"`
 
-	// REQUIRED; The date when the resource connectivity status was last updated. This status should be updated every 15 minutes. If this status has not been
-	// updated, then it means that the service has lost network
-	// connectivity to the resource, from inside the Virtual Network.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO
-	// 8601 standard.
+	// REQUIRED; The date when the resource connectivity status was last updated. This status should be updated every 15 minutes.
+	// If this status has not been updated, then it means that the service has lost network
+	// connectivity to the resource, from inside the Virtual Network.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
+	// as specified by the ISO 8601 standard.
 	LastUpdated *time.Time `json:"lastUpdated,omitempty"`
 
-	// REQUIRED; The hostname of the resource which the service depends on. This can be the database, storage or any other azure resource on which the service
-	// depends upon.
+	// REQUIRED; The hostname of the resource which the service depends on. This can be the database, storage or any other azure
+	// resource on which the service depends upon.
 	Name *string `json:"name,omitempty"`
 
 	// REQUIRED; Resource Type.
@@ -3203,6 +2858,32 @@ func (c *ConnectivityStatusContract) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// ContentItemClientCreateOrUpdateOptions contains the optional parameters for the ContentItemClient.CreateOrUpdate method.
+type ContentItemClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// ContentItemClientDeleteOptions contains the optional parameters for the ContentItemClient.Delete method.
+type ContentItemClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContentItemClientGetEntityTagOptions contains the optional parameters for the ContentItemClient.GetEntityTag method.
+type ContentItemClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContentItemClientGetOptions contains the optional parameters for the ContentItemClient.Get method.
+type ContentItemClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContentItemClientListByServiceOptions contains the optional parameters for the ContentItemClient.ListByService method.
+type ContentItemClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ContentItemCollection - Paged list of content items.
 type ContentItemCollection struct {
 	// READ-ONLY; Next page link, if any.
@@ -3222,42 +2903,47 @@ func (c ContentItemCollection) MarshalJSON() ([]byte, error) {
 
 // ContentItemContract - Content type contract details.
 type ContentItemContract struct {
-	Resource
 	// Properties of the content item.
 	Properties map[string]interface{} `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentItemContract.
 func (c ContentItemContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
-// ContentItemCreateOrUpdateOptions contains the optional parameters for the ContentItem.CreateOrUpdate method.
-type ContentItemCreateOrUpdateOptions struct {
+// ContentTypeClientCreateOrUpdateOptions contains the optional parameters for the ContentTypeClient.CreateOrUpdate method.
+type ContentTypeClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// ContentItemDeleteOptions contains the optional parameters for the ContentItem.Delete method.
-type ContentItemDeleteOptions struct {
+// ContentTypeClientDeleteOptions contains the optional parameters for the ContentTypeClient.Delete method.
+type ContentTypeClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentItemGetEntityTagOptions contains the optional parameters for the ContentItem.GetEntityTag method.
-type ContentItemGetEntityTagOptions struct {
+// ContentTypeClientGetOptions contains the optional parameters for the ContentTypeClient.Get method.
+type ContentTypeClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentItemGetOptions contains the optional parameters for the ContentItem.Get method.
-type ContentItemGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContentItemListByServiceOptions contains the optional parameters for the ContentItem.ListByService method.
-type ContentItemListByServiceOptions struct {
+// ContentTypeClientListByServiceOptions contains the optional parameters for the ContentTypeClient.ListByService method.
+type ContentTypeClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3280,17 +2966,17 @@ func (c ContentTypeCollection) MarshalJSON() ([]byte, error) {
 
 // ContentTypeContract - Content type contract details.
 type ContentTypeContract struct {
-	Resource
 	// Properties of the content type.
 	Properties *ContentTypeContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ContentTypeContract.
-func (c ContentTypeContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type ContentTypeContractProperties struct {
@@ -3308,27 +2994,6 @@ type ContentTypeContractProperties struct {
 
 	// Content type version.
 	Version *string `json:"version,omitempty"`
-}
-
-// ContentTypeCreateOrUpdateOptions contains the optional parameters for the ContentType.CreateOrUpdate method.
-type ContentTypeCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// ContentTypeDeleteOptions contains the optional parameters for the ContentType.Delete method.
-type ContentTypeDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContentTypeGetOptions contains the optional parameters for the ContentType.Get method.
-type ContentTypeGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContentTypeListByServiceOptions contains the optional parameters for the ContentType.ListByService method.
-type ContentTypeListByServiceOptions struct {
-	// placeholder for future optional parameters
 }
 
 type DataMasking struct {
@@ -3355,57 +3020,60 @@ type DataMaskingEntity struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// DelegationSettingsCreateOrUpdateOptions contains the optional parameters for the DelegationSettings.CreateOrUpdate method.
-type DelegationSettingsCreateOrUpdateOptions struct {
+// DelegationSettingsClientCreateOrUpdateOptions contains the optional parameters for the DelegationSettingsClient.CreateOrUpdate
+// method.
+type DelegationSettingsClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// DelegationSettingsGetEntityTagOptions contains the optional parameters for the DelegationSettings.GetEntityTag method.
-type DelegationSettingsGetEntityTagOptions struct {
+// DelegationSettingsClientGetEntityTagOptions contains the optional parameters for the DelegationSettingsClient.GetEntityTag
+// method.
+type DelegationSettingsClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DelegationSettingsGetOptions contains the optional parameters for the DelegationSettings.Get method.
-type DelegationSettingsGetOptions struct {
+// DelegationSettingsClientGetOptions contains the optional parameters for the DelegationSettingsClient.Get method.
+type DelegationSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DelegationSettingsListSecretsOptions contains the optional parameters for the DelegationSettings.ListSecrets method.
-type DelegationSettingsListSecretsOptions struct {
+// DelegationSettingsClientListSecretsOptions contains the optional parameters for the DelegationSettingsClient.ListSecrets
+// method.
+type DelegationSettingsClientListSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DelegationSettingsUpdateOptions contains the optional parameters for the DelegationSettings.Update method.
-type DelegationSettingsUpdateOptions struct {
+// DelegationSettingsClientUpdateOptions contains the optional parameters for the DelegationSettingsClient.Update method.
+type DelegationSettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DeletedServiceContract - Deleted API Management Service information.
 type DeletedServiceContract struct {
-	Resource
 	// Deleted API Management Service details.
 	Properties *DeletedServiceContractProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
 	// READ-ONLY; API Management Service Master Location.
 	Location *string `json:"location,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DeletedServiceContract.
-func (d DeletedServiceContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type DeletedServiceContractProperties struct {
-	// UTC Timestamp when the service was soft-deleted. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// UTC Timestamp when the service was soft-deleted. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	DeletionDate *time.Time `json:"deletionDate,omitempty"`
 
-	// UTC Date and Time when the service will be automatically purged. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the
-	// ISO 8601 standard.
+	// UTC Date and Time when the service will be automatically purged. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
+	// as specified by the ISO 8601 standard.
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty"`
 
 	// Fully-qualified API Management Service Resource ID
@@ -3447,8 +3115,19 @@ func (d *DeletedServiceContractProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DeletedServicesBeginPurgeOptions contains the optional parameters for the DeletedServices.BeginPurge method.
-type DeletedServicesBeginPurgeOptions struct {
+// DeletedServicesClientBeginPurgeOptions contains the optional parameters for the DeletedServicesClient.BeginPurge method.
+type DeletedServicesClientBeginPurgeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedServicesClientGetByNameOptions contains the optional parameters for the DeletedServicesClient.GetByName method.
+type DeletedServicesClientGetByNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedServicesClientListBySubscriptionOptions contains the optional parameters for the DeletedServicesClient.ListBySubscription
+// method.
+type DeletedServicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3469,16 +3148,6 @@ func (d DeletedServicesCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DeletedServicesGetByNameOptions contains the optional parameters for the DeletedServices.GetByName method.
-type DeletedServicesGetByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeletedServicesListBySubscriptionOptions contains the optional parameters for the DeletedServices.ListBySubscription method.
-type DeletedServicesListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
 // DeployConfigurationParameterProperties - Parameters supplied to the Deploy Configuration operation.
 type DeployConfigurationParameterProperties struct {
 	// REQUIRED; The name of the Git branch from which the configuration is to be deployed to the configuration database.
@@ -3492,6 +3161,44 @@ type DeployConfigurationParameterProperties struct {
 type DeployConfigurationParameters struct {
 	// Deploy Configuration Parameter contract properties.
 	Properties *DeployConfigurationParameterProperties `json:"properties,omitempty"`
+}
+
+// DiagnosticClientCreateOrUpdateOptions contains the optional parameters for the DiagnosticClient.CreateOrUpdate method.
+type DiagnosticClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// DiagnosticClientDeleteOptions contains the optional parameters for the DiagnosticClient.Delete method.
+type DiagnosticClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticClientGetEntityTagOptions contains the optional parameters for the DiagnosticClient.GetEntityTag method.
+type DiagnosticClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticClientGetOptions contains the optional parameters for the DiagnosticClient.Get method.
+type DiagnosticClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticClientListByServiceOptions contains the optional parameters for the DiagnosticClient.ListByService method.
+type DiagnosticClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// DiagnosticClientUpdateOptions contains the optional parameters for the DiagnosticClient.Update method.
+type DiagnosticClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // DiagnosticCollection - Paged Diagnostic list representation.
@@ -3517,16 +3224,26 @@ func (d DiagnosticCollection) MarshalJSON() ([]byte, error) {
 
 // DiagnosticContract - Diagnostic details.
 type DiagnosticContract struct {
-	Resource
 	// Diagnostic entity contract properties.
 	Properties *DiagnosticContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DiagnosticContract.
 func (d DiagnosticContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -3560,31 +3277,32 @@ type DiagnosticContractProperties struct {
 	Verbosity *Verbosity `json:"verbosity,omitempty"`
 }
 
-// DiagnosticCreateOrUpdateOptions contains the optional parameters for the Diagnostic.CreateOrUpdate method.
-type DiagnosticCreateOrUpdateOptions struct {
+// EmailTemplateClientCreateOrUpdateOptions contains the optional parameters for the EmailTemplateClient.CreateOrUpdate method.
+type EmailTemplateClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// DiagnosticDeleteOptions contains the optional parameters for the Diagnostic.Delete method.
-type DiagnosticDeleteOptions struct {
+// EmailTemplateClientDeleteOptions contains the optional parameters for the EmailTemplateClient.Delete method.
+type EmailTemplateClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticGetEntityTagOptions contains the optional parameters for the Diagnostic.GetEntityTag method.
-type DiagnosticGetEntityTagOptions struct {
+// EmailTemplateClientGetEntityTagOptions contains the optional parameters for the EmailTemplateClient.GetEntityTag method.
+type EmailTemplateClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticGetOptions contains the optional parameters for the Diagnostic.Get method.
-type DiagnosticGetOptions struct {
+// EmailTemplateClientGetOptions contains the optional parameters for the EmailTemplateClient.Get method.
+type EmailTemplateClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticListByServiceOptions contains the optional parameters for the Diagnostic.ListByService method.
-type DiagnosticListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
+// EmailTemplateClientListByServiceOptions contains the optional parameters for the EmailTemplateClient.ListByService method.
+type EmailTemplateClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -3592,8 +3310,8 @@ type DiagnosticListByServiceOptions struct {
 	Top *int32
 }
 
-// DiagnosticUpdateOptions contains the optional parameters for the Diagnostic.Update method.
-type DiagnosticUpdateOptions struct {
+// EmailTemplateClientUpdateOptions contains the optional parameters for the EmailTemplateClient.Update method.
+type EmailTemplateClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3620,17 +3338,17 @@ func (e EmailTemplateCollection) MarshalJSON() ([]byte, error) {
 
 // EmailTemplateContract - Email Template details.
 type EmailTemplateContract struct {
-	Resource
 	// Email Template entity contract properties.
 	Properties *EmailTemplateContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type EmailTemplateContract.
-func (e EmailTemplateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // EmailTemplateContractProperties - Email Template Contract properties.
@@ -3666,38 +3384,6 @@ func (e EmailTemplateContractProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EmailTemplateCreateOrUpdateOptions contains the optional parameters for the EmailTemplate.CreateOrUpdate method.
-type EmailTemplateCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// EmailTemplateDeleteOptions contains the optional parameters for the EmailTemplate.Delete method.
-type EmailTemplateDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EmailTemplateGetEntityTagOptions contains the optional parameters for the EmailTemplate.GetEntityTag method.
-type EmailTemplateGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EmailTemplateGetOptions contains the optional parameters for the EmailTemplate.Get method.
-type EmailTemplateGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EmailTemplateListByServiceOptions contains the optional parameters for the EmailTemplate.ListByService method.
-type EmailTemplateListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
 // EmailTemplateParametersContractProperties - Email Template Parameter contract.
 type EmailTemplateParametersContractProperties struct {
 	// Template parameter description.
@@ -3708,11 +3394,6 @@ type EmailTemplateParametersContractProperties struct {
 
 	// Template parameter title.
 	Title *string `json:"title,omitempty"`
-}
-
-// EmailTemplateUpdateOptions contains the optional parameters for the EmailTemplate.Update method.
-type EmailTemplateUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // EmailTemplateUpdateParameterProperties - Email Template Update Contract properties.
@@ -3796,17 +3477,9 @@ type ErrorFieldContract struct {
 }
 
 // ErrorResponse - Error Response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// Properties of the Error Response.
-	InnerError *ErrorResponseBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseBody `json:"error,omitempty"`
 }
 
 // ErrorResponseBody - Error Body contract.
@@ -3830,25 +3503,64 @@ func (e ErrorResponseBody) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GatewayAPICreateOrUpdateOptions contains the optional parameters for the GatewayAPI.CreateOrUpdate method.
-type GatewayAPICreateOrUpdateOptions struct {
+// GatewayAPIClientCreateOrUpdateOptions contains the optional parameters for the GatewayAPIClient.CreateOrUpdate method.
+type GatewayAPIClientCreateOrUpdateOptions struct {
 	Parameters *AssociationContract
 }
 
-// GatewayAPIDeleteOptions contains the optional parameters for the GatewayAPI.Delete method.
-type GatewayAPIDeleteOptions struct {
+// GatewayAPIClientDeleteOptions contains the optional parameters for the GatewayAPIClient.Delete method.
+type GatewayAPIClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayAPIGetEntityTagOptions contains the optional parameters for the GatewayAPI.GetEntityTag method.
-type GatewayAPIGetEntityTagOptions struct {
+// GatewayAPIClientGetEntityTagOptions contains the optional parameters for the GatewayAPIClient.GetEntityTag method.
+type GatewayAPIClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayAPIListByServiceOptions contains the optional parameters for the GatewayAPI.ListByService method.
-type GatewayAPIListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
+// GatewayAPIClientListByServiceOptions contains the optional parameters for the GatewayAPIClient.ListByService method.
+type GatewayAPIClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// GatewayCertificateAuthorityClientCreateOrUpdateOptions contains the optional parameters for the GatewayCertificateAuthorityClient.CreateOrUpdate
+// method.
+type GatewayCertificateAuthorityClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// GatewayCertificateAuthorityClientDeleteOptions contains the optional parameters for the GatewayCertificateAuthorityClient.Delete
+// method.
+type GatewayCertificateAuthorityClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCertificateAuthorityClientGetEntityTagOptions contains the optional parameters for the GatewayCertificateAuthorityClient.GetEntityTag
+// method.
+type GatewayCertificateAuthorityClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCertificateAuthorityClientGetOptions contains the optional parameters for the GatewayCertificateAuthorityClient.Get
+// method.
+type GatewayCertificateAuthorityClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCertificateAuthorityClientListByServiceOptions contains the optional parameters for the GatewayCertificateAuthorityClient.ListByService
+// method.
+type GatewayCertificateAuthorityClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | eq, ne | |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -3875,17 +3587,17 @@ func (g GatewayCertificateAuthorityCollection) MarshalJSON() ([]byte, error) {
 
 // GatewayCertificateAuthorityContract - Gateway certificate authority details.
 type GatewayCertificateAuthorityContract struct {
-	Resource
 	// Gateway certificate authority details.
 	Properties *GatewayCertificateAuthorityContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type GatewayCertificateAuthorityContract.
-func (g GatewayCertificateAuthorityContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GatewayCertificateAuthorityContractProperties - Gateway certificate authority details.
@@ -3894,36 +3606,59 @@ type GatewayCertificateAuthorityContractProperties struct {
 	IsTrusted *bool `json:"isTrusted,omitempty"`
 }
 
-// GatewayCertificateAuthorityCreateOrUpdateOptions contains the optional parameters for the GatewayCertificateAuthority.CreateOrUpdate method.
-type GatewayCertificateAuthorityCreateOrUpdateOptions struct {
+// GatewayClientCreateOrUpdateOptions contains the optional parameters for the GatewayClient.CreateOrUpdate method.
+type GatewayClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// GatewayCertificateAuthorityDeleteOptions contains the optional parameters for the GatewayCertificateAuthority.Delete method.
-type GatewayCertificateAuthorityDeleteOptions struct {
+// GatewayClientDeleteOptions contains the optional parameters for the GatewayClient.Delete method.
+type GatewayClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayCertificateAuthorityGetEntityTagOptions contains the optional parameters for the GatewayCertificateAuthority.GetEntityTag method.
-type GatewayCertificateAuthorityGetEntityTagOptions struct {
+// GatewayClientGenerateTokenOptions contains the optional parameters for the GatewayClient.GenerateToken method.
+type GatewayClientGenerateTokenOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayCertificateAuthorityGetOptions contains the optional parameters for the GatewayCertificateAuthority.Get method.
-type GatewayCertificateAuthorityGetOptions struct {
+// GatewayClientGetEntityTagOptions contains the optional parameters for the GatewayClient.GetEntityTag method.
+type GatewayClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayCertificateAuthorityListByServiceOptions contains the optional parameters for the GatewayCertificateAuthority.ListByService method.
-type GatewayCertificateAuthorityListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | eq,
-	// ne | |</br>
+// GatewayClientGetOptions contains the optional parameters for the GatewayClient.Get method.
+type GatewayClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayClientListByServiceOptions contains the optional parameters for the GatewayClient.ListByService method.
+type GatewayClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | region | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
 	// Number of records to return.
 	Top *int32
+}
+
+// GatewayClientListKeysOptions contains the optional parameters for the GatewayClient.ListKeys method.
+type GatewayClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayClientRegenerateKeyOptions contains the optional parameters for the GatewayClient.RegenerateKey method.
+type GatewayClientRegenerateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayClientUpdateOptions contains the optional parameters for the GatewayClient.Update method.
+type GatewayClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // GatewayCollection - Paged Gateway list representation.
@@ -3949,16 +3684,26 @@ func (g GatewayCollection) MarshalJSON() ([]byte, error) {
 
 // GatewayContract - Gateway details.
 type GatewayContract struct {
-	Resource
 	// Gateway details.
 	Properties *GatewayContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type GatewayContract.
 func (g GatewayContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", g.ID)
+	populate(objectMap, "name", g.Name)
 	populate(objectMap, "properties", g.Properties)
+	populate(objectMap, "type", g.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -3971,30 +3716,43 @@ type GatewayContractProperties struct {
 	LocationData *ResourceLocationDataContract `json:"locationData,omitempty"`
 }
 
-// GatewayCreateOrUpdateOptions contains the optional parameters for the Gateway.CreateOrUpdate method.
-type GatewayCreateOrUpdateOptions struct {
+// GatewayHostnameConfigurationClientCreateOrUpdateOptions contains the optional parameters for the GatewayHostnameConfigurationClient.CreateOrUpdate
+// method.
+type GatewayHostnameConfigurationClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// GatewayDeleteOptions contains the optional parameters for the Gateway.Delete method.
-type GatewayDeleteOptions struct {
+// GatewayHostnameConfigurationClientDeleteOptions contains the optional parameters for the GatewayHostnameConfigurationClient.Delete
+// method.
+type GatewayHostnameConfigurationClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayGenerateTokenOptions contains the optional parameters for the Gateway.GenerateToken method.
-type GatewayGenerateTokenOptions struct {
+// GatewayHostnameConfigurationClientGetEntityTagOptions contains the optional parameters for the GatewayHostnameConfigurationClient.GetEntityTag
+// method.
+type GatewayHostnameConfigurationClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayGetEntityTagOptions contains the optional parameters for the Gateway.GetEntityTag method.
-type GatewayGetEntityTagOptions struct {
+// GatewayHostnameConfigurationClientGetOptions contains the optional parameters for the GatewayHostnameConfigurationClient.Get
+// method.
+type GatewayHostnameConfigurationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayGetOptions contains the optional parameters for the Gateway.Get method.
-type GatewayGetOptions struct {
-	// placeholder for future optional parameters
+// GatewayHostnameConfigurationClientListByServiceOptions contains the optional parameters for the GatewayHostnameConfigurationClient.ListByService
+// method.
+type GatewayHostnameConfigurationClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | hostname | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
 }
 
 // GatewayHostnameConfigurationCollection - Paged Gateway hostname configuration list representation.
@@ -4016,17 +3774,17 @@ func (g GatewayHostnameConfigurationCollection) MarshalJSON() ([]byte, error) {
 
 // GatewayHostnameConfigurationContract - Gateway hostname configuration details.
 type GatewayHostnameConfigurationContract struct {
-	Resource
 	// Gateway hostname configuration details.
 	Properties *GatewayHostnameConfigurationContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type GatewayHostnameConfigurationContract.
-func (g GatewayHostnameConfigurationContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GatewayHostnameConfigurationContractProperties - Gateway hostname configuration details.
@@ -4050,39 +3808,6 @@ type GatewayHostnameConfigurationContractProperties struct {
 	Tls11Enabled *bool `json:"tls11Enabled,omitempty"`
 }
 
-// GatewayHostnameConfigurationCreateOrUpdateOptions contains the optional parameters for the GatewayHostnameConfiguration.CreateOrUpdate method.
-type GatewayHostnameConfigurationCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// GatewayHostnameConfigurationDeleteOptions contains the optional parameters for the GatewayHostnameConfiguration.Delete method.
-type GatewayHostnameConfigurationDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GatewayHostnameConfigurationGetEntityTagOptions contains the optional parameters for the GatewayHostnameConfiguration.GetEntityTag method.
-type GatewayHostnameConfigurationGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GatewayHostnameConfigurationGetOptions contains the optional parameters for the GatewayHostnameConfiguration.Get method.
-type GatewayHostnameConfigurationGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GatewayHostnameConfigurationListByServiceOptions contains the optional parameters for the GatewayHostnameConfiguration.ListByService method.
-type GatewayHostnameConfigurationListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| hostname | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
 // GatewayKeyRegenerationRequestContract - Gateway key regeneration request contract properties.
 type GatewayKeyRegenerationRequestContract struct {
 	// REQUIRED; The Key being regenerated.
@@ -4098,28 +3823,6 @@ type GatewayKeysContract struct {
 	Secondary *string `json:"secondary,omitempty"`
 }
 
-// GatewayListByServiceOptions contains the optional parameters for the Gateway.ListByService method.
-type GatewayListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| region | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// GatewayListKeysOptions contains the optional parameters for the Gateway.ListKeys method.
-type GatewayListKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GatewayRegenerateKeyOptions contains the optional parameters for the Gateway.RegenerateKey method.
-type GatewayRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
 // GatewayTokenContract - Gateway access token.
 type GatewayTokenContract struct {
 	// Shared Access Authentication token value for the Gateway.
@@ -4128,8 +3831,8 @@ type GatewayTokenContract struct {
 
 // GatewayTokenRequestContract - Gateway token request contract properties.
 type GatewayTokenRequestContract struct {
-	// REQUIRED; The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
-	// as specified by the ISO 8601 standard.
+	// REQUIRED; The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following
+	// format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	Expiry *time.Time `json:"expiry,omitempty"`
 
 	// REQUIRED; The Key to be used to generate gateway token.
@@ -4167,15 +3870,136 @@ func (g *GatewayTokenRequestContract) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// GatewayUpdateOptions contains the optional parameters for the Gateway.Update method.
-type GatewayUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // GenerateSsoURLResult - Generate SSO Url operations response details.
 type GenerateSsoURLResult struct {
 	// Redirect Url containing the SSO URL value.
 	Value *string `json:"value,omitempty"`
+}
+
+// GlobalSchemaClientBeginCreateOrUpdateOptions contains the optional parameters for the GlobalSchemaClient.BeginCreateOrUpdate
+// method.
+type GlobalSchemaClientBeginCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// GlobalSchemaClientDeleteOptions contains the optional parameters for the GlobalSchemaClient.Delete method.
+type GlobalSchemaClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GlobalSchemaClientGetEntityTagOptions contains the optional parameters for the GlobalSchemaClient.GetEntityTag method.
+type GlobalSchemaClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GlobalSchemaClientGetOptions contains the optional parameters for the GlobalSchemaClient.Get method.
+type GlobalSchemaClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GlobalSchemaClientListByServiceOptions contains the optional parameters for the GlobalSchemaClient.ListByService method.
+type GlobalSchemaClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// GlobalSchemaCollection - The response of the list schema operation.
+type GlobalSchemaCollection struct {
+	// Total record count number.
+	Count *int64 `json:"count,omitempty"`
+
+	// READ-ONLY; Next page link if any.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Global Schema Contract value.
+	Value []*GlobalSchemaContract `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GlobalSchemaCollection.
+func (g GlobalSchemaCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "count", g.Count)
+	populate(objectMap, "nextLink", g.NextLink)
+	populate(objectMap, "value", g.Value)
+	return json.Marshal(objectMap)
+}
+
+// GlobalSchemaContract - Global Schema Contract details.
+type GlobalSchemaContract struct {
+	// Properties of the Global Schema.
+	Properties *GlobalSchemaContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GlobalSchemaContractProperties - Schema create or update contract Properties.
+type GlobalSchemaContractProperties struct {
+	// REQUIRED; Schema Type. Immutable.
+	SchemaType *SchemaType `json:"schemaType,omitempty"`
+
+	// Free-form schema entity description.
+	Description *string `json:"description,omitempty"`
+
+	// Global Schema document object for json-based schema formats(e.g. json schema).
+	Document map[string]interface{} `json:"document,omitempty"`
+
+	// Json-encoded string for non json-based schema.
+	Value interface{} `json:"value,omitempty"`
+}
+
+// GroupClientCreateOrUpdateOptions contains the optional parameters for the GroupClient.CreateOrUpdate method.
+type GroupClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// GroupClientDeleteOptions contains the optional parameters for the GroupClient.Delete method.
+type GroupClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupClientGetEntityTagOptions contains the optional parameters for the GroupClient.GetEntityTag method.
+type GroupClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupClientGetOptions contains the optional parameters for the GroupClient.Get method.
+type GroupClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GroupClientListByServiceOptions contains the optional parameters for the GroupClient.ListByService method.
+type GroupClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | externalId | filter | eq | |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// GroupClientUpdateOptions contains the optional parameters for the GroupClient.Update method.
+type GroupClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // GroupCollection - Paged Group list representation.
@@ -4201,17 +4025,17 @@ func (g GroupCollection) MarshalJSON() ([]byte, error) {
 
 // GroupContract - Contract details.
 type GroupContract struct {
-	Resource
 	// Group entity contract properties.
 	Properties *GroupContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type GroupContract.
-func (g GroupContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GroupContractProperties - Group contract Properties.
@@ -4222,8 +4046,8 @@ type GroupContractProperties struct {
 	// Group description. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
 
-	// For external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group
-	// object id>; otherwise
+	// For external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active
+	// Directory aad://<tenant>.onmicrosoft.com/groups/<group object id>; otherwise
 	// the value is null.
 	ExternalID *string `json:"externalId,omitempty"`
 
@@ -4232,12 +4056,6 @@ type GroupContractProperties struct {
 
 	// READ-ONLY; true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
 	BuiltIn *bool `json:"builtIn,omitempty" azure:"ro"`
-}
-
-// GroupCreateOrUpdateOptions contains the optional parameters for the Group.CreateOrUpdate method.
-type GroupCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
 }
 
 // GroupCreateParameters - Parameters supplied to the Create Group operation.
@@ -4254,45 +4072,13 @@ type GroupCreateParametersProperties struct {
 	// Group description.
 	Description *string `json:"description,omitempty"`
 
-	// Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group
-	// object
+	// Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g.
+	// for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object
 	// id>; otherwise the value is null.
 	ExternalID *string `json:"externalId,omitempty"`
 
 	// Group type.
 	Type *GroupType `json:"type,omitempty"`
-}
-
-// GroupDeleteOptions contains the optional parameters for the Group.Delete method.
-type GroupDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GroupGetEntityTagOptions contains the optional parameters for the Group.GetEntityTag method.
-type GroupGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GroupGetOptions contains the optional parameters for the Group.Get method.
-type GroupGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GroupListByServiceOptions contains the optional parameters for the Group.ListByService method.
-type GroupListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| externalId | filter | eq | |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// GroupUpdateOptions contains the optional parameters for the Group.Update method.
-type GroupUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // GroupUpdateParameters - Parameters supplied to the Update Group operation.
@@ -4316,8 +4102,8 @@ type GroupUpdateParametersProperties struct {
 	// Group name.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group
-	// object
+	// Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g.
+	// for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object
 	// id>; otherwise the value is null.
 	ExternalID *string `json:"externalId,omitempty"`
 
@@ -4325,28 +4111,31 @@ type GroupUpdateParametersProperties struct {
 	Type *GroupType `json:"type,omitempty"`
 }
 
-// GroupUserCheckEntityExistsOptions contains the optional parameters for the GroupUser.CheckEntityExists method.
-type GroupUserCheckEntityExistsOptions struct {
+// GroupUserClientCheckEntityExistsOptions contains the optional parameters for the GroupUserClient.CheckEntityExists method.
+type GroupUserClientCheckEntityExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GroupUserCreateOptions contains the optional parameters for the GroupUser.Create method.
-type GroupUserCreateOptions struct {
+// GroupUserClientCreateOptions contains the optional parameters for the GroupUserClient.Create method.
+type GroupUserClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GroupUserDeleteOptions contains the optional parameters for the GroupUser.Delete method.
-type GroupUserDeleteOptions struct {
+// GroupUserClientDeleteOptions contains the optional parameters for the GroupUserClient.Delete method.
+type GroupUserClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GroupUserListOptions contains the optional parameters for the GroupUser.List method.
-type GroupUserListOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| firstName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| lastName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| email | filter | ge, le, eq, ne, gt,
-	// lt | substringof, contains, startswith, endswith |</br>| registrationDate | filter | ge, le, eq, ne, gt, lt | |</br>| note | filter | ge, le, eq, ne,
-	// gt, lt | substringof, contains, startswith, endswith |</br>
+// GroupUserClientListOptions contains the optional parameters for the GroupUserClient.List method.
+type GroupUserClientListOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | firstName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | lastName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | email | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | registrationDate | filter | ge, le, eq, ne, gt, lt | |
+	// | note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -4404,20 +4193,21 @@ type HostnameConfiguration struct {
 	// Certificate Status.
 	CertificateStatus *CertificateStatus `json:"certificateStatus,omitempty"`
 
-	// Specify true to setup the certificate associated with this Hostname as the Default SSL Certificate. If a client does not send the SNI header, then this
-	// will be the certificate that will be challenged.
-	// The property is useful if a service has multiple custom hostname enabled and it needs to decide on the default ssl certificate. The setting only applied
-	// to Proxy Hostname Type.
+	// Specify true to setup the certificate associated with this Hostname as the Default SSL Certificate. If a client does not
+	// send the SNI header, then this will be the certificate that will be challenged.
+	// The property is useful if a service has multiple custom hostname enabled and it needs to decide on the default ssl certificate.
+	// The setting only applied to Proxy Hostname Type.
 	DefaultSSLBinding *bool `json:"defaultSslBinding,omitempty"`
 
 	// Base64 Encoded certificate.
 	EncodedCertificate *string `json:"encodedCertificate,omitempty"`
 
-	// System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate.
+	// System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing
+	// the SSL certificate.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 
-	// Url to the KeyVault Secret containing the Ssl Certificate. If absolute Url containing version is provided, auto-update of ssl certificate will not work.
-	// This requires Api Management service to be
+	// Url to the KeyVault Secret containing the Ssl Certificate. If absolute Url containing version is provided, auto-update
+	// of ssl certificate will not work. This requires Api Management service to be
 	// configured with aka.ms/apimmsi. The secret should be of type application/x-pkcs12
 	KeyVaultID *string `json:"keyVaultId,omitempty"`
 
@@ -4455,11 +4245,6 @@ type IdentityProviderBaseParameters struct {
 // MarshalJSON implements the json.Marshaller interface for type IdentityProviderBaseParameters.
 func (i IdentityProviderBaseParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (i IdentityProviderBaseParameters) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "allowedTenants", i.AllowedTenants)
 	populate(objectMap, "authority", i.Authority)
 	populate(objectMap, "passwordResetPolicyName", i.PasswordResetPolicyName)
@@ -4468,101 +4253,182 @@ func (i IdentityProviderBaseParameters) marshalInternal(objectMap map[string]int
 	populate(objectMap, "signinTenant", i.SigninTenant)
 	populate(objectMap, "signupPolicyName", i.SignupPolicyName)
 	populate(objectMap, "type", i.Type)
+	return json.Marshal(objectMap)
+}
+
+// IdentityProviderClientCreateOrUpdateOptions contains the optional parameters for the IdentityProviderClient.CreateOrUpdate
+// method.
+type IdentityProviderClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// IdentityProviderClientDeleteOptions contains the optional parameters for the IdentityProviderClient.Delete method.
+type IdentityProviderClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityProviderClientGetEntityTagOptions contains the optional parameters for the IdentityProviderClient.GetEntityTag
+// method.
+type IdentityProviderClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityProviderClientGetOptions contains the optional parameters for the IdentityProviderClient.Get method.
+type IdentityProviderClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityProviderClientListByServiceOptions contains the optional parameters for the IdentityProviderClient.ListByService
+// method.
+type IdentityProviderClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityProviderClientListSecretsOptions contains the optional parameters for the IdentityProviderClient.ListSecrets method.
+type IdentityProviderClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityProviderClientUpdateOptions contains the optional parameters for the IdentityProviderClient.Update method.
+type IdentityProviderClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // IdentityProviderContract - Identity Provider details.
 type IdentityProviderContract struct {
-	Resource
 	// Identity Provider contract properties.
 	Properties *IdentityProviderContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IdentityProviderContract.
-func (i IdentityProviderContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
-}
-
-// IdentityProviderContractProperties - The external Identity Providers like Facebook, Google, Microsoft, Twitter or Azure Active Directory which can be
-// used to enable access to the API Management service developer portal for all users.
+// IdentityProviderContractProperties - The external Identity Providers like Facebook, Google, Microsoft, Twitter or Azure
+// Active Directory which can be used to enable access to the API Management service developer portal for all users.
 type IdentityProviderContractProperties struct {
-	IdentityProviderBaseParameters
-	// REQUIRED; Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
+	// REQUIRED; Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
+	// Google login, App ID for Microsoft.
 	ClientID *string `json:"clientId,omitempty"`
 
-	// Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is App Secret for Facebook login,
-	// API Key for Google login, Public Key for
+	// List of Allowed Tenants when configuring Azure Active Directory login.
+	AllowedTenants []*string `json:"allowedTenants,omitempty"`
+
+	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+	Authority *string `json:"authority,omitempty"`
+
+	// Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is
+	// App Secret for Facebook login, API Key for Google login, Public Key for
 	// Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
 	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
+	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+
+	// Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
+	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+
+	// Signin Policy Name. Only applies to AAD B2C Identity Provider.
+	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+
+	// The TenantId to use instead of Common when logging into Active Directory
+	SigninTenant *string `json:"signinTenant,omitempty"`
+
+	// Signup Policy Name. Only applies to AAD B2C Identity Provider.
+	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+
+	// Identity Provider Type identifier.
+	Type *IdentityProviderType `json:"type,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IdentityProviderContractProperties.
 func (i IdentityProviderContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.IdentityProviderBaseParameters.marshalInternal(objectMap)
+	populate(objectMap, "allowedTenants", i.AllowedTenants)
+	populate(objectMap, "authority", i.Authority)
 	populate(objectMap, "clientId", i.ClientID)
 	populate(objectMap, "clientSecret", i.ClientSecret)
+	populate(objectMap, "passwordResetPolicyName", i.PasswordResetPolicyName)
+	populate(objectMap, "profileEditingPolicyName", i.ProfileEditingPolicyName)
+	populate(objectMap, "signinPolicyName", i.SigninPolicyName)
+	populate(objectMap, "signinTenant", i.SigninTenant)
+	populate(objectMap, "signupPolicyName", i.SignupPolicyName)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
 // IdentityProviderCreateContract - Identity Provider details.
 type IdentityProviderCreateContract struct {
-	Resource
 	// Identity Provider contract properties.
 	Properties *IdentityProviderCreateContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IdentityProviderCreateContract.
-func (i IdentityProviderCreateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
-}
-
-// IdentityProviderCreateContractProperties - The external Identity Providers like Facebook, Google, Microsoft, Twitter or Azure Active Directory which
-// can be used to enable access to the API Management service developer portal for all users.
+// IdentityProviderCreateContractProperties - The external Identity Providers like Facebook, Google, Microsoft, Twitter or
+// Azure Active Directory which can be used to enable access to the API Management service developer portal for all users.
 type IdentityProviderCreateContractProperties struct {
-	IdentityProviderBaseParameters
-	// REQUIRED; Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
+	// REQUIRED; Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
+	// Google login, App ID for Microsoft.
 	ClientID *string `json:"clientId,omitempty"`
 
-	// REQUIRED; Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is App Secret for Facebook
-	// login, API Key for Google login, Public Key for
+	// REQUIRED; Client secret of the Application in external Identity Provider, used to authenticate login request. For example,
+	// it is App Secret for Facebook login, API Key for Google login, Public Key for
 	// Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
 	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// List of Allowed Tenants when configuring Azure Active Directory login.
+	AllowedTenants []*string `json:"allowedTenants,omitempty"`
+
+	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+	Authority *string `json:"authority,omitempty"`
+
+	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
+	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+
+	// Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
+	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+
+	// Signin Policy Name. Only applies to AAD B2C Identity Provider.
+	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+
+	// The TenantId to use instead of Common when logging into Active Directory
+	SigninTenant *string `json:"signinTenant,omitempty"`
+
+	// Signup Policy Name. Only applies to AAD B2C Identity Provider.
+	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+
+	// Identity Provider Type identifier.
+	Type *IdentityProviderType `json:"type,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IdentityProviderCreateContractProperties.
 func (i IdentityProviderCreateContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.IdentityProviderBaseParameters.marshalInternal(objectMap)
+	populate(objectMap, "allowedTenants", i.AllowedTenants)
+	populate(objectMap, "authority", i.Authority)
 	populate(objectMap, "clientId", i.ClientID)
 	populate(objectMap, "clientSecret", i.ClientSecret)
+	populate(objectMap, "passwordResetPolicyName", i.PasswordResetPolicyName)
+	populate(objectMap, "profileEditingPolicyName", i.ProfileEditingPolicyName)
+	populate(objectMap, "signinPolicyName", i.SigninPolicyName)
+	populate(objectMap, "signinTenant", i.SigninTenant)
+	populate(objectMap, "signupPolicyName", i.SignupPolicyName)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
-}
-
-// IdentityProviderCreateOrUpdateOptions contains the optional parameters for the IdentityProvider.CreateOrUpdate method.
-type IdentityProviderCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// IdentityProviderDeleteOptions contains the optional parameters for the IdentityProvider.Delete method.
-type IdentityProviderDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IdentityProviderGetEntityTagOptions contains the optional parameters for the IdentityProvider.GetEntityTag method.
-type IdentityProviderGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IdentityProviderGetOptions contains the optional parameters for the IdentityProvider.Get method.
-type IdentityProviderGetOptions struct {
-	// placeholder for future optional parameters
 }
 
 // IdentityProviderList - List of all the Identity Providers configured on the service instance.
@@ -4586,21 +4452,6 @@ func (i IdentityProviderList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IdentityProviderListByServiceOptions contains the optional parameters for the IdentityProvider.ListByService method.
-type IdentityProviderListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IdentityProviderListSecretsOptions contains the optional parameters for the IdentityProvider.ListSecrets method.
-type IdentityProviderListSecretsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IdentityProviderUpdateOptions contains the optional parameters for the IdentityProvider.Update method.
-type IdentityProviderUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // IdentityProviderUpdateParameters - Parameters supplied to update Identity Provider
 type IdentityProviderUpdateParameters struct {
 	// Identity Provider update properties.
@@ -4616,22 +4467,53 @@ func (i IdentityProviderUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // IdentityProviderUpdateProperties - Parameters supplied to the Update Identity Provider operation.
 type IdentityProviderUpdateProperties struct {
-	IdentityProviderBaseParameters
-	// Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
+	// List of Allowed Tenants when configuring Azure Active Directory login.
+	AllowedTenants []*string `json:"allowedTenants,omitempty"`
+
+	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+	Authority *string `json:"authority,omitempty"`
+
+	// Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login,
+	// App ID for Microsoft.
 	ClientID *string `json:"clientId,omitempty"`
 
-	// Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is App Secret for Facebook login,
-	// API Key for Google login, Public Key for
+	// Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is
+	// App Secret for Facebook login, API Key for Google login, Public Key for
 	// Microsoft.
 	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
+	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+
+	// Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
+	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+
+	// Signin Policy Name. Only applies to AAD B2C Identity Provider.
+	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+
+	// The TenantId to use instead of Common when logging into Active Directory
+	SigninTenant *string `json:"signinTenant,omitempty"`
+
+	// Signup Policy Name. Only applies to AAD B2C Identity Provider.
+	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+
+	// Identity Provider Type identifier.
+	Type *IdentityProviderType `json:"type,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IdentityProviderUpdateProperties.
 func (i IdentityProviderUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.IdentityProviderBaseParameters.marshalInternal(objectMap)
+	populate(objectMap, "allowedTenants", i.AllowedTenants)
+	populate(objectMap, "authority", i.Authority)
 	populate(objectMap, "clientId", i.ClientID)
 	populate(objectMap, "clientSecret", i.ClientSecret)
+	populate(objectMap, "passwordResetPolicyName", i.PasswordResetPolicyName)
+	populate(objectMap, "profileEditingPolicyName", i.ProfileEditingPolicyName)
+	populate(objectMap, "signinPolicyName", i.SigninPolicyName)
+	populate(objectMap, "signinTenant", i.SigninTenant)
+	populate(objectMap, "signupPolicyName", i.SignupPolicyName)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -4658,17 +4540,17 @@ func (i IssueAttachmentCollection) MarshalJSON() ([]byte, error) {
 
 // IssueAttachmentContract - Issue Attachment Contract details.
 type IssueAttachmentContract struct {
-	Resource
 	// Properties of the Issue Attachment.
 	Properties *IssueAttachmentContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IssueAttachmentContract.
-func (i IssueAttachmentContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IssueAttachmentContractProperties - Issue Attachment contract Properties.
@@ -4676,11 +4558,34 @@ type IssueAttachmentContractProperties struct {
 	// REQUIRED; An HTTP link or Base64-encoded binary data.
 	Content *string `json:"content,omitempty"`
 
-	// REQUIRED; Either 'link' if content is provided via an HTTP link or the MIME type of the Base64-encoded binary data provided in the 'content' property.
+	// REQUIRED; Either 'link' if content is provided via an HTTP link or the MIME type of the Base64-encoded binary data provided
+	// in the 'content' property.
 	ContentFormat *string `json:"contentFormat,omitempty"`
 
 	// REQUIRED; Filename by which the binary data will be saved.
 	Title *string `json:"title,omitempty"`
+}
+
+// IssueClientGetOptions contains the optional parameters for the IssueClient.Get method.
+type IssueClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IssueClientListByServiceOptions contains the optional parameters for the IssueClient.ListByService method.
+type IssueClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | apiId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | title | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | authorName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | state | filter | eq | |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
 }
 
 // IssueCollection - Paged Issue list representation.
@@ -4727,17 +4632,17 @@ func (i IssueCommentCollection) MarshalJSON() ([]byte, error) {
 
 // IssueCommentContract - Issue Comment Contract details.
 type IssueCommentContract struct {
-	Resource
 	// Properties of the Issue Comment.
 	Properties *IssueCommentContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IssueCommentContract.
-func (i IssueCommentContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IssueCommentContractProperties - Issue Comment contract Properties.
@@ -4789,17 +4694,17 @@ func (i *IssueCommentContractProperties) UnmarshalJSON(data []byte) error {
 
 // IssueContract - Issue Contract details.
 type IssueContract struct {
-	Resource
 	// Properties of the Issue.
 	Properties *IssueContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IssueContract.
-func (i IssueContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IssueContractBaseProperties - Issue contract Base Properties.
@@ -4817,7 +4722,9 @@ type IssueContractBaseProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type IssueContractBaseProperties.
 func (i IssueContractBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.marshalInternal(objectMap)
+	populate(objectMap, "apiId", i.APIID)
+	populateTimeRFC3339(objectMap, "createdDate", i.CreatedDate)
+	populate(objectMap, "state", i.State)
 	return json.Marshal(objectMap)
 }
 
@@ -4827,16 +4734,6 @@ func (i *IssueContractBaseProperties) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return i.unmarshalInternal(rawMsg)
-}
-
-func (i IssueContractBaseProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "apiId", i.APIID)
-	populateTimeRFC3339(objectMap, "createdDate", i.CreatedDate)
-	populate(objectMap, "state", i.State)
-}
-
-func (i *IssueContractBaseProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -4859,7 +4756,6 @@ func (i *IssueContractBaseProperties) unmarshalInternal(rawMsg map[string]json.R
 
 // IssueContractProperties - Issue contract Properties.
 type IssueContractProperties struct {
-	IssueContractBaseProperties
 	// REQUIRED; Text describing the issue.
 	Description *string `json:"description,omitempty"`
 
@@ -4868,13 +4764,24 @@ type IssueContractProperties struct {
 
 	// REQUIRED; A resource identifier for the user created the issue.
 	UserID *string `json:"userId,omitempty"`
+
+	// A resource identifier for the API the issue was created for.
+	APIID *string `json:"apiId,omitempty"`
+
+	// Date and time when the issue was created.
+	CreatedDate *time.Time `json:"createdDate,omitempty"`
+
+	// Status of the issue.
+	State *State `json:"state,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IssueContractProperties.
 func (i IssueContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.IssueContractBaseProperties.marshalInternal(objectMap)
+	populate(objectMap, "apiId", i.APIID)
+	populateTimeRFC3339(objectMap, "createdDate", i.CreatedDate)
 	populate(objectMap, "description", i.Description)
+	populate(objectMap, "state", i.State)
 	populate(objectMap, "title", i.Title)
 	populate(objectMap, "userId", i.UserID)
 	return json.Marshal(objectMap)
@@ -4889,8 +4796,17 @@ func (i *IssueContractProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "apiId":
+			err = unpopulate(val, &i.APIID)
+			delete(rawMsg, key)
+		case "createdDate":
+			err = unpopulateTimeRFC3339(val, &i.CreatedDate)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, &i.Description)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, &i.State)
 			delete(rawMsg, key)
 		case "title":
 			err = unpopulate(val, &i.Title)
@@ -4903,29 +4819,7 @@ func (i *IssueContractProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := i.IssueContractBaseProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
-}
-
-// IssueGetOptions contains the optional parameters for the Issue.Get method.
-type IssueGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IssueListByServiceOptions contains the optional parameters for the Issue.ListByService method.
-type IssueListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| apiId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| title | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| description | filter | ge, le, eq, ne,
-	// gt, lt | substringof, contains, startswith, endswith |</br>| authorName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-	// |</br>| state | filter | eq | |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
 }
 
 // IssueUpdateContract - Issue update Parameters.
@@ -4943,9 +4837,17 @@ func (i IssueUpdateContract) MarshalJSON() ([]byte, error) {
 
 // IssueUpdateContractProperties - Issue contract Update Properties.
 type IssueUpdateContractProperties struct {
-	IssueContractBaseProperties
+	// A resource identifier for the API the issue was created for.
+	APIID *string `json:"apiId,omitempty"`
+
+	// Date and time when the issue was created.
+	CreatedDate *time.Time `json:"createdDate,omitempty"`
+
 	// Text describing the issue.
 	Description *string `json:"description,omitempty"`
+
+	// Status of the issue.
+	State *State `json:"state,omitempty"`
 
 	// The issue title.
 	Title *string `json:"title,omitempty"`
@@ -4957,8 +4859,10 @@ type IssueUpdateContractProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type IssueUpdateContractProperties.
 func (i IssueUpdateContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.IssueContractBaseProperties.marshalInternal(objectMap)
+	populate(objectMap, "apiId", i.APIID)
+	populateTimeRFC3339(objectMap, "createdDate", i.CreatedDate)
 	populate(objectMap, "description", i.Description)
+	populate(objectMap, "state", i.State)
 	populate(objectMap, "title", i.Title)
 	populate(objectMap, "userId", i.UserID)
 	return json.Marshal(objectMap)
@@ -4973,8 +4877,17 @@ func (i *IssueUpdateContractProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "apiId":
+			err = unpopulate(val, &i.APIID)
+			delete(rawMsg, key)
+		case "createdDate":
+			err = unpopulateTimeRFC3339(val, &i.CreatedDate)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, &i.Description)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, &i.State)
 			delete(rawMsg, key)
 		case "title":
 			err = unpopulate(val, &i.Title)
@@ -4987,9 +4900,6 @@ func (i *IssueUpdateContractProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := i.IssueContractBaseProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -4998,16 +4908,22 @@ type KeyVaultContractCreateProperties struct {
 	// SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 
-	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires API Management service to be configured
-	// with aka.ms/apimmsi
+	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires
+	// API Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
 }
 
 // KeyVaultContractProperties - KeyVault contract details.
 type KeyVaultContractProperties struct {
-	KeyVaultContractCreateProperties
+	// SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
+	IdentityClientID *string `json:"identityClientId,omitempty"`
+
 	// Last time sync and refresh status of secret from key vault.
 	LastStatus *KeyVaultLastAccessStatusContractProperties `json:"lastStatus,omitempty"`
+
+	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires
+	// API Management service to be configured with aka.ms/apimmsi
+	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
 }
 
 // KeyVaultLastAccessStatusContractProperties - Issue contract Update Properties.
@@ -5018,7 +4934,8 @@ type KeyVaultLastAccessStatusContractProperties struct {
 	// Details of the error else empty.
 	Message *string `json:"message,omitempty"`
 
-	// Last time secret was accessed. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// Last time secret was accessed. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO
+	// 8601 standard.
 	TimeStampUTC *time.Time `json:"timeStampUtc,omitempty"`
 }
 
@@ -5057,6 +4974,47 @@ func (k *KeyVaultLastAccessStatusContractProperties) UnmarshalJSON(data []byte) 
 	return nil
 }
 
+// LoggerClientCreateOrUpdateOptions contains the optional parameters for the LoggerClient.CreateOrUpdate method.
+type LoggerClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// LoggerClientDeleteOptions contains the optional parameters for the LoggerClient.Delete method.
+type LoggerClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LoggerClientGetEntityTagOptions contains the optional parameters for the LoggerClient.GetEntityTag method.
+type LoggerClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LoggerClientGetOptions contains the optional parameters for the LoggerClient.Get method.
+type LoggerClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LoggerClientListByServiceOptions contains the optional parameters for the LoggerClient.ListByService method.
+type LoggerClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | loggerType | filter | eq | |
+	// | resourceId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// LoggerClientUpdateOptions contains the optional parameters for the LoggerClient.Update method.
+type LoggerClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // LoggerCollection - Paged Logger list representation.
 type LoggerCollection struct {
 	// Total record count number across all pages.
@@ -5080,26 +5038,27 @@ func (l LoggerCollection) MarshalJSON() ([]byte, error) {
 
 // LoggerContract - Logger details.
 type LoggerContract struct {
-	Resource
 	// Logger entity contract properties.
 	Properties *LoggerContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LoggerContract.
-func (l LoggerContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
-}
-
-// LoggerContractProperties - The Logger entity in API Management represents an event sink that you can use to log API Management events. Currently the
-// Logger entity supports logging API Management events to Azure Event Hubs.
+// LoggerContractProperties - The Logger entity in API Management represents an event sink that you can use to log API Management
+// events. Currently the Logger entity supports logging API Management events to Azure Event Hubs.
 type LoggerContractProperties struct {
 	// REQUIRED; Logger type.
 	LoggerType *LoggerType `json:"loggerType,omitempty"`
 
-	// The name and SendRule connection string of the event hub for azureEventHub logger. Instrumentation key for applicationInsights logger.
+	// The name and SendRule connection string of the event hub for azureEventHub logger. Instrumentation key for applicationInsights
+	// logger.
 	Credentials map[string]*string `json:"credentials,omitempty"`
 
 	// Logger description.
@@ -5123,39 +5082,6 @@ func (l LoggerContractProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LoggerCreateOrUpdateOptions contains the optional parameters for the Logger.CreateOrUpdate method.
-type LoggerCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// LoggerDeleteOptions contains the optional parameters for the Logger.Delete method.
-type LoggerDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LoggerGetEntityTagOptions contains the optional parameters for the Logger.GetEntityTag method.
-type LoggerGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LoggerGetOptions contains the optional parameters for the Logger.Get method.
-type LoggerGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LoggerListByServiceOptions contains the optional parameters for the Logger.ListByService method.
-type LoggerListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| loggerType | filter | eq | |</br>| resourceId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
 // LoggerUpdateContract - Logger update contract.
 type LoggerUpdateContract struct {
 	// Logger entity update contract properties.
@@ -5167,11 +5093,6 @@ func (l LoggerUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "properties", l.Properties)
 	return json.Marshal(objectMap)
-}
-
-// LoggerUpdateOptions contains the optional parameters for the Logger.Update method.
-type LoggerUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // LoggerUpdateParameters - Parameters supplied to the Update Logger operation.
@@ -5199,19 +5120,56 @@ func (l LoggerUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// NamedValueBeginCreateOrUpdateOptions contains the optional parameters for the NamedValue.BeginCreateOrUpdate method.
-type NamedValueBeginCreateOrUpdateOptions struct {
+// NamedValueClientBeginCreateOrUpdateOptions contains the optional parameters for the NamedValueClient.BeginCreateOrUpdate
+// method.
+type NamedValueClientBeginCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// NamedValueBeginRefreshSecretOptions contains the optional parameters for the NamedValue.BeginRefreshSecret method.
-type NamedValueBeginRefreshSecretOptions struct {
+// NamedValueClientBeginRefreshSecretOptions contains the optional parameters for the NamedValueClient.BeginRefreshSecret
+// method.
+type NamedValueClientBeginRefreshSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamedValueBeginUpdateOptions contains the optional parameters for the NamedValue.BeginUpdate method.
-type NamedValueBeginUpdateOptions struct {
+// NamedValueClientBeginUpdateOptions contains the optional parameters for the NamedValueClient.BeginUpdate method.
+type NamedValueClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamedValueClientDeleteOptions contains the optional parameters for the NamedValueClient.Delete method.
+type NamedValueClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamedValueClientGetEntityTagOptions contains the optional parameters for the NamedValueClient.GetEntityTag method.
+type NamedValueClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamedValueClientGetOptions contains the optional parameters for the NamedValueClient.Get method.
+type NamedValueClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamedValueClientListByServiceOptions contains the optional parameters for the NamedValueClient.ListByService method.
+type NamedValueClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | tags | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith, any, all |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// When set to true, the response contains only named value entities which failed refresh.
+	IsKeyVaultRefreshFailed *bool
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// NamedValueClientListValueOptions contains the optional parameters for the NamedValueClient.ListValue method.
+type NamedValueClientListValueOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5238,30 +5196,35 @@ func (n NamedValueCollection) MarshalJSON() ([]byte, error) {
 
 // NamedValueContract - NamedValue details.
 type NamedValueContract struct {
-	Resource
 	// NamedValue entity contract properties.
 	Properties *NamedValueContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NamedValueContract.
-func (n NamedValueContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NamedValueContractProperties - NamedValue Contract properties.
 type NamedValueContractProperties struct {
-	NamedValueEntityBaseParameters
 	// REQUIRED; Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// KeyVault location details of the namedValue.
 	KeyVault *KeyVaultContractProperties `json:"keyVault,omitempty"`
 
-	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET'
-	// operations! Use '/listSecrets' POST request to get
+	// Determines whether the value is a secret and should be encrypted or not. Default value is false.
+	Secret *bool `json:"secret,omitempty"`
+
+	// Optional tags that when provided can be used to filter the NamedValue list.
+	Tags []*string `json:"tags,omitempty"`
+
+	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property
+	// will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
 	// the value.
 	Value *string `json:"value,omitempty"`
 }
@@ -5269,39 +5232,45 @@ type NamedValueContractProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type NamedValueContractProperties.
 func (n NamedValueContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.NamedValueEntityBaseParameters.marshalInternal(objectMap)
 	populate(objectMap, "displayName", n.DisplayName)
 	populate(objectMap, "keyVault", n.KeyVault)
+	populate(objectMap, "secret", n.Secret)
+	populate(objectMap, "tags", n.Tags)
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
 
 // NamedValueCreateContract - NamedValue details.
 type NamedValueCreateContract struct {
-	Resource
 	// NamedValue entity contract properties for PUT operation.
 	Properties *NamedValueCreateContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NamedValueCreateContract.
-func (n NamedValueCreateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NamedValueCreateContractProperties - NamedValue Contract properties.
 type NamedValueCreateContractProperties struct {
-	NamedValueEntityBaseParameters
 	// REQUIRED; Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// KeyVault location details of the namedValue.
 	KeyVault *KeyVaultContractCreateProperties `json:"keyVault,omitempty"`
 
-	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET'
-	// operations! Use '/listSecrets' POST request to get
+	// Determines whether the value is a secret and should be encrypted or not. Default value is false.
+	Secret *bool `json:"secret,omitempty"`
+
+	// Optional tags that when provided can be used to filter the NamedValue list.
+	Tags []*string `json:"tags,omitempty"`
+
+	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property
+	// will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
 	// the value.
 	Value *string `json:"value,omitempty"`
 }
@@ -5309,16 +5278,12 @@ type NamedValueCreateContractProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type NamedValueCreateContractProperties.
 func (n NamedValueCreateContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.NamedValueEntityBaseParameters.marshalInternal(objectMap)
 	populate(objectMap, "displayName", n.DisplayName)
 	populate(objectMap, "keyVault", n.KeyVault)
+	populate(objectMap, "secret", n.Secret)
+	populate(objectMap, "tags", n.Tags)
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
-}
-
-// NamedValueDeleteOptions contains the optional parameters for the NamedValue.Delete method.
-type NamedValueDeleteOptions struct {
-	// placeholder for future optional parameters
 }
 
 // NamedValueEntityBaseParameters - NamedValue Entity Base Parameters set.
@@ -5333,42 +5298,9 @@ type NamedValueEntityBaseParameters struct {
 // MarshalJSON implements the json.Marshaller interface for type NamedValueEntityBaseParameters.
 func (n NamedValueEntityBaseParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (n NamedValueEntityBaseParameters) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "secret", n.Secret)
 	populate(objectMap, "tags", n.Tags)
-}
-
-// NamedValueGetEntityTagOptions contains the optional parameters for the NamedValue.GetEntityTag method.
-type NamedValueGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NamedValueGetOptions contains the optional parameters for the NamedValue.Get method.
-type NamedValueGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NamedValueListByServiceOptions contains the optional parameters for the NamedValue.ListByService method.
-type NamedValueListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| tags | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith, any, all |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains,
-	// startswith, endswith |</br>
-	Filter *string
-	// When set to true, the response contains only named value entities which failed refresh.
-	IsKeyVaultRefreshFailed *bool
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// NamedValueListValueOptions contains the optional parameters for the NamedValue.ListValue method.
-type NamedValueListValueOptions struct {
-	// placeholder for future optional parameters
+	return json.Marshal(objectMap)
 }
 
 // NamedValueSecretContract - Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
@@ -5379,12 +5311,17 @@ type NamedValueSecretContract struct {
 
 // NamedValueUpdateParameterProperties - NamedValue Contract properties.
 type NamedValueUpdateParameterProperties struct {
-	NamedValueEntityBaseParameters
 	// Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// KeyVault location details of the namedValue.
 	KeyVault *KeyVaultContractCreateProperties `json:"keyVault,omitempty"`
+
+	// Determines whether the value is a secret and should be encrypted or not. Default value is false.
+	Secret *bool `json:"secret,omitempty"`
+
+	// Optional tags that when provided can be used to filter the NamedValue list.
+	Tags []*string `json:"tags,omitempty"`
 
 	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace.
 	Value *string `json:"value,omitempty"`
@@ -5393,9 +5330,10 @@ type NamedValueUpdateParameterProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type NamedValueUpdateParameterProperties.
 func (n NamedValueUpdateParameterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	n.NamedValueEntityBaseParameters.marshalInternal(objectMap)
 	populate(objectMap, "displayName", n.DisplayName)
 	populate(objectMap, "keyVault", n.KeyVault)
+	populate(objectMap, "secret", n.Secret)
+	populate(objectMap, "tags", n.Tags)
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
@@ -5411,6 +5349,16 @@ func (n NamedValueUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "properties", n.Properties)
 	return json.Marshal(objectMap)
+}
+
+// NetworkStatusClientListByLocationOptions contains the optional parameters for the NetworkStatusClient.ListByLocation method.
+type NetworkStatusClientListByLocationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkStatusClientListByServiceOptions contains the optional parameters for the NetworkStatusClient.ListByService method.
+type NetworkStatusClientListByServiceOptions struct {
+	// placeholder for future optional parameters
 }
 
 // NetworkStatusContract - Network Status details.
@@ -5439,14 +5387,23 @@ type NetworkStatusContractByLocation struct {
 	NetworkStatus *NetworkStatusContract `json:"networkStatus,omitempty"`
 }
 
-// NetworkStatusListByLocationOptions contains the optional parameters for the NetworkStatus.ListByLocation method.
-type NetworkStatusListByLocationOptions struct {
+// NotificationClientCreateOrUpdateOptions contains the optional parameters for the NotificationClient.CreateOrUpdate method.
+type NotificationClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// NotificationClientGetOptions contains the optional parameters for the NotificationClient.Get method.
+type NotificationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkStatusListByServiceOptions contains the optional parameters for the NetworkStatus.ListByService method.
-type NetworkStatusListByServiceOptions struct {
-	// placeholder for future optional parameters
+// NotificationClientListByServiceOptions contains the optional parameters for the NotificationClient.ListByService method.
+type NotificationClientListByServiceOptions struct {
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
 }
 
 // NotificationCollection - Paged Notification list representation.
@@ -5472,17 +5429,17 @@ func (n NotificationCollection) MarshalJSON() ([]byte, error) {
 
 // NotificationContract - Notification details.
 type NotificationContract struct {
-	Resource
 	// Notification entity contract properties.
 	Properties *NotificationContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NotificationContract.
-func (n NotificationContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NotificationContractProperties - Notification Contract properties.
@@ -5497,62 +5454,51 @@ type NotificationContractProperties struct {
 	Recipients *RecipientsContractProperties `json:"recipients,omitempty"`
 }
 
-// NotificationCreateOrUpdateOptions contains the optional parameters for the Notification.CreateOrUpdate method.
-type NotificationCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// NotificationGetOptions contains the optional parameters for the Notification.Get method.
-type NotificationGetOptions struct {
+// NotificationRecipientEmailClientCheckEntityExistsOptions contains the optional parameters for the NotificationRecipientEmailClient.CheckEntityExists
+// method.
+type NotificationRecipientEmailClientCheckEntityExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NotificationListByServiceOptions contains the optional parameters for the Notification.ListByService method.
-type NotificationListByServiceOptions struct {
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// NotificationRecipientEmailCheckEntityExistsOptions contains the optional parameters for the NotificationRecipientEmail.CheckEntityExists method.
-type NotificationRecipientEmailCheckEntityExistsOptions struct {
+// NotificationRecipientEmailClientCreateOrUpdateOptions contains the optional parameters for the NotificationRecipientEmailClient.CreateOrUpdate
+// method.
+type NotificationRecipientEmailClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NotificationRecipientEmailCreateOrUpdateOptions contains the optional parameters for the NotificationRecipientEmail.CreateOrUpdate method.
-type NotificationRecipientEmailCreateOrUpdateOptions struct {
+// NotificationRecipientEmailClientDeleteOptions contains the optional parameters for the NotificationRecipientEmailClient.Delete
+// method.
+type NotificationRecipientEmailClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NotificationRecipientEmailDeleteOptions contains the optional parameters for the NotificationRecipientEmail.Delete method.
-type NotificationRecipientEmailDeleteOptions struct {
+// NotificationRecipientEmailClientListByNotificationOptions contains the optional parameters for the NotificationRecipientEmailClient.ListByNotification
+// method.
+type NotificationRecipientEmailClientListByNotificationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NotificationRecipientEmailListByNotificationOptions contains the optional parameters for the NotificationRecipientEmail.ListByNotification method.
-type NotificationRecipientEmailListByNotificationOptions struct {
+// NotificationRecipientUserClientCheckEntityExistsOptions contains the optional parameters for the NotificationRecipientUserClient.CheckEntityExists
+// method.
+type NotificationRecipientUserClientCheckEntityExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NotificationRecipientUserCheckEntityExistsOptions contains the optional parameters for the NotificationRecipientUser.CheckEntityExists method.
-type NotificationRecipientUserCheckEntityExistsOptions struct {
+// NotificationRecipientUserClientCreateOrUpdateOptions contains the optional parameters for the NotificationRecipientUserClient.CreateOrUpdate
+// method.
+type NotificationRecipientUserClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NotificationRecipientUserCreateOrUpdateOptions contains the optional parameters for the NotificationRecipientUser.CreateOrUpdate method.
-type NotificationRecipientUserCreateOrUpdateOptions struct {
+// NotificationRecipientUserClientDeleteOptions contains the optional parameters for the NotificationRecipientUserClient.Delete
+// method.
+type NotificationRecipientUserClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NotificationRecipientUserDeleteOptions contains the optional parameters for the NotificationRecipientUser.Delete method.
-type NotificationRecipientUserDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationRecipientUserListByNotificationOptions contains the optional parameters for the NotificationRecipientUser.ListByNotification method.
-type NotificationRecipientUserListByNotificationOptions struct {
+// NotificationRecipientUserClientListByNotificationOptions contains the optional parameters for the NotificationRecipientUserClient.ListByNotification
+// method.
+type NotificationRecipientUserClientListByNotificationOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5582,6 +5528,54 @@ func (o OpenIDAuthenticationSettingsContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// OpenIDConnectProviderClientCreateOrUpdateOptions contains the optional parameters for the OpenIDConnectProviderClient.CreateOrUpdate
+// method.
+type OpenIDConnectProviderClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// OpenIDConnectProviderClientDeleteOptions contains the optional parameters for the OpenIDConnectProviderClient.Delete method.
+type OpenIDConnectProviderClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OpenIDConnectProviderClientGetEntityTagOptions contains the optional parameters for the OpenIDConnectProviderClient.GetEntityTag
+// method.
+type OpenIDConnectProviderClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OpenIDConnectProviderClientGetOptions contains the optional parameters for the OpenIDConnectProviderClient.Get method.
+type OpenIDConnectProviderClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OpenIDConnectProviderClientListByServiceOptions contains the optional parameters for the OpenIDConnectProviderClient.ListByService
+// method.
+type OpenIDConnectProviderClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// OpenIDConnectProviderClientListSecretsOptions contains the optional parameters for the OpenIDConnectProviderClient.ListSecrets
+// method.
+type OpenIDConnectProviderClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OpenIDConnectProviderClientUpdateOptions contains the optional parameters for the OpenIDConnectProviderClient.Update method.
+type OpenIDConnectProviderClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OpenIDConnectProviderCollection - Paged OpenIdProviders list representation.
 type OpenIDConnectProviderCollection struct {
 	// Total record count number across all pages.
@@ -5603,62 +5597,19 @@ func (o OpenIDConnectProviderCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OpenIDConnectProviderCreateOrUpdateOptions contains the optional parameters for the OpenIDConnectProvider.CreateOrUpdate method.
-type OpenIDConnectProviderCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// OpenIDConnectProviderDeleteOptions contains the optional parameters for the OpenIDConnectProvider.Delete method.
-type OpenIDConnectProviderDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OpenIDConnectProviderGetEntityTagOptions contains the optional parameters for the OpenIDConnectProvider.GetEntityTag method.
-type OpenIDConnectProviderGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OpenIDConnectProviderGetOptions contains the optional parameters for the OpenIDConnectProvider.Get method.
-type OpenIDConnectProviderGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OpenIDConnectProviderListByServiceOptions contains the optional parameters for the OpenIDConnectProvider.ListByService method.
-type OpenIDConnectProviderListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// OpenIDConnectProviderListSecretsOptions contains the optional parameters for the OpenIDConnectProvider.ListSecrets method.
-type OpenIDConnectProviderListSecretsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OpenIDConnectProviderUpdateOptions contains the optional parameters for the OpenIDConnectProvider.Update method.
-type OpenIDConnectProviderUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OpenidConnectProviderContract - OpenId Connect Provider details.
 type OpenidConnectProviderContract struct {
-	Resource
 	// OpenId Connect Provider contract properties.
 	Properties *OpenidConnectProviderContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type OpenidConnectProviderContract.
-func (o OpenidConnectProviderContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OpenidConnectProviderContractProperties - OpenID Connect Providers Contract.
@@ -5725,6 +5676,25 @@ type Operation struct {
 	Properties map[string]interface{} `json:"properties,omitempty"`
 }
 
+// OperationClientListByTagsOptions contains the optional parameters for the OperationClient.ListByTags method.
+type OperationClientListByTagsOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | apiName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Include not tagged Operations.
+	IncludeNotTaggedOperations *bool
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
 // OperationCollection - Paged Operation list representation.
 type OperationCollection struct {
 	// Total record count number across all pages.
@@ -5748,22 +5718,21 @@ func (o OperationCollection) MarshalJSON() ([]byte, error) {
 
 // OperationContract - API Operation details.
 type OperationContract struct {
-	Resource
 	// Properties of the Operation Contract.
 	Properties *OperationContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type OperationContract.
-func (o OperationContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OperationContractProperties - Operation Contract Properties
 type OperationContractProperties struct {
-	OperationEntityBaseContract
 	// REQUIRED; Operation Name.
 	DisplayName *string `json:"displayName,omitempty"`
 
@@ -5772,14 +5741,33 @@ type OperationContractProperties struct {
 
 	// REQUIRED; Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}
 	URLTemplate *string `json:"urlTemplate,omitempty"`
+
+	// Description of the operation. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
+	// Operation Policies
+	Policies *string `json:"policies,omitempty"`
+
+	// An entity containing request details.
+	Request *RequestContract `json:"request,omitempty"`
+
+	// Array of Operation responses.
+	Responses []*ResponseContract `json:"responses,omitempty"`
+
+	// Collection of URL template parameters.
+	TemplateParameters []*ParameterContract `json:"templateParameters,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OperationContractProperties.
 func (o OperationContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.OperationEntityBaseContract.marshalInternal(objectMap)
+	populate(objectMap, "description", o.Description)
 	populate(objectMap, "displayName", o.DisplayName)
 	populate(objectMap, "method", o.Method)
+	populate(objectMap, "policies", o.Policies)
+	populate(objectMap, "request", o.Request)
+	populate(objectMap, "responses", o.Responses)
+	populate(objectMap, "templateParameters", o.TemplateParameters)
 	populate(objectMap, "urlTemplate", o.URLTemplate)
 	return json.Marshal(objectMap)
 }
@@ -5820,35 +5808,16 @@ type OperationEntityBaseContract struct {
 // MarshalJSON implements the json.Marshaller interface for type OperationEntityBaseContract.
 func (o OperationEntityBaseContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (o OperationEntityBaseContract) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "description", o.Description)
 	populate(objectMap, "policies", o.Policies)
 	populate(objectMap, "request", o.Request)
 	populate(objectMap, "responses", o.Responses)
 	populate(objectMap, "templateParameters", o.TemplateParameters)
+	return json.Marshal(objectMap)
 }
 
-// OperationListByTagsOptions contains the optional parameters for the Operation.ListByTags method.
-type OperationListByTagsOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| apiName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| description | filter | ge, le, eq, ne,
-	// gt, lt | substringof, contains, startswith, endswith |</br>| method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>|
-	// urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
-	Filter *string
-	// Include not tagged Operations.
-	IncludeNotTaggedOperations *bool
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the next set of results.
+// OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
+// to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -5867,17 +5836,17 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 
 // OperationResultContract - Long Running Git Operation Results.
 type OperationResultContract struct {
-	Resource
 	// Properties of the Operation Contract.
 	Properties *OperationResultContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResultContract.
-func (o OperationResultContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OperationResultContractProperties - Operation Result.
@@ -5891,17 +5860,19 @@ type OperationResultContractProperties struct {
 	// Optional result info.
 	ResultInfo *string `json:"resultInfo,omitempty"`
 
-	// Start time of an async operation. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// Start time of an async operation. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO
+	// 8601 standard.
 	Started *time.Time `json:"started,omitempty"`
 
 	// Status of an async operation.
 	Status *AsyncOperationStatus `json:"status,omitempty"`
 
-	// Last update time of an async operation. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// Last update time of an async operation. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
+	// the ISO 8601 standard.
 	Updated *time.Time `json:"updated,omitempty"`
 
-	// READ-ONLY; This property if only provided as part of the TenantConfigurationValidate operation. It contains the log the entities which will be updated/created/deleted
-	// as part of the TenantConfigurationDeploy
+	// READ-ONLY; This property if only provided as part of the TenantConfigurationValidate operation. It contains the log the
+	// entities which will be updated/created/deleted as part of the TenantConfigurationDeploy
 	// operation.
 	ActionLog []*OperationResultLogItemContract `json:"actionLog,omitempty" azure:"ro"`
 }
@@ -6011,12 +5982,26 @@ func (o OperationUpdateContract) MarshalJSON() ([]byte, error) {
 
 // OperationUpdateContractProperties - Operation Update Contract Properties.
 type OperationUpdateContractProperties struct {
-	OperationEntityBaseContract
+	// Description of the operation. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
 	// Operation Name.
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
 	Method *string `json:"method,omitempty"`
+
+	// Operation Policies
+	Policies *string `json:"policies,omitempty"`
+
+	// An entity containing request details.
+	Request *RequestContract `json:"request,omitempty"`
+
+	// Array of Operation responses.
+	Responses []*ResponseContract `json:"responses,omitempty"`
+
+	// Collection of URL template parameters.
+	TemplateParameters []*ParameterContract `json:"templateParameters,omitempty"`
 
 	// Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}
 	URLTemplate *string `json:"urlTemplate,omitempty"`
@@ -6025,14 +6010,24 @@ type OperationUpdateContractProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type OperationUpdateContractProperties.
 func (o OperationUpdateContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.OperationEntityBaseContract.marshalInternal(objectMap)
+	populate(objectMap, "description", o.Description)
 	populate(objectMap, "displayName", o.DisplayName)
 	populate(objectMap, "method", o.Method)
+	populate(objectMap, "policies", o.Policies)
+	populate(objectMap, "request", o.Request)
+	populate(objectMap, "responses", o.Responses)
+	populate(objectMap, "templateParameters", o.TemplateParameters)
 	populate(objectMap, "urlTemplate", o.URLTemplate)
 	return json.Marshal(objectMap)
 }
 
-// OutboundEnvironmentEndpoint - Endpoints accessed for a common purpose that the Api Management Service requires outbound network access to.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OutboundEnvironmentEndpoint - Endpoints accessed for a common purpose that the Api Management Service requires outbound
+// network access to.
 type OutboundEnvironmentEndpoint struct {
 	// The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
 	Category *string `json:"category,omitempty"`
@@ -6066,9 +6061,9 @@ func (o OutboundEnvironmentEndpointList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OutboundNetworkDependenciesEndpointsListByServiceOptions contains the optional parameters for the OutboundNetworkDependenciesEndpoints.ListByService
+// OutboundNetworkDependenciesEndpointsClientListByServiceOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.ListByService
 // method.
-type OutboundNetworkDependenciesEndpointsListByServiceOptions struct {
+type OutboundNetworkDependenciesEndpointsClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6141,6 +6136,33 @@ type PipelineDiagnosticSettings struct {
 	Response *HTTPMessageDiagnostic `json:"response,omitempty"`
 }
 
+// PolicyClientCreateOrUpdateOptions contains the optional parameters for the PolicyClient.CreateOrUpdate method.
+type PolicyClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// PolicyClientDeleteOptions contains the optional parameters for the PolicyClient.Delete method.
+type PolicyClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PolicyClientGetEntityTagOptions contains the optional parameters for the PolicyClient.GetEntityTag method.
+type PolicyClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PolicyClientGetOptions contains the optional parameters for the PolicyClient.Get method.
+type PolicyClientGetOptions struct {
+	// Policy Export Format.
+	Format *PolicyExportFormat
+}
+
+// PolicyClientListByServiceOptions contains the optional parameters for the PolicyClient.ListByService method.
+type PolicyClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PolicyCollection - The response of the list policy operation.
 type PolicyCollection struct {
 	// Total record count number.
@@ -6164,17 +6186,17 @@ func (p PolicyCollection) MarshalJSON() ([]byte, error) {
 
 // PolicyContract - Policy Contract details.
 type PolicyContract struct {
-	Resource
 	// Properties of the Policy.
 	Properties *PolicyContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyContract.
-func (p PolicyContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PolicyContractProperties - Policy contract Properties.
@@ -6186,15 +6208,11 @@ type PolicyContractProperties struct {
 	Format *PolicyContentFormat `json:"format,omitempty"`
 }
 
-// PolicyCreateOrUpdateOptions contains the optional parameters for the Policy.CreateOrUpdate method.
-type PolicyCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// PolicyDeleteOptions contains the optional parameters for the Policy.Delete method.
-type PolicyDeleteOptions struct {
-	// placeholder for future optional parameters
+// PolicyDescriptionClientListByServiceOptions contains the optional parameters for the PolicyDescriptionClient.ListByService
+// method.
+type PolicyDescriptionClientListByServiceOptions struct {
+	// Policy scope.
+	Scope *PolicyScopeContract
 }
 
 // PolicyDescriptionCollection - Descriptions of APIM policies.
@@ -6216,17 +6234,17 @@ func (p PolicyDescriptionCollection) MarshalJSON() ([]byte, error) {
 
 // PolicyDescriptionContract - Policy description details.
 type PolicyDescriptionContract struct {
-	Resource
 	// Policy description contract properties.
 	Properties *PolicyDescriptionContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyDescriptionContract.
-func (p PolicyDescriptionContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PolicyDescriptionContractProperties - Policy description properties.
@@ -6238,40 +6256,28 @@ type PolicyDescriptionContractProperties struct {
 	Scope *int64 `json:"scope,omitempty" azure:"ro"`
 }
 
-// PolicyDescriptionListByServiceOptions contains the optional parameters for the PolicyDescription.ListByService method.
-type PolicyDescriptionListByServiceOptions struct {
-	// Policy scope.
-	Scope *PolicyScopeContract
-}
-
-// PolicyGetEntityTagOptions contains the optional parameters for the Policy.GetEntityTag method.
-type PolicyGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyGetOptions contains the optional parameters for the Policy.Get method.
-type PolicyGetOptions struct {
-	// Policy Export Format.
-	Format *PolicyExportFormat
-}
-
-// PolicyListByServiceOptions contains the optional parameters for the Policy.ListByService method.
-type PolicyListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PortalDelegationSettings - Delegation settings for a developer portal.
 type PortalDelegationSettings struct {
-	Resource
 	// Delegation settings contract properties.
 	Properties *PortalDelegationSettingsProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PortalDelegationSettings.
 func (p PortalDelegationSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6290,14 +6296,37 @@ type PortalDelegationSettingsProperties struct {
 	ValidationKey *string `json:"validationKey,omitempty"`
 }
 
-// PortalRevisionBeginCreateOrUpdateOptions contains the optional parameters for the PortalRevision.BeginCreateOrUpdate method.
-type PortalRevisionBeginCreateOrUpdateOptions struct {
+// PortalRevisionClientBeginCreateOrUpdateOptions contains the optional parameters for the PortalRevisionClient.BeginCreateOrUpdate
+// method.
+type PortalRevisionClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PortalRevisionBeginUpdateOptions contains the optional parameters for the PortalRevision.BeginUpdate method.
-type PortalRevisionBeginUpdateOptions struct {
+// PortalRevisionClientBeginUpdateOptions contains the optional parameters for the PortalRevisionClient.BeginUpdate method.
+type PortalRevisionClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PortalRevisionClientGetEntityTagOptions contains the optional parameters for the PortalRevisionClient.GetEntityTag method.
+type PortalRevisionClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PortalRevisionClientGetOptions contains the optional parameters for the PortalRevisionClient.Get method.
+type PortalRevisionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PortalRevisionClientListByServiceOptions contains the optional parameters for the PortalRevisionClient.ListByService method.
+type PortalRevisionClientListByServiceOptions struct {
+	// FIELD SUPPORTED OPERATORS SUPPORTED FUNCTIONS
+	// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq, ne, gt, lt | substringof,
+	// contains, startswith, endswith| |isCurrent | eq, ne | |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
 }
 
 // PortalRevisionCollection - Paged list of portal revisions.
@@ -6319,16 +6348,26 @@ func (p PortalRevisionCollection) MarshalJSON() ([]byte, error) {
 
 // PortalRevisionContract - Portal Revision's contract details.
 type PortalRevisionContract struct {
-	Resource
 	// Properties of the portal revisions.
 	Properties *PortalRevisionContractProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PortalRevisionContract.
 func (p PortalRevisionContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6399,35 +6438,15 @@ func (p *PortalRevisionContractProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// PortalRevisionGetEntityTagOptions contains the optional parameters for the PortalRevision.GetEntityTag method.
-type PortalRevisionGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PortalRevisionGetOptions contains the optional parameters for the PortalRevision.Get method.
-type PortalRevisionGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PortalRevisionListByServiceOptions contains the optional parameters for the PortalRevision.ListByService method.
-type PortalRevisionListByServiceOptions struct {
-	// | Field | Supported operators | Supported functions |
-	// |-------------|------------------------|-----------------------------------|
-	//
-	// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
-	// |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
-	// |isCurrent | eq, ne | |
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
 // PortalSettingValidationKeyContract - Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
 type PortalSettingValidationKeyContract struct {
 	// This is secret value of the validation key in portal settings.
 	ValidationKey *string `json:"validationKey,omitempty"`
+}
+
+// PortalSettingsClientListByServiceOptions contains the optional parameters for the PortalSettingsClient.ListByService method.
+type PortalSettingsClientListByServiceOptions struct {
+	// placeholder for future optional parameters
 }
 
 // PortalSettingsCollection - Descriptions of APIM policies.
@@ -6449,17 +6468,17 @@ func (p PortalSettingsCollection) MarshalJSON() ([]byte, error) {
 
 // PortalSettingsContract - Portal Settings for the Developer Portal.
 type PortalSettingsContract struct {
-	Resource
 	// Portal Settings contract properties.
 	Properties *PortalSettingsContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PortalSettingsContract.
-func (p PortalSettingsContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PortalSettingsContractProperties - Sign-in settings contract properties.
@@ -6483,11 +6502,6 @@ type PortalSettingsContractProperties struct {
 	ValidationKey *string `json:"validationKey,omitempty"`
 }
 
-// PortalSettingsListByServiceOptions contains the optional parameters for the PortalSettings.ListByService method.
-type PortalSettingsListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PortalSigninSettingProperties - Sign-in settings contract properties.
 type PortalSigninSettingProperties struct {
 	// Redirect Anonymous users to the Sign-In page.
@@ -6496,31 +6510,51 @@ type PortalSigninSettingProperties struct {
 
 // PortalSigninSettings - Sign-In settings for the Developer Portal.
 type PortalSigninSettings struct {
-	Resource
 	// Sign-in settings contract properties.
 	Properties *PortalSigninSettingProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PortalSigninSettings.
 func (p PortalSigninSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
 // PortalSignupSettings - Sign-Up settings for a developer portal.
 type PortalSignupSettings struct {
-	Resource
 	// Sign-up settings contract properties.
 	Properties *PortalSignupSettingsProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PortalSignupSettings.
 func (p PortalSignupSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6541,47 +6575,52 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
-}
-
-// PrivateEndpointConnectionBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnection.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnection.BeginDelete method.
-type PrivateEndpointConnectionBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionGetByNameOptions contains the optional parameters for the PrivateEndpointConnection.GetByName method.
-type PrivateEndpointConnectionGetByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionGetPrivateLinkResourceOptions contains the optional parameters for the PrivateEndpointConnection.GetPrivateLinkResource method.
-type PrivateEndpointConnectionGetPrivateLinkResourceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionListByServiceOptions contains the optional parameters for the PrivateEndpointConnection.ListByService method.
-type PrivateEndpointConnectionListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionListPrivateLinkResourcesOptions contains the optional parameters for the PrivateEndpointConnection.ListPrivateLinkResources
+// PrivateEndpointConnectionClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginCreateOrUpdate
 // method.
-type PrivateEndpointConnectionListPrivateLinkResourcesOptions struct {
+type PrivateEndpointConnectionClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
+// method.
+type PrivateEndpointConnectionClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionClientGetByNameOptions contains the optional parameters for the PrivateEndpointConnectionClient.GetByName
+// method.
+type PrivateEndpointConnectionClientGetByNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionClientGetPrivateLinkResourceOptions contains the optional parameters for the PrivateEndpointConnectionClient.GetPrivateLinkResource
+// method.
+type PrivateEndpointConnectionClientGetPrivateLinkResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionClient.ListByService
+// method.
+type PrivateEndpointConnectionClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionClientListPrivateLinkResourcesOptions contains the optional parameters for the PrivateEndpointConnectionClient.ListPrivateLinkResources
+// method.
+type PrivateEndpointConnectionClientListPrivateLinkResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6652,17 +6691,17 @@ func (p PrivateEndpointConnectionWrapperProperties) MarshalJSON() ([]byte, error
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -6699,7 +6738,8 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
@@ -6711,33 +6751,101 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
-// ProductAPICheckEntityExistsOptions contains the optional parameters for the ProductAPI.CheckEntityExists method.
-type ProductAPICheckEntityExistsOptions struct {
+// ProductAPIClientCheckEntityExistsOptions contains the optional parameters for the ProductAPIClient.CheckEntityExists method.
+type ProductAPIClientCheckEntityExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductAPICreateOrUpdateOptions contains the optional parameters for the ProductAPI.CreateOrUpdate method.
-type ProductAPICreateOrUpdateOptions struct {
+// ProductAPIClientCreateOrUpdateOptions contains the optional parameters for the ProductAPIClient.CreateOrUpdate method.
+type ProductAPIClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductAPIDeleteOptions contains the optional parameters for the ProductAPI.Delete method.
-type ProductAPIDeleteOptions struct {
+// ProductAPIClientDeleteOptions contains the optional parameters for the ProductAPIClient.Delete method.
+type ProductAPIClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductAPIListByProductOptions contains the optional parameters for the ProductAPI.ListByProduct method.
-type ProductAPIListByProductOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| serviceUrl | filter | ge, le, eq,
-	// ne, gt, lt | substringof, contains, startswith, endswith |</br>| path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-	// |</br>
+// ProductAPIClientListByProductOptions contains the optional parameters for the ProductAPIClient.ListByProduct method.
+type ProductAPIClientListByProductOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
 	// Number of records to return.
 	Top *int32
+}
+
+// ProductClientCreateOrUpdateOptions contains the optional parameters for the ProductClient.CreateOrUpdate method.
+type ProductClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// ProductClientDeleteOptions contains the optional parameters for the ProductClient.Delete method.
+type ProductClientDeleteOptions struct {
+	// Delete existing subscriptions associated with the product or not.
+	DeleteSubscriptions *bool
+}
+
+// ProductClientGetEntityTagOptions contains the optional parameters for the ProductClient.GetEntityTag method.
+type ProductClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProductClientGetOptions contains the optional parameters for the ProductClient.Get method.
+type ProductClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProductClientListByServiceOptions contains the optional parameters for the ProductClient.ListByService method.
+type ProductClientListByServiceOptions struct {
+	// When set to true, the response contains an array of groups that have visibility to the product. The default is false.
+	ExpandGroups *bool
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | state | filter | eq | |
+	// | groups | expand | | |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Products which are part of a specific tag.
+	Tags *string
+	// Number of records to return.
+	Top *int32
+}
+
+// ProductClientListByTagsOptions contains the optional parameters for the ProductClient.ListByTags method.
+type ProductClientListByTagsOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | state | filter | eq | substringof, contains, startswith, endswith |
+	Filter *string
+	// Include not tagged Products.
+	IncludeNotTaggedProducts *bool
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// ProductClientUpdateOptions contains the optional parameters for the ProductClient.Update method.
+type ProductClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ProductCollection - Paged Products list representation.
@@ -6763,100 +6871,111 @@ func (p ProductCollection) MarshalJSON() ([]byte, error) {
 
 // ProductContract - Product details.
 type ProductContract struct {
-	Resource
 	// Product entity contract properties.
 	Properties *ProductContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ProductContract.
-func (p ProductContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ProductContractProperties - Product profile.
 type ProductContractProperties struct {
-	ProductEntityBaseParameters
 	// REQUIRED; Product name.
 	DisplayName *string `json:"displayName,omitempty"`
-}
 
-// ProductCreateOrUpdateOptions contains the optional parameters for the Product.CreateOrUpdate method.
-type ProductCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-}
-
-// ProductDeleteOptions contains the optional parameters for the Product.Delete method.
-type ProductDeleteOptions struct {
-	// Delete existing subscriptions associated with the product or not.
-	DeleteSubscriptions *bool
-}
-
-// ProductEntityBaseParameters - Product Entity Base Parameters
-type ProductEntityBaseParameters struct {
-	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs
-	// immediately after subscribing. If true,
-	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired
-	// property is present and has a value of false.
+	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
+	// to call the product’s APIs immediately after subscribing. If true,
+	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
+	// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
 
 	// Product description. May include HTML formatting tags.
 	Description *string `json:"description,omitempty"`
 
-	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators.
-	// Default state of Product is
+	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
+	// are visible only to administrators. Default state of Product is
 	// notPublished.
 	State *ProductState `json:"state,omitempty"`
 
-	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid
-	// subscription key is required for a request to an
-	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without
-	// a subscription key. If property is omitted
+	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
+	// to as "protected" and a valid subscription key is required for a request to an
+	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
+	// in the product can be made without a subscription key. If property is omitted
 	// when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
 
-	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions.
-	// Can be present only if subscriptionRequired
+	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
+	// per user subscriptions. Can be present only if subscriptionRequired
 	// property is present and has a value of false.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 
-	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the
-	// subscription process.
+	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
+	// before they can complete the subscription process.
 	Terms *string `json:"terms,omitempty"`
 }
 
-// ProductGetEntityTagOptions contains the optional parameters for the Product.GetEntityTag method.
-type ProductGetEntityTagOptions struct {
+// ProductEntityBaseParameters - Product Entity Base Parameters
+type ProductEntityBaseParameters struct {
+	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
+	// to call the product’s APIs immediately after subscribing. If true,
+	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
+	// only if subscriptionRequired property is present and has a value of false.
+	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
+
+	// Product description. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
+	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
+	// are visible only to administrators. Default state of Product is
+	// notPublished.
+	State *ProductState `json:"state,omitempty"`
+
+	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
+	// to as "protected" and a valid subscription key is required for a request to an
+	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
+	// in the product can be made without a subscription key. If property is omitted
+	// when creating a new product it's value is assumed to be true.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+
+	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
+	// per user subscriptions. Can be present only if subscriptionRequired
+	// property is present and has a value of false.
+	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
+
+	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
+	// before they can complete the subscription process.
+	Terms *string `json:"terms,omitempty"`
+}
+
+// ProductGroupClientCheckEntityExistsOptions contains the optional parameters for the ProductGroupClient.CheckEntityExists
+// method.
+type ProductGroupClientCheckEntityExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductGetOptions contains the optional parameters for the Product.Get method.
-type ProductGetOptions struct {
+// ProductGroupClientCreateOrUpdateOptions contains the optional parameters for the ProductGroupClient.CreateOrUpdate method.
+type ProductGroupClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductGroupCheckEntityExistsOptions contains the optional parameters for the ProductGroup.CheckEntityExists method.
-type ProductGroupCheckEntityExistsOptions struct {
+// ProductGroupClientDeleteOptions contains the optional parameters for the ProductGroupClient.Delete method.
+type ProductGroupClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductGroupCreateOrUpdateOptions contains the optional parameters for the ProductGroup.CreateOrUpdate method.
-type ProductGroupCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ProductGroupDeleteOptions contains the optional parameters for the ProductGroup.Delete method.
-type ProductGroupDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ProductGroupListByProductOptions contains the optional parameters for the ProductGroup.ListByProduct method.
-type ProductGroupListByProductOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | |</br>| displayName | filter | eq, ne | |</br>| description | filter | eq, ne | |</br>
+// ProductGroupClientListByProductOptions contains the optional parameters for the ProductGroupClient.ListByProduct method.
+type ProductGroupClientListByProductOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | |
+	// | displayName | filter | eq, ne | |
+	// | description | filter | eq, ne | |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -6864,73 +6983,46 @@ type ProductGroupListByProductOptions struct {
 	Top *int32
 }
 
-// ProductListByServiceOptions contains the optional parameters for the Product.ListByService method.
-type ProductListByServiceOptions struct {
-	// When set to true, the response contains an array of groups that have visibility to the product. The default is false.
-	ExpandGroups *bool
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| terms | filter | ge, le, eq, ne,
-	// gt, lt | substringof, contains, startswith, endswith |</br>| state | filter | eq | |</br>| groups | expand | | |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Products which are part of a specific tag.
-	Tags *string
-	// Number of records to return.
-	Top *int32
-}
-
-// ProductListByTagsOptions contains the optional parameters for the Product.ListByTags method.
-type ProductListByTagsOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| terms | filter | ge, le, eq, ne,
-	// gt, lt | substringof, contains, startswith, endswith |</br>| state | filter | eq | substringof, contains, startswith, endswith |</br>
-	Filter *string
-	// Include not tagged Products.
-	IncludeNotTaggedProducts *bool
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// ProductPolicyCreateOrUpdateOptions contains the optional parameters for the ProductPolicy.CreateOrUpdate method.
-type ProductPolicyCreateOrUpdateOptions struct {
+// ProductPolicyClientCreateOrUpdateOptions contains the optional parameters for the ProductPolicyClient.CreateOrUpdate method.
+type ProductPolicyClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// ProductPolicyDeleteOptions contains the optional parameters for the ProductPolicy.Delete method.
-type ProductPolicyDeleteOptions struct {
+// ProductPolicyClientDeleteOptions contains the optional parameters for the ProductPolicyClient.Delete method.
+type ProductPolicyClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductPolicyGetEntityTagOptions contains the optional parameters for the ProductPolicy.GetEntityTag method.
-type ProductPolicyGetEntityTagOptions struct {
+// ProductPolicyClientGetEntityTagOptions contains the optional parameters for the ProductPolicyClient.GetEntityTag method.
+type ProductPolicyClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductPolicyGetOptions contains the optional parameters for the ProductPolicy.Get method.
-type ProductPolicyGetOptions struct {
+// ProductPolicyClientGetOptions contains the optional parameters for the ProductPolicyClient.Get method.
+type ProductPolicyClientGetOptions struct {
 	// Policy Export Format.
 	Format *PolicyExportFormat
 }
 
-// ProductPolicyListByProductOptions contains the optional parameters for the ProductPolicy.ListByProduct method.
-type ProductPolicyListByProductOptions struct {
+// ProductPolicyClientListByProductOptions contains the optional parameters for the ProductPolicyClient.ListByProduct method.
+type ProductPolicyClientListByProductOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductSubscriptionsListOptions contains the optional parameters for the ProductSubscriptions.List method.
-type ProductSubscriptionsListOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| ownerId | filter | ge, le, eq,
-	// ne, gt, lt | substringof, contains, startswith, endswith |</br>| scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-	// |</br>| userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| productId | filter | ge, le, eq, ne, gt, lt |
-	// substringof, contains, startswith, endswith |</br>| state | filter | eq | |</br>| user | expand | | |</br>
+// ProductSubscriptionsClientListOptions contains the optional parameters for the ProductSubscriptionsClient.List method.
+type ProductSubscriptionsClientListOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | state | filter | eq | |
+	// | user | expand | | |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -6940,17 +7032,41 @@ type ProductSubscriptionsListOptions struct {
 
 // ProductTagResourceContractProperties - Product profile.
 type ProductTagResourceContractProperties struct {
-	ProductEntityBaseParameters
 	// REQUIRED; Product name.
 	Name *string `json:"name,omitempty"`
 
+	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
+	// to call the product’s APIs immediately after subscribing. If true,
+	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
+	// only if subscriptionRequired property is present and has a value of false.
+	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
+
+	// Product description. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
 	// Identifier of the product in the form of /products/{productId}
 	ID *string `json:"id,omitempty"`
-}
 
-// ProductUpdateOptions contains the optional parameters for the Product.Update method.
-type ProductUpdateOptions struct {
-	// placeholder for future optional parameters
+	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
+	// are visible only to administrators. Default state of Product is
+	// notPublished.
+	State *ProductState `json:"state,omitempty"`
+
+	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
+	// to as "protected" and a valid subscription key is required for a request to an
+	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
+	// in the product can be made without a subscription key. If property is omitted
+	// when creating a new product it's value is assumed to be true.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+
+	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
+	// per user subscriptions. Can be present only if subscriptionRequired
+	// property is present and has a value of false.
+	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
+
+	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
+	// before they can complete the subscription process.
+	Terms *string `json:"terms,omitempty"`
 }
 
 // ProductUpdateParameters - Product Update parameters.
@@ -6968,28 +7084,58 @@ func (p ProductUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // ProductUpdateProperties - Parameters supplied to the Update Product operation.
 type ProductUpdateProperties struct {
-	ProductEntityBaseParameters
+	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
+	// to call the product’s APIs immediately after subscribing. If true,
+	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
+	// only if subscriptionRequired property is present and has a value of false.
+	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
+
+	// Product description. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
+
 	// Product name.
 	DisplayName *string `json:"displayName,omitempty"`
+
+	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
+	// are visible only to administrators. Default state of Product is
+	// notPublished.
+	State *ProductState `json:"state,omitempty"`
+
+	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
+	// to as "protected" and a valid subscription key is required for a request to an
+	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
+	// in the product can be made without a subscription key. If property is omitted
+	// when creating a new product it's value is assumed to be true.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+
+	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
+	// per user subscriptions. Can be present only if subscriptionRequired
+	// property is present and has a value of false.
+	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
+
+	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
+	// before they can complete the subscription process.
+	Terms *string `json:"terms,omitempty"`
 }
 
-// QuotaByCounterKeysListByServiceOptions contains the optional parameters for the QuotaByCounterKeys.ListByService method.
-type QuotaByCounterKeysListByServiceOptions struct {
+// QuotaByCounterKeysClientListByServiceOptions contains the optional parameters for the QuotaByCounterKeysClient.ListByService
+// method.
+type QuotaByCounterKeysClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QuotaByCounterKeysUpdateOptions contains the optional parameters for the QuotaByCounterKeys.Update method.
-type QuotaByCounterKeysUpdateOptions struct {
+// QuotaByCounterKeysClientUpdateOptions contains the optional parameters for the QuotaByCounterKeysClient.Update method.
+type QuotaByCounterKeysClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QuotaByPeriodKeysGetOptions contains the optional parameters for the QuotaByPeriodKeys.Get method.
-type QuotaByPeriodKeysGetOptions struct {
+// QuotaByPeriodKeysClientGetOptions contains the optional parameters for the QuotaByPeriodKeysClient.Get method.
+type QuotaByPeriodKeysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QuotaByPeriodKeysUpdateOptions contains the optional parameters for the QuotaByPeriodKeys.Update method.
-type QuotaByPeriodKeysUpdateOptions struct {
+// QuotaByPeriodKeysClientUpdateOptions contains the optional parameters for the QuotaByPeriodKeysClient.Update method.
+type QuotaByPeriodKeysClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7019,13 +7165,15 @@ type QuotaCounterContract struct {
 	// REQUIRED; The Key value of the Counter. Must not be empty.
 	CounterKey *string `json:"counterKey,omitempty"`
 
-	// REQUIRED; The date of the end of Counter Period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// REQUIRED; The date of the end of Counter Period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	PeriodEndTime *time.Time `json:"periodEndTime,omitempty"`
 
 	// REQUIRED; Identifier of the Period for which the counter was collected. Must not be empty.
 	PeriodKey *string `json:"periodKey,omitempty"`
 
-	// REQUIRED; The date of the start of Counter Period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// REQUIRED; The date of the start of Counter Period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	PeriodStartTime *time.Time `json:"periodStartTime,omitempty"`
 
 	// Quota Value Properties
@@ -7126,17 +7274,17 @@ func (r RecipientEmailCollection) MarshalJSON() ([]byte, error) {
 
 // RecipientEmailContract - Recipient Email details.
 type RecipientEmailContract struct {
-	Resource
 	// Recipient Email contract properties.
 	Properties *RecipientEmailContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RecipientEmailContract.
-func (r RecipientEmailContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecipientEmailContractProperties - Recipient Email Contract Properties.
@@ -7168,17 +7316,17 @@ func (r RecipientUserCollection) MarshalJSON() ([]byte, error) {
 
 // RecipientUserContract - Recipient User details.
 type RecipientUserContract struct {
-	Resource
 	// Recipient User entity contract properties.
 	Properties *RecipientUsersContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RecipientUserContract.
-func (r RecipientUserContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecipientUsersContractProperties - Recipient User Contract Properties.
@@ -7204,6 +7352,11 @@ func (r RecipientsContractProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// RegionClientListByServiceOptions contains the optional parameters for the RegionClient.ListByService method.
+type RegionClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
 // RegionContract - Region profile.
 type RegionContract struct {
 	// whether Region is deleted.
@@ -7214,11 +7367,6 @@ type RegionContract struct {
 
 	// READ-ONLY; Region name.
 	Name *string `json:"name,omitempty" azure:"ro"`
-}
-
-// RegionListByServiceOptions contains the optional parameters for the Region.ListByService method.
-type RegionListByServiceOptions struct {
-	// placeholder for future optional parameters
 }
 
 // RegionListResult - Lists Regions operation response details.
@@ -7310,11 +7458,12 @@ type ReportRecordContract struct {
 	// Number of times content was fetched from backend.
 	CacheMissCount *int32 `json:"cacheMissCount,omitempty"`
 
-	// Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
+	// Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden
+	// and HttpStatusCode.TooManyRequests
 	CallCountBlocked *int32 `json:"callCountBlocked,omitempty"`
 
-	// Number of calls failed due to proxy or backend errors. This includes calls returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError
-	// (500) and 600
+	// Number of calls failed due to proxy or backend errors. This includes calls returning HttpStatusCode.BadRequest(400) and
+	// any Code between HttpStatusCode.InternalServerError (500) and 600
 	CallCountFailed *int32 `json:"callCountFailed,omitempty"`
 
 	// Number of other calls.
@@ -7329,7 +7478,8 @@ type ReportRecordContract struct {
 	// Country to which this record data is related.
 	Country *string `json:"country,omitempty"`
 
-	// Length of aggregation period. Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
+	// Length of aggregation period. Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601
+	// format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
 	Interval *string `json:"interval,omitempty"`
 
 	// Name depending on report endpoint specifies product, API, operation or developer name.
@@ -7353,7 +7503,8 @@ type ReportRecordContract struct {
 	// Subscription identifier path. /subscriptions/{subscriptionId}
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 
-	// Start of aggregation period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// Start of aggregation period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
+	// standard.
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 
 	// Zip code to which this record data is related.
@@ -7493,8 +7644,8 @@ func (r *ReportRecordContract) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ReportsListByAPIOptions contains the optional parameters for the Reports.ListByAPI method.
-type ReportsListByAPIOptions struct {
+// ReportsClientListByAPIOptions contains the optional parameters for the ReportsClient.ListByAPI method.
+type ReportsClientListByAPIOptions struct {
 	// OData order by query option.
 	Orderby *string
 	// Number of records to skip.
@@ -7503,16 +7654,16 @@ type ReportsListByAPIOptions struct {
 	Top *int32
 }
 
-// ReportsListByGeoOptions contains the optional parameters for the Reports.ListByGeo method.
-type ReportsListByGeoOptions struct {
+// ReportsClientListByGeoOptions contains the optional parameters for the ReportsClient.ListByGeo method.
+type ReportsClientListByGeoOptions struct {
 	// Number of records to skip.
 	Skip *int32
 	// Number of records to return.
 	Top *int32
 }
 
-// ReportsListByOperationOptions contains the optional parameters for the Reports.ListByOperation method.
-type ReportsListByOperationOptions struct {
+// ReportsClientListByOperationOptions contains the optional parameters for the ReportsClient.ListByOperation method.
+type ReportsClientListByOperationOptions struct {
 	// OData order by query option.
 	Orderby *string
 	// Number of records to skip.
@@ -7521,8 +7672,8 @@ type ReportsListByOperationOptions struct {
 	Top *int32
 }
 
-// ReportsListByProductOptions contains the optional parameters for the Reports.ListByProduct method.
-type ReportsListByProductOptions struct {
+// ReportsClientListByProductOptions contains the optional parameters for the ReportsClient.ListByProduct method.
+type ReportsClientListByProductOptions struct {
 	// OData order by query option.
 	Orderby *string
 	// Number of records to skip.
@@ -7531,16 +7682,16 @@ type ReportsListByProductOptions struct {
 	Top *int32
 }
 
-// ReportsListByRequestOptions contains the optional parameters for the Reports.ListByRequest method.
-type ReportsListByRequestOptions struct {
+// ReportsClientListByRequestOptions contains the optional parameters for the ReportsClient.ListByRequest method.
+type ReportsClientListByRequestOptions struct {
 	// Number of records to skip.
 	Skip *int32
 	// Number of records to return.
 	Top *int32
 }
 
-// ReportsListBySubscriptionOptions contains the optional parameters for the Reports.ListBySubscription method.
-type ReportsListBySubscriptionOptions struct {
+// ReportsClientListBySubscriptionOptions contains the optional parameters for the ReportsClient.ListBySubscription method.
+type ReportsClientListBySubscriptionOptions struct {
 	// OData order by query option.
 	Orderby *string
 	// Number of records to skip.
@@ -7549,8 +7700,8 @@ type ReportsListBySubscriptionOptions struct {
 	Top *int32
 }
 
-// ReportsListByTimeOptions contains the optional parameters for the Reports.ListByTime method.
-type ReportsListByTimeOptions struct {
+// ReportsClientListByTimeOptions contains the optional parameters for the ReportsClient.ListByTime method.
+type ReportsClientListByTimeOptions struct {
 	// OData order by query option.
 	Orderby *string
 	// Number of records to skip.
@@ -7559,8 +7710,8 @@ type ReportsListByTimeOptions struct {
 	Top *int32
 }
 
-// ReportsListByUserOptions contains the optional parameters for the Reports.ListByUser method.
-type ReportsListByUserOptions struct {
+// ReportsClientListByUserOptions contains the optional parameters for the ReportsClient.ListByUser method.
+type ReportsClientListByUserOptions struct {
 	// OData order by query option.
 	Orderby *string
 	// Number of records to skip.
@@ -7583,7 +7734,8 @@ type RepresentationContract struct {
 	// Schema identifier. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded' nor 'multipart/form-data'.
 	SchemaID *string `json:"schemaId,omitempty"`
 
-	// Type name defined by the schema. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded' nor 'multipart/form-data'.
+	// Type name defined by the schema. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded'
+	// nor 'multipart/form-data'.
 	TypeName *string `json:"typeName,omitempty"`
 }
 
@@ -7654,8 +7806,8 @@ type RequestReportRecordContract struct {
 	// The HTTP status code received by the gateway as a result of forwarding this request to the backend.
 	BackendResponseCode *string `json:"backendResponseCode,omitempty"`
 
-	// Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the value is hit, cached response
-	// was returned. If the value is miss, the cache
+	// Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the
+	// value is hit, cached response was returned. If the value is miss, the cache
 	// was used but lookup resulted in a miss and request was fulfilled by the backend.
 	Cache *string `json:"cache,omitempty"`
 
@@ -7806,19 +7958,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // ResourceLocationDataContract - Resource location data properties.
 type ResourceLocationDataContract struct {
 	// REQUIRED; A canonical name for the geographic or physical location.
@@ -7909,6 +8048,208 @@ func (r ResponseContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// SKU - Describes an available ApiManagement SKU.
+type SKU struct {
+	// READ-ONLY; The api versions that support this SKU.
+	APIVersions []*string `json:"apiVersions,omitempty" azure:"ro"`
+
+	// READ-ONLY; A name value pair to describe the capability.
+	Capabilities []*SKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the number of virtual machines in the scale set.
+	Capacity *SKUCapacity `json:"capacity,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata for retrieving price info.
+	Costs []*SKUCosts `json:"costs,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Family of this particular SKU.
+	Family *string `json:"family,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Kind of resources that are supported in this SKU.
+	Kind *string `json:"kind,omitempty" azure:"ro"`
+
+	// READ-ONLY; A list of locations and availability zones in those locations where the SKU is available.
+	LocationInfo []*SKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The set of locations that the SKU is available.
+	Locations []*string `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of SKU.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of resource the SKU applies to.
+	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
+	Restrictions []*SKURestrictions `json:"restrictions,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Size of the SKU.
+	Size *string `json:"size,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the tier of virtual machines in a scale set.
+	// Possible Values:
+	// Standard
+	// Basic
+	Tier *string `json:"tier,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKU.
+func (s SKU) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "apiVersions", s.APIVersions)
+	populate(objectMap, "capabilities", s.Capabilities)
+	populate(objectMap, "capacity", s.Capacity)
+	populate(objectMap, "costs", s.Costs)
+	populate(objectMap, "family", s.Family)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "locationInfo", s.LocationInfo)
+	populate(objectMap, "locations", s.Locations)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "resourceType", s.ResourceType)
+	populate(objectMap, "restrictions", s.Restrictions)
+	populate(objectMap, "size", s.Size)
+	populate(objectMap, "tier", s.Tier)
+	return json.Marshal(objectMap)
+}
+
+// SKUCapabilities - Describes The SKU capabilities object.
+type SKUCapabilities struct {
+	// READ-ONLY; An invariant to describe the feature.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; An invariant if the feature is measured by quantity.
+	Value *string `json:"value,omitempty" azure:"ro"`
+}
+
+// SKUCapacity - Describes scaling information of a SKU.
+type SKUCapacity struct {
+	// READ-ONLY; The default capacity.
+	Default *int32 `json:"default,omitempty" azure:"ro"`
+
+	// READ-ONLY; The maximum capacity that can be set.
+	Maximum *int32 `json:"maximum,omitempty" azure:"ro"`
+
+	// READ-ONLY; The minimum capacity.
+	Minimum *int32 `json:"minimum,omitempty" azure:"ro"`
+
+	// READ-ONLY; The scale type applicable to the sku.
+	ScaleType *APIManagementSKUCapacityScaleType `json:"scaleType,omitempty" azure:"ro"`
+}
+
+// SKUCosts - Describes metadata for retrieving price info.
+type SKUCosts struct {
+	// READ-ONLY; An invariant to show the extended unit.
+	ExtendedUnit *string `json:"extendedUnit,omitempty" azure:"ro"`
+
+	// READ-ONLY; Used for querying price from commerce.
+	MeterID *string `json:"meterID,omitempty" azure:"ro"`
+
+	// READ-ONLY; The multiplier is needed to extend the base metered cost.
+	Quantity *int64 `json:"quantity,omitempty" azure:"ro"`
+}
+
+type SKULocationInfo struct {
+	// READ-ONLY; Location of the SKU
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; Details of capabilities available to a SKU in specific zones.
+	ZoneDetails []*SKUZoneDetails `json:"zoneDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of availability zones where the SKU is supported.
+	Zones []*string `json:"zones,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKULocationInfo.
+func (s SKULocationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "zoneDetails", s.ZoneDetails)
+	populate(objectMap, "zones", s.Zones)
+	return json.Marshal(objectMap)
+}
+
+type SKURestrictionInfo struct {
+	// READ-ONLY; Locations where the SKU is restricted
+	Locations []*string `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of availability zones where the SKU is restricted.
+	Zones []*string `json:"zones,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKURestrictionInfo.
+func (s SKURestrictionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "locations", s.Locations)
+	populate(objectMap, "zones", s.Zones)
+	return json.Marshal(objectMap)
+}
+
+// SKURestrictions - Describes scaling information of a SKU.
+type SKURestrictions struct {
+	// READ-ONLY; The reason for restriction.
+	ReasonCode *APIManagementSKURestrictionsReasonCode `json:"reasonCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; The information about the restriction where the SKU cannot be used.
+	RestrictionInfo *SKURestrictionInfo `json:"restrictionInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of restrictions.
+	Type *APIManagementSKURestrictionsType `json:"type,omitempty" azure:"ro"`
+
+	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
+	// the SKU is restricted.
+	Values []*string `json:"values,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKURestrictions.
+func (s SKURestrictions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "reasonCode", s.ReasonCode)
+	populate(objectMap, "restrictionInfo", s.RestrictionInfo)
+	populate(objectMap, "type", s.Type)
+	populate(objectMap, "values", s.Values)
+	return json.Marshal(objectMap)
+}
+
+// SKUZoneDetails - Describes The zonal capabilities of a SKU.
+type SKUZoneDetails struct {
+	// READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
+	Capabilities []*SKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
+
+	// READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
+	Name []*string `json:"name,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKUZoneDetails.
+func (s SKUZoneDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "capabilities", s.Capabilities)
+	populate(objectMap, "name", s.Name)
+	return json.Marshal(objectMap)
+}
+
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+type SKUsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SKUsResult - The List Resource Skus operation response.
+type SKUsResult struct {
+	// REQUIRED; The list of skus available for the subscription.
+	Value []*SKU `json:"value,omitempty"`
+
+	// READ-ONLY; The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource
+	// Skus
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKUsResult.
+func (s SKUsResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
 // SamplingSettings - Sampling settings for Diagnostic.
 type SamplingSettings struct {
 	// Rate of sampling for fixed-rate sampling.
@@ -7929,8 +8270,8 @@ type SaveConfigurationParameterProperties struct {
 	// REQUIRED; The name of the Git branch in which to commit the current configuration snapshot.
 	Branch *string `json:"branch,omitempty"`
 
-	// The value if true, the current configuration database is committed to the Git repository, even if the Git repository has newer changes that would be
-	// overwritten.
+	// The value if true, the current configuration database is committed to the Git repository, even if the Git repository has
+	// newer changes that would be overwritten.
 	Force *bool `json:"force,omitempty"`
 }
 
@@ -7955,87 +8296,1220 @@ func (s SchemaCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SchemaContract - Schema Contract details.
+// SchemaContract - API Schema Contract details.
 type SchemaContract struct {
-	Resource
-	// Properties of the Schema.
+	// Properties of the API Schema.
 	Properties *SchemaContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SchemaContract.
-func (s SchemaContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SchemaContractProperties - API Schema create or update contract Properties.
 type SchemaContractProperties struct {
-	// REQUIRED; Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json,
-	// application/xml).
+	// REQUIRED; Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema
+	// document (e.g. application/json, application/xml).
 	// - Swagger Schema use application/vnd.ms-azure-apim.swagger.definitions+json
 	// - WSDL Schema use application/vnd.ms-azure-apim.xsd+xml
 	// - OpenApi Schema use application/vnd.oai.openapi.components+json
 	// - WADL Schema use application/vnd.ms-azure-apim.wadl.grammars+xml.
 	ContentType *string `json:"contentType,omitempty"`
 
-	// Create or update Properties of the Schema Document.
+	// Create or update Properties of the API Schema Document.
 	Document *SchemaDocumentProperties `json:"document,omitempty"`
 }
 
-// SchemaDocumentProperties - Schema Document Properties.
+// SchemaDocumentProperties - Api Schema Document Properties.
 type SchemaDocumentProperties struct {
-	// Types definitions. Used for OpenAPI v3 schemas only, null otherwise.
+	// Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
 	Components map[string]interface{} `json:"components,omitempty"`
 
-	// Types definitions. Used for OpenAPI v2 (Swagger) schemas only, null otherwise.
+	// Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
 	Definitions map[string]interface{} `json:"definitions,omitempty"`
 
 	// Json escaped string defining the document representing the Schema. Used for schemas other than Swagger/OpenAPI.
 	Value *string `json:"value,omitempty"`
 }
 
-// SignInSettingsCreateOrUpdateOptions contains the optional parameters for the SignInSettings.CreateOrUpdate method.
-type SignInSettingsCreateOrUpdateOptions struct {
+// ServiceApplyNetworkConfigurationParameters - Parameter supplied to the Apply Network configuration operation.
+type ServiceApplyNetworkConfigurationParameters struct {
+	// Location of the Api Management service to update for a multi-region service. For a service deployed in a single region,
+	// this parameter is not required.
+	Location *string `json:"location,omitempty"`
+}
+
+// ServiceBackupRestoreParameters - Parameters supplied to the Backup/Restore of an API Management service operation.
+type ServiceBackupRestoreParameters struct {
+	// REQUIRED; The name of the backup file to create/retrieve.
+	BackupName *string `json:"backupName,omitempty"`
+
+	// REQUIRED; The name of the blob container (used to place/retrieve the backup).
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// REQUIRED; The name of the Azure storage account (used to place/retrieve the backup).
+	StorageAccount *string `json:"storageAccount,omitempty"`
+
+	// Storage account access key. Required only if accessType is set to AccessKey.
+	AccessKey *string `json:"accessKey,omitempty"`
+
+	// The type of access to be used for the storage account.
+	AccessType *AccessType `json:"accessType,omitempty"`
+
+	// The Client ID of user assigned managed identity. Required only if accessType is set to UserAssignedManagedIdentity.
+	ClientID *string `json:"clientId,omitempty"`
+}
+
+// ServiceBaseProperties - Base Properties of an API Management service resource description.
+type ServiceBaseProperties struct {
+	// Control Plane Apis version constraint for the API Management service.
+	APIVersionConstraint *APIVersionConstraint `json:"apiVersionConstraint,omitempty"`
+
+	// Additional datacenter locations of the API Management service.
+	AdditionalLocations []*AdditionalLocation `json:"additionalLocations,omitempty"`
+
+	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
+	// is 10.
+	Certificates []*CertificateConfiguration `json:"certificates,omitempty"`
+
+	// Custom properties of the API Management service.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
+	// for all TLS(1.0, 1.1 and 1.2).
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
+	// Management service.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
+	// for communications with backends.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
+	// communications with backends.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
+	// API Management service.
+	// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
+	// all the settings except Http2 the default value is True if the service was
+	// created on or before April 1st 2018 and False otherwise. Http2 setting's default value is False.
+	// You can disable any of next ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
+	// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBCSHA, TLS
+	// ECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
+	// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For example,
+	// Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default value
+	// is true for them. Note: next ciphers can't be disabled since they are required by
+	// Azure CloudService internal components: TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCMSHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBC
+	// SHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256,TLSRSAWITHAES256GCMSHA384
+	CustomProperties map[string]*string `json:"customProperties,omitempty"`
+
+	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
+	// in master region.
+	DisableGateway *bool `json:"disableGateway,omitempty"`
+
+	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
+	// request to the gateway. This also enables the ability to authenticate the
+	// certificate in the policy on the gateway.
+	EnableClientCertificate *bool `json:"enableClientCertificate,omitempty"`
+
+	// Custom hostname configuration of the API Management service.
+	HostnameConfigurations []*HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
+
+	// Email address from which the notification will be sent.
+	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
+
+	// List of Private Endpoint Connections of this service.
+	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper `json:"privateEndpointConnections,omitempty"`
+
+	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
+	// only for Developer and Premium SKU being deployed in Virtual Network.
+	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+
+	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
+	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
+	// exclusive access method. Default value is 'Enabled'
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
+	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
+	// properties will be ignored.
+	Restore *bool `json:"restore,omitempty"`
+
+	// Virtual network configuration of the API Management service.
+	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
+
+	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
+	// service is not part of any Virtual Network, External means the API Management
+	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
+	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
+	// only.
+	VirtualNetworkType *VirtualNetworkType `json:"virtualNetworkType,omitempty"`
+
+	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
+	// as specified by the ISO 8601 standard.
+	CreatedAtUTC *time.Time `json:"createdAtUtc,omitempty" azure:"ro"`
+
+	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gateway URL of the API Management service in the Default Region.
+	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gateway URL of the API Management service.
+	GatewayURL *string `json:"gatewayUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Management API endpoint URL of the API Management service.
+	ManagementAPIURL *string `json:"managementApiUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Compute Platform Version running the service in this location.
+	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; Publisher portal endpoint Url of the API Management service.
+	PortalURL *string `json:"portalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
+	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
+	// SKU.
+	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
+	// Basic, Standard, Premium and Isolated SKU.
+	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY; SCM endpoint URL of the API Management service.
+	ScmURL *string `json:"scmUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
+	// on the service.
+	TargetProvisioningState *string `json:"targetProvisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceBaseProperties.
+func (s ServiceBaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "apiVersionConstraint", s.APIVersionConstraint)
+	populate(objectMap, "additionalLocations", s.AdditionalLocations)
+	populate(objectMap, "certificates", s.Certificates)
+	populateTimeRFC3339(objectMap, "createdAtUtc", s.CreatedAtUTC)
+	populate(objectMap, "customProperties", s.CustomProperties)
+	populate(objectMap, "developerPortalUrl", s.DeveloperPortalURL)
+	populate(objectMap, "disableGateway", s.DisableGateway)
+	populate(objectMap, "enableClientCertificate", s.EnableClientCertificate)
+	populate(objectMap, "gatewayRegionalUrl", s.GatewayRegionalURL)
+	populate(objectMap, "gatewayUrl", s.GatewayURL)
+	populate(objectMap, "hostnameConfigurations", s.HostnameConfigurations)
+	populate(objectMap, "managementApiUrl", s.ManagementAPIURL)
+	populate(objectMap, "notificationSenderEmail", s.NotificationSenderEmail)
+	populate(objectMap, "platformVersion", s.PlatformVersion)
+	populate(objectMap, "portalUrl", s.PortalURL)
+	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
+	populate(objectMap, "privateIPAddresses", s.PrivateIPAddresses)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "publicIpAddressId", s.PublicIPAddressID)
+	populate(objectMap, "publicIPAddresses", s.PublicIPAddresses)
+	populate(objectMap, "publicNetworkAccess", s.PublicNetworkAccess)
+	populate(objectMap, "restore", s.Restore)
+	populate(objectMap, "scmUrl", s.ScmURL)
+	populate(objectMap, "targetProvisioningState", s.TargetProvisioningState)
+	populate(objectMap, "virtualNetworkConfiguration", s.VirtualNetworkConfiguration)
+	populate(objectMap, "virtualNetworkType", s.VirtualNetworkType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceBaseProperties.
+func (s *ServiceBaseProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "apiVersionConstraint":
+			err = unpopulate(val, &s.APIVersionConstraint)
+			delete(rawMsg, key)
+		case "additionalLocations":
+			err = unpopulate(val, &s.AdditionalLocations)
+			delete(rawMsg, key)
+		case "certificates":
+			err = unpopulate(val, &s.Certificates)
+			delete(rawMsg, key)
+		case "createdAtUtc":
+			err = unpopulateTimeRFC3339(val, &s.CreatedAtUTC)
+			delete(rawMsg, key)
+		case "customProperties":
+			err = unpopulate(val, &s.CustomProperties)
+			delete(rawMsg, key)
+		case "developerPortalUrl":
+			err = unpopulate(val, &s.DeveloperPortalURL)
+			delete(rawMsg, key)
+		case "disableGateway":
+			err = unpopulate(val, &s.DisableGateway)
+			delete(rawMsg, key)
+		case "enableClientCertificate":
+			err = unpopulate(val, &s.EnableClientCertificate)
+			delete(rawMsg, key)
+		case "gatewayRegionalUrl":
+			err = unpopulate(val, &s.GatewayRegionalURL)
+			delete(rawMsg, key)
+		case "gatewayUrl":
+			err = unpopulate(val, &s.GatewayURL)
+			delete(rawMsg, key)
+		case "hostnameConfigurations":
+			err = unpopulate(val, &s.HostnameConfigurations)
+			delete(rawMsg, key)
+		case "managementApiUrl":
+			err = unpopulate(val, &s.ManagementAPIURL)
+			delete(rawMsg, key)
+		case "notificationSenderEmail":
+			err = unpopulate(val, &s.NotificationSenderEmail)
+			delete(rawMsg, key)
+		case "platformVersion":
+			err = unpopulate(val, &s.PlatformVersion)
+			delete(rawMsg, key)
+		case "portalUrl":
+			err = unpopulate(val, &s.PortalURL)
+			delete(rawMsg, key)
+		case "privateEndpointConnections":
+			err = unpopulate(val, &s.PrivateEndpointConnections)
+			delete(rawMsg, key)
+		case "privateIPAddresses":
+			err = unpopulate(val, &s.PrivateIPAddresses)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicIpAddressId":
+			err = unpopulate(val, &s.PublicIPAddressID)
+			delete(rawMsg, key)
+		case "publicIPAddresses":
+			err = unpopulate(val, &s.PublicIPAddresses)
+			delete(rawMsg, key)
+		case "publicNetworkAccess":
+			err = unpopulate(val, &s.PublicNetworkAccess)
+			delete(rawMsg, key)
+		case "restore":
+			err = unpopulate(val, &s.Restore)
+			delete(rawMsg, key)
+		case "scmUrl":
+			err = unpopulate(val, &s.ScmURL)
+			delete(rawMsg, key)
+		case "targetProvisioningState":
+			err = unpopulate(val, &s.TargetProvisioningState)
+			delete(rawMsg, key)
+		case "virtualNetworkConfiguration":
+			err = unpopulate(val, &s.VirtualNetworkConfiguration)
+			delete(rawMsg, key)
+		case "virtualNetworkType":
+			err = unpopulate(val, &s.VirtualNetworkType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ServiceCheckNameAvailabilityParameters - Parameters supplied to the CheckNameAvailability operation.
+type ServiceCheckNameAvailabilityParameters struct {
+	// REQUIRED; The name to check for availability.
+	Name *string `json:"name,omitempty"`
+}
+
+// ServiceClientBeginApplyNetworkConfigurationUpdatesOptions contains the optional parameters for the ServiceClient.BeginApplyNetworkConfigurationUpdates
+// method.
+type ServiceClientBeginApplyNetworkConfigurationUpdatesOptions struct {
+	// Parameters supplied to the Apply Network Configuration operation. If the parameters are empty, all the regions in which
+	// the Api Management service is deployed will be updated sequentially without
+	// incurring downtime in the region.
+	Parameters *ServiceApplyNetworkConfigurationParameters
+}
+
+// ServiceClientBeginBackupOptions contains the optional parameters for the ServiceClient.BeginBackup method.
+type ServiceClientBeginBackupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceClient.BeginCreateOrUpdate method.
+type ServiceClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
+type ServiceClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientBeginRestoreOptions contains the optional parameters for the ServiceClient.BeginRestore method.
+type ServiceClientBeginRestoreOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientBeginUpdateOptions contains the optional parameters for the ServiceClient.BeginUpdate method.
+type ServiceClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientCheckNameAvailabilityOptions contains the optional parameters for the ServiceClient.CheckNameAvailability
+// method.
+type ServiceClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientGetDomainOwnershipIdentifierOptions contains the optional parameters for the ServiceClient.GetDomainOwnershipIdentifier
+// method.
+type ServiceClientGetDomainOwnershipIdentifierOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
+type ServiceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientGetSsoTokenOptions contains the optional parameters for the ServiceClient.GetSsoToken method.
+type ServiceClientGetSsoTokenOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientListByResourceGroupOptions contains the optional parameters for the ServiceClient.ListByResourceGroup method.
+type ServiceClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
+type ServiceClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGetDomainOwnershipIdentifierResult - Response of the GetDomainOwnershipIdentifier operation.
+type ServiceGetDomainOwnershipIdentifierResult struct {
+	// READ-ONLY; The domain ownership identifier value.
+	DomainOwnershipIdentifier *string `json:"domainOwnershipIdentifier,omitempty" azure:"ro"`
+}
+
+// ServiceGetSsoTokenResult - The response of the GetSsoToken operation.
+type ServiceGetSsoTokenResult struct {
+	// Redirect URL to the Publisher Portal containing the SSO token.
+	RedirectURI *string `json:"redirectUri,omitempty"`
+}
+
+// ServiceIdentity - Identity properties of the Api Management service resource.
+type ServiceIdentity struct {
+	// REQUIRED; The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+	// created identity and a set of user assigned identities. The type 'None' will remove any
+	// identities from the service.
+	Type *ApimIdentityType `json:"type,omitempty"`
+
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The principal id of the identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The client tenant id of the identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceIdentity.
+func (s ServiceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "principalId", s.PrincipalID)
+	populate(objectMap, "tenantId", s.TenantID)
+	populate(objectMap, "type", s.Type)
+	populate(objectMap, "userAssignedIdentities", s.UserAssignedIdentities)
+	return json.Marshal(objectMap)
+}
+
+// ServiceListResult - The response of the List API Management services operation.
+type ServiceListResult struct {
+	// REQUIRED; Result of the List API Management services operation.
+	Value []*ServiceResource `json:"value,omitempty"`
+
+	// Link to the next set of results. Not empty if Value contains incomplete list of API Management services.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceListResult.
+func (s ServiceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// ServiceNameAvailabilityResult - Response of the CheckNameAvailability operation.
+type ServiceNameAvailabilityResult struct {
+	// Invalid indicates the name provided does not match the resource provider’s naming requirements (incorrect length, unsupported
+	// characters, etc.) AlreadyExists indicates that the name is already in use
+	// and is therefore unavailable.
+	Reason *NameAvailabilityReason `json:"reason,omitempty"`
+
+	// READ-ONLY; If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource
+	// naming requirements so that the user can select a valid name. If reason == AlreadyExists,
+	// explain that is already in use, and direct them to select a different name.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; True if the name is available and can be used to create a new API Management service; otherwise false.
+	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
+}
+
+// ServiceProperties - Properties of an API Management service resource description.
+type ServiceProperties struct {
+	// REQUIRED; Publisher email.
+	PublisherEmail *string `json:"publisherEmail,omitempty"`
+
+	// REQUIRED; Publisher name.
+	PublisherName *string `json:"publisherName,omitempty"`
+
+	// Control Plane Apis version constraint for the API Management service.
+	APIVersionConstraint *APIVersionConstraint `json:"apiVersionConstraint,omitempty"`
+
+	// Additional datacenter locations of the API Management service.
+	AdditionalLocations []*AdditionalLocation `json:"additionalLocations,omitempty"`
+
+	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
+	// is 10.
+	Certificates []*CertificateConfiguration `json:"certificates,omitempty"`
+
+	// Custom properties of the API Management service.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
+	// for all TLS(1.0, 1.1 and 1.2).
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
+	// Management service.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
+	// for communications with backends.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
+	// communications with backends.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
+	// API Management service.
+	// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
+	// all the settings except Http2 the default value is True if the service was
+	// created on or before April 1st 2018 and False otherwise. Http2 setting's default value is False.
+	// You can disable any of next ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
+	// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBCSHA, TLS
+	// ECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
+	// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For example,
+	// Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default value
+	// is true for them. Note: next ciphers can't be disabled since they are required by
+	// Azure CloudService internal components: TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCMSHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBC
+	// SHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256,TLSRSAWITHAES256GCMSHA384
+	CustomProperties map[string]*string `json:"customProperties,omitempty"`
+
+	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
+	// in master region.
+	DisableGateway *bool `json:"disableGateway,omitempty"`
+
+	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
+	// request to the gateway. This also enables the ability to authenticate the
+	// certificate in the policy on the gateway.
+	EnableClientCertificate *bool `json:"enableClientCertificate,omitempty"`
+
+	// Custom hostname configuration of the API Management service.
+	HostnameConfigurations []*HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
+
+	// Email address from which the notification will be sent.
+	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
+
+	// List of Private Endpoint Connections of this service.
+	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper `json:"privateEndpointConnections,omitempty"`
+
+	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
+	// only for Developer and Premium SKU being deployed in Virtual Network.
+	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+
+	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
+	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
+	// exclusive access method. Default value is 'Enabled'
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
+	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
+	// properties will be ignored.
+	Restore *bool `json:"restore,omitempty"`
+
+	// Virtual network configuration of the API Management service.
+	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
+
+	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
+	// service is not part of any Virtual Network, External means the API Management
+	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
+	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
+	// only.
+	VirtualNetworkType *VirtualNetworkType `json:"virtualNetworkType,omitempty"`
+
+	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
+	// as specified by the ISO 8601 standard.
+	CreatedAtUTC *time.Time `json:"createdAtUtc,omitempty" azure:"ro"`
+
+	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gateway URL of the API Management service in the Default Region.
+	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gateway URL of the API Management service.
+	GatewayURL *string `json:"gatewayUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Management API endpoint URL of the API Management service.
+	ManagementAPIURL *string `json:"managementApiUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Compute Platform Version running the service in this location.
+	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; Publisher portal endpoint Url of the API Management service.
+	PortalURL *string `json:"portalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
+	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
+	// SKU.
+	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
+	// Basic, Standard, Premium and Isolated SKU.
+	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY; SCM endpoint URL of the API Management service.
+	ScmURL *string `json:"scmUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
+	// on the service.
+	TargetProvisioningState *string `json:"targetProvisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceProperties.
+func (s ServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "apiVersionConstraint", s.APIVersionConstraint)
+	populate(objectMap, "additionalLocations", s.AdditionalLocations)
+	populate(objectMap, "certificates", s.Certificates)
+	populateTimeRFC3339(objectMap, "createdAtUtc", s.CreatedAtUTC)
+	populate(objectMap, "customProperties", s.CustomProperties)
+	populate(objectMap, "developerPortalUrl", s.DeveloperPortalURL)
+	populate(objectMap, "disableGateway", s.DisableGateway)
+	populate(objectMap, "enableClientCertificate", s.EnableClientCertificate)
+	populate(objectMap, "gatewayRegionalUrl", s.GatewayRegionalURL)
+	populate(objectMap, "gatewayUrl", s.GatewayURL)
+	populate(objectMap, "hostnameConfigurations", s.HostnameConfigurations)
+	populate(objectMap, "managementApiUrl", s.ManagementAPIURL)
+	populate(objectMap, "notificationSenderEmail", s.NotificationSenderEmail)
+	populate(objectMap, "platformVersion", s.PlatformVersion)
+	populate(objectMap, "portalUrl", s.PortalURL)
+	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
+	populate(objectMap, "privateIPAddresses", s.PrivateIPAddresses)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "publicIpAddressId", s.PublicIPAddressID)
+	populate(objectMap, "publicIPAddresses", s.PublicIPAddresses)
+	populate(objectMap, "publicNetworkAccess", s.PublicNetworkAccess)
+	populate(objectMap, "publisherEmail", s.PublisherEmail)
+	populate(objectMap, "publisherName", s.PublisherName)
+	populate(objectMap, "restore", s.Restore)
+	populate(objectMap, "scmUrl", s.ScmURL)
+	populate(objectMap, "targetProvisioningState", s.TargetProvisioningState)
+	populate(objectMap, "virtualNetworkConfiguration", s.VirtualNetworkConfiguration)
+	populate(objectMap, "virtualNetworkType", s.VirtualNetworkType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceProperties.
+func (s *ServiceProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "apiVersionConstraint":
+			err = unpopulate(val, &s.APIVersionConstraint)
+			delete(rawMsg, key)
+		case "additionalLocations":
+			err = unpopulate(val, &s.AdditionalLocations)
+			delete(rawMsg, key)
+		case "certificates":
+			err = unpopulate(val, &s.Certificates)
+			delete(rawMsg, key)
+		case "createdAtUtc":
+			err = unpopulateTimeRFC3339(val, &s.CreatedAtUTC)
+			delete(rawMsg, key)
+		case "customProperties":
+			err = unpopulate(val, &s.CustomProperties)
+			delete(rawMsg, key)
+		case "developerPortalUrl":
+			err = unpopulate(val, &s.DeveloperPortalURL)
+			delete(rawMsg, key)
+		case "disableGateway":
+			err = unpopulate(val, &s.DisableGateway)
+			delete(rawMsg, key)
+		case "enableClientCertificate":
+			err = unpopulate(val, &s.EnableClientCertificate)
+			delete(rawMsg, key)
+		case "gatewayRegionalUrl":
+			err = unpopulate(val, &s.GatewayRegionalURL)
+			delete(rawMsg, key)
+		case "gatewayUrl":
+			err = unpopulate(val, &s.GatewayURL)
+			delete(rawMsg, key)
+		case "hostnameConfigurations":
+			err = unpopulate(val, &s.HostnameConfigurations)
+			delete(rawMsg, key)
+		case "managementApiUrl":
+			err = unpopulate(val, &s.ManagementAPIURL)
+			delete(rawMsg, key)
+		case "notificationSenderEmail":
+			err = unpopulate(val, &s.NotificationSenderEmail)
+			delete(rawMsg, key)
+		case "platformVersion":
+			err = unpopulate(val, &s.PlatformVersion)
+			delete(rawMsg, key)
+		case "portalUrl":
+			err = unpopulate(val, &s.PortalURL)
+			delete(rawMsg, key)
+		case "privateEndpointConnections":
+			err = unpopulate(val, &s.PrivateEndpointConnections)
+			delete(rawMsg, key)
+		case "privateIPAddresses":
+			err = unpopulate(val, &s.PrivateIPAddresses)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicIpAddressId":
+			err = unpopulate(val, &s.PublicIPAddressID)
+			delete(rawMsg, key)
+		case "publicIPAddresses":
+			err = unpopulate(val, &s.PublicIPAddresses)
+			delete(rawMsg, key)
+		case "publicNetworkAccess":
+			err = unpopulate(val, &s.PublicNetworkAccess)
+			delete(rawMsg, key)
+		case "publisherEmail":
+			err = unpopulate(val, &s.PublisherEmail)
+			delete(rawMsg, key)
+		case "publisherName":
+			err = unpopulate(val, &s.PublisherName)
+			delete(rawMsg, key)
+		case "restore":
+			err = unpopulate(val, &s.Restore)
+			delete(rawMsg, key)
+		case "scmUrl":
+			err = unpopulate(val, &s.ScmURL)
+			delete(rawMsg, key)
+		case "targetProvisioningState":
+			err = unpopulate(val, &s.TargetProvisioningState)
+			delete(rawMsg, key)
+		case "virtualNetworkConfiguration":
+			err = unpopulate(val, &s.VirtualNetworkConfiguration)
+			delete(rawMsg, key)
+		case "virtualNetworkType":
+			err = unpopulate(val, &s.VirtualNetworkType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ServiceResource - A single API Management service resource in List or Get response.
+type ServiceResource struct {
+	// REQUIRED; Resource location.
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; Properties of the API Management service.
+	Properties *ServiceProperties `json:"properties,omitempty"`
+
+	// REQUIRED; SKU properties of the API Management service.
+	SKU *ServiceSKUProperties `json:"sku,omitempty"`
+
+	// Managed service identity of the Api Management service.
+	Identity *ServiceIdentity `json:"identity,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// A list of availability zones denoting where the resource needs to come from.
+	Zones []*string `json:"zones,omitempty"`
+
+	// READ-ONLY; ETag of the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type for API Management resource is set to Microsoft.ApiManagement.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceResource.
+func (s ServiceResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", s.Etag)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "sku", s.SKU)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
+	populate(objectMap, "zones", s.Zones)
+	return json.Marshal(objectMap)
+}
+
+// ServiceSKUProperties - API Management service resource SKU properties.
+type ServiceSKUProperties struct {
+	// REQUIRED; Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU capacity must be specified as
+	// 0.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// REQUIRED; Name of the Sku.
+	Name *SKUType `json:"name,omitempty"`
+}
+
+// ServiceSKUsClientListAvailableServiceSKUsOptions contains the optional parameters for the ServiceSKUsClient.ListAvailableServiceSKUs
+// method.
+type ServiceSKUsClientListAvailableServiceSKUsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceUpdateParameters - Parameter supplied to Update Api Management Service.
+type ServiceUpdateParameters struct {
+	// Managed service identity of the Api Management service.
+	Identity *ServiceIdentity `json:"identity,omitempty"`
+
+	// Properties of the API Management service.
+	Properties *ServiceUpdateProperties `json:"properties,omitempty"`
+
+	// SKU properties of the API Management service.
+	SKU *ServiceSKUProperties `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// A list of availability zones denoting where the resource needs to come from.
+	Zones []*string `json:"zones,omitempty"`
+
+	// READ-ONLY; ETag of the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type for API Management resource is set to Microsoft.ApiManagement.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceUpdateParameters.
+func (s ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", s.Etag)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "sku", s.SKU)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
+	populate(objectMap, "zones", s.Zones)
+	return json.Marshal(objectMap)
+}
+
+// ServiceUpdateProperties - Properties of an API Management service resource description.
+type ServiceUpdateProperties struct {
+	// Control Plane Apis version constraint for the API Management service.
+	APIVersionConstraint *APIVersionConstraint `json:"apiVersionConstraint,omitempty"`
+
+	// Additional datacenter locations of the API Management service.
+	AdditionalLocations []*AdditionalLocation `json:"additionalLocations,omitempty"`
+
+	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
+	// is 10.
+	Certificates []*CertificateConfiguration `json:"certificates,omitempty"`
+
+	// Custom properties of the API Management service.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
+	// for all TLS(1.0, 1.1 and 1.2).
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 can be used to disable just TLS 1.1.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 can be used to disable TLS 1.0 on an API
+	// Management service.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 can be used to disable just TLS 1.1
+	// for communications with backends.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 can be used to disable TLS 1.0 for
+	// communications with backends.
+	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2 can be used to enable HTTP2 protocol on an
+	// API Management service.
+	// Not specifying any of these properties on PATCH operation will reset omitted properties' values to their defaults. For
+	// all the settings except Http2 the default value is True if the service was
+	// created on or before April 1st 2018 and False otherwise. Http2 setting's default value is False.
+	// You can disable any of next ciphers by using settings Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]:
+	// TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES128CBCSHA, TLS
+	// ECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES128CBCSHA, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES128CBCSHA256,
+	// TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES128CBCSHA. For example,
+	// Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256:false. The default value
+	// is true for them. Note: next ciphers can't be disabled since they are required by
+	// Azure CloudService internal components: TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCMSHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBC
+	// SHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256,TLSRSAWITHAES256GCMSHA384
+	CustomProperties map[string]*string `json:"customProperties,omitempty"`
+
+	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
+	// in master region.
+	DisableGateway *bool `json:"disableGateway,omitempty"`
+
+	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
+	// request to the gateway. This also enables the ability to authenticate the
+	// certificate in the policy on the gateway.
+	EnableClientCertificate *bool `json:"enableClientCertificate,omitempty"`
+
+	// Custom hostname configuration of the API Management service.
+	HostnameConfigurations []*HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
+
+	// Email address from which the notification will be sent.
+	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
+
+	// List of Private Endpoint Connections of this service.
+	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper `json:"privateEndpointConnections,omitempty"`
+
+	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
+	// only for Developer and Premium SKU being deployed in Virtual Network.
+	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+
+	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
+	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
+	// exclusive access method. Default value is 'Enabled'
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
+	// Publisher email.
+	PublisherEmail *string `json:"publisherEmail,omitempty"`
+
+	// Publisher name.
+	PublisherName *string `json:"publisherName,omitempty"`
+
+	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
+	// properties will be ignored.
+	Restore *bool `json:"restore,omitempty"`
+
+	// Virtual network configuration of the API Management service.
+	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
+
+	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
+	// service is not part of any Virtual Network, External means the API Management
+	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
+	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
+	// only.
+	VirtualNetworkType *VirtualNetworkType `json:"virtualNetworkType,omitempty"`
+
+	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
+	// as specified by the ISO 8601 standard.
+	CreatedAtUTC *time.Time `json:"createdAtUtc,omitempty" azure:"ro"`
+
+	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
+	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gateway URL of the API Management service in the Default Region.
+	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gateway URL of the API Management service.
+	GatewayURL *string `json:"gatewayUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Management API endpoint URL of the API Management service.
+	ManagementAPIURL *string `json:"managementApiUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Compute Platform Version running the service in this location.
+	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; Publisher portal endpoint Url of the API Management service.
+	PortalURL *string `json:"portalUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
+	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
+	// SKU.
+	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
+	// Basic, Standard, Premium and Isolated SKU.
+	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY; SCM endpoint URL of the API Management service.
+	ScmURL *string `json:"scmUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
+	// on the service.
+	TargetProvisioningState *string `json:"targetProvisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceUpdateProperties.
+func (s ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "apiVersionConstraint", s.APIVersionConstraint)
+	populate(objectMap, "additionalLocations", s.AdditionalLocations)
+	populate(objectMap, "certificates", s.Certificates)
+	populateTimeRFC3339(objectMap, "createdAtUtc", s.CreatedAtUTC)
+	populate(objectMap, "customProperties", s.CustomProperties)
+	populate(objectMap, "developerPortalUrl", s.DeveloperPortalURL)
+	populate(objectMap, "disableGateway", s.DisableGateway)
+	populate(objectMap, "enableClientCertificate", s.EnableClientCertificate)
+	populate(objectMap, "gatewayRegionalUrl", s.GatewayRegionalURL)
+	populate(objectMap, "gatewayUrl", s.GatewayURL)
+	populate(objectMap, "hostnameConfigurations", s.HostnameConfigurations)
+	populate(objectMap, "managementApiUrl", s.ManagementAPIURL)
+	populate(objectMap, "notificationSenderEmail", s.NotificationSenderEmail)
+	populate(objectMap, "platformVersion", s.PlatformVersion)
+	populate(objectMap, "portalUrl", s.PortalURL)
+	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
+	populate(objectMap, "privateIPAddresses", s.PrivateIPAddresses)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "publicIpAddressId", s.PublicIPAddressID)
+	populate(objectMap, "publicIPAddresses", s.PublicIPAddresses)
+	populate(objectMap, "publicNetworkAccess", s.PublicNetworkAccess)
+	populate(objectMap, "publisherEmail", s.PublisherEmail)
+	populate(objectMap, "publisherName", s.PublisherName)
+	populate(objectMap, "restore", s.Restore)
+	populate(objectMap, "scmUrl", s.ScmURL)
+	populate(objectMap, "targetProvisioningState", s.TargetProvisioningState)
+	populate(objectMap, "virtualNetworkConfiguration", s.VirtualNetworkConfiguration)
+	populate(objectMap, "virtualNetworkType", s.VirtualNetworkType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceUpdateProperties.
+func (s *ServiceUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "apiVersionConstraint":
+			err = unpopulate(val, &s.APIVersionConstraint)
+			delete(rawMsg, key)
+		case "additionalLocations":
+			err = unpopulate(val, &s.AdditionalLocations)
+			delete(rawMsg, key)
+		case "certificates":
+			err = unpopulate(val, &s.Certificates)
+			delete(rawMsg, key)
+		case "createdAtUtc":
+			err = unpopulateTimeRFC3339(val, &s.CreatedAtUTC)
+			delete(rawMsg, key)
+		case "customProperties":
+			err = unpopulate(val, &s.CustomProperties)
+			delete(rawMsg, key)
+		case "developerPortalUrl":
+			err = unpopulate(val, &s.DeveloperPortalURL)
+			delete(rawMsg, key)
+		case "disableGateway":
+			err = unpopulate(val, &s.DisableGateway)
+			delete(rawMsg, key)
+		case "enableClientCertificate":
+			err = unpopulate(val, &s.EnableClientCertificate)
+			delete(rawMsg, key)
+		case "gatewayRegionalUrl":
+			err = unpopulate(val, &s.GatewayRegionalURL)
+			delete(rawMsg, key)
+		case "gatewayUrl":
+			err = unpopulate(val, &s.GatewayURL)
+			delete(rawMsg, key)
+		case "hostnameConfigurations":
+			err = unpopulate(val, &s.HostnameConfigurations)
+			delete(rawMsg, key)
+		case "managementApiUrl":
+			err = unpopulate(val, &s.ManagementAPIURL)
+			delete(rawMsg, key)
+		case "notificationSenderEmail":
+			err = unpopulate(val, &s.NotificationSenderEmail)
+			delete(rawMsg, key)
+		case "platformVersion":
+			err = unpopulate(val, &s.PlatformVersion)
+			delete(rawMsg, key)
+		case "portalUrl":
+			err = unpopulate(val, &s.PortalURL)
+			delete(rawMsg, key)
+		case "privateEndpointConnections":
+			err = unpopulate(val, &s.PrivateEndpointConnections)
+			delete(rawMsg, key)
+		case "privateIPAddresses":
+			err = unpopulate(val, &s.PrivateIPAddresses)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicIpAddressId":
+			err = unpopulate(val, &s.PublicIPAddressID)
+			delete(rawMsg, key)
+		case "publicIPAddresses":
+			err = unpopulate(val, &s.PublicIPAddresses)
+			delete(rawMsg, key)
+		case "publicNetworkAccess":
+			err = unpopulate(val, &s.PublicNetworkAccess)
+			delete(rawMsg, key)
+		case "publisherEmail":
+			err = unpopulate(val, &s.PublisherEmail)
+			delete(rawMsg, key)
+		case "publisherName":
+			err = unpopulate(val, &s.PublisherName)
+			delete(rawMsg, key)
+		case "restore":
+			err = unpopulate(val, &s.Restore)
+			delete(rawMsg, key)
+		case "scmUrl":
+			err = unpopulate(val, &s.ScmURL)
+			delete(rawMsg, key)
+		case "targetProvisioningState":
+			err = unpopulate(val, &s.TargetProvisioningState)
+			delete(rawMsg, key)
+		case "virtualNetworkConfiguration":
+			err = unpopulate(val, &s.VirtualNetworkConfiguration)
+			delete(rawMsg, key)
+		case "virtualNetworkType":
+			err = unpopulate(val, &s.VirtualNetworkType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// SignInSettingsClientCreateOrUpdateOptions contains the optional parameters for the SignInSettingsClient.CreateOrUpdate
+// method.
+type SignInSettingsClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// SignInSettingsGetEntityTagOptions contains the optional parameters for the SignInSettings.GetEntityTag method.
-type SignInSettingsGetEntityTagOptions struct {
+// SignInSettingsClientGetEntityTagOptions contains the optional parameters for the SignInSettingsClient.GetEntityTag method.
+type SignInSettingsClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SignInSettingsGetOptions contains the optional parameters for the SignInSettings.Get method.
-type SignInSettingsGetOptions struct {
+// SignInSettingsClientGetOptions contains the optional parameters for the SignInSettingsClient.Get method.
+type SignInSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SignInSettingsUpdateOptions contains the optional parameters for the SignInSettings.Update method.
-type SignInSettingsUpdateOptions struct {
+// SignInSettingsClientUpdateOptions contains the optional parameters for the SignInSettingsClient.Update method.
+type SignInSettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SignUpSettingsCreateOrUpdateOptions contains the optional parameters for the SignUpSettings.CreateOrUpdate method.
-type SignUpSettingsCreateOrUpdateOptions struct {
+// SignUpSettingsClientCreateOrUpdateOptions contains the optional parameters for the SignUpSettingsClient.CreateOrUpdate
+// method.
+type SignUpSettingsClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
 	IfMatch *string
 }
 
-// SignUpSettingsGetEntityTagOptions contains the optional parameters for the SignUpSettings.GetEntityTag method.
-type SignUpSettingsGetEntityTagOptions struct {
+// SignUpSettingsClientGetEntityTagOptions contains the optional parameters for the SignUpSettingsClient.GetEntityTag method.
+type SignUpSettingsClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SignUpSettingsGetOptions contains the optional parameters for the SignUpSettings.Get method.
-type SignUpSettingsGetOptions struct {
+// SignUpSettingsClientGetOptions contains the optional parameters for the SignUpSettingsClient.Get method.
+type SignUpSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SignUpSettingsUpdateOptions contains the optional parameters for the SignUpSettings.Update method.
-type SignUpSettingsUpdateOptions struct {
+// SignUpSettingsClientUpdateOptions contains the optional parameters for the SignUpSettingsClient.Update method.
+type SignUpSettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SubscriptionClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionClient.CreateOrUpdate method.
+type SubscriptionClientCreateOrUpdateOptions struct {
+	// Determines the type of application which send the create user request. Default is legacy publisher portal.
+	AppType *AppType
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+	// Notify change in Subscription State.
+	// * If false, do not send any email notification for change of state of subscription
+	// * If true, send email notification of change of state of subscription
+	Notify *bool
+}
+
+// SubscriptionClientDeleteOptions contains the optional parameters for the SubscriptionClient.Delete method.
+type SubscriptionClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionClientGetEntityTagOptions contains the optional parameters for the SubscriptionClient.GetEntityTag method.
+type SubscriptionClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionClientGetOptions contains the optional parameters for the SubscriptionClient.Get method.
+type SubscriptionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionClientListOptions contains the optional parameters for the SubscriptionClient.List method.
+type SubscriptionClientListOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | state | filter | eq | |
+	// | user | expand | | |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// SubscriptionClientListSecretsOptions contains the optional parameters for the SubscriptionClient.ListSecrets method.
+type SubscriptionClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionClientRegeneratePrimaryKeyOptions contains the optional parameters for the SubscriptionClient.RegeneratePrimaryKey
+// method.
+type SubscriptionClientRegeneratePrimaryKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionClientRegenerateSecondaryKeyOptions contains the optional parameters for the SubscriptionClient.RegenerateSecondaryKey
+// method.
+type SubscriptionClientRegenerateSecondaryKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionClientUpdateOptions contains the optional parameters for the SubscriptionClient.Update method.
+type SubscriptionClientUpdateOptions struct {
+	// Determines the type of application which send the create user request. Default is legacy publisher portal.
+	AppType *AppType
+	// Notify change in Subscription State.
+	// * If false, do not send any email notification for change of state of subscription
+	// * If true, send email notification of change of state of subscription
+	Notify *bool
 }
 
 // SubscriptionCollection - Paged Subscriptions list representation.
@@ -8061,17 +9535,17 @@ func (s SubscriptionCollection) MarshalJSON() ([]byte, error) {
 
 // SubscriptionContract - Subscription details.
 type SubscriptionContract struct {
-	Resource
 	// Subscription contract properties.
 	Properties *SubscriptionContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SubscriptionContract.
-func (s SubscriptionContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SubscriptionContractProperties - Subscription details.
@@ -8079,11 +9553,12 @@ type SubscriptionContractProperties struct {
 	// REQUIRED; Scope like /products/{productId} or /apis or /apis/{apiId}.
 	Scope *string `json:"scope,omitempty"`
 
-	// REQUIRED; Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber
-	// cannot call any APIs of the product, * submitted – the
-	// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied
-	// by an administrator, * cancelled – the
-	// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
+	// REQUIRED; Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription
+	// is blocked, and the subscriber cannot call any APIs of the product, * submitted – the
+	// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription
+	// request has been denied by an administrator, * cancelled – the
+	// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
+	// date and was deactivated.
 	State *SubscriptionState `json:"state,omitempty"`
 
 	// Determines whether tracing is enabled
@@ -8092,37 +9567,42 @@ type SubscriptionContractProperties struct {
 	// The name of the subscription, or null if the subscription has no name.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Date when subscription was cancelled or expired. The setting is for audit purposes only and the subscription is not automatically cancelled. The subscription
-	// lifecycle can be managed by using the
+	// Date when subscription was cancelled or expired. The setting is for audit purposes only and the subscription is not automatically
+	// cancelled. The subscription lifecycle can be managed by using the
 	// state property. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	EndDate *time.Time `json:"endDate,omitempty"`
 
-	// Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired. The subscription lifecycle can
-	// be managed by using the state property. The date
+	// Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired.
+	// The subscription lifecycle can be managed by using the state property. The date
 	// conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
 
-	// Upcoming subscription expiration notification date. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// Upcoming subscription expiration notification date. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as
+	// specified by the ISO 8601 standard.
 	NotificationDate *time.Time `json:"notificationDate,omitempty"`
 
-	// The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{userId} where {userId} is a user identifier.
+	// The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{userId}
+	// where {userId} is a user identifier.
 	OwnerID *string `json:"ownerId,omitempty"`
 
-	// Subscription primary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	// Subscription primary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
+	// the value.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 
-	// Subscription secondary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+	// Subscription secondary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
+	// the value.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 
-	// Subscription activation date. The setting is for audit purposes only and the subscription is not automatically activated. The subscription lifecycle
-	// can be managed by using the state property. The
+	// Subscription activation date. The setting is for audit purposes only and the subscription is not automatically activated.
+	// The subscription lifecycle can be managed by using the state property. The
 	// date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	StartDate *time.Time `json:"startDate,omitempty"`
 
 	// Optional subscription comment added by an administrator when the state is changed to the 'rejected'.
 	StateComment *string `json:"stateComment,omitempty"`
 
-	// READ-ONLY; Subscription creation date. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// READ-ONLY; Subscription creation date. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
+	// the ISO 8601 standard.
 	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
 }
 
@@ -8201,18 +9681,6 @@ func (s *SubscriptionContractProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SubscriptionCreateOrUpdateOptions contains the optional parameters for the Subscription.CreateOrUpdate method.
-type SubscriptionCreateOrUpdateOptions struct {
-	// Determines the type of application which send the create user request. Default is legacy publisher portal.
-	AppType *AppType
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-	// Notify change in Subscription State.
-	// - If false, do not send any email notification for change of state of subscription
-	// - If true, send email notification of change of state of subscription
-	Notify *bool
-}
-
 // SubscriptionCreateParameterProperties - Parameters supplied to the Create subscription operation.
 type SubscriptionCreateParameterProperties struct {
 	// REQUIRED; Subscription name.
@@ -8233,12 +9701,12 @@ type SubscriptionCreateParameterProperties struct {
 	// Secondary subscription key. If not specified during request key will be generated automatically.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 
-	// Initial subscription state. If no value is specified, subscription is created with Submitted state. Possible states are * active – the subscription is
-	// active, * suspended – the subscription is
-	// blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but has not yet
-	// been approved or rejected, * rejected – the
-	// subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired
-	// – the subscription reached its expiration date
+	// Initial subscription state. If no value is specified, subscription is created with Submitted state. Possible states are
+	// * active – the subscription is active, * suspended – the subscription is
+	// blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by
+	// the developer, but has not yet been approved or rejected, * rejected – the
+	// subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer
+	// or administrator, * expired – the subscription reached its expiration date
 	// and was deactivated.
 	State *SubscriptionState `json:"state,omitempty"`
 }
@@ -8247,21 +9715,6 @@ type SubscriptionCreateParameterProperties struct {
 type SubscriptionCreateParameters struct {
 	// Subscription contract properties.
 	Properties *SubscriptionCreateParameterProperties `json:"properties,omitempty"`
-}
-
-// SubscriptionDeleteOptions contains the optional parameters for the Subscription.Delete method.
-type SubscriptionDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionGetEntityTagOptions contains the optional parameters for the Subscription.GetEntityTag method.
-type SubscriptionGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionGetOptions contains the optional parameters for the Subscription.Get method.
-type SubscriptionGetOptions struct {
-	// placeholder for future optional parameters
 }
 
 // SubscriptionKeyParameterNamesContract - Subscription key parameter names details.
@@ -8282,46 +9735,6 @@ type SubscriptionKeysContract struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
-// SubscriptionListOptions contains the optional parameters for the Subscription.List method.
-type SubscriptionListOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| ownerId | filter | ge, le, eq,
-	// ne, gt, lt | substringof, contains, startswith, endswith |</br>| scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-	// |</br>| userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| productId | filter | ge, le, eq, ne, gt, lt |
-	// substringof, contains, startswith, endswith |</br>| state | filter | eq | |</br>| user | expand | | |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// SubscriptionListSecretsOptions contains the optional parameters for the Subscription.ListSecrets method.
-type SubscriptionListSecretsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionRegeneratePrimaryKeyOptions contains the optional parameters for the Subscription.RegeneratePrimaryKey method.
-type SubscriptionRegeneratePrimaryKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionRegenerateSecondaryKeyOptions contains the optional parameters for the Subscription.RegenerateSecondaryKey method.
-type SubscriptionRegenerateSecondaryKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionUpdateOptions contains the optional parameters for the Subscription.Update method.
-type SubscriptionUpdateOptions struct {
-	// Determines the type of application which send the create user request. Default is legacy publisher portal.
-	AppType *AppType
-	// Notify change in Subscription State.
-	// - If false, do not send any email notification for change of state of subscription
-	// - If true, send email notification of change of state of subscription
-	Notify *bool
-}
-
 // SubscriptionUpdateParameterProperties - Parameters supplied to the Update subscription operation.
 type SubscriptionUpdateParameterProperties struct {
 	// Determines whether tracing can be enabled
@@ -8330,8 +9743,8 @@ type SubscriptionUpdateParameterProperties struct {
 	// Subscription name.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired. The subscription lifecycle can
-	// be managed by using the state property. The date
+	// Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired.
+	// The subscription lifecycle can be managed by using the state property. The date
 	// conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
 
@@ -8347,11 +9760,12 @@ type SubscriptionUpdateParameterProperties struct {
 	// Secondary subscription key.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 
-	// Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber cannot call
-	// any APIs of the product, * submitted – the
-	// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied
-	// by an administrator, * cancelled – the
-	// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
+	// Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked,
+	// and the subscriber cannot call any APIs of the product, * submitted – the
+	// subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription
+	// request has been denied by an administrator, * cancelled – the
+	// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
+	// date and was deactivated.
 	State *SubscriptionState `json:"state,omitempty"`
 
 	// Comments describing subscription state change by the administrator when the state is changed to the 'rejected'.
@@ -8504,18 +9918,144 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TagAssignToAPIOptions contains the optional parameters for the Tag.AssignToAPI method.
-type TagAssignToAPIOptions struct {
+// TagClientAssignToAPIOptions contains the optional parameters for the TagClient.AssignToAPI method.
+type TagClientAssignToAPIOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagAssignToOperationOptions contains the optional parameters for the Tag.AssignToOperation method.
-type TagAssignToOperationOptions struct {
+// TagClientAssignToOperationOptions contains the optional parameters for the TagClient.AssignToOperation method.
+type TagClientAssignToOperationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagAssignToProductOptions contains the optional parameters for the Tag.AssignToProduct method.
-type TagAssignToProductOptions struct {
+// TagClientAssignToProductOptions contains the optional parameters for the TagClient.AssignToProduct method.
+type TagClientAssignToProductOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientCreateOrUpdateOptions contains the optional parameters for the TagClient.CreateOrUpdate method.
+type TagClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+}
+
+// TagClientDeleteOptions contains the optional parameters for the TagClient.Delete method.
+type TagClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientDetachFromAPIOptions contains the optional parameters for the TagClient.DetachFromAPI method.
+type TagClientDetachFromAPIOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientDetachFromOperationOptions contains the optional parameters for the TagClient.DetachFromOperation method.
+type TagClientDetachFromOperationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientDetachFromProductOptions contains the optional parameters for the TagClient.DetachFromProduct method.
+type TagClientDetachFromProductOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientGetByAPIOptions contains the optional parameters for the TagClient.GetByAPI method.
+type TagClientGetByAPIOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientGetByOperationOptions contains the optional parameters for the TagClient.GetByOperation method.
+type TagClientGetByOperationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientGetByProductOptions contains the optional parameters for the TagClient.GetByProduct method.
+type TagClientGetByProductOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientGetEntityStateByAPIOptions contains the optional parameters for the TagClient.GetEntityStateByAPI method.
+type TagClientGetEntityStateByAPIOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientGetEntityStateByOperationOptions contains the optional parameters for the TagClient.GetEntityStateByOperation
+// method.
+type TagClientGetEntityStateByOperationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientGetEntityStateByProductOptions contains the optional parameters for the TagClient.GetEntityStateByProduct method.
+type TagClientGetEntityStateByProductOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientGetEntityStateOptions contains the optional parameters for the TagClient.GetEntityState method.
+type TagClientGetEntityStateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientGetOptions contains the optional parameters for the TagClient.Get method.
+type TagClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TagClientListByAPIOptions contains the optional parameters for the TagClient.ListByAPI method.
+type TagClientListByAPIOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// TagClientListByOperationOptions contains the optional parameters for the TagClient.ListByOperation method.
+type TagClientListByOperationOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// TagClientListByProductOptions contains the optional parameters for the TagClient.ListByProduct method.
+type TagClientListByProductOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// TagClientListByServiceOptions contains the optional parameters for the TagClient.ListByService method.
+type TagClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+	// Scope like 'apis', 'products' or 'apis/{apiId}
+	Scope *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// TagClientUpdateOptions contains the optional parameters for the TagClient.Update method.
+type TagClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8542,29 +10082,23 @@ func (t TagCollection) MarshalJSON() ([]byte, error) {
 
 // TagContract - Tag Contract details.
 type TagContract struct {
-	Resource
 	// Tag entity contract properties.
 	Properties *TagContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TagContract.
-func (t TagContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TagContractProperties - Tag contract Properties.
 type TagContractProperties struct {
 	// REQUIRED; Tag name.
 	DisplayName *string `json:"displayName,omitempty"`
-}
-
-// TagCreateOrUpdateOptions contains the optional parameters for the Tag.CreateOrUpdate method.
-type TagCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
 }
 
 // TagCreateUpdateParameters - Parameters supplied to Create/Update Tag operations.
@@ -8578,11 +10112,6 @@ func (t TagCreateUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "properties", t.Properties)
 	return json.Marshal(objectMap)
-}
-
-// TagDeleteOptions contains the optional parameters for the Tag.Delete method.
-type TagDeleteOptions struct {
-	// placeholder for future optional parameters
 }
 
 // TagDescriptionBaseProperties - Parameters supplied to the Create TagDescription operation.
@@ -8620,24 +10149,32 @@ func (t TagDescriptionCollection) MarshalJSON() ([]byte, error) {
 
 // TagDescriptionContract - Contract details.
 type TagDescriptionContract struct {
-	Resource
 	// TagDescription entity contract properties.
 	Properties *TagDescriptionContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TagDescriptionContract.
-func (t TagDescriptionContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TagDescriptionContractProperties - TagDescription contract Properties.
 type TagDescriptionContractProperties struct {
-	TagDescriptionBaseProperties
+	// Description of the Tag.
+	Description *string `json:"description,omitempty"`
+
 	// Tag name.
 	DisplayName *string `json:"displayName,omitempty"`
+
+	// Description of the external resources describing the tag.
+	ExternalDocsDescription *string `json:"externalDocsDescription,omitempty"`
+
+	// Absolute URL of external resources describing the tag.
+	ExternalDocsURL *string `json:"externalDocsUrl,omitempty"`
 
 	// Identifier of the tag in the form of /tags/{tagId}
 	TagID *string `json:"tagId,omitempty"`
@@ -8649,105 +10186,24 @@ type TagDescriptionCreateParameters struct {
 	Properties *TagDescriptionBaseProperties `json:"properties,omitempty"`
 }
 
-// TagDetachFromAPIOptions contains the optional parameters for the Tag.DetachFromAPI method.
-type TagDetachFromAPIOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagDetachFromOperationOptions contains the optional parameters for the Tag.DetachFromOperation method.
-type TagDetachFromOperationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagDetachFromProductOptions contains the optional parameters for the Tag.DetachFromProduct method.
-type TagDetachFromProductOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagGetByAPIOptions contains the optional parameters for the Tag.GetByAPI method.
-type TagGetByAPIOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagGetByOperationOptions contains the optional parameters for the Tag.GetByOperation method.
-type TagGetByOperationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagGetByProductOptions contains the optional parameters for the Tag.GetByProduct method.
-type TagGetByProductOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagGetEntityStateByAPIOptions contains the optional parameters for the Tag.GetEntityStateByAPI method.
-type TagGetEntityStateByAPIOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagGetEntityStateByOperationOptions contains the optional parameters for the Tag.GetEntityStateByOperation method.
-type TagGetEntityStateByOperationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagGetEntityStateByProductOptions contains the optional parameters for the Tag.GetEntityStateByProduct method.
-type TagGetEntityStateByProductOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagGetEntityStateOptions contains the optional parameters for the Tag.GetEntityState method.
-type TagGetEntityStateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagGetOptions contains the optional parameters for the Tag.Get method.
-type TagGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagListByAPIOptions contains the optional parameters for the Tag.ListByAPI method.
-type TagListByAPIOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| displayName | filter
-	// | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
+// TagResourceClientListByServiceOptions contains the optional parameters for the TagResourceClient.ListByService method.
+type TagResourceClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | aid | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | apiName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | state | filter | eq | |
+	// | isCurrent | filter | eq | |
 	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// TagListByOperationOptions contains the optional parameters for the Tag.ListByOperation method.
-type TagListByOperationOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| displayName | filter
-	// | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// TagListByProductOptions contains the optional parameters for the Tag.ListByProduct method.
-type TagListByProductOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| displayName | filter
-	// | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// TagListByServiceOptions contains the optional parameters for the Tag.ListByService method.
-type TagListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>
-	Filter *string
-	// Scope like 'apis', 'products' or 'apis/{apiId}
-	Scope *string
 	// Number of records to skip.
 	Skip *int32
 	// Number of records to return.
@@ -8799,113 +10255,98 @@ type TagResourceContractProperties struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// TagResourceListByServiceOptions contains the optional parameters for the TagResource.ListByService method.
-type TagResourceListByServiceOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| aid | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| apiName | filter | ge, le, eq, ne,
-	// gt, lt | substringof, contains, startswith, endswith |</br>| apiRevision | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-	// |</br>| path | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| description | filter | ge, le, eq, ne, gt, lt |
-	// substringof, contains, startswith, endswith |</br>| serviceUrl | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>|
-	// method | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| urlTemplate | filter | ge, le, eq, ne, gt, lt | substringof,
-	// contains, startswith, endswith |</br>| terms | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| state | filter |
-	// eq | |</br>| isCurrent | filter | eq | |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// TagUpdateOptions contains the optional parameters for the Tag.Update method.
-type TagUpdateOptions struct {
+// TenantAccessClientCreateOptions contains the optional parameters for the TenantAccessClient.Create method.
+type TenantAccessClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantAccessCreateOptions contains the optional parameters for the TenantAccess.Create method.
-type TenantAccessCreateOptions struct {
+// TenantAccessClientGetEntityTagOptions contains the optional parameters for the TenantAccessClient.GetEntityTag method.
+type TenantAccessClientGetEntityTagOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantAccessGetEntityTagOptions contains the optional parameters for the TenantAccess.GetEntityTag method.
-type TenantAccessGetEntityTagOptions struct {
+// TenantAccessClientGetOptions contains the optional parameters for the TenantAccessClient.Get method.
+type TenantAccessClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantAccessGetOptions contains the optional parameters for the TenantAccess.Get method.
-type TenantAccessGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TenantAccessGitRegeneratePrimaryKeyOptions contains the optional parameters for the TenantAccessGit.RegeneratePrimaryKey method.
-type TenantAccessGitRegeneratePrimaryKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TenantAccessGitRegenerateSecondaryKeyOptions contains the optional parameters for the TenantAccessGit.RegenerateSecondaryKey method.
-type TenantAccessGitRegenerateSecondaryKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TenantAccessListByServiceOptions contains the optional parameters for the TenantAccess.ListByService method.
-type TenantAccessListByServiceOptions struct {
+// TenantAccessClientListByServiceOptions contains the optional parameters for the TenantAccessClient.ListByService method.
+type TenantAccessClientListByServiceOptions struct {
 	// Not used
 	Filter *string
 }
 
-// TenantAccessListSecretsOptions contains the optional parameters for the TenantAccess.ListSecrets method.
-type TenantAccessListSecretsOptions struct {
+// TenantAccessClientListSecretsOptions contains the optional parameters for the TenantAccessClient.ListSecrets method.
+type TenantAccessClientListSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantAccessRegeneratePrimaryKeyOptions contains the optional parameters for the TenantAccess.RegeneratePrimaryKey method.
-type TenantAccessRegeneratePrimaryKeyOptions struct {
+// TenantAccessClientRegeneratePrimaryKeyOptions contains the optional parameters for the TenantAccessClient.RegeneratePrimaryKey
+// method.
+type TenantAccessClientRegeneratePrimaryKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantAccessRegenerateSecondaryKeyOptions contains the optional parameters for the TenantAccess.RegenerateSecondaryKey method.
-type TenantAccessRegenerateSecondaryKeyOptions struct {
+// TenantAccessClientRegenerateSecondaryKeyOptions contains the optional parameters for the TenantAccessClient.RegenerateSecondaryKey
+// method.
+type TenantAccessClientRegenerateSecondaryKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantAccessUpdateOptions contains the optional parameters for the TenantAccess.Update method.
-type TenantAccessUpdateOptions struct {
+// TenantAccessClientUpdateOptions contains the optional parameters for the TenantAccessClient.Update method.
+type TenantAccessClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantConfigurationBeginDeployOptions contains the optional parameters for the TenantConfiguration.BeginDeploy method.
-type TenantConfigurationBeginDeployOptions struct {
+// TenantAccessGitClientRegeneratePrimaryKeyOptions contains the optional parameters for the TenantAccessGitClient.RegeneratePrimaryKey
+// method.
+type TenantAccessGitClientRegeneratePrimaryKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantConfigurationBeginSaveOptions contains the optional parameters for the TenantConfiguration.BeginSave method.
-type TenantConfigurationBeginSaveOptions struct {
+// TenantAccessGitClientRegenerateSecondaryKeyOptions contains the optional parameters for the TenantAccessGitClient.RegenerateSecondaryKey
+// method.
+type TenantAccessGitClientRegenerateSecondaryKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantConfigurationBeginValidateOptions contains the optional parameters for the TenantConfiguration.BeginValidate method.
-type TenantConfigurationBeginValidateOptions struct {
+// TenantConfigurationClientBeginDeployOptions contains the optional parameters for the TenantConfigurationClient.BeginDeploy
+// method.
+type TenantConfigurationClientBeginDeployOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantConfigurationGetSyncStateOptions contains the optional parameters for the TenantConfiguration.GetSyncState method.
-type TenantConfigurationGetSyncStateOptions struct {
+// TenantConfigurationClientBeginSaveOptions contains the optional parameters for the TenantConfigurationClient.BeginSave
+// method.
+type TenantConfigurationClientBeginSaveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantConfigurationClientBeginValidateOptions contains the optional parameters for the TenantConfigurationClient.BeginValidate
+// method.
+type TenantConfigurationClientBeginValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantConfigurationClientGetSyncStateOptions contains the optional parameters for the TenantConfigurationClient.GetSyncState
+// method.
+type TenantConfigurationClientGetSyncStateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // TenantConfigurationSyncStateContract - Result of Tenant Configuration Sync State.
 type TenantConfigurationSyncStateContract struct {
-	Resource
 	// Properties returned Tenant Configuration Sync State check.
 	Properties *TenantConfigurationSyncStateContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TenantConfigurationSyncStateContract.
-func (t TenantConfigurationSyncStateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TenantConfigurationSyncStateContractProperties - Tenant Configuration Synchronization State.
@@ -8916,7 +10357,8 @@ type TenantConfigurationSyncStateContractProperties struct {
 	// The latest commit Id.
 	CommitID *string `json:"commitId,omitempty"`
 
-	// The date of the latest configuration change. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// The date of the latest configuration change. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
+	// by the ISO 8601 standard.
 	ConfigurationChangeDate *time.Time `json:"configurationChangeDate,omitempty"`
 
 	// value indicating if last sync was save (true) or deploy (false) operation.
@@ -8931,7 +10373,8 @@ type TenantConfigurationSyncStateContractProperties struct {
 	// Most recent tenant configuration operation identifier
 	LastOperationID *string `json:"lastOperationId,omitempty"`
 
-	// The date of the latest synchronization. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// The date of the latest synchronization. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
+	// the ISO 8601 standard.
 	SyncDate *time.Time `json:"syncDate,omitempty"`
 }
 
@@ -8990,6 +10433,17 @@ func (t *TenantConfigurationSyncStateContractProperties) UnmarshalJSON(data []by
 	return nil
 }
 
+// TenantSettingsClientGetOptions contains the optional parameters for the TenantSettingsClient.Get method.
+type TenantSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantSettingsClientListByServiceOptions contains the optional parameters for the TenantSettingsClient.ListByService method.
+type TenantSettingsClientListByServiceOptions struct {
+	// Not used
+	Filter *string
+}
+
 // TenantSettingsCollection - Paged AccessInformation list representation.
 type TenantSettingsCollection struct {
 	// READ-ONLY; Next page link if any.
@@ -9009,17 +10463,17 @@ func (t TenantSettingsCollection) MarshalJSON() ([]byte, error) {
 
 // TenantSettingsContract - Tenant Settings.
 type TenantSettingsContract struct {
-	Resource
 	// TenantSettings entity contract properties.
 	Properties *TenantSettingsContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TenantSettingsContract.
-func (t TenantSettingsContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TenantSettingsContractProperties - Tenant access information contract of the API Management service.
@@ -9033,17 +10487,6 @@ func (t TenantSettingsContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "settings", t.Settings)
 	return json.Marshal(objectMap)
-}
-
-// TenantSettingsGetOptions contains the optional parameters for the TenantSettings.Get method.
-type TenantSettingsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TenantSettingsListByServiceOptions contains the optional parameters for the TenantSettings.ListByService method.
-type TenantSettingsListByServiceOptions struct {
-	// Not used
-	Filter *string
 }
 
 // TermsOfServiceProperties - Terms of service contract properties.
@@ -9067,6 +10510,70 @@ type TokenBodyParameterContract struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// UserClientCreateOrUpdateOptions contains the optional parameters for the UserClient.CreateOrUpdate method.
+type UserClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+	// Send an Email notification to the User.
+	Notify *bool
+}
+
+// UserClientDeleteOptions contains the optional parameters for the UserClient.Delete method.
+type UserClientDeleteOptions struct {
+	// Determines the type of application which send the create user request. Default is legacy publisher portal.
+	AppType *AppType
+	// Whether to delete user's subscription or not.
+	DeleteSubscriptions *bool
+	// Send an Account Closed Email notification to the User.
+	Notify *bool
+}
+
+// UserClientGenerateSsoURLOptions contains the optional parameters for the UserClient.GenerateSsoURL method.
+type UserClientGenerateSsoURLOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UserClientGetEntityTagOptions contains the optional parameters for the UserClient.GetEntityTag method.
+type UserClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UserClientGetOptions contains the optional parameters for the UserClient.Get method.
+type UserClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UserClientGetSharedAccessTokenOptions contains the optional parameters for the UserClient.GetSharedAccessToken method.
+type UserClientGetSharedAccessTokenOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UserClientListByServiceOptions contains the optional parameters for the UserClient.ListByService method.
+type UserClientListByServiceOptions struct {
+	// Detailed Group in response.
+	ExpandGroups *bool
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | firstName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | lastName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | email | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | state | filter | eq | |
+	// | registrationDate | filter | ge, le, eq, ne, gt, lt | |
+	// | note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | groups | expand | | |
+	Filter *string
+	// Number of records to skip.
+	Skip *int32
+	// Number of records to return.
+	Top *int32
+}
+
+// UserClientUpdateOptions contains the optional parameters for the UserClient.Update method.
+type UserClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // UserCollection - Paged Users list representation.
 type UserCollection struct {
 	// Total record count number across all pages.
@@ -9088,41 +10595,52 @@ func (u UserCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UserConfirmationPasswordSendOptions contains the optional parameters for the UserConfirmationPassword.Send method.
-type UserConfirmationPasswordSendOptions struct {
+// UserConfirmationPasswordClientSendOptions contains the optional parameters for the UserConfirmationPasswordClient.Send
+// method.
+type UserConfirmationPasswordClientSendOptions struct {
 	// Determines the type of application which send the create user request. Default is legacy publisher portal.
 	AppType *AppType
 }
 
 // UserContract - User details.
 type UserContract struct {
-	Resource
 	// User entity contract properties.
 	Properties *UserContractProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type UserContract.
-func (u UserContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UserContractProperties - User profile.
 type UserContractProperties struct {
-	UserEntityBaseParameters
 	// Email address.
 	Email *string `json:"email,omitempty"`
 
 	// First name.
 	FirstName *string `json:"firstName,omitempty"`
 
+	// Collection of user identities.
+	Identities []*UserIdentityContract `json:"identities,omitempty"`
+
 	// Last name.
 	LastName *string `json:"lastName,omitempty"`
 
-	// Date of user registration. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// Optional note about a user set by the administrator.
+	Note *string `json:"note,omitempty"`
+
+	// Date of user registration. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
+	// standard.
 	RegistrationDate *time.Time `json:"registrationDate,omitempty"`
+
+	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
+	// or call any APIs of subscribed products. Default state is Active.
+	State *UserState `json:"state,omitempty"`
 
 	// READ-ONLY; Collection of groups user is part of.
 	Groups []*GroupContractProperties `json:"groups,omitempty" azure:"ro"`
@@ -9131,12 +10649,14 @@ type UserContractProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type UserContractProperties.
 func (u UserContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	u.UserEntityBaseParameters.marshalInternal(objectMap)
 	populate(objectMap, "email", u.Email)
 	populate(objectMap, "firstName", u.FirstName)
 	populate(objectMap, "groups", u.Groups)
+	populate(objectMap, "identities", u.Identities)
 	populate(objectMap, "lastName", u.LastName)
+	populate(objectMap, "note", u.Note)
 	populateTimeRFC3339(objectMap, "registrationDate", u.RegistrationDate)
+	populate(objectMap, "state", u.State)
 	return json.Marshal(objectMap)
 }
 
@@ -9158,34 +10678,31 @@ func (u *UserContractProperties) UnmarshalJSON(data []byte) error {
 		case "groups":
 			err = unpopulate(val, &u.Groups)
 			delete(rawMsg, key)
+		case "identities":
+			err = unpopulate(val, &u.Identities)
+			delete(rawMsg, key)
 		case "lastName":
 			err = unpopulate(val, &u.LastName)
 			delete(rawMsg, key)
+		case "note":
+			err = unpopulate(val, &u.Note)
+			delete(rawMsg, key)
 		case "registrationDate":
 			err = unpopulateTimeRFC3339(val, &u.RegistrationDate)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, &u.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := u.UserEntityBaseParameters.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
-}
-
-// UserCreateOrUpdateOptions contains the optional parameters for the User.CreateOrUpdate method.
-type UserCreateOrUpdateOptions struct {
-	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-	IfMatch *string
-	// Send an Email notification to the User.
-	Notify *bool
 }
 
 // UserCreateParameterProperties - Parameters supplied to the Create User operation.
 type UserCreateParameterProperties struct {
-	UserEntityBaseParameters
 	// REQUIRED; Email address. Must not be empty and must be unique within the service instance.
 	Email *string `json:"email,omitempty"`
 
@@ -9201,75 +10718,39 @@ type UserCreateParameterProperties struct {
 	// Determines the type of confirmation e-mail that will be sent to the newly created user.
 	Confirmation *Confirmation `json:"confirmation,omitempty"`
 
+	// Collection of user identities.
+	Identities []*UserIdentityContract `json:"identities,omitempty"`
+
+	// Optional note about a user set by the administrator.
+	Note *string `json:"note,omitempty"`
+
 	// User Password. If no value is provided, a default password is generated.
 	Password *string `json:"password,omitempty"`
+
+	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
+	// or call any APIs of subscribed products. Default state is Active.
+	State *UserState `json:"state,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type UserCreateParameterProperties.
 func (u UserCreateParameterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	u.UserEntityBaseParameters.marshalInternal(objectMap)
 	populate(objectMap, "appType", u.AppType)
 	populate(objectMap, "confirmation", u.Confirmation)
 	populate(objectMap, "email", u.Email)
 	populate(objectMap, "firstName", u.FirstName)
+	populate(objectMap, "identities", u.Identities)
 	populate(objectMap, "lastName", u.LastName)
+	populate(objectMap, "note", u.Note)
 	populate(objectMap, "password", u.Password)
+	populate(objectMap, "state", u.State)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UserCreateParameterProperties.
-func (u *UserCreateParameterProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appType":
-			err = unpopulate(val, &u.AppType)
-			delete(rawMsg, key)
-		case "confirmation":
-			err = unpopulate(val, &u.Confirmation)
-			delete(rawMsg, key)
-		case "email":
-			err = unpopulate(val, &u.Email)
-			delete(rawMsg, key)
-		case "firstName":
-			err = unpopulate(val, &u.FirstName)
-			delete(rawMsg, key)
-		case "lastName":
-			err = unpopulate(val, &u.LastName)
-			delete(rawMsg, key)
-		case "password":
-			err = unpopulate(val, &u.Password)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := u.UserEntityBaseParameters.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // UserCreateParameters - User create details.
 type UserCreateParameters struct {
 	// User entity create contract properties.
 	Properties *UserCreateParameterProperties `json:"properties,omitempty"`
-}
-
-// UserDeleteOptions contains the optional parameters for the User.Delete method.
-type UserDeleteOptions struct {
-	// Determines the type of application which send the create user request. Default is legacy publisher portal.
-	AppType *AppType
-	// Whether to delete user's subscription or not.
-	DeleteSubscriptions *bool
-	// Send an Account Closed Email notification to the User.
-	Notify *bool
 }
 
 // UserEntityBaseParameters - User Entity Base Parameters set.
@@ -9280,79 +10761,27 @@ type UserEntityBaseParameters struct {
 	// Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
 
-	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal or call any APIs of subscribed
-	// products. Default state is Active.
+	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
+	// or call any APIs of subscribed products. Default state is Active.
 	State *UserState `json:"state,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type UserEntityBaseParameters.
 func (u UserEntityBaseParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	u.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UserEntityBaseParameters.
-func (u *UserEntityBaseParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return u.unmarshalInternal(rawMsg)
-}
-
-func (u UserEntityBaseParameters) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "identities", u.Identities)
 	populate(objectMap, "note", u.Note)
 	populate(objectMap, "state", u.State)
+	return json.Marshal(objectMap)
 }
 
-func (u *UserEntityBaseParameters) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identities":
-			err = unpopulate(val, &u.Identities)
-			delete(rawMsg, key)
-		case "note":
-			err = unpopulate(val, &u.Note)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &u.State)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// UserGenerateSsoURLOptions contains the optional parameters for the User.GenerateSsoURL method.
-type UserGenerateSsoURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// UserGetEntityTagOptions contains the optional parameters for the User.GetEntityTag method.
-type UserGetEntityTagOptions struct {
-	// placeholder for future optional parameters
-}
-
-// UserGetOptions contains the optional parameters for the User.Get method.
-type UserGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// UserGetSharedAccessTokenOptions contains the optional parameters for the User.GetSharedAccessToken method.
-type UserGetSharedAccessTokenOptions struct {
-	// placeholder for future optional parameters
-}
-
-// UserGroupListOptions contains the optional parameters for the UserGroup.List method.
-type UserGroupListOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|------------------------|-----------------------------------|</br>|
-	// name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| displayName | filter | ge, le, eq, ne, gt, lt | substringof,
-	// contains, startswith, endswith |</br>| description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>
+// UserGroupClientListOptions contains the optional parameters for the UserGroupClient.List method.
+type UserGroupClientListOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|------------------------|-----------------------------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -9360,8 +10789,8 @@ type UserGroupListOptions struct {
 	Top *int32
 }
 
-// UserIdentitiesListOptions contains the optional parameters for the UserIdentities.List method.
-type UserIdentitiesListOptions struct {
+// UserIdentitiesClientListOptions contains the optional parameters for the UserIdentitiesClient.List method.
+type UserIdentitiesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9403,35 +10832,22 @@ type UserIdentityProperties struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 }
 
-// UserListByServiceOptions contains the optional parameters for the User.ListByService method.
-type UserListByServiceOptions struct {
-	// Detailed Group in response.
-	ExpandGroups *bool
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| firstName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>| lastName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| email | filter | ge, le, eq, ne, gt,
-	// lt | substringof, contains, startswith, endswith |</br>| state | filter | eq | |</br>| registrationDate | filter | ge, le, eq, ne, gt, lt | |</br>| note
-	// | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>| groups | expand | | |</br>
-	Filter *string
-	// Number of records to skip.
-	Skip *int32
-	// Number of records to return.
-	Top *int32
-}
-
-// UserSubscriptionGetOptions contains the optional parameters for the UserSubscription.Get method.
-type UserSubscriptionGetOptions struct {
+// UserSubscriptionClientGetOptions contains the optional parameters for the UserSubscriptionClient.Get method.
+type UserSubscriptionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserSubscriptionListOptions contains the optional parameters for the UserSubscription.List method.
-type UserSubscriptionListOptions struct {
-	// | Field | Usage | Supported operators | Supported functions |</br>|-------------|------------------------|-----------------------------------|</br>|name
-	// | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>|displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains,
-	// startswith, endswith |</br>|stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>|ownerId | filter | ge,
-	// le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>|scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
-	// endswith |</br>|userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |</br>|productId | filter | ge, le, eq, ne, gt,
-	// lt | substringof, contains, startswith, endswith |</br>
+// UserSubscriptionClientListOptions contains the optional parameters for the UserSubscriptionClient.List method.
+type UserSubscriptionClientListOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|------------------------|-----------------------------------|
+	// |name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// |displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// |stateComment | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// |ownerId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// |scope | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// |userId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// |productId | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 	Filter *string
 	// Number of records to skip.
 	Skip *int32
@@ -9441,8 +10857,8 @@ type UserSubscriptionListOptions struct {
 
 // UserTokenParameterProperties - Parameters supplied to the Get User Token operation.
 type UserTokenParameterProperties struct {
-	// REQUIRED; The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
-	// as specified by the ISO 8601 standard.
+	// REQUIRED; The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following
+	// format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	Expiry *time.Time `json:"expiry,omitempty"`
 
 	// REQUIRED; The Key to be used to generate token for user.
@@ -9492,11 +10908,6 @@ type UserTokenResult struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// UserUpdateOptions contains the optional parameters for the User.Update method.
-type UserUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // UserUpdateParameters - User update parameters.
 type UserUpdateParameters struct {
 	// User entity update contract properties.
@@ -9512,61 +10923,40 @@ func (u UserUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // UserUpdateParametersProperties - Parameters supplied to the Update User operation.
 type UserUpdateParametersProperties struct {
-	UserEntityBaseParameters
 	// Email address. Must not be empty and must be unique within the service instance.
 	Email *string `json:"email,omitempty"`
 
 	// First name.
 	FirstName *string `json:"firstName,omitempty"`
 
+	// Collection of user identities.
+	Identities []*UserIdentityContract `json:"identities,omitempty"`
+
 	// Last name.
 	LastName *string `json:"lastName,omitempty"`
 
+	// Optional note about a user set by the administrator.
+	Note *string `json:"note,omitempty"`
+
 	// User Password.
 	Password *string `json:"password,omitempty"`
+
+	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
+	// or call any APIs of subscribed products. Default state is Active.
+	State *UserState `json:"state,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type UserUpdateParametersProperties.
 func (u UserUpdateParametersProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	u.UserEntityBaseParameters.marshalInternal(objectMap)
 	populate(objectMap, "email", u.Email)
 	populate(objectMap, "firstName", u.FirstName)
+	populate(objectMap, "identities", u.Identities)
 	populate(objectMap, "lastName", u.LastName)
+	populate(objectMap, "note", u.Note)
 	populate(objectMap, "password", u.Password)
+	populate(objectMap, "state", u.State)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UserUpdateParametersProperties.
-func (u *UserUpdateParametersProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "email":
-			err = unpopulate(val, &u.Email)
-			delete(rawMsg, key)
-		case "firstName":
-			err = unpopulate(val, &u.FirstName)
-			delete(rawMsg, key)
-		case "lastName":
-			err = unpopulate(val, &u.LastName)
-			delete(rawMsg, key)
-		case "password":
-			err = unpopulate(val, &u.Password)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := u.UserEntityBaseParameters.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // VirtualNetworkConfiguration - Configuration of a virtual network to which API Management service is deployed.

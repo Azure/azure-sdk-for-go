@@ -28,12 +28,16 @@ func ExampleSubAccountTagRulesClient_List() {
 		"<monitor-name>",
 		"<sub-account-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MonitoringTagRules.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,11 +55,11 @@ func ExampleSubAccountTagRulesClient_CreateOrUpdate() {
 		"<monitor-name>",
 		"<sub-account-name>",
 		"<rule-set-name>",
-		&armlogz.SubAccountTagRulesCreateOrUpdateOptions{Body: nil})
+		&armlogz.SubAccountTagRulesClientCreateOrUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MonitoringTagRules.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SubAccountTagRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccountTagRules_Get.json
@@ -75,7 +79,7 @@ func ExampleSubAccountTagRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MonitoringTagRules.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SubAccountTagRulesClientGetResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccountTagRules_Delete.json

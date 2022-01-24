@@ -9,8 +9,8 @@
 package armcostmanagement
 
 const (
-	module  = "armcostmanagement"
-	version = "v0.1.0"
+	moduleName    = "armcostmanagement"
+	moduleVersion = "v0.2.0"
 )
 
 // AccumulatedType - Show costs accumulated over time.
@@ -322,8 +322,8 @@ func (c ExecutionType) ToPtr() *ExecutionType {
 	return &c
 }
 
-// ExportType - The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that do not yet provide data for charges
-// or amortization for service reservations.
+// ExportType - The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that
+// do not yet provide data for charges or amortization for service reservations.
 type ExportType string
 
 const (
@@ -366,7 +366,8 @@ func (c ExternalCloudProviderType) ToPtr() *ExternalCloudProviderType {
 	return &c
 }
 
-// ForecastTimeframeType - The time frame for pulling data for the forecast. If custom, then a specific time period must be provided.
+// ForecastTimeframeType - The time frame for pulling data for the forecast. If custom, then a specific time period must be
+// provided.
 type ForecastTimeframeType string
 
 const (
@@ -766,8 +767,8 @@ func (c ReportTimeframeType) ToPtr() *ReportTimeframeType {
 	return &c
 }
 
-// ReportType - The type of the report. Usage represents actual usage, forecast represents forecasted data and UsageAndForecast represents both usage and
-// forecasted data. Actual usage and forecasted data can be
+// ReportType - The type of the report. Usage represents actual usage, forecast represents forecasted data and UsageAndForecast
+// represents both usage and forecasted data. Actual usage and forecasted data can be
 // differentiated based on dates.
 type ReportType string
 

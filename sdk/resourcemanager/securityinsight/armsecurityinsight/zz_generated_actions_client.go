@@ -11,7 +11,6 @@ package armsecurityinsight
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ActionsClient contains the methods for the Actions group.
 // Don't use this type directly, use NewActionsClient() instead.
 type ActionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewActionsClient creates a new instance of ActionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ActionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ActionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates the action of alert rule.
-// If the operation fails it returns the *CloudError error type.
-func (client *ActionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, action ActionRequest, options *ActionsCreateOrUpdateOptions) (ActionsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// ruleID - Alert rule ID
+// actionID - Action ID
+// action - The action
+// options - ActionsClientCreateOrUpdateOptions contains the optional parameters for the ActionsClient.CreateOrUpdate method.
+func (client *ActionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, action ActionRequest, options *ActionsClientCreateOrUpdateOptions) (ActionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, actionID, action, options)
 	if err != nil {
-		return ActionsCreateOrUpdateResponse{}, err
+		return ActionsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionsCreateOrUpdateResponse{}, err
+		return ActionsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ActionsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ActionsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, action ActionRequest, options *ActionsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, action ActionRequest, options *ActionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,58 +95,50 @@ func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter actionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionId}", url.PathEscape(actionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, action)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ActionsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionsCreateOrUpdateResponse, error) {
-	result := ActionsCreateOrUpdateResponse{RawResponse: resp}
+func (client *ActionsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionsClientCreateOrUpdateResponse, error) {
+	result := ActionsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionResponse); err != nil {
-		return ActionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ActionsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ActionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the action of alert rule.
-// If the operation fails it returns the *CloudError error type.
-func (client *ActionsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsDeleteOptions) (ActionsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// ruleID - Alert rule ID
+// actionID - Action ID
+// options - ActionsClientDeleteOptions contains the optional parameters for the ActionsClient.Delete method.
+func (client *ActionsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsClientDeleteOptions) (ActionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, actionID, options)
 	if err != nil {
-		return ActionsDeleteResponse{}, err
+		return ActionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionsDeleteResponse{}, err
+		return ActionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ActionsDeleteResponse{}, client.deleteHandleError(resp)
+		return ActionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ActionsDeleteResponse{RawResponse: resp}, nil
+	return ActionsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsDeleteOptions) (*policy.Request, error) {
+func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,49 +160,41 @@ func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter actionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionId}", url.PathEscape(actionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ActionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the action of alert rule.
-// If the operation fails it returns the *CloudError error type.
-func (client *ActionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsGetOptions) (ActionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// ruleID - Alert rule ID
+// actionID - Action ID
+// options - ActionsClientGetOptions contains the optional parameters for the ActionsClient.Get method.
+func (client *ActionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsClientGetOptions) (ActionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, actionID, options)
 	if err != nil {
-		return ActionsGetResponse{}, err
+		return ActionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionsGetResponse{}, err
+		return ActionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActionsGetResponse{}, client.getHandleError(resp)
+		return ActionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsGetOptions) (*policy.Request, error) {
+func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,55 +216,46 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter actionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionId}", url.PathEscape(actionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsGetResponse, error) {
-	result := ActionsGetResponse{RawResponse: resp}
+func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClientGetResponse, error) {
+	result := ActionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionResponse); err != nil {
-		return ActionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ActionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ActionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAlertRule - Gets all actions of alert rule.
-// If the operation fails it returns the *CloudError error type.
-func (client *ActionsClient) ListByAlertRule(resourceGroupName string, workspaceName string, ruleID string, options *ActionsListByAlertRuleOptions) *ActionsListByAlertRulePager {
-	return &ActionsListByAlertRulePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// ruleID - Alert rule ID
+// options - ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.ListByAlertRule method.
+func (client *ActionsClient) ListByAlertRule(resourceGroupName string, workspaceName string, ruleID string, options *ActionsClientListByAlertRuleOptions) *ActionsClientListByAlertRulePager {
+	return &ActionsClientListByAlertRulePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAlertRuleCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, options)
 		},
-		advancer: func(ctx context.Context, resp ActionsListByAlertRuleResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ActionsClientListByAlertRuleResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ActionsList.NextLink)
 		},
 	}
 }
 
 // listByAlertRuleCreateRequest creates the ListByAlertRule request.
-func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, options *ActionsListByAlertRuleOptions) (*policy.Request, error) {
+func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, options *ActionsClientListByAlertRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -285,35 +273,22 @@ func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByAlertRuleHandleResponse handles the ListByAlertRule response.
-func (client *ActionsClient) listByAlertRuleHandleResponse(resp *http.Response) (ActionsListByAlertRuleResponse, error) {
-	result := ActionsListByAlertRuleResponse{RawResponse: resp}
+func (client *ActionsClient) listByAlertRuleHandleResponse(resp *http.Response) (ActionsClientListByAlertRuleResponse, error) {
+	result := ActionsClientListByAlertRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionsList); err != nil {
-		return ActionsListByAlertRuleResponse{}, runtime.NewResponseError(err, resp)
+		return ActionsClientListByAlertRuleResponse{}, err
 	}
 	return result, nil
-}
-
-// listByAlertRuleHandleError handles the ListByAlertRule error response.
-func (client *ActionsClient) listByAlertRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

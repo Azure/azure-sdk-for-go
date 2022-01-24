@@ -34,7 +34,7 @@ func ExampleSQLPoolMaintenanceWindowsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MaintenanceWindows.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolMaintenanceWindowsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateMaintenanceWindows.json
@@ -54,7 +54,7 @@ func ExampleSQLPoolMaintenanceWindowsClient_CreateOrUpdate() {
 			Properties: &armsynapse.MaintenanceWindowsProperties{
 				TimeRanges: []*armsynapse.MaintenanceWindowTimeRange{
 					{
-						DayOfWeek: armsynapse.DayOfWeekSaturday.ToPtr(),
+						DayOfWeek: armsynapse.DayOfWeek("Saturday").ToPtr(),
 						Duration:  to.StringPtr("<duration>"),
 						StartTime: to.StringPtr("<start-time>"),
 					}},

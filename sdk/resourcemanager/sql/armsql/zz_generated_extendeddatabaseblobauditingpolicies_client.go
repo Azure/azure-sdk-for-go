@@ -24,42 +24,57 @@ import (
 // ExtendedDatabaseBlobAuditingPoliciesClient contains the methods for the ExtendedDatabaseBlobAuditingPolicies group.
 // Don't use this type directly, use NewExtendedDatabaseBlobAuditingPoliciesClient() instead.
 type ExtendedDatabaseBlobAuditingPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExtendedDatabaseBlobAuditingPoliciesClient creates a new instance of ExtendedDatabaseBlobAuditingPoliciesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExtendedDatabaseBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExtendedDatabaseBlobAuditingPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExtendedDatabaseBlobAuditingPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExtendedDatabaseBlobAuditingPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates an extended database's blob auditing policy.
-// If the operation fails it returns a generic error.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExtendedDatabaseBlobAuditingPolicy, options *ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateOptions) (ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// parameters - The extended database blob auditing policy.
+// options - ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ExtendedDatabaseBlobAuditingPoliciesClient.CreateOrUpdate
+// method.
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExtendedDatabaseBlobAuditingPolicy, options *ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateOptions) (ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
-		return ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, err
+		return ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, err
+		return ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExtendedDatabaseBlobAuditingPolicy, options *ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExtendedDatabaseBlobAuditingPolicy, options *ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +93,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,45 +105,39 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRe
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateResponse, error) {
-	result := ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse, error) {
+	result := ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtendedDatabaseBlobAuditingPolicy); err != nil {
-		return ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ExtendedDatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets an extended database's blob auditing policy.
-// If the operation fails it returns a generic error.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesGetOptions) (ExtendedDatabaseBlobAuditingPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - ExtendedDatabaseBlobAuditingPoliciesClientGetOptions contains the optional parameters for the ExtendedDatabaseBlobAuditingPoliciesClient.Get
+// method.
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientGetOptions) (ExtendedDatabaseBlobAuditingPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
-		return ExtendedDatabaseBlobAuditingPoliciesGetResponse{}, err
+		return ExtendedDatabaseBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtendedDatabaseBlobAuditingPoliciesGetResponse{}, err
+		return ExtendedDatabaseBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtendedDatabaseBlobAuditingPoliciesGetResponse{}, client.getHandleError(resp)
+		return ExtendedDatabaseBlobAuditingPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesGetOptions) (*policy.Request, error) {
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,7 +156,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,42 +168,36 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx c
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (ExtendedDatabaseBlobAuditingPoliciesGetResponse, error) {
-	result := ExtendedDatabaseBlobAuditingPoliciesGetResponse{RawResponse: resp}
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (ExtendedDatabaseBlobAuditingPoliciesClientGetResponse, error) {
+	result := ExtendedDatabaseBlobAuditingPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtendedDatabaseBlobAuditingPolicy); err != nil {
-		return ExtendedDatabaseBlobAuditingPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ExtendedDatabaseBlobAuditingPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabase - Lists extended auditing settings of a database.
-// If the operation fails it returns a generic error.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesListByDatabaseOptions) *ExtendedDatabaseBlobAuditingPoliciesListByDatabasePager {
-	return &ExtendedDatabaseBlobAuditingPoliciesListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions contains the optional parameters for the ExtendedDatabaseBlobAuditingPoliciesClient.ListByDatabase
+// method.
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions) *ExtendedDatabaseBlobAuditingPoliciesClientListByDatabasePager {
+	return &ExtendedDatabaseBlobAuditingPoliciesClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp ExtendedDatabaseBlobAuditingPoliciesListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExtendedDatabaseBlobAuditingPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesListByDatabaseOptions) (*policy.Request, error) {
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -212,7 +215,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -224,22 +227,10 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseCreateRe
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (ExtendedDatabaseBlobAuditingPoliciesListByDatabaseResponse, error) {
-	result := ExtendedDatabaseBlobAuditingPoliciesListByDatabaseResponse{RawResponse: resp}
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse, error) {
+	result := ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtendedDatabaseBlobAuditingPolicyListResult); err != nil {
-		return ExtendedDatabaseBlobAuditingPoliciesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

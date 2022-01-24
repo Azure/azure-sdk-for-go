@@ -16,40 +16,33 @@ import (
 
 // Display - Detailed HANA operation information
 type Display struct {
-	// READ-ONLY; The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise. It will be used
-	// in tool-tips and detailed views.
+	// READ-ONLY; The localized friendly description for the operation as shown to the user. This description should be thorough,
+	// yet concise. It will be used in tool-tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop downs), but clear (self-documenting).
-	// Use Title Casing and include the entity/resource
+	// READ-ONLY; The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop
+	// downs), but clear (self-documenting). Use Title Casing and include the entity/resource
 	// to which it applies.
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value is 'user,system'
+	// READ-ONLY; The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
+	// UX. Default value is 'user,system'
 	Origin *string `json:"origin,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title
-	// Casing. Begin with "Microsoft" for 1st party services.
+	// READ-ONLY; The localized friendly form of the resource provider name. This form is also expected to include the publisher/company
+	// responsible. Use Title Casing. Begin with "Microsoft" for 1st party services.
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource type related to this action/operation. This form should match the public documentation for the
-	// resource provider. Use Title Casing. For examples, refer to
+	// READ-ONLY; The localized friendly form of the resource type related to this action/operation. This form should match the
+	// public documentation for the resource provider. Use Title Casing. For examples, refer to
 	// the “name” section.
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
 // ErrorResponse - Describes the format of Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// Describes the error object.
-	InnerError *ErrorResponseError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseError `json:"error,omitempty"`
 }
 
 // ErrorResponseError - Describes the error object.
@@ -66,8 +59,8 @@ type Operation struct {
 	// Displayed HANA operation information
 	Display *Display `json:"display,omitempty"`
 
-	// READ-ONLY; The name of the operation being performed on this particular object. This name should match the action name that appears in RBAC / the event
-	// service.
+	// READ-ONLY; The name of the operation being performed on this particular object. This name should match the action name
+	// that appears in RBAC / the event service.
 	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
@@ -84,24 +77,24 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ProviderInstance - A provider instance associated with a SAP monitor.
 type ProviderInstance struct {
-	ProxyResource
 	// Provider Instance properties
 	Properties *ProviderInstanceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ProviderInstance.
-func (p ProviderInstance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ProviderInstanceListResult - The response from the List provider instances operation.
@@ -136,33 +129,39 @@ type ProviderInstanceProperties struct {
 	ProvisioningState *HanaProvisioningStatesEnum `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// ProviderInstancesBeginCreateOptions contains the optional parameters for the ProviderInstances.BeginCreate method.
-type ProviderInstancesBeginCreateOptions struct {
+// ProviderInstancesClientBeginCreateOptions contains the optional parameters for the ProviderInstancesClient.BeginCreate
+// method.
+type ProviderInstancesClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProviderInstancesBeginDeleteOptions contains the optional parameters for the ProviderInstances.BeginDelete method.
-type ProviderInstancesBeginDeleteOptions struct {
+// ProviderInstancesClientBeginDeleteOptions contains the optional parameters for the ProviderInstancesClient.BeginDelete
+// method.
+type ProviderInstancesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProviderInstancesGetOptions contains the optional parameters for the ProviderInstances.Get method.
-type ProviderInstancesGetOptions struct {
+// ProviderInstancesClientGetOptions contains the optional parameters for the ProviderInstancesClient.Get method.
+type ProviderInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProviderInstancesListOptions contains the optional parameters for the ProviderInstances.List method.
-type ProviderInstancesListOptions struct {
+// ProviderInstancesClientListOptions contains the optional parameters for the ProviderInstancesClient.List method.
+type ProviderInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -177,31 +176,36 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // SapMonitor - SAP monitor info on Azure (ARM properties and SAP monitor properties)
 type SapMonitor struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// SAP monitor properties
 	Properties *SapMonitorProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SapMonitor.
 func (s SapMonitor) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -249,28 +253,28 @@ type SapMonitorProperties struct {
 	SapMonitorCollectorVersion *string `json:"sapMonitorCollectorVersion,omitempty" azure:"ro"`
 }
 
-// SapMonitorsBeginCreateOptions contains the optional parameters for the SapMonitors.BeginCreate method.
-type SapMonitorsBeginCreateOptions struct {
+// SapMonitorsClientBeginCreateOptions contains the optional parameters for the SapMonitorsClient.BeginCreate method.
+type SapMonitorsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SapMonitorsBeginDeleteOptions contains the optional parameters for the SapMonitors.BeginDelete method.
-type SapMonitorsBeginDeleteOptions struct {
+// SapMonitorsClientBeginDeleteOptions contains the optional parameters for the SapMonitorsClient.BeginDelete method.
+type SapMonitorsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SapMonitorsGetOptions contains the optional parameters for the SapMonitors.Get method.
-type SapMonitorsGetOptions struct {
+// SapMonitorsClientGetOptions contains the optional parameters for the SapMonitorsClient.Get method.
+type SapMonitorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SapMonitorsListOptions contains the optional parameters for the SapMonitors.List method.
-type SapMonitorsListOptions struct {
+// SapMonitorsClientListOptions contains the optional parameters for the SapMonitorsClient.List method.
+type SapMonitorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SapMonitorsUpdateOptions contains the optional parameters for the SapMonitors.Update method.
-type SapMonitorsUpdateOptions struct {
+// SapMonitorsClientUpdateOptions contains the optional parameters for the SapMonitorsClient.Update method.
+type SapMonitorsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -287,27 +291,34 @@ func (t Tags) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

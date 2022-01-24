@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
@@ -27,12 +28,12 @@ func ExampleComponentLinkedStorageAccountsClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.StorageTypeServiceProfiler,
+		armapplicationinsights.StorageType("ServiceProfiler"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ComponentLinkedStorageAccounts.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComponentLinkedStorageAccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/ComponentLinkedStorageAccountsCreateAndUpdate.json
@@ -46,13 +47,17 @@ func ExampleComponentLinkedStorageAccountsClient_CreateAndUpdate() {
 	res, err := client.CreateAndUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.StorageTypeServiceProfiler,
-		armapplicationinsights.ComponentLinkedStorageAccounts{},
+		armapplicationinsights.StorageType("ServiceProfiler"),
+		armapplicationinsights.ComponentLinkedStorageAccounts{
+			Properties: &armapplicationinsights.LinkedStorageAccountsProperties{
+				LinkedStorageAccount: to.StringPtr("<linked-storage-account>"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ComponentLinkedStorageAccounts.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComponentLinkedStorageAccountsClientCreateAndUpdateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/ComponentLinkedStorageAccountsUpdate.json
@@ -66,13 +71,17 @@ func ExampleComponentLinkedStorageAccountsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.StorageTypeServiceProfiler,
-		armapplicationinsights.ComponentLinkedStorageAccountsPatch{},
+		armapplicationinsights.StorageType("ServiceProfiler"),
+		armapplicationinsights.ComponentLinkedStorageAccountsPatch{
+			Properties: &armapplicationinsights.LinkedStorageAccountsProperties{
+				LinkedStorageAccount: to.StringPtr("<linked-storage-account>"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ComponentLinkedStorageAccounts.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComponentLinkedStorageAccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/ComponentLinkedStorageAccountsDelete.json
@@ -86,7 +95,7 @@ func ExampleComponentLinkedStorageAccountsClient_Delete() {
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.StorageTypeServiceProfiler,
+		armapplicationinsights.StorageType("ServiceProfiler"),
 		nil)
 	if err != nil {
 		log.Fatal(err)

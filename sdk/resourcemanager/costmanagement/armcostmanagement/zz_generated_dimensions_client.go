@@ -11,7 +11,6 @@ package armcostmanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,41 +25,53 @@ import (
 // DimensionsClient contains the methods for the Dimensions group.
 // Don't use this type directly, use NewDimensionsClient() instead.
 type DimensionsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewDimensionsClient creates a new instance of DimensionsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DimensionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DimensionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DimensionsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ByExternalCloudProviderType - Lists the dimensions by the external cloud provider type.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DimensionsClient) ByExternalCloudProviderType(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *DimensionsByExternalCloudProviderTypeOptions) (DimensionsByExternalCloudProviderTypeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// externalCloudProviderType - The external cloud provider type associated with dimension/query operations. This includes
+// 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
+// externalCloudProviderID - This can be '{externalSubscriptionId}' for linked account or '{externalBillingAccountId}' for
+// consolidated account used with dimension/query operations.
+// options - DimensionsClientByExternalCloudProviderTypeOptions contains the optional parameters for the DimensionsClient.ByExternalCloudProviderType
+// method.
+func (client *DimensionsClient) ByExternalCloudProviderType(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *DimensionsClientByExternalCloudProviderTypeOptions) (DimensionsClientByExternalCloudProviderTypeResponse, error) {
 	req, err := client.byExternalCloudProviderTypeCreateRequest(ctx, externalCloudProviderType, externalCloudProviderID, options)
 	if err != nil {
-		return DimensionsByExternalCloudProviderTypeResponse{}, err
+		return DimensionsClientByExternalCloudProviderTypeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DimensionsByExternalCloudProviderTypeResponse{}, err
+		return DimensionsClientByExternalCloudProviderTypeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DimensionsByExternalCloudProviderTypeResponse{}, client.byExternalCloudProviderTypeHandleError(resp)
+		return DimensionsClientByExternalCloudProviderTypeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.byExternalCloudProviderTypeHandleResponse(resp)
 }
 
 // byExternalCloudProviderTypeCreateRequest creates the ByExternalCloudProviderType request.
-func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *DimensionsByExternalCloudProviderTypeOptions) (*policy.Request, error) {
+func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, options *DimensionsClientByExternalCloudProviderTypeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/dimensions"
 	if externalCloudProviderType == "" {
 		return nil, errors.New("parameter externalCloudProviderType cannot be empty")
@@ -70,7 +81,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx con
 		return nil, errors.New("parameter externalCloudProviderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{externalCloudProviderId}", url.PathEscape(externalCloudProviderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,49 +105,47 @@ func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx con
 }
 
 // byExternalCloudProviderTypeHandleResponse handles the ByExternalCloudProviderType response.
-func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *http.Response) (DimensionsByExternalCloudProviderTypeResponse, error) {
-	result := DimensionsByExternalCloudProviderTypeResponse{RawResponse: resp}
+func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *http.Response) (DimensionsClientByExternalCloudProviderTypeResponse, error) {
+	result := DimensionsClientByExternalCloudProviderTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DimensionsListResult); err != nil {
-		return DimensionsByExternalCloudProviderTypeResponse{}, runtime.NewResponseError(err, resp)
+		return DimensionsClientByExternalCloudProviderTypeResponse{}, err
 	}
 	return result, nil
 }
 
-// byExternalCloudProviderTypeHandleError handles the ByExternalCloudProviderType error response.
-func (client *DimensionsClient) byExternalCloudProviderTypeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the dimensions by the defined scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DimensionsClient) List(ctx context.Context, scope string, options *DimensionsListOptions) (DimensionsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with dimension operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+// scope,
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for billingProfile scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// options - DimensionsClientListOptions contains the optional parameters for the DimensionsClient.List method.
+func (client *DimensionsClient) List(ctx context.Context, scope string, options *DimensionsClientListOptions) (DimensionsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, scope, options)
 	if err != nil {
-		return DimensionsListResponse{}, err
+		return DimensionsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DimensionsListResponse{}, err
+		return DimensionsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DimensionsListResponse{}, client.listHandleError(resp)
+		return DimensionsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope string, options *DimensionsListOptions) (*policy.Request, error) {
+func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope string, options *DimensionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/dimensions"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -160,23 +169,10 @@ func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope str
 }
 
 // listHandleResponse handles the List response.
-func (client *DimensionsClient) listHandleResponse(resp *http.Response) (DimensionsListResponse, error) {
-	result := DimensionsListResponse{RawResponse: resp}
+func (client *DimensionsClient) listHandleResponse(resp *http.Response) (DimensionsClientListResponse, error) {
+	result := DimensionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DimensionsListResult); err != nil {
-		return DimensionsListResponse{}, runtime.NewResponseError(err, resp)
+		return DimensionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *DimensionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

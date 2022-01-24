@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetFunctionAppStacks.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetFunctionAppStacks.json
 func ExampleProviderClient_GetFunctionAppStacks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,18 +24,22 @@ func ExampleProviderClient_GetFunctionAppStacks() {
 	}
 	ctx := context.Background()
 	client := armappservice.NewProviderClient("<subscription-id>", cred, nil)
-	pager := client.GetFunctionAppStacks(&armappservice.ProviderGetFunctionAppStacksOptions{StackOsType: nil})
-	for pager.NextPage(ctx) {
+	pager := client.GetFunctionAppStacks(&armappservice.ProviderClientGetFunctionAppStacksOptions{StackOsType: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("FunctionAppStack.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetFunctionAppStacksForLocation.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetFunctionAppStacksForLocation.json
 func ExampleProviderClient_GetFunctionAppStacksForLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,18 +48,22 @@ func ExampleProviderClient_GetFunctionAppStacksForLocation() {
 	ctx := context.Background()
 	client := armappservice.NewProviderClient("<subscription-id>", cred, nil)
 	pager := client.GetFunctionAppStacksForLocation("<location>",
-		&armappservice.ProviderGetFunctionAppStacksForLocationOptions{StackOsType: nil})
-	for pager.NextPage(ctx) {
+		&armappservice.ProviderClientGetFunctionAppStacksForLocationOptions{StackOsType: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("FunctionAppStack.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetWebAppStacksForLocation.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebAppStacksForLocation.json
 func ExampleProviderClient_GetWebAppStacksForLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,18 +72,22 @@ func ExampleProviderClient_GetWebAppStacksForLocation() {
 	ctx := context.Background()
 	client := armappservice.NewProviderClient("<subscription-id>", cred, nil)
 	pager := client.GetWebAppStacksForLocation("<location>",
-		&armappservice.ProviderGetWebAppStacksForLocationOptions{StackOsType: nil})
-	for pager.NextPage(ctx) {
+		&armappservice.ProviderClientGetWebAppStacksForLocationOptions{StackOsType: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WebAppStack.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListOperations.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListOperations.json
 func ExampleProviderClient_ListOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,14 +96,21 @@ func ExampleProviderClient_ListOperations() {
 	ctx := context.Background()
 	client := armappservice.NewProviderClient("<subscription-id>", cred, nil)
 	pager := client.ListOperations(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetWebAppStacks.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebAppStacks.json
 func ExampleProviderClient_GetWebAppStacks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,13 +118,17 @@ func ExampleProviderClient_GetWebAppStacks() {
 	}
 	ctx := context.Background()
 	client := armappservice.NewProviderClient("<subscription-id>", cred, nil)
-	pager := client.GetWebAppStacks(&armappservice.ProviderGetWebAppStacksOptions{StackOsType: nil})
-	for pager.NextPage(ctx) {
+	pager := client.GetWebAppStacks(&armappservice.ProviderClientGetWebAppStacksOptions{StackOsType: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WebAppStack.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // TestResultsClient contains the methods for the TestResults group.
 // Don't use this type directly, use NewTestResultsClient() instead.
 type TestResultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTestResultsClient creates a new instance of TestResultsClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTestResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TestResultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TestResultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TestResultsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the Test Result by Id with specified OS Update type for a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestResultsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsGetOptions) (TestResultsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// options - TestResultsClientGetOptions contains the optional parameters for the TestResultsClient.Get method.
+func (client *TestResultsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetOptions) (TestResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, options)
 	if err != nil {
-		return TestResultsGetResponse{}, err
+		return TestResultsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestResultsGetResponse{}, err
+		return TestResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestResultsGetResponse{}, client.getHandleError(resp)
+		return TestResultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TestResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsGetOptions) (*policy.Request, error) {
+func (client *TestResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/testResults/{testResultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +94,7 @@ func (client *TestResultsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter testResultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testResultName}", url.PathEscape(testResultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +106,39 @@ func (client *TestResultsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *TestResultsClient) getHandleResponse(resp *http.Response) (TestResultsGetResponse, error) {
-	result := TestResultsGetResponse{RawResponse: resp}
+func (client *TestResultsClient) getHandleResponse(resp *http.Response) (TestResultsClientGetResponse, error) {
+	result := TestResultsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestResultResource); err != nil {
-		return TestResultsGetResponse{}, runtime.NewResponseError(err, resp)
+		return TestResultsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TestResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetDownloadURL - Gets the download URL of the test result.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestResultsClient) GetDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsGetDownloadURLOptions) (TestResultsGetDownloadURLResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// options - TestResultsClientGetDownloadURLOptions contains the optional parameters for the TestResultsClient.GetDownloadURL
+// method.
+func (client *TestResultsClient) GetDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetDownloadURLOptions) (TestResultsClientGetDownloadURLResponse, error) {
 	req, err := client.getDownloadURLCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, options)
 	if err != nil {
-		return TestResultsGetDownloadURLResponse{}, err
+		return TestResultsClientGetDownloadURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestResultsGetDownloadURLResponse{}, err
+		return TestResultsClientGetDownloadURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestResultsGetDownloadURLResponse{}, client.getDownloadURLHandleError(resp)
+		return TestResultsClientGetDownloadURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDownloadURLHandleResponse(resp)
 }
 
 // getDownloadURLCreateRequest creates the GetDownloadURL request.
-func (client *TestResultsClient) getDownloadURLCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsGetDownloadURLOptions) (*policy.Request, error) {
+func (client *TestResultsClient) getDownloadURLCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetDownloadURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/testResults/{testResultName}/getDownloadUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +160,7 @@ func (client *TestResultsClient) getDownloadURLCreateRequest(ctx context.Context
 		return nil, errors.New("parameter testResultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testResultName}", url.PathEscape(testResultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,46 +172,39 @@ func (client *TestResultsClient) getDownloadURLCreateRequest(ctx context.Context
 }
 
 // getDownloadURLHandleResponse handles the GetDownloadURL response.
-func (client *TestResultsClient) getDownloadURLHandleResponse(resp *http.Response) (TestResultsGetDownloadURLResponse, error) {
-	result := TestResultsGetDownloadURLResponse{RawResponse: resp}
+func (client *TestResultsClient) getDownloadURLHandleResponse(resp *http.Response) (TestResultsClientGetDownloadURLResponse, error) {
+	result := TestResultsClientGetDownloadURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DownloadURLResponse); err != nil {
-		return TestResultsGetDownloadURLResponse{}, runtime.NewResponseError(err, resp)
+		return TestResultsClientGetDownloadURLResponse{}, err
 	}
 	return result, nil
 }
 
-// getDownloadURLHandleError handles the GetDownloadURL error response.
-func (client *TestResultsClient) getDownloadURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetVideoDownloadURL - Gets the download URL of the test execution screen recording.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestResultsClient) GetVideoDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsGetVideoDownloadURLOptions) (TestResultsGetVideoDownloadURLResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// options - TestResultsClientGetVideoDownloadURLOptions contains the optional parameters for the TestResultsClient.GetVideoDownloadURL
+// method.
+func (client *TestResultsClient) GetVideoDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetVideoDownloadURLOptions) (TestResultsClientGetVideoDownloadURLResponse, error) {
 	req, err := client.getVideoDownloadURLCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, options)
 	if err != nil {
-		return TestResultsGetVideoDownloadURLResponse{}, err
+		return TestResultsClientGetVideoDownloadURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestResultsGetVideoDownloadURLResponse{}, err
+		return TestResultsClientGetVideoDownloadURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestResultsGetVideoDownloadURLResponse{}, client.getVideoDownloadURLHandleError(resp)
+		return TestResultsClientGetVideoDownloadURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getVideoDownloadURLHandleResponse(resp)
 }
 
 // getVideoDownloadURLCreateRequest creates the GetVideoDownloadURL request.
-func (client *TestResultsClient) getVideoDownloadURLCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsGetVideoDownloadURLOptions) (*policy.Request, error) {
+func (client *TestResultsClient) getVideoDownloadURLCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetVideoDownloadURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/testResults/{testResultName}/getVideoDownloadUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -228,7 +226,7 @@ func (client *TestResultsClient) getVideoDownloadURLCreateRequest(ctx context.Co
 		return nil, errors.New("parameter testResultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testResultName}", url.PathEscape(testResultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -240,44 +238,36 @@ func (client *TestResultsClient) getVideoDownloadURLCreateRequest(ctx context.Co
 }
 
 // getVideoDownloadURLHandleResponse handles the GetVideoDownloadURL response.
-func (client *TestResultsClient) getVideoDownloadURLHandleResponse(resp *http.Response) (TestResultsGetVideoDownloadURLResponse, error) {
-	result := TestResultsGetVideoDownloadURLResponse{RawResponse: resp}
+func (client *TestResultsClient) getVideoDownloadURLHandleResponse(resp *http.Response) (TestResultsClientGetVideoDownloadURLResponse, error) {
+	result := TestResultsClientGetVideoDownloadURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DownloadURLResponse); err != nil {
-		return TestResultsGetVideoDownloadURLResponse{}, runtime.NewResponseError(err, resp)
+		return TestResultsClientGetVideoDownloadURLResponse{}, err
 	}
 	return result, nil
 }
 
-// getVideoDownloadURLHandleError handles the GetVideoDownloadURL error response.
-func (client *TestResultsClient) getVideoDownloadURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists all the Test Results with specified OS Update type for a Test Base Package. Can be filtered by osName, releaseName, flightingRing, buildVersion,
-// buildRevision.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestResultsClient) List(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *TestResultsListOptions) *TestResultsListPager {
-	return &TestResultsListPager{
+// List - Lists all the Test Results with specified OS Update type for a Test Base Package. Can be filtered by osName, releaseName,
+// flightingRing, buildVersion, buildRevision.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// osUpdateType - The type of the OS Update.
+// options - TestResultsClientListOptions contains the optional parameters for the TestResultsClient.List method.
+func (client *TestResultsClient) List(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *TestResultsClientListOptions) *TestResultsClientListPager {
+	return &TestResultsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, osUpdateType, options)
 		},
-		advancer: func(ctx context.Context, resp TestResultsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TestResultsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TestResultListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TestResultsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *TestResultsListOptions) (*policy.Request, error) {
+func (client *TestResultsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *TestResultsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/testResults"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -295,7 +285,7 @@ func (client *TestResultsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -311,23 +301,10 @@ func (client *TestResultsClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client *TestResultsClient) listHandleResponse(resp *http.Response) (TestResultsListResponse, error) {
-	result := TestResultsListResponse{RawResponse: resp}
+func (client *TestResultsClient) listHandleResponse(resp *http.Response) (TestResultsClientListResponse, error) {
+	result := TestResultsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestResultListResult); err != nil {
-		return TestResultsListResponse{}, runtime.NewResponseError(err, resp)
+		return TestResultsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *TestResultsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

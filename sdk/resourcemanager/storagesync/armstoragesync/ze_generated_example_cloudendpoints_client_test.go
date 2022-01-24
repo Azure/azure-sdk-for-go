@@ -48,7 +48,7 @@ func ExampleCloudEndpointsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CloudEndpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CloudEndpointsClientCreateResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/CloudEndpoints_Get.json
@@ -68,7 +68,7 @@ func ExampleCloudEndpointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CloudEndpoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CloudEndpointsClientGetResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/CloudEndpoints_Delete.json
@@ -102,7 +102,7 @@ func ExampleCloudEndpointsClient_ListBySyncGroup() {
 	}
 	ctx := context.Background()
 	client := armstoragesync.NewCloudEndpointsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySyncGroup(ctx,
+	res, err := client.ListBySyncGroup(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		"<sync-group-name>",
@@ -110,6 +110,7 @@ func ExampleCloudEndpointsClient_ListBySyncGroup() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.CloudEndpointsClientListBySyncGroupResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/CloudEndpoints_PreBackup.json
@@ -158,10 +159,11 @@ func ExampleCloudEndpointsClient_BeginPostBackup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.CloudEndpointsClientPostBackupResult)
 }
 
 // x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/CloudEndpoints_PreRestore.json
@@ -285,7 +287,7 @@ func ExampleCloudEndpointsClient_BeginTriggerChangeDetection() {
 		"<sync-group-name>",
 		"<cloud-endpoint-name>",
 		armstoragesync.TriggerChangeDetectionParameters{
-			ChangeDetectionMode: armstoragesync.ChangeDetectionModeRecursive.ToPtr(),
+			ChangeDetectionMode: armstoragesync.ChangeDetectionMode("Recursive").ToPtr(),
 			DirectoryPath:       to.StringPtr("<directory-path>"),
 		},
 		nil)

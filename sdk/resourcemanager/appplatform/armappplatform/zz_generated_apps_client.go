@@ -11,7 +11,6 @@ package armappplatform
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,62 @@ import (
 // AppsClient contains the methods for the Apps group.
 // Don't use this type directly, use NewAppsClient() instead.
 type AppsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAppsClient creates a new instance of AppsClient with the specified values.
+// subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AppsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AppsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AppsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create a new App or update an exiting App.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsBeginCreateOrUpdateOptions) (AppsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serviceName - The name of the Service resource.
+// appName - The name of the App resource.
+// appResource - Parameters for the create or update operation
+// options - AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate
+// method.
+func (client *AppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginCreateOrUpdateOptions) (AppsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, appName, appResource, options)
 	if err != nil {
-		return AppsCreateOrUpdatePollerResponse{}, err
+		return AppsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := AppsCreateOrUpdatePollerResponse{
+	result := AppsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AppsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("AppsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return AppsCreateOrUpdatePollerResponse{}, err
+		return AppsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &AppsCreateOrUpdatePoller{
+	result.Poller = &AppsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create a new App or update an exiting App.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, appName, appResource, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +89,13 @@ func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,53 +113,45 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appResource)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AppsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Operation to delete an App.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsBeginDeleteOptions) (AppsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serviceName - The name of the Service resource.
+// appName - The name of the App resource.
+// options - AppsClientBeginDeleteOptions contains the optional parameters for the AppsClient.BeginDelete method.
+func (client *AppsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientBeginDeleteOptions) (AppsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, appName, options)
 	if err != nil {
-		return AppsDeletePollerResponse{}, err
+		return AppsClientDeletePollerResponse{}, err
 	}
-	result := AppsDeletePollerResponse{
+	result := AppsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AppsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AppsClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return AppsDeletePollerResponse{}, err
+		return AppsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AppsDeletePoller{
+	result.Poller = &AppsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Operation to delete an App.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +161,13 @@ func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,49 +185,41 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AppsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get an App and its properties.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsGetOptions) (AppsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serviceName - The name of the Service resource.
+// appName - The name of the App resource.
+// options - AppsClientGetOptions contains the optional parameters for the AppsClient.Get method.
+func (client *AppsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientGetOptions) (AppsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
 	if err != nil {
-		return AppsGetResponse{}, err
+		return AppsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppsGetResponse{}, err
+		return AppsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppsGetResponse{}, client.getHandleError(resp)
+		return AppsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsGetOptions) (*policy.Request, error) {
+func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,12 +237,12 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	if options != nil && options.SyncStatus != nil {
 		reqQP.Set("syncStatus", *options.SyncStatus)
 	}
@@ -253,46 +252,39 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsGetResponse, error) {
-	result := AppsGetResponse{RawResponse: resp}
+func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsClientGetResponse, error) {
+	result := AppsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppResource); err != nil {
-		return AppsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AppsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetResourceUploadURL - Get an resource upload URL for an App, which may be artifacts or source archive.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) GetResourceUploadURL(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsGetResourceUploadURLOptions) (AppsGetResourceUploadURLResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serviceName - The name of the Service resource.
+// appName - The name of the App resource.
+// options - AppsClientGetResourceUploadURLOptions contains the optional parameters for the AppsClient.GetResourceUploadURL
+// method.
+func (client *AppsClient) GetResourceUploadURL(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientGetResourceUploadURLOptions) (AppsClientGetResourceUploadURLResponse, error) {
 	req, err := client.getResourceUploadURLCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
 	if err != nil {
-		return AppsGetResourceUploadURLResponse{}, err
+		return AppsClientGetResourceUploadURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppsGetResourceUploadURLResponse{}, err
+		return AppsClientGetResourceUploadURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppsGetResourceUploadURLResponse{}, client.getResourceUploadURLHandleError(resp)
+		return AppsClientGetResourceUploadURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getResourceUploadURLHandleResponse(resp)
 }
 
 // getResourceUploadURLCreateRequest creates the GetResourceUploadURL request.
-func (client *AppsClient) getResourceUploadURLCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsGetResourceUploadURLOptions) (*policy.Request, error) {
+func (client *AppsClient) getResourceUploadURLCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientGetResourceUploadURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/getResourceUploadUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -310,55 +302,46 @@ func (client *AppsClient) getResourceUploadURLCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getResourceUploadURLHandleResponse handles the GetResourceUploadURL response.
-func (client *AppsClient) getResourceUploadURLHandleResponse(resp *http.Response) (AppsGetResourceUploadURLResponse, error) {
-	result := AppsGetResourceUploadURLResponse{RawResponse: resp}
+func (client *AppsClient) getResourceUploadURLHandleResponse(resp *http.Response) (AppsClientGetResourceUploadURLResponse, error) {
+	result := AppsClientGetResourceUploadURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceUploadDefinition); err != nil {
-		return AppsGetResourceUploadURLResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientGetResourceUploadURLResponse{}, err
 	}
 	return result, nil
 }
 
-// getResourceUploadURLHandleError handles the GetResourceUploadURL error response.
-func (client *AppsClient) getResourceUploadURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Handles requests to list all resources in a Service.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) List(resourceGroupName string, serviceName string, options *AppsListOptions) *AppsListPager {
-	return &AppsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serviceName - The name of the Service resource.
+// options - AppsClientListOptions contains the optional parameters for the AppsClient.List method.
+func (client *AppsClient) List(resourceGroupName string, serviceName string, options *AppsClientListOptions) *AppsClientListPager {
+	return &AppsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp AppsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AppsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppResourceCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AppsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *AppsListOptions) (*policy.Request, error) {
+func (client *AppsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *AppsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -372,62 +355,129 @@ func (client *AppsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AppsClient) listHandleResponse(resp *http.Response) (AppsListResponse, error) {
-	result := AppsListResponse{RawResponse: resp}
+func (client *AppsClient) listHandleResponse(resp *http.Response) (AppsClientListResponse, error) {
+	result := AppsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppResourceCollection); err != nil {
-		return AppsListResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AppsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// BeginSetActiveDeployments - Set existing Deployment under the app as active
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serviceName - The name of the Service resource.
+// appName - The name of the App resource.
+// activeDeploymentCollection - A list of Deployment name to be active.
+// options - AppsClientBeginSetActiveDeploymentsOptions contains the optional parameters for the AppsClient.BeginSetActiveDeployments
+// method.
+func (client *AppsClient) BeginSetActiveDeployments(ctx context.Context, resourceGroupName string, serviceName string, appName string, activeDeploymentCollection ActiveDeploymentCollection, options *AppsClientBeginSetActiveDeploymentsOptions) (AppsClientSetActiveDeploymentsPollerResponse, error) {
+	resp, err := client.setActiveDeployments(ctx, resourceGroupName, serviceName, appName, activeDeploymentCollection, options)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return AppsClientSetActiveDeploymentsPollerResponse{}, err
 	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	result := AppsClientSetActiveDeploymentsPollerResponse{
+		RawResponse: resp,
 	}
-	return runtime.NewResponseError(&errType, resp)
+	pt, err := armruntime.NewPoller("AppsClient.SetActiveDeployments", "azure-async-operation", resp, client.pl)
+	if err != nil {
+		return AppsClientSetActiveDeploymentsPollerResponse{}, err
+	}
+	result.Poller = &AppsClientSetActiveDeploymentsPoller{
+		pt: pt,
+	}
+	return result, nil
+}
+
+// SetActiveDeployments - Set existing Deployment under the app as active
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppsClient) setActiveDeployments(ctx context.Context, resourceGroupName string, serviceName string, appName string, activeDeploymentCollection ActiveDeploymentCollection, options *AppsClientBeginSetActiveDeploymentsOptions) (*http.Response, error) {
+	req, err := client.setActiveDeploymentsCreateRequest(ctx, resourceGroupName, serviceName, appName, activeDeploymentCollection, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// setActiveDeploymentsCreateRequest creates the SetActiveDeployments request.
+func (client *AppsClient) setActiveDeploymentsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, activeDeploymentCollection ActiveDeploymentCollection, options *AppsClientBeginSetActiveDeploymentsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/setActiveDeployments"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, activeDeploymentCollection)
 }
 
 // BeginUpdate - Operation to update an exiting App.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsBeginUpdateOptions) (AppsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serviceName - The name of the Service resource.
+// appName - The name of the App resource.
+// appResource - Parameters for the update operation
+// options - AppsClientBeginUpdateOptions contains the optional parameters for the AppsClient.BeginUpdate method.
+func (client *AppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginUpdateOptions) (AppsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, serviceName, appName, appResource, options)
 	if err != nil {
-		return AppsUpdatePollerResponse{}, err
+		return AppsClientUpdatePollerResponse{}, err
 	}
-	result := AppsUpdatePollerResponse{
+	result := AppsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AppsClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("AppsClient.Update", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return AppsUpdatePollerResponse{}, err
+		return AppsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &AppsUpdatePoller{
+	result.Poller = &AppsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Operation to update an exiting App.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppsClient) update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, appName, appResource, options)
 	if err != nil {
 		return nil, err
@@ -437,13 +487,13 @@ func (client *AppsClient) update(ctx context.Context, resourceGroupName string, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsBeginUpdateOptions) (*policy.Request, error) {
+func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -461,49 +511,42 @@ func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appResource)
 }
 
-// updateHandleError handles the Update error response.
-func (client *AppsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ValidateDomain - Check the resource name is valid as well as not in use.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) ValidateDomain(ctx context.Context, resourceGroupName string, serviceName string, appName string, validatePayload CustomDomainValidatePayload, options *AppsValidateDomainOptions) (AppsValidateDomainResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serviceName - The name of the Service resource.
+// appName - The name of the App resource.
+// validatePayload - Custom domain payload to be validated
+// options - AppsClientValidateDomainOptions contains the optional parameters for the AppsClient.ValidateDomain method.
+func (client *AppsClient) ValidateDomain(ctx context.Context, resourceGroupName string, serviceName string, appName string, validatePayload CustomDomainValidatePayload, options *AppsClientValidateDomainOptions) (AppsClientValidateDomainResponse, error) {
 	req, err := client.validateDomainCreateRequest(ctx, resourceGroupName, serviceName, appName, validatePayload, options)
 	if err != nil {
-		return AppsValidateDomainResponse{}, err
+		return AppsClientValidateDomainResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppsValidateDomainResponse{}, err
+		return AppsClientValidateDomainResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppsValidateDomainResponse{}, client.validateDomainHandleError(resp)
+		return AppsClientValidateDomainResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateDomainHandleResponse(resp)
 }
 
 // validateDomainCreateRequest creates the ValidateDomain request.
-func (client *AppsClient) validateDomainCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, validatePayload CustomDomainValidatePayload, options *AppsValidateDomainOptions) (*policy.Request, error) {
+func (client *AppsClient) validateDomainCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, validatePayload CustomDomainValidatePayload, options *AppsClientValidateDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/validateDomain"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -521,35 +564,22 @@ func (client *AppsClient) validateDomainCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, validatePayload)
 }
 
 // validateDomainHandleResponse handles the ValidateDomain response.
-func (client *AppsClient) validateDomainHandleResponse(resp *http.Response) (AppsValidateDomainResponse, error) {
-	result := AppsValidateDomainResponse{RawResponse: resp}
+func (client *AppsClient) validateDomainHandleResponse(resp *http.Response) (AppsClientValidateDomainResponse, error) {
+	result := AppsClientValidateDomainResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomainValidateResult); err != nil {
-		return AppsValidateDomainResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientValidateDomainResponse{}, err
 	}
 	return result, nil
-}
-
-// validateDomainHandleError handles the ValidateDomain error response.
-func (client *AppsClient) validateDomainHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

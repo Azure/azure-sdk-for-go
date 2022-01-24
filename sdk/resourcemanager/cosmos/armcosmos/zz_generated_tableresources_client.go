@@ -11,7 +11,6 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // TableResourcesClient contains the methods for the TableResources group.
 // Don't use this type directly, use NewTableResourcesClient() instead.
 type TableResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTableResourcesClient creates a new instance of TableResourcesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTableResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TableResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TableResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TableResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateUpdateTable - Create or update an Azure Cosmos DB Table
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) BeginCreateUpdateTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesBeginCreateUpdateTableOptions) (TableResourcesCreateUpdateTablePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// tableName - Cosmos DB table name.
+// createUpdateTableParameters - The parameters to provide for the current Table.
+// options - TableResourcesClientBeginCreateUpdateTableOptions contains the optional parameters for the TableResourcesClient.BeginCreateUpdateTable
+// method.
+func (client *TableResourcesClient) BeginCreateUpdateTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesClientBeginCreateUpdateTableOptions) (TableResourcesClientCreateUpdateTablePollerResponse, error) {
 	resp, err := client.createUpdateTable(ctx, resourceGroupName, accountName, tableName, createUpdateTableParameters, options)
 	if err != nil {
-		return TableResourcesCreateUpdateTablePollerResponse{}, err
+		return TableResourcesClientCreateUpdateTablePollerResponse{}, err
 	}
-	result := TableResourcesCreateUpdateTablePollerResponse{
+	result := TableResourcesClientCreateUpdateTablePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TableResourcesClient.CreateUpdateTable", "", resp, client.pl, client.createUpdateTableHandleError)
+	pt, err := armruntime.NewPoller("TableResourcesClient.CreateUpdateTable", "", resp, client.pl)
 	if err != nil {
-		return TableResourcesCreateUpdateTablePollerResponse{}, err
+		return TableResourcesClientCreateUpdateTablePollerResponse{}, err
 	}
-	result.Poller = &TableResourcesCreateUpdateTablePoller{
+	result.Poller = &TableResourcesClientCreateUpdateTablePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateTable - Create or update an Azure Cosmos DB Table
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) createUpdateTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesBeginCreateUpdateTableOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TableResourcesClient) createUpdateTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesClientBeginCreateUpdateTableOptions) (*http.Response, error) {
 	req, err := client.createUpdateTableCreateRequest(ctx, resourceGroupName, accountName, tableName, createUpdateTableParameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *TableResourcesClient) createUpdateTable(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createUpdateTableHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateTableCreateRequest creates the CreateUpdateTable request.
-func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesBeginCreateUpdateTableOptions) (*policy.Request, error) {
+func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesClientBeginCreateUpdateTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.C
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,41 +122,34 @@ func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.C
 	return req, runtime.MarshalAsJSON(req, createUpdateTableParameters)
 }
 
-// createUpdateTableHandleError handles the CreateUpdateTable error response.
-func (client *TableResourcesClient) createUpdateTableHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDeleteTable - Deletes an existing Azure Cosmos DB Table.
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) BeginDeleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginDeleteTableOptions) (TableResourcesDeleteTablePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// tableName - Cosmos DB table name.
+// options - TableResourcesClientBeginDeleteTableOptions contains the optional parameters for the TableResourcesClient.BeginDeleteTable
+// method.
+func (client *TableResourcesClient) BeginDeleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginDeleteTableOptions) (TableResourcesClientDeleteTablePollerResponse, error) {
 	resp, err := client.deleteTable(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
-		return TableResourcesDeleteTablePollerResponse{}, err
+		return TableResourcesClientDeleteTablePollerResponse{}, err
 	}
-	result := TableResourcesDeleteTablePollerResponse{
+	result := TableResourcesClientDeleteTablePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TableResourcesClient.DeleteTable", "", resp, client.pl, client.deleteTableHandleError)
+	pt, err := armruntime.NewPoller("TableResourcesClient.DeleteTable", "", resp, client.pl)
 	if err != nil {
-		return TableResourcesDeleteTablePollerResponse{}, err
+		return TableResourcesClientDeleteTablePollerResponse{}, err
 	}
-	result.Poller = &TableResourcesDeleteTablePoller{
+	result.Poller = &TableResourcesClientDeleteTablePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteTable - Deletes an existing Azure Cosmos DB Table.
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) deleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginDeleteTableOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TableResourcesClient) deleteTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginDeleteTableOptions) (*http.Response, error) {
 	req, err := client.deleteTableCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return nil, err
@@ -153,13 +159,13 @@ func (client *TableResourcesClient) deleteTable(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteTableHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteTableCreateRequest creates the DeleteTable request.
-func (client *TableResourcesClient) deleteTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginDeleteTableOptions) (*policy.Request, error) {
+func (client *TableResourcesClient) deleteTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginDeleteTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -177,7 +183,7 @@ func (client *TableResourcesClient) deleteTableCreateRequest(ctx context.Context
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,37 +193,29 @@ func (client *TableResourcesClient) deleteTableCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// deleteTableHandleError handles the DeleteTable error response.
-func (client *TableResourcesClient) deleteTableHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetTable - Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) GetTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesGetTableOptions) (TableResourcesGetTableResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// tableName - Cosmos DB table name.
+// options - TableResourcesClientGetTableOptions contains the optional parameters for the TableResourcesClient.GetTable method.
+func (client *TableResourcesClient) GetTable(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientGetTableOptions) (TableResourcesClientGetTableResponse, error) {
 	req, err := client.getTableCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
-		return TableResourcesGetTableResponse{}, err
+		return TableResourcesClientGetTableResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TableResourcesGetTableResponse{}, err
+		return TableResourcesClientGetTableResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TableResourcesGetTableResponse{}, client.getTableHandleError(resp)
+		return TableResourcesClientGetTableResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getTableHandleResponse(resp)
 }
 
 // getTableCreateRequest creates the GetTable request.
-func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesGetTableOptions) (*policy.Request, error) {
+func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientGetTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -235,7 +233,7 @@ func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -247,45 +245,39 @@ func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, r
 }
 
 // getTableHandleResponse handles the GetTable response.
-func (client *TableResourcesClient) getTableHandleResponse(resp *http.Response) (TableResourcesGetTableResponse, error) {
-	result := TableResourcesGetTableResponse{RawResponse: resp}
+func (client *TableResourcesClient) getTableHandleResponse(resp *http.Response) (TableResourcesClientGetTableResponse, error) {
+	result := TableResourcesClientGetTableResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableGetResults); err != nil {
-		return TableResourcesGetTableResponse{}, runtime.NewResponseError(err, resp)
+		return TableResourcesClientGetTableResponse{}, err
 	}
 	return result, nil
 }
 
-// getTableHandleError handles the GetTable error response.
-func (client *TableResourcesClient) getTableHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// GetTableThroughput - Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) GetTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesGetTableThroughputOptions) (TableResourcesGetTableThroughputResponse, error) {
+// GetTableThroughput - Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
+// name.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// tableName - Cosmos DB table name.
+// options - TableResourcesClientGetTableThroughputOptions contains the optional parameters for the TableResourcesClient.GetTableThroughput
+// method.
+func (client *TableResourcesClient) GetTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientGetTableThroughputOptions) (TableResourcesClientGetTableThroughputResponse, error) {
 	req, err := client.getTableThroughputCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
-		return TableResourcesGetTableThroughputResponse{}, err
+		return TableResourcesClientGetTableThroughputResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TableResourcesGetTableThroughputResponse{}, err
+		return TableResourcesClientGetTableThroughputResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TableResourcesGetTableThroughputResponse{}, client.getTableThroughputHandleError(resp)
+		return TableResourcesClientGetTableThroughputResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getTableThroughputHandleResponse(resp)
 }
 
 // getTableThroughputCreateRequest creates the GetTableThroughput request.
-func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesGetTableThroughputOptions) (*policy.Request, error) {
+func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientGetTableThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -303,7 +295,7 @@ func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -315,45 +307,37 @@ func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.
 }
 
 // getTableThroughputHandleResponse handles the GetTableThroughput response.
-func (client *TableResourcesClient) getTableThroughputHandleResponse(resp *http.Response) (TableResourcesGetTableThroughputResponse, error) {
-	result := TableResourcesGetTableThroughputResponse{RawResponse: resp}
+func (client *TableResourcesClient) getTableThroughputHandleResponse(resp *http.Response) (TableResourcesClientGetTableThroughputResponse, error) {
+	result := TableResourcesClientGetTableThroughputResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
-		return TableResourcesGetTableThroughputResponse{}, runtime.NewResponseError(err, resp)
+		return TableResourcesClientGetTableThroughputResponse{}, err
 	}
 	return result, nil
 }
 
-// getTableThroughputHandleError handles the GetTableThroughput error response.
-func (client *TableResourcesClient) getTableThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListTables - Lists the Tables under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) ListTables(ctx context.Context, resourceGroupName string, accountName string, options *TableResourcesListTablesOptions) (TableResourcesListTablesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - TableResourcesClientListTablesOptions contains the optional parameters for the TableResourcesClient.ListTables
+// method.
+func (client *TableResourcesClient) ListTables(ctx context.Context, resourceGroupName string, accountName string, options *TableResourcesClientListTablesOptions) (TableResourcesClientListTablesResponse, error) {
 	req, err := client.listTablesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return TableResourcesListTablesResponse{}, err
+		return TableResourcesClientListTablesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TableResourcesListTablesResponse{}, err
+		return TableResourcesClientListTablesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TableResourcesListTablesResponse{}, client.listTablesHandleError(resp)
+		return TableResourcesClientListTablesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listTablesHandleResponse(resp)
 }
 
 // listTablesCreateRequest creates the ListTables request.
-func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TableResourcesListTablesOptions) (*policy.Request, error) {
+func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TableResourcesClientListTablesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -367,7 +351,7 @@ func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -379,49 +363,42 @@ func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context,
 }
 
 // listTablesHandleResponse handles the ListTables response.
-func (client *TableResourcesClient) listTablesHandleResponse(resp *http.Response) (TableResourcesListTablesResponse, error) {
-	result := TableResourcesListTablesResponse{RawResponse: resp}
+func (client *TableResourcesClient) listTablesHandleResponse(resp *http.Response) (TableResourcesClientListTablesResponse, error) {
+	result := TableResourcesClientListTablesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableListResult); err != nil {
-		return TableResourcesListTablesResponse{}, runtime.NewResponseError(err, resp)
+		return TableResourcesClientListTablesResponse{}, err
 	}
 	return result, nil
 }
 
-// listTablesHandleError handles the ListTables error response.
-func (client *TableResourcesClient) listTablesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginMigrateTableToAutoscale - Migrate an Azure Cosmos DB Table from manual throughput to autoscale
-// If the operation fails it returns the *CloudError error type.
-func (client *TableResourcesClient) BeginMigrateTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginMigrateTableToAutoscaleOptions) (TableResourcesMigrateTableToAutoscalePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// tableName - Cosmos DB table name.
+// options - TableResourcesClientBeginMigrateTableToAutoscaleOptions contains the optional parameters for the TableResourcesClient.BeginMigrateTableToAutoscale
+// method.
+func (client *TableResourcesClient) BeginMigrateTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToAutoscaleOptions) (TableResourcesClientMigrateTableToAutoscalePollerResponse, error) {
 	resp, err := client.migrateTableToAutoscale(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
-		return TableResourcesMigrateTableToAutoscalePollerResponse{}, err
+		return TableResourcesClientMigrateTableToAutoscalePollerResponse{}, err
 	}
-	result := TableResourcesMigrateTableToAutoscalePollerResponse{
+	result := TableResourcesClientMigrateTableToAutoscalePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TableResourcesClient.MigrateTableToAutoscale", "", resp, client.pl, client.migrateTableToAutoscaleHandleError)
+	pt, err := armruntime.NewPoller("TableResourcesClient.MigrateTableToAutoscale", "", resp, client.pl)
 	if err != nil {
-		return TableResourcesMigrateTableToAutoscalePollerResponse{}, err
+		return TableResourcesClientMigrateTableToAutoscalePollerResponse{}, err
 	}
-	result.Poller = &TableResourcesMigrateTableToAutoscalePoller{
+	result.Poller = &TableResourcesClientMigrateTableToAutoscalePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateTableToAutoscale - Migrate an Azure Cosmos DB Table from manual throughput to autoscale
-// If the operation fails it returns the *CloudError error type.
-func (client *TableResourcesClient) migrateTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginMigrateTableToAutoscaleOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TableResourcesClient) migrateTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToAutoscaleOptions) (*http.Response, error) {
 	req, err := client.migrateTableToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return nil, err
@@ -431,13 +408,13 @@ func (client *TableResourcesClient) migrateTableToAutoscale(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.migrateTableToAutoscaleHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // migrateTableToAutoscaleCreateRequest creates the MigrateTableToAutoscale request.
-func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginMigrateTableToAutoscaleOptions) (*policy.Request, error) {
+func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -455,7 +432,7 @@ func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx con
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -466,42 +443,34 @@ func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx con
 	return req, nil
 }
 
-// migrateTableToAutoscaleHandleError handles the MigrateTableToAutoscale error response.
-func (client *TableResourcesClient) migrateTableToAutoscaleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginMigrateTableToManualThroughput - Migrate an Azure Cosmos DB Table from autoscale to manual throughput
-// If the operation fails it returns the *CloudError error type.
-func (client *TableResourcesClient) BeginMigrateTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginMigrateTableToManualThroughputOptions) (TableResourcesMigrateTableToManualThroughputPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// tableName - Cosmos DB table name.
+// options - TableResourcesClientBeginMigrateTableToManualThroughputOptions contains the optional parameters for the TableResourcesClient.BeginMigrateTableToManualThroughput
+// method.
+func (client *TableResourcesClient) BeginMigrateTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToManualThroughputOptions) (TableResourcesClientMigrateTableToManualThroughputPollerResponse, error) {
 	resp, err := client.migrateTableToManualThroughput(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
-		return TableResourcesMigrateTableToManualThroughputPollerResponse{}, err
+		return TableResourcesClientMigrateTableToManualThroughputPollerResponse{}, err
 	}
-	result := TableResourcesMigrateTableToManualThroughputPollerResponse{
+	result := TableResourcesClientMigrateTableToManualThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TableResourcesClient.MigrateTableToManualThroughput", "", resp, client.pl, client.migrateTableToManualThroughputHandleError)
+	pt, err := armruntime.NewPoller("TableResourcesClient.MigrateTableToManualThroughput", "", resp, client.pl)
 	if err != nil {
-		return TableResourcesMigrateTableToManualThroughputPollerResponse{}, err
+		return TableResourcesClientMigrateTableToManualThroughputPollerResponse{}, err
 	}
-	result.Poller = &TableResourcesMigrateTableToManualThroughputPoller{
+	result.Poller = &TableResourcesClientMigrateTableToManualThroughputPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateTableToManualThroughput - Migrate an Azure Cosmos DB Table from autoscale to manual throughput
-// If the operation fails it returns the *CloudError error type.
-func (client *TableResourcesClient) migrateTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginMigrateTableToManualThroughputOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TableResourcesClient) migrateTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToManualThroughputOptions) (*http.Response, error) {
 	req, err := client.migrateTableToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return nil, err
@@ -511,13 +480,13 @@ func (client *TableResourcesClient) migrateTableToManualThroughput(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.migrateTableToManualThroughputHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // migrateTableToManualThroughputCreateRequest creates the MigrateTableToManualThroughput request.
-func (client *TableResourcesClient) migrateTableToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesBeginMigrateTableToManualThroughputOptions) (*policy.Request, error) {
+func (client *TableResourcesClient) migrateTableToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -535,7 +504,7 @@ func (client *TableResourcesClient) migrateTableToManualThroughputCreateRequest(
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -546,42 +515,35 @@ func (client *TableResourcesClient) migrateTableToManualThroughputCreateRequest(
 	return req, nil
 }
 
-// migrateTableToManualThroughputHandleError handles the MigrateTableToManualThroughput error response.
-func (client *TableResourcesClient) migrateTableToManualThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdateTableThroughput - Update RUs per second of an Azure Cosmos DB Table
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) BeginUpdateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesBeginUpdateTableThroughputOptions) (TableResourcesUpdateTableThroughputPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// tableName - Cosmos DB table name.
+// updateThroughputParameters - The parameters to provide for the RUs per second of the current Table.
+// options - TableResourcesClientBeginUpdateTableThroughputOptions contains the optional parameters for the TableResourcesClient.BeginUpdateTableThroughput
+// method.
+func (client *TableResourcesClient) BeginUpdateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesClientBeginUpdateTableThroughputOptions) (TableResourcesClientUpdateTableThroughputPollerResponse, error) {
 	resp, err := client.updateTableThroughput(ctx, resourceGroupName, accountName, tableName, updateThroughputParameters, options)
 	if err != nil {
-		return TableResourcesUpdateTableThroughputPollerResponse{}, err
+		return TableResourcesClientUpdateTableThroughputPollerResponse{}, err
 	}
-	result := TableResourcesUpdateTableThroughputPollerResponse{
+	result := TableResourcesClientUpdateTableThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TableResourcesClient.UpdateTableThroughput", "", resp, client.pl, client.updateTableThroughputHandleError)
+	pt, err := armruntime.NewPoller("TableResourcesClient.UpdateTableThroughput", "", resp, client.pl)
 	if err != nil {
-		return TableResourcesUpdateTableThroughputPollerResponse{}, err
+		return TableResourcesClientUpdateTableThroughputPollerResponse{}, err
 	}
-	result.Poller = &TableResourcesUpdateTableThroughputPoller{
+	result.Poller = &TableResourcesClientUpdateTableThroughputPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdateTableThroughput - Update RUs per second of an Azure Cosmos DB Table
-// If the operation fails it returns a generic error.
-func (client *TableResourcesClient) updateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesBeginUpdateTableThroughputOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TableResourcesClient) updateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesClientBeginUpdateTableThroughputOptions) (*http.Response, error) {
 	req, err := client.updateTableThroughputCreateRequest(ctx, resourceGroupName, accountName, tableName, updateThroughputParameters, options)
 	if err != nil {
 		return nil, err
@@ -591,13 +553,13 @@ func (client *TableResourcesClient) updateTableThroughput(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateTableThroughputHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateTableThroughputCreateRequest creates the UpdateTableThroughput request.
-func (client *TableResourcesClient) updateTableThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesBeginUpdateTableThroughputOptions) (*policy.Request, error) {
+func (client *TableResourcesClient) updateTableThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesClientBeginUpdateTableThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -615,7 +577,7 @@ func (client *TableResourcesClient) updateTableThroughputCreateRequest(ctx conte
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -624,16 +586,4 @@ func (client *TableResourcesClient) updateTableThroughputCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)
-}
-
-// updateTableThroughputHandleError handles the UpdateTableThroughput error response.
-func (client *TableResourcesClient) updateTableThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

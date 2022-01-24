@@ -11,7 +11,6 @@ package armhybridcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // MachineExtensionsClient contains the methods for the MachineExtensions group.
 // Don't use this type directly, use NewMachineExtensionsClient() instead.
 type MachineExtensionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMachineExtensionsClient creates a new instance of MachineExtensionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMachineExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MachineExtensionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MachineExtensionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MachineExtensionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - The operation to create or update the extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsBeginCreateOrUpdateOptions) (MachineExtensionsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the machine where the extension should be created or updated.
+// extensionName - The name of the machine extension.
+// extensionParameters - Parameters supplied to the Create Machine Extension operation.
+// options - MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
+// method.
+func (client *MachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (MachineExtensionsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, machineName, extensionName, extensionParameters, options)
 	if err != nil {
-		return MachineExtensionsCreateOrUpdatePollerResponse{}, err
+		return MachineExtensionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := MachineExtensionsCreateOrUpdatePollerResponse{
+	result := MachineExtensionsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("MachineExtensionsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("MachineExtensionsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return MachineExtensionsCreateOrUpdatePollerResponse{}, err
+		return MachineExtensionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &MachineExtensionsCreateOrUpdatePoller{
+	result.Poller = &MachineExtensionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - The operation to create or update the extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachineExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MachineExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, machineName, extensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *MachineExtensionsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions/{extensionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,7 +111,7 @@ func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,34 @@ func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.C
 	return req, runtime.MarshalAsJSON(req, extensionParameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *MachineExtensionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - The operation to delete the extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsBeginDeleteOptions) (MachineExtensionsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the machine where the extension should be deleted.
+// extensionName - The name of the machine extension.
+// options - MachineExtensionsClientBeginDeleteOptions contains the optional parameters for the MachineExtensionsClient.BeginDelete
+// method.
+func (client *MachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (MachineExtensionsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, machineName, extensionName, options)
 	if err != nil {
-		return MachineExtensionsDeletePollerResponse{}, err
+		return MachineExtensionsClientDeletePollerResponse{}, err
 	}
-	result := MachineExtensionsDeletePollerResponse{
+	result := MachineExtensionsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("MachineExtensionsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("MachineExtensionsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return MachineExtensionsDeletePollerResponse{}, err
+		return MachineExtensionsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &MachineExtensionsDeletePoller{
+	result.Poller = &MachineExtensionsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - The operation to delete the extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachineExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MachineExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, machineName, extensionName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *MachineExtensionsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsBeginDeleteOptions) (*policy.Request, error) {
+func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions/{extensionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,7 +183,7 @@ func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +194,29 @@ func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *MachineExtensionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - The operation to get the extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsGetOptions) (MachineExtensionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the machine containing the extension.
+// extensionName - The name of the machine extension.
+// options - MachineExtensionsClientGetOptions contains the optional parameters for the MachineExtensionsClient.Get method.
+func (client *MachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsClientGetOptions) (MachineExtensionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, machineName, extensionName, options)
 	if err != nil {
-		return MachineExtensionsGetResponse{}, err
+		return MachineExtensionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MachineExtensionsGetResponse{}, err
+		return MachineExtensionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MachineExtensionsGetResponse{}, client.getHandleError(resp)
+		return MachineExtensionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsGetOptions) (*policy.Request, error) {
+func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionName string, options *MachineExtensionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions/{extensionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,7 +234,7 @@ func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +246,33 @@ func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *MachineExtensionsClient) getHandleResponse(resp *http.Response) (MachineExtensionsGetResponse, error) {
-	result := MachineExtensionsGetResponse{RawResponse: resp}
+func (client *MachineExtensionsClient) getHandleResponse(resp *http.Response) (MachineExtensionsClientGetResponse, error) {
+	result := MachineExtensionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MachineExtension); err != nil {
-		return MachineExtensionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return MachineExtensionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MachineExtensionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - The operation to get all extensions of a non-Azure machine
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachineExtensionsClient) List(resourceGroupName string, machineName string, options *MachineExtensionsListOptions) *MachineExtensionsListPager {
-	return &MachineExtensionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the machine containing the extension.
+// options - MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.List method.
+func (client *MachineExtensionsClient) List(resourceGroupName string, machineName string, options *MachineExtensionsClientListOptions) *MachineExtensionsClientListPager {
+	return &MachineExtensionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, machineName, options)
 		},
-		advancer: func(ctx context.Context, resp MachineExtensionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MachineExtensionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MachineExtensionsListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, machineName string, options *MachineExtensionsListOptions) (*policy.Request, error) {
+func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, machineName string, options *MachineExtensionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,7 +286,7 @@ func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -315,50 +301,43 @@ func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *MachineExtensionsClient) listHandleResponse(resp *http.Response) (MachineExtensionsListResponse, error) {
-	result := MachineExtensionsListResponse{RawResponse: resp}
+func (client *MachineExtensionsClient) listHandleResponse(resp *http.Response) (MachineExtensionsClientListResponse, error) {
+	result := MachineExtensionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MachineExtensionsListResult); err != nil {
-		return MachineExtensionsListResponse{}, runtime.NewResponseError(err, resp)
+		return MachineExtensionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *MachineExtensionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - The operation to create or update the extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsBeginUpdateOptions) (MachineExtensionsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the machine where the extension should be created or updated.
+// extensionName - The name of the machine extension.
+// extensionParameters - Parameters supplied to the Create Machine Extension operation.
+// options - MachineExtensionsClientBeginUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginUpdate
+// method.
+func (client *MachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (MachineExtensionsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, machineName, extensionName, extensionParameters, options)
 	if err != nil {
-		return MachineExtensionsUpdatePollerResponse{}, err
+		return MachineExtensionsClientUpdatePollerResponse{}, err
 	}
-	result := MachineExtensionsUpdatePollerResponse{
+	result := MachineExtensionsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("MachineExtensionsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("MachineExtensionsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return MachineExtensionsUpdatePollerResponse{}, err
+		return MachineExtensionsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &MachineExtensionsUpdatePoller{
+	result.Poller = &MachineExtensionsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - The operation to create or update the extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachineExtensionsClient) update(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MachineExtensionsClient) update(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, machineName, extensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
@@ -368,13 +347,13 @@ func (client *MachineExtensionsClient) update(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsBeginUpdateOptions) (*policy.Request, error) {
+func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions/{extensionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -392,7 +371,7 @@ func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -401,17 +380,4 @@ func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, extensionParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *MachineExtensionsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

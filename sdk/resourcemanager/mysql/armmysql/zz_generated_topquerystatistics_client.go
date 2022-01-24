@@ -11,7 +11,6 @@ package armmysql
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // TopQueryStatisticsClient contains the methods for the TopQueryStatistics group.
 // Don't use this type directly, use NewTopQueryStatisticsClient() instead.
 type TopQueryStatisticsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTopQueryStatisticsClient creates a new instance of TopQueryStatisticsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTopQueryStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TopQueryStatisticsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TopQueryStatisticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TopQueryStatisticsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Retrieve the query statistic for specified identifier.
-// If the operation fails it returns the *CloudError error type.
-func (client *TopQueryStatisticsClient) Get(ctx context.Context, resourceGroupName string, serverName string, queryStatisticID string, options *TopQueryStatisticsGetOptions) (TopQueryStatisticsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// queryStatisticID - The Query Statistic identifier.
+// options - TopQueryStatisticsClientGetOptions contains the optional parameters for the TopQueryStatisticsClient.Get method.
+func (client *TopQueryStatisticsClient) Get(ctx context.Context, resourceGroupName string, serverName string, queryStatisticID string, options *TopQueryStatisticsClientGetOptions) (TopQueryStatisticsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, queryStatisticID, options)
 	if err != nil {
-		return TopQueryStatisticsGetResponse{}, err
+		return TopQueryStatisticsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TopQueryStatisticsGetResponse{}, err
+		return TopQueryStatisticsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TopQueryStatisticsGetResponse{}, client.getHandleError(resp)
+		return TopQueryStatisticsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TopQueryStatisticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, queryStatisticID string, options *TopQueryStatisticsGetOptions) (*policy.Request, error) {
+func (client *TopQueryStatisticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, queryStatisticID string, options *TopQueryStatisticsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/topQueryStatistics/{queryStatisticId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *TopQueryStatisticsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter queryStatisticID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{queryStatisticId}", url.PathEscape(queryStatisticID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,35 @@ func (client *TopQueryStatisticsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *TopQueryStatisticsClient) getHandleResponse(resp *http.Response) (TopQueryStatisticsGetResponse, error) {
-	result := TopQueryStatisticsGetResponse{RawResponse: resp}
+func (client *TopQueryStatisticsClient) getHandleResponse(resp *http.Response) (TopQueryStatisticsClientGetResponse, error) {
+	result := TopQueryStatisticsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryStatistic); err != nil {
-		return TopQueryStatisticsGetResponse{}, runtime.NewResponseError(err, resp)
+		return TopQueryStatisticsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TopQueryStatisticsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByServer - Retrieve the Query-Store top queries for specified metric and aggregation.
-// If the operation fails it returns the *CloudError error type.
-func (client *TopQueryStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters TopQueryStatisticsInput, options *TopQueryStatisticsListByServerOptions) *TopQueryStatisticsListByServerPager {
-	return &TopQueryStatisticsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// parameters - The required parameters for retrieving top query statistics.
+// options - TopQueryStatisticsClientListByServerOptions contains the optional parameters for the TopQueryStatisticsClient.ListByServer
+// method.
+func (client *TopQueryStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters TopQueryStatisticsInput, options *TopQueryStatisticsClientListByServerOptions) *TopQueryStatisticsClientListByServerPager {
+	return &TopQueryStatisticsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 		},
-		advancer: func(ctx context.Context, resp TopQueryStatisticsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TopQueryStatisticsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TopQueryStatisticsResultList.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *TopQueryStatisticsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters TopQueryStatisticsInput, options *TopQueryStatisticsListByServerOptions) (*policy.Request, error) {
+func (client *TopQueryStatisticsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters TopQueryStatisticsInput, options *TopQueryStatisticsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/topQueryStatistics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +143,7 @@ func (client *TopQueryStatisticsClient) listByServerCreateRequest(ctx context.Co
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +155,10 @@ func (client *TopQueryStatisticsClient) listByServerCreateRequest(ctx context.Co
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *TopQueryStatisticsClient) listByServerHandleResponse(resp *http.Response) (TopQueryStatisticsListByServerResponse, error) {
-	result := TopQueryStatisticsListByServerResponse{RawResponse: resp}
+func (client *TopQueryStatisticsClient) listByServerHandleResponse(resp *http.Response) (TopQueryStatisticsClientListByServerResponse, error) {
+	result := TopQueryStatisticsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopQueryStatisticsResultList); err != nil {
-		return TopQueryStatisticsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return TopQueryStatisticsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *TopQueryStatisticsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

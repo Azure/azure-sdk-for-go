@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListCertificates.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListCertificates.json
 func ExampleCertificatesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,18 +25,22 @@ func ExampleCertificatesClient_List() {
 	}
 	ctx := context.Background()
 	client := armappservice.NewCertificatesClient("<subscription-id>", cred, nil)
-	pager := client.List(&armappservice.CertificatesListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armappservice.CertificatesClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Certificate.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/ListCertificatesByResourceGroup.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListCertificatesByResourceGroup.json
 func ExampleCertificatesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,17 +50,21 @@ func ExampleCertificatesClient_ListByResourceGroup() {
 	client := armappservice.NewCertificatesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Certificate.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetCertificate.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetCertificate.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,10 +79,10 @@ func ExampleCertificatesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Certificate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CertificatesClientGetResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/CreateOrUpdateCertificate.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/CreateOrUpdateCertificate.json
 func ExampleCertificatesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,11 +93,9 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<name>",
-		armappservice.Certificate{
-			Resource: armappservice.Resource{
-				Location: to.StringPtr("<location>"),
-			},
-			Properties: &armappservice.CertificateProperties{
+		armappservice.AppCertificate{
+			Location: to.StringPtr("<location>"),
+			Properties: &armappservice.AppCertificateProperties{
 				HostNames: []*string{
 					to.StringPtr("ServerCert")},
 				Password: to.StringPtr("<password>"),
@@ -99,10 +105,10 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Certificate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CertificatesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/DeleteCertificate.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteCertificate.json
 func ExampleCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +125,7 @@ func ExampleCertificatesClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/PatchCertificate.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/PatchCertificate.json
 func ExampleCertificatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,8 +136,8 @@ func ExampleCertificatesClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<name>",
-		armappservice.CertificatePatchResource{
-			Properties: &armappservice.CertificatePatchResourceProperties{
+		armappservice.AppCertificatePatchResource{
+			Properties: &armappservice.AppCertificatePatchResourceProperties{
 				Password: to.StringPtr("<password>"),
 			},
 		},
@@ -139,5 +145,5 @@ func ExampleCertificatesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Certificate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CertificatesClientUpdateResult)
 }

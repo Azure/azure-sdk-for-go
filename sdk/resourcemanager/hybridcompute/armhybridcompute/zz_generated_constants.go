@@ -9,8 +9,8 @@
 package armhybridcompute
 
 const (
-	module  = "armhybridcompute"
-	version = "v0.1.0"
+	moduleName    = "armhybridcompute"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -56,15 +56,16 @@ func (c InstanceViewTypes) ToPtr() *InstanceViewTypes {
 	return &c
 }
 
-// PublicNetworkAccessType - The network access policy to determine if Azure Arc agents can use public Azure Arc service endpoints. Defaults to disabled
-// (access to Azure Arc services only via private link).
+// PublicNetworkAccessType - The network access policy to determine if Azure Arc agents can use public Azure Arc service endpoints.
+// Defaults to disabled (access to Azure Arc services only via private link).
 type PublicNetworkAccessType string
 
 const (
-	// PublicNetworkAccessTypeDisabled - Does not allow Azure Arc agents to communicate with Azure Arc services over public (internet) endpoints. The agents
-	// must use the private link.
+	// PublicNetworkAccessTypeDisabled - Does not allow Azure Arc agents to communicate with Azure Arc services over public (internet)
+	// endpoints. The agents must use the private link.
 	PublicNetworkAccessTypeDisabled PublicNetworkAccessType = "Disabled"
-	// PublicNetworkAccessTypeEnabled - Allows Azure Arc agents to communicate with Azure Arc services over both public (internet) and private endpoints.
+	// PublicNetworkAccessTypeEnabled - Allows Azure Arc agents to communicate with Azure Arc services over both public (internet)
+	// and private endpoints.
 	PublicNetworkAccessTypeEnabled PublicNetworkAccessType = "Enabled"
 )
 

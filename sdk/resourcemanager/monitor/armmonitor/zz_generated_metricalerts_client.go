@@ -11,7 +11,6 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // MetricAlertsClient contains the methods for the MetricAlerts group.
 // Don't use this type directly, use NewMetricAlertsClient() instead.
 type MetricAlertsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMetricAlertsClient creates a new instance of MetricAlertsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMetricAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MetricAlertsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MetricAlertsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MetricAlertsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update an metric alert definition.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource, options *MetricAlertsCreateOrUpdateOptions) (MetricAlertsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// ruleName - The name of the rule.
+// parameters - The parameters of the rule to create or update.
+// options - MetricAlertsClientCreateOrUpdateOptions contains the optional parameters for the MetricAlertsClient.CreateOrUpdate
+// method.
+func (client *MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource, options *MetricAlertsClientCreateOrUpdateOptions) (MetricAlertsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters, options)
 	if err != nil {
-		return MetricAlertsCreateOrUpdateResponse{}, err
+		return MetricAlertsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricAlertsCreateOrUpdateResponse{}, err
+		return MetricAlertsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricAlertsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return MetricAlertsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource, options *MetricAlertsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource, options *MetricAlertsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +86,7 @@ func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter ruleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +98,36 @@ func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MetricAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (MetricAlertsCreateOrUpdateResponse, error) {
-	result := MetricAlertsCreateOrUpdateResponse{RawResponse: resp}
+func (client *MetricAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (MetricAlertsClientCreateOrUpdateResponse, error) {
+	result := MetricAlertsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
-		return MetricAlertsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MetricAlertsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *MetricAlertsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete an alert rule definition.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MetricAlertsClient) Delete(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsDeleteOptions) (MetricAlertsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// ruleName - The name of the rule.
+// options - MetricAlertsClientDeleteOptions contains the optional parameters for the MetricAlertsClient.Delete method.
+func (client *MetricAlertsClient) Delete(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsClientDeleteOptions) (MetricAlertsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
-		return MetricAlertsDeleteResponse{}, err
+		return MetricAlertsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricAlertsDeleteResponse{}, err
+		return MetricAlertsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return MetricAlertsDeleteResponse{}, client.deleteHandleError(resp)
+		return MetricAlertsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MetricAlertsDeleteResponse{RawResponse: resp}, nil
+	return MetricAlertsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MetricAlertsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsDeleteOptions) (*policy.Request, error) {
+func (client *MetricAlertsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +141,7 @@ func (client *MetricAlertsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter ruleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +152,28 @@ func (client *MetricAlertsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *MetricAlertsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve an alert rule definition.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MetricAlertsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsGetOptions) (MetricAlertsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// ruleName - The name of the rule.
+// options - MetricAlertsClientGetOptions contains the optional parameters for the MetricAlertsClient.Get method.
+func (client *MetricAlertsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsClientGetOptions) (MetricAlertsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
-		return MetricAlertsGetResponse{}, err
+		return MetricAlertsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricAlertsGetResponse{}, err
+		return MetricAlertsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricAlertsGetResponse{}, client.getHandleError(resp)
+		return MetricAlertsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MetricAlertsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsGetOptions) (*policy.Request, error) {
+func (client *MetricAlertsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +187,7 @@ func (client *MetricAlertsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter ruleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,46 +199,36 @@ func (client *MetricAlertsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *MetricAlertsClient) getHandleResponse(resp *http.Response) (MetricAlertsGetResponse, error) {
-	result := MetricAlertsGetResponse{RawResponse: resp}
+func (client *MetricAlertsClient) getHandleResponse(resp *http.Response) (MetricAlertsClientGetResponse, error) {
+	result := MetricAlertsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
-		return MetricAlertsGetResponse{}, runtime.NewResponseError(err, resp)
+		return MetricAlertsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MetricAlertsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Retrieve alert rule definitions in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MetricAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *MetricAlertsListByResourceGroupOptions) (MetricAlertsListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - MetricAlertsClientListByResourceGroupOptions contains the optional parameters for the MetricAlertsClient.ListByResourceGroup
+// method.
+func (client *MetricAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *MetricAlertsClientListByResourceGroupOptions) (MetricAlertsClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return MetricAlertsListByResourceGroupResponse{}, err
+		return MetricAlertsClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricAlertsListByResourceGroupResponse{}, err
+		return MetricAlertsClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricAlertsListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return MetricAlertsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MetricAlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *MetricAlertsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *MetricAlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *MetricAlertsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -256,7 +238,7 @@ func (client *MetricAlertsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,52 +250,41 @@ func (client *MetricAlertsClient) listByResourceGroupCreateRequest(ctx context.C
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *MetricAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (MetricAlertsListByResourceGroupResponse, error) {
-	result := MetricAlertsListByResourceGroupResponse{RawResponse: resp}
+func (client *MetricAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (MetricAlertsClientListByResourceGroupResponse, error) {
+	result := MetricAlertsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResourceCollection); err != nil {
-		return MetricAlertsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return MetricAlertsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *MetricAlertsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Retrieve alert rule definitions in a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MetricAlertsClient) ListBySubscription(ctx context.Context, options *MetricAlertsListBySubscriptionOptions) (MetricAlertsListBySubscriptionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - MetricAlertsClientListBySubscriptionOptions contains the optional parameters for the MetricAlertsClient.ListBySubscription
+// method.
+func (client *MetricAlertsClient) ListBySubscription(ctx context.Context, options *MetricAlertsClientListBySubscriptionOptions) (MetricAlertsClientListBySubscriptionResponse, error) {
 	req, err := client.listBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
-		return MetricAlertsListBySubscriptionResponse{}, err
+		return MetricAlertsClientListBySubscriptionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricAlertsListBySubscriptionResponse{}, err
+		return MetricAlertsClientListBySubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricAlertsListBySubscriptionResponse{}, client.listBySubscriptionHandleError(resp)
+		return MetricAlertsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBySubscriptionHandleResponse(resp)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *MetricAlertsClient) listBySubscriptionCreateRequest(ctx context.Context, options *MetricAlertsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *MetricAlertsClient) listBySubscriptionCreateRequest(ctx context.Context, options *MetricAlertsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricAlerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,46 +296,37 @@ func (client *MetricAlertsClient) listBySubscriptionCreateRequest(ctx context.Co
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *MetricAlertsClient) listBySubscriptionHandleResponse(resp *http.Response) (MetricAlertsListBySubscriptionResponse, error) {
-	result := MetricAlertsListBySubscriptionResponse{RawResponse: resp}
+func (client *MetricAlertsClient) listBySubscriptionHandleResponse(resp *http.Response) (MetricAlertsClientListBySubscriptionResponse, error) {
+	result := MetricAlertsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResourceCollection); err != nil {
-		return MetricAlertsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return MetricAlertsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *MetricAlertsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update an metric alert definition.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MetricAlertsClient) Update(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch, options *MetricAlertsUpdateOptions) (MetricAlertsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// ruleName - The name of the rule.
+// parameters - The parameters of the rule to update.
+// options - MetricAlertsClientUpdateOptions contains the optional parameters for the MetricAlertsClient.Update method.
+func (client *MetricAlertsClient) Update(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch, options *MetricAlertsClientUpdateOptions) (MetricAlertsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, ruleName, parameters, options)
 	if err != nil {
-		return MetricAlertsUpdateResponse{}, err
+		return MetricAlertsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricAlertsUpdateResponse{}, err
+		return MetricAlertsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricAlertsUpdateResponse{}, client.updateHandleError(resp)
+		return MetricAlertsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch, options *MetricAlertsUpdateOptions) (*policy.Request, error) {
+func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch, options *MetricAlertsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -378,7 +340,7 @@ func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter ruleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -390,23 +352,10 @@ func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *MetricAlertsClient) updateHandleResponse(resp *http.Response) (MetricAlertsUpdateResponse, error) {
-	result := MetricAlertsUpdateResponse{RawResponse: resp}
+func (client *MetricAlertsClient) updateHandleResponse(resp *http.Response) (MetricAlertsClientUpdateResponse, error) {
+	result := MetricAlertsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
-		return MetricAlertsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MetricAlertsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *MetricAlertsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -9,8 +9,8 @@
 package armhdinsight
 
 const (
-	module  = "armhdinsight"
-	version = "v0.1.0"
+	moduleName    = "armhdinsight"
+	moduleVersion = "v0.2.0"
 )
 
 // AsyncOperationState - The async operation state.
@@ -277,7 +277,8 @@ func (c PrivateLink) ToPtr() *PrivateLink {
 	return &c
 }
 
-// PrivateLinkConfigurationProvisioningState - The private link configuration provisioning state, which only appears in the response.
+// PrivateLinkConfigurationProvisioningState - The private link configuration provisioning state, which only appears in the
+// response.
 type PrivateLinkConfigurationProvisioningState string
 
 const (
@@ -329,8 +330,8 @@ func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectio
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
-// and a set of user assigned identities.
+// ResourceIdentityType - The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both
+// an implicitly created identity and a set of user assigned identities.
 type ResourceIdentityType string
 
 const (

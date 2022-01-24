@@ -27,13 +27,14 @@ func ExampleSnapshotPoliciesClient_List() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewSnapshotPoliciesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SnapshotPoliciesClientListResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/SnapshotPolicies_Get.json
@@ -52,7 +53,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SnapshotPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SnapshotPoliciesClientGetResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/SnapshotPolicies_Create.json
@@ -75,6 +76,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 					Minute:          to.Int32Ptr(30),
 					SnapshotsToKeep: to.Int32Ptr(4),
 				},
+				Enabled: to.BoolPtr(true),
 				HourlySchedule: &armnetapp.HourlySchedule{
 					Minute:          to.Int32Ptr(50),
 					SnapshotsToKeep: to.Int32Ptr(2),
@@ -97,7 +99,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SnapshotPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SnapshotPoliciesClientCreateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/SnapshotPolicies_Update.json
@@ -147,7 +149,7 @@ func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SnapshotPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SnapshotPoliciesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/SnapshotPolicies_Delete.json
@@ -180,7 +182,7 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewSnapshotPoliciesClient("<subscription-id>", cred, nil)
-	_, err = client.ListVolumes(ctx,
+	res, err := client.ListVolumes(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<snapshot-policy-name>",
@@ -188,4 +190,5 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SnapshotPoliciesClientListVolumesResult)
 }

@@ -1,14 +1,1892 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ServicesClient.List` parameter(s) have been changed from `(string, *ServicesListOptions)` to `(string, *ServicesClientListOptions)`
+- Function `*ServicesClient.List` return value(s) have been changed from `(*ServicesListPager)` to `(*ServicesClientListPager)`
+- Function `*ServicesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ServicesBeginDeleteOptions)` to `(context.Context, string, string, *ServicesClientBeginDeleteOptions)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(ServicesDeletePollerResponse, error)` to `(ServicesClientDeletePollerResponse, error)`
+- Function `*DeploymentsClient.BeginStartJFR` parameter(s) have been changed from `(context.Context, string, string, string, string, DiagnosticParameters, *DeploymentsBeginStartJFROptions)` to `(context.Context, string, string, string, string, DiagnosticParameters, *DeploymentsClientBeginStartJFROptions)`
+- Function `*DeploymentsClient.BeginStartJFR` return value(s) have been changed from `(DeploymentsStartJFRPollerResponse, error)` to `(DeploymentsClientStartJFRPollerResponse, error)`
+- Function `*CertificatesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *CertificatesBeginDeleteOptions)` to `(context.Context, string, string, string, *CertificatesClientBeginDeleteOptions)`
+- Function `*CertificatesClient.BeginDelete` return value(s) have been changed from `(CertificatesDeletePollerResponse, error)` to `(CertificatesClientDeletePollerResponse, error)`
+- Function `*ConfigServersClient.BeginUpdatePut` parameter(s) have been changed from `(context.Context, string, string, ConfigServerResource, *ConfigServersBeginUpdatePutOptions)` to `(context.Context, string, string, ConfigServerResource, *ConfigServersClientBeginUpdatePutOptions)`
+- Function `*ConfigServersClient.BeginUpdatePut` return value(s) have been changed from `(ConfigServersUpdatePutPollerResponse, error)` to `(ConfigServersClientUpdatePutPollerResponse, error)`
+- Function `*DeploymentsClient.BeginGenerateHeapDump` parameter(s) have been changed from `(context.Context, string, string, string, string, DiagnosticParameters, *DeploymentsBeginGenerateHeapDumpOptions)` to `(context.Context, string, string, string, string, DiagnosticParameters, *DeploymentsClientBeginGenerateHeapDumpOptions)`
+- Function `*DeploymentsClient.BeginGenerateHeapDump` return value(s) have been changed from `(DeploymentsGenerateHeapDumpPollerResponse, error)` to `(DeploymentsClientGenerateHeapDumpPollerResponse, error)`
+- Function `*CustomDomainsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *CustomDomainsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *CustomDomainsClientBeginDeleteOptions)`
+- Function `*CustomDomainsClient.BeginDelete` return value(s) have been changed from `(CustomDomainsDeletePollerResponse, error)` to `(CustomDomainsClientDeletePollerResponse, error)`
+- Function `*ServicesClient.RegenerateTestKey` parameter(s) have been changed from `(context.Context, string, string, RegenerateTestKeyRequestPayload, *ServicesRegenerateTestKeyOptions)` to `(context.Context, string, string, RegenerateTestKeyRequestPayload, *ServicesClientRegenerateTestKeyOptions)`
+- Function `*ServicesClient.RegenerateTestKey` return value(s) have been changed from `(ServicesRegenerateTestKeyResponse, error)` to `(ServicesClientRegenerateTestKeyResponse, error)`
+- Function `*MonitoringSettingsClient.BeginUpdatePatch` parameter(s) have been changed from `(context.Context, string, string, MonitoringSettingResource, *MonitoringSettingsBeginUpdatePatchOptions)` to `(context.Context, string, string, MonitoringSettingResource, *MonitoringSettingsClientBeginUpdatePatchOptions)`
+- Function `*MonitoringSettingsClient.BeginUpdatePatch` return value(s) have been changed from `(MonitoringSettingsUpdatePatchPollerResponse, error)` to `(MonitoringSettingsClientUpdatePatchPollerResponse, error)`
+- Function `*MonitoringSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *MonitoringSettingsGetOptions)` to `(context.Context, string, string, *MonitoringSettingsClientGetOptions)`
+- Function `*MonitoringSettingsClient.Get` return value(s) have been changed from `(MonitoringSettingsGetResponse, error)` to `(MonitoringSettingsClientGetResponse, error)`
+- Function `*AppsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, AppResource, *AppsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, AppResource, *AppsClientBeginCreateOrUpdateOptions)`
+- Function `*AppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AppsCreateOrUpdatePollerResponse, error)` to `(AppsClientCreateOrUpdatePollerResponse, error)`
+- Function `*StoragesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, StorageResource, *StoragesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, StorageResource, *StoragesClientBeginCreateOrUpdateOptions)`
+- Function `*StoragesClient.BeginCreateOrUpdate` return value(s) have been changed from `(StoragesCreateOrUpdatePollerResponse, error)` to `(StoragesClientCreateOrUpdatePollerResponse, error)`
+- Function `*AppsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AppsGetOptions)` to `(context.Context, string, string, string, *AppsClientGetOptions)`
+- Function `*AppsClient.Get` return value(s) have been changed from `(AppsGetResponse, error)` to `(AppsClientGetResponse, error)`
+- Function `*ServicesClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, *ServicesBeginStartOptions)` to `(context.Context, string, string, *ServicesClientBeginStartOptions)`
+- Function `*ServicesClient.BeginStart` return value(s) have been changed from `(ServicesStartPollerResponse, error)` to `(ServicesClientStartPollerResponse, error)`
+- Function `*BindingsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, BindingResource, *BindingsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, BindingResource, *BindingsClientBeginCreateOrUpdateOptions)`
+- Function `*BindingsClient.BeginCreateOrUpdate` return value(s) have been changed from `(BindingsCreateOrUpdatePollerResponse, error)` to `(BindingsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DeploymentsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *DeploymentsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *DeploymentsClientBeginDeleteOptions)`
+- Function `*DeploymentsClient.BeginDelete` return value(s) have been changed from `(DeploymentsDeletePollerResponse, error)` to `(DeploymentsClientDeletePollerResponse, error)`
+- Function `*AppsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *AppsBeginDeleteOptions)` to `(context.Context, string, string, string, *AppsClientBeginDeleteOptions)`
+- Function `*AppsClient.BeginDelete` return value(s) have been changed from `(AppsDeletePollerResponse, error)` to `(AppsClientDeletePollerResponse, error)`
+- Function `*ConfigServersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ConfigServersGetOptions)` to `(context.Context, string, string, *ConfigServersClientGetOptions)`
+- Function `*ConfigServersClient.Get` return value(s) have been changed from `(ConfigServersGetResponse, error)` to `(ConfigServersClientGetResponse, error)`
+- Function `*MonitoringSettingsClient.BeginUpdatePut` parameter(s) have been changed from `(context.Context, string, string, MonitoringSettingResource, *MonitoringSettingsBeginUpdatePutOptions)` to `(context.Context, string, string, MonitoringSettingResource, *MonitoringSettingsClientBeginUpdatePutOptions)`
+- Function `*MonitoringSettingsClient.BeginUpdatePut` return value(s) have been changed from `(MonitoringSettingsUpdatePutPollerResponse, error)` to `(MonitoringSettingsClientUpdatePutPollerResponse, error)`
+- Function `*ServicesClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, *ServicesBeginStopOptions)` to `(context.Context, string, string, *ServicesClientBeginStopOptions)`
+- Function `*ServicesClient.BeginStop` return value(s) have been changed from `(ServicesStopPollerResponse, error)` to `(ServicesClientStopPollerResponse, error)`
+- Function `*DeploymentsClient.BeginGenerateThreadDump` parameter(s) have been changed from `(context.Context, string, string, string, string, DiagnosticParameters, *DeploymentsBeginGenerateThreadDumpOptions)` to `(context.Context, string, string, string, string, DiagnosticParameters, *DeploymentsClientBeginGenerateThreadDumpOptions)`
+- Function `*DeploymentsClient.BeginGenerateThreadDump` return value(s) have been changed from `(DeploymentsGenerateThreadDumpPollerResponse, error)` to `(DeploymentsClientGenerateThreadDumpPollerResponse, error)`
+- Function `*BindingsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, BindingResource, *BindingsBeginUpdateOptions)` to `(context.Context, string, string, string, string, BindingResource, *BindingsClientBeginUpdateOptions)`
+- Function `*BindingsClient.BeginUpdate` return value(s) have been changed from `(BindingsUpdatePollerResponse, error)` to `(BindingsClientUpdatePollerResponse, error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ServiceResource, *ServicesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, ServiceResource, *ServicesClientBeginCreateOrUpdateOptions)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServicesCreateOrUpdatePollerResponse, error)` to `(ServicesClientCreateOrUpdatePollerResponse, error)`
+- Function `*BindingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *BindingsGetOptions)` to `(context.Context, string, string, string, string, *BindingsClientGetOptions)`
+- Function `*BindingsClient.Get` return value(s) have been changed from `(BindingsGetResponse, error)` to `(BindingsClientGetResponse, error)`
+- Function `*DeploymentsClient.GetLogFileURL` parameter(s) have been changed from `(context.Context, string, string, string, string, *DeploymentsGetLogFileURLOptions)` to `(context.Context, string, string, string, string, *DeploymentsClientGetLogFileURLOptions)`
+- Function `*DeploymentsClient.GetLogFileURL` return value(s) have been changed from `(DeploymentsGetLogFileURLResponse, error)` to `(DeploymentsClientGetLogFileURLResponse, error)`
+- Function `*DeploymentsClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, string, *DeploymentsBeginStartOptions)` to `(context.Context, string, string, string, string, *DeploymentsClientBeginStartOptions)`
+- Function `*DeploymentsClient.BeginStart` return value(s) have been changed from `(DeploymentsStartPollerResponse, error)` to `(DeploymentsClientStartPollerResponse, error)`
+- Function `*DeploymentsClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, string, string, string, *DeploymentsBeginRestartOptions)` to `(context.Context, string, string, string, string, *DeploymentsClientBeginRestartOptions)`
+- Function `*DeploymentsClient.BeginRestart` return value(s) have been changed from `(DeploymentsRestartPollerResponse, error)` to `(DeploymentsClientRestartPollerResponse, error)`
+- Function `*ConfigServersClient.BeginUpdatePatch` parameter(s) have been changed from `(context.Context, string, string, ConfigServerResource, *ConfigServersBeginUpdatePatchOptions)` to `(context.Context, string, string, ConfigServerResource, *ConfigServersClientBeginUpdatePatchOptions)`
+- Function `*ConfigServersClient.BeginUpdatePatch` return value(s) have been changed from `(ConfigServersUpdatePatchPollerResponse, error)` to `(ConfigServersClientUpdatePatchPollerResponse, error)`
+- Function `*BindingsClient.List` parameter(s) have been changed from `(string, string, string, *BindingsListOptions)` to `(string, string, string, *BindingsClientListOptions)`
+- Function `*BindingsClient.List` return value(s) have been changed from `(*BindingsListPager)` to `(*BindingsClientListPager)`
+- Function `*DeploymentsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, DeploymentResource, *DeploymentsBeginUpdateOptions)` to `(context.Context, string, string, string, string, DeploymentResource, *DeploymentsClientBeginUpdateOptions)`
+- Function `*DeploymentsClient.BeginUpdate` return value(s) have been changed from `(DeploymentsUpdatePollerResponse, error)` to `(DeploymentsClientUpdatePollerResponse, error)`
+- Function `*StoragesClient.List` parameter(s) have been changed from `(string, string, *StoragesListOptions)` to `(string, string, *StoragesClientListOptions)`
+- Function `*StoragesClient.List` return value(s) have been changed from `(*StoragesListPager)` to `(*StoragesClientListPager)`
+- Function `*CertificatesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CertificatesGetOptions)` to `(context.Context, string, string, string, *CertificatesClientGetOptions)`
+- Function `*CertificatesClient.Get` return value(s) have been changed from `(CertificatesGetResponse, error)` to `(CertificatesClientGetResponse, error)`
+- Function `*CustomDomainsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, CustomDomainResource, *CustomDomainsBeginUpdateOptions)` to `(context.Context, string, string, string, string, CustomDomainResource, *CustomDomainsClientBeginUpdateOptions)`
+- Function `*CustomDomainsClient.BeginUpdate` return value(s) have been changed from `(CustomDomainsUpdatePollerResponse, error)` to `(CustomDomainsClientUpdatePollerResponse, error)`
+- Function `*CertificatesClient.List` parameter(s) have been changed from `(string, string, *CertificatesListOptions)` to `(string, string, *CertificatesClientListOptions)`
+- Function `*CertificatesClient.List` return value(s) have been changed from `(*CertificatesListPager)` to `(*CertificatesClientListPager)`
+- Function `*ServicesClient.DisableTestEndpoint` parameter(s) have been changed from `(context.Context, string, string, *ServicesDisableTestEndpointOptions)` to `(context.Context, string, string, *ServicesClientDisableTestEndpointOptions)`
+- Function `*ServicesClient.DisableTestEndpoint` return value(s) have been changed from `(ServicesDisableTestEndpointResponse, error)` to `(ServicesClientDisableTestEndpointResponse, error)`
+- Function `*RuntimeVersionsClient.ListRuntimeVersions` parameter(s) have been changed from `(context.Context, *RuntimeVersionsListRuntimeVersionsOptions)` to `(context.Context, *RuntimeVersionsClientListRuntimeVersionsOptions)`
+- Function `*RuntimeVersionsClient.ListRuntimeVersions` return value(s) have been changed from `(RuntimeVersionsListRuntimeVersionsResponse, error)` to `(RuntimeVersionsClientListRuntimeVersionsResponse, error)`
+- Function `*AppsClient.ValidateDomain` parameter(s) have been changed from `(context.Context, string, string, string, CustomDomainValidatePayload, *AppsValidateDomainOptions)` to `(context.Context, string, string, string, CustomDomainValidatePayload, *AppsClientValidateDomainOptions)`
+- Function `*AppsClient.ValidateDomain` return value(s) have been changed from `(AppsValidateDomainResponse, error)` to `(AppsClientValidateDomainResponse, error)`
+- Function `*CustomDomainsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, CustomDomainResource, *CustomDomainsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, CustomDomainResource, *CustomDomainsClientBeginCreateOrUpdateOptions)`
+- Function `*CustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(CustomDomainsCreateOrUpdatePollerResponse, error)` to `(CustomDomainsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ServicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ServicesGetOptions)` to `(context.Context, string, string, *ServicesClientGetOptions)`
+- Function `*ServicesClient.Get` return value(s) have been changed from `(ServicesGetResponse, error)` to `(ServicesClientGetResponse, error)`
+- Function `*SKUsClient.List` parameter(s) have been changed from `(*SKUsListOptions)` to `(*SKUsClientListOptions)`
+- Function `*SKUsClient.List` return value(s) have been changed from `(*SKUsListPager)` to `(*SKUsClientListPager)`
+- Function `*ServicesClient.EnableTestEndpoint` parameter(s) have been changed from `(context.Context, string, string, *ServicesEnableTestEndpointOptions)` to `(context.Context, string, string, *ServicesClientEnableTestEndpointOptions)`
+- Function `*ServicesClient.EnableTestEndpoint` return value(s) have been changed from `(ServicesEnableTestEndpointResponse, error)` to `(ServicesClientEnableTestEndpointResponse, error)`
+- Function `*ConfigServersClient.BeginValidate` parameter(s) have been changed from `(context.Context, string, string, ConfigServerSettings, *ConfigServersBeginValidateOptions)` to `(context.Context, string, string, ConfigServerSettings, *ConfigServersClientBeginValidateOptions)`
+- Function `*ConfigServersClient.BeginValidate` return value(s) have been changed from `(ConfigServersValidatePollerResponse, error)` to `(ConfigServersClientValidatePollerResponse, error)`
+- Function `*AppsClient.GetResourceUploadURL` parameter(s) have been changed from `(context.Context, string, string, string, *AppsGetResourceUploadURLOptions)` to `(context.Context, string, string, string, *AppsClientGetResourceUploadURLOptions)`
+- Function `*AppsClient.GetResourceUploadURL` return value(s) have been changed from `(AppsGetResourceUploadURLResponse, error)` to `(AppsClientGetResourceUploadURLResponse, error)`
+- Function `*ServicesClient.ListBySubscription` parameter(s) have been changed from `(*ServicesListBySubscriptionOptions)` to `(*ServicesClientListBySubscriptionOptions)`
+- Function `*ServicesClient.ListBySubscription` return value(s) have been changed from `(*ServicesListBySubscriptionPager)` to `(*ServicesClientListBySubscriptionPager)`
+- Function `*StoragesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *StoragesGetOptions)` to `(context.Context, string, string, string, *StoragesClientGetOptions)`
+- Function `*StoragesClient.Get` return value(s) have been changed from `(StoragesGetResponse, error)` to `(StoragesClientGetResponse, error)`
+- Function `*DeploymentsClient.ListForCluster` parameter(s) have been changed from `(string, string, *DeploymentsListForClusterOptions)` to `(string, string, *DeploymentsClientListForClusterOptions)`
+- Function `*DeploymentsClient.ListForCluster` return value(s) have been changed from `(*DeploymentsListForClusterPager)` to `(*DeploymentsClientListForClusterPager)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, DeploymentResource, *DeploymentsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, DeploymentResource, *DeploymentsClientBeginCreateOrUpdateOptions)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DeploymentsCreateOrUpdatePollerResponse, error)` to `(DeploymentsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DeploymentsClient.List` parameter(s) have been changed from `(string, string, string, *DeploymentsListOptions)` to `(string, string, string, *DeploymentsClientListOptions)`
+- Function `*DeploymentsClient.List` return value(s) have been changed from `(*DeploymentsListPager)` to `(*DeploymentsClientListPager)`
+- Function `*AppsClient.List` parameter(s) have been changed from `(string, string, *AppsListOptions)` to `(string, string, *AppsClientListOptions)`
+- Function `*AppsClient.List` return value(s) have been changed from `(*AppsListPager)` to `(*AppsClientListPager)`
+- Function `*ServicesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ServiceResource, *ServicesBeginUpdateOptions)` to `(context.Context, string, string, ServiceResource, *ServicesClientBeginUpdateOptions)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(ServicesUpdatePollerResponse, error)` to `(ServicesClientUpdatePollerResponse, error)`
+- Function `*ServicesClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, NameAvailabilityParameters, *ServicesCheckNameAvailabilityOptions)` to `(context.Context, string, NameAvailabilityParameters, *ServicesClientCheckNameAvailabilityOptions)`
+- Function `*ServicesClient.CheckNameAvailability` return value(s) have been changed from `(ServicesCheckNameAvailabilityResponse, error)` to `(ServicesClientCheckNameAvailabilityResponse, error)`
+- Function `*DeploymentsClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, string, *DeploymentsBeginStopOptions)` to `(context.Context, string, string, string, string, *DeploymentsClientBeginStopOptions)`
+- Function `*DeploymentsClient.BeginStop` return value(s) have been changed from `(DeploymentsStopPollerResponse, error)` to `(DeploymentsClientStopPollerResponse, error)`
+- Function `*DeploymentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *DeploymentsGetOptions)` to `(context.Context, string, string, string, string, *DeploymentsClientGetOptions)`
+- Function `*DeploymentsClient.Get` return value(s) have been changed from `(DeploymentsGetResponse, error)` to `(DeploymentsClientGetResponse, error)`
+- Function `*CertificatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CertificateResource, *CertificatesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, CertificateResource, *CertificatesClientBeginCreateOrUpdateOptions)`
+- Function `*CertificatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(CertificatesCreateOrUpdatePollerResponse, error)` to `(CertificatesClientCreateOrUpdatePollerResponse, error)`
+- Function `*ServicesClient.ListTestKeys` parameter(s) have been changed from `(context.Context, string, string, *ServicesListTestKeysOptions)` to `(context.Context, string, string, *ServicesClientListTestKeysOptions)`
+- Function `*ServicesClient.ListTestKeys` return value(s) have been changed from `(ServicesListTestKeysResponse, error)` to `(ServicesClientListTestKeysResponse, error)`
+- Function `*CustomDomainsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *CustomDomainsGetOptions)` to `(context.Context, string, string, string, string, *CustomDomainsClientGetOptions)`
+- Function `*CustomDomainsClient.Get` return value(s) have been changed from `(CustomDomainsGetResponse, error)` to `(CustomDomainsClientGetResponse, error)`
+- Function `*StoragesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *StoragesBeginDeleteOptions)` to `(context.Context, string, string, string, *StoragesClientBeginDeleteOptions)`
+- Function `*StoragesClient.BeginDelete` return value(s) have been changed from `(StoragesDeletePollerResponse, error)` to `(StoragesClientDeletePollerResponse, error)`
+- Function `*BindingsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *BindingsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *BindingsClientBeginDeleteOptions)`
+- Function `*BindingsClient.BeginDelete` return value(s) have been changed from `(BindingsDeletePollerResponse, error)` to `(BindingsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*CustomDomainsClient.List` parameter(s) have been changed from `(string, string, string, *CustomDomainsListOptions)` to `(string, string, string, *CustomDomainsClientListOptions)`
+- Function `*CustomDomainsClient.List` return value(s) have been changed from `(*CustomDomainsListPager)` to `(*CustomDomainsClientListPager)`
+- Function `*AppsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, AppResource, *AppsBeginUpdateOptions)` to `(context.Context, string, string, string, AppResource, *AppsClientBeginUpdateOptions)`
+- Function `*AppsClient.BeginUpdate` return value(s) have been changed from `(AppsUpdatePollerResponse, error)` to `(AppsClientUpdatePollerResponse, error)`
+- Type of `DeploymentSettings.ContainerProbeSettings` has been changed from `*DeploymentSettingsContainerProbeSettings` to `*ContainerProbeSettings`
+- Type of `SystemData.LastModifiedByType` has been changed from `*CreatedByType` to `*LastModifiedByType`
+- Type of `UserSourceInfo.Type` has been changed from `*UserSourceType` to `*string`
+- Type of `DeploymentResourceProperties.Source` has been changed from `*UserSourceInfo` to `UserSourceInfoClassification`
+- Const `UserSourceTypeSource` has been removed
+- Const `UserSourceTypeNetCoreZip` has been removed
+- Const `DeploymentResourceStatusAllocating` has been removed
+- Const `RuntimeVersionJava8` has been removed
+- Const `DeploymentResourceStatusFailed` has been removed
+- Const `RuntimeVersionNetCore31` has been removed
+- Const `DeploymentResourceStatusUnknown` has been removed
+- Const `UserSourceTypeContainer` has been removed
+- Const `RuntimeVersionJava11` has been removed
+- Const `DeploymentResourceStatusCompiling` has been removed
+- Const `DeploymentResourceStatusUpgrading` has been removed
+- Const `UserSourceTypeJar` has been removed
+- Function `*DeploymentsDeletePollerResponse.Resume` has been removed
+- Function `*CustomDomainsDeletePoller.Done` has been removed
+- Function `*CustomDomainsListPager.NextPage` has been removed
+- Function `*ServicesDeletePoller.Poll` has been removed
+- Function `*ConfigServersUpdatePatchPollerResponse.Resume` has been removed
+- Function `PossibleRuntimeVersionValues` has been removed
+- Function `*AppsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `CertificatesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AppsDeletePoller.ResumeToken` has been removed
+- Function `*DeploymentsGenerateHeapDumpPoller.Done` has been removed
+- Function `*AppsListPager.NextPage` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `DeploymentsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsUpdatePoller.ResumeToken` has been removed
+- Function `*AppsUpdatePoller.FinalResponse` has been removed
+- Function `ConfigServersValidatePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesListPager.PageResponse` has been removed
+- Function `*BindingsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*AppsDeletePoller.FinalResponse` has been removed
+- Function `*DeploymentsUpdatePoller.Poll` has been removed
+- Function `BindingsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigServersUpdatePutPollerResponse.Resume` has been removed
+- Function `*ConfigServersValidatePoller.Done` has been removed
+- Function `*ServicesStartPollerResponse.Resume` has been removed
+- Function `*DeploymentsDeletePoller.Done` has been removed
+- Function `*MonitoringSettingsUpdatePatchPoller.ResumeToken` has been removed
+- Function `*ConfigServersValidatePoller.ResumeToken` has been removed
+- Function `*SKUsListPager.PageResponse` has been removed
+- Function `*ServicesUpdatePoller.Poll` has been removed
+- Function `*StoragesDeletePoller.FinalResponse` has been removed
+- Function `*CertificatesListPager.Err` has been removed
+- Function `*DeploymentsStartJFRPoller.FinalResponse` has been removed
+- Function `*BindingsListPager.PageResponse` has been removed
+- Function `*BindingsDeletePoller.ResumeToken` has been removed
+- Function `*ConfigServersUpdatePatchPoller.ResumeToken` has been removed
+- Function `*ServicesListPager.Err` has been removed
+- Function `*StoragesListPager.NextPage` has been removed
+- Function `*ServicesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CertificatesDeletePoller.Poll` has been removed
+- Function `*AppsListPager.Err` has been removed
+- Function `*AppsListPager.PageResponse` has been removed
+- Function `*ServicesUpdatePoller.FinalResponse` has been removed
+- Function `*AppsDeletePoller.Poll` has been removed
+- Function `*DeploymentsGenerateHeapDumpPoller.Poll` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `BindingsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DeploymentsRestartPoller.FinalResponse` has been removed
+- Function `*CustomDomainsDeletePoller.FinalResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*ConfigServerResource.UnmarshalJSON` has been removed
+- Function `*BindingsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*BindingsUpdatePoller.Poll` has been removed
+- Function `*StoragesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ConfigServersUpdatePutPoller.FinalResponse` has been removed
+- Function `*AppsDeletePollerResponse.Resume` has been removed
+- Function `*ServicesListBySubscriptionPager.Err` has been removed
+- Function `*DeploymentsStopPoller.Poll` has been removed
+- Function `DeploymentsStartJFRPollerResponse.PollUntilDone` has been removed
+- Function `ConfigServersUpdatePatchPollerResponse.PollUntilDone` has been removed
+- Function `*CertificatesCreateOrUpdatePoller.Poll` has been removed
+- Function `*StoragesDeletePoller.ResumeToken` has been removed
+- Function `*ConfigServersValidatePollerResponse.Resume` has been removed
+- Function `CustomDomainsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsDeletePoller.Poll` has been removed
+- Function `*BindingsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*BindingsUpdatePoller.Done` has been removed
+- Function `*CustomDomainsListPager.PageResponse` has been removed
+- Function `*CertificatesListPager.PageResponse` has been removed
+- Function `ConfigServersUpdatePutPollerResponse.PollUntilDone` has been removed
+- Function `DeploymentsRestartPollerResponse.PollUntilDone` has been removed
+- Function `*ServicesDeletePoller.FinalResponse` has been removed
+- Function `*CustomDomainsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CustomDomainsDeletePoller.Poll` has been removed
+- Function `StoragesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigServersUpdatePutPoller.ResumeToken` has been removed
+- Function `AppsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsStopPoller.Done` has been removed
+- Function `*DeploymentsGenerateHeapDumpPoller.ResumeToken` has been removed
+- Function `*ServicesUpdatePollerResponse.Resume` has been removed
+- Function `DeploymentsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*MonitoringSettingsUpdatePatchPollerResponse.Resume` has been removed
+- Function `*ServicesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DeploymentsGenerateThreadDumpPollerResponse.Resume` has been removed
+- Function `DeploymentsGenerateHeapDumpPollerResponse.PollUntilDone` has been removed
+- Function `*ServicesStopPoller.FinalResponse` has been removed
+- Function `ServicesStartPollerResponse.PollUntilDone` has been removed
+- Function `*BindingsUpdatePoller.ResumeToken` has been removed
+- Function `*DeploymentsStopPoller.FinalResponse` has been removed
+- Function `AppsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*CertificatesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DeploymentsStartPoller.Done` has been removed
+- Function `*SKUsListPager.Err` has been removed
+- Function `MonitoringSettingsUpdatePatchPollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsStopPoller.ResumeToken` has been removed
+- Function `*ServicesStopPoller.ResumeToken` has been removed
+- Function `MonitoringSettingsUpdatePutPollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsStartPoller.Poll` has been removed
+- Function `ServicesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigServersUpdatePutPoller.Done` has been removed
+- Function `*MonitoringSettingsUpdatePatchPoller.Done` has been removed
+- Function `*StoragesListPager.PageResponse` has been removed
+- Function `*AppResourceProperties.UnmarshalJSON` has been removed
+- Function `*DeploymentsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ServicesStopPollerResponse.Resume` has been removed
+- Function `*ServicesStartPoller.Poll` has been removed
+- Function `*StoragesDeletePollerResponse.Resume` has been removed
+- Function `*ServicesUpdatePoller.Done` has been removed
+- Function `*ServicesListBySubscriptionPager.PageResponse` has been removed
+- Function `*DeploymentsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServicesListBySubscriptionPager.NextPage` has been removed
+- Function `*DeploymentsStartPoller.ResumeToken` has been removed
+- Function `*ServicesStartPoller.ResumeToken` has been removed
+- Function `*AppsDeletePoller.Done` has been removed
+- Function `*DeploymentsCreateOrUpdatePoller.Done` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*DeploymentsUpdatePollerResponse.Resume` has been removed
+- Function `ServicesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `DeploymentsStartPollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsRestartPoller.Poll` has been removed
+- Function `*DeploymentsUpdatePoller.FinalResponse` has been removed
+- Function `*DeploymentResource.UnmarshalJSON` has been removed
+- Function `*BindingsDeletePollerResponse.Resume` has been removed
+- Function `*DeploymentsDeletePoller.FinalResponse` has been removed
+- Function `*DeploymentsStartJFRPoller.Done` has been removed
+- Function `*MonitoringSettingsUpdatePutPoller.Done` has been removed
+- Function `*ServicesStopPoller.Poll` has been removed
+- Function `*MonitoringSettingsUpdatePatchPoller.FinalResponse` has been removed
+- Function `*AppsUpdatePoller.Done` has been removed
+- Function `*ConfigServersUpdatePatchPoller.FinalResponse` has been removed
+- Function `*DeploymentsListForClusterPager.Err` has been removed
+- Function `*MonitoringSettingsUpdatePutPoller.FinalResponse` has been removed
+- Function `*BindingsCreateOrUpdatePoller.Poll` has been removed
+- Function `*ConfigServersValidatePoller.Poll` has been removed
+- Function `*CustomPersistentDiskProperties.UnmarshalJSON` has been removed
+- Function `ServicesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AppsUpdatePoller.Poll` has been removed
+- Function `*CertificatesDeletePoller.FinalResponse` has been removed
+- Function `*DeploymentsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `BindingsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigServersValidatePoller.FinalResponse` has been removed
+- Function `DeploymentsGenerateThreadDumpPollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsUpdatePoller.Poll` has been removed
+- Function `*CertificatesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CertificatesDeletePoller.Done` has been removed
+- Function `*CertificatesDeletePollerResponse.Resume` has been removed
+- Function `*CustomDomainsCreateOrUpdatePoller.Poll` has been removed
+- Function `*DeploymentsUpdatePoller.ResumeToken` has been removed
+- Function `*CertificatesDeletePoller.ResumeToken` has been removed
+- Function `*ConfigServersUpdatePutPoller.Poll` has been removed
+- Function `DeploymentsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*StoragesCreateOrUpdatePoller.Poll` has been removed
+- Function `*CustomDomainsUpdatePoller.FinalResponse` has been removed
+- Function `*AppsCreateOrUpdatePoller.Done` has been removed
+- Function `*CertificatesCreateOrUpdatePoller.Done` has been removed
+- Function `*ServicesStartPoller.FinalResponse` has been removed
+- Function `*DeploymentsListForClusterPager.PageResponse` has been removed
+- Function `*CertificatesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*CustomDomainsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CustomDomainResource.UnmarshalJSON` has been removed
+- Function `RuntimeVersion.ToPtr` has been removed
+- Function `*AppsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DeploymentsGenerateThreadDumpPoller.FinalResponse` has been removed
+- Function `*ServicesDeletePollerResponse.Resume` has been removed
+- Function `*MonitoringSettingResource.UnmarshalJSON` has been removed
+- Function `*CertificateProperties.UnmarshalJSON` has been removed
+- Function `*BindingsListPager.Err` has been removed
+- Function `*BindingsCreateOrUpdatePoller.Done` has been removed
+- Function `*DeploymentsStartJFRPoller.Poll` has been removed
+- Function `*MonitoringSettingsUpdatePutPollerResponse.Resume` has been removed
+- Function `*CustomDomainsCreateOrUpdatePoller.Done` has been removed
+- Function `*MonitoringSettingsUpdatePutPoller.Poll` has been removed
+- Function `*CustomDomainsDeletePollerResponse.Resume` has been removed
+- Function `*ServicesUpdatePoller.ResumeToken` has been removed
+- Function `*MonitoringSettingsUpdatePutPoller.ResumeToken` has been removed
+- Function `*DeploymentsCreateOrUpdatePoller.Poll` has been removed
+- Function `*AppsUpdatePollerResponse.Resume` has been removed
+- Function `*DeploymentsRestartPoller.Done` has been removed
+- Function `*CertificatesListPager.NextPage` has been removed
+- Function `*DeploymentsGenerateHeapDumpPoller.FinalResponse` has been removed
+- Function `*StoragesCreateOrUpdatePoller.Done` has been removed
+- Function `*DeploymentsStartJFRPoller.ResumeToken` has been removed
+- Function `*BindingsDeletePoller.FinalResponse` has been removed
+- Function `*BindingsUpdatePollerResponse.Resume` has been removed
+- Function `*DeploymentsUpdatePoller.Done` has been removed
+- Function `AppsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsGenerateThreadDumpPoller.Poll` has been removed
+- Function `*DeploymentsListPager.PageResponse` has been removed
+- Function `*AppsCreateOrUpdatePoller.Poll` has been removed
+- Function `*AppsUpdatePoller.ResumeToken` has been removed
+- Function `*MonitoringSettingsUpdatePatchPoller.Poll` has been removed
+- Function `*BindingsDeletePoller.Done` has been removed
+- Function `*DeploymentsRestartPoller.ResumeToken` has been removed
+- Function `*StoragesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*BindingsDeletePoller.Poll` has been removed
+- Function `*CustomDomainsUpdatePoller.Done` has been removed
+- Function `CertificatesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*StoragesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ServicesCreateOrUpdatePoller.Poll` has been removed
+- Function `*AppResource.UnmarshalJSON` has been removed
+- Function `*ServicesStopPoller.Done` has been removed
+- Function `*DeploymentsGenerateHeapDumpPollerResponse.Resume` has been removed
+- Function `*ConfigServersUpdatePatchPoller.Done` has been removed
+- Function `*DeploymentsListPager.NextPage` has been removed
+- Function `*CustomDomainsListPager.Err` has been removed
+- Function `*ServiceResource.UnmarshalJSON` has been removed
+- Function `*ServicesListPager.NextPage` has been removed
+- Function `*StoragesDeletePoller.Poll` has been removed
+- Function `*DeploymentsGenerateThreadDumpPoller.Done` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*CustomDomainsDeletePoller.ResumeToken` has been removed
+- Function `*BindingResource.UnmarshalJSON` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*DeploymentsListForClusterPager.NextPage` has been removed
+- Function `*CustomDomainsUpdatePollerResponse.Resume` has been removed
+- Function `*StoragesDeletePoller.Done` has been removed
+- Function `CustomDomainsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigServersUpdatePatchPoller.Poll` has been removed
+- Function `*ServicesDeletePoller.ResumeToken` has been removed
+- Function `*DeploymentsRestartPollerResponse.Resume` has been removed
+- Function `PossibleUserSourceTypeValues` has been removed
+- Function `*DeploymentsStartPollerResponse.Resume` has been removed
+- Function `*SKUsListPager.NextPage` has been removed
+- Function `*StorageProperties.UnmarshalJSON` has been removed
+- Function `*TrackedResource.UnmarshalJSON` has been removed
+- Function `*DeploymentsDeletePoller.ResumeToken` has been removed
+- Function `*ServicesStartPoller.Done` has been removed
+- Function `*BindingsListPager.NextPage` has been removed
+- Function `*DeploymentsListPager.Err` has been removed
+- Function `UserSourceType.ToPtr` has been removed
+- Function `*ServicesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DeploymentsStopPollerResponse.Resume` has been removed
+- Function `DeploymentsStopPollerResponse.PollUntilDone` has been removed
+- Function `CustomDomainsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeploymentsStartJFRPollerResponse.Resume` has been removed
+- Function `*DeploymentsGenerateThreadDumpPoller.ResumeToken` has been removed
+- Function `*DeploymentsStartPoller.FinalResponse` has been removed
+- Function `*StoragesListPager.Err` has been removed
+- Function `*BindingsUpdatePoller.FinalResponse` has been removed
+- Function `*ServicesCreateOrUpdatePoller.Done` has been removed
+- Function `*ServicesDeletePoller.Done` has been removed
+- Function `*AppsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `ServicesStopPollerResponse.PollUntilDone` has been removed
+- Function `StoragesDeletePollerResponse.PollUntilDone` has been removed
+- Struct `AppsBeginCreateOrUpdateOptions` has been removed
+- Struct `AppsBeginDeleteOptions` has been removed
+- Struct `AppsBeginUpdateOptions` has been removed
+- Struct `AppsCreateOrUpdatePoller` has been removed
+- Struct `AppsCreateOrUpdatePollerResponse` has been removed
+- Struct `AppsCreateOrUpdateResponse` has been removed
+- Struct `AppsCreateOrUpdateResult` has been removed
+- Struct `AppsDeletePoller` has been removed
+- Struct `AppsDeletePollerResponse` has been removed
+- Struct `AppsDeleteResponse` has been removed
+- Struct `AppsGetOptions` has been removed
+- Struct `AppsGetResourceUploadURLOptions` has been removed
+- Struct `AppsGetResourceUploadURLResponse` has been removed
+- Struct `AppsGetResourceUploadURLResult` has been removed
+- Struct `AppsGetResponse` has been removed
+- Struct `AppsGetResult` has been removed
+- Struct `AppsListOptions` has been removed
+- Struct `AppsListPager` has been removed
+- Struct `AppsListResponse` has been removed
+- Struct `AppsListResult` has been removed
+- Struct `AppsUpdatePoller` has been removed
+- Struct `AppsUpdatePollerResponse` has been removed
+- Struct `AppsUpdateResponse` has been removed
+- Struct `AppsUpdateResult` has been removed
+- Struct `AppsValidateDomainOptions` has been removed
+- Struct `AppsValidateDomainResponse` has been removed
+- Struct `AppsValidateDomainResult` has been removed
+- Struct `BindingsBeginCreateOrUpdateOptions` has been removed
+- Struct `BindingsBeginDeleteOptions` has been removed
+- Struct `BindingsBeginUpdateOptions` has been removed
+- Struct `BindingsCreateOrUpdatePoller` has been removed
+- Struct `BindingsCreateOrUpdatePollerResponse` has been removed
+- Struct `BindingsCreateOrUpdateResponse` has been removed
+- Struct `BindingsCreateOrUpdateResult` has been removed
+- Struct `BindingsDeletePoller` has been removed
+- Struct `BindingsDeletePollerResponse` has been removed
+- Struct `BindingsDeleteResponse` has been removed
+- Struct `BindingsGetOptions` has been removed
+- Struct `BindingsGetResponse` has been removed
+- Struct `BindingsGetResult` has been removed
+- Struct `BindingsListOptions` has been removed
+- Struct `BindingsListPager` has been removed
+- Struct `BindingsListResponse` has been removed
+- Struct `BindingsListResult` has been removed
+- Struct `BindingsUpdatePoller` has been removed
+- Struct `BindingsUpdatePollerResponse` has been removed
+- Struct `BindingsUpdateResponse` has been removed
+- Struct `BindingsUpdateResult` has been removed
+- Struct `CertificatesBeginCreateOrUpdateOptions` has been removed
+- Struct `CertificatesBeginDeleteOptions` has been removed
+- Struct `CertificatesCreateOrUpdatePoller` has been removed
+- Struct `CertificatesCreateOrUpdatePollerResponse` has been removed
+- Struct `CertificatesCreateOrUpdateResponse` has been removed
+- Struct `CertificatesCreateOrUpdateResult` has been removed
+- Struct `CertificatesDeletePoller` has been removed
+- Struct `CertificatesDeletePollerResponse` has been removed
+- Struct `CertificatesDeleteResponse` has been removed
+- Struct `CertificatesGetOptions` has been removed
+- Struct `CertificatesGetResponse` has been removed
+- Struct `CertificatesGetResult` has been removed
+- Struct `CertificatesListOptions` has been removed
+- Struct `CertificatesListPager` has been removed
+- Struct `CertificatesListResponse` has been removed
+- Struct `CertificatesListResult` has been removed
+- Struct `ConfigServersBeginUpdatePatchOptions` has been removed
+- Struct `ConfigServersBeginUpdatePutOptions` has been removed
+- Struct `ConfigServersBeginValidateOptions` has been removed
+- Struct `ConfigServersGetOptions` has been removed
+- Struct `ConfigServersGetResponse` has been removed
+- Struct `ConfigServersGetResult` has been removed
+- Struct `ConfigServersUpdatePatchPoller` has been removed
+- Struct `ConfigServersUpdatePatchPollerResponse` has been removed
+- Struct `ConfigServersUpdatePatchResponse` has been removed
+- Struct `ConfigServersUpdatePatchResult` has been removed
+- Struct `ConfigServersUpdatePutPoller` has been removed
+- Struct `ConfigServersUpdatePutPollerResponse` has been removed
+- Struct `ConfigServersUpdatePutResponse` has been removed
+- Struct `ConfigServersUpdatePutResult` has been removed
+- Struct `ConfigServersValidatePoller` has been removed
+- Struct `ConfigServersValidatePollerResponse` has been removed
+- Struct `ConfigServersValidateResponse` has been removed
+- Struct `ConfigServersValidateResult` has been removed
+- Struct `CustomDomainsBeginCreateOrUpdateOptions` has been removed
+- Struct `CustomDomainsBeginDeleteOptions` has been removed
+- Struct `CustomDomainsBeginUpdateOptions` has been removed
+- Struct `CustomDomainsCreateOrUpdatePoller` has been removed
+- Struct `CustomDomainsCreateOrUpdatePollerResponse` has been removed
+- Struct `CustomDomainsCreateOrUpdateResponse` has been removed
+- Struct `CustomDomainsCreateOrUpdateResult` has been removed
+- Struct `CustomDomainsDeletePoller` has been removed
+- Struct `CustomDomainsDeletePollerResponse` has been removed
+- Struct `CustomDomainsDeleteResponse` has been removed
+- Struct `CustomDomainsGetOptions` has been removed
+- Struct `CustomDomainsGetResponse` has been removed
+- Struct `CustomDomainsGetResult` has been removed
+- Struct `CustomDomainsListOptions` has been removed
+- Struct `CustomDomainsListPager` has been removed
+- Struct `CustomDomainsListResponse` has been removed
+- Struct `CustomDomainsListResult` has been removed
+- Struct `CustomDomainsUpdatePoller` has been removed
+- Struct `CustomDomainsUpdatePollerResponse` has been removed
+- Struct `CustomDomainsUpdateResponse` has been removed
+- Struct `CustomDomainsUpdateResult` has been removed
+- Struct `DeploymentSettingsContainerProbeSettings` has been removed
+- Struct `DeploymentsBeginCreateOrUpdateOptions` has been removed
+- Struct `DeploymentsBeginDeleteOptions` has been removed
+- Struct `DeploymentsBeginGenerateHeapDumpOptions` has been removed
+- Struct `DeploymentsBeginGenerateThreadDumpOptions` has been removed
+- Struct `DeploymentsBeginRestartOptions` has been removed
+- Struct `DeploymentsBeginStartJFROptions` has been removed
+- Struct `DeploymentsBeginStartOptions` has been removed
+- Struct `DeploymentsBeginStopOptions` has been removed
+- Struct `DeploymentsBeginUpdateOptions` has been removed
+- Struct `DeploymentsCreateOrUpdatePoller` has been removed
+- Struct `DeploymentsCreateOrUpdatePollerResponse` has been removed
+- Struct `DeploymentsCreateOrUpdateResponse` has been removed
+- Struct `DeploymentsCreateOrUpdateResult` has been removed
+- Struct `DeploymentsDeletePoller` has been removed
+- Struct `DeploymentsDeletePollerResponse` has been removed
+- Struct `DeploymentsDeleteResponse` has been removed
+- Struct `DeploymentsGenerateHeapDumpPoller` has been removed
+- Struct `DeploymentsGenerateHeapDumpPollerResponse` has been removed
+- Struct `DeploymentsGenerateHeapDumpResponse` has been removed
+- Struct `DeploymentsGenerateThreadDumpPoller` has been removed
+- Struct `DeploymentsGenerateThreadDumpPollerResponse` has been removed
+- Struct `DeploymentsGenerateThreadDumpResponse` has been removed
+- Struct `DeploymentsGetLogFileURLOptions` has been removed
+- Struct `DeploymentsGetLogFileURLResponse` has been removed
+- Struct `DeploymentsGetLogFileURLResult` has been removed
+- Struct `DeploymentsGetOptions` has been removed
+- Struct `DeploymentsGetResponse` has been removed
+- Struct `DeploymentsGetResult` has been removed
+- Struct `DeploymentsListForClusterOptions` has been removed
+- Struct `DeploymentsListForClusterPager` has been removed
+- Struct `DeploymentsListForClusterResponse` has been removed
+- Struct `DeploymentsListForClusterResult` has been removed
+- Struct `DeploymentsListOptions` has been removed
+- Struct `DeploymentsListPager` has been removed
+- Struct `DeploymentsListResponse` has been removed
+- Struct `DeploymentsListResult` has been removed
+- Struct `DeploymentsRestartPoller` has been removed
+- Struct `DeploymentsRestartPollerResponse` has been removed
+- Struct `DeploymentsRestartResponse` has been removed
+- Struct `DeploymentsStartJFRPoller` has been removed
+- Struct `DeploymentsStartJFRPollerResponse` has been removed
+- Struct `DeploymentsStartJFRResponse` has been removed
+- Struct `DeploymentsStartPoller` has been removed
+- Struct `DeploymentsStartPollerResponse` has been removed
+- Struct `DeploymentsStartResponse` has been removed
+- Struct `DeploymentsStopPoller` has been removed
+- Struct `DeploymentsStopPollerResponse` has been removed
+- Struct `DeploymentsStopResponse` has been removed
+- Struct `DeploymentsUpdatePoller` has been removed
+- Struct `DeploymentsUpdatePollerResponse` has been removed
+- Struct `DeploymentsUpdateResponse` has been removed
+- Struct `DeploymentsUpdateResult` has been removed
+- Struct `MonitoringSettingsBeginUpdatePatchOptions` has been removed
+- Struct `MonitoringSettingsBeginUpdatePutOptions` has been removed
+- Struct `MonitoringSettingsGetOptions` has been removed
+- Struct `MonitoringSettingsGetResponse` has been removed
+- Struct `MonitoringSettingsGetResult` has been removed
+- Struct `MonitoringSettingsUpdatePatchPoller` has been removed
+- Struct `MonitoringSettingsUpdatePatchPollerResponse` has been removed
+- Struct `MonitoringSettingsUpdatePatchResponse` has been removed
+- Struct `MonitoringSettingsUpdatePatchResult` has been removed
+- Struct `MonitoringSettingsUpdatePutPoller` has been removed
+- Struct `MonitoringSettingsUpdatePutPollerResponse` has been removed
+- Struct `MonitoringSettingsUpdatePutResponse` has been removed
+- Struct `MonitoringSettingsUpdatePutResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `RuntimeVersionsListRuntimeVersionsOptions` has been removed
+- Struct `RuntimeVersionsListRuntimeVersionsResponse` has been removed
+- Struct `RuntimeVersionsListRuntimeVersionsResult` has been removed
+- Struct `SKUsListOptions` has been removed
+- Struct `SKUsListPager` has been removed
+- Struct `SKUsListResponse` has been removed
+- Struct `SKUsListResult` has been removed
+- Struct `ServicesBeginCreateOrUpdateOptions` has been removed
+- Struct `ServicesBeginDeleteOptions` has been removed
+- Struct `ServicesBeginStartOptions` has been removed
+- Struct `ServicesBeginStopOptions` has been removed
+- Struct `ServicesBeginUpdateOptions` has been removed
+- Struct `ServicesCheckNameAvailabilityOptions` has been removed
+- Struct `ServicesCheckNameAvailabilityResponse` has been removed
+- Struct `ServicesCheckNameAvailabilityResult` has been removed
+- Struct `ServicesCreateOrUpdatePoller` has been removed
+- Struct `ServicesCreateOrUpdatePollerResponse` has been removed
+- Struct `ServicesCreateOrUpdateResponse` has been removed
+- Struct `ServicesCreateOrUpdateResult` has been removed
+- Struct `ServicesDeletePoller` has been removed
+- Struct `ServicesDeletePollerResponse` has been removed
+- Struct `ServicesDeleteResponse` has been removed
+- Struct `ServicesDisableTestEndpointOptions` has been removed
+- Struct `ServicesDisableTestEndpointResponse` has been removed
+- Struct `ServicesEnableTestEndpointOptions` has been removed
+- Struct `ServicesEnableTestEndpointResponse` has been removed
+- Struct `ServicesEnableTestEndpointResult` has been removed
+- Struct `ServicesGetOptions` has been removed
+- Struct `ServicesGetResponse` has been removed
+- Struct `ServicesGetResult` has been removed
+- Struct `ServicesListBySubscriptionOptions` has been removed
+- Struct `ServicesListBySubscriptionPager` has been removed
+- Struct `ServicesListBySubscriptionResponse` has been removed
+- Struct `ServicesListBySubscriptionResult` has been removed
+- Struct `ServicesListOptions` has been removed
+- Struct `ServicesListPager` has been removed
+- Struct `ServicesListResponse` has been removed
+- Struct `ServicesListResult` has been removed
+- Struct `ServicesListTestKeysOptions` has been removed
+- Struct `ServicesListTestKeysResponse` has been removed
+- Struct `ServicesListTestKeysResult` has been removed
+- Struct `ServicesRegenerateTestKeyOptions` has been removed
+- Struct `ServicesRegenerateTestKeyResponse` has been removed
+- Struct `ServicesRegenerateTestKeyResult` has been removed
+- Struct `ServicesStartPoller` has been removed
+- Struct `ServicesStartPollerResponse` has been removed
+- Struct `ServicesStartResponse` has been removed
+- Struct `ServicesStopPoller` has been removed
+- Struct `ServicesStopPollerResponse` has been removed
+- Struct `ServicesStopResponse` has been removed
+- Struct `ServicesUpdatePoller` has been removed
+- Struct `ServicesUpdatePollerResponse` has been removed
+- Struct `ServicesUpdateResponse` has been removed
+- Struct `ServicesUpdateResult` has been removed
+- Struct `StoragesBeginCreateOrUpdateOptions` has been removed
+- Struct `StoragesBeginDeleteOptions` has been removed
+- Struct `StoragesCreateOrUpdatePoller` has been removed
+- Struct `StoragesCreateOrUpdatePollerResponse` has been removed
+- Struct `StoragesCreateOrUpdateResponse` has been removed
+- Struct `StoragesCreateOrUpdateResult` has been removed
+- Struct `StoragesDeletePoller` has been removed
+- Struct `StoragesDeletePollerResponse` has been removed
+- Struct `StoragesDeleteResponse` has been removed
+- Struct `StoragesGetOptions` has been removed
+- Struct `StoragesGetResponse` has been removed
+- Struct `StoragesGetResult` has been removed
+- Struct `StoragesListOptions` has been removed
+- Struct `StoragesListPager` has been removed
+- Struct `StoragesListResponse` has been removed
+- Struct `StoragesListResult` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `StorageProperties` of struct `StorageAccount` has been removed
+- Field `TrackedResource` of struct `ServiceResource` has been removed
+- Field `ProxyResource` of struct `DeploymentResource` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `ProxyResource` of struct `ConfigServerResource` has been removed
+- Field `CertificateProperties` of struct `KeyVaultCertificateProperties` has been removed
+- Field `ProxyResource` of struct `AppResource` has been removed
+- Field `ProxyResource` of struct `StorageResource` has been removed
+- Field `ArtifactSelector` of struct `UserSourceInfo` has been removed
+- Field `CustomContainer` of struct `UserSourceInfo` has been removed
+- Field `RelativePath` of struct `UserSourceInfo` has been removed
+- Field `ProxyResource` of struct `CustomDomainResource` has been removed
+- Field `CustomPersistentDiskProperties` of struct `AzureFileVolume` has been removed
+- Field `ProxyResource` of struct `MonitoringSettingResource` has been removed
+- Field `CertificateProperties` of struct `ContentCertificateProperties` has been removed
+- Field `MemoryInGB` of struct `DeploymentSettings` has been removed
+- Field `NetCoreMainEntryPath` of struct `DeploymentSettings` has been removed
+- Field `RuntimeVersion` of struct `DeploymentSettings` has been removed
+- Field `CPU` of struct `DeploymentSettings` has been removed
+- Field `JvmOptions` of struct `DeploymentSettings` has been removed
+- Field `ActiveDeploymentName` of struct `AppResourceProperties` has been removed
+- Field `CreatedTime` of struct `AppResourceProperties` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `AppName` of struct `DeploymentResourceProperties` has been removed
+- Field `CreatedTime` of struct `DeploymentResourceProperties` has been removed
+- Field `ProxyResource` of struct `CertificateResource` has been removed
+- Field `ProxyResource` of struct `BindingResource` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `BuildpackBindingProvisioningStateDeleting`
+- New const `BuildProvisioningStateUpdating`
+- New const `APIPortalProvisioningStateUpdating`
+- New const `BuildProvisioningStateCreating`
+- New const `BuildpackBindingProvisioningStateUpdating`
+- New const `ServiceRegistryProvisioningStateDeleting`
+- New const `BuilderProvisioningStateCreating`
+- New const `ServiceRegistryProvisioningStateFailed`
+- New const `APIPortalProvisioningStateCreating`
+- New const `BuildProvisioningStateFailed`
+- New const `GatewayProvisioningStateSucceeded`
+- New const `BuildResultProvisioningStateFailed`
+- New const `LastModifiedByTypeUser`
+- New const `KPackBuildStageProvisioningStateRunning`
+- New const `LastModifiedByTypeApplication`
+- New const `BindingTypeDynatrace`
+- New const `BuildResultProvisioningStateSucceeded`
+- New const `BuilderProvisioningStateSucceeded`
+- New const `APIPortalProvisioningStateFailed`
+- New const `KPackBuildStageProvisioningStateSucceeded`
+- New const `LastModifiedByTypeKey`
+- New const `BuildServiceProvisioningStateUpdating`
+- New const `KPackBuildStageProvisioningStateFailed`
+- New const `BuildProvisioningStateSucceeded`
+- New const `GatewayProvisioningStateUpdating`
+- New const `BuildServiceProvisioningStateCreating`
+- New const `ConfigurationServiceProvisioningStateFailed`
+- New const `GatewayProvisioningStateDeleting`
+- New const `KPackBuildStageProvisioningStateNotStarted`
+- New const `LastModifiedByTypeManagedIdentity`
+- New const `BindingTypeElasticAPM`
+- New const `BuildpackBindingProvisioningStateCreating`
+- New const `BuildProvisioningStateDeleting`
+- New const `AppResourceProvisioningStateDeleting`
+- New const `BuilderProvisioningStateFailed`
+- New const `ServiceRegistryProvisioningStateSucceeded`
+- New const `ConfigurationServiceProvisioningStateDeleting`
+- New const `BuildServiceProvisioningStateDeleting`
+- New const `BuildServiceProvisioningStateSucceeded`
+- New const `APIPortalProvisioningStateSucceeded`
+- New const `BuilderProvisioningStateDeleting`
+- New const `BuildpackBindingProvisioningStateSucceeded`
+- New const `GatewayProvisioningStateFailed`
+- New const `ConfigurationServiceProvisioningStateSucceeded`
+- New const `ConfigurationServiceProvisioningStateCreating`
+- New const `BuildServiceProvisioningStateFailed`
+- New const `APIPortalProvisioningStateDeleting`
+- New const `BuildResultProvisioningStateQueuing`
+- New const `BuilderProvisioningStateUpdating`
+- New const `BuildpackBindingProvisioningStateFailed`
+- New const `BindingTypeApplicationInsights`
+- New const `ConfigurationServiceProvisioningStateUpdating`
+- New const `SupportedRuntimeValueJava17`
+- New const `ServiceRegistryProvisioningStateCreating`
+- New const `BuildResultProvisioningStateDeleting`
+- New const `BuildResultProvisioningStateBuilding`
+- New const `BindingTypeNewRelic`
+- New const `BindingTypeApacheSkyWalking`
+- New const `ServiceRegistryProvisioningStateUpdating`
+- New const `BindingTypeAppDynamics`
+- New const `GatewayProvisioningStateCreating`
+- New function `*ConfigurationServicesClientListPager.NextPage(context.Context) bool`
+- New function `*BuildpackBindingClient.List(string, string, string, string, *BuildpackBindingClientListOptions) *BuildpackBindingClientListPager`
+- New function `*GatewayCustomDomainsClientListPager.Err() error`
+- New function `CustomDomainsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CustomDomainsClientCreateOrUpdateResponse, error)`
+- New function `*ServiceRegistriesClient.Get(context.Context, string, string, string, *ServiceRegistriesClientGetOptions) (ServiceRegistriesClientGetResponse, error)`
+- New function `GatewayOperatorProperties.MarshalJSON() ([]byte, error)`
+- New function `*ServiceRegistriesClientDeletePoller.Done() bool`
+- New function `*CustomDomainsClientListPager.Err() error`
+- New function `*APIPortalCustomDomainsClient.List(string, string, string, *APIPortalCustomDomainsClientListOptions) *APIPortalCustomDomainsClientListPager`
+- New function `*GatewayCustomDomainsClientCreateOrUpdatePoller.Done() bool`
+- New function `KPackBuildStageProvisioningState.ToPtr() *KPackBuildStageProvisioningState`
+- New function `ServicesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientDeleteResponse, error)`
+- New function `BuildpacksGroupProperties.MarshalJSON() ([]byte, error)`
+- New function `*GatewayRouteConfigsClientCreateOrUpdatePollerResponse.Resume(context.Context, *GatewayRouteConfigsClient, string) error`
+- New function `*DeploymentsClientDeletePollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*ConfigServersClientValidatePoller.ResumeToken() (string, error)`
+- New function `*BuildpackBindingClient.BeginCreateOrUpdate(context.Context, string, string, string, string, string, BuildpackBindingResource, *BuildpackBindingClientBeginCreateOrUpdateOptions) (BuildpackBindingClientCreateOrUpdatePollerResponse, error)`
+- New function `*ConfigServersClientUpdatePatchPollerResponse.Resume(context.Context, *ConfigServersClient, string) error`
+- New function `*ConfigurationServicesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConfigurationServicesClient.BeginDelete(context.Context, string, string, string, *ConfigurationServicesClientBeginDeleteOptions) (ConfigurationServicesClientDeletePollerResponse, error)`
+- New function `*ConfigServersClientUpdatePutPoller.Poll(context.Context) (*http.Response, error)`
+- New function `GatewayResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*GatewaysClient.ValidateDomain(context.Context, string, string, string, CustomDomainValidatePayload, *GatewaysClientValidateDomainOptions) (GatewaysClientValidateDomainResponse, error)`
+- New function `NewServiceRegistriesClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServiceRegistriesClient`
+- New function `*GatewaysClientDeletePoller.FinalResponse(context.Context) (GatewaysClientDeleteResponse, error)`
+- New function `*MonitoringSettingsClientUpdatePutPoller.Poll(context.Context) (*http.Response, error)`
+- New function `BuildProperties.MarshalJSON() ([]byte, error)`
+- New function `*ConfigurationServicesClient.Get(context.Context, string, string, string, *ConfigurationServicesClientGetOptions) (ConfigurationServicesClientGetResponse, error)`
+- New function `*CustomDomainsClientUpdatePoller.Done() bool`
+- New function `*BuildServiceBuilderClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `BuildProvisioningState.ToPtr() *BuildProvisioningState`
+- New function `CustomContainerUserSourceInfo.MarshalJSON() ([]byte, error)`
+- New function `GatewayCustomDomainsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GatewayCustomDomainsClientDeleteResponse, error)`
+- New function `*ConfigServersClientUpdatePutPollerResponse.Resume(context.Context, *ConfigServersClient, string) error`
+- New function `*BuildServiceClient.ListSupportedBuildpacks(context.Context, string, string, string, *BuildServiceClientListSupportedBuildpacksOptions) (BuildServiceClientListSupportedBuildpacksResponse, error)`
+- New function `*StoragesClientListPager.PageResponse() StoragesClientListResponse`
+- New function `*APIPortalCustomDomainsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BuildpackBindingClientDeletePoller.FinalResponse(context.Context) (BuildpackBindingClientDeleteResponse, error)`
+- New function `*BuildServiceClientListBuildsPager.Err() error`
+- New function `NewBuildServiceClient(string, azcore.TokenCredential, *arm.ClientOptions) *BuildServiceClient`
+- New function `*BuildServiceBuilderClientCreateOrUpdatePoller.Done() bool`
+- New function `GatewayAPIRoute.MarshalJSON() ([]byte, error)`
+- New function `*BuildServiceBuilderClient.Get(context.Context, string, string, string, string, *BuildServiceBuilderClientGetOptions) (BuildServiceBuilderClientGetResponse, error)`
+- New function `*AppsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceClientListBuildsPager.PageResponse() BuildServiceClientListBuildsResponse`
+- New function `*DeploymentsClientStartJFRPollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*DeploymentsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*BindingsClientDeletePoller.Done() bool`
+- New function `GatewayRouteConfigsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GatewayRouteConfigsClientDeleteResponse, error)`
+- New function `*CertificatesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `BuildpackBindingProvisioningState.ToPtr() *BuildpackBindingProvisioningState`
+- New function `*ServicesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PossibleKPackBuildStageProvisioningStateValues() []KPackBuildStageProvisioningState`
+- New function `*BuildServiceBuilderClientCreateOrUpdatePoller.FinalResponse(context.Context) (BuildServiceBuilderClientCreateOrUpdateResponse, error)`
+- New function `*ServicesClientStopPollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*DeploymentsClientGenerateHeapDumpPoller.FinalResponse(context.Context) (DeploymentsClientGenerateHeapDumpResponse, error)`
+- New function `PossibleServiceRegistryProvisioningStateValues() []ServiceRegistryProvisioningState`
+- New function `*StoragesClientListPager.NextPage(context.Context) bool`
+- New function `*AppsClientCreateOrUpdatePoller.FinalResponse(context.Context) (AppsClientCreateOrUpdateResponse, error)`
+- New function `*GatewaysClientDeletePollerResponse.Resume(context.Context, *GatewaysClient, string) error`
+- New function `ServicesClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientStopResponse, error)`
+- New function `BindingsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (BindingsClientCreateOrUpdateResponse, error)`
+- New function `*BindingsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ContentCertificateProperties.GetCertificateProperties() *CertificateProperties`
+- New function `*MonitoringSettingsClientUpdatePutPoller.Done() bool`
+- New function `BuilderProvisioningState.ToPtr() *BuilderProvisioningState`
+- New function `*GatewayRouteConfigsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*GatewayCustomDomainsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, GatewayCustomDomainResource, *GatewayCustomDomainsClientBeginCreateOrUpdateOptions) (GatewayCustomDomainsClientCreateOrUpdatePollerResponse, error)`
+- New function `DeploymentsClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientStopResponse, error)`
+- New function `ConfigServersClientUpdatePatchPollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigServersClientUpdatePatchResponse, error)`
+- New function `GatewayRouteConfigProperties.MarshalJSON() ([]byte, error)`
+- New function `*AppsClientCreateOrUpdatePollerResponse.Resume(context.Context, *AppsClient, string) error`
+- New function `*ConfigServersClientUpdatePutPoller.ResumeToken() (string, error)`
+- New function `*AppsClientSetActiveDeploymentsPoller.FinalResponse(context.Context) (AppsClientSetActiveDeploymentsResponse, error)`
+- New function `BuildServiceBuilderClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (BuildServiceBuilderClientDeleteResponse, error)`
+- New function `*BuildServiceBuilderClientDeletePoller.FinalResponse(context.Context) (BuildServiceBuilderClientDeleteResponse, error)`
+- New function `*APIPortalCustomDomainsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*BuildpackBindingClientListPager.PageResponse() BuildpackBindingClientListResponse`
+- New function `*APIPortalCustomDomainsClientListPager.NextPage(context.Context) bool`
+- New function `*AppsClientSetActiveDeploymentsPollerResponse.Resume(context.Context, *AppsClient, string) error`
+- New function `NewGatewayCustomDomainsClient(string, azcore.TokenCredential, *arm.ClientOptions) *GatewayCustomDomainsClient`
+- New function `BuildServiceCollection.MarshalJSON() ([]byte, error)`
+- New function `*GatewaysClientCreateOrUpdatePoller.Done() bool`
+- New function `*ConfigServersClientUpdatePatchPoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClientStartPoller.Done() bool`
+- New function `*AppsClientUpdatePollerResponse.Resume(context.Context, *AppsClient, string) error`
+- New function `*AppsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BuildpackBindingClient.Get(context.Context, string, string, string, string, string, *BuildpackBindingClientGetOptions) (BuildpackBindingClientGetResponse, error)`
+- New function `*DeploymentsClientStartJFRPoller.Done() bool`
+- New function `CustomDomainsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CustomDomainsClientUpdateResponse, error)`
+- New function `*DeploymentsClientStartPoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClientGenerateThreadDumpPoller.ResumeToken() (string, error)`
+- New function `*CustomDomainsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `APIPortalResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*ConfigServersClientUpdatePatchPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BuildServiceClient.GetBuildService(context.Context, string, string, string, *BuildServiceClientGetBuildServiceOptions) (BuildServiceClientGetBuildServiceResponse, error)`
+- New function `*ServicesClientCreateOrUpdatePoller.FinalResponse(context.Context) (ServicesClientCreateOrUpdateResponse, error)`
+- New function `*BuildServiceAgentPoolClientUpdatePutPollerResponse.Resume(context.Context, *BuildServiceAgentPoolClient, string) error`
+- New function `ServiceRegistryResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*CertificatesClientCreateOrUpdatePollerResponse.Resume(context.Context, *CertificatesClient, string) error`
+- New function `*AppsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ServiceRegistriesClientCreateOrUpdatePoller.Done() bool`
+- New function `*APIPortalCustomDomainsClientDeletePollerResponse.Resume(context.Context, *APIPortalCustomDomainsClient, string) error`
+- New function `*ServicesClientUpdatePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*ServicesClientUpdatePoller.FinalResponse(context.Context) (ServicesClientUpdateResponse, error)`
+- New function `*CertificatesClientDeletePollerResponse.Resume(context.Context, *CertificatesClient, string) error`
+- New function `*DeploymentsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `BindingsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (BindingsClientDeleteResponse, error)`
+- New function `BuildCollection.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClientDeletePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*ConfigurationServicesClientValidatePoller.FinalResponse(context.Context) (ConfigurationServicesClientValidateResponse, error)`
+- New function `*BuildpackBindingClientListPager.Err() error`
+- New function `DeploymentsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientUpdateResponse, error)`
+- New function `AppsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AppsClientDeleteResponse, error)`
+- New function `*BuildServiceAgentPoolClient.Get(context.Context, string, string, string, string, *BuildServiceAgentPoolClientGetOptions) (BuildServiceAgentPoolClientGetResponse, error)`
+- New function `*ServicesClientStartPoller.FinalResponse(context.Context) (ServicesClientStartResponse, error)`
+- New function `*MonitoringSettingsClientUpdatePutPoller.FinalResponse(context.Context) (MonitoringSettingsClientUpdatePutResponse, error)`
+- New function `*ServicesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIPortalCustomDomainsClient.Get(context.Context, string, string, string, string, *APIPortalCustomDomainsClientGetOptions) (APIPortalCustomDomainsClientGetResponse, error)`
+- New function `*BuildServiceBuilderClientDeletePoller.ResumeToken() (string, error)`
+- New function `*APIPortalCustomDomainsClient.BeginDelete(context.Context, string, string, string, string, *APIPortalCustomDomainsClientBeginDeleteOptions) (APIPortalCustomDomainsClientDeletePollerResponse, error)`
+- New function `*ServiceRegistriesClientDeletePoller.FinalResponse(context.Context) (ServiceRegistriesClientDeleteResponse, error)`
+- New function `*DeploymentsClientStartPollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*SKUsClientListPager.Err() error`
+- New function `MonitoringSettingsClientUpdatePutPollerResponse.PollUntilDone(context.Context, time.Duration) (MonitoringSettingsClientUpdatePutResponse, error)`
+- New function `APIPortalCustomDomainsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (APIPortalCustomDomainsClientDeleteResponse, error)`
+- New function `ConfigurationServiceProvisioningState.ToPtr() *ConfigurationServiceProvisioningState`
+- New function `*GatewayRouteConfigsClientDeletePoller.FinalResponse(context.Context) (GatewayRouteConfigsClientDeleteResponse, error)`
+- New function `*ServicesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `NewBuildServiceAgentPoolClient(string, azcore.TokenCredential, *arm.ClientOptions) *BuildServiceAgentPoolClient`
+- New function `*ServiceRegistriesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIPortalsClient.BeginCreateOrUpdate(context.Context, string, string, string, APIPortalResource, *APIPortalsClientBeginCreateOrUpdateOptions) (APIPortalsClientCreateOrUpdatePollerResponse, error)`
+- New function `*MonitoringSettingsClientUpdatePutPoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClientListPager.PageResponse() DeploymentsClientListResponse`
+- New function `*GatewayRouteConfigsClientCreateOrUpdatePoller.FinalResponse(context.Context) (GatewayRouteConfigsClientCreateOrUpdateResponse, error)`
+- New function `*MonitoringSettingsClientUpdatePatchPoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClientListPager.NextPage(context.Context) bool`
+- New function `APIPortalsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (APIPortalsClientDeleteResponse, error)`
+- New function `NewBuildServiceBuilderClient(string, azcore.TokenCredential, *arm.ClientOptions) *BuildServiceBuilderClient`
+- New function `*GatewayCustomDomainsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CertificatesClientListPager.NextPage(context.Context) bool`
+- New function `*DeploymentsClientRestartPollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*BuildpackBindingClientDeletePollerResponse.Resume(context.Context, *BuildpackBindingClient, string) error`
+- New function `ServiceRegistryProvisioningState.ToPtr() *ServiceRegistryProvisioningState`
+- New function `*GatewayRouteConfigsClient.List(string, string, string, *GatewayRouteConfigsClientListOptions) *GatewayRouteConfigsClientListPager`
+- New function `*BuildServiceClientListBuildServicesPager.NextPage(context.Context) bool`
+- New function `CertificatesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CertificatesClientDeleteResponse, error)`
+- New function `*DeploymentsClientStartJFRPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConfigServersClientUpdatePatchPoller.FinalResponse(context.Context) (ConfigServersClientUpdatePatchResponse, error)`
+- New function `*ServiceRegistriesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceBuilderClientListPager.PageResponse() BuildServiceBuilderClientListResponse`
+- New function `PossibleAPIPortalProvisioningStateValues() []APIPortalProvisioningState`
+- New function `*ServiceRegistriesClient.List(string, string, *ServiceRegistriesClientListOptions) *ServiceRegistriesClientListPager`
+- New function `*StoragesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceBuilderClientDeletePoller.Done() bool`
+- New function `*GatewayCustomDomainsClient.Get(context.Context, string, string, string, string, *GatewayCustomDomainsClientGetOptions) (GatewayCustomDomainsClientGetResponse, error)`
+- New function `*APIPortalsClient.List(string, string, *APIPortalsClientListOptions) *APIPortalsClientListPager`
+- New function `*CustomDomainsClientDeletePoller.FinalResponse(context.Context) (CustomDomainsClientDeleteResponse, error)`
+- New function `ConfigurationServiceProperties.MarshalJSON() ([]byte, error)`
+- New function `*BindingsClientListPager.NextPage(context.Context) bool`
+- New function `*ServiceRegistriesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*MonitoringSettingsClientUpdatePatchPoller.FinalResponse(context.Context) (MonitoringSettingsClientUpdatePatchResponse, error)`
+- New function `*BuildpackBindingClientDeletePoller.Done() bool`
+- New function `*DeploymentsClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SourceUploadedUserSourceInfo.GetUploadedUserSourceInfo() *UploadedUserSourceInfo`
+- New function `*GatewayCustomDomainsClient.List(string, string, string, *GatewayCustomDomainsClientListOptions) *GatewayCustomDomainsClientListPager`
+- New function `*CustomDomainsClientDeletePoller.Done() bool`
+- New function `*BuildServiceBuilderClient.BeginDelete(context.Context, string, string, string, string, *BuildServiceBuilderClientBeginDeleteOptions) (BuildServiceBuilderClientDeletePollerResponse, error)`
+- New function `*DeploymentsClientUpdatePollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*GatewayCustomDomainsClientDeletePollerResponse.Resume(context.Context, *GatewayCustomDomainsClient, string) error`
+- New function `*APIPortalsClientDeletePoller.Done() bool`
+- New function `GatewayRouteConfigResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*GatewayCustomDomainsClientListPager.NextPage(context.Context) bool`
+- New function `*DeploymentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (DeploymentsClientCreateOrUpdateResponse, error)`
+- New function `*CustomDomainsClientUpdatePollerResponse.Resume(context.Context, *CustomDomainsClient, string) error`
+- New function `BuildpackBindingClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (BuildpackBindingClientDeleteResponse, error)`
+- New function `*ConfigServersClientValidatePollerResponse.Resume(context.Context, *ConfigServersClient, string) error`
+- New function `*ConfigurationServicesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*BindingsClientListPager.Err() error`
+- New function `BuildpackBindingClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (BuildpackBindingClientCreateOrUpdateResponse, error)`
+- New function `GatewaysClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GatewaysClientCreateOrUpdateResponse, error)`
+- New function `*AppsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GatewayRouteConfigsClientDeletePollerResponse.Resume(context.Context, *GatewayRouteConfigsClient, string) error`
+- New function `*DeploymentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ServicesClientDeletePoller.Done() bool`
+- New function `CustomDomainsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CustomDomainsClientDeleteResponse, error)`
+- New function `*KeyVaultCertificateProperties.GetCertificateProperties() *CertificateProperties`
+- New function `DeploymentsClientGenerateHeapDumpPollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientGenerateHeapDumpResponse, error)`
+- New function `*BindingsClientCreateOrUpdatePoller.FinalResponse(context.Context) (BindingsClientCreateOrUpdateResponse, error)`
+- New function `*APIPortalCustomDomainsClientCreateOrUpdatePoller.Done() bool`
+- New function `*BuildpackBindingClient.BeginDelete(context.Context, string, string, string, string, string, *BuildpackBindingClientBeginDeleteOptions) (BuildpackBindingClientDeletePollerResponse, error)`
+- New function `*CustomDomainsClientListPager.PageResponse() CustomDomainsClientListResponse`
+- New function `*GatewayRouteConfigsClientListPager.Err() error`
+- New function `*CustomDomainsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GatewayCustomDomainsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomContainerUserSourceInfo.GetUserSourceInfo() *UserSourceInfo`
+- New function `BuilderResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*AppsClientListPager.PageResponse() AppsClientListResponse`
+- New function `*BindingsClientCreateOrUpdatePollerResponse.Resume(context.Context, *BindingsClient, string) error`
+- New function `*ConfigurationServicesClientListPager.Err() error`
+- New function `*GatewayRouteConfigsClient.Get(context.Context, string, string, string, string, *GatewayRouteConfigsClientGetOptions) (GatewayRouteConfigsClientGetResponse, error)`
+- New function `*CustomDomainsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceBuilderClientListPager.Err() error`
+- New function `*BuildServiceBuilderClientCreateOrUpdatePollerResponse.Resume(context.Context, *BuildServiceBuilderClient, string) error`
+- New function `ConfigurationServicesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigurationServicesClientCreateOrUpdateResponse, error)`
+- New function `*AppsClientListPager.Err() error`
+- New function `SupportedStacksCollection.MarshalJSON() ([]byte, error)`
+- New function `*StorageAccount.GetStorageProperties() *StorageProperties`
+- New function `BuildServiceAgentPoolResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*APIPortalsClient.BeginDelete(context.Context, string, string, string, *APIPortalsClientBeginDeleteOptions) (APIPortalsClientDeletePollerResponse, error)`
+- New function `*BuildResultUserSourceInfo.UnmarshalJSON([]byte) error`
+- New function `MonitoringSettingsClientUpdatePatchPollerResponse.PollUntilDone(context.Context, time.Duration) (MonitoringSettingsClientUpdatePatchResponse, error)`
+- New function `*APIPortalsClientDeletePollerResponse.Resume(context.Context, *APIPortalsClient, string) error`
+- New function `*APIPortalsClientListPager.PageResponse() APIPortalsClientListResponse`
+- New function `*DeploymentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*AppsClient.BeginSetActiveDeployments(context.Context, string, string, string, ActiveDeploymentCollection, *AppsClientBeginSetActiveDeploymentsOptions) (AppsClientSetActiveDeploymentsPollerResponse, error)`
+- New function `*DeploymentsClientListForClusterPager.NextPage(context.Context) bool`
+- New function `*ServicesClientListBySubscriptionPager.PageResponse() ServicesClientListBySubscriptionResponse`
+- New function `UploadedUserSourceInfo.MarshalJSON() ([]byte, error)`
+- New function `*GatewayCustomDomainsClientDeletePoller.FinalResponse(context.Context) (GatewayCustomDomainsClientDeleteResponse, error)`
+- New function `*AppsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*CertificatesClientDeletePoller.Done() bool`
+- New function `*MonitoringSettingsClientUpdatePatchPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeploymentsClientGenerateHeapDumpPollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*ConfigurationServicesClient.BeginValidate(context.Context, string, string, string, ConfigurationServiceSettings, *ConfigurationServicesClientBeginValidateOptions) (ConfigurationServicesClientValidatePollerResponse, error)`
+- New function `*BuildResultUserSourceInfo.GetUserSourceInfo() *UserSourceInfo`
+- New function `ServicesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientCreateOrUpdateResponse, error)`
+- New function `*AppsClientListPager.NextPage(context.Context) bool`
+- New function `*NetCoreZipUploadedUserSourceInfo.UnmarshalJSON([]byte) error`
+- New function `*GatewayCustomDomainsClientCreateOrUpdatePollerResponse.Resume(context.Context, *GatewayCustomDomainsClient, string) error`
+- New function `*APIPortalsClientCreateOrUpdatePoller.FinalResponse(context.Context) (APIPortalsClientCreateOrUpdateResponse, error)`
+- New function `*CustomDomainsClientDeletePollerResponse.Resume(context.Context, *CustomDomainsClient, string) error`
+- New function `*UploadedUserSourceInfo.GetUserSourceInfo() *UserSourceInfo`
+- New function `*BuildpackBindingClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `AppsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AppsClientUpdateResponse, error)`
+- New function `ConfigurationServicesClientValidatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigurationServicesClientValidateResponse, error)`
+- New function `APIPortalProvisioningState.ToPtr() *APIPortalProvisioningState`
+- New function `*BuildpackBindingClientCreateOrUpdatePollerResponse.Resume(context.Context, *BuildpackBindingClient, string) error`
+- New function `DeploymentsClientGenerateThreadDumpPollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientGenerateThreadDumpResponse, error)`
+- New function `*BuildServiceClient.GetBuildResultLog(context.Context, string, string, string, string, string, *BuildServiceClientGetBuildResultLogOptions) (BuildServiceClientGetBuildResultLogResponse, error)`
+- New function `StoragesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (StoragesClientCreateOrUpdateResponse, error)`
+- New function `SupportedBuildpacksCollection.MarshalJSON() ([]byte, error)`
+- New function `*DeploymentsClientRestartPoller.Done() bool`
+- New function `BindingsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (BindingsClientUpdateResponse, error)`
+- New function `PossibleConfigurationServiceProvisioningStateValues() []ConfigurationServiceProvisioningState`
+- New function `NewGatewaysClient(string, azcore.TokenCredential, *arm.ClientOptions) *GatewaysClient`
+- New function `BuildResultUserSourceInfo.MarshalJSON() ([]byte, error)`
+- New function `*BuildServiceAgentPoolClient.List(string, string, string, *BuildServiceAgentPoolClientListOptions) *BuildServiceAgentPoolClientListPager`
+- New function `BuildServiceAgentPoolClientUpdatePutPollerResponse.PollUntilDone(context.Context, time.Duration) (BuildServiceAgentPoolClientUpdatePutResponse, error)`
+- New function `*GatewaysClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeploymentsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NetCoreZipUploadedUserSourceInfo.GetUserSourceInfo() *UserSourceInfo`
+- New function `*BuildServiceClient.GetSupportedBuildpack(context.Context, string, string, string, string, *BuildServiceClientGetSupportedBuildpackOptions) (BuildServiceClientGetSupportedBuildpackResponse, error)`
+- New function `BuildResultCollection.MarshalJSON() ([]byte, error)`
+- New function `*BuildServiceBuilderClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ConfigurationServicesClientCreateOrUpdatePollerResponse.Resume(context.Context, *ConfigurationServicesClient, string) error`
+- New function `*DeploymentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*BuildServiceAgentPoolClientUpdatePutPoller.Done() bool`
+- New function `*GatewayRouteConfigsClientCreateOrUpdatePoller.Done() bool`
+- New function `*BindingsClientDeletePoller.FinalResponse(context.Context) (BindingsClientDeleteResponse, error)`
+- New function `*GatewayCustomDomainsClientDeletePoller.ResumeToken() (string, error)`
+- New function `BuildServiceBuilderClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (BuildServiceBuilderClientCreateOrUpdateResponse, error)`
+- New function `BuildpackBindingLaunchProperties.MarshalJSON() ([]byte, error)`
+- New function `*CertificatesClientListPager.PageResponse() CertificatesClientListResponse`
+- New function `*MonitoringSettingsClientUpdatePutPollerResponse.Resume(context.Context, *MonitoringSettingsClient, string) error`
+- New function `*DeploymentsClientStopPoller.ResumeToken() (string, error)`
+- New function `*APIPortalsClient.Get(context.Context, string, string, string, *APIPortalsClientGetOptions) (APIPortalsClientGetResponse, error)`
+- New function `*DeploymentsClientListForClusterPager.Err() error`
+- New function `*ServicesClientStopPoller.Done() bool`
+- New function `*AppsClientUpdatePoller.Done() bool`
+- New function `LastModifiedByType.ToPtr() *LastModifiedByType`
+- New function `*DeploymentsClientStopPoller.FinalResponse(context.Context) (DeploymentsClientStopResponse, error)`
+- New function `*BuildServiceClient.GetBuildResult(context.Context, string, string, string, string, string, *BuildServiceClientGetBuildResultOptions) (BuildServiceClientGetBuildResultResponse, error)`
+- New function `*BuildpackBindingClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `DeploymentsClientStartJFRPollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientStartJFRResponse, error)`
+- New function `*UserSourceInfo.GetUserSourceInfo() *UserSourceInfo`
+- New function `*SKUsClientListPager.PageResponse() SKUsClientListResponse`
+- New function `*BindingsClientUpdatePollerResponse.Resume(context.Context, *BindingsClient, string) error`
+- New function `*ServiceRegistriesClientListPager.PageResponse() ServiceRegistriesClientListResponse`
+- New function `*BuildServiceAgentPoolClientListPager.PageResponse() BuildServiceAgentPoolClientListResponse`
+- New function `*GatewayRouteConfigsClientDeletePoller.Done() bool`
+- New function `*GatewaysClient.Get(context.Context, string, string, string, *GatewaysClientGetOptions) (GatewaysClientGetResponse, error)`
+- New function `*GatewaysClientListPager.PageResponse() GatewaysClientListResponse`
+- New function `*ServiceRegistriesClientCreateOrUpdatePollerResponse.Resume(context.Context, *ServiceRegistriesClient, string) error`
+- New function `*GatewayRouteConfigsClientListPager.PageResponse() GatewayRouteConfigsClientListResponse`
+- New function `*CustomDomainsClientCreateOrUpdatePollerResponse.Resume(context.Context, *CustomDomainsClient, string) error`
+- New function `*BuildServiceClient.ListBuilds(string, string, string, *BuildServiceClientListBuildsOptions) *BuildServiceClientListBuildsPager`
+- New function `*BuildServiceBuilderClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GatewaysClientListPager.Err() error`
+- New function `*BuildServiceClient.ListBuildServices(string, string, *BuildServiceClientListBuildServicesOptions) *BuildServiceClientListBuildServicesPager`
+- New function `*StoragesClientDeletePollerResponse.Resume(context.Context, *StoragesClient, string) error`
+- New function `AppsClientSetActiveDeploymentsPollerResponse.PollUntilDone(context.Context, time.Duration) (AppsClientSetActiveDeploymentsResponse, error)`
+- New function `*DeploymentsClientGenerateThreadDumpPollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `PossibleBindingTypeValues() []BindingType`
+- New function `*ServicesClientStopPoller.ResumeToken() (string, error)`
+- New function `*APIPortalCustomDomainsClientCreateOrUpdatePoller.FinalResponse(context.Context) (APIPortalCustomDomainsClientCreateOrUpdateResponse, error)`
+- New function `*GatewayCustomDomainsClientDeletePoller.Done() bool`
+- New function `*GatewaysClient.BeginDelete(context.Context, string, string, string, *GatewaysClientBeginDeleteOptions) (GatewaysClientDeletePollerResponse, error)`
+- New function `*CertificatesClientCreateOrUpdatePoller.FinalResponse(context.Context) (CertificatesClientCreateOrUpdateResponse, error)`
+- New function `*BuildServiceClientListBuildsPager.NextPage(context.Context) bool`
+- New function `*ServicesClientStartPollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*GatewaysClientListPager.NextPage(context.Context) bool`
+- New function `*CertificatesClientListPager.Err() error`
+- New function `*DeploymentsClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BuildServiceBuilderClientListPager.NextPage(context.Context) bool`
+- New function `*ConfigurationServicesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIPortalsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomDomainsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*AppsClientSetActiveDeploymentsPoller.ResumeToken() (string, error)`
+- New function `*BuildpackBindingClientCreateOrUpdatePoller.Done() bool`
+- New function `*StoragesClientCreateOrUpdatePollerResponse.Resume(context.Context, *StoragesClient, string) error`
+- New function `*ServicesClientListPager.NextPage(context.Context) bool`
+- New function `*DeploymentsClientGenerateHeapDumpPoller.Done() bool`
+- New function `*SourceUploadedUserSourceInfo.GetUserSourceInfo() *UserSourceInfo`
+- New function `*DeploymentsClientGenerateThreadDumpPoller.Done() bool`
+- New function `*BuildServiceClient.GetBuild(context.Context, string, string, string, string, *BuildServiceClientGetBuildOptions) (BuildServiceClientGetBuildResponse, error)`
+- New function `*ConfigurationServicesClientDeletePoller.FinalResponse(context.Context) (ConfigurationServicesClientDeleteResponse, error)`
+- New function `*ConfigServersClientUpdatePatchPoller.Done() bool`
+- New function `CertificateProperties.MarshalJSON() ([]byte, error)`
+- New function `*ServicesClientListBySubscriptionPager.Err() error`
+- New function `*GatewayRouteConfigsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, GatewayRouteConfigResource, *GatewayRouteConfigsClientBeginCreateOrUpdateOptions) (GatewayRouteConfigsClientCreateOrUpdatePollerResponse, error)`
+- New function `*BuildServiceClientListBuildResultsPager.Err() error`
+- New function `*AppsClientDeletePoller.FinalResponse(context.Context) (AppsClientDeleteResponse, error)`
+- New function `*GatewayCustomDomainsClientCreateOrUpdatePoller.FinalResponse(context.Context) (GatewayCustomDomainsClientCreateOrUpdateResponse, error)`
+- New function `*AppsClientSetActiveDeploymentsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AppsClientDeletePollerResponse.Resume(context.Context, *AppsClient, string) error`
+- New function `*ConfigServersClientValidatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConfigServersClientValidatePoller.Done() bool`
+- New function `*DeploymentsClientGenerateThreadDumpPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GatewaysClient.BeginCreateOrUpdate(context.Context, string, string, string, GatewayResource, *GatewaysClientBeginCreateOrUpdateOptions) (GatewaysClientCreateOrUpdatePollerResponse, error)`
+- New function `GatewayCustomDomainResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*BuildServiceAgentPoolClientUpdatePutPoller.ResumeToken() (string, error)`
+- New function `NewBuildpackBindingClient(string, azcore.TokenCredential, *arm.ClientOptions) *BuildpackBindingClient`
+- New function `*DeploymentsClientStartJFRPoller.FinalResponse(context.Context) (DeploymentsClientStartJFRResponse, error)`
+- New function `StoragesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (StoragesClientDeleteResponse, error)`
+- New function `*APIPortalsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceAgentPoolClientUpdatePutPoller.FinalResponse(context.Context) (BuildServiceAgentPoolClientUpdatePutResponse, error)`
+- New function `GatewayCustomDomainsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GatewayCustomDomainsClientCreateOrUpdateResponse, error)`
+- New function `PossibleBuildpackBindingProvisioningStateValues() []BuildpackBindingProvisioningState`
+- New function `*APIPortalsClientListPager.NextPage(context.Context) bool`
+- New function `*APIPortalsClientListPager.Err() error`
+- New function `JarUploadedUserSourceInfo.MarshalJSON() ([]byte, error)`
+- New function `*AppsClientDeletePoller.Done() bool`
+- New function `*SourceUploadedUserSourceInfo.UnmarshalJSON([]byte) error`
+- New function `*ServiceRegistriesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `NewAPIPortalsClient(string, azcore.TokenCredential, *arm.ClientOptions) *APIPortalsClient`
+- New function `*BuildServiceBuilderClient.BeginCreateOrUpdate(context.Context, string, string, string, string, BuilderResource, *BuildServiceBuilderClientBeginCreateOrUpdateOptions) (BuildServiceBuilderClientCreateOrUpdatePollerResponse, error)`
+- New function `ConfigServersClientUpdatePutPollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigServersClientUpdatePutResponse, error)`
+- New function `*BuildServiceClientListBuildResultsPager.PageResponse() BuildServiceClientListBuildResultsResponse`
+- New function `CertificatesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (CertificatesClientCreateOrUpdateResponse, error)`
+- New function `*CertificatesClientCreateOrUpdatePoller.Done() bool`
+- New function `*ConfigServersClientUpdatePutPoller.FinalResponse(context.Context) (ConfigServersClientUpdatePutResponse, error)`
+- New function `*GatewayCustomDomainsClient.BeginDelete(context.Context, string, string, string, string, *GatewayCustomDomainsClientBeginDeleteOptions) (GatewayCustomDomainsClientDeletePollerResponse, error)`
+- New function `*DeploymentsClientDeletePoller.FinalResponse(context.Context) (DeploymentsClientDeleteResponse, error)`
+- New function `APIPortalCustomDomainResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*StoragesClientCreateOrUpdatePoller.Done() bool`
+- New function `DeploymentsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientDeleteResponse, error)`
+- New function `*StoragesClientCreateOrUpdatePoller.FinalResponse(context.Context) (StoragesClientCreateOrUpdateResponse, error)`
+- New function `*ServicesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PossibleBuildProvisioningStateValues() []BuildProvisioningState`
+- New function `*AppsClientSetActiveDeploymentsPoller.Done() bool`
+- New function `*ServicesClientDeletePoller.FinalResponse(context.Context) (ServicesClientDeleteResponse, error)`
+- New function `CustomPersistentDiskProperties.MarshalJSON() ([]byte, error)`
+- New function `*ServiceRegistriesClientListPager.Err() error`
+- New function `*GatewaysClientCreateOrUpdatePollerResponse.Resume(context.Context, *GatewaysClient, string) error`
+- New function `*BuildServiceClient.GetResourceUploadURL(context.Context, string, string, string, *BuildServiceClientGetResourceUploadURLOptions) (BuildServiceClientGetResourceUploadURLResponse, error)`
+- New function `*CustomDomainsClientUpdatePoller.FinalResponse(context.Context) (CustomDomainsClientUpdateResponse, error)`
+- New function `*APIPortalCustomDomainsClientListPager.Err() error`
+- New function `DeploymentsClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientRestartResponse, error)`
+- New function `*GatewayRouteConfigsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeploymentsClientGenerateHeapDumpPoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClientUpdatePoller.FinalResponse(context.Context) (DeploymentsClientUpdateResponse, error)`
+- New function `*APIPortalsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ConfigurationServicesClientCreateOrUpdatePoller.Done() bool`
+- New function `*APIPortalsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomDomainsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeploymentsClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServicesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `ServiceRegistriesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServiceRegistriesClientDeleteResponse, error)`
+- New function `*UploadedUserSourceInfo.UnmarshalJSON([]byte) error`
+- New function `*APIPortalsClientDeletePoller.FinalResponse(context.Context) (APIPortalsClientDeleteResponse, error)`
+- New function `*APIPortalCustomDomainsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClientRestartPoller.ResumeToken() (string, error)`
+- New function `*BindingsClientUpdatePoller.FinalResponse(context.Context) (BindingsClientUpdateResponse, error)`
+- New function `*DeploymentsClientStopPoller.Done() bool`
+- New function `*ConfigurationServicesClientListPager.PageResponse() ConfigurationServicesClientListResponse`
+- New function `*NetCoreZipUploadedUserSourceInfo.GetUploadedUserSourceInfo() *UploadedUserSourceInfo`
+- New function `*BindingsClientUpdatePoller.Done() bool`
+- New function `*BuildServiceAgentPoolClientListPager.NextPage(context.Context) bool`
+- New function `*ConfigurationServicesClientValidatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CertificatesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `PossibleBuildResultProvisioningStateValues() []BuildResultProvisioningState`
+- New function `SsoProperties.MarshalJSON() ([]byte, error)`
+- New function `*ConfigurationServicesClientCreateOrUpdatePoller.FinalResponse(context.Context) (ConfigurationServicesClientCreateOrUpdateResponse, error)`
+- New function `*DeploymentsClientGenerateHeapDumpPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServicesClientStartPoller.ResumeToken() (string, error)`
+- New function `*BuildServiceClientListBuildServicesPager.PageResponse() BuildServiceClientListBuildServicesResponse`
+- New function `*DeploymentsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ActiveDeploymentCollection.MarshalJSON() ([]byte, error)`
+- New function `*APIPortalCustomDomainsClientDeletePoller.Done() bool`
+- New function `*CustomContainerUserSourceInfo.UnmarshalJSON([]byte) error`
+- New function `GatewayRouteConfigsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GatewayRouteConfigsClientCreateOrUpdateResponse, error)`
+- New function `*GatewaysClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CertificatesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*JarUploadedUserSourceInfo.GetUserSourceInfo() *UserSourceInfo`
+- New function `PossibleGatewayProvisioningStateValues() []GatewayProvisioningState`
+- New function `*StoragesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `SourceUploadedUserSourceInfo.MarshalJSON() ([]byte, error)`
+- New function `ConfigurationServicesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigurationServicesClientDeleteResponse, error)`
+- New function `*DeploymentsClientRestartPoller.FinalResponse(context.Context) (DeploymentsClientRestartResponse, error)`
+- New function `ConfigurationServiceGitRepository.MarshalJSON() ([]byte, error)`
+- New function `*AzureFileVolume.GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties`
+- New function `*ServicesClientStartPoller.Done() bool`
+- New function `*StoragesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ConfigurationServicesClientValidatePollerResponse.Resume(context.Context, *ConfigurationServicesClient, string) error`
+- New function `*BindingsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*GatewaysClient.List(string, string, *GatewaysClientListOptions) *GatewaysClientListPager`
+- New function `ConfigurationServiceGitProperty.MarshalJSON() ([]byte, error)`
+- New function `*JarUploadedUserSourceInfo.GetUploadedUserSourceInfo() *UploadedUserSourceInfo`
+- New function `*GatewayCustomDomainsClientListPager.PageResponse() GatewayCustomDomainsClientListResponse`
+- New function `*APIPortalCustomDomainsClientListPager.PageResponse() APIPortalCustomDomainsClientListResponse`
+- New function `*GatewayRouteConfigsClient.BeginDelete(context.Context, string, string, string, string, *GatewayRouteConfigsClientBeginDeleteOptions) (GatewayRouteConfigsClientDeletePollerResponse, error)`
+- New function `*StoragesClientDeletePoller.FinalResponse(context.Context) (StoragesClientDeleteResponse, error)`
+- New function `ServicesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientUpdateResponse, error)`
+- New function `*ConfigurationServicesClientValidatePoller.Done() bool`
+- New function `BuilderProperties.MarshalJSON() ([]byte, error)`
+- New function `NewAPIPortalCustomDomainsClient(string, azcore.TokenCredential, *arm.ClientOptions) *APIPortalCustomDomainsClient`
+- New function `*APIPortalsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceAgentPoolClientListPager.Err() error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ConfigurationServicesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceClient.GetSupportedStack(context.Context, string, string, string, string, *BuildServiceClientGetSupportedStackOptions) (BuildServiceClientGetSupportedStackResponse, error)`
+- New function `*ServicesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ServiceRegistriesClient.BeginCreateOrUpdate(context.Context, string, string, string, *ServiceRegistriesClientBeginCreateOrUpdateOptions) (ServiceRegistriesClientCreateOrUpdatePollerResponse, error)`
+- New function `*DeploymentsClientStartPoller.FinalResponse(context.Context) (DeploymentsClientStartResponse, error)`
+- New function `*ServiceRegistriesClientCreateOrUpdatePoller.FinalResponse(context.Context) (ServiceRegistriesClientCreateOrUpdateResponse, error)`
+- New function `*ServicesClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConfigurationServicesClientDeletePoller.Done() bool`
+- New function `*APIPortalCustomDomainsClientDeletePoller.FinalResponse(context.Context) (APIPortalCustomDomainsClientDeleteResponse, error)`
+- New function `GatewaysClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (GatewaysClientDeleteResponse, error)`
+- New function `*BuildServiceClient.ListBuildResults(string, string, string, string, *BuildServiceClientListBuildResultsOptions) *BuildServiceClientListBuildResultsPager`
+- New function `*MonitoringSettingsClientUpdatePatchPoller.Done() bool`
+- New function `*GatewaysClientDeletePoller.ResumeToken() (string, error)`
+- New function `GatewayProperties.MarshalJSON() ([]byte, error)`
+- New function `*AppsClientUpdatePoller.FinalResponse(context.Context) (AppsClientUpdateResponse, error)`
+- New function `*BindingsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeploymentsClientGenerateThreadDumpPoller.FinalResponse(context.Context) (DeploymentsClientGenerateThreadDumpResponse, error)`
+- New function `*DeploymentsClientUpdatePoller.Done() bool`
+- New function `*ServiceRegistriesClientListPager.NextPage(context.Context) bool`
+- New function `GatewayCorsProperties.MarshalJSON() ([]byte, error)`
+- New function `*ConfigurationServicesClientDeletePollerResponse.Resume(context.Context, *ConfigurationServicesClient, string) error`
+- New function `*ServicesClientCreateOrUpdatePoller.Done() bool`
+- New function `*ServiceRegistriesClientDeletePollerResponse.Resume(context.Context, *ServiceRegistriesClient, string) error`
+- New function `*JarUploadedUserSourceInfo.UnmarshalJSON([]byte) error`
+- New function `*BuildServiceClient.CreateOrUpdateBuild(context.Context, string, string, string, string, Build, *BuildServiceClientCreateOrUpdateBuildOptions) (BuildServiceClientCreateOrUpdateBuildResponse, error)`
+- New function `*ServicesClientStopPoller.FinalResponse(context.Context) (ServicesClientStopResponse, error)`
+- New function `GatewayProvisioningState.ToPtr() *GatewayProvisioningState`
+- New function `*APIPortalsClient.ValidateDomain(context.Context, string, string, string, CustomDomainValidatePayload, *APIPortalsClientValidateDomainOptions) (APIPortalsClientValidateDomainResponse, error)`
+- New function `*CustomDomainsClientCreateOrUpdatePoller.Done() bool`
+- New function `*GatewaysClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceAgentPoolClient.BeginUpdatePut(context.Context, string, string, string, string, BuildServiceAgentPoolResource, *BuildServiceAgentPoolClientBeginUpdatePutOptions) (BuildServiceAgentPoolClientUpdatePutPollerResponse, error)`
+- New function `*BuildServiceClientListBuildResultsPager.NextPage(context.Context) bool`
+- New function `*BuildpackBindingClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SKUsClientListPager.NextPage(context.Context) bool`
+- New function `*APIPortalCustomDomainsClientCreateOrUpdatePollerResponse.Resume(context.Context, *APIPortalCustomDomainsClient, string) error`
+- New function `*ConfigurationServicesClientValidatePoller.ResumeToken() (string, error)`
+- New function `*CustomDomainsClientCreateOrUpdatePoller.FinalResponse(context.Context) (CustomDomainsClientCreateOrUpdateResponse, error)`
+- New function `ConfigurationServiceResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*APIPortalCustomDomainsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIPortalsClientCreateOrUpdatePollerResponse.Resume(context.Context, *APIPortalsClient, string) error`
+- New function `*DeploymentsClientDeletePoller.Done() bool`
+- New function `*StoragesClientDeletePoller.Done() bool`
+- New function `*BuildServiceClientListBuildServicesPager.Err() error`
+- New function `*BindingsClientListPager.PageResponse() BindingsClientListResponse`
+- New function `*ServicesClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `ConfigurationServiceGitPropertyValidateResult.MarshalJSON() ([]byte, error)`
+- New function `*CertificatesClientDeletePoller.FinalResponse(context.Context) (CertificatesClientDeleteResponse, error)`
+- New function `ServiceRegistriesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServiceRegistriesClientCreateOrUpdateResponse, error)`
+- New function `*BindingsClientDeletePollerResponse.Resume(context.Context, *BindingsClient, string) error`
+- New function `PossibleBuildServiceProvisioningStateValues() []BuildServiceProvisioningState`
+- New function `*DeploymentsClientListForClusterPager.PageResponse() DeploymentsClientListForClusterResponse`
+- New function `*MonitoringSettingsClientUpdatePatchPollerResponse.Resume(context.Context, *MonitoringSettingsClient, string) error`
+- New function `*APIPortalCustomDomainsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, APIPortalCustomDomainResource, *APIPortalCustomDomainsClientBeginCreateOrUpdateOptions) (APIPortalCustomDomainsClientCreateOrUpdatePollerResponse, error)`
+- New function `*GatewayRouteConfigsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*AppsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `BuildResultProperties.MarshalJSON() ([]byte, error)`
+- New function `*CertificatesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GatewaysClientDeletePoller.Done() bool`
+- New function `NetCoreZipUploadedUserSourceInfo.MarshalJSON() ([]byte, error)`
+- New function `ServiceRegistryProperties.MarshalJSON() ([]byte, error)`
+- New function `AppsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AppsClientCreateOrUpdateResponse, error)`
+- New function `*GatewayCustomDomainsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ConfigServersClientValidatePoller.FinalResponse(context.Context) (ConfigServersClientValidateResponse, error)`
+- New function `*BuildpackBindingClientListPager.NextPage(context.Context) bool`
+- New function `*BuildServiceBuilderClientDeletePollerResponse.Resume(context.Context, *BuildServiceBuilderClient, string) error`
+- New function `*BuildServiceClient.ListSupportedStacks(context.Context, string, string, string, *BuildServiceClientListSupportedStacksOptions) (BuildServiceClientListSupportedStacksResponse, error)`
+- New function `*BindingsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*BuildpackBindingClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PossibleLastModifiedByTypeValues() []LastModifiedByType`
+- New function `*CustomDomainsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `APIPortalCustomDomainsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (APIPortalCustomDomainsClientCreateOrUpdateResponse, error)`
+- New function `*GatewaysClientCreateOrUpdatePoller.FinalResponse(context.Context) (GatewaysClientCreateOrUpdateResponse, error)`
+- New function `*BindingsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServicesClientListPager.PageResponse() ServicesClientListResponse`
+- New function `*GatewayRouteConfigsClientListPager.NextPage(context.Context) bool`
+- New function `*ServiceRegistriesClient.BeginDelete(context.Context, string, string, string, *ServiceRegistriesClientBeginDeleteOptions) (ServiceRegistriesClientDeletePollerResponse, error)`
+- New function `APIPortalProperties.MarshalJSON() ([]byte, error)`
+- New function `ConfigServersClientValidatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigServersClientValidateResponse, error)`
+- New function `*DeploymentsClientStopPollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `NewGatewayRouteConfigsClient(string, azcore.TokenCredential, *arm.ClientOptions) *GatewayRouteConfigsClient`
+- New function `*UploadedUserSourceInfo.GetUploadedUserSourceInfo() *UploadedUserSourceInfo`
+- New function `*ConfigurationServicesClient.List(string, string, *ConfigurationServicesClientListOptions) *ConfigurationServicesClientListPager`
+- New function `*DeploymentsClientListPager.Err() error`
+- New function `*ConfigServersClientUpdatePutPoller.Done() bool`
+- New function `*ServicesClientCreateOrUpdatePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `BuildResultProvisioningState.ToPtr() *BuildResultProvisioningState`
+- New function `*DeploymentsClientStartJFRPoller.ResumeToken() (string, error)`
+- New function `ValidationMessages.MarshalJSON() ([]byte, error)`
+- New function `DeploymentsClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientStartResponse, error)`
+- New function `*BuildpackBindingClientCreateOrUpdatePoller.FinalResponse(context.Context) (BuildpackBindingClientCreateOrUpdateResponse, error)`
+- New function `ServicesClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientStartResponse, error)`
+- New function `APIPortalsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (APIPortalsClientCreateOrUpdateResponse, error)`
+- New function `DeploymentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientCreateOrUpdateResponse, error)`
+- New function `*GatewayRouteConfigsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StoragesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BindingsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BuildServiceAgentPoolClientUpdatePutPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConfigurationServicesClient.BeginCreateOrUpdate(context.Context, string, string, string, ConfigurationServiceResource, *ConfigurationServicesClientBeginCreateOrUpdateOptions) (ConfigurationServicesClientCreateOrUpdatePollerResponse, error)`
+- New function `*ServicesClientUpdatePoller.Done() bool`
+- New function `BuildServiceProvisioningState.ToPtr() *BuildServiceProvisioningState`
+- New function `PossibleBuilderProvisioningStateValues() []BuilderProvisioningState`
+- New function `*ServicesClientListPager.Err() error`
+- New function `NewConfigurationServicesClient(string, azcore.TokenCredential, *arm.ClientOptions) *ConfigurationServicesClient`
+- New function `*CustomDomainsClientListPager.NextPage(context.Context) bool`
+- New function `*BindingsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*StoragesClientListPager.Err() error`
+- New function `BuildpackBindingResourceCollection.MarshalJSON() ([]byte, error)`
+- New function `*AppsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `BindingType.ToPtr() *BindingType`
+- New function `*ServicesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*BuildServiceBuilderClient.List(string, string, string, *BuildServiceBuilderClientListOptions) *BuildServiceBuilderClientListPager`
+- New struct `APIPortalCustomDomainProperties`
+- New struct `APIPortalCustomDomainResource`
+- New struct `APIPortalCustomDomainResourceCollection`
+- New struct `APIPortalCustomDomainsClient`
+- New struct `APIPortalCustomDomainsClientBeginCreateOrUpdateOptions`
+- New struct `APIPortalCustomDomainsClientBeginDeleteOptions`
+- New struct `APIPortalCustomDomainsClientCreateOrUpdatePoller`
+- New struct `APIPortalCustomDomainsClientCreateOrUpdatePollerResponse`
+- New struct `APIPortalCustomDomainsClientCreateOrUpdateResponse`
+- New struct `APIPortalCustomDomainsClientCreateOrUpdateResult`
+- New struct `APIPortalCustomDomainsClientDeletePoller`
+- New struct `APIPortalCustomDomainsClientDeletePollerResponse`
+- New struct `APIPortalCustomDomainsClientDeleteResponse`
+- New struct `APIPortalCustomDomainsClientGetOptions`
+- New struct `APIPortalCustomDomainsClientGetResponse`
+- New struct `APIPortalCustomDomainsClientGetResult`
+- New struct `APIPortalCustomDomainsClientListOptions`
+- New struct `APIPortalCustomDomainsClientListPager`
+- New struct `APIPortalCustomDomainsClientListResponse`
+- New struct `APIPortalCustomDomainsClientListResult`
+- New struct `APIPortalInstance`
+- New struct `APIPortalProperties`
+- New struct `APIPortalResource`
+- New struct `APIPortalResourceCollection`
+- New struct `APIPortalResourceRequests`
+- New struct `APIPortalsClient`
+- New struct `APIPortalsClientBeginCreateOrUpdateOptions`
+- New struct `APIPortalsClientBeginDeleteOptions`
+- New struct `APIPortalsClientCreateOrUpdatePoller`
+- New struct `APIPortalsClientCreateOrUpdatePollerResponse`
+- New struct `APIPortalsClientCreateOrUpdateResponse`
+- New struct `APIPortalsClientCreateOrUpdateResult`
+- New struct `APIPortalsClientDeletePoller`
+- New struct `APIPortalsClientDeletePollerResponse`
+- New struct `APIPortalsClientDeleteResponse`
+- New struct `APIPortalsClientGetOptions`
+- New struct `APIPortalsClientGetResponse`
+- New struct `APIPortalsClientGetResult`
+- New struct `APIPortalsClientListOptions`
+- New struct `APIPortalsClientListPager`
+- New struct `APIPortalsClientListResponse`
+- New struct `APIPortalsClientListResult`
+- New struct `APIPortalsClientValidateDomainOptions`
+- New struct `APIPortalsClientValidateDomainResponse`
+- New struct `APIPortalsClientValidateDomainResult`
+- New struct `ActiveDeploymentCollection`
+- New struct `AppsClientBeginCreateOrUpdateOptions`
+- New struct `AppsClientBeginDeleteOptions`
+- New struct `AppsClientBeginSetActiveDeploymentsOptions`
+- New struct `AppsClientBeginUpdateOptions`
+- New struct `AppsClientCreateOrUpdatePoller`
+- New struct `AppsClientCreateOrUpdatePollerResponse`
+- New struct `AppsClientCreateOrUpdateResponse`
+- New struct `AppsClientCreateOrUpdateResult`
+- New struct `AppsClientDeletePoller`
+- New struct `AppsClientDeletePollerResponse`
+- New struct `AppsClientDeleteResponse`
+- New struct `AppsClientGetOptions`
+- New struct `AppsClientGetResourceUploadURLOptions`
+- New struct `AppsClientGetResourceUploadURLResponse`
+- New struct `AppsClientGetResourceUploadURLResult`
+- New struct `AppsClientGetResponse`
+- New struct `AppsClientGetResult`
+- New struct `AppsClientListOptions`
+- New struct `AppsClientListPager`
+- New struct `AppsClientListResponse`
+- New struct `AppsClientListResult`
+- New struct `AppsClientSetActiveDeploymentsPoller`
+- New struct `AppsClientSetActiveDeploymentsPollerResponse`
+- New struct `AppsClientSetActiveDeploymentsResponse`
+- New struct `AppsClientSetActiveDeploymentsResult`
+- New struct `AppsClientUpdatePoller`
+- New struct `AppsClientUpdatePollerResponse`
+- New struct `AppsClientUpdateResponse`
+- New struct `AppsClientUpdateResult`
+- New struct `AppsClientValidateDomainOptions`
+- New struct `AppsClientValidateDomainResponse`
+- New struct `AppsClientValidateDomainResult`
+- New struct `BindingsClientBeginCreateOrUpdateOptions`
+- New struct `BindingsClientBeginDeleteOptions`
+- New struct `BindingsClientBeginUpdateOptions`
+- New struct `BindingsClientCreateOrUpdatePoller`
+- New struct `BindingsClientCreateOrUpdatePollerResponse`
+- New struct `BindingsClientCreateOrUpdateResponse`
+- New struct `BindingsClientCreateOrUpdateResult`
+- New struct `BindingsClientDeletePoller`
+- New struct `BindingsClientDeletePollerResponse`
+- New struct `BindingsClientDeleteResponse`
+- New struct `BindingsClientGetOptions`
+- New struct `BindingsClientGetResponse`
+- New struct `BindingsClientGetResult`
+- New struct `BindingsClientListOptions`
+- New struct `BindingsClientListPager`
+- New struct `BindingsClientListResponse`
+- New struct `BindingsClientListResult`
+- New struct `BindingsClientUpdatePoller`
+- New struct `BindingsClientUpdatePollerResponse`
+- New struct `BindingsClientUpdateResponse`
+- New struct `BindingsClientUpdateResult`
+- New struct `Build`
+- New struct `BuildCollection`
+- New struct `BuildProperties`
+- New struct `BuildResult`
+- New struct `BuildResultCollection`
+- New struct `BuildResultLog`
+- New struct `BuildResultProperties`
+- New struct `BuildResultUserSourceInfo`
+- New struct `BuildService`
+- New struct `BuildServiceAgentPoolClient`
+- New struct `BuildServiceAgentPoolClientBeginUpdatePutOptions`
+- New struct `BuildServiceAgentPoolClientGetOptions`
+- New struct `BuildServiceAgentPoolClientGetResponse`
+- New struct `BuildServiceAgentPoolClientGetResult`
+- New struct `BuildServiceAgentPoolClientListOptions`
+- New struct `BuildServiceAgentPoolClientListPager`
+- New struct `BuildServiceAgentPoolClientListResponse`
+- New struct `BuildServiceAgentPoolClientListResult`
+- New struct `BuildServiceAgentPoolClientUpdatePutPoller`
+- New struct `BuildServiceAgentPoolClientUpdatePutPollerResponse`
+- New struct `BuildServiceAgentPoolClientUpdatePutResponse`
+- New struct `BuildServiceAgentPoolClientUpdatePutResult`
+- New struct `BuildServiceAgentPoolProperties`
+- New struct `BuildServiceAgentPoolResource`
+- New struct `BuildServiceAgentPoolResourceCollection`
+- New struct `BuildServiceAgentPoolSizeProperties`
+- New struct `BuildServiceBuilderClient`
+- New struct `BuildServiceBuilderClientBeginCreateOrUpdateOptions`
+- New struct `BuildServiceBuilderClientBeginDeleteOptions`
+- New struct `BuildServiceBuilderClientCreateOrUpdatePoller`
+- New struct `BuildServiceBuilderClientCreateOrUpdatePollerResponse`
+- New struct `BuildServiceBuilderClientCreateOrUpdateResponse`
+- New struct `BuildServiceBuilderClientCreateOrUpdateResult`
+- New struct `BuildServiceBuilderClientDeletePoller`
+- New struct `BuildServiceBuilderClientDeletePollerResponse`
+- New struct `BuildServiceBuilderClientDeleteResponse`
+- New struct `BuildServiceBuilderClientGetOptions`
+- New struct `BuildServiceBuilderClientGetResponse`
+- New struct `BuildServiceBuilderClientGetResult`
+- New struct `BuildServiceBuilderClientListOptions`
+- New struct `BuildServiceBuilderClientListPager`
+- New struct `BuildServiceBuilderClientListResponse`
+- New struct `BuildServiceBuilderClientListResult`
+- New struct `BuildServiceClient`
+- New struct `BuildServiceClientCreateOrUpdateBuildOptions`
+- New struct `BuildServiceClientCreateOrUpdateBuildResponse`
+- New struct `BuildServiceClientCreateOrUpdateBuildResult`
+- New struct `BuildServiceClientGetBuildOptions`
+- New struct `BuildServiceClientGetBuildResponse`
+- New struct `BuildServiceClientGetBuildResult`
+- New struct `BuildServiceClientGetBuildResultLogOptions`
+- New struct `BuildServiceClientGetBuildResultLogResponse`
+- New struct `BuildServiceClientGetBuildResultLogResult`
+- New struct `BuildServiceClientGetBuildResultOptions`
+- New struct `BuildServiceClientGetBuildResultResponse`
+- New struct `BuildServiceClientGetBuildResultResult`
+- New struct `BuildServiceClientGetBuildServiceOptions`
+- New struct `BuildServiceClientGetBuildServiceResponse`
+- New struct `BuildServiceClientGetBuildServiceResult`
+- New struct `BuildServiceClientGetResourceUploadURLOptions`
+- New struct `BuildServiceClientGetResourceUploadURLResponse`
+- New struct `BuildServiceClientGetResourceUploadURLResult`
+- New struct `BuildServiceClientGetSupportedBuildpackOptions`
+- New struct `BuildServiceClientGetSupportedBuildpackResponse`
+- New struct `BuildServiceClientGetSupportedBuildpackResult`
+- New struct `BuildServiceClientGetSupportedStackOptions`
+- New struct `BuildServiceClientGetSupportedStackResponse`
+- New struct `BuildServiceClientGetSupportedStackResult`
+- New struct `BuildServiceClientListBuildResultsOptions`
+- New struct `BuildServiceClientListBuildResultsPager`
+- New struct `BuildServiceClientListBuildResultsResponse`
+- New struct `BuildServiceClientListBuildResultsResult`
+- New struct `BuildServiceClientListBuildServicesOptions`
+- New struct `BuildServiceClientListBuildServicesPager`
+- New struct `BuildServiceClientListBuildServicesResponse`
+- New struct `BuildServiceClientListBuildServicesResult`
+- New struct `BuildServiceClientListBuildsOptions`
+- New struct `BuildServiceClientListBuildsPager`
+- New struct `BuildServiceClientListBuildsResponse`
+- New struct `BuildServiceClientListBuildsResult`
+- New struct `BuildServiceClientListSupportedBuildpacksOptions`
+- New struct `BuildServiceClientListSupportedBuildpacksResponse`
+- New struct `BuildServiceClientListSupportedBuildpacksResult`
+- New struct `BuildServiceClientListSupportedStacksOptions`
+- New struct `BuildServiceClientListSupportedStacksResponse`
+- New struct `BuildServiceClientListSupportedStacksResult`
+- New struct `BuildServiceCollection`
+- New struct `BuildServiceProperties`
+- New struct `BuildServicePropertiesResourceRequests`
+- New struct `BuildStageProperties`
+- New struct `BuilderProperties`
+- New struct `BuilderResource`
+- New struct `BuilderResourceCollection`
+- New struct `BuildpackBindingClient`
+- New struct `BuildpackBindingClientBeginCreateOrUpdateOptions`
+- New struct `BuildpackBindingClientBeginDeleteOptions`
+- New struct `BuildpackBindingClientCreateOrUpdatePoller`
+- New struct `BuildpackBindingClientCreateOrUpdatePollerResponse`
+- New struct `BuildpackBindingClientCreateOrUpdateResponse`
+- New struct `BuildpackBindingClientCreateOrUpdateResult`
+- New struct `BuildpackBindingClientDeletePoller`
+- New struct `BuildpackBindingClientDeletePollerResponse`
+- New struct `BuildpackBindingClientDeleteResponse`
+- New struct `BuildpackBindingClientGetOptions`
+- New struct `BuildpackBindingClientGetResponse`
+- New struct `BuildpackBindingClientGetResult`
+- New struct `BuildpackBindingClientListOptions`
+- New struct `BuildpackBindingClientListPager`
+- New struct `BuildpackBindingClientListResponse`
+- New struct `BuildpackBindingClientListResult`
+- New struct `BuildpackBindingLaunchProperties`
+- New struct `BuildpackBindingProperties`
+- New struct `BuildpackBindingResource`
+- New struct `BuildpackBindingResourceCollection`
+- New struct `BuildpackProperties`
+- New struct `BuildpacksGroupProperties`
+- New struct `CertificatesClientBeginCreateOrUpdateOptions`
+- New struct `CertificatesClientBeginDeleteOptions`
+- New struct `CertificatesClientCreateOrUpdatePoller`
+- New struct `CertificatesClientCreateOrUpdatePollerResponse`
+- New struct `CertificatesClientCreateOrUpdateResponse`
+- New struct `CertificatesClientCreateOrUpdateResult`
+- New struct `CertificatesClientDeletePoller`
+- New struct `CertificatesClientDeletePollerResponse`
+- New struct `CertificatesClientDeleteResponse`
+- New struct `CertificatesClientGetOptions`
+- New struct `CertificatesClientGetResponse`
+- New struct `CertificatesClientGetResult`
+- New struct `CertificatesClientListOptions`
+- New struct `CertificatesClientListPager`
+- New struct `CertificatesClientListResponse`
+- New struct `CertificatesClientListResult`
+- New struct `ConfigServersClientBeginUpdatePatchOptions`
+- New struct `ConfigServersClientBeginUpdatePutOptions`
+- New struct `ConfigServersClientBeginValidateOptions`
+- New struct `ConfigServersClientGetOptions`
+- New struct `ConfigServersClientGetResponse`
+- New struct `ConfigServersClientGetResult`
+- New struct `ConfigServersClientUpdatePatchPoller`
+- New struct `ConfigServersClientUpdatePatchPollerResponse`
+- New struct `ConfigServersClientUpdatePatchResponse`
+- New struct `ConfigServersClientUpdatePatchResult`
+- New struct `ConfigServersClientUpdatePutPoller`
+- New struct `ConfigServersClientUpdatePutPollerResponse`
+- New struct `ConfigServersClientUpdatePutResponse`
+- New struct `ConfigServersClientUpdatePutResult`
+- New struct `ConfigServersClientValidatePoller`
+- New struct `ConfigServersClientValidatePollerResponse`
+- New struct `ConfigServersClientValidateResponse`
+- New struct `ConfigServersClientValidateResult`
+- New struct `ConfigurationServiceGitProperty`
+- New struct `ConfigurationServiceGitPropertyValidateResult`
+- New struct `ConfigurationServiceGitRepository`
+- New struct `ConfigurationServiceInstance`
+- New struct `ConfigurationServiceProperties`
+- New struct `ConfigurationServiceResource`
+- New struct `ConfigurationServiceResourceCollection`
+- New struct `ConfigurationServiceResourceRequests`
+- New struct `ConfigurationServiceSettings`
+- New struct `ConfigurationServiceSettingsValidateResult`
+- New struct `ConfigurationServicesClient`
+- New struct `ConfigurationServicesClientBeginCreateOrUpdateOptions`
+- New struct `ConfigurationServicesClientBeginDeleteOptions`
+- New struct `ConfigurationServicesClientBeginValidateOptions`
+- New struct `ConfigurationServicesClientCreateOrUpdatePoller`
+- New struct `ConfigurationServicesClientCreateOrUpdatePollerResponse`
+- New struct `ConfigurationServicesClientCreateOrUpdateResponse`
+- New struct `ConfigurationServicesClientCreateOrUpdateResult`
+- New struct `ConfigurationServicesClientDeletePoller`
+- New struct `ConfigurationServicesClientDeletePollerResponse`
+- New struct `ConfigurationServicesClientDeleteResponse`
+- New struct `ConfigurationServicesClientGetOptions`
+- New struct `ConfigurationServicesClientGetResponse`
+- New struct `ConfigurationServicesClientGetResult`
+- New struct `ConfigurationServicesClientListOptions`
+- New struct `ConfigurationServicesClientListPager`
+- New struct `ConfigurationServicesClientListResponse`
+- New struct `ConfigurationServicesClientListResult`
+- New struct `ConfigurationServicesClientValidatePoller`
+- New struct `ConfigurationServicesClientValidatePollerResponse`
+- New struct `ConfigurationServicesClientValidateResponse`
+- New struct `ConfigurationServicesClientValidateResult`
+- New struct `ContainerProbeSettings`
+- New struct `CustomContainerUserSourceInfo`
+- New struct `CustomDomainsClientBeginCreateOrUpdateOptions`
+- New struct `CustomDomainsClientBeginDeleteOptions`
+- New struct `CustomDomainsClientBeginUpdateOptions`
+- New struct `CustomDomainsClientCreateOrUpdatePoller`
+- New struct `CustomDomainsClientCreateOrUpdatePollerResponse`
+- New struct `CustomDomainsClientCreateOrUpdateResponse`
+- New struct `CustomDomainsClientCreateOrUpdateResult`
+- New struct `CustomDomainsClientDeletePoller`
+- New struct `CustomDomainsClientDeletePollerResponse`
+- New struct `CustomDomainsClientDeleteResponse`
+- New struct `CustomDomainsClientGetOptions`
+- New struct `CustomDomainsClientGetResponse`
+- New struct `CustomDomainsClientGetResult`
+- New struct `CustomDomainsClientListOptions`
+- New struct `CustomDomainsClientListPager`
+- New struct `CustomDomainsClientListResponse`
+- New struct `CustomDomainsClientListResult`
+- New struct `CustomDomainsClientUpdatePoller`
+- New struct `CustomDomainsClientUpdatePollerResponse`
+- New struct `CustomDomainsClientUpdateResponse`
+- New struct `CustomDomainsClientUpdateResult`
+- New struct `DeploymentsClientBeginCreateOrUpdateOptions`
+- New struct `DeploymentsClientBeginDeleteOptions`
+- New struct `DeploymentsClientBeginGenerateHeapDumpOptions`
+- New struct `DeploymentsClientBeginGenerateThreadDumpOptions`
+- New struct `DeploymentsClientBeginRestartOptions`
+- New struct `DeploymentsClientBeginStartJFROptions`
+- New struct `DeploymentsClientBeginStartOptions`
+- New struct `DeploymentsClientBeginStopOptions`
+- New struct `DeploymentsClientBeginUpdateOptions`
+- New struct `DeploymentsClientCreateOrUpdatePoller`
+- New struct `DeploymentsClientCreateOrUpdatePollerResponse`
+- New struct `DeploymentsClientCreateOrUpdateResponse`
+- New struct `DeploymentsClientCreateOrUpdateResult`
+- New struct `DeploymentsClientDeletePoller`
+- New struct `DeploymentsClientDeletePollerResponse`
+- New struct `DeploymentsClientDeleteResponse`
+- New struct `DeploymentsClientGenerateHeapDumpPoller`
+- New struct `DeploymentsClientGenerateHeapDumpPollerResponse`
+- New struct `DeploymentsClientGenerateHeapDumpResponse`
+- New struct `DeploymentsClientGenerateThreadDumpPoller`
+- New struct `DeploymentsClientGenerateThreadDumpPollerResponse`
+- New struct `DeploymentsClientGenerateThreadDumpResponse`
+- New struct `DeploymentsClientGetLogFileURLOptions`
+- New struct `DeploymentsClientGetLogFileURLResponse`
+- New struct `DeploymentsClientGetLogFileURLResult`
+- New struct `DeploymentsClientGetOptions`
+- New struct `DeploymentsClientGetResponse`
+- New struct `DeploymentsClientGetResult`
+- New struct `DeploymentsClientListForClusterOptions`
+- New struct `DeploymentsClientListForClusterPager`
+- New struct `DeploymentsClientListForClusterResponse`
+- New struct `DeploymentsClientListForClusterResult`
+- New struct `DeploymentsClientListOptions`
+- New struct `DeploymentsClientListPager`
+- New struct `DeploymentsClientListResponse`
+- New struct `DeploymentsClientListResult`
+- New struct `DeploymentsClientRestartPoller`
+- New struct `DeploymentsClientRestartPollerResponse`
+- New struct `DeploymentsClientRestartResponse`
+- New struct `DeploymentsClientStartJFRPoller`
+- New struct `DeploymentsClientStartJFRPollerResponse`
+- New struct `DeploymentsClientStartJFRResponse`
+- New struct `DeploymentsClientStartPoller`
+- New struct `DeploymentsClientStartPollerResponse`
+- New struct `DeploymentsClientStartResponse`
+- New struct `DeploymentsClientStopPoller`
+- New struct `DeploymentsClientStopPollerResponse`
+- New struct `DeploymentsClientStopResponse`
+- New struct `DeploymentsClientUpdatePoller`
+- New struct `DeploymentsClientUpdatePollerResponse`
+- New struct `DeploymentsClientUpdateResponse`
+- New struct `DeploymentsClientUpdateResult`
+- New struct `GatewayAPIMetadataProperties`
+- New struct `GatewayAPIRoute`
+- New struct `GatewayCorsProperties`
+- New struct `GatewayCustomDomainProperties`
+- New struct `GatewayCustomDomainResource`
+- New struct `GatewayCustomDomainResourceCollection`
+- New struct `GatewayCustomDomainsClient`
+- New struct `GatewayCustomDomainsClientBeginCreateOrUpdateOptions`
+- New struct `GatewayCustomDomainsClientBeginDeleteOptions`
+- New struct `GatewayCustomDomainsClientCreateOrUpdatePoller`
+- New struct `GatewayCustomDomainsClientCreateOrUpdatePollerResponse`
+- New struct `GatewayCustomDomainsClientCreateOrUpdateResponse`
+- New struct `GatewayCustomDomainsClientCreateOrUpdateResult`
+- New struct `GatewayCustomDomainsClientDeletePoller`
+- New struct `GatewayCustomDomainsClientDeletePollerResponse`
+- New struct `GatewayCustomDomainsClientDeleteResponse`
+- New struct `GatewayCustomDomainsClientGetOptions`
+- New struct `GatewayCustomDomainsClientGetResponse`
+- New struct `GatewayCustomDomainsClientGetResult`
+- New struct `GatewayCustomDomainsClientListOptions`
+- New struct `GatewayCustomDomainsClientListPager`
+- New struct `GatewayCustomDomainsClientListResponse`
+- New struct `GatewayCustomDomainsClientListResult`
+- New struct `GatewayInstance`
+- New struct `GatewayOperatorProperties`
+- New struct `GatewayOperatorResourceRequests`
+- New struct `GatewayProperties`
+- New struct `GatewayResource`
+- New struct `GatewayResourceCollection`
+- New struct `GatewayResourceRequests`
+- New struct `GatewayRouteConfigProperties`
+- New struct `GatewayRouteConfigResource`
+- New struct `GatewayRouteConfigResourceCollection`
+- New struct `GatewayRouteConfigsClient`
+- New struct `GatewayRouteConfigsClientBeginCreateOrUpdateOptions`
+- New struct `GatewayRouteConfigsClientBeginDeleteOptions`
+- New struct `GatewayRouteConfigsClientCreateOrUpdatePoller`
+- New struct `GatewayRouteConfigsClientCreateOrUpdatePollerResponse`
+- New struct `GatewayRouteConfigsClientCreateOrUpdateResponse`
+- New struct `GatewayRouteConfigsClientCreateOrUpdateResult`
+- New struct `GatewayRouteConfigsClientDeletePoller`
+- New struct `GatewayRouteConfigsClientDeletePollerResponse`
+- New struct `GatewayRouteConfigsClientDeleteResponse`
+- New struct `GatewayRouteConfigsClientGetOptions`
+- New struct `GatewayRouteConfigsClientGetResponse`
+- New struct `GatewayRouteConfigsClientGetResult`
+- New struct `GatewayRouteConfigsClientListOptions`
+- New struct `GatewayRouteConfigsClientListPager`
+- New struct `GatewayRouteConfigsClientListResponse`
+- New struct `GatewayRouteConfigsClientListResult`
+- New struct `GatewaysClient`
+- New struct `GatewaysClientBeginCreateOrUpdateOptions`
+- New struct `GatewaysClientBeginDeleteOptions`
+- New struct `GatewaysClientCreateOrUpdatePoller`
+- New struct `GatewaysClientCreateOrUpdatePollerResponse`
+- New struct `GatewaysClientCreateOrUpdateResponse`
+- New struct `GatewaysClientCreateOrUpdateResult`
+- New struct `GatewaysClientDeletePoller`
+- New struct `GatewaysClientDeletePollerResponse`
+- New struct `GatewaysClientDeleteResponse`
+- New struct `GatewaysClientGetOptions`
+- New struct `GatewaysClientGetResponse`
+- New struct `GatewaysClientGetResult`
+- New struct `GatewaysClientListOptions`
+- New struct `GatewaysClientListPager`
+- New struct `GatewaysClientListResponse`
+- New struct `GatewaysClientListResult`
+- New struct `GatewaysClientValidateDomainOptions`
+- New struct `GatewaysClientValidateDomainResponse`
+- New struct `GatewaysClientValidateDomainResult`
+- New struct `JarUploadedUserSourceInfo`
+- New struct `MonitoringSettingsClientBeginUpdatePatchOptions`
+- New struct `MonitoringSettingsClientBeginUpdatePutOptions`
+- New struct `MonitoringSettingsClientGetOptions`
+- New struct `MonitoringSettingsClientGetResponse`
+- New struct `MonitoringSettingsClientGetResult`
+- New struct `MonitoringSettingsClientUpdatePatchPoller`
+- New struct `MonitoringSettingsClientUpdatePatchPollerResponse`
+- New struct `MonitoringSettingsClientUpdatePatchResponse`
+- New struct `MonitoringSettingsClientUpdatePatchResult`
+- New struct `MonitoringSettingsClientUpdatePutPoller`
+- New struct `MonitoringSettingsClientUpdatePutPollerResponse`
+- New struct `MonitoringSettingsClientUpdatePutResponse`
+- New struct `MonitoringSettingsClientUpdatePutResult`
+- New struct `NetCoreZipUploadedUserSourceInfo`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `RuntimeVersionsClientListRuntimeVersionsOptions`
+- New struct `RuntimeVersionsClientListRuntimeVersionsResponse`
+- New struct `RuntimeVersionsClientListRuntimeVersionsResult`
+- New struct `SKUsClientListOptions`
+- New struct `SKUsClientListPager`
+- New struct `SKUsClientListResponse`
+- New struct `SKUsClientListResult`
+- New struct `ServiceRegistriesClient`
+- New struct `ServiceRegistriesClientBeginCreateOrUpdateOptions`
+- New struct `ServiceRegistriesClientBeginDeleteOptions`
+- New struct `ServiceRegistriesClientCreateOrUpdatePoller`
+- New struct `ServiceRegistriesClientCreateOrUpdatePollerResponse`
+- New struct `ServiceRegistriesClientCreateOrUpdateResponse`
+- New struct `ServiceRegistriesClientCreateOrUpdateResult`
+- New struct `ServiceRegistriesClientDeletePoller`
+- New struct `ServiceRegistriesClientDeletePollerResponse`
+- New struct `ServiceRegistriesClientDeleteResponse`
+- New struct `ServiceRegistriesClientGetOptions`
+- New struct `ServiceRegistriesClientGetResponse`
+- New struct `ServiceRegistriesClientGetResult`
+- New struct `ServiceRegistriesClientListOptions`
+- New struct `ServiceRegistriesClientListPager`
+- New struct `ServiceRegistriesClientListResponse`
+- New struct `ServiceRegistriesClientListResult`
+- New struct `ServiceRegistryInstance`
+- New struct `ServiceRegistryProperties`
+- New struct `ServiceRegistryResource`
+- New struct `ServiceRegistryResourceCollection`
+- New struct `ServiceRegistryResourceRequests`
+- New struct `ServicesClientBeginCreateOrUpdateOptions`
+- New struct `ServicesClientBeginDeleteOptions`
+- New struct `ServicesClientBeginStartOptions`
+- New struct `ServicesClientBeginStopOptions`
+- New struct `ServicesClientBeginUpdateOptions`
+- New struct `ServicesClientCheckNameAvailabilityOptions`
+- New struct `ServicesClientCheckNameAvailabilityResponse`
+- New struct `ServicesClientCheckNameAvailabilityResult`
+- New struct `ServicesClientCreateOrUpdatePoller`
+- New struct `ServicesClientCreateOrUpdatePollerResponse`
+- New struct `ServicesClientCreateOrUpdateResponse`
+- New struct `ServicesClientCreateOrUpdateResult`
+- New struct `ServicesClientDeletePoller`
+- New struct `ServicesClientDeletePollerResponse`
+- New struct `ServicesClientDeleteResponse`
+- New struct `ServicesClientDisableTestEndpointOptions`
+- New struct `ServicesClientDisableTestEndpointResponse`
+- New struct `ServicesClientEnableTestEndpointOptions`
+- New struct `ServicesClientEnableTestEndpointResponse`
+- New struct `ServicesClientEnableTestEndpointResult`
+- New struct `ServicesClientGetOptions`
+- New struct `ServicesClientGetResponse`
+- New struct `ServicesClientGetResult`
+- New struct `ServicesClientListBySubscriptionOptions`
+- New struct `ServicesClientListBySubscriptionPager`
+- New struct `ServicesClientListBySubscriptionResponse`
+- New struct `ServicesClientListBySubscriptionResult`
+- New struct `ServicesClientListOptions`
+- New struct `ServicesClientListPager`
+- New struct `ServicesClientListResponse`
+- New struct `ServicesClientListResult`
+- New struct `ServicesClientListTestKeysOptions`
+- New struct `ServicesClientListTestKeysResponse`
+- New struct `ServicesClientListTestKeysResult`
+- New struct `ServicesClientRegenerateTestKeyOptions`
+- New struct `ServicesClientRegenerateTestKeyResponse`
+- New struct `ServicesClientRegenerateTestKeyResult`
+- New struct `ServicesClientStartPoller`
+- New struct `ServicesClientStartPollerResponse`
+- New struct `ServicesClientStartResponse`
+- New struct `ServicesClientStopPoller`
+- New struct `ServicesClientStopPollerResponse`
+- New struct `ServicesClientStopResponse`
+- New struct `ServicesClientUpdatePoller`
+- New struct `ServicesClientUpdatePollerResponse`
+- New struct `ServicesClientUpdateResponse`
+- New struct `ServicesClientUpdateResult`
+- New struct `SourceUploadedUserSourceInfo`
+- New struct `SsoProperties`
+- New struct `StackProperties`
+- New struct `StoragesClientBeginCreateOrUpdateOptions`
+- New struct `StoragesClientBeginDeleteOptions`
+- New struct `StoragesClientCreateOrUpdatePoller`
+- New struct `StoragesClientCreateOrUpdatePollerResponse`
+- New struct `StoragesClientCreateOrUpdateResponse`
+- New struct `StoragesClientCreateOrUpdateResult`
+- New struct `StoragesClientDeletePoller`
+- New struct `StoragesClientDeletePollerResponse`
+- New struct `StoragesClientDeleteResponse`
+- New struct `StoragesClientGetOptions`
+- New struct `StoragesClientGetResponse`
+- New struct `StoragesClientGetResult`
+- New struct `StoragesClientListOptions`
+- New struct `StoragesClientListPager`
+- New struct `StoragesClientListResponse`
+- New struct `StoragesClientListResult`
+- New struct `SupportedBuildpackResource`
+- New struct `SupportedBuildpackResourceProperties`
+- New struct `SupportedBuildpacksCollection`
+- New struct `SupportedStackResource`
+- New struct `SupportedStackResourceProperties`
+- New struct `SupportedStacksCollection`
+- New struct `TriggeredBuildResult`
+- New struct `UploadedUserSourceInfo`
+- New struct `ValidationMessages`
+- New field `SubjectName` in struct `KeyVaultCertificateProperties`
+- New field `Thumbprint` in struct `KeyVaultCertificateProperties`
+- New field `ActivateDate` in struct `KeyVaultCertificateProperties`
+- New field `DNSNames` in struct `KeyVaultCertificateProperties`
+- New field `IssuedDate` in struct `KeyVaultCertificateProperties`
+- New field `Issuer` in struct `KeyVaultCertificateProperties`
+- New field `Type` in struct `KeyVaultCertificateProperties`
+- New field `ExpirationDate` in struct `KeyVaultCertificateProperties`
+- New field `SystemData` in struct `BindingResource`
+- New field `Type` in struct `BindingResource`
+- New field `ID` in struct `BindingResource`
+- New field `Name` in struct `BindingResource`
+- New field `Zone` in struct `DeploymentInstance`
+- New field `ZoneRedundant` in struct `ClusterResourceProperties`
+- New field `Fqdn` in struct `ClusterResourceProperties`
+- New field `Name` in struct `CustomDomainResource`
+- New field `SystemData` in struct `CustomDomainResource`
+- New field `Type` in struct `CustomDomainResource`
+- New field `ID` in struct `CustomDomainResource`
+- New field `AddonConfigs` in struct `AppResourceProperties`
+- New field `Issuer` in struct `ContentCertificateProperties`
+- New field `SubjectName` in struct `ContentCertificateProperties`
+- New field `ActivateDate` in struct `ContentCertificateProperties`
+- New field `DNSNames` in struct `ContentCertificateProperties`
+- New field `Type` in struct `ContentCertificateProperties`
+- New field `Thumbprint` in struct `ContentCertificateProperties`
+- New field `ExpirationDate` in struct `ContentCertificateProperties`
+- New field `IssuedDate` in struct `ContentCertificateProperties`
+- New field `Type` in struct `AzureFileVolume`
+- New field `MountOptions` in struct `AzureFileVolume`
+- New field `ReadOnly` in struct `AzureFileVolume`
+- New field `MountPath` in struct `AzureFileVolume`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `SystemData` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `Error` in struct `CloudError`
+- New field `ID` in struct `CertificateResource`
+- New field `Name` in struct `CertificateResource`
+- New field `SystemData` in struct `CertificateResource`
+- New field `Type` in struct `CertificateResource`
+- New field `Name` in struct `StorageResource`
+- New field `Type` in struct `StorageResource`
+- New field `ID` in struct `StorageResource`
+- New field `StorageType` in struct `StorageAccount`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `SystemData` in struct `TrackedResource`
+- New field `ID` in struct `AppResource`
+- New field `Name` in struct `AppResource`
+- New field `SystemData` in struct `AppResource`
+- New field `Type` in struct `AppResource`
+- New field `AddonConfigs` in struct `DeploymentSettings`
+- New field `Type` in struct `DeploymentResource`
+- New field `ID` in struct `DeploymentResource`
+- New field `Name` in struct `DeploymentResource`
+- New field `SystemData` in struct `DeploymentResource`
+- New field `SystemData` in struct `Resource`
+- New field `Name` in struct `MonitoringSettingResource`
+- New field `SystemData` in struct `MonitoringSettingResource`
+- New field `Type` in struct `MonitoringSettingResource`
+- New field `ID` in struct `MonitoringSettingResource`
+- New field `SystemData` in struct `ServiceResource`
+- New field `Type` in struct `ServiceResource`
+- New field `Location` in struct `ServiceResource`
+- New field `Tags` in struct `ServiceResource`
+- New field `ID` in struct `ServiceResource`
+- New field `Name` in struct `ServiceResource`
+- New field `Name` in struct `ConfigServerResource`
+- New field `SystemData` in struct `ConfigServerResource`
+- New field `Type` in struct `ConfigServerResource`
+- New field `ID` in struct `ConfigServerResource`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

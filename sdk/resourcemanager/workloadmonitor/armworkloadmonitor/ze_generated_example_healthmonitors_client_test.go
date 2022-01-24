@@ -32,15 +32,19 @@ func ExampleHealthMonitorsClient_List() {
 		"<provider-name>",
 		"<resource-collection-name>",
 		"<resource-name>",
-		&armworkloadmonitor.HealthMonitorsListOptions{Filter: nil,
+		&armworkloadmonitor.HealthMonitorsClientListOptions{Filter: nil,
 			Expand: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("HealthMonitor.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -60,11 +64,11 @@ func ExampleHealthMonitorsClient_Get() {
 		"<resource-collection-name>",
 		"<resource-name>",
 		"<monitor-id>",
-		&armworkloadmonitor.HealthMonitorsGetOptions{Expand: nil})
+		&armworkloadmonitor.HealthMonitorsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HealthMonitor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HealthMonitorsClientGetResult)
 }
 
 // x-ms-original-file: specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorHistory_GetDefault.json
@@ -81,17 +85,21 @@ func ExampleHealthMonitorsClient_ListStateChanges() {
 		"<resource-collection-name>",
 		"<resource-name>",
 		"<monitor-id>",
-		&armworkloadmonitor.HealthMonitorsListStateChangesOptions{Filter: nil,
+		&armworkloadmonitor.HealthMonitorsClientListStateChangesOptions{Filter: nil,
 			Expand:            nil,
 			StartTimestampUTC: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-19T19:24:14Z"); return t }()),
 			EndTimestampUTC:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T01:24:14Z"); return t }()),
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("HealthMonitorStateChange.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -112,9 +120,9 @@ func ExampleHealthMonitorsClient_GetStateChange() {
 		"<resource-name>",
 		"<monitor-id>",
 		"<timestamp-unix>",
-		&armworkloadmonitor.HealthMonitorsGetStateChangeOptions{Expand: nil})
+		&armworkloadmonitor.HealthMonitorsClientGetStateChangeOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("HealthMonitorStateChange.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HealthMonitorsClientGetStateChangeResult)
 }

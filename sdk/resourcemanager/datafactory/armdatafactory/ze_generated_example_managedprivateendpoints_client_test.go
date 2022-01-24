@@ -29,12 +29,16 @@ func ExampleManagedPrivateEndpointsClient_ListByFactory() {
 		"<factory-name>",
 		"<managed-virtual-network-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ManagedPrivateEndpointResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -59,11 +63,11 @@ func ExampleManagedPrivateEndpointsClient_CreateOrUpdate() {
 				PrivateLinkResourceID: to.StringPtr("<private-link-resource-id>"),
 			},
 		},
-		&armdatafactory.ManagedPrivateEndpointsCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.ManagedPrivateEndpointsClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedPrivateEndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedPrivateEndpointsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Get.json
@@ -79,11 +83,11 @@ func ExampleManagedPrivateEndpointsClient_Get() {
 		"<factory-name>",
 		"<managed-virtual-network-name>",
 		"<managed-private-endpoint-name>",
-		&armdatafactory.ManagedPrivateEndpointsGetOptions{IfNoneMatch: nil})
+		&armdatafactory.ManagedPrivateEndpointsClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedPrivateEndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagedPrivateEndpointsClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Delete.json

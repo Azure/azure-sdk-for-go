@@ -26,12 +26,16 @@ func ExampleResourceGuardsClient_GetResourcesInSubscription() {
 	ctx := context.Background()
 	client := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	pager := client.GetResourcesInSubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ResourceGuardResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -46,12 +50,16 @@ func ExampleResourceGuardsClient_GetResourcesInResourceGroup() {
 	client := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	pager := client.GetResourcesInResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ResourceGuardResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -68,18 +76,16 @@ func ExampleResourceGuardsClient_Put() {
 		"<resource-group-name>",
 		"<resource-guards-name>",
 		armdataprotection.ResourceGuardResource{
-			DppTrackedResource: armdataprotection.DppTrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key1": to.StringPtr("val1"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key1": to.StringPtr("val1"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ResourceGuardResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientPutResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetResourceGuard.json
@@ -97,7 +103,7 @@ func ExampleResourceGuardsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ResourceGuardResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientGetResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/DeleteResourceGuard.json
@@ -137,7 +143,7 @@ func ExampleResourceGuardsClient_Patch() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ResourceGuardResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientPatchResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
@@ -151,12 +157,16 @@ func ExampleResourceGuardsClient_GetDisableSoftDeleteRequestsObjects() {
 	pager := client.GetDisableSoftDeleteRequestsObjects("<resource-group-name>",
 		"<resource-guards-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DppBaseResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -172,12 +182,16 @@ func ExampleResourceGuardsClient_GetDeleteResourceGuardProxyRequestsObjects() {
 	pager := client.GetDeleteResourceGuardProxyRequestsObjects("<resource-group-name>",
 		"<resource-guards-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DppBaseResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -193,12 +207,16 @@ func ExampleResourceGuardsClient_GetBackupSecurityPINRequestsObjects() {
 	pager := client.GetBackupSecurityPINRequestsObjects("<resource-group-name>",
 		"<resource-guards-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DppBaseResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -214,12 +232,16 @@ func ExampleResourceGuardsClient_GetDeleteProtectedItemRequestsObjects() {
 	pager := client.GetDeleteProtectedItemRequestsObjects("<resource-group-name>",
 		"<resource-guards-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DppBaseResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -235,12 +257,16 @@ func ExampleResourceGuardsClient_GetUpdateProtectionPolicyRequestsObjects() {
 	pager := client.GetUpdateProtectionPolicyRequestsObjects("<resource-group-name>",
 		"<resource-guards-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DppBaseResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -256,12 +282,16 @@ func ExampleResourceGuardsClient_GetUpdateProtectedItemRequestsObjects() {
 	pager := client.GetUpdateProtectedItemRequestsObjects("<resource-group-name>",
 		"<resource-guards-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DppBaseResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -282,7 +312,7 @@ func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DppBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
@@ -301,7 +331,7 @@ func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObjec
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DppBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
@@ -320,7 +350,7 @@ func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DppBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
@@ -339,7 +369,7 @@ func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DppBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
@@ -358,7 +388,7 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject(
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DppBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
@@ -377,5 +407,5 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DppBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResult)
 }

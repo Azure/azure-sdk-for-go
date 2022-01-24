@@ -28,12 +28,16 @@ func ExampleDataControllersClient_ListInSubscription() {
 	ctx := context.Background()
 	client := armazurearcdata.NewDataControllersClient("<subscription-id>", cred, nil)
 	pager := client.ListInSubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataControllerResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleDataControllersClient_ListInGroup() {
 	client := armazurearcdata.NewDataControllersClient("<subscription-id>", cred, nil)
 	pager := client.ListInGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataControllerResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -70,15 +78,13 @@ func ExampleDataControllersClient_BeginPutDataController() {
 		"<resource-group-name>",
 		"<data-controller-name>",
 		armazurearcdata.DataControllerResource{
-			TrackedResource: armazurearcdata.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"mytag": to.StringPtr("myval"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"mytag": to.StringPtr("myval"),
 			},
 			ExtendedLocation: &armazurearcdata.ExtendedLocation{
 				Name: to.StringPtr("<name>"),
-				Type: armazurearcdata.ExtendedLocationTypesCustomLocation.ToPtr(),
+				Type: armazurearcdata.ExtendedLocationTypes("CustomLocation").ToPtr(),
 			},
 			Properties: &armazurearcdata.DataControllerProperties{
 				BasicLoginInformation: &armazurearcdata.BasicLoginInformation{
@@ -125,7 +131,7 @@ func ExampleDataControllersClient_BeginPutDataController() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataControllerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataControllersClientPutDataControllerResult)
 }
 
 // x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/DeleteDataController.json
@@ -164,7 +170,7 @@ func ExampleDataControllersClient_GetDataController() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataControllerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataControllersClientGetDataControllerResult)
 }
 
 // x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/UpdateDataController.json
@@ -187,5 +193,5 @@ func ExampleDataControllersClient_PatchDataController() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataControllerResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataControllersClientPatchDataControllerResult)
 }

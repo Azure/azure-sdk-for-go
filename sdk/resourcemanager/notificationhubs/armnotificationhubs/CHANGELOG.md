@@ -1,14 +1,360 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*NamespacesClient.ListAll` parameter(s) have been changed from `(*NamespacesListAllOptions)` to `(*NamespacesClientListAllOptions)`
+- Function `*NamespacesClient.ListAll` return value(s) have been changed from `(*NamespacesListAllPager)` to `(*NamespacesClientListAllPager)`
+- Function `*NamespacesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, NamespaceCreateOrUpdateParameters, *NamespacesCreateOrUpdateOptions)` to `(context.Context, string, string, NamespaceCreateOrUpdateParameters, *NamespacesClientCreateOrUpdateOptions)`
+- Function `*NamespacesClient.CreateOrUpdate` return value(s) have been changed from `(NamespacesCreateOrUpdateResponse, error)` to `(NamespacesClientCreateOrUpdateResponse, error)`
+- Function `*NamespacesClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, string, PolicykeyResource, *NamespacesRegenerateKeysOptions)` to `(context.Context, string, string, string, PolicykeyResource, *NamespacesClientRegenerateKeysOptions)`
+- Function `*NamespacesClient.RegenerateKeys` return value(s) have been changed from `(NamespacesRegenerateKeysResponse, error)` to `(NamespacesClientRegenerateKeysResponse, error)`
+- Function `*NamespacesClient.ListAuthorizationRules` parameter(s) have been changed from `(string, string, *NamespacesListAuthorizationRulesOptions)` to `(string, string, *NamespacesClientListAuthorizationRulesOptions)`
+- Function `*NamespacesClient.ListAuthorizationRules` return value(s) have been changed from `(*NamespacesListAuthorizationRulesPager)` to `(*NamespacesClientListAuthorizationRulesPager)`
+- Function `*NamespacesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *NamespacesBeginDeleteOptions)` to `(context.Context, string, string, *NamespacesClientBeginDeleteOptions)`
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(NamespacesDeletePollerResponse, error)` to `(NamespacesClientDeletePollerResponse, error)`
+- Function `*NamespacesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *NamespacesGetOptions)` to `(context.Context, string, string, *NamespacesClientGetOptions)`
+- Function `*NamespacesClient.Get` return value(s) have been changed from `(NamespacesGetResponse, error)` to `(NamespacesClientGetResponse, error)`
+- Function `*NamespacesClient.CreateOrUpdateAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, SharedAccessAuthorizationRuleCreateOrUpdateParameters, *NamespacesCreateOrUpdateAuthorizationRuleOptions)` to `(context.Context, string, string, string, SharedAccessAuthorizationRuleCreateOrUpdateParameters, *NamespacesClientCreateOrUpdateAuthorizationRuleOptions)`
+- Function `*NamespacesClient.CreateOrUpdateAuthorizationRule` return value(s) have been changed from `(NamespacesCreateOrUpdateAuthorizationRuleResponse, error)` to `(NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error)`
+- Function `*NamespacesClient.GetAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesGetAuthorizationRuleOptions)` to `(context.Context, string, string, string, *NamespacesClientGetAuthorizationRuleOptions)`
+- Function `*NamespacesClient.GetAuthorizationRule` return value(s) have been changed from `(NamespacesGetAuthorizationRuleResponse, error)` to `(NamespacesClientGetAuthorizationRuleResponse, error)`
+- Function `*NamespacesClient.CheckAvailability` parameter(s) have been changed from `(context.Context, CheckAvailabilityParameters, *NamespacesCheckAvailabilityOptions)` to `(context.Context, CheckAvailabilityParameters, *NamespacesClientCheckAvailabilityOptions)`
+- Function `*NamespacesClient.CheckAvailability` return value(s) have been changed from `(NamespacesCheckAvailabilityResponse, error)` to `(NamespacesClientCheckAvailabilityResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*NamespacesClient.List` parameter(s) have been changed from `(string, *NamespacesListOptions)` to `(string, *NamespacesClientListOptions)`
+- Function `*NamespacesClient.List` return value(s) have been changed from `(*NamespacesListPager)` to `(*NamespacesClientListPager)`
+- Function `*NamespacesClient.DeleteAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesDeleteAuthorizationRuleOptions)` to `(context.Context, string, string, string, *NamespacesClientDeleteAuthorizationRuleOptions)`
+- Function `*NamespacesClient.DeleteAuthorizationRule` return value(s) have been changed from `(NamespacesDeleteAuthorizationRuleResponse, error)` to `(NamespacesClientDeleteAuthorizationRuleResponse, error)`
+- Function `*NamespacesClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesListKeysOptions)` to `(context.Context, string, string, string, *NamespacesClientListKeysOptions)`
+- Function `*NamespacesClient.ListKeys` return value(s) have been changed from `(NamespacesListKeysResponse, error)` to `(NamespacesClientListKeysResponse, error)`
+- Function `*NamespacesClient.Patch` parameter(s) have been changed from `(context.Context, string, string, NamespacePatchParameters, *NamespacesPatchOptions)` to `(context.Context, string, string, NamespacePatchParameters, *NamespacesClientPatchOptions)`
+- Function `*NamespacesClient.Patch` return value(s) have been changed from `(NamespacesPatchResponse, error)` to `(NamespacesClientPatchResponse, error)`
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `NewNotificationHubsClient` has been removed
+- Function `*NotificationHubsClient.CheckNotificationHubAvailability` has been removed
+- Function `*NotificationHubsClient.DeleteAuthorizationRule` has been removed
+- Function `*NotificationHubsClient.ListKeys` has been removed
+- Function `*NamespacesListPager.NextPage` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*NotificationHubsClient.Delete` has been removed
+- Function `NamespacesDeletePollerResponse.PollUntilDone` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*NamespacesListAllPager.Err` has been removed
+- Function `*NotificationHubsListPager.NextPage` has been removed
+- Function `*NotificationHubsListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.Err` has been removed
+- Function `*NotificationHubsClient.ListAuthorizationRules` has been removed
+- Function `*NamespacesDeletePollerResponse.Resume` has been removed
+- Function `*NamespacesDeletePoller.Poll` has been removed
+- Function `*NamespacesListAllPager.NextPage` has been removed
+- Function `*NamespacesDeletePoller.FinalResponse` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*NotificationHubsClient.GetPnsCredentials` has been removed
+- Function `*NotificationHubsListAuthorizationRulesPager.NextPage` has been removed
+- Function `*NotificationHubsClient.Patch` has been removed
+- Function `*NotificationHubsClient.DebugSend` has been removed
+- Function `*NotificationHubsListPager.PageResponse` has been removed
+- Function `*NotificationHubsClient.CreateOrUpdate` has been removed
+- Function `*NotificationHubsListPager.Err` has been removed
+- Function `*NotificationHubsClient.Get` has been removed
+- Function `*NamespacesListPager.Err` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.NextPage` has been removed
+- Function `*NotificationHubsClient.GetAuthorizationRule` has been removed
+- Function `*NotificationHubsClient.RegenerateKeys` has been removed
+- Function `*NotificationHubsListAuthorizationRulesPager.Err` has been removed
+- Function `*NamespacesDeletePoller.ResumeToken` has been removed
+- Function `*NotificationHubsClient.CreateOrUpdateAuthorizationRule` has been removed
+- Function `*NamespacesListPager.PageResponse` has been removed
+- Function `*NamespacesDeletePoller.Done` has been removed
+- Function `*NotificationHubsClient.List` has been removed
+- Function `*NamespacesListAllPager.PageResponse` has been removed
+- Struct `NamespacesBeginDeleteOptions` has been removed
+- Struct `NamespacesCheckAvailabilityOptions` has been removed
+- Struct `NamespacesCheckAvailabilityResponse` has been removed
+- Struct `NamespacesCheckAvailabilityResult` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleOptions` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `NamespacesCreateOrUpdateOptions` has been removed
+- Struct `NamespacesCreateOrUpdateResponse` has been removed
+- Struct `NamespacesCreateOrUpdateResult` has been removed
+- Struct `NamespacesDeleteAuthorizationRuleOptions` has been removed
+- Struct `NamespacesDeleteAuthorizationRuleResponse` has been removed
+- Struct `NamespacesDeletePoller` has been removed
+- Struct `NamespacesDeletePollerResponse` has been removed
+- Struct `NamespacesDeleteResponse` has been removed
+- Struct `NamespacesGetAuthorizationRuleOptions` has been removed
+- Struct `NamespacesGetAuthorizationRuleResponse` has been removed
+- Struct `NamespacesGetAuthorizationRuleResult` has been removed
+- Struct `NamespacesGetOptions` has been removed
+- Struct `NamespacesGetResponse` has been removed
+- Struct `NamespacesGetResult` has been removed
+- Struct `NamespacesListAllOptions` has been removed
+- Struct `NamespacesListAllPager` has been removed
+- Struct `NamespacesListAllResponse` has been removed
+- Struct `NamespacesListAllResult` has been removed
+- Struct `NamespacesListAuthorizationRulesOptions` has been removed
+- Struct `NamespacesListAuthorizationRulesPager` has been removed
+- Struct `NamespacesListAuthorizationRulesResponse` has been removed
+- Struct `NamespacesListAuthorizationRulesResult` has been removed
+- Struct `NamespacesListKeysOptions` has been removed
+- Struct `NamespacesListKeysResponse` has been removed
+- Struct `NamespacesListKeysResult` has been removed
+- Struct `NamespacesListOptions` has been removed
+- Struct `NamespacesListPager` has been removed
+- Struct `NamespacesListResponse` has been removed
+- Struct `NamespacesListResult` has been removed
+- Struct `NamespacesPatchOptions` has been removed
+- Struct `NamespacesPatchResponse` has been removed
+- Struct `NamespacesPatchResult` has been removed
+- Struct `NamespacesRegenerateKeysOptions` has been removed
+- Struct `NamespacesRegenerateKeysResponse` has been removed
+- Struct `NamespacesRegenerateKeysResult` has been removed
+- Struct `NotificationHubsCheckNotificationHubAvailabilityOptions` has been removed
+- Struct `NotificationHubsCheckNotificationHubAvailabilityResponse` has been removed
+- Struct `NotificationHubsCheckNotificationHubAvailabilityResult` has been removed
+- Struct `NotificationHubsClient` has been removed
+- Struct `NotificationHubsCreateOrUpdateAuthorizationRuleOptions` has been removed
+- Struct `NotificationHubsCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Struct `NotificationHubsCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `NotificationHubsCreateOrUpdateOptions` has been removed
+- Struct `NotificationHubsCreateOrUpdateResponse` has been removed
+- Struct `NotificationHubsCreateOrUpdateResult` has been removed
+- Struct `NotificationHubsDebugSendOptions` has been removed
+- Struct `NotificationHubsDebugSendResponse` has been removed
+- Struct `NotificationHubsDebugSendResult` has been removed
+- Struct `NotificationHubsDeleteAuthorizationRuleOptions` has been removed
+- Struct `NotificationHubsDeleteAuthorizationRuleResponse` has been removed
+- Struct `NotificationHubsDeleteOptions` has been removed
+- Struct `NotificationHubsDeleteResponse` has been removed
+- Struct `NotificationHubsGetAuthorizationRuleOptions` has been removed
+- Struct `NotificationHubsGetAuthorizationRuleResponse` has been removed
+- Struct `NotificationHubsGetAuthorizationRuleResult` has been removed
+- Struct `NotificationHubsGetOptions` has been removed
+- Struct `NotificationHubsGetPnsCredentialsOptions` has been removed
+- Struct `NotificationHubsGetPnsCredentialsResponse` has been removed
+- Struct `NotificationHubsGetPnsCredentialsResult` has been removed
+- Struct `NotificationHubsGetResponse` has been removed
+- Struct `NotificationHubsGetResult` has been removed
+- Struct `NotificationHubsListAuthorizationRulesOptions` has been removed
+- Struct `NotificationHubsListAuthorizationRulesPager` has been removed
+- Struct `NotificationHubsListAuthorizationRulesResponse` has been removed
+- Struct `NotificationHubsListAuthorizationRulesResult` has been removed
+- Struct `NotificationHubsListKeysOptions` has been removed
+- Struct `NotificationHubsListKeysResponse` has been removed
+- Struct `NotificationHubsListKeysResult` has been removed
+- Struct `NotificationHubsListOptions` has been removed
+- Struct `NotificationHubsListPager` has been removed
+- Struct `NotificationHubsListResponse` has been removed
+- Struct `NotificationHubsListResult` has been removed
+- Struct `NotificationHubsPatchOptions` has been removed
+- Struct `NotificationHubsPatchResponse` has been removed
+- Struct `NotificationHubsPatchResult` has been removed
+- Struct `NotificationHubsRegenerateKeysOptions` has been removed
+- Struct `NotificationHubsRegenerateKeysResponse` has been removed
+- Struct `NotificationHubsRegenerateKeysResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Field `Resource` of struct `NamespaceCreateOrUpdateParameters` has been removed
+- Field `Resource` of struct `CheckAvailabilityResult` has been removed
+- Field `Resource` of struct `NamespaceResource` has been removed
+- Field `Resource` of struct `PnsCredentialsResource` has been removed
+- Field `Resource` of struct `DebugSendResponse` has been removed
+- Field `Resource` of struct `NotificationHubResource` has been removed
+- Field `Resource` of struct `NotificationHubCreateOrUpdateParameters` has been removed
+- Field `Resource` of struct `SharedAccessAuthorizationRuleResource` has been removed
+- Field `Resource` of struct `NotificationHubPatchParameters` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*NamespacesClientDeletePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*ClientListPager.Err() error`
+- New function `*Client.ListKeys(context.Context, string, string, string, string, *ClientListKeysOptions) (ClientListKeysResponse, error)`
+- New function `*NamespacesClientListPager.PageResponse() NamespacesClientListResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*Client.ListAuthorizationRules(string, string, string, *ClientListAuthorizationRulesOptions) *ClientListAuthorizationRulesPager`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*NamespacesClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*NamespacesClientListPager.Err() error`
+- New function `*NamespacesClientListPager.NextPage(context.Context) bool`
+- New function `*Client.GetPnsCredentials(context.Context, string, string, string, *ClientGetPnsCredentialsOptions) (ClientGetPnsCredentialsResponse, error)`
+- New function `*ClientListPager.PageResponse() ClientListResponse`
+- New function `*Client.CreateOrUpdate(context.Context, string, string, string, NotificationHubCreateOrUpdateParameters, *ClientCreateOrUpdateOptions) (ClientCreateOrUpdateResponse, error)`
+- New function `*Client.Patch(context.Context, string, string, string, *ClientPatchOptions) (ClientPatchResponse, error)`
+- New function `*Client.CheckNotificationHubAvailability(context.Context, string, string, CheckAvailabilityParameters, *ClientCheckNotificationHubAvailabilityOptions) (ClientCheckNotificationHubAvailabilityResponse, error)`
+- New function `*NamespacesClientListAllPager.Err() error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*NamespacesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NamespacesClientDeletePoller.FinalResponse(context.Context) (NamespacesClientDeleteResponse, error)`
+- New function `*Client.DebugSend(context.Context, string, string, string, *ClientDebugSendOptions) (ClientDebugSendResponse, error)`
+- New function `*Client.CreateOrUpdateAuthorizationRule(context.Context, string, string, string, string, SharedAccessAuthorizationRuleCreateOrUpdateParameters, *ClientCreateOrUpdateAuthorizationRuleOptions) (ClientCreateOrUpdateAuthorizationRuleResponse, error)`
+- New function `*ClientListAuthorizationRulesPager.Err() error`
+- New function `*NamespacesClientDeletePoller.Done() bool`
+- New function `*NamespacesClientListAllPager.PageResponse() NamespacesClientListAllResponse`
+- New function `*Client.Get(context.Context, string, string, string, *ClientGetOptions) (ClientGetResponse, error)`
+- New function `NamespacesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesClientDeleteResponse, error)`
+- New function `*Client.Delete(context.Context, string, string, string, *ClientDeleteOptions) (ClientDeleteResponse, error)`
+- New function `*NamespacesClientListAllPager.NextPage(context.Context) bool`
+- New function `*ClientListAuthorizationRulesPager.PageResponse() ClientListAuthorizationRulesResponse`
+- New function `*NamespacesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*NamespacesClientListAuthorizationRulesPager.PageResponse() NamespacesClientListAuthorizationRulesResponse`
+- New function `*ClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*ClientListPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*Client.GetAuthorizationRule(context.Context, string, string, string, string, *ClientGetAuthorizationRuleOptions) (ClientGetAuthorizationRuleResponse, error)`
+- New function `*Client.List(string, string, *ClientListOptions) *ClientListPager`
+- New function `*Client.RegenerateKeys(context.Context, string, string, string, string, PolicykeyResource, *ClientRegenerateKeysOptions) (ClientRegenerateKeysResponse, error)`
+- New function `*Client.DeleteAuthorizationRule(context.Context, string, string, string, string, *ClientDeleteAuthorizationRuleOptions) (ClientDeleteAuthorizationRuleResponse, error)`
+- New function `*NamespacesClientListAuthorizationRulesPager.Err() error`
+- New struct `Client`
+- New struct `ClientCheckNotificationHubAvailabilityOptions`
+- New struct `ClientCheckNotificationHubAvailabilityResponse`
+- New struct `ClientCheckNotificationHubAvailabilityResult`
+- New struct `ClientCreateOrUpdateAuthorizationRuleOptions`
+- New struct `ClientCreateOrUpdateAuthorizationRuleResponse`
+- New struct `ClientCreateOrUpdateAuthorizationRuleResult`
+- New struct `ClientCreateOrUpdateOptions`
+- New struct `ClientCreateOrUpdateResponse`
+- New struct `ClientCreateOrUpdateResult`
+- New struct `ClientDebugSendOptions`
+- New struct `ClientDebugSendResponse`
+- New struct `ClientDebugSendResult`
+- New struct `ClientDeleteAuthorizationRuleOptions`
+- New struct `ClientDeleteAuthorizationRuleResponse`
+- New struct `ClientDeleteOptions`
+- New struct `ClientDeleteResponse`
+- New struct `ClientGetAuthorizationRuleOptions`
+- New struct `ClientGetAuthorizationRuleResponse`
+- New struct `ClientGetAuthorizationRuleResult`
+- New struct `ClientGetOptions`
+- New struct `ClientGetPnsCredentialsOptions`
+- New struct `ClientGetPnsCredentialsResponse`
+- New struct `ClientGetPnsCredentialsResult`
+- New struct `ClientGetResponse`
+- New struct `ClientGetResult`
+- New struct `ClientListAuthorizationRulesOptions`
+- New struct `ClientListAuthorizationRulesPager`
+- New struct `ClientListAuthorizationRulesResponse`
+- New struct `ClientListAuthorizationRulesResult`
+- New struct `ClientListKeysOptions`
+- New struct `ClientListKeysResponse`
+- New struct `ClientListKeysResult`
+- New struct `ClientListOptions`
+- New struct `ClientListPager`
+- New struct `ClientListResponse`
+- New struct `ClientListResult`
+- New struct `ClientPatchOptions`
+- New struct `ClientPatchResponse`
+- New struct `ClientPatchResult`
+- New struct `ClientRegenerateKeysOptions`
+- New struct `ClientRegenerateKeysResponse`
+- New struct `ClientRegenerateKeysResult`
+- New struct `NamespacesClientBeginDeleteOptions`
+- New struct `NamespacesClientCheckAvailabilityOptions`
+- New struct `NamespacesClientCheckAvailabilityResponse`
+- New struct `NamespacesClientCheckAvailabilityResult`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleOptions`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleResult`
+- New struct `NamespacesClientCreateOrUpdateOptions`
+- New struct `NamespacesClientCreateOrUpdateResponse`
+- New struct `NamespacesClientCreateOrUpdateResult`
+- New struct `NamespacesClientDeleteAuthorizationRuleOptions`
+- New struct `NamespacesClientDeleteAuthorizationRuleResponse`
+- New struct `NamespacesClientDeletePoller`
+- New struct `NamespacesClientDeletePollerResponse`
+- New struct `NamespacesClientDeleteResponse`
+- New struct `NamespacesClientGetAuthorizationRuleOptions`
+- New struct `NamespacesClientGetAuthorizationRuleResponse`
+- New struct `NamespacesClientGetAuthorizationRuleResult`
+- New struct `NamespacesClientGetOptions`
+- New struct `NamespacesClientGetResponse`
+- New struct `NamespacesClientGetResult`
+- New struct `NamespacesClientListAllOptions`
+- New struct `NamespacesClientListAllPager`
+- New struct `NamespacesClientListAllResponse`
+- New struct `NamespacesClientListAllResult`
+- New struct `NamespacesClientListAuthorizationRulesOptions`
+- New struct `NamespacesClientListAuthorizationRulesPager`
+- New struct `NamespacesClientListAuthorizationRulesResponse`
+- New struct `NamespacesClientListAuthorizationRulesResult`
+- New struct `NamespacesClientListKeysOptions`
+- New struct `NamespacesClientListKeysResponse`
+- New struct `NamespacesClientListKeysResult`
+- New struct `NamespacesClientListOptions`
+- New struct `NamespacesClientListPager`
+- New struct `NamespacesClientListResponse`
+- New struct `NamespacesClientListResult`
+- New struct `NamespacesClientPatchOptions`
+- New struct `NamespacesClientPatchResponse`
+- New struct `NamespacesClientPatchResult`
+- New struct `NamespacesClientRegenerateKeysOptions`
+- New struct `NamespacesClientRegenerateKeysResponse`
+- New struct `NamespacesClientRegenerateKeysResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New field `Tags` in struct `NotificationHubPatchParameters`
+- New field `ID` in struct `NotificationHubPatchParameters`
+- New field `Name` in struct `NotificationHubPatchParameters`
+- New field `Type` in struct `NotificationHubPatchParameters`
+- New field `Location` in struct `NotificationHubPatchParameters`
+- New field `SKU` in struct `NotificationHubPatchParameters`
+- New field `Name` in struct `NamespaceCreateOrUpdateParameters`
+- New field `Type` in struct `NamespaceCreateOrUpdateParameters`
+- New field `Location` in struct `NamespaceCreateOrUpdateParameters`
+- New field `SKU` in struct `NamespaceCreateOrUpdateParameters`
+- New field `Tags` in struct `NamespaceCreateOrUpdateParameters`
+- New field `ID` in struct `NamespaceCreateOrUpdateParameters`
+- New field `Location` in struct `CheckAvailabilityResult`
+- New field `SKU` in struct `CheckAvailabilityResult`
+- New field `Tags` in struct `CheckAvailabilityResult`
+- New field `ID` in struct `CheckAvailabilityResult`
+- New field `Name` in struct `CheckAvailabilityResult`
+- New field `Type` in struct `CheckAvailabilityResult`
+- New field `SKU` in struct `PnsCredentialsResource`
+- New field `Tags` in struct `PnsCredentialsResource`
+- New field `ID` in struct `PnsCredentialsResource`
+- New field `Name` in struct `PnsCredentialsResource`
+- New field `Type` in struct `PnsCredentialsResource`
+- New field `Location` in struct `PnsCredentialsResource`
+- New field `ID` in struct `NotificationHubCreateOrUpdateParameters`
+- New field `Name` in struct `NotificationHubCreateOrUpdateParameters`
+- New field `Type` in struct `NotificationHubCreateOrUpdateParameters`
+- New field `Location` in struct `NotificationHubCreateOrUpdateParameters`
+- New field `SKU` in struct `NotificationHubCreateOrUpdateParameters`
+- New field `Tags` in struct `NotificationHubCreateOrUpdateParameters`
+- New field `SKU` in struct `NamespaceResource`
+- New field `Tags` in struct `NamespaceResource`
+- New field `ID` in struct `NamespaceResource`
+- New field `Name` in struct `NamespaceResource`
+- New field `Type` in struct `NamespaceResource`
+- New field `Location` in struct `NamespaceResource`
+- New field `Location` in struct `DebugSendResponse`
+- New field `SKU` in struct `DebugSendResponse`
+- New field `Tags` in struct `DebugSendResponse`
+- New field `ID` in struct `DebugSendResponse`
+- New field `Name` in struct `DebugSendResponse`
+- New field `Type` in struct `DebugSendResponse`
+- New field `SKU` in struct `SharedAccessAuthorizationRuleResource`
+- New field `Tags` in struct `SharedAccessAuthorizationRuleResource`
+- New field `ID` in struct `SharedAccessAuthorizationRuleResource`
+- New field `Name` in struct `SharedAccessAuthorizationRuleResource`
+- New field `Type` in struct `SharedAccessAuthorizationRuleResource`
+- New field `Location` in struct `SharedAccessAuthorizationRuleResource`
+- New field `SKU` in struct `NotificationHubResource`
+- New field `Tags` in struct `NotificationHubResource`
+- New field `ID` in struct `NotificationHubResource`
+- New field `Name` in struct `NotificationHubResource`
+- New field `Type` in struct `NotificationHubResource`
+- New field `Location` in struct `NotificationHubResource`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

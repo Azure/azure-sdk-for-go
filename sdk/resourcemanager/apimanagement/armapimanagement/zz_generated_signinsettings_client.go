@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // SignInSettingsClient contains the methods for the SignInSettings group.
 // Don't use this type directly, use NewSignInSettingsClient() instead.
 type SignInSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSignInSettingsClient creates a new instance of SignInSettingsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSignInSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SignInSettingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SignInSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SignInSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or Update Sign-In settings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SignInSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSigninSettings, options *SignInSettingsCreateOrUpdateOptions) (SignInSettingsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// parameters - Create or update parameters.
+// options - SignInSettingsClientCreateOrUpdateOptions contains the optional parameters for the SignInSettingsClient.CreateOrUpdate
+// method.
+func (client *SignInSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSigninSettings, options *SignInSettingsClientCreateOrUpdateOptions) (SignInSettingsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
-		return SignInSettingsCreateOrUpdateResponse{}, err
+		return SignInSettingsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SignInSettingsCreateOrUpdateResponse{}, err
+		return SignInSettingsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SignInSettingsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SignInSettingsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SignInSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSigninSettings, options *SignInSettingsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SignInSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSigninSettings, options *SignInSettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signin"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +87,7 @@ func (client *SignInSettingsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,46 +102,36 @@ func (client *SignInSettingsClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SignInSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (SignInSettingsCreateOrUpdateResponse, error) {
-	result := SignInSettingsCreateOrUpdateResponse{RawResponse: resp}
+func (client *SignInSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (SignInSettingsClientCreateOrUpdateResponse, error) {
+	result := SignInSettingsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalSigninSettings); err != nil {
-		return SignInSettingsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SignInSettingsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SignInSettingsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get Sign In Settings for the Portal
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SignInSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsGetOptions) (SignInSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - SignInSettingsClientGetOptions contains the optional parameters for the SignInSettingsClient.Get method.
+func (client *SignInSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsClientGetOptions) (SignInSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
-		return SignInSettingsGetResponse{}, err
+		return SignInSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SignInSettingsGetResponse{}, err
+		return SignInSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SignInSettingsGetResponse{}, client.getHandleError(resp)
+		return SignInSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SignInSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsGetOptions) (*policy.Request, error) {
+func (client *SignInSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signin"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -142,7 +145,7 @@ func (client *SignInSettingsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -154,46 +157,36 @@ func (client *SignInSettingsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *SignInSettingsClient) getHandleResponse(resp *http.Response) (SignInSettingsGetResponse, error) {
-	result := SignInSettingsGetResponse{RawResponse: resp}
+func (client *SignInSettingsClient) getHandleResponse(resp *http.Response) (SignInSettingsClientGetResponse, error) {
+	result := SignInSettingsClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalSigninSettings); err != nil {
-		return SignInSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SignInSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SignInSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the SignInSettings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SignInSettingsClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsGetEntityTagOptions) (SignInSettingsGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - SignInSettingsClientGetEntityTagOptions contains the optional parameters for the SignInSettingsClient.GetEntityTag
+// method.
+func (client *SignInSettingsClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsClientGetEntityTagOptions) (SignInSettingsClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
-		return SignInSettingsGetEntityTagResponse{}, err
+		return SignInSettingsClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SignInSettingsGetEntityTagResponse{}, err
+		return SignInSettingsClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *SignInSettingsClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsGetEntityTagOptions) (*policy.Request, error) {
+func (client *SignInSettingsClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *SignInSettingsClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signin"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +200,7 @@ func (client *SignInSettingsClient) getEntityTagCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,8 +212,8 @@ func (client *SignInSettingsClient) getEntityTagCreateRequest(ctx context.Contex
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *SignInSettingsClient) getEntityTagHandleResponse(resp *http.Response) (SignInSettingsGetEntityTagResponse, error) {
-	result := SignInSettingsGetEntityTagResponse{RawResponse: resp}
+func (client *SignInSettingsClient) getEntityTagHandleResponse(resp *http.Response) (SignInSettingsClientGetEntityTagResponse, error) {
+	result := SignInSettingsClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -231,24 +224,30 @@ func (client *SignInSettingsClient) getEntityTagHandleResponse(resp *http.Respon
 }
 
 // Update - Update Sign-In settings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SignInSettingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalSigninSettings, options *SignInSettingsUpdateOptions) (SignInSettingsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update Sign-In settings.
+// options - SignInSettingsClientUpdateOptions contains the optional parameters for the SignInSettingsClient.Update method.
+func (client *SignInSettingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalSigninSettings, options *SignInSettingsClientUpdateOptions) (SignInSettingsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, ifMatch, parameters, options)
 	if err != nil {
-		return SignInSettingsUpdateResponse{}, err
+		return SignInSettingsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SignInSettingsUpdateResponse{}, err
+		return SignInSettingsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return SignInSettingsUpdateResponse{}, client.updateHandleError(resp)
+		return SignInSettingsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return SignInSettingsUpdateResponse{RawResponse: resp}, nil
+	return SignInSettingsClientUpdateResponse{RawResponse: resp}, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SignInSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalSigninSettings, options *SignInSettingsUpdateOptions) (*policy.Request, error) {
+func (client *SignInSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalSigninSettings, options *SignInSettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signin"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -262,7 +261,7 @@ func (client *SignInSettingsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -272,17 +271,4 @@ func (client *SignInSettingsClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *SignInSettingsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

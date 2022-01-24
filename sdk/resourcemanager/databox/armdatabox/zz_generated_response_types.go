@@ -15,34 +15,28 @@ import (
 	"time"
 )
 
-// DataBoxManagementClientMitigateResponse contains the response from method DataBoxManagementClient.Mitigate.
-type DataBoxManagementClientMitigateResponse struct {
+// JobsClientBookShipmentPickUpResponse contains the response from method JobsClient.BookShipmentPickUp.
+type JobsClientBookShipmentPickUpResponse struct {
+	JobsClientBookShipmentPickUpResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsBookShipmentPickUpResponse contains the response from method Jobs.BookShipmentPickUp.
-type JobsBookShipmentPickUpResponse struct {
-	JobsBookShipmentPickUpResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JobsBookShipmentPickUpResult contains the result from method Jobs.BookShipmentPickUp.
-type JobsBookShipmentPickUpResult struct {
+// JobsClientBookShipmentPickUpResult contains the result from method JobsClient.BookShipmentPickUp.
+type JobsClientBookShipmentPickUpResult struct {
 	ShipmentPickUpResponse
 }
 
-// JobsCancelResponse contains the response from method Jobs.Cancel.
-type JobsCancelResponse struct {
+// JobsClientCancelResponse contains the response from method JobsClient.Cancel.
+type JobsClientCancelResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsCreatePollerResponse contains the response from method Jobs.Create.
-type JobsCreatePollerResponse struct {
+// JobsClientCreatePollerResponse contains the response from method JobsClient.Create.
+type JobsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *JobsCreatePoller
+	Poller *JobsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,8 +45,8 @@ type JobsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l JobsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobsCreateResponse, error) {
-	respType := JobsCreateResponse{}
+func (l JobsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobsClientCreateResponse, error) {
+	respType := JobsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.JobResource)
 	if err != nil {
 		return respType, err
@@ -61,13 +55,13 @@ func (l JobsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.D
 	return respType, nil
 }
 
-// Resume rehydrates a JobsCreatePollerResponse from the provided client and resume token.
-func (l *JobsCreatePollerResponse) Resume(ctx context.Context, client *JobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("JobsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a JobsClientCreatePollerResponse from the provided client and resume token.
+func (l *JobsClientCreatePollerResponse) Resume(ctx context.Context, client *JobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("JobsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &JobsCreatePoller{
+	poller := &JobsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,22 +73,22 @@ func (l *JobsCreatePollerResponse) Resume(ctx context.Context, client *JobsClien
 	return nil
 }
 
-// JobsCreateResponse contains the response from method Jobs.Create.
-type JobsCreateResponse struct {
-	JobsCreateResult
+// JobsClientCreateResponse contains the response from method JobsClient.Create.
+type JobsClientCreateResponse struct {
+	JobsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsCreateResult contains the result from method Jobs.Create.
-type JobsCreateResult struct {
+// JobsClientCreateResult contains the result from method JobsClient.Create.
+type JobsClientCreateResult struct {
 	JobResource
 }
 
-// JobsDeletePollerResponse contains the response from method Jobs.Delete.
-type JobsDeletePollerResponse struct {
+// JobsClientDeletePollerResponse contains the response from method JobsClient.Delete.
+type JobsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *JobsDeletePoller
+	Poller *JobsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -103,8 +97,8 @@ type JobsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l JobsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobsDeleteResponse, error) {
-	respType := JobsDeleteResponse{}
+func (l JobsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobsClientDeleteResponse, error) {
+	respType := JobsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -113,13 +107,13 @@ func (l JobsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.D
 	return respType, nil
 }
 
-// Resume rehydrates a JobsDeletePollerResponse from the provided client and resume token.
-func (l *JobsDeletePollerResponse) Resume(ctx context.Context, client *JobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("JobsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a JobsClientDeletePollerResponse from the provided client and resume token.
+func (l *JobsClientDeletePollerResponse) Resume(ctx context.Context, client *JobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("JobsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &JobsDeletePoller{
+	poller := &JobsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -131,70 +125,70 @@ func (l *JobsDeletePollerResponse) Resume(ctx context.Context, client *JobsClien
 	return nil
 }
 
-// JobsDeleteResponse contains the response from method Jobs.Delete.
-type JobsDeleteResponse struct {
+// JobsClientDeleteResponse contains the response from method JobsClient.Delete.
+type JobsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsGetResponse contains the response from method Jobs.Get.
-type JobsGetResponse struct {
-	JobsGetResult
+// JobsClientGetResponse contains the response from method JobsClient.Get.
+type JobsClientGetResponse struct {
+	JobsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsGetResult contains the result from method Jobs.Get.
-type JobsGetResult struct {
+// JobsClientGetResult contains the result from method JobsClient.Get.
+type JobsClientGetResult struct {
 	JobResource
 }
 
-// JobsListByResourceGroupResponse contains the response from method Jobs.ListByResourceGroup.
-type JobsListByResourceGroupResponse struct {
-	JobsListByResourceGroupResult
+// JobsClientListByResourceGroupResponse contains the response from method JobsClient.ListByResourceGroup.
+type JobsClientListByResourceGroupResponse struct {
+	JobsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsListByResourceGroupResult contains the result from method Jobs.ListByResourceGroup.
-type JobsListByResourceGroupResult struct {
+// JobsClientListByResourceGroupResult contains the result from method JobsClient.ListByResourceGroup.
+type JobsClientListByResourceGroupResult struct {
 	JobResourceList
 }
 
-// JobsListCredentialsResponse contains the response from method Jobs.ListCredentials.
-type JobsListCredentialsResponse struct {
-	JobsListCredentialsResult
+// JobsClientListCredentialsResponse contains the response from method JobsClient.ListCredentials.
+type JobsClientListCredentialsResponse struct {
+	JobsClientListCredentialsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsListCredentialsResult contains the result from method Jobs.ListCredentials.
-type JobsListCredentialsResult struct {
+// JobsClientListCredentialsResult contains the result from method JobsClient.ListCredentials.
+type JobsClientListCredentialsResult struct {
 	UnencryptedCredentialsList
 }
 
-// JobsListResponse contains the response from method Jobs.List.
-type JobsListResponse struct {
-	JobsListResult
+// JobsClientListResponse contains the response from method JobsClient.List.
+type JobsClientListResponse struct {
+	JobsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsListResult contains the result from method Jobs.List.
-type JobsListResult struct {
+// JobsClientListResult contains the result from method JobsClient.List.
+type JobsClientListResult struct {
 	JobResourceList
 }
 
-// JobsMarkDevicesShippedResponse contains the response from method Jobs.MarkDevicesShipped.
-type JobsMarkDevicesShippedResponse struct {
+// JobsClientMarkDevicesShippedResponse contains the response from method JobsClient.MarkDevicesShipped.
+type JobsClientMarkDevicesShippedResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsUpdatePollerResponse contains the response from method Jobs.Update.
-type JobsUpdatePollerResponse struct {
+// JobsClientUpdatePollerResponse contains the response from method JobsClient.Update.
+type JobsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *JobsUpdatePoller
+	Poller *JobsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -203,8 +197,8 @@ type JobsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l JobsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobsUpdateResponse, error) {
-	respType := JobsUpdateResponse{}
+func (l JobsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobsClientUpdateResponse, error) {
+	respType := JobsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.JobResource)
 	if err != nil {
 		return respType, err
@@ -213,13 +207,13 @@ func (l JobsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.D
 	return respType, nil
 }
 
-// Resume rehydrates a JobsUpdatePollerResponse from the provided client and resume token.
-func (l *JobsUpdatePollerResponse) Resume(ctx context.Context, client *JobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("JobsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a JobsClientUpdatePollerResponse from the provided client and resume token.
+func (l *JobsClientUpdatePollerResponse) Resume(ctx context.Context, client *JobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("JobsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &JobsUpdatePoller{
+	poller := &JobsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -231,98 +225,104 @@ func (l *JobsUpdatePollerResponse) Resume(ctx context.Context, client *JobsClien
 	return nil
 }
 
-// JobsUpdateResponse contains the response from method Jobs.Update.
-type JobsUpdateResponse struct {
-	JobsUpdateResult
+// JobsClientUpdateResponse contains the response from method JobsClient.Update.
+type JobsClientUpdateResponse struct {
+	JobsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsUpdateResult contains the result from method Jobs.Update.
-type JobsUpdateResult struct {
+// JobsClientUpdateResult contains the result from method JobsClient.Update.
+type JobsClientUpdateResult struct {
 	JobResource
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// ManagementClientMitigateResponse contains the response from method ManagementClient.Mitigate.
+type ManagementClientMitigateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }
 
-// ServiceListAvailableSKUsByResourceGroupResponse contains the response from method Service.ListAvailableSKUsByResourceGroup.
-type ServiceListAvailableSKUsByResourceGroupResponse struct {
-	ServiceListAvailableSKUsByResourceGroupResult
+// ServiceClientListAvailableSKUsByResourceGroupResponse contains the response from method ServiceClient.ListAvailableSKUsByResourceGroup.
+type ServiceClientListAvailableSKUsByResourceGroupResponse struct {
+	ServiceClientListAvailableSKUsByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceListAvailableSKUsByResourceGroupResult contains the result from method Service.ListAvailableSKUsByResourceGroup.
-type ServiceListAvailableSKUsByResourceGroupResult struct {
+// ServiceClientListAvailableSKUsByResourceGroupResult contains the result from method ServiceClient.ListAvailableSKUsByResourceGroup.
+type ServiceClientListAvailableSKUsByResourceGroupResult struct {
 	AvailableSKUsResult
 }
 
-// ServiceRegionConfigurationByResourceGroupResponse contains the response from method Service.RegionConfigurationByResourceGroup.
-type ServiceRegionConfigurationByResourceGroupResponse struct {
-	ServiceRegionConfigurationByResourceGroupResult
+// ServiceClientRegionConfigurationByResourceGroupResponse contains the response from method ServiceClient.RegionConfigurationByResourceGroup.
+type ServiceClientRegionConfigurationByResourceGroupResponse struct {
+	ServiceClientRegionConfigurationByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceRegionConfigurationByResourceGroupResult contains the result from method Service.RegionConfigurationByResourceGroup.
-type ServiceRegionConfigurationByResourceGroupResult struct {
+// ServiceClientRegionConfigurationByResourceGroupResult contains the result from method ServiceClient.RegionConfigurationByResourceGroup.
+type ServiceClientRegionConfigurationByResourceGroupResult struct {
 	RegionConfigurationResponse
 }
 
-// ServiceRegionConfigurationResponse contains the response from method Service.RegionConfiguration.
-type ServiceRegionConfigurationResponse struct {
-	ServiceRegionConfigurationResult
+// ServiceClientRegionConfigurationResponse contains the response from method ServiceClient.RegionConfiguration.
+type ServiceClientRegionConfigurationResponse struct {
+	ServiceClientRegionConfigurationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceRegionConfigurationResult contains the result from method Service.RegionConfiguration.
-type ServiceRegionConfigurationResult struct {
+// ServiceClientRegionConfigurationResult contains the result from method ServiceClient.RegionConfiguration.
+type ServiceClientRegionConfigurationResult struct {
 	RegionConfigurationResponse
 }
 
-// ServiceValidateAddressResponse contains the response from method Service.ValidateAddress.
-type ServiceValidateAddressResponse struct {
-	ServiceValidateAddressResult
+// ServiceClientValidateAddressResponse contains the response from method ServiceClient.ValidateAddress.
+type ServiceClientValidateAddressResponse struct {
+	ServiceClientValidateAddressResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceValidateAddressResult contains the result from method Service.ValidateAddress.
-type ServiceValidateAddressResult struct {
+// ServiceClientValidateAddressResult contains the result from method ServiceClient.ValidateAddress.
+type ServiceClientValidateAddressResult struct {
 	AddressValidationOutput
 }
 
-// ServiceValidateInputsByResourceGroupResponse contains the response from method Service.ValidateInputsByResourceGroup.
-type ServiceValidateInputsByResourceGroupResponse struct {
-	ServiceValidateInputsByResourceGroupResult
+// ServiceClientValidateInputsByResourceGroupResponse contains the response from method ServiceClient.ValidateInputsByResourceGroup.
+type ServiceClientValidateInputsByResourceGroupResponse struct {
+	ServiceClientValidateInputsByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceValidateInputsByResourceGroupResult contains the result from method Service.ValidateInputsByResourceGroup.
-type ServiceValidateInputsByResourceGroupResult struct {
+// ServiceClientValidateInputsByResourceGroupResult contains the result from method ServiceClient.ValidateInputsByResourceGroup.
+type ServiceClientValidateInputsByResourceGroupResult struct {
 	ValidationResponse
 }
 
-// ServiceValidateInputsResponse contains the response from method Service.ValidateInputs.
-type ServiceValidateInputsResponse struct {
-	ServiceValidateInputsResult
+// ServiceClientValidateInputsResponse contains the response from method ServiceClient.ValidateInputs.
+type ServiceClientValidateInputsResponse struct {
+	ServiceClientValidateInputsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceValidateInputsResult contains the result from method Service.ValidateInputs.
-type ServiceValidateInputsResult struct {
+// ServiceClientValidateInputsResult contains the result from method ServiceClient.ValidateInputs.
+type ServiceClientValidateInputsResult struct {
 	ValidationResponse
 }

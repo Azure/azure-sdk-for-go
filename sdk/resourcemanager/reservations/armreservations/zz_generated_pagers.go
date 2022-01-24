@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// OperationListPager provides operations for iterating over paged responses.
-type OperationListPager struct {
+// OperationClientListPager provides operations for iterating over paged responses.
+type OperationClientListPager struct {
 	client    *OperationClient
-	current   OperationListResponse
+	current   OperationClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationListPager) Err() error {
+func (p *OperationClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationListPager) NextPage(ctx context.Context) bool {
+func (p *OperationClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *OperationListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *OperationListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationListResponse page.
-func (p *OperationListPager) PageResponse() OperationListResponse {
+// PageResponse returns the current OperationClientListResponse page.
+func (p *OperationClientListPager) PageResponse() OperationClientListResponse {
 	return p.current
 }
 
-// QuotaListPager provides operations for iterating over paged responses.
-type QuotaListPager struct {
+// QuotaClientListPager provides operations for iterating over paged responses.
+type QuotaClientListPager struct {
 	client    *QuotaClient
-	current   QuotaListResponse
+	current   QuotaClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, QuotaListResponse) (*policy.Request, error)
+	advancer  func(context.Context, QuotaClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *QuotaListPager) Err() error {
+func (p *QuotaClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *QuotaListPager) NextPage(ctx context.Context) bool {
+func (p *QuotaClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *QuotaListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *QuotaListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current QuotaListResponse page.
-func (p *QuotaListPager) PageResponse() QuotaListResponse {
+// PageResponse returns the current QuotaClientListResponse page.
+func (p *QuotaClientListPager) PageResponse() QuotaClientListResponse {
 	return p.current
 }
 
-// QuotaRequestStatusListPager provides operations for iterating over paged responses.
-type QuotaRequestStatusListPager struct {
+// QuotaRequestStatusClientListPager provides operations for iterating over paged responses.
+type QuotaRequestStatusClientListPager struct {
 	client    *QuotaRequestStatusClient
-	current   QuotaRequestStatusListResponse
+	current   QuotaRequestStatusClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, QuotaRequestStatusListResponse) (*policy.Request, error)
+	advancer  func(context.Context, QuotaRequestStatusClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *QuotaRequestStatusListPager) Err() error {
+func (p *QuotaRequestStatusClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *QuotaRequestStatusListPager) NextPage(ctx context.Context) bool {
+func (p *QuotaRequestStatusClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *QuotaRequestStatusListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,32 +173,32 @@ func (p *QuotaRequestStatusListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current QuotaRequestStatusListResponse page.
-func (p *QuotaRequestStatusListPager) PageResponse() QuotaRequestStatusListResponse {
+// PageResponse returns the current QuotaRequestStatusClientListResponse page.
+func (p *QuotaRequestStatusClientListPager) PageResponse() QuotaRequestStatusClientListResponse {
 	return p.current
 }
 
-// ReservationListAllPager provides operations for iterating over paged responses.
-type ReservationListAllPager struct {
+// ReservationClientListAllPager provides operations for iterating over paged responses.
+type ReservationClientListAllPager struct {
 	client    *ReservationClient
-	current   ReservationListAllResponse
+	current   ReservationClientListAllResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ReservationListAllResponse) (*policy.Request, error)
+	advancer  func(context.Context, ReservationClientListAllResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ReservationListAllPager) Err() error {
+func (p *ReservationClientListAllPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ReservationListAllPager) NextPage(ctx context.Context) bool {
+func (p *ReservationClientListAllPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ReservationsListResult.NextLink == nil || len(*p.current.ReservationsListResult.NextLink) == 0 {
+		if p.current.ListResult.NextLink == nil || len(*p.current.ListResult.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -215,7 +215,7 @@ func (p *ReservationListAllPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listAllHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listAllHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *ReservationListAllPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ReservationListAllResponse page.
-func (p *ReservationListAllPager) PageResponse() ReservationListAllResponse {
+// PageResponse returns the current ReservationClientListAllResponse page.
+func (p *ReservationClientListAllPager) PageResponse() ReservationClientListAllResponse {
 	return p.current
 }
 
-// ReservationListPager provides operations for iterating over paged responses.
-type ReservationListPager struct {
+// ReservationClientListPager provides operations for iterating over paged responses.
+type ReservationClientListPager struct {
 	client    *ReservationClient
-	current   ReservationListResponse
+	current   ReservationClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ReservationListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ReservationClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ReservationListPager) Err() error {
+func (p *ReservationClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ReservationListPager) NextPage(ctx context.Context) bool {
+func (p *ReservationClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *ReservationListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -281,28 +281,28 @@ func (p *ReservationListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ReservationListResponse page.
-func (p *ReservationListPager) PageResponse() ReservationListResponse {
+// PageResponse returns the current ReservationClientListResponse page.
+func (p *ReservationClientListPager) PageResponse() ReservationClientListResponse {
 	return p.current
 }
 
-// ReservationListRevisionsPager provides operations for iterating over paged responses.
-type ReservationListRevisionsPager struct {
+// ReservationClientListRevisionsPager provides operations for iterating over paged responses.
+type ReservationClientListRevisionsPager struct {
 	client    *ReservationClient
-	current   ReservationListRevisionsResponse
+	current   ReservationClientListRevisionsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ReservationListRevisionsResponse) (*policy.Request, error)
+	advancer  func(context.Context, ReservationClientListRevisionsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ReservationListRevisionsPager) Err() error {
+func (p *ReservationClientListRevisionsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ReservationListRevisionsPager) NextPage(ctx context.Context) bool {
+func (p *ReservationClientListRevisionsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -323,7 +323,7 @@ func (p *ReservationListRevisionsPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listRevisionsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listRevisionsHandleResponse(resp)
@@ -335,28 +335,28 @@ func (p *ReservationListRevisionsPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ReservationListRevisionsResponse page.
-func (p *ReservationListRevisionsPager) PageResponse() ReservationListRevisionsResponse {
+// PageResponse returns the current ReservationClientListRevisionsResponse page.
+func (p *ReservationClientListRevisionsPager) PageResponse() ReservationClientListRevisionsResponse {
 	return p.current
 }
 
-// ReservationOrderListPager provides operations for iterating over paged responses.
-type ReservationOrderListPager struct {
+// ReservationOrderClientListPager provides operations for iterating over paged responses.
+type ReservationOrderClientListPager struct {
 	client    *ReservationOrderClient
-	current   ReservationOrderListResponse
+	current   ReservationOrderClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ReservationOrderListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ReservationOrderClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ReservationOrderListPager) Err() error {
+func (p *ReservationOrderClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ReservationOrderListPager) NextPage(ctx context.Context) bool {
+func (p *ReservationOrderClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -377,7 +377,7 @@ func (p *ReservationOrderListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -389,7 +389,7 @@ func (p *ReservationOrderListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ReservationOrderListResponse page.
-func (p *ReservationOrderListPager) PageResponse() ReservationOrderListResponse {
+// PageResponse returns the current ReservationOrderClientListResponse page.
+func (p *ReservationOrderClientListPager) PageResponse() ReservationOrderClientListResponse {
 	return p.current
 }

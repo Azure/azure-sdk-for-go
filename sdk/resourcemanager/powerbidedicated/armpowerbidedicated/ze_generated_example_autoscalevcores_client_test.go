@@ -32,7 +32,7 @@ func ExampleAutoScaleVCoresClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AutoScaleVCore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AutoScaleVCoresClientGetResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/createAutoScaleVCore.json
@@ -47,29 +47,25 @@ func ExampleAutoScaleVCoresClient_Create() {
 		"<resource-group-name>",
 		"<vcore-name>",
 		armpowerbidedicated.AutoScaleVCore{
-			Resource: armpowerbidedicated.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"testKey": to.StringPtr("testValue"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"testKey": to.StringPtr("testValue"),
 			},
 			Properties: &armpowerbidedicated.AutoScaleVCoreProperties{
-				AutoScaleVCoreMutableProperties: armpowerbidedicated.AutoScaleVCoreMutableProperties{
-					CapacityLimit: to.Int32Ptr(10),
-				},
+				CapacityLimit:    to.Int32Ptr(10),
 				CapacityObjectID: to.StringPtr("<capacity-object-id>"),
 			},
 			SKU: &armpowerbidedicated.AutoScaleVCoreSKU{
 				Name:     to.StringPtr("<name>"),
 				Capacity: to.Int32Ptr(0),
-				Tier:     armpowerbidedicated.VCoreSKUTierAutoScale.ToPtr(),
+				Tier:     armpowerbidedicated.VCoreSKUTier("AutoScale").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AutoScaleVCore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AutoScaleVCoresClientCreateResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/deleteAutoScaleVCore.json
@@ -107,7 +103,7 @@ func ExampleAutoScaleVCoresClient_Update() {
 			SKU: &armpowerbidedicated.AutoScaleVCoreSKU{
 				Name:     to.StringPtr("<name>"),
 				Capacity: to.Int32Ptr(0),
-				Tier:     armpowerbidedicated.VCoreSKUTierAutoScale.ToPtr(),
+				Tier:     armpowerbidedicated.VCoreSKUTier("AutoScale").ToPtr(),
 			},
 			Tags: map[string]*string{
 				"testKey": to.StringPtr("testValue"),
@@ -117,7 +113,7 @@ func ExampleAutoScaleVCoresClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AutoScaleVCore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AutoScaleVCoresClientUpdateResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/listAutoScaleVCoresInResourceGroup.json
@@ -128,12 +124,13 @@ func ExampleAutoScaleVCoresClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armpowerbidedicated.NewAutoScaleVCoresClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AutoScaleVCoresClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/listAutoScaleVCoresInSubscription.json
@@ -144,9 +141,10 @@ func ExampleAutoScaleVCoresClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armpowerbidedicated.NewAutoScaleVCoresClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AutoScaleVCoresClientListBySubscriptionResult)
 }

@@ -24,7 +24,7 @@ func ExampleExportJobsOperationResultClient_Get() {
 	}
 	ctx := context.Background()
 	client := armdataprotection.NewExportJobsOperationResultClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<vault-name>",
 		"<operation-id>",
@@ -32,4 +32,5 @@ func ExampleExportJobsOperationResultClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExportJobsOperationResultClientGetResult)
 }

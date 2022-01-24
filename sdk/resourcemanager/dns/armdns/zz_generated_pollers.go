@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// ZonesDeletePoller provides polling facilities until the operation reaches a terminal state.
-type ZonesDeletePoller struct {
+// ZonesClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type ZonesClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *ZonesDeletePoller) Done() bool {
+func (p *ZonesClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *ZonesDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *ZonesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ZonesClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final ZonesDeleteResponse will be returned.
-func (p *ZonesDeletePoller) FinalResponse(ctx context.Context) (ZonesDeleteResponse, error) {
-	respType := ZonesDeleteResponse{}
+// If the final GET succeeded then the final ZonesClientDeleteResponse will be returned.
+func (p *ZonesClientDeletePoller) FinalResponse(ctx context.Context) (ZonesClientDeleteResponse, error) {
+	respType := ZonesClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return ZonesDeleteResponse{}, err
+		return ZonesClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *ZonesDeletePoller) FinalResponse(ctx context.Context) (ZonesDeleteRespo
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *ZonesDeletePoller) ResumeToken() (string, error) {
+func (p *ZonesClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

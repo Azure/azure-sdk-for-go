@@ -27,13 +27,17 @@ func ExampleConfigurationStoresClient_List() {
 	}
 	ctx := context.Background()
 	client := armappconfiguration.NewConfigurationStoresClient("<subscription-id>", cred, nil)
-	pager := client.List(&armappconfiguration.ConfigurationStoresListOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armappconfiguration.ConfigurationStoresClientListOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ConfigurationStore.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -47,13 +51,17 @@ func ExampleConfigurationStoresClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armappconfiguration.NewConfigurationStoresClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armappconfiguration.ConfigurationStoresListByResourceGroupOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armappconfiguration.ConfigurationStoresClientListByResourceGroupOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ConfigurationStore.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleConfigurationStoresClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationStore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationStoresClientGetResult)
 }
 
 // x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-03-01-preview/examples/ConfigurationStoresCreate.json
@@ -88,11 +96,9 @@ func ExampleConfigurationStoresClient_BeginCreate() {
 		"<resource-group-name>",
 		"<config-store-name>",
 		armappconfiguration.ConfigurationStore{
-			TrackedResource: armappconfiguration.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"myTag": to.StringPtr("myTagValue"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"myTag": to.StringPtr("myTagValue"),
 			},
 			SKU: &armappconfiguration.SKU{
 				Name: to.StringPtr("<name>"),
@@ -106,7 +112,7 @@ func ExampleConfigurationStoresClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationStore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationStoresClientCreateResult)
 }
 
 // x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-03-01-preview/examples/ConfigurationStoresDelete.json
@@ -157,7 +163,7 @@ func ExampleConfigurationStoresClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationStore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationStoresClientUpdateResult)
 }
 
 // x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-03-01-preview/examples/ConfigurationStoresListKeys.json
@@ -170,13 +176,17 @@ func ExampleConfigurationStoresClient_ListKeys() {
 	client := armappconfiguration.NewConfigurationStoresClient("<subscription-id>", cred, nil)
 	pager := client.ListKeys("<resource-group-name>",
 		"<config-store-name>",
-		&armappconfiguration.ConfigurationStoresListKeysOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armappconfiguration.ConfigurationStoresClientListKeysOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("APIKey.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -199,5 +209,5 @@ func ExampleConfigurationStoresClient_RegenerateKey() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("APIKey.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationStoresClientRegenerateKeyResult)
 }

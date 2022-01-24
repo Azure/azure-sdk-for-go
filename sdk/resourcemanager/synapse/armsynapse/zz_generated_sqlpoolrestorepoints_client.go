@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // SQLPoolRestorePointsClient contains the methods for the SQLPoolRestorePoints group.
 // Don't use this type directly, use NewSQLPoolRestorePointsClient() instead.
 type SQLPoolRestorePointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolRestorePointsClient creates a new instance of SQLPoolRestorePointsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolRestorePointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolRestorePointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolRestorePointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolRestorePointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates a restore point for a data warehouse.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolRestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsBeginCreateOptions) (SQLPoolRestorePointsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// parameters - The definition for creating the restore point of this Sql pool.
+// options - SQLPoolRestorePointsClientBeginCreateOptions contains the optional parameters for the SQLPoolRestorePointsClient.BeginCreate
+// method.
+func (client *SQLPoolRestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsClientBeginCreateOptions) (SQLPoolRestorePointsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, workspaceName, sqlPoolName, parameters, options)
 	if err != nil {
-		return SQLPoolRestorePointsCreatePollerResponse{}, err
+		return SQLPoolRestorePointsClientCreatePollerResponse{}, err
 	}
-	result := SQLPoolRestorePointsCreatePollerResponse{
+	result := SQLPoolRestorePointsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLPoolRestorePointsClient.Create", "location", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("SQLPoolRestorePointsClient.Create", "location", resp, client.pl)
 	if err != nil {
-		return SQLPoolRestorePointsCreatePollerResponse{}, err
+		return SQLPoolRestorePointsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &SQLPoolRestorePointsCreatePoller{
+	result.Poller = &SQLPoolRestorePointsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a restore point for a data warehouse.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolRestorePointsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLPoolRestorePointsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *SQLPoolRestorePointsClient) create(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *SQLPoolRestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsBeginCreateOptions) (*policy.Request, error) {
+func (client *SQLPoolRestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *SQLPoolRestorePointsClient) createCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,37 +122,31 @@ func (client *SQLPoolRestorePointsClient) createCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *SQLPoolRestorePointsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes a restore point.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolRestorePointsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, restorePointName string, options *SQLPoolRestorePointsDeleteOptions) (SQLPoolRestorePointsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// restorePointName - The name of the restore point.
+// options - SQLPoolRestorePointsClientDeleteOptions contains the optional parameters for the SQLPoolRestorePointsClient.Delete
+// method.
+func (client *SQLPoolRestorePointsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, restorePointName string, options *SQLPoolRestorePointsClientDeleteOptions) (SQLPoolRestorePointsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, restorePointName, options)
 	if err != nil {
-		return SQLPoolRestorePointsDeleteResponse{}, err
+		return SQLPoolRestorePointsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolRestorePointsDeleteResponse{}, err
+		return SQLPoolRestorePointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SQLPoolRestorePointsDeleteResponse{}, client.deleteHandleError(resp)
+		return SQLPoolRestorePointsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLPoolRestorePointsDeleteResponse{RawResponse: resp}, nil
+	return SQLPoolRestorePointsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SQLPoolRestorePointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, restorePointName string, options *SQLPoolRestorePointsDeleteOptions) (*policy.Request, error) {
+func (client *SQLPoolRestorePointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, restorePointName string, options *SQLPoolRestorePointsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -161,7 +168,7 @@ func (client *SQLPoolRestorePointsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter restorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{restorePointName}", url.PathEscape(restorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,37 +178,31 @@ func (client *SQLPoolRestorePointsClient) deleteCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SQLPoolRestorePointsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a restore point.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolRestorePointsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, restorePointName string, options *SQLPoolRestorePointsGetOptions) (SQLPoolRestorePointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// restorePointName - The name of the restore point.
+// options - SQLPoolRestorePointsClientGetOptions contains the optional parameters for the SQLPoolRestorePointsClient.Get
+// method.
+func (client *SQLPoolRestorePointsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, restorePointName string, options *SQLPoolRestorePointsClientGetOptions) (SQLPoolRestorePointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, restorePointName, options)
 	if err != nil {
-		return SQLPoolRestorePointsGetResponse{}, err
+		return SQLPoolRestorePointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolRestorePointsGetResponse{}, err
+		return SQLPoolRestorePointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolRestorePointsGetResponse{}, client.getHandleError(resp)
+		return SQLPoolRestorePointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolRestorePointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, restorePointName string, options *SQLPoolRestorePointsGetOptions) (*policy.Request, error) {
+func (client *SQLPoolRestorePointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, restorePointName string, options *SQLPoolRestorePointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -223,7 +224,7 @@ func (client *SQLPoolRestorePointsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter restorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{restorePointName}", url.PathEscape(restorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,42 +236,35 @@ func (client *SQLPoolRestorePointsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolRestorePointsClient) getHandleResponse(resp *http.Response) (SQLPoolRestorePointsGetResponse, error) {
-	result := SQLPoolRestorePointsGetResponse{RawResponse: resp}
+func (client *SQLPoolRestorePointsClient) getHandleResponse(resp *http.Response) (SQLPoolRestorePointsClientGetResponse, error) {
+	result := SQLPoolRestorePointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePoint); err != nil {
-		return SQLPoolRestorePointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolRestorePointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLPoolRestorePointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Get SQL pool backup information
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolRestorePointsClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolRestorePointsListOptions) *SQLPoolRestorePointsListPager {
-	return &SQLPoolRestorePointsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolRestorePointsClientListOptions contains the optional parameters for the SQLPoolRestorePointsClient.List
+// method.
+func (client *SQLPoolRestorePointsClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolRestorePointsClientListOptions) *SQLPoolRestorePointsClientListPager {
+	return &SQLPoolRestorePointsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolRestorePointsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolRestorePointsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RestorePointListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLPoolRestorePointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolRestorePointsListOptions) (*policy.Request, error) {
+func (client *SQLPoolRestorePointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolRestorePointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -288,7 +282,7 @@ func (client *SQLPoolRestorePointsClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -300,23 +294,10 @@ func (client *SQLPoolRestorePointsClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLPoolRestorePointsClient) listHandleResponse(resp *http.Response) (SQLPoolRestorePointsListResponse, error) {
-	result := SQLPoolRestorePointsListResponse{RawResponse: resp}
+func (client *SQLPoolRestorePointsClient) listHandleResponse(resp *http.Response) (SQLPoolRestorePointsClientListResponse, error) {
+	result := SQLPoolRestorePointsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointListResult); err != nil {
-		return SQLPoolRestorePointsListResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolRestorePointsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SQLPoolRestorePointsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

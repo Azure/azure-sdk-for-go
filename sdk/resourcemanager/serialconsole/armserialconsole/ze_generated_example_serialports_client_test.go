@@ -24,7 +24,7 @@ func ExampleSerialPortsClient_List() {
 	}
 	ctx := context.Background()
 	client := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-provider-namespace>",
 		"<parent-resource-type>",
@@ -33,6 +33,7 @@ func ExampleSerialPortsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SerialPortsClientListResult)
 }
 
 // x-ms-original-file: specification/serialconsole/resource-manager/Microsoft.SerialConsole/stable/2018-05-01/examples/GetSerialPort.json
@@ -53,7 +54,7 @@ func ExampleSerialPortsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SerialPort.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SerialPortsClientGetResult)
 }
 
 // x-ms-original-file: specification/serialconsole/resource-manager/Microsoft.SerialConsole/stable/2018-05-01/examples/CreateSerialPort.json
@@ -64,7 +65,7 @@ func ExampleSerialPortsClient_Create() {
 	}
 	ctx := context.Background()
 	client := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
-	res, err := client.Create(ctx,
+	_, err = client.Create(ctx,
 		"<resource-group-name>",
 		"<resource-provider-namespace>",
 		"<parent-resource-type>",
@@ -79,7 +80,6 @@ func ExampleSerialPortsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SerialPort.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/serialconsole/resource-manager/Microsoft.SerialConsole/stable/2018-05-01/examples/DeleteSerialPort.json
@@ -110,11 +110,12 @@ func ExampleSerialPortsClient_ListBySubscriptions() {
 	}
 	ctx := context.Background()
 	client := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscriptions(ctx,
+	res, err := client.ListBySubscriptions(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SerialPortsClientListBySubscriptionsResult)
 }
 
 // x-ms-original-file: specification/serialconsole/resource-manager/Microsoft.SerialConsole/stable/2018-05-01/examples/SerialPortConnectVMSS.json
@@ -125,7 +126,7 @@ func ExampleSerialPortsClient_Connect() {
 	}
 	ctx := context.Background()
 	client := armserialconsole.NewSerialPortsClient("<subscription-id>", cred, nil)
-	_, err = client.Connect(ctx,
+	res, err := client.Connect(ctx,
 		"<resource-group-name>",
 		"<resource-provider-namespace>",
 		"<parent-resource-type>",
@@ -135,4 +136,5 @@ func ExampleSerialPortsClient_Connect() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SerialPortsClientConnectResult)
 }

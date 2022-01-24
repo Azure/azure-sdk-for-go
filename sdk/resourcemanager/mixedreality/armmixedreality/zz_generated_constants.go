@@ -9,8 +9,8 @@
 package armmixedreality
 
 const (
-	module  = "armmixedreality"
-	version = "v0.1.0"
+	moduleName    = "armmixedreality"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -59,7 +59,8 @@ func (c NameUnavailableReason) ToPtr() *NameUnavailableReason {
 	return &c
 }
 
-// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
 type SKUTier string
 
 const (

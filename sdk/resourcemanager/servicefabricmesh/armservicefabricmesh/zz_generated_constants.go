@@ -9,8 +9,8 @@
 package armservicefabricmesh
 
 const (
-	module  = "armservicefabricmesh"
-	version = "v0.1.0"
+	moduleName    = "armservicefabricmesh"
+	moduleVersion = "v0.2.0"
 )
 
 // ApplicationScopedVolumeKind - Specifies the application-scoped volume kind.
@@ -100,7 +100,8 @@ func (c AutoScalingResourceMetricName) ToPtr() *AutoScalingResourceMetricName {
 type AutoScalingTriggerKind string
 
 const (
-	// AutoScalingTriggerKindAverageLoad - Indicates that scaling should be performed based on average load of all replicas in the service.
+	// AutoScalingTriggerKindAverageLoad - Indicates that scaling should be performed based on average load of all replicas in
+	// the service.
 	AutoScalingTriggerKindAverageLoad AutoScalingTriggerKind = "AverageLoad"
 )
 
@@ -158,14 +159,16 @@ func (c HeaderMatchType) ToPtr() *HeaderMatchType {
 	return &c
 }
 
-// HealthState - The health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica etc.
+// HealthState - The health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica
+// etc.
 type HealthState string
 
 const (
-	// HealthStateError - Indicates the health state is at an error level. Error health state should be investigated, as they can impact the correct functionality
-	// of the cluster. The value is 3.
+	// HealthStateError - Indicates the health state is at an error level. Error health state should be investigated, as they
+	// can impact the correct functionality of the cluster. The value is 3.
 	HealthStateError HealthState = "Error"
-	// HealthStateInvalid - Indicates an invalid health state. All Service Fabric enumerations have the invalid type. The value is zero.
+	// HealthStateInvalid - Indicates an invalid health state. All Service Fabric enumerations have the invalid type. The value
+	// is zero.
 	HealthStateInvalid HealthState = "Invalid"
 	// HealthStateOk - Indicates the health state is okay. The value is 1.
 	HealthStateOk HealthState = "Ok"
@@ -261,8 +264,8 @@ const (
 	ResourceStatusCreating ResourceStatus = "Creating"
 	// ResourceStatusDeleting - Indicates the resource is being deleted. The value is 4.
 	ResourceStatusDeleting ResourceStatus = "Deleting"
-	// ResourceStatusFailed - Indicates the resource is not functional due to persistent failures. See statusDetails property for more details. The value is
-	// 5.
+	// ResourceStatusFailed - Indicates the resource is not functional due to persistent failures. See statusDetails property
+	// for more details. The value is 5.
 	ResourceStatusFailed ResourceStatus = "Failed"
 	// ResourceStatusReady - Indicates the resource is ready. The value is 1.
 	ResourceStatusReady ResourceStatus = "Ready"

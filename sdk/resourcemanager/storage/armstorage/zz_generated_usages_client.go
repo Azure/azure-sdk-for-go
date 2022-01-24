@@ -24,42 +24,52 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByLocation - Gets the current usage count and the limit for the resources of the location under the subscription.
-// If the operation fails it returns a generic error.
-func (client *UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (UsagesListByLocationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location of the Azure Storage resource.
+// options - UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+func (client *UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesClientListByLocationOptions) (UsagesClientListByLocationResponse, error) {
 	req, err := client.listByLocationCreateRequest(ctx, location, options)
 	if err != nil {
-		return UsagesListByLocationResponse{}, err
+		return UsagesClientListByLocationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UsagesListByLocationResponse{}, err
+		return UsagesClientListByLocationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UsagesListByLocationResponse{}, client.listByLocationHandleError(resp)
+		return UsagesClientListByLocationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByLocationHandleResponse(resp)
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, options *UsagesListByLocationOptions) (*policy.Request, error) {
+func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, options *UsagesClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -69,34 +79,22 @@ func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, loc
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *UsagesClient) listByLocationHandleResponse(resp *http.Response) (UsagesListByLocationResponse, error) {
-	result := UsagesListByLocationResponse{RawResponse: resp}
+func (client *UsagesClient) listByLocationHandleResponse(resp *http.Response) (UsagesClientListByLocationResponse, error) {
+	result := UsagesClientListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
-		return UsagesListByLocationResponse{}, runtime.NewResponseError(err, resp)
+		return UsagesClientListByLocationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *UsagesClient) listByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

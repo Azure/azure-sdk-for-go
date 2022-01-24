@@ -30,12 +30,16 @@ func ExampleStorageAccountCredentialsClient_ListByDataBoxEdgeDevice() {
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StorageAccountCredential.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleStorageAccountCredentialsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageAccountCredential.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StorageAccountCredentialsClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/SACPut.json
@@ -74,13 +78,13 @@ func ExampleStorageAccountCredentialsClient_BeginCreateOrUpdate() {
 		armdataboxedge.StorageAccountCredential{
 			Properties: &armdataboxedge.StorageAccountCredentialProperties{
 				AccountKey: &armdataboxedge.AsymmetricEncryptedSecret{
-					EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithmAES256.ToPtr(),
+					EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithm("AES256").ToPtr(),
 					EncryptionCertThumbprint: to.StringPtr("<encryption-cert-thumbprint>"),
 					Value:                    to.StringPtr("<value>"),
 				},
-				AccountType: armdataboxedge.AccountTypeBlobStorage.ToPtr(),
+				AccountType: armdataboxedge.AccountType("BlobStorage").ToPtr(),
 				Alias:       to.StringPtr("<alias>"),
-				SSLStatus:   armdataboxedge.SSLStatusDisabled.ToPtr(),
+				SSLStatus:   armdataboxedge.SSLStatus("Disabled").ToPtr(),
 				UserName:    to.StringPtr("<user-name>"),
 			},
 		},
@@ -92,7 +96,7 @@ func ExampleStorageAccountCredentialsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageAccountCredential.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.StorageAccountCredentialsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/SACDelete.json

@@ -11,7 +11,6 @@ package armadvisor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // ConfigurationsClient contains the methods for the Configurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
 type ConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateInResourceGroup - Create/Overwrite Azure Advisor configuration.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *ConfigurationsClient) CreateInResourceGroup(ctx context.Context, configurationName ConfigurationName, resourceGroup string, configContract ConfigData, options *ConfigurationsCreateInResourceGroupOptions) (ConfigurationsCreateInResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// configurationName - Advisor configuration name. Value must be 'default'
+// resourceGroup - The name of the Azure resource group.
+// configContract - The Azure Advisor configuration data structure.
+// options - ConfigurationsClientCreateInResourceGroupOptions contains the optional parameters for the ConfigurationsClient.CreateInResourceGroup
+// method.
+func (client *ConfigurationsClient) CreateInResourceGroup(ctx context.Context, configurationName ConfigurationName, resourceGroup string, configContract ConfigData, options *ConfigurationsClientCreateInResourceGroupOptions) (ConfigurationsClientCreateInResourceGroupResponse, error) {
 	req, err := client.createInResourceGroupCreateRequest(ctx, configurationName, resourceGroup, configContract, options)
 	if err != nil {
-		return ConfigurationsCreateInResourceGroupResponse{}, err
+		return ConfigurationsClientCreateInResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationsCreateInResourceGroupResponse{}, err
+		return ConfigurationsClientCreateInResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationsCreateInResourceGroupResponse{}, client.createInResourceGroupHandleError(resp)
+		return ConfigurationsClientCreateInResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createInResourceGroupHandleResponse(resp)
 }
 
 // createInResourceGroupCreateRequest creates the CreateInResourceGroup request.
-func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx context.Context, configurationName ConfigurationName, resourceGroup string, configContract ConfigData, options *ConfigurationsCreateInResourceGroupOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx context.Context, configurationName ConfigurationName, resourceGroup string, configContract ConfigData, options *ConfigurationsClientCreateInResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +86,7 @@ func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter resourceGroup cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroup}", url.PathEscape(resourceGroup))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +98,38 @@ func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx conte
 }
 
 // createInResourceGroupHandleResponse handles the CreateInResourceGroup response.
-func (client *ConfigurationsClient) createInResourceGroupHandleResponse(resp *http.Response) (ConfigurationsCreateInResourceGroupResponse, error) {
-	result := ConfigurationsCreateInResourceGroupResponse{RawResponse: resp}
+func (client *ConfigurationsClient) createInResourceGroupHandleResponse(resp *http.Response) (ConfigurationsClientCreateInResourceGroupResponse, error) {
+	result := ConfigurationsClientCreateInResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigData); err != nil {
-		return ConfigurationsCreateInResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationsClientCreateInResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// createInResourceGroupHandleError handles the CreateInResourceGroup error response.
-func (client *ConfigurationsClient) createInResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateInSubscription - Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *ConfigurationsClient) CreateInSubscription(ctx context.Context, configurationName ConfigurationName, configContract ConfigData, options *ConfigurationsCreateInSubscriptionOptions) (ConfigurationsCreateInSubscriptionResponse, error) {
+// CreateInSubscription - Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource
+// groups.
+// If the operation fails it returns an *azcore.ResponseError type.
+// configurationName - Advisor configuration name. Value must be 'default'
+// configContract - The Azure Advisor configuration data structure.
+// options - ConfigurationsClientCreateInSubscriptionOptions contains the optional parameters for the ConfigurationsClient.CreateInSubscription
+// method.
+func (client *ConfigurationsClient) CreateInSubscription(ctx context.Context, configurationName ConfigurationName, configContract ConfigData, options *ConfigurationsClientCreateInSubscriptionOptions) (ConfigurationsClientCreateInSubscriptionResponse, error) {
 	req, err := client.createInSubscriptionCreateRequest(ctx, configurationName, configContract, options)
 	if err != nil {
-		return ConfigurationsCreateInSubscriptionResponse{}, err
+		return ConfigurationsClientCreateInSubscriptionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationsCreateInSubscriptionResponse{}, err
+		return ConfigurationsClientCreateInSubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationsCreateInSubscriptionResponse{}, client.createInSubscriptionHandleError(resp)
+		return ConfigurationsClientCreateInSubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createInSubscriptionHandleResponse(resp)
 }
 
 // createInSubscriptionCreateRequest creates the CreateInSubscription request.
-func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx context.Context, configurationName ConfigurationName, configContract ConfigData, options *ConfigurationsCreateInSubscriptionOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx context.Context, configurationName ConfigurationName, configContract ConfigData, options *ConfigurationsClientCreateInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -135,7 +139,7 @@ func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx contex
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(string(configurationName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,46 +151,36 @@ func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx contex
 }
 
 // createInSubscriptionHandleResponse handles the CreateInSubscription response.
-func (client *ConfigurationsClient) createInSubscriptionHandleResponse(resp *http.Response) (ConfigurationsCreateInSubscriptionResponse, error) {
-	result := ConfigurationsCreateInSubscriptionResponse{RawResponse: resp}
+func (client *ConfigurationsClient) createInSubscriptionHandleResponse(resp *http.Response) (ConfigurationsClientCreateInSubscriptionResponse, error) {
+	result := ConfigurationsClientCreateInSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigData); err != nil {
-		return ConfigurationsCreateInSubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationsClientCreateInSubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// createInSubscriptionHandleError handles the CreateInSubscription error response.
-func (client *ConfigurationsClient) createInSubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Retrieve Azure Advisor configurations.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *ConfigurationsClient) ListByResourceGroup(ctx context.Context, resourceGroup string, options *ConfigurationsListByResourceGroupOptions) (ConfigurationsListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroup - The name of the Azure resource group.
+// options - ConfigurationsClientListByResourceGroupOptions contains the optional parameters for the ConfigurationsClient.ListByResourceGroup
+// method.
+func (client *ConfigurationsClient) ListByResourceGroup(ctx context.Context, resourceGroup string, options *ConfigurationsClientListByResourceGroupOptions) (ConfigurationsClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroup, options)
 	if err != nil {
-		return ConfigurationsListByResourceGroupResponse{}, err
+		return ConfigurationsClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationsListByResourceGroupResponse{}, err
+		return ConfigurationsClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationsListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return ConfigurationsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroup string, options *ConfigurationsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroup string, options *ConfigurationsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -196,7 +190,7 @@ func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context
 		return nil, errors.New("parameter resourceGroup cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroup}", url.PathEscape(resourceGroup))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,49 +202,38 @@ func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ConfigurationsClient) listByResourceGroupHandleResponse(resp *http.Response) (ConfigurationsListByResourceGroupResponse, error) {
-	result := ConfigurationsListByResourceGroupResponse{RawResponse: resp}
+func (client *ConfigurationsClient) listByResourceGroupHandleResponse(resp *http.Response) (ConfigurationsClientListByResourceGroupResponse, error) {
+	result := ConfigurationsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResult); err != nil {
-		return ConfigurationsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ConfigurationsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *ConfigurationsClient) ListBySubscription(options *ConfigurationsListBySubscriptionOptions) *ConfigurationsListBySubscriptionPager {
-	return &ConfigurationsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationsClient.ListBySubscription
+// method.
+func (client *ConfigurationsClient) ListBySubscription(options *ConfigurationsClientListBySubscriptionOptions) *ConfigurationsClientListBySubscriptionPager {
+	return &ConfigurationsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ConfigurationsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ConfigurationsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConfigurationListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ConfigurationsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ConfigurationsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,23 +245,10 @@ func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ConfigurationsListBySubscriptionResponse, error) {
-	result := ConfigurationsListBySubscriptionResponse{RawResponse: resp}
+func (client *ConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ConfigurationsClientListBySubscriptionResponse, error) {
+	result := ConfigurationsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResult); err != nil {
-		return ConfigurationsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ConfigurationsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

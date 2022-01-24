@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // KustoPoolDatabasePrincipalAssignmentsClient contains the methods for the KustoPoolDatabasePrincipalAssignments group.
 // Don't use this type directly, use NewKustoPoolDatabasePrincipalAssignmentsClient() instead.
 type KustoPoolDatabasePrincipalAssignmentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewKustoPoolDatabasePrincipalAssignmentsClient creates a new instance of KustoPoolDatabasePrincipalAssignmentsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKustoPoolDatabasePrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KustoPoolDatabasePrincipalAssignmentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KustoPoolDatabasePrincipalAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KustoPoolDatabasePrincipalAssignmentsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Checks that the database principal assignment is valid and is not already in use.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) CheckNameAvailability(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, principalAssignmentName DatabasePrincipalAssignmentCheckNameRequest, options *KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityOptions) (KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// principalAssignmentName - The name of the resource.
+// options - KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions contains the optional parameters for
+// the KustoPoolDatabasePrincipalAssignmentsClient.CheckNameAvailability method.
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) CheckNameAvailability(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, principalAssignmentName DatabasePrincipalAssignmentCheckNameRequest, options *KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions) (KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, workspaceName, kustoPoolName, databaseName, resourceGroupName, principalAssignmentName, options)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) checkNameAvailabilityCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, principalAssignmentName DatabasePrincipalAssignmentCheckNameRequest, options *KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) checkNameAvailabilityCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, principalAssignmentName DatabasePrincipalAssignmentCheckNameRequest, options *KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/checkPrincipalAssignmentNameAvailability"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -82,7 +96,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) checkNameAvailability
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,50 +108,45 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) checkNameAvailability
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse, error) {
-	result := KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse, error) {
+	result := KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Creates a Kusto pool database principalAssignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, parameters DatabasePrincipalAssignment, options *KustoPoolDatabasePrincipalAssignmentsBeginCreateOrUpdateOptions) (KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// principalAssignmentName - The name of the Kusto principalAssignment.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// parameters - The Kusto principalAssignments parameters supplied for the operation.
+// options - KustoPoolDatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the
+// KustoPoolDatabasePrincipalAssignmentsClient.BeginCreateOrUpdate method.
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, parameters DatabasePrincipalAssignment, options *KustoPoolDatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions) (KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName, parameters, options)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePollerResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePollerResponse{
+	result := KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KustoPoolDatabasePrincipalAssignmentsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("KustoPoolDatabasePrincipalAssignmentsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePollerResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &KustoPoolDatabasePrincipalAssignmentsCreateOrUpdatePoller{
+	result.Poller = &KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a Kusto pool database principalAssignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, parameters DatabasePrincipalAssignment, options *KustoPoolDatabasePrincipalAssignmentsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, parameters DatabasePrincipalAssignment, options *KustoPoolDatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -147,13 +156,13 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdate(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, parameters DatabasePrincipalAssignment, options *KustoPoolDatabasePrincipalAssignmentsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, parameters DatabasePrincipalAssignment, options *KustoPoolDatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -179,7 +188,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdateCreateR
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -190,42 +199,36 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdateCreateR
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a Kusto pool principalAssignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) BeginDelete(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsBeginDeleteOptions) (KustoPoolDatabasePrincipalAssignmentsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// principalAssignmentName - The name of the Kusto principalAssignment.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - KustoPoolDatabasePrincipalAssignmentsClientBeginDeleteOptions contains the optional parameters for the KustoPoolDatabasePrincipalAssignmentsClient.BeginDelete
+// method.
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) BeginDelete(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientBeginDeleteOptions) (KustoPoolDatabasePrincipalAssignmentsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName, options)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsDeletePollerResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientDeletePollerResponse{}, err
 	}
-	result := KustoPoolDatabasePrincipalAssignmentsDeletePollerResponse{
+	result := KustoPoolDatabasePrincipalAssignmentsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KustoPoolDatabasePrincipalAssignmentsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("KustoPoolDatabasePrincipalAssignmentsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsDeletePollerResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &KustoPoolDatabasePrincipalAssignmentsDeletePoller{
+	result.Poller = &KustoPoolDatabasePrincipalAssignmentsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a Kusto pool principalAssignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteOperation(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteOperation(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -235,13 +238,13 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteOperation(ctx c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsBeginDeleteOptions) (*policy.Request, error) {
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -267,7 +270,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteCreateRequest(c
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -278,38 +281,32 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteCreateRequest(c
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a Kusto pool database principalAssignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) Get(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsGetOptions) (KustoPoolDatabasePrincipalAssignmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// principalAssignmentName - The name of the Kusto principalAssignment.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - KustoPoolDatabasePrincipalAssignmentsClientGetOptions contains the optional parameters for the KustoPoolDatabasePrincipalAssignmentsClient.Get
+// method.
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) Get(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientGetOptions) (KustoPoolDatabasePrincipalAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName, options)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsGetResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsGetResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolDatabasePrincipalAssignmentsGetResponse{}, client.getHandleError(resp)
+		return KustoPoolDatabasePrincipalAssignmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) getCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsGetOptions) (*policy.Request, error) {
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) getCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, principalAssignmentName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -335,7 +332,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) getCreateRequest(ctx 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -347,46 +344,39 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) getCreateRequest(ctx 
 }
 
 // getHandleResponse handles the Get response.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) getHandleResponse(resp *http.Response) (KustoPoolDatabasePrincipalAssignmentsGetResponse, error) {
-	result := KustoPoolDatabasePrincipalAssignmentsGetResponse{RawResponse: resp}
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) getHandleResponse(resp *http.Response) (KustoPoolDatabasePrincipalAssignmentsClientGetResponse, error) {
+	result := KustoPoolDatabasePrincipalAssignmentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalAssignment); err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolDatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all Kusto pool database principalAssignments.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) List(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsListOptions) (KustoPoolDatabasePrincipalAssignmentsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// databaseName - The name of the database in the Kusto pool.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - KustoPoolDatabasePrincipalAssignmentsClientListOptions contains the optional parameters for the KustoPoolDatabasePrincipalAssignmentsClient.List
+// method.
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) List(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientListOptions) (KustoPoolDatabasePrincipalAssignmentsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, workspaceName, kustoPoolName, databaseName, resourceGroupName, options)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsListResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsListResponse{}, err
+		return KustoPoolDatabasePrincipalAssignmentsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolDatabasePrincipalAssignmentsListResponse{}, client.listHandleError(resp)
+		return KustoPoolDatabasePrincipalAssignmentsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) listCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsListOptions) (*policy.Request, error) {
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) listCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, databaseName string, resourceGroupName string, options *KustoPoolDatabasePrincipalAssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/principalAssignments"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -408,7 +398,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) listCreateRequest(ctx
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -420,23 +410,10 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) listCreateRequest(ctx
 }
 
 // listHandleResponse handles the List response.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) listHandleResponse(resp *http.Response) (KustoPoolDatabasePrincipalAssignmentsListResponse, error) {
-	result := KustoPoolDatabasePrincipalAssignmentsListResponse{RawResponse: resp}
+func (client *KustoPoolDatabasePrincipalAssignmentsClient) listHandleResponse(resp *http.Response) (KustoPoolDatabasePrincipalAssignmentsClientListResponse, error) {
+	result := KustoPoolDatabasePrincipalAssignmentsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalAssignmentListResult); err != nil {
-		return KustoPoolDatabasePrincipalAssignmentsListResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolDatabasePrincipalAssignmentsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *KustoPoolDatabasePrincipalAssignmentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

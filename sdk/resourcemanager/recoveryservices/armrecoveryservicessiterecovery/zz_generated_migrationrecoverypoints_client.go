@@ -24,44 +24,62 @@ import (
 // MigrationRecoveryPointsClient contains the methods for the MigrationRecoveryPoints group.
 // Don't use this type directly, use NewMigrationRecoveryPointsClient() instead.
 type MigrationRecoveryPointsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewMigrationRecoveryPointsClient creates a new instance of MigrationRecoveryPointsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMigrationRecoveryPointsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MigrationRecoveryPointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MigrationRecoveryPointsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MigrationRecoveryPointsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a recovery point for a migration item.
-// If the operation fails it returns a generic error.
-func (client *MigrationRecoveryPointsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrationRecoveryPointName string, options *MigrationRecoveryPointsGetOptions) (MigrationRecoveryPointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric unique name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// migrationRecoveryPointName - The migration recovery point name.
+// options - MigrationRecoveryPointsClientGetOptions contains the optional parameters for the MigrationRecoveryPointsClient.Get
+// method.
+func (client *MigrationRecoveryPointsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrationRecoveryPointName string, options *MigrationRecoveryPointsClientGetOptions) (MigrationRecoveryPointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, migrationRecoveryPointName, options)
 	if err != nil {
-		return MigrationRecoveryPointsGetResponse{}, err
+		return MigrationRecoveryPointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MigrationRecoveryPointsGetResponse{}, err
+		return MigrationRecoveryPointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MigrationRecoveryPointsGetResponse{}, client.getHandleError(resp)
+		return MigrationRecoveryPointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MigrationRecoveryPointsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrationRecoveryPointName string, options *MigrationRecoveryPointsGetOptions) (*policy.Request, error) {
+func (client *MigrationRecoveryPointsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrationRecoveryPointName string, options *MigrationRecoveryPointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/migrationRecoveryPoints/{migrationRecoveryPointName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -91,54 +109,47 @@ func (client *MigrationRecoveryPointsClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter migrationRecoveryPointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationRecoveryPointName}", url.PathEscape(migrationRecoveryPointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *MigrationRecoveryPointsClient) getHandleResponse(resp *http.Response) (MigrationRecoveryPointsGetResponse, error) {
-	result := MigrationRecoveryPointsGetResponse{RawResponse: resp}
+func (client *MigrationRecoveryPointsClient) getHandleResponse(resp *http.Response) (MigrationRecoveryPointsClientGetResponse, error) {
+	result := MigrationRecoveryPointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationRecoveryPoint); err != nil {
-		return MigrationRecoveryPointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return MigrationRecoveryPointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MigrationRecoveryPointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByReplicationMigrationItems - Gets the recovery points for a migration item.
-// If the operation fails it returns a generic error.
-func (client *MigrationRecoveryPointsClient) ListByReplicationMigrationItems(fabricName string, protectionContainerName string, migrationItemName string, options *MigrationRecoveryPointsListByReplicationMigrationItemsOptions) *MigrationRecoveryPointsListByReplicationMigrationItemsPager {
-	return &MigrationRecoveryPointsListByReplicationMigrationItemsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric unique name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// options - MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions contains the optional parameters for the
+// MigrationRecoveryPointsClient.ListByReplicationMigrationItems method.
+func (client *MigrationRecoveryPointsClient) ListByReplicationMigrationItems(fabricName string, protectionContainerName string, migrationItemName string, options *MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions) *MigrationRecoveryPointsClientListByReplicationMigrationItemsPager {
+	return &MigrationRecoveryPointsClientListByReplicationMigrationItemsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByReplicationMigrationItemsCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, options)
 		},
-		advancer: func(ctx context.Context, resp MigrationRecoveryPointsListByReplicationMigrationItemsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MigrationRecoveryPointCollection.NextLink)
 		},
 	}
 }
 
 // listByReplicationMigrationItemsCreateRequest creates the ListByReplicationMigrationItems request.
-func (client *MigrationRecoveryPointsClient) listByReplicationMigrationItemsCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *MigrationRecoveryPointsListByReplicationMigrationItemsOptions) (*policy.Request, error) {
+func (client *MigrationRecoveryPointsClient) listByReplicationMigrationItemsCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/migrationRecoveryPoints"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -164,34 +175,22 @@ func (client *MigrationRecoveryPointsClient) listByReplicationMigrationItemsCrea
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByReplicationMigrationItemsHandleResponse handles the ListByReplicationMigrationItems response.
-func (client *MigrationRecoveryPointsClient) listByReplicationMigrationItemsHandleResponse(resp *http.Response) (MigrationRecoveryPointsListByReplicationMigrationItemsResponse, error) {
-	result := MigrationRecoveryPointsListByReplicationMigrationItemsResponse{RawResponse: resp}
+func (client *MigrationRecoveryPointsClient) listByReplicationMigrationItemsHandleResponse(resp *http.Response) (MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse, error) {
+	result := MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationRecoveryPointCollection); err != nil {
-		return MigrationRecoveryPointsListByReplicationMigrationItemsResponse{}, runtime.NewResponseError(err, resp)
+		return MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse{}, err
 	}
 	return result, nil
-}
-
-// listByReplicationMigrationItemsHandleError handles the ListByReplicationMigrationItems error response.
-func (client *MigrationRecoveryPointsClient) listByReplicationMigrationItemsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

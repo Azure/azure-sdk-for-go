@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 )
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/VMCollection_Update.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/VMCollection_Update.json
 func ExampleVMCollectionClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,7 +27,7 @@ func ExampleVMCollectionClient_Update() {
 	_, err = client.Update(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
-		&armelastic.VMCollectionUpdateOptions{Body: nil})
+		&armelastic.VMCollectionClientUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}

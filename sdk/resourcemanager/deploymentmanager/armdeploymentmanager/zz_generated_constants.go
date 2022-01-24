@@ -9,8 +9,8 @@
 package armdeploymentmanager
 
 const (
-	module  = "armdeploymentmanager"
-	version = "v0.1.0"
+	moduleName    = "armdeploymentmanager"
+	moduleVersion = "v0.2.0"
 )
 
 // DeploymentMode - Describes the type of ARM deployment to be performed on the resource.

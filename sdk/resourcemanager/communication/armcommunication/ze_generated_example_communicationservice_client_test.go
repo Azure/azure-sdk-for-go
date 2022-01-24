@@ -20,15 +20,15 @@ import (
 )
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/checkNameAvailabilityAvailable.json
-func ExampleCommunicationServiceClient_CheckNameAvailability() {
+func ExampleServiceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
-		&armcommunication.CommunicationServiceCheckNameAvailabilityOptions{NameAvailabilityParameters: &armcommunication.NameAvailabilityParameters{
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	res, err := client.CheckNameAvailability(ctx,
+		&armcommunication.ServiceClientCheckNameAvailabilityOptions{NameAvailabilityParameters: &armcommunication.NameAvailabilityParameters{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
 		},
@@ -36,20 +36,21 @@ func ExampleCommunicationServiceClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServiceClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/linkNotificationHub.json
-func ExampleCommunicationServiceClient_LinkNotificationHub() {
+func ExampleServiceClient_LinkNotificationHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
-	_, err = client.LinkNotificationHub(ctx,
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	res, err := client.LinkNotificationHub(ctx,
 		"<resource-group-name>",
 		"<communication-service-name>",
-		&armcommunication.CommunicationServiceLinkNotificationHubOptions{LinkNotificationHubParameters: &armcommunication.LinkNotificationHubParameters{
+		&armcommunication.ServiceClientLinkNotificationHubOptions{LinkNotificationHubParameters: &armcommunication.LinkNotificationHubParameters{
 			ConnectionString: to.StringPtr("<connection-string>"),
 			ResourceID:       to.StringPtr("<resource-id>"),
 		},
@@ -57,80 +58,87 @@ func ExampleCommunicationServiceClient_LinkNotificationHub() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServiceClientLinkNotificationHubResult)
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/listBySubscription.json
-func ExampleCommunicationServiceClient_ListBySubscription() {
+func ExampleServiceClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CommunicationServiceResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/listByResourceGroup.json
-func ExampleCommunicationServiceClient_ListByResourceGroup() {
+func ExampleServiceClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CommunicationServiceResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/update.json
-func ExampleCommunicationServiceClient_Update() {
+func ExampleServiceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<communication-service-name>",
-		&armcommunication.CommunicationServiceUpdateOptions{Parameters: &armcommunication.CommunicationServiceResource{
-			TaggedResource: armcommunication.TaggedResource{
-				Tags: map[string]*string{
-					"newTag": to.StringPtr("newVal"),
-				},
+		&armcommunication.ServiceClientUpdateOptions{Parameters: &armcommunication.ServiceResource{
+			Tags: map[string]*string{
+				"newTag": to.StringPtr("newVal"),
 			},
 		},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CommunicationServiceResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServiceClientUpdateResult)
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/get.json
-func ExampleCommunicationServiceClient_Get() {
+func ExampleServiceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<communication-service-name>",
@@ -138,25 +146,23 @@ func ExampleCommunicationServiceClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CommunicationServiceResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServiceClientGetResult)
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/createOrUpdate.json
-func ExampleCommunicationServiceClient_BeginCreateOrUpdate() {
+func ExampleServiceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<communication-service-name>",
-		&armcommunication.CommunicationServiceBeginCreateOrUpdateOptions{Parameters: &armcommunication.CommunicationServiceResource{
-			LocationResource: armcommunication.LocationResource{
-				Location: to.StringPtr("<location>"),
-			},
-			Properties: &armcommunication.CommunicationServiceProperties{
+		&armcommunication.ServiceClientBeginCreateOrUpdateOptions{Parameters: &armcommunication.ServiceResource{
+			Location: to.StringPtr("<location>"),
+			Properties: &armcommunication.ServiceProperties{
 				DataLocation: to.StringPtr("<data-location>"),
 			},
 		},
@@ -168,17 +174,17 @@ func ExampleCommunicationServiceClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CommunicationServiceResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServiceClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/delete.json
-func ExampleCommunicationServiceClient_BeginDelete() {
+func ExampleServiceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<communication-service-name>",
@@ -193,31 +199,32 @@ func ExampleCommunicationServiceClient_BeginDelete() {
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/listKeys.json
-func ExampleCommunicationServiceClient_ListKeys() {
+func ExampleServiceClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<communication-service-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServiceClientListKeysResult)
 }
 
 // x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2020-08-20/examples/regenerateKey.json
-func ExampleCommunicationServiceClient_RegenerateKey() {
+func ExampleServiceClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcommunication.NewCommunicationServiceClient("<subscription-id>", cred, nil)
-	_, err = client.RegenerateKey(ctx,
+	client := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	res, err := client.RegenerateKey(ctx,
 		"<resource-group-name>",
 		"<communication-service-name>",
 		armcommunication.RegenerateKeyParameters{
@@ -227,4 +234,5 @@ func ExampleCommunicationServiceClient_RegenerateKey() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServiceClientRegenerateKeyResult)
 }

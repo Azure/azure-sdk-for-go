@@ -31,7 +31,7 @@ func ExampleUsagesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CurrentUsagesBase.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.UsagesClientGetResult)
 }
 
 // x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getComputeUsages.json
@@ -44,12 +44,16 @@ func ExampleUsagesClient_List() {
 	client := armquota.NewUsagesClient(cred, nil)
 	pager := client.List("<scope>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CurrentUsagesBase.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

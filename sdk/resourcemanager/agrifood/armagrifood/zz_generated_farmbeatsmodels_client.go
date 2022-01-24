@@ -11,7 +11,6 @@ package armagrifood
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // FarmBeatsModelsClient contains the methods for the FarmBeatsModels group.
 // Don't use this type directly, use NewFarmBeatsModelsClient() instead.
 type FarmBeatsModelsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFarmBeatsModelsClient creates a new instance of FarmBeatsModelsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFarmBeatsModelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FarmBeatsModelsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FarmBeatsModelsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FarmBeatsModelsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update FarmBeats resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FarmBeatsModelsClient) CreateOrUpdate(ctx context.Context, farmBeatsResourceName string, resourceGroupName string, body FarmBeats, options *FarmBeatsModelsCreateOrUpdateOptions) (FarmBeatsModelsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// farmBeatsResourceName - FarmBeats resource name.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// body - FarmBeats resource create or update request object.
+// options - FarmBeatsModelsClientCreateOrUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.CreateOrUpdate
+// method.
+func (client *FarmBeatsModelsClient) CreateOrUpdate(ctx context.Context, farmBeatsResourceName string, resourceGroupName string, body FarmBeats, options *FarmBeatsModelsClientCreateOrUpdateOptions) (FarmBeatsModelsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, farmBeatsResourceName, resourceGroupName, body, options)
 	if err != nil {
-		return FarmBeatsModelsCreateOrUpdateResponse{}, err
+		return FarmBeatsModelsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FarmBeatsModelsCreateOrUpdateResponse{}, err
+		return FarmBeatsModelsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return FarmBeatsModelsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return FarmBeatsModelsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FarmBeatsModelsClient) createOrUpdateCreateRequest(ctx context.Context, farmBeatsResourceName string, resourceGroupName string, body FarmBeats, options *FarmBeatsModelsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *FarmBeatsModelsClient) createOrUpdateCreateRequest(ctx context.Context, farmBeatsResourceName string, resourceGroupName string, body FarmBeats, options *FarmBeatsModelsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}"
 	if farmBeatsResourceName == "" {
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
@@ -75,7 +87,7 @@ func (client *FarmBeatsModelsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,46 +99,36 @@ func (client *FarmBeatsModelsClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FarmBeatsModelsClient) createOrUpdateHandleResponse(resp *http.Response) (FarmBeatsModelsCreateOrUpdateResponse, error) {
-	result := FarmBeatsModelsCreateOrUpdateResponse{RawResponse: resp}
+func (client *FarmBeatsModelsClient) createOrUpdateHandleResponse(resp *http.Response) (FarmBeatsModelsClientCreateOrUpdateResponse, error) {
+	result := FarmBeatsModelsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeats); err != nil {
-		return FarmBeatsModelsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return FarmBeatsModelsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *FarmBeatsModelsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a FarmBeats resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FarmBeatsModelsClient) Delete(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsDeleteOptions) (FarmBeatsModelsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// farmBeatsResourceName - FarmBeats resource name.
+// options - FarmBeatsModelsClientDeleteOptions contains the optional parameters for the FarmBeatsModelsClient.Delete method.
+func (client *FarmBeatsModelsClient) Delete(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsClientDeleteOptions) (FarmBeatsModelsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, options)
 	if err != nil {
-		return FarmBeatsModelsDeleteResponse{}, err
+		return FarmBeatsModelsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FarmBeatsModelsDeleteResponse{}, err
+		return FarmBeatsModelsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return FarmBeatsModelsDeleteResponse{}, client.deleteHandleError(resp)
+		return FarmBeatsModelsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FarmBeatsModelsDeleteResponse{RawResponse: resp}, nil
+	return FarmBeatsModelsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FarmBeatsModelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsDeleteOptions) (*policy.Request, error) {
+func (client *FarmBeatsModelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -140,7 +142,7 @@ func (client *FarmBeatsModelsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{farmBeatsResourceName}", url.PathEscape(farmBeatsResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,38 +153,28 @@ func (client *FarmBeatsModelsClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FarmBeatsModelsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get FarmBeats resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FarmBeatsModelsClient) Get(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsGetOptions) (FarmBeatsModelsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// farmBeatsResourceName - FarmBeats resource name.
+// options - FarmBeatsModelsClientGetOptions contains the optional parameters for the FarmBeatsModelsClient.Get method.
+func (client *FarmBeatsModelsClient) Get(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsClientGetOptions) (FarmBeatsModelsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, options)
 	if err != nil {
-		return FarmBeatsModelsGetResponse{}, err
+		return FarmBeatsModelsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FarmBeatsModelsGetResponse{}, err
+		return FarmBeatsModelsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FarmBeatsModelsGetResponse{}, client.getHandleError(resp)
+		return FarmBeatsModelsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FarmBeatsModelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsGetOptions) (*policy.Request, error) {
+func (client *FarmBeatsModelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -196,7 +188,7 @@ func (client *FarmBeatsModelsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{farmBeatsResourceName}", url.PathEscape(farmBeatsResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,43 +200,33 @@ func (client *FarmBeatsModelsClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *FarmBeatsModelsClient) getHandleResponse(resp *http.Response) (FarmBeatsModelsGetResponse, error) {
-	result := FarmBeatsModelsGetResponse{RawResponse: resp}
+func (client *FarmBeatsModelsClient) getHandleResponse(resp *http.Response) (FarmBeatsModelsClientGetResponse, error) {
+	result := FarmBeatsModelsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeats); err != nil {
-		return FarmBeatsModelsGetResponse{}, runtime.NewResponseError(err, resp)
+		return FarmBeatsModelsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FarmBeatsModelsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists the FarmBeats instances for a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FarmBeatsModelsClient) ListByResourceGroup(resourceGroupName string, options *FarmBeatsModelsListByResourceGroupOptions) *FarmBeatsModelsListByResourceGroupPager {
-	return &FarmBeatsModelsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - FarmBeatsModelsClientListByResourceGroupOptions contains the optional parameters for the FarmBeatsModelsClient.ListByResourceGroup
+// method.
+func (client *FarmBeatsModelsClient) ListByResourceGroup(resourceGroupName string, options *FarmBeatsModelsClientListByResourceGroupOptions) *FarmBeatsModelsClientListByResourceGroupPager {
+	return &FarmBeatsModelsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp FarmBeatsModelsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp FarmBeatsModelsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.FarmBeatsListResponse.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *FarmBeatsModelsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *FarmBeatsModelsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *FarmBeatsModelsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *FarmBeatsModelsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -254,7 +236,7 @@ func (client *FarmBeatsModelsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -272,49 +254,38 @@ func (client *FarmBeatsModelsClient) listByResourceGroupCreateRequest(ctx contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *FarmBeatsModelsClient) listByResourceGroupHandleResponse(resp *http.Response) (FarmBeatsModelsListByResourceGroupResponse, error) {
-	result := FarmBeatsModelsListByResourceGroupResponse{RawResponse: resp}
+func (client *FarmBeatsModelsClient) listByResourceGroupHandleResponse(resp *http.Response) (FarmBeatsModelsClientListByResourceGroupResponse, error) {
+	result := FarmBeatsModelsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeatsListResponse); err != nil {
-		return FarmBeatsModelsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return FarmBeatsModelsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *FarmBeatsModelsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists the FarmBeats instances for a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FarmBeatsModelsClient) ListBySubscription(options *FarmBeatsModelsListBySubscriptionOptions) *FarmBeatsModelsListBySubscriptionPager {
-	return &FarmBeatsModelsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - FarmBeatsModelsClientListBySubscriptionOptions contains the optional parameters for the FarmBeatsModelsClient.ListBySubscription
+// method.
+func (client *FarmBeatsModelsClient) ListBySubscription(options *FarmBeatsModelsClientListBySubscriptionOptions) *FarmBeatsModelsClientListBySubscriptionPager {
+	return &FarmBeatsModelsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp FarmBeatsModelsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp FarmBeatsModelsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.FarmBeatsListResponse.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *FarmBeatsModelsClient) listBySubscriptionCreateRequest(ctx context.Context, options *FarmBeatsModelsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *FarmBeatsModelsClient) listBySubscriptionCreateRequest(ctx context.Context, options *FarmBeatsModelsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AgFoodPlatform/farmBeats"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -332,46 +303,37 @@ func (client *FarmBeatsModelsClient) listBySubscriptionCreateRequest(ctx context
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *FarmBeatsModelsClient) listBySubscriptionHandleResponse(resp *http.Response) (FarmBeatsModelsListBySubscriptionResponse, error) {
-	result := FarmBeatsModelsListBySubscriptionResponse{RawResponse: resp}
+func (client *FarmBeatsModelsClient) listBySubscriptionHandleResponse(resp *http.Response) (FarmBeatsModelsClientListBySubscriptionResponse, error) {
+	result := FarmBeatsModelsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeatsListResponse); err != nil {
-		return FarmBeatsModelsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return FarmBeatsModelsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *FarmBeatsModelsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a FarmBeats resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FarmBeatsModelsClient) Update(ctx context.Context, farmBeatsResourceName string, resourceGroupName string, body FarmBeatsUpdateRequestModel, options *FarmBeatsModelsUpdateOptions) (FarmBeatsModelsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// farmBeatsResourceName - FarmBeats resource name.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// body - Request object.
+// options - FarmBeatsModelsClientUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.Update method.
+func (client *FarmBeatsModelsClient) Update(ctx context.Context, farmBeatsResourceName string, resourceGroupName string, body FarmBeatsUpdateRequestModel, options *FarmBeatsModelsClientUpdateOptions) (FarmBeatsModelsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, farmBeatsResourceName, resourceGroupName, body, options)
 	if err != nil {
-		return FarmBeatsModelsUpdateResponse{}, err
+		return FarmBeatsModelsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FarmBeatsModelsUpdateResponse{}, err
+		return FarmBeatsModelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FarmBeatsModelsUpdateResponse{}, client.updateHandleError(resp)
+		return FarmBeatsModelsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FarmBeatsModelsClient) updateCreateRequest(ctx context.Context, farmBeatsResourceName string, resourceGroupName string, body FarmBeatsUpdateRequestModel, options *FarmBeatsModelsUpdateOptions) (*policy.Request, error) {
+func (client *FarmBeatsModelsClient) updateCreateRequest(ctx context.Context, farmBeatsResourceName string, resourceGroupName string, body FarmBeatsUpdateRequestModel, options *FarmBeatsModelsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}"
 	if farmBeatsResourceName == "" {
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
@@ -385,7 +347,7 @@ func (client *FarmBeatsModelsClient) updateCreateRequest(ctx context.Context, fa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -397,23 +359,10 @@ func (client *FarmBeatsModelsClient) updateCreateRequest(ctx context.Context, fa
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FarmBeatsModelsClient) updateHandleResponse(resp *http.Response) (FarmBeatsModelsUpdateResponse, error) {
-	result := FarmBeatsModelsUpdateResponse{RawResponse: resp}
+func (client *FarmBeatsModelsClient) updateHandleResponse(resp *http.Response) (FarmBeatsModelsClientUpdateResponse, error) {
+	result := FarmBeatsModelsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeats); err != nil {
-		return FarmBeatsModelsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return FarmBeatsModelsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *FarmBeatsModelsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

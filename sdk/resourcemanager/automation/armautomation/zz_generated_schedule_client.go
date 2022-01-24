@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ScheduleClient contains the methods for the Schedule group.
 // Don't use this type directly, use NewScheduleClient() instead.
 type ScheduleClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewScheduleClient creates a new instance of ScheduleClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewScheduleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScheduleClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ScheduleClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ScheduleClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create a schedule.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScheduleClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters, options *ScheduleCreateOrUpdateOptions) (ScheduleCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// scheduleName - The schedule name.
+// parameters - The parameters supplied to the create or update schedule operation.
+// options - ScheduleClientCreateOrUpdateOptions contains the optional parameters for the ScheduleClient.CreateOrUpdate method.
+func (client *ScheduleClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters, options *ScheduleClientCreateOrUpdateOptions) (ScheduleClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, scheduleName, parameters, options)
 	if err != nil {
-		return ScheduleCreateOrUpdateResponse{}, err
+		return ScheduleClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScheduleCreateOrUpdateResponse{}, err
+		return ScheduleClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusConflict) {
-		return ScheduleCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ScheduleClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ScheduleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters, options *ScheduleCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ScheduleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters, options *ScheduleClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +91,7 @@ func (client *ScheduleClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,37 @@ func (client *ScheduleClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ScheduleClient) createOrUpdateHandleResponse(resp *http.Response) (ScheduleCreateOrUpdateResponse, error) {
-	result := ScheduleCreateOrUpdateResponse{RawResponse: resp}
+func (client *ScheduleClient) createOrUpdateHandleResponse(resp *http.Response) (ScheduleClientCreateOrUpdateResponse, error) {
+	result := ScheduleClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return ScheduleCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ScheduleClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ScheduleClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the schedule identified by schedule name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScheduleClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, options *ScheduleDeleteOptions) (ScheduleDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// scheduleName - The schedule name.
+// options - ScheduleClientDeleteOptions contains the optional parameters for the ScheduleClient.Delete method.
+func (client *ScheduleClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, options *ScheduleClientDeleteOptions) (ScheduleClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, scheduleName, options)
 	if err != nil {
-		return ScheduleDeleteResponse{}, err
+		return ScheduleClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScheduleDeleteResponse{}, err
+		return ScheduleClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScheduleDeleteResponse{}, client.deleteHandleError(resp)
+		return ScheduleClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ScheduleDeleteResponse{RawResponse: resp}, nil
+	return ScheduleClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ScheduleClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, options *ScheduleDeleteOptions) (*policy.Request, error) {
+func (client *ScheduleClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, options *ScheduleClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,7 +151,7 @@ func (client *ScheduleClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +162,29 @@ func (client *ScheduleClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ScheduleClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the schedule identified by schedule name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScheduleClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, options *ScheduleGetOptions) (ScheduleGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// scheduleName - The schedule name.
+// options - ScheduleClientGetOptions contains the optional parameters for the ScheduleClient.Get method.
+func (client *ScheduleClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, options *ScheduleClientGetOptions) (ScheduleClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, scheduleName, options)
 	if err != nil {
-		return ScheduleGetResponse{}, err
+		return ScheduleClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScheduleGetResponse{}, err
+		return ScheduleClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScheduleGetResponse{}, client.getHandleError(resp)
+		return ScheduleClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScheduleClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, options *ScheduleGetOptions) (*policy.Request, error) {
+func (client *ScheduleClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, options *ScheduleClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +202,7 @@ func (client *ScheduleClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +214,34 @@ func (client *ScheduleClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScheduleClient) getHandleResponse(resp *http.Response) (ScheduleGetResponse, error) {
-	result := ScheduleGetResponse{RawResponse: resp}
+func (client *ScheduleClient) getHandleResponse(resp *http.Response) (ScheduleClientGetResponse, error) {
+	result := ScheduleClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return ScheduleGetResponse{}, runtime.NewResponseError(err, resp)
+		return ScheduleClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ScheduleClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of schedules.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScheduleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ScheduleListByAutomationAccountOptions) *ScheduleListByAutomationAccountPager {
-	return &ScheduleListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - ScheduleClientListByAutomationAccountOptions contains the optional parameters for the ScheduleClient.ListByAutomationAccount
+// method.
+func (client *ScheduleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ScheduleClientListByAutomationAccountOptions) *ScheduleClientListByAutomationAccountPager {
+	return &ScheduleClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp ScheduleListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ScheduleClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScheduleListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *ScheduleClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *ScheduleListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *ScheduleClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *ScheduleClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,7 +255,7 @@ func (client *ScheduleClient) listByAutomationAccountCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,46 +267,38 @@ func (client *ScheduleClient) listByAutomationAccountCreateRequest(ctx context.C
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *ScheduleClient) listByAutomationAccountHandleResponse(resp *http.Response) (ScheduleListByAutomationAccountResponse, error) {
-	result := ScheduleListByAutomationAccountResponse{RawResponse: resp}
+func (client *ScheduleClient) listByAutomationAccountHandleResponse(resp *http.Response) (ScheduleClientListByAutomationAccountResponse, error) {
+	result := ScheduleClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduleListResult); err != nil {
-		return ScheduleListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return ScheduleClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *ScheduleClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update the schedule identified by schedule name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ScheduleClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters, options *ScheduleUpdateOptions) (ScheduleUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// scheduleName - The schedule name.
+// parameters - The parameters supplied to the update schedule operation.
+// options - ScheduleClientUpdateOptions contains the optional parameters for the ScheduleClient.Update method.
+func (client *ScheduleClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters, options *ScheduleClientUpdateOptions) (ScheduleClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, scheduleName, parameters, options)
 	if err != nil {
-		return ScheduleUpdateResponse{}, err
+		return ScheduleClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScheduleUpdateResponse{}, err
+		return ScheduleClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScheduleUpdateResponse{}, client.updateHandleError(resp)
+		return ScheduleClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ScheduleClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters, options *ScheduleUpdateOptions) (*policy.Request, error) {
+func (client *ScheduleClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters, options *ScheduleClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -338,7 +316,7 @@ func (client *ScheduleClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,23 +328,10 @@ func (client *ScheduleClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ScheduleClient) updateHandleResponse(resp *http.Response) (ScheduleUpdateResponse, error) {
-	result := ScheduleUpdateResponse{RawResponse: resp}
+func (client *ScheduleClient) updateHandleResponse(resp *http.Response) (ScheduleClientUpdateResponse, error) {
+	result := ScheduleClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return ScheduleUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ScheduleClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ScheduleClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

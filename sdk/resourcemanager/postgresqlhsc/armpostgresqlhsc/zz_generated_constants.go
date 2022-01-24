@@ -9,8 +9,8 @@
 package armpostgresqlhsc
 
 const (
-	module  = "armpostgresqlhsc"
-	version = "v0.1.0"
+	moduleName    = "armpostgresqlhsc"
+	moduleVersion = "v0.2.0"
 )
 
 // CitusVersion - The Citus version.

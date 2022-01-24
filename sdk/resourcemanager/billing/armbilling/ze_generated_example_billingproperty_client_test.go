@@ -18,32 +18,32 @@ import (
 )
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProperty.json
-func ExampleBillingPropertyClient_Get() {
+func ExamplePropertyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingPropertyClient("<subscription-id>", cred, nil)
+	client := armbilling.NewPropertyClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingProperty.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PropertyClientGetResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateBillingProperty.json
-func ExampleBillingPropertyClient_Update() {
+func ExamplePropertyClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingPropertyClient("<subscription-id>", cred, nil)
+	client := armbilling.NewPropertyClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
-		armbilling.BillingProperty{
-			Properties: &armbilling.BillingPropertyProperties{
+		armbilling.Property{
+			Properties: &armbilling.PropertyProperties{
 				CostCenter: to.StringPtr("<cost-center>"),
 			},
 		},
@@ -51,5 +51,5 @@ func ExampleBillingPropertyClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingProperty.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PropertyClientUpdateResult)
 }

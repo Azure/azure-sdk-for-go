@@ -10,87 +10,87 @@ package armmarketplaceordering
 
 import "net/http"
 
-// MarketplaceAgreementsCancelResponse contains the response from method MarketplaceAgreements.Cancel.
-type MarketplaceAgreementsCancelResponse struct {
-	MarketplaceAgreementsCancelResult
+// MarketplaceAgreementsClientCancelResponse contains the response from method MarketplaceAgreementsClient.Cancel.
+type MarketplaceAgreementsClientCancelResponse struct {
+	MarketplaceAgreementsClientCancelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsCancelResult contains the result from method MarketplaceAgreements.Cancel.
-type MarketplaceAgreementsCancelResult struct {
+// MarketplaceAgreementsClientCancelResult contains the result from method MarketplaceAgreementsClient.Cancel.
+type MarketplaceAgreementsClientCancelResult struct {
 	AgreementTerms
 }
 
-// MarketplaceAgreementsCreateResponse contains the response from method MarketplaceAgreements.Create.
-type MarketplaceAgreementsCreateResponse struct {
-	MarketplaceAgreementsCreateResult
+// MarketplaceAgreementsClientCreateResponse contains the response from method MarketplaceAgreementsClient.Create.
+type MarketplaceAgreementsClientCreateResponse struct {
+	MarketplaceAgreementsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsCreateResult contains the result from method MarketplaceAgreements.Create.
-type MarketplaceAgreementsCreateResult struct {
+// MarketplaceAgreementsClientCreateResult contains the result from method MarketplaceAgreementsClient.Create.
+type MarketplaceAgreementsClientCreateResult struct {
 	AgreementTerms
 }
 
-// MarketplaceAgreementsGetAgreementResponse contains the response from method MarketplaceAgreements.GetAgreement.
-type MarketplaceAgreementsGetAgreementResponse struct {
-	MarketplaceAgreementsGetAgreementResult
+// MarketplaceAgreementsClientGetAgreementResponse contains the response from method MarketplaceAgreementsClient.GetAgreement.
+type MarketplaceAgreementsClientGetAgreementResponse struct {
+	MarketplaceAgreementsClientGetAgreementResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsGetAgreementResult contains the result from method MarketplaceAgreements.GetAgreement.
-type MarketplaceAgreementsGetAgreementResult struct {
+// MarketplaceAgreementsClientGetAgreementResult contains the result from method MarketplaceAgreementsClient.GetAgreement.
+type MarketplaceAgreementsClientGetAgreementResult struct {
 	AgreementTerms
 }
 
-// MarketplaceAgreementsGetResponse contains the response from method MarketplaceAgreements.Get.
-type MarketplaceAgreementsGetResponse struct {
-	MarketplaceAgreementsGetResult
+// MarketplaceAgreementsClientGetResponse contains the response from method MarketplaceAgreementsClient.Get.
+type MarketplaceAgreementsClientGetResponse struct {
+	MarketplaceAgreementsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsGetResult contains the result from method MarketplaceAgreements.Get.
-type MarketplaceAgreementsGetResult struct {
+// MarketplaceAgreementsClientGetResult contains the result from method MarketplaceAgreementsClient.Get.
+type MarketplaceAgreementsClientGetResult struct {
 	AgreementTerms
 }
 
-// MarketplaceAgreementsListResponse contains the response from method MarketplaceAgreements.List.
-type MarketplaceAgreementsListResponse struct {
-	MarketplaceAgreementsListResult
+// MarketplaceAgreementsClientListResponse contains the response from method MarketplaceAgreementsClient.List.
+type MarketplaceAgreementsClientListResponse struct {
+	MarketplaceAgreementsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsListResult contains the result from method MarketplaceAgreements.List.
-type MarketplaceAgreementsListResult struct {
+// MarketplaceAgreementsClientListResult contains the result from method MarketplaceAgreementsClient.List.
+type MarketplaceAgreementsClientListResult struct {
 	// Array of AgreementTerms
 	AgreementTermsArray []*AgreementTerms
 }
 
-// MarketplaceAgreementsSignResponse contains the response from method MarketplaceAgreements.Sign.
-type MarketplaceAgreementsSignResponse struct {
-	MarketplaceAgreementsSignResult
+// MarketplaceAgreementsClientSignResponse contains the response from method MarketplaceAgreementsClient.Sign.
+type MarketplaceAgreementsClientSignResponse struct {
+	MarketplaceAgreementsClientSignResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsSignResult contains the result from method MarketplaceAgreements.Sign.
-type MarketplaceAgreementsSignResult struct {
+// MarketplaceAgreementsClientSignResult contains the result from method MarketplaceAgreementsClient.Sign.
+type MarketplaceAgreementsClientSignResult struct {
 	AgreementTerms
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

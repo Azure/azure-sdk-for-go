@@ -26,12 +26,16 @@ func ExampleSpatialAnchorsAccountsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmixedreality.NewSpatialAnchorsAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SpatialAnchorsAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -46,12 +50,16 @@ func ExampleSpatialAnchorsAccountsClient_ListByResourceGroup() {
 	client := armmixedreality.NewSpatialAnchorsAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SpatialAnchorsAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -88,7 +96,7 @@ func ExampleSpatialAnchorsAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SpatialAnchorsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SpatialAnchorsAccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/spatial-anchors/Patch.json
@@ -103,19 +111,17 @@ func ExampleSpatialAnchorsAccountsClient_Update() {
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.SpatialAnchorsAccount{
-			TrackedResource: armmixedreality.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"hero":    to.StringPtr("romeo"),
-					"heroine": to.StringPtr("juliet"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"hero":    to.StringPtr("romeo"),
+				"heroine": to.StringPtr("juliet"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SpatialAnchorsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SpatialAnchorsAccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/spatial-anchors/Put.json
@@ -130,15 +136,13 @@ func ExampleSpatialAnchorsAccountsClient_Create() {
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.SpatialAnchorsAccount{
-			TrackedResource: armmixedreality.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SpatialAnchorsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SpatialAnchorsAccountsClientCreateResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/spatial-anchors/ListKeys.json
@@ -149,13 +153,14 @@ func ExampleSpatialAnchorsAccountsClient_ListKeys() {
 	}
 	ctx := context.Background()
 	client := armmixedreality.NewSpatialAnchorsAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SpatialAnchorsAccountsClientListKeysResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/spatial-anchors/RegenerateKey.json
@@ -166,7 +171,7 @@ func ExampleSpatialAnchorsAccountsClient_RegenerateKeys() {
 	}
 	ctx := context.Background()
 	client := armmixedreality.NewSpatialAnchorsAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.RegenerateKeys(ctx,
+	res, err := client.RegenerateKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.AccountKeyRegenerateRequest{
@@ -176,4 +181,5 @@ func ExampleSpatialAnchorsAccountsClient_RegenerateKeys() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SpatialAnchorsAccountsClientRegenerateKeysResult)
 }

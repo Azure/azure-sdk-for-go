@@ -20,14 +20,14 @@ import (
 )
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CheckNameAvailabilityWithSubscription.json
-func ExampleSupportTicketsClient_CheckNameAvailability() {
+func ExampleTicketsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsupport.NewSupportTicketsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	client := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
+	res, err := client.CheckNameAvailability(ctx,
 		armsupport.CheckNameAvailabilityInput{
 			Name: to.StringPtr("<name>"),
 			Type: armsupport.TypeMicrosoftSupportSupportTickets.ToPtr(),
@@ -36,54 +36,59 @@ func ExampleSupportTicketsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TicketsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
-func ExampleSupportTicketsClient_List() {
+func ExampleTicketsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsupport.NewSupportTicketsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armsupport.SupportTicketsListOptions{Top: nil,
+	client := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
+	pager := client.List(&armsupport.TicketsClientListOptions{Top: nil,
 		Filter: to.StringPtr("<filter>"),
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SupportTicketDetails.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/GetSubscriptionSupportTicketDetails.json
-func ExampleSupportTicketsClient_Get() {
+func ExampleTicketsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsupport.NewSupportTicketsClient("<subscription-id>", cred, nil)
+	client := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<support-ticket-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SupportTicketDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TicketsClientGetResult)
 }
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
-func ExampleSupportTicketsClient_Update() {
+func ExampleTicketsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsupport.NewSupportTicketsClient("<subscription-id>", cred, nil)
+	client := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<support-ticket-name>",
 		armsupport.UpdateSupportTicket{
@@ -95,7 +100,7 @@ func ExampleSupportTicketsClient_Update() {
 				FirstName:                to.StringPtr("<first-name>"),
 				LastName:                 to.StringPtr("<last-name>"),
 				PhoneNumber:              to.StringPtr("<phone-number>"),
-				PreferredContactMethod:   armsupport.PreferredContactMethodEmail.ToPtr(),
+				PreferredContactMethod:   armsupport.PreferredContactMethod("email").ToPtr(),
 				PreferredSupportLanguage: to.StringPtr("<preferred-support-language>"),
 				PreferredTimeZone:        to.StringPtr("<preferred-time-zone>"),
 				PrimaryEmailAddress:      to.StringPtr("<primary-email-address>"),
@@ -105,34 +110,34 @@ func ExampleSupportTicketsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SupportTicketDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TicketsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBillingSupportTicketForSubscription.json
-func ExampleSupportTicketsClient_BeginCreate() {
+func ExampleTicketsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsupport.NewSupportTicketsClient("<subscription-id>", cred, nil)
+	client := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<support-ticket-name>",
-		armsupport.SupportTicketDetails{
-			Properties: &armsupport.SupportTicketDetailsProperties{
+		armsupport.TicketDetails{
+			Properties: &armsupport.TicketDetailsProperties{
 				Description: to.StringPtr("<description>"),
 				ContactDetails: &armsupport.ContactProfile{
 					Country:                  to.StringPtr("<country>"),
 					FirstName:                to.StringPtr("<first-name>"),
 					LastName:                 to.StringPtr("<last-name>"),
-					PreferredContactMethod:   armsupport.PreferredContactMethodEmail.ToPtr(),
+					PreferredContactMethod:   armsupport.PreferredContactMethod("email").ToPtr(),
 					PreferredSupportLanguage: to.StringPtr("<preferred-support-language>"),
 					PreferredTimeZone:        to.StringPtr("<preferred-time-zone>"),
 					PrimaryEmailAddress:      to.StringPtr("<primary-email-address>"),
 				},
 				ProblemClassificationID: to.StringPtr("<problem-classification-id>"),
 				ServiceID:               to.StringPtr("<service-id>"),
-				Severity:                armsupport.SeverityLevelModerate.ToPtr(),
+				Severity:                armsupport.SeverityLevel("moderate").ToPtr(),
 				Title:                   to.StringPtr("<title>"),
 			},
 		},
@@ -144,5 +149,5 @@ func ExampleSupportTicketsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SupportTicketDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TicketsClientCreateResult)
 }

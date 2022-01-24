@@ -11,7 +11,6 @@ package armpostgresqlhsc
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // RolesClient contains the methods for the Roles group.
 // Don't use this type directly, use NewRolesClient() instead.
 type RolesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRolesClient creates a new instance of RolesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RolesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RolesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RolesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates a new role or updates an existing role.
-// If the operation fails it returns the *CloudError error type.
-func (client *RolesClient) BeginCreate(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesBeginCreateOptions) (RolesCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// roleName - The name of the server group role name.
+// parameters - The required parameters for creating or updating a role.
+// options - RolesClientBeginCreateOptions contains the optional parameters for the RolesClient.BeginCreate method.
+func (client *RolesClient) BeginCreate(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions) (RolesClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, serverGroupName, roleName, parameters, options)
 	if err != nil {
-		return RolesCreatePollerResponse{}, err
+		return RolesClientCreatePollerResponse{}, err
 	}
-	result := RolesCreatePollerResponse{
+	result := RolesClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RolesClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("RolesClient.Create", "", resp, client.pl)
 	if err != nil {
-		return RolesCreatePollerResponse{}, err
+		return RolesClientCreatePollerResponse{}, err
 	}
-	result.Poller = &RolesCreatePoller{
+	result.Poller = &RolesClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a new role or updates an existing role.
-// If the operation fails it returns the *CloudError error type.
-func (client *RolesClient) create(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RolesClient) create(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serverGroupName, roleName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *RolesClient) create(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesBeginCreateOptions) (*policy.Request, error) {
+func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, parameters Role, options *RolesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/roles/{roleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +110,7 @@ func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter roleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleName}", url.PathEscape(roleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +121,33 @@ func (client *RolesClient) createCreateRequest(ctx context.Context, resourceGrou
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *RolesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a server group role.
-// If the operation fails it returns the *CloudError error type.
-func (client *RolesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesBeginDeleteOptions) (RolesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// roleName - The name of the server group role name.
+// options - RolesClientBeginDeleteOptions contains the optional parameters for the RolesClient.BeginDelete method.
+func (client *RolesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesClientBeginDeleteOptions) (RolesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverGroupName, roleName, options)
 	if err != nil {
-		return RolesDeletePollerResponse{}, err
+		return RolesClientDeletePollerResponse{}, err
 	}
-	result := RolesDeletePollerResponse{
+	result := RolesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RolesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("RolesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return RolesDeletePollerResponse{}, err
+		return RolesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &RolesDeletePoller{
+	result.Poller = &RolesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a server group role.
-// If the operation fails it returns the *CloudError error type.
-func (client *RolesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RolesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverGroupName, roleName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +157,13 @@ func (client *RolesClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesBeginDeleteOptions) (*policy.Request, error) {
+func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, roleName string, options *RolesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/roles/{roleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +181,7 @@ func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter roleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleName}", url.PathEscape(roleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +192,28 @@ func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RolesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByServerGroup - List all the roles in a given server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *RolesClient) ListByServerGroup(ctx context.Context, resourceGroupName string, serverGroupName string, options *RolesListByServerGroupOptions) (RolesListByServerGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// options - RolesClientListByServerGroupOptions contains the optional parameters for the RolesClient.ListByServerGroup method.
+func (client *RolesClient) ListByServerGroup(ctx context.Context, resourceGroupName string, serverGroupName string, options *RolesClientListByServerGroupOptions) (RolesClientListByServerGroupResponse, error) {
 	req, err := client.listByServerGroupCreateRequest(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
-		return RolesListByServerGroupResponse{}, err
+		return RolesClientListByServerGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RolesListByServerGroupResponse{}, err
+		return RolesClientListByServerGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RolesListByServerGroupResponse{}, client.listByServerGroupHandleError(resp)
+		return RolesClientListByServerGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServerGroupHandleResponse(resp)
 }
 
 // listByServerGroupCreateRequest creates the ListByServerGroup request.
-func (client *RolesClient) listByServerGroupCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *RolesListByServerGroupOptions) (*policy.Request, error) {
+func (client *RolesClient) listByServerGroupCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *RolesClientListByServerGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/roles"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -234,7 +227,7 @@ func (client *RolesClient) listByServerGroupCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,23 +239,10 @@ func (client *RolesClient) listByServerGroupCreateRequest(ctx context.Context, r
 }
 
 // listByServerGroupHandleResponse handles the ListByServerGroup response.
-func (client *RolesClient) listByServerGroupHandleResponse(resp *http.Response) (RolesListByServerGroupResponse, error) {
-	result := RolesListByServerGroupResponse{RawResponse: resp}
+func (client *RolesClient) listByServerGroupHandleResponse(resp *http.Response) (RolesClientListByServerGroupResponse, error) {
+	result := RolesClientListByServerGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleListResult); err != nil {
-		return RolesListByServerGroupResponse{}, runtime.NewResponseError(err, resp)
+		return RolesClientListByServerGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerGroupHandleError handles the ListByServerGroup error response.
-func (client *RolesClient) listByServerGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -31,7 +31,7 @@ func ExampleSubscriptionFeatureRegistrationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SubscriptionFeatureRegistration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SubscriptionFeatureRegistrationsClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/FeatureRegistration/SubscriptionFeatureRegistrationPUT.json
@@ -45,11 +45,14 @@ func ExampleSubscriptionFeatureRegistrationsClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<provider-namespace>",
 		"<feature-name>",
-		&armfeatures.SubscriptionFeatureRegistrationsCreateOrUpdateOptions{SubscriptionFeatureRegistrationType: nil})
+		&armfeatures.SubscriptionFeatureRegistrationsClientCreateOrUpdateOptions{SubscriptionFeatureRegistrationType: &armfeatures.SubscriptionFeatureRegistration{
+			Properties: &armfeatures.SubscriptionFeatureRegistrationProperties{},
+		},
+		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SubscriptionFeatureRegistration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SubscriptionFeatureRegistrationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/FeatureRegistration/SubscriptionFeatureRegistrationDELETE.json
@@ -79,12 +82,16 @@ func ExampleSubscriptionFeatureRegistrationsClient_ListBySubscription() {
 	client := armfeatures.NewSubscriptionFeatureRegistrationsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription("<provider-namespace>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SubscriptionFeatureRegistration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -98,12 +105,16 @@ func ExampleSubscriptionFeatureRegistrationsClient_ListAllBySubscription() {
 	ctx := context.Background()
 	client := armfeatures.NewSubscriptionFeatureRegistrationsClient("<subscription-id>", cred, nil)
 	pager := client.ListAllBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SubscriptionFeatureRegistration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

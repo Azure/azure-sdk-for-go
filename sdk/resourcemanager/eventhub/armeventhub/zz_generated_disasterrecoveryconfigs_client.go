@@ -11,7 +11,6 @@ package armeventhub
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // DisasterRecoveryConfigsClient contains the methods for the DisasterRecoveryConfigs group.
 // Don't use this type directly, use NewDisasterRecoveryConfigsClient() instead.
 type DisasterRecoveryConfigsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDisasterRecoveryConfigsClient creates a new instance of DisasterRecoveryConfigsClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDisasterRecoveryConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DisasterRecoveryConfigsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DisasterRecoveryConfigsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DisasterRecoveryConfigsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BreakPairing - This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) BreakPairing(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsBreakPairingOptions) (DisasterRecoveryConfigsBreakPairingResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// alias - The Disaster Recovery configuration name
+// options - DisasterRecoveryConfigsClientBreakPairingOptions contains the optional parameters for the DisasterRecoveryConfigsClient.BreakPairing
+// method.
+func (client *DisasterRecoveryConfigsClient) BreakPairing(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientBreakPairingOptions) (DisasterRecoveryConfigsClientBreakPairingResponse, error) {
 	req, err := client.breakPairingCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 	if err != nil {
-		return DisasterRecoveryConfigsBreakPairingResponse{}, err
+		return DisasterRecoveryConfigsClientBreakPairingResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisasterRecoveryConfigsBreakPairingResponse{}, err
+		return DisasterRecoveryConfigsClientBreakPairingResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DisasterRecoveryConfigsBreakPairingResponse{}, client.breakPairingHandleError(resp)
+		return DisasterRecoveryConfigsClientBreakPairingResponse{}, runtime.NewResponseError(resp)
 	}
-	return DisasterRecoveryConfigsBreakPairingResponse{RawResponse: resp}, nil
+	return DisasterRecoveryConfigsClientBreakPairingResponse{RawResponse: resp}, nil
 }
 
 // breakPairingCreateRequest creates the BreakPairing request.
-func (client *DisasterRecoveryConfigsClient) breakPairingCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsBreakPairingOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) breakPairingCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientBreakPairingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/breakPairing"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +91,7 @@ func (client *DisasterRecoveryConfigsClient) breakPairingCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,38 +102,30 @@ func (client *DisasterRecoveryConfigsClient) breakPairingCreateRequest(ctx conte
 	return req, nil
 }
 
-// breakPairingHandleError handles the BreakPairing error response.
-func (client *DisasterRecoveryConfigsClient) breakPairingHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CheckNameAvailability - Check the give Namespace name availability.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter, options *DisasterRecoveryConfigsCheckNameAvailabilityOptions) (DisasterRecoveryConfigsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// parameters - Parameters to check availability of the given Alias name
+// options - DisasterRecoveryConfigsClientCheckNameAvailabilityOptions contains the optional parameters for the DisasterRecoveryConfigsClient.CheckNameAvailability
+// method.
+func (client *DisasterRecoveryConfigsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter, options *DisasterRecoveryConfigsClientCheckNameAvailabilityOptions) (DisasterRecoveryConfigsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
-		return DisasterRecoveryConfigsCheckNameAvailabilityResponse{}, err
+		return DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisasterRecoveryConfigsCheckNameAvailabilityResponse{}, err
+		return DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DisasterRecoveryConfigsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter, options *DisasterRecoveryConfigsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter, options *DisasterRecoveryConfigsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -134,7 +139,7 @@ func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityCreateRequest(
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -146,46 +151,39 @@ func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityCreateRequest(
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (DisasterRecoveryConfigsCheckNameAvailabilityResponse, error) {
-	result := DisasterRecoveryConfigsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientCheckNameAvailabilityResponse, error) {
+	result := DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return DisasterRecoveryConfigsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return DisasterRecoveryConfigsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *DisasterRecoveryConfigsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdate - Creates or updates a new Alias(Disaster Recovery configuration)
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery, options *DisasterRecoveryConfigsCreateOrUpdateOptions) (DisasterRecoveryConfigsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// alias - The Disaster Recovery configuration name
+// parameters - Parameters required to create an Alias(Disaster Recovery configuration)
+// options - DisasterRecoveryConfigsClientCreateOrUpdateOptions contains the optional parameters for the DisasterRecoveryConfigsClient.CreateOrUpdate
+// method.
+func (client *DisasterRecoveryConfigsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery, options *DisasterRecoveryConfigsClientCreateOrUpdateOptions) (DisasterRecoveryConfigsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, alias, parameters, options)
 	if err != nil {
-		return DisasterRecoveryConfigsCreateOrUpdateResponse{}, err
+		return DisasterRecoveryConfigsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisasterRecoveryConfigsCreateOrUpdateResponse{}, err
+		return DisasterRecoveryConfigsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DisasterRecoveryConfigsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DisasterRecoveryConfigsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DisasterRecoveryConfigsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery, options *DisasterRecoveryConfigsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery, options *DisasterRecoveryConfigsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -203,7 +201,7 @@ func (client *DisasterRecoveryConfigsClient) createOrUpdateCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -215,46 +213,38 @@ func (client *DisasterRecoveryConfigsClient) createOrUpdateCreateRequest(ctx con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DisasterRecoveryConfigsClient) createOrUpdateHandleResponse(resp *http.Response) (DisasterRecoveryConfigsCreateOrUpdateResponse, error) {
-	result := DisasterRecoveryConfigsCreateOrUpdateResponse{RawResponse: resp}
+func (client *DisasterRecoveryConfigsClient) createOrUpdateHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientCreateOrUpdateResponse, error) {
+	result := DisasterRecoveryConfigsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmDisasterRecovery); err != nil {
-		return DisasterRecoveryConfigsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DisasterRecoveryConfigsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DisasterRecoveryConfigsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an Alias(Disaster Recovery configuration)
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsDeleteOptions) (DisasterRecoveryConfigsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// alias - The Disaster Recovery configuration name
+// options - DisasterRecoveryConfigsClientDeleteOptions contains the optional parameters for the DisasterRecoveryConfigsClient.Delete
+// method.
+func (client *DisasterRecoveryConfigsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientDeleteOptions) (DisasterRecoveryConfigsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 	if err != nil {
-		return DisasterRecoveryConfigsDeleteResponse{}, err
+		return DisasterRecoveryConfigsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisasterRecoveryConfigsDeleteResponse{}, err
+		return DisasterRecoveryConfigsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DisasterRecoveryConfigsDeleteResponse{}, client.deleteHandleError(resp)
+		return DisasterRecoveryConfigsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DisasterRecoveryConfigsDeleteResponse{RawResponse: resp}, nil
+	return DisasterRecoveryConfigsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DisasterRecoveryConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsDeleteOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -272,7 +262,7 @@ func (client *DisasterRecoveryConfigsClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -283,38 +273,30 @@ func (client *DisasterRecoveryConfigsClient) deleteCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DisasterRecoveryConfigsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // FailOver - Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) FailOver(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsFailOverOptions) (DisasterRecoveryConfigsFailOverResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// alias - The Disaster Recovery configuration name
+// options - DisasterRecoveryConfigsClientFailOverOptions contains the optional parameters for the DisasterRecoveryConfigsClient.FailOver
+// method.
+func (client *DisasterRecoveryConfigsClient) FailOver(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientFailOverOptions) (DisasterRecoveryConfigsClientFailOverResponse, error) {
 	req, err := client.failOverCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 	if err != nil {
-		return DisasterRecoveryConfigsFailOverResponse{}, err
+		return DisasterRecoveryConfigsClientFailOverResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisasterRecoveryConfigsFailOverResponse{}, err
+		return DisasterRecoveryConfigsClientFailOverResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DisasterRecoveryConfigsFailOverResponse{}, client.failOverHandleError(resp)
+		return DisasterRecoveryConfigsClientFailOverResponse{}, runtime.NewResponseError(resp)
 	}
-	return DisasterRecoveryConfigsFailOverResponse{RawResponse: resp}, nil
+	return DisasterRecoveryConfigsClientFailOverResponse{RawResponse: resp}, nil
 }
 
 // failOverCreateRequest creates the FailOver request.
-func (client *DisasterRecoveryConfigsClient) failOverCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsFailOverOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) failOverCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientFailOverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/failover"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -332,7 +314,7 @@ func (client *DisasterRecoveryConfigsClient) failOverCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -343,38 +325,30 @@ func (client *DisasterRecoveryConfigsClient) failOverCreateRequest(ctx context.C
 	return req, nil
 }
 
-// failOverHandleError handles the FailOver error response.
-func (client *DisasterRecoveryConfigsClient) failOverHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsGetOptions) (DisasterRecoveryConfigsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// alias - The Disaster Recovery configuration name
+// options - DisasterRecoveryConfigsClientGetOptions contains the optional parameters for the DisasterRecoveryConfigsClient.Get
+// method.
+func (client *DisasterRecoveryConfigsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientGetOptions) (DisasterRecoveryConfigsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 	if err != nil {
-		return DisasterRecoveryConfigsGetResponse{}, err
+		return DisasterRecoveryConfigsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisasterRecoveryConfigsGetResponse{}, err
+		return DisasterRecoveryConfigsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DisasterRecoveryConfigsGetResponse{}, client.getHandleError(resp)
+		return DisasterRecoveryConfigsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DisasterRecoveryConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsGetOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -392,7 +366,7 @@ func (client *DisasterRecoveryConfigsClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -404,46 +378,39 @@ func (client *DisasterRecoveryConfigsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *DisasterRecoveryConfigsClient) getHandleResponse(resp *http.Response) (DisasterRecoveryConfigsGetResponse, error) {
-	result := DisasterRecoveryConfigsGetResponse{RawResponse: resp}
+func (client *DisasterRecoveryConfigsClient) getHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientGetResponse, error) {
+	result := DisasterRecoveryConfigsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmDisasterRecovery); err != nil {
-		return DisasterRecoveryConfigsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DisasterRecoveryConfigsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DisasterRecoveryConfigsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAuthorizationRule - Gets an AuthorizationRule for a Namespace by rule name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsGetAuthorizationRuleOptions) (DisasterRecoveryConfigsGetAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// alias - The Disaster Recovery configuration name
+// authorizationRuleName - The authorization rule name.
+// options - DisasterRecoveryConfigsClientGetAuthorizationRuleOptions contains the optional parameters for the DisasterRecoveryConfigsClient.GetAuthorizationRule
+// method.
+func (client *DisasterRecoveryConfigsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsClientGetAuthorizationRuleOptions) (DisasterRecoveryConfigsClientGetAuthorizationRuleResponse, error) {
 	req, err := client.getAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, alias, authorizationRuleName, options)
 	if err != nil {
-		return DisasterRecoveryConfigsGetAuthorizationRuleResponse{}, err
+		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisasterRecoveryConfigsGetAuthorizationRuleResponse{}, err
+		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DisasterRecoveryConfigsGetAuthorizationRuleResponse{}, client.getAuthorizationRuleHandleError(resp)
+		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAuthorizationRuleHandleResponse(resp)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsGetAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -465,7 +432,7 @@ func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -477,43 +444,34 @@ func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleCreateRequest(c
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (DisasterRecoveryConfigsGetAuthorizationRuleResponse, error) {
-	result := DisasterRecoveryConfigsGetAuthorizationRuleResponse{RawResponse: resp}
+func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientGetAuthorizationRuleResponse, error) {
+	result := DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return DisasterRecoveryConfigsGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
+		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, err
 	}
 	return result, nil
 }
 
-// getAuthorizationRuleHandleError handles the GetAuthorizationRule error response.
-func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets all Alias(Disaster Recovery configurations)
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) List(resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsListOptions) *DisasterRecoveryConfigsListPager {
-	return &DisasterRecoveryConfigsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// options - DisasterRecoveryConfigsClientListOptions contains the optional parameters for the DisasterRecoveryConfigsClient.List
+// method.
+func (client *DisasterRecoveryConfigsClient) List(resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsClientListOptions) *DisasterRecoveryConfigsClientListPager {
+	return &DisasterRecoveryConfigsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, namespaceName, options)
 		},
-		advancer: func(ctx context.Context, resp DisasterRecoveryConfigsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DisasterRecoveryConfigsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ArmDisasterRecoveryListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DisasterRecoveryConfigsClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsListOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -527,7 +485,7 @@ func (client *DisasterRecoveryConfigsClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -539,43 +497,35 @@ func (client *DisasterRecoveryConfigsClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *DisasterRecoveryConfigsClient) listHandleResponse(resp *http.Response) (DisasterRecoveryConfigsListResponse, error) {
-	result := DisasterRecoveryConfigsListResponse{RawResponse: resp}
+func (client *DisasterRecoveryConfigsClient) listHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientListResponse, error) {
+	result := DisasterRecoveryConfigsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmDisasterRecoveryListResult); err != nil {
-		return DisasterRecoveryConfigsListResponse{}, runtime.NewResponseError(err, resp)
+		return DisasterRecoveryConfigsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DisasterRecoveryConfigsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAuthorizationRules - Gets a list of authorization rules for a Namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsListAuthorizationRulesOptions) *DisasterRecoveryConfigsListAuthorizationRulesPager {
-	return &DisasterRecoveryConfigsListAuthorizationRulesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// alias - The Disaster Recovery configuration name
+// options - DisasterRecoveryConfigsClientListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListAuthorizationRules
+// method.
+func (client *DisasterRecoveryConfigsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) *DisasterRecoveryConfigsClientListAuthorizationRulesPager {
+	return &DisasterRecoveryConfigsClientListAuthorizationRulesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 		},
-		advancer: func(ctx context.Context, resp DisasterRecoveryConfigsListAuthorizationRulesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DisasterRecoveryConfigsClientListAuthorizationRulesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
 		},
 	}
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsListAuthorizationRulesOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -593,7 +543,7 @@ func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -605,46 +555,39 @@ func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesCreateRequest
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (DisasterRecoveryConfigsListAuthorizationRulesResponse, error) {
-	result := DisasterRecoveryConfigsListAuthorizationRulesResponse{RawResponse: resp}
+func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientListAuthorizationRulesResponse, error) {
+	result := DisasterRecoveryConfigsClientListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
-		return DisasterRecoveryConfigsListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
+		return DisasterRecoveryConfigsClientListAuthorizationRulesResponse{}, err
 	}
 	return result, nil
 }
 
-// listAuthorizationRulesHandleError handles the ListAuthorizationRules error response.
-func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListKeys - Gets the primary and secondary connection strings for the Namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DisasterRecoveryConfigsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsListKeysOptions) (DisasterRecoveryConfigsListKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the azure subscription.
+// namespaceName - The Namespace name
+// alias - The Disaster Recovery configuration name
+// authorizationRuleName - The authorization rule name.
+// options - DisasterRecoveryConfigsClientListKeysOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListKeys
+// method.
+func (client *DisasterRecoveryConfigsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsClientListKeysOptions) (DisasterRecoveryConfigsClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, alias, authorizationRuleName, options)
 	if err != nil {
-		return DisasterRecoveryConfigsListKeysResponse{}, err
+		return DisasterRecoveryConfigsClientListKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisasterRecoveryConfigsListKeysResponse{}, err
+		return DisasterRecoveryConfigsClientListKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DisasterRecoveryConfigsListKeysResponse{}, client.listKeysHandleError(resp)
+		return DisasterRecoveryConfigsClientListKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listKeysHandleResponse(resp)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *DisasterRecoveryConfigsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsListKeysOptions) (*policy.Request, error) {
+func (client *DisasterRecoveryConfigsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules/{authorizationRuleName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -666,7 +609,7 @@ func (client *DisasterRecoveryConfigsClient) listKeysCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -678,23 +621,10 @@ func (client *DisasterRecoveryConfigsClient) listKeysCreateRequest(ctx context.C
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *DisasterRecoveryConfigsClient) listKeysHandleResponse(resp *http.Response) (DisasterRecoveryConfigsListKeysResponse, error) {
-	result := DisasterRecoveryConfigsListKeysResponse{RawResponse: resp}
+func (client *DisasterRecoveryConfigsClient) listKeysHandleResponse(resp *http.Response) (DisasterRecoveryConfigsClientListKeysResponse, error) {
+	result := DisasterRecoveryConfigsClientListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return DisasterRecoveryConfigsListKeysResponse{}, runtime.NewResponseError(err, resp)
+		return DisasterRecoveryConfigsClientListKeysResponse{}, err
 	}
 	return result, nil
-}
-
-// listKeysHandleError handles the ListKeys error response.
-func (client *DisasterRecoveryConfigsClient) listKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

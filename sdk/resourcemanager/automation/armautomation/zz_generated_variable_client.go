@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // VariableClient contains the methods for the Variable group.
 // Don't use this type directly, use NewVariableClient() instead.
 type VariableClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVariableClient creates a new instance of VariableClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVariableClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VariableClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VariableClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VariableClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create a variable.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VariableClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters VariableCreateOrUpdateParameters, options *VariableCreateOrUpdateOptions) (VariableCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// variableName - The variable name.
+// parameters - The parameters supplied to the create or update variable operation.
+// options - VariableClientCreateOrUpdateOptions contains the optional parameters for the VariableClient.CreateOrUpdate method.
+func (client *VariableClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters VariableCreateOrUpdateParameters, options *VariableClientCreateOrUpdateOptions) (VariableClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, variableName, parameters, options)
 	if err != nil {
-		return VariableCreateOrUpdateResponse{}, err
+		return VariableClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VariableCreateOrUpdateResponse{}, err
+		return VariableClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return VariableCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return VariableClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VariableClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters VariableCreateOrUpdateParameters, options *VariableCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VariableClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters VariableCreateOrUpdateParameters, options *VariableClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/variables/{variableName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +91,7 @@ func (client *VariableClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,37 @@ func (client *VariableClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VariableClient) createOrUpdateHandleResponse(resp *http.Response) (VariableCreateOrUpdateResponse, error) {
-	result := VariableCreateOrUpdateResponse{RawResponse: resp}
+func (client *VariableClient) createOrUpdateHandleResponse(resp *http.Response) (VariableClientCreateOrUpdateResponse, error) {
+	result := VariableClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Variable); err != nil {
-		return VariableCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return VariableClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VariableClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the variable.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VariableClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, options *VariableDeleteOptions) (VariableDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// variableName - The name of variable.
+// options - VariableClientDeleteOptions contains the optional parameters for the VariableClient.Delete method.
+func (client *VariableClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, options *VariableClientDeleteOptions) (VariableClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, variableName, options)
 	if err != nil {
-		return VariableDeleteResponse{}, err
+		return VariableClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VariableDeleteResponse{}, err
+		return VariableClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VariableDeleteResponse{}, client.deleteHandleError(resp)
+		return VariableClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return VariableDeleteResponse{RawResponse: resp}, nil
+	return VariableClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VariableClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, options *VariableDeleteOptions) (*policy.Request, error) {
+func (client *VariableClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, options *VariableClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/variables/{variableName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,7 +151,7 @@ func (client *VariableClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +162,29 @@ func (client *VariableClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VariableClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the variable identified by variable name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VariableClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, options *VariableGetOptions) (VariableGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// variableName - The name of variable.
+// options - VariableClientGetOptions contains the optional parameters for the VariableClient.Get method.
+func (client *VariableClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, options *VariableClientGetOptions) (VariableClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, variableName, options)
 	if err != nil {
-		return VariableGetResponse{}, err
+		return VariableClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VariableGetResponse{}, err
+		return VariableClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VariableGetResponse{}, client.getHandleError(resp)
+		return VariableClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VariableClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, options *VariableGetOptions) (*policy.Request, error) {
+func (client *VariableClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, options *VariableClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/variables/{variableName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +202,7 @@ func (client *VariableClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +214,34 @@ func (client *VariableClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *VariableClient) getHandleResponse(resp *http.Response) (VariableGetResponse, error) {
-	result := VariableGetResponse{RawResponse: resp}
+func (client *VariableClient) getHandleResponse(resp *http.Response) (VariableClientGetResponse, error) {
+	result := VariableClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Variable); err != nil {
-		return VariableGetResponse{}, runtime.NewResponseError(err, resp)
+		return VariableClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VariableClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of variables.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VariableClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *VariableListByAutomationAccountOptions) *VariableListByAutomationAccountPager {
-	return &VariableListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - VariableClientListByAutomationAccountOptions contains the optional parameters for the VariableClient.ListByAutomationAccount
+// method.
+func (client *VariableClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *VariableClientListByAutomationAccountOptions) *VariableClientListByAutomationAccountPager {
+	return &VariableClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp VariableListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VariableClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VariableListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *VariableClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *VariableListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *VariableClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *VariableClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/variables"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,7 +255,7 @@ func (client *VariableClient) listByAutomationAccountCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,46 +267,38 @@ func (client *VariableClient) listByAutomationAccountCreateRequest(ctx context.C
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *VariableClient) listByAutomationAccountHandleResponse(resp *http.Response) (VariableListByAutomationAccountResponse, error) {
-	result := VariableListByAutomationAccountResponse{RawResponse: resp}
+func (client *VariableClient) listByAutomationAccountHandleResponse(resp *http.Response) (VariableClientListByAutomationAccountResponse, error) {
+	result := VariableClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VariableListResult); err != nil {
-		return VariableListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return VariableClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *VariableClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a variable.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VariableClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters VariableUpdateParameters, options *VariableUpdateOptions) (VariableUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// variableName - The variable name.
+// parameters - The parameters supplied to the update variable operation.
+// options - VariableClientUpdateOptions contains the optional parameters for the VariableClient.Update method.
+func (client *VariableClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters VariableUpdateParameters, options *VariableClientUpdateOptions) (VariableClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, variableName, parameters, options)
 	if err != nil {
-		return VariableUpdateResponse{}, err
+		return VariableClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VariableUpdateResponse{}, err
+		return VariableClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VariableUpdateResponse{}, client.updateHandleError(resp)
+		return VariableClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VariableClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters VariableUpdateParameters, options *VariableUpdateOptions) (*policy.Request, error) {
+func (client *VariableClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, variableName string, parameters VariableUpdateParameters, options *VariableClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/variables/{variableName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -338,7 +316,7 @@ func (client *VariableClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,23 +328,10 @@ func (client *VariableClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *VariableClient) updateHandleResponse(resp *http.Response) (VariableUpdateResponse, error) {
-	result := VariableUpdateResponse{RawResponse: resp}
+func (client *VariableClient) updateHandleResponse(resp *http.Response) (VariableClientUpdateResponse, error) {
+	result := VariableClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Variable); err != nil {
-		return VariableUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return VariableClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *VariableClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

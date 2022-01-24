@@ -11,7 +11,6 @@ package armresources
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // ProviderResourceTypesClient contains the methods for the ProviderResourceTypes group.
 // Don't use this type directly, use NewProviderResourceTypesClient() instead.
 type ProviderResourceTypesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProviderResourceTypesClient creates a new instance of ProviderResourceTypesClient with the specified values.
+// subscriptionID - The Microsoft Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProviderResourceTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProviderResourceTypesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProviderResourceTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProviderResourceTypesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List the resource types for a specified resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProviderResourceTypesClient) List(ctx context.Context, resourceProviderNamespace string, options *ProviderResourceTypesListOptions) (ProviderResourceTypesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceProviderNamespace - The namespace of the resource provider.
+// options - ProviderResourceTypesClientListOptions contains the optional parameters for the ProviderResourceTypesClient.List
+// method.
+func (client *ProviderResourceTypesClient) List(ctx context.Context, resourceProviderNamespace string, options *ProviderResourceTypesClientListOptions) (ProviderResourceTypesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return ProviderResourceTypesListResponse{}, err
+		return ProviderResourceTypesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProviderResourceTypesListResponse{}, err
+		return ProviderResourceTypesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProviderResourceTypesListResponse{}, client.listHandleError(resp)
+		return ProviderResourceTypesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProviderResourceTypesListOptions) (*policy.Request, error) {
+func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProviderResourceTypesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/resourceTypes"
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -70,7 +80,7 @@ func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,23 +95,10 @@ func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *ProviderResourceTypesClient) listHandleResponse(resp *http.Response) (ProviderResourceTypesListResponse, error) {
-	result := ProviderResourceTypesListResponse{RawResponse: resp}
+func (client *ProviderResourceTypesClient) listHandleResponse(resp *http.Response) (ProviderResourceTypesClientListResponse, error) {
+	result := ProviderResourceTypesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderResourceTypeListResult); err != nil {
-		return ProviderResourceTypesListResponse{}, runtime.NewResponseError(err, resp)
+		return ProviderResourceTypesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ProviderResourceTypesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

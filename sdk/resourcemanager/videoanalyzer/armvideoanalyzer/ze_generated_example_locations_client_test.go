@@ -25,7 +25,7 @@ func ExampleLocationsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armvideoanalyzer.NewLocationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<location-name>",
 		armvideoanalyzer.CheckNameAvailabilityRequest{
 			Name: to.StringPtr("<name>"),
@@ -35,4 +35,5 @@ func ExampleLocationsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LocationsClientCheckNameAvailabilityResult)
 }

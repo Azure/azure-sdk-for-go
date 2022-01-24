@@ -11,7 +11,6 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // CloudServicesClient contains the methods for the CloudServices group.
 // Don't use this type directly, use NewCloudServicesClient() instead.
 type CloudServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCloudServicesClient creates a new instance of CloudServicesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CloudServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CloudServicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (CloudServicesCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service
+// creation.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesClient.BeginCreateOrUpdate
+// method.
+func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (CloudServicesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesCreateOrUpdatePollerResponse{}, err
+		return CloudServicesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := CloudServicesCreateOrUpdatePollerResponse{
+	result := CloudServicesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesCreateOrUpdatePollerResponse{}, err
+		return CloudServicesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &CloudServicesCreateOrUpdatePoller{
+	result.Poller = &CloudServicesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -94,7 +107,7 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,42 +121,33 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CloudServicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (CloudServicesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginDeleteOptions contains the optional parameters for the CloudServicesClient.BeginDelete
+// method.
+func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteOptions) (CloudServicesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesDeletePollerResponse{}, err
+		return CloudServicesClientDeletePollerResponse{}, err
 	}
-	result := CloudServicesDeletePollerResponse{
+	result := CloudServicesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesDeletePollerResponse{}, err
+		return CloudServicesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &CloudServicesDeletePoller{
+	result.Poller = &CloudServicesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -153,13 +157,13 @@ func (client *CloudServicesClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,7 +177,7 @@ func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -184,42 +188,33 @@ func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CloudServicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeleteInstances - Deletes role instances in a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (CloudServicesDeleteInstancesPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginDeleteInstancesOptions contains the optional parameters for the CloudServicesClient.BeginDeleteInstances
+// method.
+func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteInstancesOptions) (CloudServicesClientDeleteInstancesPollerResponse, error) {
 	resp, err := client.deleteInstances(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesDeleteInstancesPollerResponse{}, err
+		return CloudServicesClientDeleteInstancesPollerResponse{}, err
 	}
-	result := CloudServicesDeleteInstancesPollerResponse{
+	result := CloudServicesClientDeleteInstancesPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.DeleteInstances", "", resp, client.pl, client.deleteInstancesHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.DeleteInstances", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesDeleteInstancesPollerResponse{}, err
+		return CloudServicesClientDeleteInstancesPollerResponse{}, err
 	}
-	result.Poller = &CloudServicesDeleteInstancesPoller{
+	result.Poller = &CloudServicesClientDeleteInstancesPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteInstances - Deletes role instances in a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) deleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) deleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteInstancesOptions) (*http.Response, error) {
 	req, err := client.deleteInstancesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -229,13 +224,13 @@ func (client *CloudServicesClient) deleteInstances(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteInstancesHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteInstancesCreateRequest creates the DeleteInstances request.
-func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteInstancesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/delete"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -249,7 +244,7 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -263,38 +258,28 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteInstancesHandleError handles the DeleteInstances error response.
-func (client *CloudServicesClient) deleteInstancesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Display information about a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) Get(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (CloudServicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientGetOptions contains the optional parameters for the CloudServicesClient.Get method.
+func (client *CloudServicesClient) Get(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientGetOptions) (CloudServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesGetResponse{}, err
+		return CloudServicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudServicesGetResponse{}, err
+		return CloudServicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CloudServicesGetResponse{}, client.getHandleError(resp)
+		return CloudServicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -308,7 +293,7 @@ func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -320,46 +305,37 @@ func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudServicesClient) getHandleResponse(resp *http.Response) (CloudServicesGetResponse, error) {
-	result := CloudServicesGetResponse{RawResponse: resp}
+func (client *CloudServicesClient) getHandleResponse(resp *http.Response) (CloudServicesClientGetResponse, error) {
+	result := CloudServicesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudService); err != nil {
-		return CloudServicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return CloudServicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CloudServicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetInstanceView - Gets the status of a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) GetInstanceView(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (CloudServicesGetInstanceViewResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientGetInstanceViewOptions contains the optional parameters for the CloudServicesClient.GetInstanceView
+// method.
+func (client *CloudServicesClient) GetInstanceView(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientGetInstanceViewOptions) (CloudServicesClientGetInstanceViewResponse, error) {
 	req, err := client.getInstanceViewCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesGetInstanceViewResponse{}, err
+		return CloudServicesClientGetInstanceViewResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudServicesGetInstanceViewResponse{}, err
+		return CloudServicesClientGetInstanceViewResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CloudServicesGetInstanceViewResponse{}, client.getInstanceViewHandleError(resp)
+		return CloudServicesClientGetInstanceViewResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getInstanceViewHandleResponse(resp)
 }
 
 // getInstanceViewCreateRequest creates the GetInstanceView request.
-func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientGetInstanceViewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/instanceView"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -373,7 +349,7 @@ func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -385,44 +361,33 @@ func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Cont
 }
 
 // getInstanceViewHandleResponse handles the GetInstanceView response.
-func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Response) (CloudServicesGetInstanceViewResponse, error) {
-	result := CloudServicesGetInstanceViewResponse{RawResponse: resp}
+func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Response) (CloudServicesClientGetInstanceViewResponse, error) {
+	result := CloudServicesClientGetInstanceViewResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceInstanceView); err != nil {
-		return CloudServicesGetInstanceViewResponse{}, runtime.NewResponseError(err, resp)
+		return CloudServicesClientGetInstanceViewResponse{}, err
 	}
 	return result, nil
 }
 
-// getInstanceViewHandleError handles the GetInstanceView error response.
-func (client *CloudServicesClient) getInstanceViewHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next page of Cloud Services. Do this
-// till nextLink is null to fetch all the Cloud Services.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) List(resourceGroupName string, options *CloudServicesListOptions) *CloudServicesListPager {
-	return &CloudServicesListPager{
+// List - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
+// page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// options - CloudServicesClientListOptions contains the optional parameters for the CloudServicesClient.List method.
+func (client *CloudServicesClient) List(resourceGroupName string, options *CloudServicesClientListOptions) *CloudServicesClientListPager {
+	return &CloudServicesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp CloudServicesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServicesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CloudServiceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *CloudServicesListOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *CloudServicesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -432,7 +397,7 @@ func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -444,51 +409,39 @@ func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (CloudServicesListResponse, error) {
-	result := CloudServicesListResponse{RawResponse: resp}
+func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (CloudServicesClientListResponse, error) {
+	result := CloudServicesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceListResult); err != nil {
-		return CloudServicesListResponse{}, runtime.NewResponseError(err, resp)
+		return CloudServicesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *CloudServicesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListAll - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink property in the response to
-// get the next page of Cloud Services. Do this till nextLink
+// ListAll - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
+// property in the response to get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) ListAll(options *CloudServicesListAllOptions) *CloudServicesListAllPager {
-	return &CloudServicesListAllPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - CloudServicesClientListAllOptions contains the optional parameters for the CloudServicesClient.ListAll method.
+func (client *CloudServicesClient) ListAll(options *CloudServicesClientListAllOptions) *CloudServicesClientListAllPager {
+	return &CloudServicesClientListAllPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAllCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp CloudServicesListAllResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServicesClientListAllResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CloudServiceListResult.NextLink)
 		},
 	}
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, options *CloudServicesListAllOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, options *CloudServicesClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/cloudServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -500,50 +453,42 @@ func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, opt
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *CloudServicesClient) listAllHandleResponse(resp *http.Response) (CloudServicesListAllResponse, error) {
-	result := CloudServicesListAllResponse{RawResponse: resp}
+func (client *CloudServicesClient) listAllHandleResponse(resp *http.Response) (CloudServicesClientListAllResponse, error) {
+	result := CloudServicesClientListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceListResult); err != nil {
-		return CloudServicesListAllResponse{}, runtime.NewResponseError(err, resp)
+		return CloudServicesClientListAllResponse{}, err
 	}
 	return result, nil
 }
 
-// listAllHandleError handles the ListAll error response.
-func (client *CloudServicesClient) listAllHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (CloudServicesPowerOffPollerResponse, error) {
+// BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the
+// resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginPowerOffOptions contains the optional parameters for the CloudServicesClient.BeginPowerOff
+// method.
+func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginPowerOffOptions) (CloudServicesClientPowerOffPollerResponse, error) {
 	resp, err := client.powerOff(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesPowerOffPollerResponse{}, err
+		return CloudServicesClientPowerOffPollerResponse{}, err
 	}
-	result := CloudServicesPowerOffPollerResponse{
+	result := CloudServicesClientPowerOffPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.PowerOff", "", resp, client.pl, client.powerOffHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.PowerOff", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesPowerOffPollerResponse{}, err
+		return CloudServicesClientPowerOffPollerResponse{}, err
 	}
-	result.Poller = &CloudServicesPowerOffPoller{
+	result.Poller = &CloudServicesClientPowerOffPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // PowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) powerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) powerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginPowerOffOptions) (*http.Response, error) {
 	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -553,13 +498,13 @@ func (client *CloudServicesClient) powerOff(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.powerOffHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // powerOffCreateRequest creates the PowerOff request.
-func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginPowerOffOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/poweroff"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -573,7 +518,7 @@ func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -584,46 +529,37 @@ func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// powerOffHandleError handles the PowerOff error response.
-func (client *CloudServicesClient) powerOffHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginRebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes the storage resources
-// that are used by them. If you do not want to initialize storage
+// BeginRebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
+// the storage resources that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (CloudServicesRebuildPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginRebuildOptions contains the optional parameters for the CloudServicesClient.BeginRebuild
+// method.
+func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRebuildOptions) (CloudServicesClientRebuildPollerResponse, error) {
 	resp, err := client.rebuild(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesRebuildPollerResponse{}, err
+		return CloudServicesClientRebuildPollerResponse{}, err
 	}
-	result := CloudServicesRebuildPollerResponse{
+	result := CloudServicesClientRebuildPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.Rebuild", "", resp, client.pl, client.rebuildHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Rebuild", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesRebuildPollerResponse{}, err
+		return CloudServicesClientRebuildPollerResponse{}, err
 	}
-	result.Poller = &CloudServicesRebuildPoller{
+	result.Poller = &CloudServicesClientRebuildPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Rebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes the storage resources that
-// are used by them. If you do not want to initialize storage
+// Rebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
+// the storage resources that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRebuildOptions) (*http.Response, error) {
 	req, err := client.rebuildCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -633,13 +569,13 @@ func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.rebuildHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // rebuildCreateRequest creates the Rebuild request.
-func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRebuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/rebuild"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -653,7 +589,7 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -667,42 +603,33 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// rebuildHandleError handles the Rebuild error response.
-func (client *CloudServicesClient) rebuildHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginReimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (CloudServicesReimagePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginReimageOptions contains the optional parameters for the CloudServicesClient.BeginReimage
+// method.
+func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginReimageOptions) (CloudServicesClientReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesReimagePollerResponse{}, err
+		return CloudServicesClientReimagePollerResponse{}, err
 	}
-	result := CloudServicesReimagePollerResponse{
+	result := CloudServicesClientReimagePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.Reimage", "", resp, client.pl, client.reimageHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Reimage", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesReimagePollerResponse{}, err
+		return CloudServicesClientReimagePollerResponse{}, err
 	}
-	result.Poller = &CloudServicesReimagePoller{
+	result.Poller = &CloudServicesClientReimagePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Reimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) reimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) reimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginReimageOptions) (*http.Response, error) {
 	req, err := client.reimageCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -712,13 +639,13 @@ func (client *CloudServicesClient) reimage(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.reimageHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // reimageCreateRequest creates the Reimage request.
-func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginReimageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/reimage"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -732,7 +659,7 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -746,42 +673,33 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// reimageHandleError handles the Reimage error response.
-func (client *CloudServicesClient) reimageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRestart - Restarts one or more role instances in a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (CloudServicesRestartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginRestartOptions contains the optional parameters for the CloudServicesClient.BeginRestart
+// method.
+func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRestartOptions) (CloudServicesClientRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesRestartPollerResponse{}, err
+		return CloudServicesClientRestartPollerResponse{}, err
 	}
-	result := CloudServicesRestartPollerResponse{
+	result := CloudServicesClientRestartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.Restart", "", resp, client.pl, client.restartHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Restart", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesRestartPollerResponse{}, err
+		return CloudServicesClientRestartPollerResponse{}, err
 	}
-	result.Poller = &CloudServicesRestartPoller{
+	result.Poller = &CloudServicesClientRestartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Restart - Restarts one or more role instances in a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) restart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) restart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -791,13 +709,13 @@ func (client *CloudServicesClient) restart(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.restartHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/restart"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -811,7 +729,7 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -825,42 +743,33 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// restartHandleError handles the Restart error response.
-func (client *CloudServicesClient) restartHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Starts the cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (CloudServicesStartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginStartOptions contains the optional parameters for the CloudServicesClient.BeginStart
+// method.
+func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginStartOptions) (CloudServicesClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesStartPollerResponse{}, err
+		return CloudServicesClientStartPollerResponse{}, err
 	}
-	result := CloudServicesStartPollerResponse{
+	result := CloudServicesClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.Start", "", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Start", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesStartPollerResponse{}, err
+		return CloudServicesClientStartPollerResponse{}, err
 	}
-	result.Poller = &CloudServicesStartPoller{
+	result.Poller = &CloudServicesClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Starts the cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) start(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) start(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -870,13 +779,13 @@ func (client *CloudServicesClient) start(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/start"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -890,7 +799,7 @@ func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -901,42 +810,33 @@ func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *CloudServicesClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (CloudServicesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesClientBeginUpdateOptions contains the optional parameters for the CloudServicesClient.BeginUpdate
+// method.
+func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (CloudServicesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicesUpdatePollerResponse{}, err
+		return CloudServicesClientUpdatePollerResponse{}, err
 	}
-	result := CloudServicesUpdatePollerResponse{
+	result := CloudServicesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CloudServicesClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Update", "", resp, client.pl)
 	if err != nil {
-		return CloudServicesUpdatePollerResponse{}, err
+		return CloudServicesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &CloudServicesUpdatePoller{
+	result.Poller = &CloudServicesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update a cloud service.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -946,13 +846,13 @@ func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -966,7 +866,7 @@ func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -978,17 +878,4 @@ func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, reso
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *CloudServicesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

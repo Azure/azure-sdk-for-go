@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// ConnectedClusterCreatePollerResponse contains the response from method ConnectedCluster.Create.
-type ConnectedClusterCreatePollerResponse struct {
+// ConnectedClusterClientCreatePollerResponse contains the response from method ConnectedClusterClient.Create.
+type ConnectedClusterClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ConnectedClusterCreatePoller
+	Poller *ConnectedClusterClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type ConnectedClusterCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ConnectedClusterCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConnectedClusterCreateResponse, error) {
-	respType := ConnectedClusterCreateResponse{}
+func (l ConnectedClusterClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConnectedClusterClientCreateResponse, error) {
+	respType := ConnectedClusterClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConnectedCluster)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l ConnectedClusterCreatePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a ConnectedClusterCreatePollerResponse from the provided client and resume token.
-func (l *ConnectedClusterCreatePollerResponse) Resume(ctx context.Context, client *ConnectedClusterClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ConnectedClusterClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ConnectedClusterClientCreatePollerResponse from the provided client and resume token.
+func (l *ConnectedClusterClientCreatePollerResponse) Resume(ctx context.Context, client *ConnectedClusterClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ConnectedClusterClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ConnectedClusterCreatePoller{
+	poller := &ConnectedClusterClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *ConnectedClusterCreatePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// ConnectedClusterCreateResponse contains the response from method ConnectedCluster.Create.
-type ConnectedClusterCreateResponse struct {
-	ConnectedClusterCreateResult
+// ConnectedClusterClientCreateResponse contains the response from method ConnectedClusterClient.Create.
+type ConnectedClusterClientCreateResponse struct {
+	ConnectedClusterClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectedClusterCreateResult contains the result from method ConnectedCluster.Create.
-type ConnectedClusterCreateResult struct {
+// ConnectedClusterClientCreateResult contains the result from method ConnectedClusterClient.Create.
+type ConnectedClusterClientCreateResult struct {
 	ConnectedCluster
 }
 
-// ConnectedClusterDeletePollerResponse contains the response from method ConnectedCluster.Delete.
-type ConnectedClusterDeletePollerResponse struct {
+// ConnectedClusterClientDeletePollerResponse contains the response from method ConnectedClusterClient.Delete.
+type ConnectedClusterClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ConnectedClusterDeletePoller
+	Poller *ConnectedClusterClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type ConnectedClusterDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ConnectedClusterDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConnectedClusterDeleteResponse, error) {
-	respType := ConnectedClusterDeleteResponse{}
+func (l ConnectedClusterClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConnectedClusterClientDeleteResponse, error) {
+	respType := ConnectedClusterClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l ConnectedClusterDeletePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a ConnectedClusterDeletePollerResponse from the provided client and resume token.
-func (l *ConnectedClusterDeletePollerResponse) Resume(ctx context.Context, client *ConnectedClusterClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ConnectedClusterClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ConnectedClusterClientDeletePollerResponse from the provided client and resume token.
+func (l *ConnectedClusterClientDeletePollerResponse) Resume(ctx context.Context, client *ConnectedClusterClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ConnectedClusterClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ConnectedClusterDeletePoller{
+	poller := &ConnectedClusterClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,80 +107,80 @@ func (l *ConnectedClusterDeletePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// ConnectedClusterDeleteResponse contains the response from method ConnectedCluster.Delete.
-type ConnectedClusterDeleteResponse struct {
+// ConnectedClusterClientDeleteResponse contains the response from method ConnectedClusterClient.Delete.
+type ConnectedClusterClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectedClusterGetResponse contains the response from method ConnectedCluster.Get.
-type ConnectedClusterGetResponse struct {
-	ConnectedClusterGetResult
+// ConnectedClusterClientGetResponse contains the response from method ConnectedClusterClient.Get.
+type ConnectedClusterClientGetResponse struct {
+	ConnectedClusterClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectedClusterGetResult contains the result from method ConnectedCluster.Get.
-type ConnectedClusterGetResult struct {
+// ConnectedClusterClientGetResult contains the result from method ConnectedClusterClient.Get.
+type ConnectedClusterClientGetResult struct {
 	ConnectedCluster
 }
 
-// ConnectedClusterListByResourceGroupResponse contains the response from method ConnectedCluster.ListByResourceGroup.
-type ConnectedClusterListByResourceGroupResponse struct {
-	ConnectedClusterListByResourceGroupResult
+// ConnectedClusterClientListByResourceGroupResponse contains the response from method ConnectedClusterClient.ListByResourceGroup.
+type ConnectedClusterClientListByResourceGroupResponse struct {
+	ConnectedClusterClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectedClusterListByResourceGroupResult contains the result from method ConnectedCluster.ListByResourceGroup.
-type ConnectedClusterListByResourceGroupResult struct {
+// ConnectedClusterClientListByResourceGroupResult contains the result from method ConnectedClusterClient.ListByResourceGroup.
+type ConnectedClusterClientListByResourceGroupResult struct {
 	ConnectedClusterList
 }
 
-// ConnectedClusterListBySubscriptionResponse contains the response from method ConnectedCluster.ListBySubscription.
-type ConnectedClusterListBySubscriptionResponse struct {
-	ConnectedClusterListBySubscriptionResult
+// ConnectedClusterClientListBySubscriptionResponse contains the response from method ConnectedClusterClient.ListBySubscription.
+type ConnectedClusterClientListBySubscriptionResponse struct {
+	ConnectedClusterClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectedClusterListBySubscriptionResult contains the result from method ConnectedCluster.ListBySubscription.
-type ConnectedClusterListBySubscriptionResult struct {
+// ConnectedClusterClientListBySubscriptionResult contains the result from method ConnectedClusterClient.ListBySubscription.
+type ConnectedClusterClientListBySubscriptionResult struct {
 	ConnectedClusterList
 }
 
-// ConnectedClusterListClusterUserCredentialResponse contains the response from method ConnectedCluster.ListClusterUserCredential.
-type ConnectedClusterListClusterUserCredentialResponse struct {
-	ConnectedClusterListClusterUserCredentialResult
+// ConnectedClusterClientListClusterUserCredentialResponse contains the response from method ConnectedClusterClient.ListClusterUserCredential.
+type ConnectedClusterClientListClusterUserCredentialResponse struct {
+	ConnectedClusterClientListClusterUserCredentialResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectedClusterListClusterUserCredentialResult contains the result from method ConnectedCluster.ListClusterUserCredential.
-type ConnectedClusterListClusterUserCredentialResult struct {
+// ConnectedClusterClientListClusterUserCredentialResult contains the result from method ConnectedClusterClient.ListClusterUserCredential.
+type ConnectedClusterClientListClusterUserCredentialResult struct {
 	CredentialResults
 }
 
-// ConnectedClusterUpdateResponse contains the response from method ConnectedCluster.Update.
-type ConnectedClusterUpdateResponse struct {
-	ConnectedClusterUpdateResult
+// ConnectedClusterClientUpdateResponse contains the response from method ConnectedClusterClient.Update.
+type ConnectedClusterClientUpdateResponse struct {
+	ConnectedClusterClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectedClusterUpdateResult contains the result from method ConnectedCluster.Update.
-type ConnectedClusterUpdateResult struct {
+// ConnectedClusterClientUpdateResult contains the result from method ConnectedClusterClient.Update.
+type ConnectedClusterClientUpdateResult struct {
 	ConnectedCluster
 }
 
-// OperationsGetResponse contains the response from method Operations.Get.
-type OperationsGetResponse struct {
-	OperationsGetResult
+// OperationsClientGetResponse contains the response from method OperationsClient.Get.
+type OperationsClientGetResponse struct {
+	OperationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsGetResult contains the result from method Operations.Get.
-type OperationsGetResult struct {
+// OperationsClientGetResult contains the result from method OperationsClient.Get.
+type OperationsClientGetResult struct {
 	OperationList
 }

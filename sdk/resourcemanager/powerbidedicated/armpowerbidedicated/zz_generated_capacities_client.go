@@ -11,7 +11,6 @@ package armpowerbidedicated
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // CapacitiesClient contains the methods for the Capacities group.
 // Don't use this type directly, use NewCapacitiesClient() instead.
 type CapacitiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCapacitiesClient creates a new instance of CapacitiesClient with the specified values.
+// subscriptionID - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for
+// every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCapacitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CapacitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CapacitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CapacitiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Check the name availability in the target location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) CheckNameAvailability(ctx context.Context, location string, capacityParameters CheckCapacityNameAvailabilityParameters, options *CapacitiesCheckNameAvailabilityOptions) (CapacitiesCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The region name which the operation will lookup into.
+// capacityParameters - The name of the capacity.
+// options - CapacitiesClientCheckNameAvailabilityOptions contains the optional parameters for the CapacitiesClient.CheckNameAvailability
+// method.
+func (client *CapacitiesClient) CheckNameAvailability(ctx context.Context, location string, capacityParameters CheckCapacityNameAvailabilityParameters, options *CapacitiesClientCheckNameAvailabilityOptions) (CapacitiesClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, capacityParameters, options)
 	if err != nil {
-		return CapacitiesCheckNameAvailabilityResponse{}, err
+		return CapacitiesClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacitiesCheckNameAvailabilityResponse{}, err
+		return CapacitiesClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapacitiesCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return CapacitiesClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *CapacitiesClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, capacityParameters CheckCapacityNameAvailabilityParameters, options *CapacitiesCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, capacityParameters CheckCapacityNameAvailabilityParameters, options *CapacitiesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/locations/{location}/checkNameAvailability"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -70,7 +82,7 @@ func (client *CapacitiesClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,50 +94,42 @@ func (client *CapacitiesClient) checkNameAvailabilityCreateRequest(ctx context.C
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *CapacitiesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CapacitiesCheckNameAvailabilityResponse, error) {
-	result := CapacitiesCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *CapacitiesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CapacitiesClientCheckNameAvailabilityResponse, error) {
+	result := CapacitiesClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckCapacityNameAvailabilityResult); err != nil {
-		return CapacitiesCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return CapacitiesClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *CapacitiesClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreate - Provisions the specified Dedicated capacity based on the configuration specified in the request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) BeginCreate(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityParameters DedicatedCapacity, options *CapacitiesBeginCreateOptions) (CapacitiesCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// dedicatedCapacityName - The name of the Dedicated capacity. It must be a minimum of 3 characters, and a maximum of 63.
+// capacityParameters - Contains the information used to provision the Dedicated capacity.
+// options - CapacitiesClientBeginCreateOptions contains the optional parameters for the CapacitiesClient.BeginCreate method.
+func (client *CapacitiesClient) BeginCreate(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityParameters DedicatedCapacity, options *CapacitiesClientBeginCreateOptions) (CapacitiesClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, dedicatedCapacityName, capacityParameters, options)
 	if err != nil {
-		return CapacitiesCreatePollerResponse{}, err
+		return CapacitiesClientCreatePollerResponse{}, err
 	}
-	result := CapacitiesCreatePollerResponse{
+	result := CapacitiesClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CapacitiesClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("CapacitiesClient.Create", "", resp, client.pl)
 	if err != nil {
-		return CapacitiesCreatePollerResponse{}, err
+		return CapacitiesClientCreatePollerResponse{}, err
 	}
-	result.Poller = &CapacitiesCreatePoller{
+	result.Poller = &CapacitiesClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Provisions the specified Dedicated capacity based on the configuration specified in the request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) create(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityParameters DedicatedCapacity, options *CapacitiesBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CapacitiesClient) create(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityParameters DedicatedCapacity, options *CapacitiesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, dedicatedCapacityName, capacityParameters, options)
 	if err != nil {
 		return nil, err
@@ -135,13 +139,13 @@ func (client *CapacitiesClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *CapacitiesClient) createCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityParameters DedicatedCapacity, options *CapacitiesBeginCreateOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) createCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityParameters DedicatedCapacity, options *CapacitiesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -155,7 +159,7 @@ func (client *CapacitiesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,42 +170,34 @@ func (client *CapacitiesClient) createCreateRequest(ctx context.Context, resourc
 	return req, runtime.MarshalAsJSON(req, capacityParameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *CapacitiesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified Dedicated capacity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) BeginDelete(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginDeleteOptions) (CapacitiesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// dedicatedCapacityName - The name of the Dedicated capacity. It must be at least 3 characters in length, and no more than
+// 63.
+// options - CapacitiesClientBeginDeleteOptions contains the optional parameters for the CapacitiesClient.BeginDelete method.
+func (client *CapacitiesClient) BeginDelete(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginDeleteOptions) (CapacitiesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, dedicatedCapacityName, options)
 	if err != nil {
-		return CapacitiesDeletePollerResponse{}, err
+		return CapacitiesClientDeletePollerResponse{}, err
 	}
-	result := CapacitiesDeletePollerResponse{
+	result := CapacitiesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CapacitiesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("CapacitiesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return CapacitiesDeletePollerResponse{}, err
+		return CapacitiesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &CapacitiesDeletePoller{
+	result.Poller = &CapacitiesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified Dedicated capacity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CapacitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dedicatedCapacityName, options)
 	if err != nil {
 		return nil, err
@@ -211,13 +207,13 @@ func (client *CapacitiesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CapacitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginDeleteOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -231,7 +227,7 @@ func (client *CapacitiesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,38 +238,29 @@ func (client *CapacitiesClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CapacitiesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetDetails - Gets details about the specified dedicated capacity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) GetDetails(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesGetDetailsOptions) (CapacitiesGetDetailsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// dedicatedCapacityName - The name of the dedicated capacity. It must be a minimum of 3 characters, and a maximum of 63.
+// options - CapacitiesClientGetDetailsOptions contains the optional parameters for the CapacitiesClient.GetDetails method.
+func (client *CapacitiesClient) GetDetails(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientGetDetailsOptions) (CapacitiesClientGetDetailsResponse, error) {
 	req, err := client.getDetailsCreateRequest(ctx, resourceGroupName, dedicatedCapacityName, options)
 	if err != nil {
-		return CapacitiesGetDetailsResponse{}, err
+		return CapacitiesClientGetDetailsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacitiesGetDetailsResponse{}, err
+		return CapacitiesClientGetDetailsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapacitiesGetDetailsResponse{}, client.getDetailsHandleError(resp)
+		return CapacitiesClientGetDetailsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDetailsHandleResponse(resp)
 }
 
 // getDetailsCreateRequest creates the GetDetails request.
-func (client *CapacitiesClient) getDetailsCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesGetDetailsOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) getDetailsCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientGetDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -287,7 +274,7 @@ func (client *CapacitiesClient) getDetailsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -299,52 +286,40 @@ func (client *CapacitiesClient) getDetailsCreateRequest(ctx context.Context, res
 }
 
 // getDetailsHandleResponse handles the GetDetails response.
-func (client *CapacitiesClient) getDetailsHandleResponse(resp *http.Response) (CapacitiesGetDetailsResponse, error) {
-	result := CapacitiesGetDetailsResponse{RawResponse: resp}
+func (client *CapacitiesClient) getDetailsHandleResponse(resp *http.Response) (CapacitiesClientGetDetailsResponse, error) {
+	result := CapacitiesClientGetDetailsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCapacity); err != nil {
-		return CapacitiesGetDetailsResponse{}, runtime.NewResponseError(err, resp)
+		return CapacitiesClientGetDetailsResponse{}, err
 	}
 	return result, nil
 }
 
-// getDetailsHandleError handles the GetDetails error response.
-func (client *CapacitiesClient) getDetailsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the Dedicated capacities for the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) List(ctx context.Context, options *CapacitiesListOptions) (CapacitiesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - CapacitiesClientListOptions contains the optional parameters for the CapacitiesClient.List method.
+func (client *CapacitiesClient) List(ctx context.Context, options *CapacitiesClientListOptions) (CapacitiesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return CapacitiesListResponse{}, err
+		return CapacitiesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacitiesListResponse{}, err
+		return CapacitiesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapacitiesListResponse{}, client.listHandleError(resp)
+		return CapacitiesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *CapacitiesClient) listCreateRequest(ctx context.Context, options *CapacitiesListOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) listCreateRequest(ctx context.Context, options *CapacitiesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,46 +331,37 @@ func (client *CapacitiesClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *CapacitiesClient) listHandleResponse(resp *http.Response) (CapacitiesListResponse, error) {
-	result := CapacitiesListResponse{RawResponse: resp}
+func (client *CapacitiesClient) listHandleResponse(resp *http.Response) (CapacitiesClientListResponse, error) {
+	result := CapacitiesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCapacities); err != nil {
-		return CapacitiesListResponse{}, runtime.NewResponseError(err, resp)
+		return CapacitiesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *CapacitiesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Gets all the Dedicated capacities for the given resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *CapacitiesListByResourceGroupOptions) (CapacitiesListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// options - CapacitiesClientListByResourceGroupOptions contains the optional parameters for the CapacitiesClient.ListByResourceGroup
+// method.
+func (client *CapacitiesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *CapacitiesClientListByResourceGroupOptions) (CapacitiesClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return CapacitiesListByResourceGroupResponse{}, err
+		return CapacitiesClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacitiesListByResourceGroupResponse{}, err
+		return CapacitiesClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapacitiesListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return CapacitiesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *CapacitiesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CapacitiesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CapacitiesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -405,7 +371,7 @@ func (client *CapacitiesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -417,52 +383,40 @@ func (client *CapacitiesClient) listByResourceGroupCreateRequest(ctx context.Con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *CapacitiesClient) listByResourceGroupHandleResponse(resp *http.Response) (CapacitiesListByResourceGroupResponse, error) {
-	result := CapacitiesListByResourceGroupResponse{RawResponse: resp}
+func (client *CapacitiesClient) listByResourceGroupHandleResponse(resp *http.Response) (CapacitiesClientListByResourceGroupResponse, error) {
+	result := CapacitiesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCapacities); err != nil {
-		return CapacitiesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return CapacitiesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *CapacitiesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSKUs - Lists eligible SKUs for PowerBI Dedicated resource provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) ListSKUs(ctx context.Context, options *CapacitiesListSKUsOptions) (CapacitiesListSKUsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - CapacitiesClientListSKUsOptions contains the optional parameters for the CapacitiesClient.ListSKUs method.
+func (client *CapacitiesClient) ListSKUs(ctx context.Context, options *CapacitiesClientListSKUsOptions) (CapacitiesClientListSKUsResponse, error) {
 	req, err := client.listSKUsCreateRequest(ctx, options)
 	if err != nil {
-		return CapacitiesListSKUsResponse{}, err
+		return CapacitiesClientListSKUsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacitiesListSKUsResponse{}, err
+		return CapacitiesClientListSKUsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapacitiesListSKUsResponse{}, client.listSKUsHandleError(resp)
+		return CapacitiesClientListSKUsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSKUsHandleResponse(resp)
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
-func (client *CapacitiesClient) listSKUsCreateRequest(ctx context.Context, options *CapacitiesListSKUsOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) listSKUsCreateRequest(ctx context.Context, options *CapacitiesClientListSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -474,46 +428,39 @@ func (client *CapacitiesClient) listSKUsCreateRequest(ctx context.Context, optio
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *CapacitiesClient) listSKUsHandleResponse(resp *http.Response) (CapacitiesListSKUsResponse, error) {
-	result := CapacitiesListSKUsResponse{RawResponse: resp}
+func (client *CapacitiesClient) listSKUsHandleResponse(resp *http.Response) (CapacitiesClientListSKUsResponse, error) {
+	result := CapacitiesClientListSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUEnumerationForNewResourceResult); err != nil {
-		return CapacitiesListSKUsResponse{}, runtime.NewResponseError(err, resp)
+		return CapacitiesClientListSKUsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSKUsHandleError handles the ListSKUs error response.
-func (client *CapacitiesClient) listSKUsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSKUsForCapacity - Lists eligible SKUs for a PowerBI Dedicated resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) ListSKUsForCapacity(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesListSKUsForCapacityOptions) (CapacitiesListSKUsForCapacityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// dedicatedCapacityName - The name of the Dedicated capacity. It must be at least 3 characters in length, and no more than
+// 63.
+// options - CapacitiesClientListSKUsForCapacityOptions contains the optional parameters for the CapacitiesClient.ListSKUsForCapacity
+// method.
+func (client *CapacitiesClient) ListSKUsForCapacity(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientListSKUsForCapacityOptions) (CapacitiesClientListSKUsForCapacityResponse, error) {
 	req, err := client.listSKUsForCapacityCreateRequest(ctx, resourceGroupName, dedicatedCapacityName, options)
 	if err != nil {
-		return CapacitiesListSKUsForCapacityResponse{}, err
+		return CapacitiesClientListSKUsForCapacityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacitiesListSKUsForCapacityResponse{}, err
+		return CapacitiesClientListSKUsForCapacityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapacitiesListSKUsForCapacityResponse{}, client.listSKUsForCapacityHandleError(resp)
+		return CapacitiesClientListSKUsForCapacityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSKUsForCapacityHandleResponse(resp)
 }
 
 // listSKUsForCapacityCreateRequest creates the ListSKUsForCapacity request.
-func (client *CapacitiesClient) listSKUsForCapacityCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesListSKUsForCapacityOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) listSKUsForCapacityCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientListSKUsForCapacityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/skus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -527,7 +474,7 @@ func (client *CapacitiesClient) listSKUsForCapacityCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -539,50 +486,42 @@ func (client *CapacitiesClient) listSKUsForCapacityCreateRequest(ctx context.Con
 }
 
 // listSKUsForCapacityHandleResponse handles the ListSKUsForCapacity response.
-func (client *CapacitiesClient) listSKUsForCapacityHandleResponse(resp *http.Response) (CapacitiesListSKUsForCapacityResponse, error) {
-	result := CapacitiesListSKUsForCapacityResponse{RawResponse: resp}
+func (client *CapacitiesClient) listSKUsForCapacityHandleResponse(resp *http.Response) (CapacitiesClientListSKUsForCapacityResponse, error) {
+	result := CapacitiesClientListSKUsForCapacityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUEnumerationForExistingResourceResult); err != nil {
-		return CapacitiesListSKUsForCapacityResponse{}, runtime.NewResponseError(err, resp)
+		return CapacitiesClientListSKUsForCapacityResponse{}, err
 	}
 	return result, nil
 }
 
-// listSKUsForCapacityHandleError handles the ListSKUsForCapacity error response.
-func (client *CapacitiesClient) listSKUsForCapacityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginResume - Resumes operation of the specified Dedicated capacity instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) BeginResume(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginResumeOptions) (CapacitiesResumePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// dedicatedCapacityName - The name of the Dedicated capacity. It must be at least 3 characters in length, and no more than
+// 63.
+// options - CapacitiesClientBeginResumeOptions contains the optional parameters for the CapacitiesClient.BeginResume method.
+func (client *CapacitiesClient) BeginResume(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginResumeOptions) (CapacitiesClientResumePollerResponse, error) {
 	resp, err := client.resume(ctx, resourceGroupName, dedicatedCapacityName, options)
 	if err != nil {
-		return CapacitiesResumePollerResponse{}, err
+		return CapacitiesClientResumePollerResponse{}, err
 	}
-	result := CapacitiesResumePollerResponse{
+	result := CapacitiesClientResumePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CapacitiesClient.Resume", "", resp, client.pl, client.resumeHandleError)
+	pt, err := armruntime.NewPoller("CapacitiesClient.Resume", "", resp, client.pl)
 	if err != nil {
-		return CapacitiesResumePollerResponse{}, err
+		return CapacitiesClientResumePollerResponse{}, err
 	}
-	result.Poller = &CapacitiesResumePoller{
+	result.Poller = &CapacitiesClientResumePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Resume - Resumes operation of the specified Dedicated capacity instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) resume(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginResumeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CapacitiesClient) resume(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, dedicatedCapacityName, options)
 	if err != nil {
 		return nil, err
@@ -592,13 +531,13 @@ func (client *CapacitiesClient) resume(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.resumeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *CapacitiesClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginResumeOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/resume"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -612,7 +551,7 @@ func (client *CapacitiesClient) resumeCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -623,42 +562,34 @@ func (client *CapacitiesClient) resumeCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// resumeHandleError handles the Resume error response.
-func (client *CapacitiesClient) resumeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginSuspend - Suspends operation of the specified dedicated capacity instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) BeginSuspend(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginSuspendOptions) (CapacitiesSuspendPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// dedicatedCapacityName - The name of the Dedicated capacity. It must be at least 3 characters in length, and no more than
+// 63.
+// options - CapacitiesClientBeginSuspendOptions contains the optional parameters for the CapacitiesClient.BeginSuspend method.
+func (client *CapacitiesClient) BeginSuspend(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginSuspendOptions) (CapacitiesClientSuspendPollerResponse, error) {
 	resp, err := client.suspend(ctx, resourceGroupName, dedicatedCapacityName, options)
 	if err != nil {
-		return CapacitiesSuspendPollerResponse{}, err
+		return CapacitiesClientSuspendPollerResponse{}, err
 	}
-	result := CapacitiesSuspendPollerResponse{
+	result := CapacitiesClientSuspendPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CapacitiesClient.Suspend", "", resp, client.pl, client.suspendHandleError)
+	pt, err := armruntime.NewPoller("CapacitiesClient.Suspend", "", resp, client.pl)
 	if err != nil {
-		return CapacitiesSuspendPollerResponse{}, err
+		return CapacitiesClientSuspendPollerResponse{}, err
 	}
-	result.Poller = &CapacitiesSuspendPoller{
+	result.Poller = &CapacitiesClientSuspendPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Suspend - Suspends operation of the specified dedicated capacity instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) suspend(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginSuspendOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CapacitiesClient) suspend(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginSuspendOptions) (*http.Response, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, dedicatedCapacityName, options)
 	if err != nil {
 		return nil, err
@@ -668,13 +599,13 @@ func (client *CapacitiesClient) suspend(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.suspendHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // suspendCreateRequest creates the Suspend request.
-func (client *CapacitiesClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesBeginSuspendOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, options *CapacitiesClientBeginSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/suspend"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -688,7 +619,7 @@ func (client *CapacitiesClient) suspendCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -699,42 +630,35 @@ func (client *CapacitiesClient) suspendCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// suspendHandleError handles the Suspend error response.
-func (client *CapacitiesClient) suspendHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates the current state of the specified Dedicated capacity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityUpdateParameters DedicatedCapacityUpdateParameters, options *CapacitiesBeginUpdateOptions) (CapacitiesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// dedicatedCapacityName - The name of the Dedicated capacity. It must be at least 3 characters in length, and no more than
+// 63.
+// capacityUpdateParameters - Request object that contains the updated information for the capacity.
+// options - CapacitiesClientBeginUpdateOptions contains the optional parameters for the CapacitiesClient.BeginUpdate method.
+func (client *CapacitiesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityUpdateParameters DedicatedCapacityUpdateParameters, options *CapacitiesClientBeginUpdateOptions) (CapacitiesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, options)
 	if err != nil {
-		return CapacitiesUpdatePollerResponse{}, err
+		return CapacitiesClientUpdatePollerResponse{}, err
 	}
-	result := CapacitiesUpdatePollerResponse{
+	result := CapacitiesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CapacitiesClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("CapacitiesClient.Update", "", resp, client.pl)
 	if err != nil {
-		return CapacitiesUpdatePollerResponse{}, err
+		return CapacitiesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &CapacitiesUpdatePoller{
+	result.Poller = &CapacitiesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates the current state of the specified Dedicated capacity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapacitiesClient) update(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityUpdateParameters DedicatedCapacityUpdateParameters, options *CapacitiesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CapacitiesClient) update(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityUpdateParameters DedicatedCapacityUpdateParameters, options *CapacitiesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, options)
 	if err != nil {
 		return nil, err
@@ -744,13 +668,13 @@ func (client *CapacitiesClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CapacitiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityUpdateParameters DedicatedCapacityUpdateParameters, options *CapacitiesBeginUpdateOptions) (*policy.Request, error) {
+func (client *CapacitiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityUpdateParameters DedicatedCapacityUpdateParameters, options *CapacitiesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -764,7 +688,7 @@ func (client *CapacitiesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -773,17 +697,4 @@ func (client *CapacitiesClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, capacityUpdateParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *CapacitiesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

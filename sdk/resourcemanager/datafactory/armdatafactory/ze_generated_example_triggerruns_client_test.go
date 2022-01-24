@@ -65,14 +65,14 @@ func ExampleTriggerRunsClient_QueryByFactory() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
-	_, err = client.QueryByFactory(ctx,
+	res, err := client.QueryByFactory(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.RunFilterParameters{
 			Filters: []*armdatafactory.RunQueryFilter{
 				{
-					Operand:  armdatafactory.RunQueryFilterOperandTriggerName.ToPtr(),
-					Operator: armdatafactory.RunQueryFilterOperatorEquals.ToPtr(),
+					Operand:  armdatafactory.RunQueryFilterOperand("TriggerName").ToPtr(),
+					Operator: armdatafactory.RunQueryFilterOperator("Equals").ToPtr(),
 					Values: []*string{
 						to.StringPtr("exampleTrigger")},
 				}},
@@ -83,4 +83,5 @@ func ExampleTriggerRunsClient_QueryByFactory() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TriggerRunsClientQueryByFactoryResult)
 }

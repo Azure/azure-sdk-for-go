@@ -24,48 +24,66 @@ import (
 // ReplicationProtectionContainerMappingsClient contains the methods for the ReplicationProtectionContainerMappings group.
 // Don't use this type directly, use NewReplicationProtectionContainerMappingsClient() instead.
 type ReplicationProtectionContainerMappingsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationProtectionContainerMappingsClient creates a new instance of ReplicationProtectionContainerMappingsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationProtectionContainerMappingsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationProtectionContainerMappingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationProtectionContainerMappingsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationProtectionContainerMappingsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - The operation to create a protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginCreateOptions) (ReplicationProtectionContainerMappingsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// mappingName - Protection container mapping name.
+// creationInput - Mapping creation input.
+// options - ReplicationProtectionContainerMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginCreate
+// method.
+func (client *ReplicationProtectionContainerMappingsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (ReplicationProtectionContainerMappingsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, fabricName, protectionContainerName, mappingName, creationInput, options)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsCreatePollerResponse{}, err
+		return ReplicationProtectionContainerMappingsClientCreatePollerResponse{}, err
 	}
-	result := ReplicationProtectionContainerMappingsCreatePollerResponse{
+	result := ReplicationProtectionContainerMappingsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationProtectionContainerMappingsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ReplicationProtectionContainerMappingsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsCreatePollerResponse{}, err
+		return ReplicationProtectionContainerMappingsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationProtectionContainerMappingsCreatePoller{
+	result.Poller = &ReplicationProtectionContainerMappingsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - The operation to create a protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, protectionContainerName, mappingName, creationInput, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +93,13 @@ func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginCreateOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -107,52 +125,46 @@ func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, creationInput)
 }
 
-// createHandleError handles the Create error response.
-func (client *ReplicationProtectionContainerMappingsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - The operation to delete or remove a protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginDeleteOptions) (ReplicationProtectionContainerMappingsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// mappingName - Protection container mapping name.
+// removalInput - Removal input.
+// options - ReplicationProtectionContainerMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginDelete
+// method.
+func (client *ReplicationProtectionContainerMappingsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (ReplicationProtectionContainerMappingsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, mappingName, removalInput, options)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsDeletePollerResponse{}, err
+		return ReplicationProtectionContainerMappingsClientDeletePollerResponse{}, err
 	}
-	result := ReplicationProtectionContainerMappingsDeletePollerResponse{
+	result := ReplicationProtectionContainerMappingsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationProtectionContainerMappingsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ReplicationProtectionContainerMappingsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsDeletePollerResponse{}, err
+		return ReplicationProtectionContainerMappingsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ReplicationProtectionContainerMappingsDeletePoller{
+	result.Poller = &ReplicationProtectionContainerMappingsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - The operation to delete or remove a protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, protectionContainerName, mappingName, removalInput, options)
 	if err != nil {
 		return nil, err
@@ -162,13 +174,13 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}/remove"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -194,47 +206,40 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, removalInput)
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ReplicationProtectionContainerMappingsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of a protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsGetOptions) (ReplicationProtectionContainerMappingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// mappingName - Protection Container mapping name.
+// options - ReplicationProtectionContainerMappingsClientGetOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.Get
+// method.
+func (client *ReplicationProtectionContainerMappingsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientGetOptions) (ReplicationProtectionContainerMappingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, protectionContainerName, mappingName, options)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsGetResponse{}, err
+		return ReplicationProtectionContainerMappingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsGetResponse{}, err
+		return ReplicationProtectionContainerMappingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationProtectionContainerMappingsGetResponse{}, client.getHandleError(resp)
+		return ReplicationProtectionContainerMappingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsGetOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -260,54 +265,44 @@ func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationProtectionContainerMappingsClient) getHandleResponse(resp *http.Response) (ReplicationProtectionContainerMappingsGetResponse, error) {
-	result := ReplicationProtectionContainerMappingsGetResponse{RawResponse: resp}
+func (client *ReplicationProtectionContainerMappingsClient) getHandleResponse(resp *http.Response) (ReplicationProtectionContainerMappingsClientGetResponse, error) {
+	result := ReplicationProtectionContainerMappingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerMapping); err != nil {
-		return ReplicationProtectionContainerMappingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionContainerMappingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationProtectionContainerMappingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists the protection container mappings in the vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) List(options *ReplicationProtectionContainerMappingsListOptions) *ReplicationProtectionContainerMappingsListPager {
-	return &ReplicationProtectionContainerMappingsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.List
+// method.
+func (client *ReplicationProtectionContainerMappingsClient) List(options *ReplicationProtectionContainerMappingsClientListOptions) *ReplicationProtectionContainerMappingsClientListPager {
+	return &ReplicationProtectionContainerMappingsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectionContainerMappingsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationProtectionContainerMappingsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectionContainerMappingCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationProtectionContainerMappingsClient) listCreateRequest(ctx context.Context, options *ReplicationProtectionContainerMappingsListOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) listCreateRequest(ctx context.Context, options *ReplicationProtectionContainerMappingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainerMappings"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -321,54 +316,46 @@ func (client *ReplicationProtectionContainerMappingsClient) listCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationProtectionContainerMappingsClient) listHandleResponse(resp *http.Response) (ReplicationProtectionContainerMappingsListResponse, error) {
-	result := ReplicationProtectionContainerMappingsListResponse{RawResponse: resp}
+func (client *ReplicationProtectionContainerMappingsClient) listHandleResponse(resp *http.Response) (ReplicationProtectionContainerMappingsClientListResponse, error) {
+	result := ReplicationProtectionContainerMappingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerMappingCollection); err != nil {
-		return ReplicationProtectionContainerMappingsListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionContainerMappingsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ReplicationProtectionContainerMappingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByReplicationProtectionContainers - Lists the protection container mappings for a protection container.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsListByReplicationProtectionContainersOptions) *ReplicationProtectionContainerMappingsListByReplicationProtectionContainersPager {
-	return &ReplicationProtectionContainerMappingsListByReplicationProtectionContainersPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// options - ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions contains the optional
+// parameters for the ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers method.
+func (client *ReplicationProtectionContainerMappingsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersPager {
+	return &ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByReplicationProtectionContainersCreateRequest(ctx, fabricName, protectionContainerName, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectionContainerMappingCollection.NextLink)
 		},
 	}
 }
 
 // listByReplicationProtectionContainersCreateRequest creates the ListByReplicationProtectionContainers request.
-func (client *ReplicationProtectionContainerMappingsClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsListByReplicationProtectionContainersOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -390,61 +377,54 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByReplicationProtectionContainersHandleResponse handles the ListByReplicationProtectionContainers response.
-func (client *ReplicationProtectionContainerMappingsClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResponse, error) {
-	result := ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResponse{RawResponse: resp}
+func (client *ReplicationProtectionContainerMappingsClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse, error) {
+	result := ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerMappingCollection); err != nil {
-		return ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse{}, err
 	}
 	return result, nil
 }
 
-// listByReplicationProtectionContainersHandleError handles the ListByReplicationProtectionContainers error response.
-func (client *ReplicationProtectionContainerMappingsClient) listByReplicationProtectionContainersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginPurge - The operation to purge(force delete) a protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) BeginPurge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsBeginPurgeOptions) (ReplicationProtectionContainerMappingsPurgePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// mappingName - Protection container mapping name.
+// options - ReplicationProtectionContainerMappingsClientBeginPurgeOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginPurge
+// method.
+func (client *ReplicationProtectionContainerMappingsClient) BeginPurge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (ReplicationProtectionContainerMappingsClientPurgePollerResponse, error) {
 	resp, err := client.purge(ctx, fabricName, protectionContainerName, mappingName, options)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsPurgePollerResponse{}, err
+		return ReplicationProtectionContainerMappingsClientPurgePollerResponse{}, err
 	}
-	result := ReplicationProtectionContainerMappingsPurgePollerResponse{
+	result := ReplicationProtectionContainerMappingsClientPurgePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationProtectionContainerMappingsClient.Purge", "", resp, client.pl, client.purgeHandleError)
+	pt, err := armruntime.NewPoller("ReplicationProtectionContainerMappingsClient.Purge", "", resp, client.pl)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsPurgePollerResponse{}, err
+		return ReplicationProtectionContainerMappingsClientPurgePollerResponse{}, err
 	}
-	result.Poller = &ReplicationProtectionContainerMappingsPurgePoller{
+	result.Poller = &ReplicationProtectionContainerMappingsClientPurgePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Purge - The operation to purge(force delete) a protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsBeginPurgeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*http.Response, error) {
 	req, err := client.purgeCreateRequest(ctx, fabricName, protectionContainerName, mappingName, options)
 	if err != nil {
 		return nil, err
@@ -454,13 +434,13 @@ func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.purgeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // purgeCreateRequest creates the Purge request.
-func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsBeginPurgeOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -486,51 +466,45 @@ func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(c
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// purgeHandleError handles the Purge error response.
-func (client *ReplicationProtectionContainerMappingsClient) purgeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - The operation to update protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginUpdateOptions) (ReplicationProtectionContainerMappingsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// mappingName - Protection container mapping name.
+// updateInput - Mapping update input.
+// options - ReplicationProtectionContainerMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginUpdate
+// method.
+func (client *ReplicationProtectionContainerMappingsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (ReplicationProtectionContainerMappingsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, fabricName, protectionContainerName, mappingName, updateInput, options)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsUpdatePollerResponse{}, err
+		return ReplicationProtectionContainerMappingsClientUpdatePollerResponse{}, err
 	}
-	result := ReplicationProtectionContainerMappingsUpdatePollerResponse{
+	result := ReplicationProtectionContainerMappingsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationProtectionContainerMappingsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ReplicationProtectionContainerMappingsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ReplicationProtectionContainerMappingsUpdatePollerResponse{}, err
+		return ReplicationProtectionContainerMappingsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationProtectionContainerMappingsUpdatePoller{
+	result.Poller = &ReplicationProtectionContainerMappingsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - The operation to update protection container mapping.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, fabricName, protectionContainerName, mappingName, updateInput, options)
 	if err != nil {
 		return nil, err
@@ -540,13 +514,13 @@ func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsBeginUpdateOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -572,25 +546,13 @@ func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateInput)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ReplicationProtectionContainerMappingsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

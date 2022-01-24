@@ -35,7 +35,7 @@ func ExampleVendorNetworkFunctionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VendorNetworkFunction.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VendorNetworkFunctionsClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorNfCreate.json
@@ -58,30 +58,28 @@ func ExampleVendorNetworkFunctionsClient_BeginCreateOrUpdate() {
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										DNSServers:         []*string{},
 										Gateway:            to.StringPtr("<gateway>"),
 										IPAddress:          to.StringPtr("<ipaddress>"),
-										IPAllocationMethod: armhybridnetwork.IPAllocationMethodDynamic.ToPtr(),
-										IPVersion:          armhybridnetwork.IPVersionIPv4.ToPtr(),
+										IPAllocationMethod: armhybridnetwork.IPAllocationMethod("Dynamic").ToPtr(),
+										IPVersion:          armhybridnetwork.IPVersion("IPv4").ToPtr(),
 										Subnet:             to.StringPtr("<subnet>"),
 									}},
 								MacAddress:           to.StringPtr("<mac-address>"),
 								NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-								VMSwitchType:         armhybridnetwork.VMSwitchTypeManagement.ToPtr(),
+								VMSwitchType:         armhybridnetwork.VMSwitchType("Management").ToPtr(),
 							},
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										DNSServers:         []*string{},
 										Gateway:            to.StringPtr("<gateway>"),
 										IPAddress:          to.StringPtr("<ipaddress>"),
-										IPAllocationMethod: armhybridnetwork.IPAllocationMethodDynamic.ToPtr(),
-										IPVersion:          armhybridnetwork.IPVersionIPv4.ToPtr(),
+										IPAllocationMethod: armhybridnetwork.IPAllocationMethod("Dynamic").ToPtr(),
+										IPVersion:          armhybridnetwork.IPVersion("IPv4").ToPtr(),
 										Subnet:             to.StringPtr("<subnet>"),
 									}},
 								MacAddress:           to.StringPtr("<mac-address>"),
 								NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-								VMSwitchType:         armhybridnetwork.VMSwitchTypeWan.ToPtr(),
+								VMSwitchType:         armhybridnetwork.VMSwitchType("Wan").ToPtr(),
 							}},
 						OSProfile: &armhybridnetwork.OsProfile{
 							AdminUsername: to.StringPtr("<admin-username>"),
@@ -99,8 +97,8 @@ func ExampleVendorNetworkFunctionsClient_BeginCreateOrUpdate() {
 						RoleName:           to.StringPtr("<role-name>"),
 						UserDataParameters: map[string]interface{}{},
 					}},
-				SKUType:                 armhybridnetwork.SKUTypeSDWAN.ToPtr(),
-				VendorProvisioningState: armhybridnetwork.VendorProvisioningStateProvisioning.ToPtr(),
+				SKUType:                 armhybridnetwork.SKUType("SDWAN").ToPtr(),
+				VendorProvisioningState: armhybridnetwork.VendorProvisioningState("Provisioning").ToPtr(),
 			},
 		},
 		nil)
@@ -111,7 +109,7 @@ func ExampleVendorNetworkFunctionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VendorNetworkFunction.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VendorNetworkFunctionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorNfListByVendor.json
@@ -124,13 +122,17 @@ func ExampleVendorNetworkFunctionsClient_List() {
 	client := armhybridnetwork.NewVendorNetworkFunctionsClient("<subscription-id>", cred, nil)
 	pager := client.List("<location-name>",
 		"<vendor-name>",
-		&armhybridnetwork.VendorNetworkFunctionsListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armhybridnetwork.VendorNetworkFunctionsClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VendorNetworkFunction.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

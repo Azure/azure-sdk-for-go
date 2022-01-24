@@ -11,7 +11,6 @@ package armm365securityandcompliance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // PrivateLinkServicesForMIPPolicySyncClient contains the methods for the PrivateLinkServicesForMIPPolicySync group.
 // Don't use this type directly, use NewPrivateLinkServicesForMIPPolicySyncClient() instead.
 type PrivateLinkServicesForMIPPolicySyncClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkServicesForMIPPolicySyncClient creates a new instance of PrivateLinkServicesForMIPPolicySyncClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateLinkServicesForMIPPolicySyncClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkServicesForMIPPolicySyncClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateLinkServicesForMIPPolicySyncClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateLinkServicesForMIPPolicySyncClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update the metadata of a privateLinkServicesForMIPPolicySync instance.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForMIPPolicySyncDescription PrivateLinkServicesForMIPPolicySyncDescription, options *PrivateLinkServicesForMIPPolicySyncBeginCreateOrUpdateOptions) (PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// privateLinkServicesForMIPPolicySyncDescription - The service instance metadata.
+// options - PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions contains the optional parameters for the
+// PrivateLinkServicesForMIPPolicySyncClient.BeginCreateOrUpdate method.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForMIPPolicySyncDescription PrivateLinkServicesForMIPPolicySyncDescription, options *PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions) (PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForMIPPolicySyncDescription, options)
 	if err != nil {
-		return PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse{}, err
+		return PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse{
+	result := PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForMIPPolicySyncClient.CreateOrUpdate", "location", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("PrivateLinkServicesForMIPPolicySyncClient.CreateOrUpdate", "location", resp, client.pl)
 	if err != nil {
-		return PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse{}, err
+		return PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePoller{
+	result.Poller = &PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update the metadata of a privateLinkServicesForMIPPolicySync instance.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForMIPPolicySyncDescription PrivateLinkServicesForMIPPolicySyncDescription, options *PrivateLinkServicesForMIPPolicySyncBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForMIPPolicySyncDescription PrivateLinkServicesForMIPPolicySyncDescription, options *PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, privateLinkServicesForMIPPolicySyncDescription, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) createOrUpdate(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForMIPPolicySyncDescription PrivateLinkServicesForMIPPolicySyncDescription, options *PrivateLinkServicesForMIPPolicySyncBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrivateLinkServicesForMIPPolicySyncClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForMIPPolicySyncDescription PrivateLinkServicesForMIPPolicySyncDescription, options *PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForMIPPolicySync/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) createOrUpdateCreateReq
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,33 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) createOrUpdateCreateReq
 	return req, runtime.MarshalAsJSON(req, privateLinkServicesForMIPPolicySyncDescription)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a service instance.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncBeginDeleteOptions) (PrivateLinkServicesForMIPPolicySyncDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// options - PrivateLinkServicesForMIPPolicySyncClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.BeginDelete
+// method.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncClientBeginDeleteOptions) (PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return PrivateLinkServicesForMIPPolicySyncDeletePollerResponse{}, err
+		return PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse{}, err
 	}
-	result := PrivateLinkServicesForMIPPolicySyncDeletePollerResponse{
+	result := PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForMIPPolicySyncClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("PrivateLinkServicesForMIPPolicySyncClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return PrivateLinkServicesForMIPPolicySyncDeletePollerResponse{}, err
+		return PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse{}, err
 	}
-	result.Poller = &PrivateLinkServicesForMIPPolicySyncDeletePoller{
+	result.Poller = &PrivateLinkServicesForMIPPolicySyncClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a service instance.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +153,13 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) deleteOperation(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncBeginDeleteOptions) (*policy.Request, error) {
+func (client *PrivateLinkServicesForMIPPolicySyncClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForMIPPolicySync/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +173,7 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) deleteCreateRequest(ctx
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +184,29 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) deleteCreateRequest(ctx
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the metadata of a privateLinkServicesForMIPPolicySync resource.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncGetOptions) (PrivateLinkServicesForMIPPolicySyncGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// options - PrivateLinkServicesForMIPPolicySyncClientGetOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.Get
+// method.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncClientGetOptions) (PrivateLinkServicesForMIPPolicySyncClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return PrivateLinkServicesForMIPPolicySyncGetResponse{}, err
+		return PrivateLinkServicesForMIPPolicySyncClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkServicesForMIPPolicySyncGetResponse{}, err
+		return PrivateLinkServicesForMIPPolicySyncClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkServicesForMIPPolicySyncGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkServicesForMIPPolicySyncClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkServicesForMIPPolicySyncClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkServicesForMIPPolicySyncClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForMIPPolicySync/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +220,7 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) getCreateRequest(ctx co
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,49 +232,38 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) getCreateRequest(ctx co
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) getHandleResponse(resp *http.Response) (PrivateLinkServicesForMIPPolicySyncGetResponse, error) {
-	result := PrivateLinkServicesForMIPPolicySyncGetResponse{RawResponse: resp}
+func (client *PrivateLinkServicesForMIPPolicySyncClient) getHandleResponse(resp *http.Response) (PrivateLinkServicesForMIPPolicySyncClientGetResponse, error) {
+	result := PrivateLinkServicesForMIPPolicySyncClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForMIPPolicySyncDescription); err != nil {
-		return PrivateLinkServicesForMIPPolicySyncGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkServicesForMIPPolicySyncClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get all the privateLinkServicesForMIPPolicySync instances in a subscription.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) List(options *PrivateLinkServicesForMIPPolicySyncListOptions) *PrivateLinkServicesForMIPPolicySyncListPager {
-	return &PrivateLinkServicesForMIPPolicySyncListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PrivateLinkServicesForMIPPolicySyncClientListOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.List
+// method.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) List(options *PrivateLinkServicesForMIPPolicySyncClientListOptions) *PrivateLinkServicesForMIPPolicySyncClientListPager {
+	return &PrivateLinkServicesForMIPPolicySyncClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesForMIPPolicySyncListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateLinkServicesForMIPPolicySyncClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServicesForMIPPolicySyncDescriptionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) listCreateRequest(ctx context.Context, options *PrivateLinkServicesForMIPPolicySyncListOptions) (*policy.Request, error) {
+func (client *PrivateLinkServicesForMIPPolicySyncClient) listCreateRequest(ctx context.Context, options *PrivateLinkServicesForMIPPolicySyncClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForMIPPolicySync"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -292,43 +275,33 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) listCreateRequest(ctx c
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) listHandleResponse(resp *http.Response) (PrivateLinkServicesForMIPPolicySyncListResponse, error) {
-	result := PrivateLinkServicesForMIPPolicySyncListResponse{RawResponse: resp}
+func (client *PrivateLinkServicesForMIPPolicySyncClient) listHandleResponse(resp *http.Response) (PrivateLinkServicesForMIPPolicySyncClientListResponse, error) {
+	result := PrivateLinkServicesForMIPPolicySyncClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForMIPPolicySyncDescriptionListResult); err != nil {
-		return PrivateLinkServicesForMIPPolicySyncListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkServicesForMIPPolicySyncClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Get all the service instances in a resource group.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForMIPPolicySyncListByResourceGroupOptions) *PrivateLinkServicesForMIPPolicySyncListByResourceGroupPager {
-	return &PrivateLinkServicesForMIPPolicySyncListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// options - PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions contains the optional parameters for the
+// PrivateLinkServicesForMIPPolicySyncClient.ListByResourceGroup method.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions) *PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupPager {
+	return &PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkServicesForMIPPolicySyncListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkServicesForMIPPolicySyncDescriptionListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PrivateLinkServicesForMIPPolicySyncListByResourceGroupOptions) (*policy.Request, error) {
+func (client *PrivateLinkServicesForMIPPolicySyncClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForMIPPolicySync"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -338,7 +311,7 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) listByResourceGroupCrea
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,50 +323,42 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) listByResourceGroupCrea
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkServicesForMIPPolicySyncListByResourceGroupResponse, error) {
-	result := PrivateLinkServicesForMIPPolicySyncListByResourceGroupResponse{RawResponse: resp}
+func (client *PrivateLinkServicesForMIPPolicySyncClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse, error) {
+	result := PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkServicesForMIPPolicySyncDescriptionListResult); err != nil {
-		return PrivateLinkServicesForMIPPolicySyncListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update the metadata of a privateLinkServicesForMIPPolicySync instance.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForMIPPolicySyncBeginUpdateOptions) (PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// servicePatchDescription - The service instance metadata and security metadata.
+// options - PrivateLinkServicesForMIPPolicySyncClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.BeginUpdate
+// method.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForMIPPolicySyncClientBeginUpdateOptions) (PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
 	if err != nil {
-		return PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse{}, err
+		return PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse{}, err
 	}
-	result := PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse{
+	result := PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateLinkServicesForMIPPolicySyncClient.Update", "location", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("PrivateLinkServicesForMIPPolicySyncClient.Update", "location", resp, client.pl)
 	if err != nil {
-		return PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse{}, err
+		return PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &PrivateLinkServicesForMIPPolicySyncUpdatePoller{
+	result.Poller = &PrivateLinkServicesForMIPPolicySyncClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update the metadata of a privateLinkServicesForMIPPolicySync instance.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForMIPPolicySyncBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateLinkServicesForMIPPolicySyncClient) update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForMIPPolicySyncClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
 	if err != nil {
 		return nil, err
@@ -403,13 +368,13 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) update(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForMIPPolicySyncBeginUpdateOptions) (*policy.Request, error) {
+func (client *PrivateLinkServicesForMIPPolicySyncClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForMIPPolicySyncClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForMIPPolicySync/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -423,7 +388,7 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) updateCreateRequest(ctx
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -432,17 +397,4 @@ func (client *PrivateLinkServicesForMIPPolicySyncClient) updateCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, servicePatchDescription)
-}
-
-// updateHandleError handles the Update error response.
-func (client *PrivateLinkServicesForMIPPolicySyncClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

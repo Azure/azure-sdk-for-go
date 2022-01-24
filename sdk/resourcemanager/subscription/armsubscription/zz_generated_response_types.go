@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// AliasCreatePollerResponse contains the response from method Alias.Create.
-type AliasCreatePollerResponse struct {
+// AliasClientCreatePollerResponse contains the response from method AliasClient.Create.
+type AliasClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AliasCreatePoller
+	Poller *AliasClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,9 +27,9 @@ type AliasCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AliasCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AliasCreateResponse, error) {
-	respType := AliasCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SubscriptionAliasResponse)
+func (l AliasClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AliasClientCreateResponse, error) {
+	respType := AliasClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AliasResponse)
 	if err != nil {
 		return respType, err
 	}
@@ -37,13 +37,13 @@ func (l AliasCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.
 	return respType, nil
 }
 
-// Resume rehydrates a AliasCreatePollerResponse from the provided client and resume token.
-func (l *AliasCreatePollerResponse) Resume(ctx context.Context, client *AliasClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AliasClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a AliasClientCreatePollerResponse from the provided client and resume token.
+func (l *AliasClientCreatePollerResponse) Resume(ctx context.Context, client *AliasClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AliasClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AliasCreatePoller{
+	poller := &AliasClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,76 +55,64 @@ func (l *AliasCreatePollerResponse) Resume(ctx context.Context, client *AliasCli
 	return nil
 }
 
-// AliasCreateResponse contains the response from method Alias.Create.
-type AliasCreateResponse struct {
-	AliasCreateResult
+// AliasClientCreateResponse contains the response from method AliasClient.Create.
+type AliasClientCreateResponse struct {
+	AliasClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AliasCreateResult contains the result from method Alias.Create.
-type AliasCreateResult struct {
-	SubscriptionAliasResponse
+// AliasClientCreateResult contains the result from method AliasClient.Create.
+type AliasClientCreateResult struct {
+	AliasResponse
 }
 
-// AliasDeleteResponse contains the response from method Alias.Delete.
-type AliasDeleteResponse struct {
+// AliasClientDeleteResponse contains the response from method AliasClient.Delete.
+type AliasClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AliasGetResponse contains the response from method Alias.Get.
-type AliasGetResponse struct {
-	AliasGetResult
+// AliasClientGetResponse contains the response from method AliasClient.Get.
+type AliasClientGetResponse struct {
+	AliasClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AliasGetResult contains the result from method Alias.Get.
-type AliasGetResult struct {
-	SubscriptionAliasResponse
+// AliasClientGetResult contains the result from method AliasClient.Get.
+type AliasClientGetResult struct {
+	AliasResponse
 }
 
-// AliasListResponse contains the response from method Alias.List.
-type AliasListResponse struct {
+// AliasClientListResponse contains the response from method AliasClient.List.
+type AliasClientListResponse struct {
+	AliasClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AliasClientListResult contains the result from method AliasClient.List.
+type AliasClientListResult struct {
 	AliasListResult
+}
+
+// BillingAccountClientGetPolicyResponse contains the response from method BillingAccountClient.GetPolicy.
+type BillingAccountClientGetPolicyResponse struct {
+	BillingAccountClientGetPolicyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AliasListResult contains the result from method Alias.List.
-type AliasListResult struct {
-	SubscriptionAliasListResult
-}
-
-// BillingAccountGetPolicyResponse contains the response from method BillingAccount.GetPolicy.
-type BillingAccountGetPolicyResponse struct {
-	BillingAccountGetPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingAccountGetPolicyResult contains the result from method BillingAccount.GetPolicy.
-type BillingAccountGetPolicyResult struct {
+// BillingAccountClientGetPolicyResult contains the result from method BillingAccountClient.GetPolicy.
+type BillingAccountClientGetPolicyResult struct {
 	BillingAccountPoliciesResponse
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationListResult
-}
-
-// SubscriptionAcceptOwnershipPollerResponse contains the response from method Subscription.AcceptOwnership.
-type SubscriptionAcceptOwnershipPollerResponse struct {
+// ClientAcceptOwnershipPollerResponse contains the response from method Client.AcceptOwnership.
+type ClientAcceptOwnershipPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SubscriptionAcceptOwnershipPoller
+	Poller *ClientAcceptOwnershipPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -133,8 +121,8 @@ type SubscriptionAcceptOwnershipPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SubscriptionAcceptOwnershipPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubscriptionAcceptOwnershipResponse, error) {
-	respType := SubscriptionAcceptOwnershipResponse{}
+func (l ClientAcceptOwnershipPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientAcceptOwnershipResponse, error) {
+	respType := ClientAcceptOwnershipResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -143,13 +131,13 @@ func (l SubscriptionAcceptOwnershipPollerResponse) PollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// Resume rehydrates a SubscriptionAcceptOwnershipPollerResponse from the provided client and resume token.
-func (l *SubscriptionAcceptOwnershipPollerResponse) Resume(ctx context.Context, client *SubscriptionClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SubscriptionClient.AcceptOwnership", token, client.pl, client.acceptOwnershipHandleError)
+// Resume rehydrates a ClientAcceptOwnershipPollerResponse from the provided client and resume token.
+func (l *ClientAcceptOwnershipPollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.AcceptOwnership", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SubscriptionAcceptOwnershipPoller{
+	poller := &ClientAcceptOwnershipPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -161,92 +149,152 @@ func (l *SubscriptionAcceptOwnershipPollerResponse) Resume(ctx context.Context, 
 	return nil
 }
 
-// SubscriptionAcceptOwnershipResponse contains the response from method Subscription.AcceptOwnership.
-type SubscriptionAcceptOwnershipResponse struct {
+// ClientAcceptOwnershipResponse contains the response from method Client.AcceptOwnership.
+type ClientAcceptOwnershipResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionAcceptOwnershipStatusResponse contains the response from method Subscription.AcceptOwnershipStatus.
-type SubscriptionAcceptOwnershipStatusResponse struct {
-	SubscriptionAcceptOwnershipStatusResult
+// ClientAcceptOwnershipStatusResponse contains the response from method Client.AcceptOwnershipStatus.
+type ClientAcceptOwnershipStatusResponse struct {
+	ClientAcceptOwnershipStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionAcceptOwnershipStatusResult contains the result from method Subscription.AcceptOwnershipStatus.
-type SubscriptionAcceptOwnershipStatusResult struct {
+// ClientAcceptOwnershipStatusResult contains the result from method Client.AcceptOwnershipStatus.
+type ClientAcceptOwnershipStatusResult struct {
 	AcceptOwnershipStatusResponse
 }
 
-// SubscriptionCancelResponse contains the response from method Subscription.Cancel.
-type SubscriptionCancelResponse struct {
-	SubscriptionCancelResult
+// ClientCancelResponse contains the response from method Client.Cancel.
+type ClientCancelResponse struct {
+	ClientCancelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionCancelResult contains the result from method Subscription.Cancel.
-type SubscriptionCancelResult struct {
+// ClientCancelResult contains the result from method Client.Cancel.
+type ClientCancelResult struct {
 	CanceledSubscriptionID
 }
 
-// SubscriptionEnableResponse contains the response from method Subscription.Enable.
-type SubscriptionEnableResponse struct {
-	SubscriptionEnableResult
+// ClientEnableResponse contains the response from method Client.Enable.
+type ClientEnableResponse struct {
+	ClientEnableResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionEnableResult contains the result from method Subscription.Enable.
-type SubscriptionEnableResult struct {
+// ClientEnableResult contains the result from method Client.Enable.
+type ClientEnableResult struct {
 	EnabledSubscriptionID
 }
 
-// SubscriptionPolicyAddUpdatePolicyForTenantResponse contains the response from method SubscriptionPolicy.AddUpdatePolicyForTenant.
-type SubscriptionPolicyAddUpdatePolicyForTenantResponse struct {
-	SubscriptionPolicyAddUpdatePolicyForTenantResult
+// ClientRenameResponse contains the response from method Client.Rename.
+type ClientRenameResponse struct {
+	ClientRenameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionPolicyAddUpdatePolicyForTenantResult contains the result from method SubscriptionPolicy.AddUpdatePolicyForTenant.
-type SubscriptionPolicyAddUpdatePolicyForTenantResult struct {
+// ClientRenameResult contains the result from method Client.Rename.
+type ClientRenameResult struct {
+	RenamedSubscriptionID
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	OperationListResult
+}
+
+// PolicyClientAddUpdatePolicyForTenantResponse contains the response from method PolicyClient.AddUpdatePolicyForTenant.
+type PolicyClientAddUpdatePolicyForTenantResponse struct {
+	PolicyClientAddUpdatePolicyForTenantResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PolicyClientAddUpdatePolicyForTenantResult contains the result from method PolicyClient.AddUpdatePolicyForTenant.
+type PolicyClientAddUpdatePolicyForTenantResult struct {
 	GetTenantPolicyResponse
 }
 
-// SubscriptionPolicyGetPolicyForTenantResponse contains the response from method SubscriptionPolicy.GetPolicyForTenant.
-type SubscriptionPolicyGetPolicyForTenantResponse struct {
-	SubscriptionPolicyGetPolicyForTenantResult
+// PolicyClientGetPolicyForTenantResponse contains the response from method PolicyClient.GetPolicyForTenant.
+type PolicyClientGetPolicyForTenantResponse struct {
+	PolicyClientGetPolicyForTenantResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionPolicyGetPolicyForTenantResult contains the result from method SubscriptionPolicy.GetPolicyForTenant.
-type SubscriptionPolicyGetPolicyForTenantResult struct {
+// PolicyClientGetPolicyForTenantResult contains the result from method PolicyClient.GetPolicyForTenant.
+type PolicyClientGetPolicyForTenantResult struct {
 	GetTenantPolicyResponse
 }
 
-// SubscriptionPolicyListPolicyForTenantResponse contains the response from method SubscriptionPolicy.ListPolicyForTenant.
-type SubscriptionPolicyListPolicyForTenantResponse struct {
-	SubscriptionPolicyListPolicyForTenantResult
+// PolicyClientListPolicyForTenantResponse contains the response from method PolicyClient.ListPolicyForTenant.
+type PolicyClientListPolicyForTenantResponse struct {
+	PolicyClientListPolicyForTenantResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionPolicyListPolicyForTenantResult contains the result from method SubscriptionPolicy.ListPolicyForTenant.
-type SubscriptionPolicyListPolicyForTenantResult struct {
+// PolicyClientListPolicyForTenantResult contains the result from method PolicyClient.ListPolicyForTenant.
+type PolicyClientListPolicyForTenantResult struct {
 	GetTenantPolicyListResponse
 }
 
-// SubscriptionRenameResponse contains the response from method Subscription.Rename.
-type SubscriptionRenameResponse struct {
-	SubscriptionRenameResult
+// SubscriptionsClientGetResponse contains the response from method SubscriptionsClient.Get.
+type SubscriptionsClientGetResponse struct {
+	SubscriptionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionRenameResult contains the result from method Subscription.Rename.
-type SubscriptionRenameResult struct {
-	RenamedSubscriptionID
+// SubscriptionsClientGetResult contains the result from method SubscriptionsClient.Get.
+type SubscriptionsClientGetResult struct {
+	Subscription
+}
+
+// SubscriptionsClientListLocationsResponse contains the response from method SubscriptionsClient.ListLocations.
+type SubscriptionsClientListLocationsResponse struct {
+	SubscriptionsClientListLocationsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionsClientListLocationsResult contains the result from method SubscriptionsClient.ListLocations.
+type SubscriptionsClientListLocationsResult struct {
+	LocationListResult
+}
+
+// SubscriptionsClientListResponse contains the response from method SubscriptionsClient.List.
+type SubscriptionsClientListResponse struct {
+	SubscriptionsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SubscriptionsClientListResult contains the result from method SubscriptionsClient.List.
+type SubscriptionsClientListResult struct {
+	ListResult
+}
+
+// TenantsClientListResponse contains the response from method TenantsClient.List.
+type TenantsClientListResponse struct {
+	TenantsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TenantsClientListResult contains the result from method TenantsClient.List.
+type TenantsClientListResult struct {
+	TenantListResult
 }

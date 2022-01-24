@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// DataControllersDeleteDataControllerPollerResponse contains the response from method DataControllers.DeleteDataController.
-type DataControllersDeleteDataControllerPollerResponse struct {
+// DataControllersClientDeleteDataControllerPollerResponse contains the response from method DataControllersClient.DeleteDataController.
+type DataControllersClientDeleteDataControllerPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DataControllersDeleteDataControllerPoller
+	Poller *DataControllersClientDeleteDataControllerPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type DataControllersDeleteDataControllerPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DataControllersDeleteDataControllerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DataControllersDeleteDataControllerResponse, error) {
-	respType := DataControllersDeleteDataControllerResponse{}
+func (l DataControllersClientDeleteDataControllerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DataControllersClientDeleteDataControllerResponse, error) {
+	respType := DataControllersClientDeleteDataControllerResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l DataControllersDeleteDataControllerPollerResponse) PollUntilDone(ctx con
 	return respType, nil
 }
 
-// Resume rehydrates a DataControllersDeleteDataControllerPollerResponse from the provided client and resume token.
-func (l *DataControllersDeleteDataControllerPollerResponse) Resume(ctx context.Context, client *DataControllersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DataControllersClient.DeleteDataController", token, client.pl, client.deleteDataControllerHandleError)
+// Resume rehydrates a DataControllersClientDeleteDataControllerPollerResponse from the provided client and resume token.
+func (l *DataControllersClientDeleteDataControllerPollerResponse) Resume(ctx context.Context, client *DataControllersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DataControllersClient.DeleteDataController", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DataControllersDeleteDataControllerPoller{
+	poller := &DataControllersClientDeleteDataControllerPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,64 +55,64 @@ func (l *DataControllersDeleteDataControllerPollerResponse) Resume(ctx context.C
 	return nil
 }
 
-// DataControllersDeleteDataControllerResponse contains the response from method DataControllers.DeleteDataController.
-type DataControllersDeleteDataControllerResponse struct {
+// DataControllersClientDeleteDataControllerResponse contains the response from method DataControllersClient.DeleteDataController.
+type DataControllersClientDeleteDataControllerResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataControllersGetDataControllerResponse contains the response from method DataControllers.GetDataController.
-type DataControllersGetDataControllerResponse struct {
-	DataControllersGetDataControllerResult
+// DataControllersClientGetDataControllerResponse contains the response from method DataControllersClient.GetDataController.
+type DataControllersClientGetDataControllerResponse struct {
+	DataControllersClientGetDataControllerResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataControllersGetDataControllerResult contains the result from method DataControllers.GetDataController.
-type DataControllersGetDataControllerResult struct {
+// DataControllersClientGetDataControllerResult contains the result from method DataControllersClient.GetDataController.
+type DataControllersClientGetDataControllerResult struct {
 	DataControllerResource
 }
 
-// DataControllersListInGroupResponse contains the response from method DataControllers.ListInGroup.
-type DataControllersListInGroupResponse struct {
-	DataControllersListInGroupResult
+// DataControllersClientListInGroupResponse contains the response from method DataControllersClient.ListInGroup.
+type DataControllersClientListInGroupResponse struct {
+	DataControllersClientListInGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataControllersListInGroupResult contains the result from method DataControllers.ListInGroup.
-type DataControllersListInGroupResult struct {
+// DataControllersClientListInGroupResult contains the result from method DataControllersClient.ListInGroup.
+type DataControllersClientListInGroupResult struct {
 	PageOfDataControllerResource
 }
 
-// DataControllersListInSubscriptionResponse contains the response from method DataControllers.ListInSubscription.
-type DataControllersListInSubscriptionResponse struct {
-	DataControllersListInSubscriptionResult
+// DataControllersClientListInSubscriptionResponse contains the response from method DataControllersClient.ListInSubscription.
+type DataControllersClientListInSubscriptionResponse struct {
+	DataControllersClientListInSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataControllersListInSubscriptionResult contains the result from method DataControllers.ListInSubscription.
-type DataControllersListInSubscriptionResult struct {
+// DataControllersClientListInSubscriptionResult contains the result from method DataControllersClient.ListInSubscription.
+type DataControllersClientListInSubscriptionResult struct {
 	PageOfDataControllerResource
 }
 
-// DataControllersPatchDataControllerResponse contains the response from method DataControllers.PatchDataController.
-type DataControllersPatchDataControllerResponse struct {
-	DataControllersPatchDataControllerResult
+// DataControllersClientPatchDataControllerResponse contains the response from method DataControllersClient.PatchDataController.
+type DataControllersClientPatchDataControllerResponse struct {
+	DataControllersClientPatchDataControllerResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataControllersPatchDataControllerResult contains the result from method DataControllers.PatchDataController.
-type DataControllersPatchDataControllerResult struct {
+// DataControllersClientPatchDataControllerResult contains the result from method DataControllersClient.PatchDataController.
+type DataControllersClientPatchDataControllerResult struct {
 	DataControllerResource
 }
 
-// DataControllersPutDataControllerPollerResponse contains the response from method DataControllers.PutDataController.
-type DataControllersPutDataControllerPollerResponse struct {
+// DataControllersClientPutDataControllerPollerResponse contains the response from method DataControllersClient.PutDataController.
+type DataControllersClientPutDataControllerPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DataControllersPutDataControllerPoller
+	Poller *DataControllersClientPutDataControllerPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -121,8 +121,8 @@ type DataControllersPutDataControllerPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DataControllersPutDataControllerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DataControllersPutDataControllerResponse, error) {
-	respType := DataControllersPutDataControllerResponse{}
+func (l DataControllersClientPutDataControllerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DataControllersClientPutDataControllerResponse, error) {
+	respType := DataControllersClientPutDataControllerResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DataControllerResource)
 	if err != nil {
 		return respType, err
@@ -131,13 +131,13 @@ func (l DataControllersPutDataControllerPollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a DataControllersPutDataControllerPollerResponse from the provided client and resume token.
-func (l *DataControllersPutDataControllerPollerResponse) Resume(ctx context.Context, client *DataControllersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DataControllersClient.PutDataController", token, client.pl, client.putDataControllerHandleError)
+// Resume rehydrates a DataControllersClientPutDataControllerPollerResponse from the provided client and resume token.
+func (l *DataControllersClientPutDataControllerPollerResponse) Resume(ctx context.Context, client *DataControllersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DataControllersClient.PutDataController", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DataControllersPutDataControllerPoller{
+	poller := &DataControllersClientPutDataControllerPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -149,34 +149,34 @@ func (l *DataControllersPutDataControllerPollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// DataControllersPutDataControllerResponse contains the response from method DataControllers.PutDataController.
-type DataControllersPutDataControllerResponse struct {
-	DataControllersPutDataControllerResult
+// DataControllersClientPutDataControllerResponse contains the response from method DataControllersClient.PutDataController.
+type DataControllersClientPutDataControllerResponse struct {
+	DataControllersClientPutDataControllerResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataControllersPutDataControllerResult contains the result from method DataControllers.PutDataController.
-type DataControllersPutDataControllerResult struct {
+// DataControllersClientPutDataControllerResult contains the result from method DataControllersClient.PutDataController.
+type DataControllersClientPutDataControllerResult struct {
 	DataControllerResource
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// SQLManagedInstancesCreatePollerResponse contains the response from method SQLManagedInstances.Create.
-type SQLManagedInstancesCreatePollerResponse struct {
+// SQLManagedInstancesClientCreatePollerResponse contains the response from method SQLManagedInstancesClient.Create.
+type SQLManagedInstancesClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SQLManagedInstancesCreatePoller
+	Poller *SQLManagedInstancesClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -185,8 +185,8 @@ type SQLManagedInstancesCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SQLManagedInstancesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLManagedInstancesCreateResponse, error) {
-	respType := SQLManagedInstancesCreateResponse{}
+func (l SQLManagedInstancesClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLManagedInstancesClientCreateResponse, error) {
+	respType := SQLManagedInstancesClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLManagedInstance)
 	if err != nil {
 		return respType, err
@@ -195,13 +195,13 @@ func (l SQLManagedInstancesCreatePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a SQLManagedInstancesCreatePollerResponse from the provided client and resume token.
-func (l *SQLManagedInstancesCreatePollerResponse) Resume(ctx context.Context, client *SQLManagedInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLManagedInstancesClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a SQLManagedInstancesClientCreatePollerResponse from the provided client and resume token.
+func (l *SQLManagedInstancesClientCreatePollerResponse) Resume(ctx context.Context, client *SQLManagedInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLManagedInstancesClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SQLManagedInstancesCreatePoller{
+	poller := &SQLManagedInstancesClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -213,22 +213,22 @@ func (l *SQLManagedInstancesCreatePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// SQLManagedInstancesCreateResponse contains the response from method SQLManagedInstances.Create.
-type SQLManagedInstancesCreateResponse struct {
-	SQLManagedInstancesCreateResult
+// SQLManagedInstancesClientCreateResponse contains the response from method SQLManagedInstancesClient.Create.
+type SQLManagedInstancesClientCreateResponse struct {
+	SQLManagedInstancesClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLManagedInstancesCreateResult contains the result from method SQLManagedInstances.Create.
-type SQLManagedInstancesCreateResult struct {
+// SQLManagedInstancesClientCreateResult contains the result from method SQLManagedInstancesClient.Create.
+type SQLManagedInstancesClientCreateResult struct {
 	SQLManagedInstance
 }
 
-// SQLManagedInstancesDeletePollerResponse contains the response from method SQLManagedInstances.Delete.
-type SQLManagedInstancesDeletePollerResponse struct {
+// SQLManagedInstancesClientDeletePollerResponse contains the response from method SQLManagedInstancesClient.Delete.
+type SQLManagedInstancesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SQLManagedInstancesDeletePoller
+	Poller *SQLManagedInstancesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -237,8 +237,8 @@ type SQLManagedInstancesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SQLManagedInstancesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLManagedInstancesDeleteResponse, error) {
-	respType := SQLManagedInstancesDeleteResponse{}
+func (l SQLManagedInstancesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLManagedInstancesClientDeleteResponse, error) {
+	respType := SQLManagedInstancesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -247,13 +247,13 @@ func (l SQLManagedInstancesDeletePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a SQLManagedInstancesDeletePollerResponse from the provided client and resume token.
-func (l *SQLManagedInstancesDeletePollerResponse) Resume(ctx context.Context, client *SQLManagedInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLManagedInstancesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SQLManagedInstancesClientDeletePollerResponse from the provided client and resume token.
+func (l *SQLManagedInstancesClientDeletePollerResponse) Resume(ctx context.Context, client *SQLManagedInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLManagedInstancesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SQLManagedInstancesDeletePoller{
+	poller := &SQLManagedInstancesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -265,64 +265,64 @@ func (l *SQLManagedInstancesDeletePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// SQLManagedInstancesDeleteResponse contains the response from method SQLManagedInstances.Delete.
-type SQLManagedInstancesDeleteResponse struct {
+// SQLManagedInstancesClientDeleteResponse contains the response from method SQLManagedInstancesClient.Delete.
+type SQLManagedInstancesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLManagedInstancesGetResponse contains the response from method SQLManagedInstances.Get.
-type SQLManagedInstancesGetResponse struct {
-	SQLManagedInstancesGetResult
+// SQLManagedInstancesClientGetResponse contains the response from method SQLManagedInstancesClient.Get.
+type SQLManagedInstancesClientGetResponse struct {
+	SQLManagedInstancesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLManagedInstancesGetResult contains the result from method SQLManagedInstances.Get.
-type SQLManagedInstancesGetResult struct {
+// SQLManagedInstancesClientGetResult contains the result from method SQLManagedInstancesClient.Get.
+type SQLManagedInstancesClientGetResult struct {
 	SQLManagedInstance
 }
 
-// SQLManagedInstancesListByResourceGroupResponse contains the response from method SQLManagedInstances.ListByResourceGroup.
-type SQLManagedInstancesListByResourceGroupResponse struct {
-	SQLManagedInstancesListByResourceGroupResult
+// SQLManagedInstancesClientListByResourceGroupResponse contains the response from method SQLManagedInstancesClient.ListByResourceGroup.
+type SQLManagedInstancesClientListByResourceGroupResponse struct {
+	SQLManagedInstancesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLManagedInstancesListByResourceGroupResult contains the result from method SQLManagedInstances.ListByResourceGroup.
-type SQLManagedInstancesListByResourceGroupResult struct {
+// SQLManagedInstancesClientListByResourceGroupResult contains the result from method SQLManagedInstancesClient.ListByResourceGroup.
+type SQLManagedInstancesClientListByResourceGroupResult struct {
 	SQLManagedInstanceListResult
 }
 
-// SQLManagedInstancesListResponse contains the response from method SQLManagedInstances.List.
-type SQLManagedInstancesListResponse struct {
-	SQLManagedInstancesListResult
+// SQLManagedInstancesClientListResponse contains the response from method SQLManagedInstancesClient.List.
+type SQLManagedInstancesClientListResponse struct {
+	SQLManagedInstancesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLManagedInstancesListResult contains the result from method SQLManagedInstances.List.
-type SQLManagedInstancesListResult struct {
+// SQLManagedInstancesClientListResult contains the result from method SQLManagedInstancesClient.List.
+type SQLManagedInstancesClientListResult struct {
 	SQLManagedInstanceListResult
 }
 
-// SQLManagedInstancesUpdateResponse contains the response from method SQLManagedInstances.Update.
-type SQLManagedInstancesUpdateResponse struct {
-	SQLManagedInstancesUpdateResult
+// SQLManagedInstancesClientUpdateResponse contains the response from method SQLManagedInstancesClient.Update.
+type SQLManagedInstancesClientUpdateResponse struct {
+	SQLManagedInstancesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLManagedInstancesUpdateResult contains the result from method SQLManagedInstances.Update.
-type SQLManagedInstancesUpdateResult struct {
+// SQLManagedInstancesClientUpdateResult contains the result from method SQLManagedInstancesClient.Update.
+type SQLManagedInstancesClientUpdateResult struct {
 	SQLManagedInstance
 }
 
-// SQLServerInstancesCreatePollerResponse contains the response from method SQLServerInstances.Create.
-type SQLServerInstancesCreatePollerResponse struct {
+// SQLServerInstancesClientCreatePollerResponse contains the response from method SQLServerInstancesClient.Create.
+type SQLServerInstancesClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SQLServerInstancesCreatePoller
+	Poller *SQLServerInstancesClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -331,8 +331,8 @@ type SQLServerInstancesCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SQLServerInstancesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLServerInstancesCreateResponse, error) {
-	respType := SQLServerInstancesCreateResponse{}
+func (l SQLServerInstancesClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLServerInstancesClientCreateResponse, error) {
+	respType := SQLServerInstancesClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SQLServerInstance)
 	if err != nil {
 		return respType, err
@@ -341,13 +341,13 @@ func (l SQLServerInstancesCreatePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a SQLServerInstancesCreatePollerResponse from the provided client and resume token.
-func (l *SQLServerInstancesCreatePollerResponse) Resume(ctx context.Context, client *SQLServerInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLServerInstancesClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a SQLServerInstancesClientCreatePollerResponse from the provided client and resume token.
+func (l *SQLServerInstancesClientCreatePollerResponse) Resume(ctx context.Context, client *SQLServerInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLServerInstancesClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SQLServerInstancesCreatePoller{
+	poller := &SQLServerInstancesClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -359,22 +359,22 @@ func (l *SQLServerInstancesCreatePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// SQLServerInstancesCreateResponse contains the response from method SQLServerInstances.Create.
-type SQLServerInstancesCreateResponse struct {
-	SQLServerInstancesCreateResult
+// SQLServerInstancesClientCreateResponse contains the response from method SQLServerInstancesClient.Create.
+type SQLServerInstancesClientCreateResponse struct {
+	SQLServerInstancesClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerInstancesCreateResult contains the result from method SQLServerInstances.Create.
-type SQLServerInstancesCreateResult struct {
+// SQLServerInstancesClientCreateResult contains the result from method SQLServerInstancesClient.Create.
+type SQLServerInstancesClientCreateResult struct {
 	SQLServerInstance
 }
 
-// SQLServerInstancesDeletePollerResponse contains the response from method SQLServerInstances.Delete.
-type SQLServerInstancesDeletePollerResponse struct {
+// SQLServerInstancesClientDeletePollerResponse contains the response from method SQLServerInstancesClient.Delete.
+type SQLServerInstancesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SQLServerInstancesDeletePoller
+	Poller *SQLServerInstancesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -383,8 +383,8 @@ type SQLServerInstancesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SQLServerInstancesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLServerInstancesDeleteResponse, error) {
-	respType := SQLServerInstancesDeleteResponse{}
+func (l SQLServerInstancesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SQLServerInstancesClientDeleteResponse, error) {
+	respType := SQLServerInstancesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -393,13 +393,13 @@ func (l SQLServerInstancesDeletePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a SQLServerInstancesDeletePollerResponse from the provided client and resume token.
-func (l *SQLServerInstancesDeletePollerResponse) Resume(ctx context.Context, client *SQLServerInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SQLServerInstancesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SQLServerInstancesClientDeletePollerResponse from the provided client and resume token.
+func (l *SQLServerInstancesClientDeletePollerResponse) Resume(ctx context.Context, client *SQLServerInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SQLServerInstancesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SQLServerInstancesDeletePoller{
+	poller := &SQLServerInstancesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -411,56 +411,56 @@ func (l *SQLServerInstancesDeletePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// SQLServerInstancesDeleteResponse contains the response from method SQLServerInstances.Delete.
-type SQLServerInstancesDeleteResponse struct {
+// SQLServerInstancesClientDeleteResponse contains the response from method SQLServerInstancesClient.Delete.
+type SQLServerInstancesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerInstancesGetResponse contains the response from method SQLServerInstances.Get.
-type SQLServerInstancesGetResponse struct {
-	SQLServerInstancesGetResult
+// SQLServerInstancesClientGetResponse contains the response from method SQLServerInstancesClient.Get.
+type SQLServerInstancesClientGetResponse struct {
+	SQLServerInstancesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerInstancesGetResult contains the result from method SQLServerInstances.Get.
-type SQLServerInstancesGetResult struct {
+// SQLServerInstancesClientGetResult contains the result from method SQLServerInstancesClient.Get.
+type SQLServerInstancesClientGetResult struct {
 	SQLServerInstance
 }
 
-// SQLServerInstancesListByResourceGroupResponse contains the response from method SQLServerInstances.ListByResourceGroup.
-type SQLServerInstancesListByResourceGroupResponse struct {
-	SQLServerInstancesListByResourceGroupResult
+// SQLServerInstancesClientListByResourceGroupResponse contains the response from method SQLServerInstancesClient.ListByResourceGroup.
+type SQLServerInstancesClientListByResourceGroupResponse struct {
+	SQLServerInstancesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerInstancesListByResourceGroupResult contains the result from method SQLServerInstances.ListByResourceGroup.
-type SQLServerInstancesListByResourceGroupResult struct {
+// SQLServerInstancesClientListByResourceGroupResult contains the result from method SQLServerInstancesClient.ListByResourceGroup.
+type SQLServerInstancesClientListByResourceGroupResult struct {
 	SQLServerInstanceListResult
 }
 
-// SQLServerInstancesListResponse contains the response from method SQLServerInstances.List.
-type SQLServerInstancesListResponse struct {
-	SQLServerInstancesListResult
+// SQLServerInstancesClientListResponse contains the response from method SQLServerInstancesClient.List.
+type SQLServerInstancesClientListResponse struct {
+	SQLServerInstancesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerInstancesListResult contains the result from method SQLServerInstances.List.
-type SQLServerInstancesListResult struct {
+// SQLServerInstancesClientListResult contains the result from method SQLServerInstancesClient.List.
+type SQLServerInstancesClientListResult struct {
 	SQLServerInstanceListResult
 }
 
-// SQLServerInstancesUpdateResponse contains the response from method SQLServerInstances.Update.
-type SQLServerInstancesUpdateResponse struct {
-	SQLServerInstancesUpdateResult
+// SQLServerInstancesClientUpdateResponse contains the response from method SQLServerInstancesClient.Update.
+type SQLServerInstancesClientUpdateResponse struct {
+	SQLServerInstancesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerInstancesUpdateResult contains the result from method SQLServerInstances.Update.
-type SQLServerInstancesUpdateResult struct {
+// SQLServerInstancesClientUpdateResult contains the result from method SQLServerInstancesClient.Update.
+type SQLServerInstancesClientUpdateResult struct {
 	SQLServerInstance
 }

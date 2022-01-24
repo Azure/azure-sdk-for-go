@@ -27,13 +27,17 @@ func ExampleSQLPoolSchemasClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		&armsynapse.SQLPoolSchemasListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armsynapse.SQLPoolSchemasClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLPoolSchema.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -55,5 +59,5 @@ func ExampleSQLPoolSchemasClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLPoolSchema.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolSchemasClientGetResult)
 }

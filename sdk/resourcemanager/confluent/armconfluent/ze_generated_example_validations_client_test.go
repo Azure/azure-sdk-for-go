@@ -52,5 +52,5 @@ func ExampleValidationsClient_ValidateOrganization() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OrganizationResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ValidationsClientValidateOrganizationResult)
 }

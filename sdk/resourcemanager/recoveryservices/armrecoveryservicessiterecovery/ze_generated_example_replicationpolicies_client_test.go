@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationPolicies_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationPolicies_List.json
 func ExampleReplicationPoliciesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,17 +30,21 @@ func ExampleReplicationPoliciesClient_List() {
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Policy.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationPolicies_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationPolicies_Get.json
 func ExampleReplicationPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,10 +60,10 @@ func ExampleReplicationPoliciesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Policy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationPoliciesClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationPolicies_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationPolicies_Create.json
 func ExampleReplicationPoliciesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,9 +78,7 @@ func ExampleReplicationPoliciesClient_BeginCreate() {
 		armrecoveryservicessiterecovery.CreatePolicyInput{
 			Properties: &armrecoveryservicessiterecovery.CreatePolicyInputProperties{
 				ProviderSpecificInput: &armrecoveryservicessiterecovery.HyperVReplicaAzurePolicyInput{
-					PolicyProviderSpecificInput: armrecoveryservicessiterecovery.PolicyProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 			},
 		},
@@ -88,10 +90,10 @@ func ExampleReplicationPoliciesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Policy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationPoliciesClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationPolicies_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationPolicies_Delete.json
 func ExampleReplicationPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +115,7 @@ func ExampleReplicationPoliciesClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationPolicies_Update.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationPolicies_Update.json
 func ExampleReplicationPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,9 +130,7 @@ func ExampleReplicationPoliciesClient_BeginUpdate() {
 		armrecoveryservicessiterecovery.UpdatePolicyInput{
 			Properties: &armrecoveryservicessiterecovery.UpdatePolicyInputProperties{
 				ReplicationProviderSettings: &armrecoveryservicessiterecovery.HyperVReplicaAzurePolicyInput{
-					PolicyProviderSpecificInput: armrecoveryservicessiterecovery.PolicyProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 			},
 		},
@@ -142,5 +142,5 @@ func ExampleReplicationPoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Policy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationPoliciesClientUpdateResult)
 }

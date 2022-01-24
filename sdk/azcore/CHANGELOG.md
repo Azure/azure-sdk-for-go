@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* `BearerTokenPolicy` is more resilient to transient authentication failures
 
 ## 0.21.0 (2022-01-11)
 

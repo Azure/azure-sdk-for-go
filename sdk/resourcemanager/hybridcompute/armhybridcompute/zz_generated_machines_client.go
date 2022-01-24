@@ -11,7 +11,6 @@ package armhybridcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // MachinesClient contains the methods for the Machines group.
 // Don't use this type directly, use NewMachinesClient() instead.
 type MachinesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMachinesClient creates a new instance of MachinesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MachinesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MachinesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MachinesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - The operation to create or update a hybrid machine resource identity in Azure.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, parameters Machine, options *MachinesCreateOrUpdateOptions) (MachinesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the hybrid machine.
+// parameters - Parameters supplied to the Create hybrid machine operation.
+// options - MachinesClientCreateOrUpdateOptions contains the optional parameters for the MachinesClient.CreateOrUpdate method.
+func (client *MachinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, parameters Machine, options *MachinesClientCreateOrUpdateOptions) (MachinesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, machineName, parameters, options)
 	if err != nil {
-		return MachinesCreateOrUpdateResponse{}, err
+		return MachinesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MachinesCreateOrUpdateResponse{}, err
+		return MachinesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MachinesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return MachinesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, parameters Machine, options *MachinesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *MachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, parameters Machine, options *MachinesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *MachinesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter machineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +97,36 @@ func (client *MachinesClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MachinesClient) createOrUpdateHandleResponse(resp *http.Response) (MachinesCreateOrUpdateResponse, error) {
-	result := MachinesCreateOrUpdateResponse{RawResponse: resp}
+func (client *MachinesClient) createOrUpdateHandleResponse(resp *http.Response) (MachinesClientCreateOrUpdateResponse, error) {
+	result := MachinesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Machine); err != nil {
-		return MachinesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MachinesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *MachinesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - The operation to remove a hybrid machine identity in Azure.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachinesClient) Delete(ctx context.Context, resourceGroupName string, machineName string, options *MachinesDeleteOptions) (MachinesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the hybrid machine.
+// options - MachinesClientDeleteOptions contains the optional parameters for the MachinesClient.Delete method.
+func (client *MachinesClient) Delete(ctx context.Context, resourceGroupName string, machineName string, options *MachinesClientDeleteOptions) (MachinesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, machineName, options)
 	if err != nil {
-		return MachinesDeleteResponse{}, err
+		return MachinesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MachinesDeleteResponse{}, err
+		return MachinesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return MachinesDeleteResponse{}, client.deleteHandleError(resp)
+		return MachinesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MachinesDeleteResponse{RawResponse: resp}, nil
+	return MachinesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, machineName string, options *MachinesDeleteOptions) (*policy.Request, error) {
+func (client *MachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, machineName string, options *MachinesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +140,7 @@ func (client *MachinesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter machineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +151,28 @@ func (client *MachinesClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *MachinesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves information about the model view or the instance view of a hybrid machine.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachinesClient) Get(ctx context.Context, resourceGroupName string, machineName string, options *MachinesGetOptions) (MachinesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the hybrid machine.
+// options - MachinesClientGetOptions contains the optional parameters for the MachinesClient.Get method.
+func (client *MachinesClient) Get(ctx context.Context, resourceGroupName string, machineName string, options *MachinesClientGetOptions) (MachinesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, machineName, options)
 	if err != nil {
-		return MachinesGetResponse{}, err
+		return MachinesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MachinesGetResponse{}, err
+		return MachinesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MachinesGetResponse{}, client.getHandleError(resp)
+		return MachinesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, machineName string, options *MachinesGetOptions) (*policy.Request, error) {
+func (client *MachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, machineName string, options *MachinesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +186,7 @@ func (client *MachinesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter machineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -210,44 +201,34 @@ func (client *MachinesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *MachinesClient) getHandleResponse(resp *http.Response) (MachinesGetResponse, error) {
-	result := MachinesGetResponse{RawResponse: resp}
+func (client *MachinesClient) getHandleResponse(resp *http.Response) (MachinesClientGetResponse, error) {
+	result := MachinesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Machine); err != nil {
-		return MachinesGetResponse{}, runtime.NewResponseError(err, resp)
+		return MachinesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MachinesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response to get the next page of
-// hybrid machines.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachinesClient) ListByResourceGroup(resourceGroupName string, options *MachinesListByResourceGroupOptions) *MachinesListByResourceGroupPager {
-	return &MachinesListByResourceGroupPager{
+// ListByResourceGroup - Lists all the hybrid machines in the specified resource group. Use the nextLink property in the response
+// to get the next page of hybrid machines.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - MachinesClientListByResourceGroupOptions contains the optional parameters for the MachinesClient.ListByResourceGroup
+// method.
+func (client *MachinesClient) ListByResourceGroup(resourceGroupName string, options *MachinesClientListByResourceGroupOptions) *MachinesClientListByResourceGroupPager {
+	return &MachinesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp MachinesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MachinesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MachineListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MachinesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *MachinesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *MachinesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *MachinesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -257,7 +238,7 @@ func (client *MachinesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,50 +250,39 @@ func (client *MachinesClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *MachinesClient) listByResourceGroupHandleResponse(resp *http.Response) (MachinesListByResourceGroupResponse, error) {
-	result := MachinesListByResourceGroupResponse{RawResponse: resp}
+func (client *MachinesClient) listByResourceGroupHandleResponse(resp *http.Response) (MachinesClientListByResourceGroupResponse, error) {
+	result := MachinesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MachineListResult); err != nil {
-		return MachinesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return MachinesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *MachinesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response to get the next page of hybrid
-// machines.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachinesClient) ListBySubscription(options *MachinesListBySubscriptionOptions) *MachinesListBySubscriptionPager {
-	return &MachinesListBySubscriptionPager{
+// ListBySubscription - Lists all the hybrid machines in the specified subscription. Use the nextLink property in the response
+// to get the next page of hybrid machines.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - MachinesClientListBySubscriptionOptions contains the optional parameters for the MachinesClient.ListBySubscription
+// method.
+func (client *MachinesClient) ListBySubscription(options *MachinesClientListBySubscriptionOptions) *MachinesClientListBySubscriptionPager {
+	return &MachinesClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp MachinesListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MachinesClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MachineListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *MachinesClient) listBySubscriptionCreateRequest(ctx context.Context, options *MachinesListBySubscriptionOptions) (*policy.Request, error) {
+func (client *MachinesClient) listBySubscriptionCreateRequest(ctx context.Context, options *MachinesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/machines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -324,46 +294,37 @@ func (client *MachinesClient) listBySubscriptionCreateRequest(ctx context.Contex
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *MachinesClient) listBySubscriptionHandleResponse(resp *http.Response) (MachinesListBySubscriptionResponse, error) {
-	result := MachinesListBySubscriptionResponse{RawResponse: resp}
+func (client *MachinesClient) listBySubscriptionHandleResponse(resp *http.Response) (MachinesClientListBySubscriptionResponse, error) {
+	result := MachinesClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MachineListResult); err != nil {
-		return MachinesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return MachinesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *MachinesClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - The operation to update a hybrid machine.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MachinesClient) Update(ctx context.Context, resourceGroupName string, machineName string, parameters MachineUpdate, options *MachinesUpdateOptions) (MachinesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the hybrid machine.
+// parameters - Parameters supplied to the Update hybrid machine operation.
+// options - MachinesClientUpdateOptions contains the optional parameters for the MachinesClient.Update method.
+func (client *MachinesClient) Update(ctx context.Context, resourceGroupName string, machineName string, parameters MachineUpdate, options *MachinesClientUpdateOptions) (MachinesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, machineName, parameters, options)
 	if err != nil {
-		return MachinesUpdateResponse{}, err
+		return MachinesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MachinesUpdateResponse{}, err
+		return MachinesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MachinesUpdateResponse{}, client.updateHandleError(resp)
+		return MachinesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, parameters MachineUpdate, options *MachinesUpdateOptions) (*policy.Request, error) {
+func (client *MachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, machineName string, parameters MachineUpdate, options *MachinesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -377,7 +338,7 @@ func (client *MachinesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter machineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -389,23 +350,10 @@ func (client *MachinesClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *MachinesClient) updateHandleResponse(resp *http.Response) (MachinesUpdateResponse, error) {
-	result := MachinesUpdateResponse{RawResponse: resp}
+func (client *MachinesClient) updateHandleResponse(resp *http.Response) (MachinesClientUpdateResponse, error) {
+	result := MachinesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Machine); err != nil {
-		return MachinesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MachinesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *MachinesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

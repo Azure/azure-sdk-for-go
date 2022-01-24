@@ -17,16 +17,60 @@ import (
 
 // AzureCliScript - Object model for the Azure CLI script.
 type AzureCliScript struct {
-	DeploymentScript
+	// REQUIRED; Type of the script.
+	Kind *ScriptType `json:"kind,omitempty"`
+
+	// REQUIRED; The location of the ACI and the storage account for the deployment script.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Properties of the Azure CLI script object.
 	Properties *AzureCliScriptProperties `json:"properties,omitempty"`
+
+	// Optional property. Managed identity to be used for this deployment script. Currently, only user-assigned MSI is supported.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDeploymentScript implements the DeploymentScriptClassification interface for type AzureCliScript.
+func (a *AzureCliScript) GetDeploymentScript() *DeploymentScript {
+	return &DeploymentScript{
+		Identity:   a.Identity,
+		Location:   a.Location,
+		Tags:       a.Tags,
+		Kind:       a.Kind,
+		SystemData: a.SystemData,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureCliScript.
 func (a AzureCliScript) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.DeploymentScript.marshalInternal(objectMap, ScriptTypeAzureCLI)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
+	objectMap["kind"] = ScriptTypeAzureCLI
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -39,49 +83,169 @@ func (a *AzureCliScript) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &a.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, &a.Identity)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &a.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &a.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &a.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &a.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &a.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &a.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.DeploymentScript.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureCliScriptProperties - Properties of the Azure CLI script object.
 type AzureCliScriptProperties struct {
-	DeploymentScriptPropertiesBase
-	ScriptConfigurationBase
 	// REQUIRED; Azure CLI module version to be used.
 	AzCliVersion *string `json:"azCliVersion,omitempty"`
+
+	// REQUIRED; Interval for which the service retains the script resource after it reaches a terminal state. Resource will be
+	// deleted when this duration expires. Duration is based on ISO 8601 pattern (for example
+	// P1D means one day).
+	RetentionInterval *string `json:"retentionInterval,omitempty"`
+
+	// Command line arguments to pass to the script. Arguments are separated by spaces. ex: -Name blue* -Location 'West US 2'
+	Arguments *string `json:"arguments,omitempty"`
+
+	// The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'.
+	CleanupPreference *CleanupOptions `json:"cleanupPreference,omitempty"`
+
+	// Container settings.
+	ContainerSettings *ContainerConfiguration `json:"containerSettings,omitempty"`
+
+	// The environment variables to pass over to the script.
+	EnvironmentVariables []*EnvironmentVariable `json:"environmentVariables,omitempty"`
+
+	// Gets or sets how the deployment script should be forced to execute even if the script resource has not changed. Can be
+	// current time stamp or a GUID.
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+
+	// Uri for the script. This is the entry point for the external script.
+	PrimaryScriptURI *string `json:"primaryScriptUri,omitempty"`
+
+	// Script body.
+	ScriptContent *string `json:"scriptContent,omitempty"`
+
+	// Storage Account settings.
+	StorageAccountSettings *StorageAccountConfiguration `json:"storageAccountSettings,omitempty"`
+
+	// Supporting files for the external script.
+	SupportingScriptUris []*string `json:"supportingScriptUris,omitempty"`
+
+	// Maximum allowed script execution time specified in ISO 8601 format. Default value is P1D
+	Timeout *string `json:"timeout,omitempty"`
+
+	// READ-ONLY; List of script outputs.
+	Outputs map[string]map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+
+	// READ-ONLY; State of the script execution. This only appears in the response.
+	ProvisioningState *ScriptProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Contains the results of script execution.
+	Status *ScriptStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureCliScriptProperties.
 func (a AzureCliScriptProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.DeploymentScriptPropertiesBase.marshalInternal(objectMap)
-	a.ScriptConfigurationBase.marshalInternal(objectMap)
+	populate(objectMap, "arguments", a.Arguments)
 	populate(objectMap, "azCliVersion", a.AzCliVersion)
+	populate(objectMap, "cleanupPreference", a.CleanupPreference)
+	populate(objectMap, "containerSettings", a.ContainerSettings)
+	populate(objectMap, "environmentVariables", a.EnvironmentVariables)
+	populate(objectMap, "forceUpdateTag", a.ForceUpdateTag)
+	populate(objectMap, "outputs", a.Outputs)
+	populate(objectMap, "primaryScriptUri", a.PrimaryScriptURI)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "retentionInterval", a.RetentionInterval)
+	populate(objectMap, "scriptContent", a.ScriptContent)
+	populate(objectMap, "status", a.Status)
+	populate(objectMap, "storageAccountSettings", a.StorageAccountSettings)
+	populate(objectMap, "supportingScriptUris", a.SupportingScriptUris)
+	populate(objectMap, "timeout", a.Timeout)
 	return json.Marshal(objectMap)
 }
 
 // AzurePowerShellScript - Object model for the Azure PowerShell script.
 type AzurePowerShellScript struct {
-	DeploymentScript
+	// REQUIRED; Type of the script.
+	Kind *ScriptType `json:"kind,omitempty"`
+
+	// REQUIRED; The location of the ACI and the storage account for the deployment script.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Properties of the Azure PowerShell script object.
 	Properties *AzurePowerShellScriptProperties `json:"properties,omitempty"`
+
+	// Optional property. Managed identity to be used for this deployment script. Currently, only user-assigned MSI is supported.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDeploymentScript implements the DeploymentScriptClassification interface for type AzurePowerShellScript.
+func (a *AzurePowerShellScript) GetDeploymentScript() *DeploymentScript {
+	return &DeploymentScript{
+		Identity:   a.Identity,
+		Location:   a.Location,
+		Tags:       a.Tags,
+		Kind:       a.Kind,
+		SystemData: a.SystemData,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzurePowerShellScript.
 func (a AzurePowerShellScript) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.DeploymentScript.marshalInternal(objectMap, ScriptTypeAzurePowerShell)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
+	objectMap["kind"] = ScriptTypeAzurePowerShell
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -94,34 +258,110 @@ func (a *AzurePowerShellScript) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &a.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, &a.Identity)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &a.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &a.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &a.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &a.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &a.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &a.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.DeploymentScript.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzurePowerShellScriptProperties - Properties of the Azure PowerShell script object.
 type AzurePowerShellScriptProperties struct {
-	DeploymentScriptPropertiesBase
-	ScriptConfigurationBase
 	// REQUIRED; Azure PowerShell module version to be used.
 	AzPowerShellVersion *string `json:"azPowerShellVersion,omitempty"`
+
+	// REQUIRED; Interval for which the service retains the script resource after it reaches a terminal state. Resource will be
+	// deleted when this duration expires. Duration is based on ISO 8601 pattern (for example
+	// P1D means one day).
+	RetentionInterval *string `json:"retentionInterval,omitempty"`
+
+	// Command line arguments to pass to the script. Arguments are separated by spaces. ex: -Name blue* -Location 'West US 2'
+	Arguments *string `json:"arguments,omitempty"`
+
+	// The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'.
+	CleanupPreference *CleanupOptions `json:"cleanupPreference,omitempty"`
+
+	// Container settings.
+	ContainerSettings *ContainerConfiguration `json:"containerSettings,omitempty"`
+
+	// The environment variables to pass over to the script.
+	EnvironmentVariables []*EnvironmentVariable `json:"environmentVariables,omitempty"`
+
+	// Gets or sets how the deployment script should be forced to execute even if the script resource has not changed. Can be
+	// current time stamp or a GUID.
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+
+	// Uri for the script. This is the entry point for the external script.
+	PrimaryScriptURI *string `json:"primaryScriptUri,omitempty"`
+
+	// Script body.
+	ScriptContent *string `json:"scriptContent,omitempty"`
+
+	// Storage Account settings.
+	StorageAccountSettings *StorageAccountConfiguration `json:"storageAccountSettings,omitempty"`
+
+	// Supporting files for the external script.
+	SupportingScriptUris []*string `json:"supportingScriptUris,omitempty"`
+
+	// Maximum allowed script execution time specified in ISO 8601 format. Default value is P1D
+	Timeout *string `json:"timeout,omitempty"`
+
+	// READ-ONLY; List of script outputs.
+	Outputs map[string]map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+
+	// READ-ONLY; State of the script execution. This only appears in the response.
+	ProvisioningState *ScriptProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Contains the results of script execution.
+	Status *ScriptStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzurePowerShellScriptProperties.
 func (a AzurePowerShellScriptProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.DeploymentScriptPropertiesBase.marshalInternal(objectMap)
-	a.ScriptConfigurationBase.marshalInternal(objectMap)
+	populate(objectMap, "arguments", a.Arguments)
 	populate(objectMap, "azPowerShellVersion", a.AzPowerShellVersion)
+	populate(objectMap, "cleanupPreference", a.CleanupPreference)
+	populate(objectMap, "containerSettings", a.ContainerSettings)
+	populate(objectMap, "environmentVariables", a.EnvironmentVariables)
+	populate(objectMap, "forceUpdateTag", a.ForceUpdateTag)
+	populate(objectMap, "outputs", a.Outputs)
+	populate(objectMap, "primaryScriptUri", a.PrimaryScriptURI)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "retentionInterval", a.RetentionInterval)
+	populate(objectMap, "scriptContent", a.ScriptContent)
+	populate(objectMap, "status", a.Status)
+	populate(objectMap, "storageAccountSettings", a.StorageAccountSettings)
+	populate(objectMap, "supportingScriptUris", a.SupportingScriptUris)
+	populate(objectMap, "timeout", a.Timeout)
 	return json.Marshal(objectMap)
 }
 
@@ -137,59 +377,60 @@ type AzureResourceBase struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureResourceBase.
-func (a AzureResourceBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
+// ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
+type ClientBeginCreateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureResourceBase.
-func (a *AzureResourceBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
+// ClientDeleteOptions contains the optional parameters for the Client.Delete method.
+type ClientDeleteOptions struct {
+	// placeholder for future optional parameters
 }
 
-func (a AzureResourceBase) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "type", a.Type)
+// ClientGetLogsDefaultOptions contains the optional parameters for the Client.GetLogsDefault method.
+type ClientGetLogsDefaultOptions struct {
+	// The number of lines to show from the tail of the deployment script log. Valid value is a positive number up to 1000. If
+	// 'tail' is not provided, all available logs are shown up to container instance
+	// log capacity of 4mb.
+	Tail *int32
 }
 
-func (a *AzureResourceBase) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// ClientGetLogsOptions contains the optional parameters for the Client.GetLogs method.
+type ClientGetLogsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+type ClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+type ClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientUpdateOptions contains the optional parameters for the Client.Update method.
+type ClientUpdateOptions struct {
+	// Deployment script resource with the tags to be updated.
+	DeploymentScript *DeploymentScriptUpdateParameter
 }
 
 // ContainerConfiguration - Settings to customize ACI container instance.
 type ContainerConfiguration struct {
-	// Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates the system to generate
-	// a unique name which might end up flagging an Azure
-	// Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention or when you want to fully control
-	// the name. 'containerGroupName' property must
-	// be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive
-	// dashes are not allowed. To specify a
-	// 'containerGroupName', add the following object to properties: { "containerSettings": { "containerGroupName": "contoso-container" } }. If you do not want
-	// to specify a 'containerGroupName' then do not
+	// Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates
+	// the system to generate a unique name which might end up flagging an Azure
+	// Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention
+	// or when you want to fully control the name. 'containerGroupName' property must
+	// be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end
+	// with a dash and consecutive dashes are not allowed. To specify a
+	// 'containerGroupName', add the following object to properties: { "containerSettings": { "containerGroupName": "contoso-container"
+	// } }. If you do not want to specify a 'containerGroupName' then do not
 	// add 'containerSettings' property.
 	ContainerGroupName *string `json:"containerGroupName,omitempty"`
 }
@@ -205,7 +446,6 @@ type DeploymentScriptClassification interface {
 
 // DeploymentScript - Deployment script object.
 type DeploymentScript struct {
-	AzureResourceBase
 	// REQUIRED; Type of the script.
 	Kind *ScriptType `json:"kind,omitempty"`
 
@@ -218,60 +458,34 @@ type DeploymentScript struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata related to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetDeploymentScript implements the DeploymentScriptClassification interface for type DeploymentScript.
 func (d *DeploymentScript) GetDeploymentScript() *DeploymentScript { return d }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentScript.
-func (d *DeploymentScript) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DeploymentScript) marshalInternal(objectMap map[string]interface{}, discValue ScriptType) {
-	d.AzureResourceBase.marshalInternal(objectMap)
+// MarshalJSON implements the json.Marshaller interface for type DeploymentScript.
+func (d DeploymentScript) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", d.ID)
 	populate(objectMap, "identity", d.Identity)
-	d.Kind = &discValue
 	objectMap["kind"] = d.Kind
 	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "systemData", d.SystemData)
 	populate(objectMap, "tags", d.Tags)
-}
-
-func (d *DeploymentScript) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &d.Identity)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &d.Kind)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &d.Location)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &d.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.AzureResourceBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	populate(objectMap, "type", d.Type)
+	return json.Marshal(objectMap)
 }
 
 // DeploymentScriptListResult - List of deployment scripts.
@@ -338,113 +552,38 @@ type DeploymentScriptPropertiesBase struct {
 // MarshalJSON implements the json.Marshaller interface for type DeploymentScriptPropertiesBase.
 func (d DeploymentScriptPropertiesBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (d DeploymentScriptPropertiesBase) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "cleanupPreference", d.CleanupPreference)
 	populate(objectMap, "containerSettings", d.ContainerSettings)
 	populate(objectMap, "outputs", d.Outputs)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "status", d.Status)
 	populate(objectMap, "storageAccountSettings", d.StorageAccountSettings)
+	return json.Marshal(objectMap)
 }
 
 // DeploymentScriptUpdateParameter - Deployment script parameters to be updated.
 type DeploymentScriptUpdateParameter struct {
-	AzureResourceBase
 	// Resource tags to be updated.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DeploymentScriptUpdateParameter.
 func (d DeploymentScriptUpdateParameter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.AzureResourceBase.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentScriptUpdateParameter.
-func (d *DeploymentScriptUpdateParameter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.AzureResourceBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeploymentScriptsBeginCreateOptions contains the optional parameters for the DeploymentScripts.BeginCreate method.
-type DeploymentScriptsBeginCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentScriptsDeleteOptions contains the optional parameters for the DeploymentScripts.Delete method.
-type DeploymentScriptsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentScriptsError - Deployment scripts error response.
-// Implements the error and azcore.HTTPResponse interfaces.
-type DeploymentScriptsError struct {
-	raw string
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response
-	// format.)
-	InnerError *ErrorResponse `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type DeploymentScriptsError.
-// The contents of the error text are not contractual and subject to change.
-func (e DeploymentScriptsError) Error() string {
-	return e.raw
-}
-
-// DeploymentScriptsGetLogsDefaultOptions contains the optional parameters for the DeploymentScripts.GetLogsDefault method.
-type DeploymentScriptsGetLogsDefaultOptions struct {
-	// The number of lines to show from the tail of the deployment script log. Valid value is a positive number up to 1000. If 'tail' is not provided, all available
-	// logs are shown up to container instance log capacity of 4mb.
-	Tail *int32
-}
-
-// DeploymentScriptsGetLogsOptions contains the optional parameters for the DeploymentScripts.GetLogs method.
-type DeploymentScriptsGetLogsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentScriptsGetOptions contains the optional parameters for the DeploymentScripts.Get method.
-type DeploymentScriptsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentScriptsListByResourceGroupOptions contains the optional parameters for the DeploymentScripts.ListByResourceGroup method.
-type DeploymentScriptsListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentScriptsListBySubscriptionOptions contains the optional parameters for the DeploymentScripts.ListBySubscription method.
-type DeploymentScriptsListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DeploymentScriptsUpdateOptions contains the optional parameters for the DeploymentScripts.Update method.
-type DeploymentScriptsUpdateOptions struct {
-	// Deployment script resource with the tags to be updated.
-	DeploymentScript *DeploymentScriptUpdateParameter
 }
 
 // EnvironmentVariable - The environment variable to pass to the script in the container instance.
@@ -459,6 +598,13 @@ type EnvironmentVariable struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// Error - Deployment scripts error response.
+type Error struct {
+	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
+	// the OData error response format.)
+	Error *ErrorResponse `json:"error,omitempty"`
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -468,8 +614,8 @@ type ErrorAdditionalInfo struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.)
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
@@ -509,7 +655,8 @@ type ManagedServiceIdentity struct {
 	// Type of the managed identity.
 	Type *ManagedServiceIdentityType `json:"type,omitempty"`
 
-	// The list of user-assigned managed identities associated with the resource. Key is the Azure resource Id of the managed identity.
+	// The list of user-assigned managed identities associated with the resource. Key is the Azure resource Id of the managed
+	// identity.
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 
 	// READ-ONLY; ID of the Azure Active Directory.
@@ -527,8 +674,8 @@ func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
 
 // ScriptConfigurationBase - Common configuration settings for both Azure PowerShell and Azure CLI scripts.
 type ScriptConfigurationBase struct {
-	// REQUIRED; Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires.
-	// Duration is based on ISO 8601 pattern (for example
+	// REQUIRED; Interval for which the service retains the script resource after it reaches a terminal state. Resource will be
+	// deleted when this duration expires. Duration is based on ISO 8601 pattern (for example
 	// P1D means one day).
 	RetentionInterval *string `json:"retentionInterval,omitempty"`
 
@@ -538,7 +685,8 @@ type ScriptConfigurationBase struct {
 	// The environment variables to pass over to the script.
 	EnvironmentVariables []*EnvironmentVariable `json:"environmentVariables,omitempty"`
 
-	// Gets or sets how the deployment script should be forced to execute even if the script resource has not changed. Can be current time stamp or a GUID.
+	// Gets or sets how the deployment script should be forced to execute even if the script resource has not changed. Can be
+	// current time stamp or a GUID.
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 
 	// Uri for the script. This is the entry point for the external script.
@@ -557,11 +705,6 @@ type ScriptConfigurationBase struct {
 // MarshalJSON implements the json.Marshaller interface for type ScriptConfigurationBase.
 func (s ScriptConfigurationBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (s ScriptConfigurationBase) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "arguments", s.Arguments)
 	populate(objectMap, "environmentVariables", s.EnvironmentVariables)
 	populate(objectMap, "forceUpdateTag", s.ForceUpdateTag)
@@ -570,44 +713,22 @@ func (s ScriptConfigurationBase) marshalInternal(objectMap map[string]interface{
 	populate(objectMap, "scriptContent", s.ScriptContent)
 	populate(objectMap, "supportingScriptUris", s.SupportingScriptUris)
 	populate(objectMap, "timeout", s.Timeout)
+	return json.Marshal(objectMap)
 }
 
 // ScriptLog - Script execution log object.
 type ScriptLog struct {
-	AzureResourceBase
 	// Script log properties.
 	Properties *LogProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ScriptLog.
-func (s ScriptLog) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.AzureResourceBase.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScriptLog.
-func (s *ScriptLog) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.AzureResourceBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Name of this resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of this resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ScriptLogsList - Deployment script execution logs.
@@ -691,7 +812,8 @@ func (s *ScriptStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// StorageAccountConfiguration - Settings to use an existing storage account. Valid storage account kinds are: Storage, StorageV2 and FileStorage
+// StorageAccountConfiguration - Settings to use an existing storage account. Valid storage account kinds are: Storage, StorageV2
+// and FileStorage
 type StorageAccountConfiguration struct {
 	// The storage account access key.
 	StorageAccountKey *string `json:"storageAccountKey,omitempty"`

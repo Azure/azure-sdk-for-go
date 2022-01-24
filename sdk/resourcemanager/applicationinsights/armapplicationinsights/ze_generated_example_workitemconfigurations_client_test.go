@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
@@ -24,13 +25,14 @@ func ExampleWorkItemConfigurationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewWorkItemConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkItemConfigurationsClientListResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkItemConfigCreate.json
@@ -44,12 +46,20 @@ func ExampleWorkItemConfigurationsClient_Create() {
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.WorkItemCreateConfiguration{},
+		armapplicationinsights.WorkItemCreateConfiguration{
+			ConnectorDataConfiguration: to.StringPtr("<connector-data-configuration>"),
+			ConnectorID:                to.StringPtr("<connector-id>"),
+			ValidateOnly:               to.BoolPtr(true),
+			WorkItemProperties: map[string]*string{
+				"0": to.StringPtr("[object Object]"),
+				"1": to.StringPtr("[object Object]"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkItemConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkItemConfigurationsClientCreateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkItemConfigDefaultGet.json
@@ -67,7 +77,7 @@ func ExampleWorkItemConfigurationsClient_GetDefault() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkItemConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkItemConfigurationsClientGetDefaultResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkItemConfigDelete.json
@@ -104,7 +114,7 @@ func ExampleWorkItemConfigurationsClient_GetItem() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkItemConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkItemConfigurationsClientGetItemResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkItemConfigUpdate.json
@@ -119,10 +129,18 @@ func ExampleWorkItemConfigurationsClient_UpdateItem() {
 		"<resource-group-name>",
 		"<resource-name>",
 		"<work-item-config-id>",
-		armapplicationinsights.WorkItemCreateConfiguration{},
+		armapplicationinsights.WorkItemCreateConfiguration{
+			ConnectorDataConfiguration: to.StringPtr("<connector-data-configuration>"),
+			ConnectorID:                to.StringPtr("<connector-id>"),
+			ValidateOnly:               to.BoolPtr(true),
+			WorkItemProperties: map[string]*string{
+				"0": to.StringPtr("[object Object]"),
+				"1": to.StringPtr("[object Object]"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkItemConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkItemConfigurationsClientUpdateItemResult)
 }

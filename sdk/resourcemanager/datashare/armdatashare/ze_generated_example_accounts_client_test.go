@@ -27,13 +27,17 @@ func ExampleAccountsClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armdatashare.NewAccountsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armdatashare.AccountsListBySubscriptionOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListBySubscription(&armdatashare.AccountsClientListBySubscriptionOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Account.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,7 +57,7 @@ func ExampleAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Accounts_Create.json
@@ -68,15 +72,13 @@ func ExampleAccountsClient_BeginCreate() {
 		"<resource-group-name>",
 		"<account-name>",
 		armdatashare.Account{
-			DefaultDto: armdatashare.DefaultDto{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"tag1": to.StringPtr("Red"),
-					"tag2": to.StringPtr("White"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"tag1": to.StringPtr("Red"),
+				"tag2": to.StringPtr("White"),
 			},
 			Identity: &armdatashare.Identity{
-				Type: armdatashare.TypeSystemAssigned.ToPtr(),
+				Type: armdatashare.Type("SystemAssigned").ToPtr(),
 			},
 		},
 		nil)
@@ -87,7 +89,7 @@ func ExampleAccountsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientCreateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Accounts_Delete.json
@@ -105,10 +107,11 @@ func ExampleAccountsClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Accounts_Update.json
@@ -132,7 +135,7 @@ func ExampleAccountsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Accounts_ListByResourceGroup.json
@@ -144,13 +147,17 @@ func ExampleAccountsClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armdatashare.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armdatashare.AccountsListByResourceGroupOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armdatashare.AccountsClientListByResourceGroupOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Account.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

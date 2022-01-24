@@ -27,12 +27,16 @@ func ExamplePrivateEndpointConnectionsPrivateLinkHubClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<private-link-hub-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnectionForPrivateLinkHub.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,5 +57,5 @@ func ExamplePrivateEndpointConnectionsPrivateLinkHubClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionForPrivateLinkHub.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsPrivateLinkHubClientGetResult)
 }

@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // CredentialClient contains the methods for the Credential group.
 // Don't use this type directly, use NewCredentialClient() instead.
 type CredentialClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCredentialClient creates a new instance of CredentialClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCredentialClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CredentialClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CredentialClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CredentialClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create a credential.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CredentialClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters, options *CredentialCreateOrUpdateOptions) (CredentialCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// credentialName - The parameters supplied to the create or update credential operation.
+// parameters - The parameters supplied to the create or update credential operation.
+// options - CredentialClientCreateOrUpdateOptions contains the optional parameters for the CredentialClient.CreateOrUpdate
+// method.
+func (client *CredentialClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters, options *CredentialClientCreateOrUpdateOptions) (CredentialClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, credentialName, parameters, options)
 	if err != nil {
-		return CredentialCreateOrUpdateResponse{}, err
+		return CredentialClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CredentialCreateOrUpdateResponse{}, err
+		return CredentialClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CredentialCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CredentialClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CredentialClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters, options *CredentialCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CredentialClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters, options *CredentialClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +92,7 @@ func (client *CredentialClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +104,37 @@ func (client *CredentialClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CredentialClient) createOrUpdateHandleResponse(resp *http.Response) (CredentialCreateOrUpdateResponse, error) {
-	result := CredentialCreateOrUpdateResponse{RawResponse: resp}
+func (client *CredentialClient) createOrUpdateHandleResponse(resp *http.Response) (CredentialClientCreateOrUpdateResponse, error) {
+	result := CredentialClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
-		return CredentialCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CredentialClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CredentialClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the credential.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CredentialClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, options *CredentialDeleteOptions) (CredentialDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// credentialName - The name of credential.
+// options - CredentialClientDeleteOptions contains the optional parameters for the CredentialClient.Delete method.
+func (client *CredentialClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, options *CredentialClientDeleteOptions) (CredentialClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, credentialName, options)
 	if err != nil {
-		return CredentialDeleteResponse{}, err
+		return CredentialClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CredentialDeleteResponse{}, err
+		return CredentialClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CredentialDeleteResponse{}, client.deleteHandleError(resp)
+		return CredentialClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CredentialDeleteResponse{RawResponse: resp}, nil
+	return CredentialClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CredentialClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, options *CredentialDeleteOptions) (*policy.Request, error) {
+func (client *CredentialClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, options *CredentialClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,7 +152,7 @@ func (client *CredentialClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +163,29 @@ func (client *CredentialClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CredentialClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the credential identified by credential name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CredentialClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, options *CredentialGetOptions) (CredentialGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// credentialName - The name of credential.
+// options - CredentialClientGetOptions contains the optional parameters for the CredentialClient.Get method.
+func (client *CredentialClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, options *CredentialClientGetOptions) (CredentialClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, credentialName, options)
 	if err != nil {
-		return CredentialGetResponse{}, err
+		return CredentialClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CredentialGetResponse{}, err
+		return CredentialClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CredentialGetResponse{}, client.getHandleError(resp)
+		return CredentialClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CredentialClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, options *CredentialGetOptions) (*policy.Request, error) {
+func (client *CredentialClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, options *CredentialClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +203,7 @@ func (client *CredentialClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +215,34 @@ func (client *CredentialClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *CredentialClient) getHandleResponse(resp *http.Response) (CredentialGetResponse, error) {
-	result := CredentialGetResponse{RawResponse: resp}
+func (client *CredentialClient) getHandleResponse(resp *http.Response) (CredentialClientGetResponse, error) {
+	result := CredentialClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
-		return CredentialGetResponse{}, runtime.NewResponseError(err, resp)
+		return CredentialClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CredentialClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of credentials.
-// If the operation fails it returns a generic error.
-func (client *CredentialClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CredentialListByAutomationAccountOptions) *CredentialListByAutomationAccountPager {
-	return &CredentialListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.ListByAutomationAccount
+// method.
+func (client *CredentialClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CredentialClientListByAutomationAccountOptions) *CredentialClientListByAutomationAccountPager {
+	return &CredentialClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp CredentialListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CredentialClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CredentialListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *CredentialClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *CredentialListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *CredentialClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *CredentialClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,7 +256,7 @@ func (client *CredentialClient) listByAutomationAccountCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,45 +268,38 @@ func (client *CredentialClient) listByAutomationAccountCreateRequest(ctx context
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *CredentialClient) listByAutomationAccountHandleResponse(resp *http.Response) (CredentialListByAutomationAccountResponse, error) {
-	result := CredentialListByAutomationAccountResponse{RawResponse: resp}
+func (client *CredentialClient) listByAutomationAccountHandleResponse(resp *http.Response) (CredentialClientListByAutomationAccountResponse, error) {
+	result := CredentialClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialListResult); err != nil {
-		return CredentialListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return CredentialClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *CredentialClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Update a credential.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CredentialClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialUpdateParameters, options *CredentialUpdateOptions) (CredentialUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// credentialName - The parameters supplied to the Update credential operation.
+// parameters - The parameters supplied to the Update credential operation.
+// options - CredentialClientUpdateOptions contains the optional parameters for the CredentialClient.Update method.
+func (client *CredentialClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialUpdateParameters, options *CredentialClientUpdateOptions) (CredentialClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, credentialName, parameters, options)
 	if err != nil {
-		return CredentialUpdateResponse{}, err
+		return CredentialClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CredentialUpdateResponse{}, err
+		return CredentialClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CredentialUpdateResponse{}, client.updateHandleError(resp)
+		return CredentialClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CredentialClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialUpdateParameters, options *CredentialUpdateOptions) (*policy.Request, error) {
+func (client *CredentialClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialUpdateParameters, options *CredentialClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -337,7 +317,7 @@ func (client *CredentialClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -349,23 +329,10 @@ func (client *CredentialClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CredentialClient) updateHandleResponse(resp *http.Response) (CredentialUpdateResponse, error) {
-	result := CredentialUpdateResponse{RawResponse: resp}
+func (client *CredentialClient) updateHandleResponse(resp *http.Response) (CredentialClientUpdateResponse, error) {
+	result := CredentialClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
-		return CredentialUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CredentialClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *CredentialClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

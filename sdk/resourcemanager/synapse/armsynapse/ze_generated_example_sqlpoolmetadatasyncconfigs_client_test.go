@@ -33,7 +33,7 @@ func ExampleSQLPoolMetadataSyncConfigsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MetadataSyncConfig.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolMetadataSyncConfigsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPoolMetadataSyncConfig.json
@@ -57,5 +57,5 @@ func ExampleSQLPoolMetadataSyncConfigsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MetadataSyncConfig.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolMetadataSyncConfigsClientCreateResult)
 }

@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,46 +25,63 @@ import (
 // APISchemaClient contains the methods for the APISchema group.
 // Don't use this type directly, use NewAPISchemaClient() instead.
 type APISchemaClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAPISchemaClient creates a new instance of APISchemaClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAPISchemaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APISchemaClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &APISchemaClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &APISchemaClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates schema configuration for the API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APISchemaClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaBeginCreateOrUpdateOptions) (APISchemaCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// schemaID - Schema id identifier. Must be unique in the current API Management service instance.
+// parameters - The schema contents to apply.
+// options - APISchemaClientBeginCreateOrUpdateOptions contains the optional parameters for the APISchemaClient.BeginCreateOrUpdate
+// method.
+func (client *APISchemaClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaClientBeginCreateOrUpdateOptions) (APISchemaClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, apiID, schemaID, parameters, options)
 	if err != nil {
-		return APISchemaCreateOrUpdatePollerResponse{}, err
+		return APISchemaClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := APISchemaCreateOrUpdatePollerResponse{
+	result := APISchemaClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("APISchemaClient.CreateOrUpdate", "location", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("APISchemaClient.CreateOrUpdate", "location", resp, client.pl)
 	if err != nil {
-		return APISchemaCreateOrUpdatePollerResponse{}, err
+		return APISchemaClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &APISchemaCreateOrUpdatePoller{
+	result.Poller = &APISchemaClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates schema configuration for the API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APISchemaClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *APISchemaClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, parameters, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +91,13 @@ func (client *APISchemaClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -103,7 +119,7 @@ func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,38 +133,33 @@ func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, 
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *APISchemaClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the schema configuration at the Api.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APISchemaClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, ifMatch string, options *APISchemaDeleteOptions) (APISchemaDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// schemaID - Schema id identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - APISchemaClientDeleteOptions contains the optional parameters for the APISchemaClient.Delete method.
+func (client *APISchemaClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, ifMatch string, options *APISchemaClientDeleteOptions) (APISchemaClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, ifMatch, options)
 	if err != nil {
-		return APISchemaDeleteResponse{}, err
+		return APISchemaClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APISchemaDeleteResponse{}, err
+		return APISchemaClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return APISchemaDeleteResponse{}, client.deleteHandleError(resp)
+		return APISchemaClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return APISchemaDeleteResponse{RawResponse: resp}, nil
+	return APISchemaClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APISchemaClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, ifMatch string, options *APISchemaDeleteOptions) (*policy.Request, error) {
+func (client *APISchemaClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, ifMatch string, options *APISchemaClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,7 +181,7 @@ func (client *APISchemaClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -185,38 +196,31 @@ func (client *APISchemaClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *APISchemaClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the schema configuration at the API level.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APISchemaClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaGetOptions) (APISchemaGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// schemaID - Schema id identifier. Must be unique in the current API Management service instance.
+// options - APISchemaClientGetOptions contains the optional parameters for the APISchemaClient.Get method.
+func (client *APISchemaClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaClientGetOptions) (APISchemaClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, options)
 	if err != nil {
-		return APISchemaGetResponse{}, err
+		return APISchemaClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APISchemaGetResponse{}, err
+		return APISchemaClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APISchemaGetResponse{}, client.getHandleError(resp)
+		return APISchemaClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *APISchemaClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaGetOptions) (*policy.Request, error) {
+func (client *APISchemaClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,7 +242,7 @@ func (client *APISchemaClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,46 +254,38 @@ func (client *APISchemaClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *APISchemaClient) getHandleResponse(resp *http.Response) (APISchemaGetResponse, error) {
-	result := APISchemaGetResponse{RawResponse: resp}
+func (client *APISchemaClient) getHandleResponse(resp *http.Response) (APISchemaClientGetResponse, error) {
+	result := APISchemaClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaContract); err != nil {
-		return APISchemaGetResponse{}, runtime.NewResponseError(err, resp)
+		return APISchemaClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *APISchemaClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the schema specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaGetEntityTagOptions) (APISchemaGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// schemaID - Schema id identifier. Must be unique in the current API Management service instance.
+// options - APISchemaClientGetEntityTagOptions contains the optional parameters for the APISchemaClient.GetEntityTag method.
+func (client *APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaClientGetEntityTagOptions) (APISchemaClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, options)
 	if err != nil {
-		return APISchemaGetEntityTagResponse{}, err
+		return APISchemaClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APISchemaGetEntityTagResponse{}, err
+		return APISchemaClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaGetEntityTagOptions) (*policy.Request, error) {
+func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -311,7 +307,7 @@ func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,8 +319,8 @@ func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, re
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response) (APISchemaGetEntityTagResponse, error) {
-	result := APISchemaGetEntityTagResponse{RawResponse: resp}
+func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response) (APISchemaClientGetEntityTagResponse, error) {
+	result := APISchemaClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -335,21 +331,26 @@ func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response) (
 }
 
 // ListByAPI - Get the schema configuration at the API level.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APISchemaClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *APISchemaListByAPIOptions) *APISchemaListByAPIPager {
-	return &APISchemaListByAPIPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// options - APISchemaClientListByAPIOptions contains the optional parameters for the APISchemaClient.ListByAPI method.
+func (client *APISchemaClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *APISchemaClientListByAPIOptions) *APISchemaClientListByAPIPager {
+	return &APISchemaClientListByAPIPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp APISchemaListByAPIResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp APISchemaClientListByAPIResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SchemaCollection.NextLink)
 		},
 	}
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
-func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APISchemaListByAPIOptions) (*policy.Request, error) {
+func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APISchemaClientListByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -367,7 +368,7 @@ func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -388,23 +389,10 @@ func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resou
 }
 
 // listByAPIHandleResponse handles the ListByAPI response.
-func (client *APISchemaClient) listByAPIHandleResponse(resp *http.Response) (APISchemaListByAPIResponse, error) {
-	result := APISchemaListByAPIResponse{RawResponse: resp}
+func (client *APISchemaClient) listByAPIHandleResponse(resp *http.Response) (APISchemaClientListByAPIResponse, error) {
+	result := APISchemaClientListByAPIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaCollection); err != nil {
-		return APISchemaListByAPIResponse{}, runtime.NewResponseError(err, resp)
+		return APISchemaClientListByAPIResponse{}, err
 	}
 	return result, nil
-}
-
-// listByAPIHandleError handles the ListByAPI error response.
-func (client *APISchemaClient) listByAPIHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

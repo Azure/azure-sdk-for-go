@@ -24,42 +24,54 @@ import (
 // ComponentFeatureCapabilitiesClient contains the methods for the ComponentFeatureCapabilities group.
 // Don't use this type directly, use NewComponentFeatureCapabilitiesClient() instead.
 type ComponentFeatureCapabilitiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewComponentFeatureCapabilitiesClient creates a new instance of ComponentFeatureCapabilitiesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewComponentFeatureCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ComponentFeatureCapabilitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ComponentFeatureCapabilitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ComponentFeatureCapabilitiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns feature capabilities of the application insights component.
-// If the operation fails it returns a generic error.
-func (client *ComponentFeatureCapabilitiesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentFeatureCapabilitiesGetOptions) (ComponentFeatureCapabilitiesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - ComponentFeatureCapabilitiesClientGetOptions contains the optional parameters for the ComponentFeatureCapabilitiesClient.Get
+// method.
+func (client *ComponentFeatureCapabilitiesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentFeatureCapabilitiesClientGetOptions) (ComponentFeatureCapabilitiesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return ComponentFeatureCapabilitiesGetResponse{}, err
+		return ComponentFeatureCapabilitiesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentFeatureCapabilitiesGetResponse{}, err
+		return ComponentFeatureCapabilitiesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentFeatureCapabilitiesGetResponse{}, client.getHandleError(resp)
+		return ComponentFeatureCapabilitiesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ComponentFeatureCapabilitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentFeatureCapabilitiesGetOptions) (*policy.Request, error) {
+func (client *ComponentFeatureCapabilitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentFeatureCapabilitiesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/featurecapabilities"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +85,7 @@ func (client *ComponentFeatureCapabilitiesClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,22 +97,10 @@ func (client *ComponentFeatureCapabilitiesClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComponentFeatureCapabilitiesClient) getHandleResponse(resp *http.Response) (ComponentFeatureCapabilitiesGetResponse, error) {
-	result := ComponentFeatureCapabilitiesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentFeatureCapabilities); err != nil {
-		return ComponentFeatureCapabilitiesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentFeatureCapabilitiesClient) getHandleResponse(resp *http.Response) (ComponentFeatureCapabilitiesClientGetResponse, error) {
+	result := ComponentFeatureCapabilitiesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFeatureCapabilities); err != nil {
+		return ComponentFeatureCapabilitiesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ComponentFeatureCapabilitiesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

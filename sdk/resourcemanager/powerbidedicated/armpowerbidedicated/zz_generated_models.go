@@ -17,20 +17,42 @@ import (
 
 // AutoScaleVCore - Represents an instance of an auto scale v-core resource.
 type AutoScaleVCore struct {
-	Resource
+	// REQUIRED; Location of the PowerBI Dedicated resource.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; The SKU of the auto scale v-core resource.
 	SKU *AutoScaleVCoreSKU `json:"sku,omitempty"`
 
 	// Properties of an auto scale v-core resource.
 	Properties *AutoScaleVCoreProperties `json:"properties,omitempty"`
+
+	// Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+
+	// Key-value pairs of additional resource provisioning properties.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; An identifier that represents the PowerBI Dedicated resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the PowerBI Dedicated resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the PowerBI Dedicated resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AutoScaleVCore.
 func (a AutoScaleVCore) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -55,11 +77,14 @@ type AutoScaleVCoreMutableProperties struct {
 
 // AutoScaleVCoreProperties - Properties of an auto scale v-core resource.
 type AutoScaleVCoreProperties struct {
-	AutoScaleVCoreMutableProperties
+	// The maximum capacity of an auto scale v-core resource.
+	CapacityLimit *int32 `json:"capacityLimit,omitempty"`
+
 	// The object ID of the capacity resource associated with the auto scale v-core resource.
 	CapacityObjectID *string `json:"capacityObjectId,omitempty"`
 
-	// READ-ONLY; The current deployment state of an auto scale v-core resource. The provisioningState is to indicate states for resource provisioning.
+	// READ-ONLY; The current deployment state of an auto scale v-core resource. The provisioningState is to indicate states for
+	// resource provisioning.
 	ProvisioningState *VCoreProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
@@ -96,88 +121,93 @@ func (a AutoScaleVCoreUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AutoScaleVCoresCreateOptions contains the optional parameters for the AutoScaleVCores.Create method.
-type AutoScaleVCoresCreateOptions struct {
+// AutoScaleVCoresClientCreateOptions contains the optional parameters for the AutoScaleVCoresClient.Create method.
+type AutoScaleVCoresClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutoScaleVCoresDeleteOptions contains the optional parameters for the AutoScaleVCores.Delete method.
-type AutoScaleVCoresDeleteOptions struct {
+// AutoScaleVCoresClientDeleteOptions contains the optional parameters for the AutoScaleVCoresClient.Delete method.
+type AutoScaleVCoresClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutoScaleVCoresGetOptions contains the optional parameters for the AutoScaleVCores.Get method.
-type AutoScaleVCoresGetOptions struct {
+// AutoScaleVCoresClientGetOptions contains the optional parameters for the AutoScaleVCoresClient.Get method.
+type AutoScaleVCoresClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutoScaleVCoresListByResourceGroupOptions contains the optional parameters for the AutoScaleVCores.ListByResourceGroup method.
-type AutoScaleVCoresListByResourceGroupOptions struct {
+// AutoScaleVCoresClientListByResourceGroupOptions contains the optional parameters for the AutoScaleVCoresClient.ListByResourceGroup
+// method.
+type AutoScaleVCoresClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutoScaleVCoresListBySubscriptionOptions contains the optional parameters for the AutoScaleVCores.ListBySubscription method.
-type AutoScaleVCoresListBySubscriptionOptions struct {
+// AutoScaleVCoresClientListBySubscriptionOptions contains the optional parameters for the AutoScaleVCoresClient.ListBySubscription
+// method.
+type AutoScaleVCoresClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutoScaleVCoresUpdateOptions contains the optional parameters for the AutoScaleVCores.Update method.
-type AutoScaleVCoresUpdateOptions struct {
+// AutoScaleVCoresClientUpdateOptions contains the optional parameters for the AutoScaleVCoresClient.Update method.
+type AutoScaleVCoresClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesBeginCreateOptions contains the optional parameters for the Capacities.BeginCreate method.
-type CapacitiesBeginCreateOptions struct {
+// CapacitiesClientBeginCreateOptions contains the optional parameters for the CapacitiesClient.BeginCreate method.
+type CapacitiesClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesBeginDeleteOptions contains the optional parameters for the Capacities.BeginDelete method.
-type CapacitiesBeginDeleteOptions struct {
+// CapacitiesClientBeginDeleteOptions contains the optional parameters for the CapacitiesClient.BeginDelete method.
+type CapacitiesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesBeginResumeOptions contains the optional parameters for the Capacities.BeginResume method.
-type CapacitiesBeginResumeOptions struct {
+// CapacitiesClientBeginResumeOptions contains the optional parameters for the CapacitiesClient.BeginResume method.
+type CapacitiesClientBeginResumeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesBeginSuspendOptions contains the optional parameters for the Capacities.BeginSuspend method.
-type CapacitiesBeginSuspendOptions struct {
+// CapacitiesClientBeginSuspendOptions contains the optional parameters for the CapacitiesClient.BeginSuspend method.
+type CapacitiesClientBeginSuspendOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesBeginUpdateOptions contains the optional parameters for the Capacities.BeginUpdate method.
-type CapacitiesBeginUpdateOptions struct {
+// CapacitiesClientBeginUpdateOptions contains the optional parameters for the CapacitiesClient.BeginUpdate method.
+type CapacitiesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesCheckNameAvailabilityOptions contains the optional parameters for the Capacities.CheckNameAvailability method.
-type CapacitiesCheckNameAvailabilityOptions struct {
+// CapacitiesClientCheckNameAvailabilityOptions contains the optional parameters for the CapacitiesClient.CheckNameAvailability
+// method.
+type CapacitiesClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesGetDetailsOptions contains the optional parameters for the Capacities.GetDetails method.
-type CapacitiesGetDetailsOptions struct {
+// CapacitiesClientGetDetailsOptions contains the optional parameters for the CapacitiesClient.GetDetails method.
+type CapacitiesClientGetDetailsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesListByResourceGroupOptions contains the optional parameters for the Capacities.ListByResourceGroup method.
-type CapacitiesListByResourceGroupOptions struct {
+// CapacitiesClientListByResourceGroupOptions contains the optional parameters for the CapacitiesClient.ListByResourceGroup
+// method.
+type CapacitiesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesListOptions contains the optional parameters for the Capacities.List method.
-type CapacitiesListOptions struct {
+// CapacitiesClientListOptions contains the optional parameters for the CapacitiesClient.List method.
+type CapacitiesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesListSKUsForCapacityOptions contains the optional parameters for the Capacities.ListSKUsForCapacity method.
-type CapacitiesListSKUsForCapacityOptions struct {
+// CapacitiesClientListSKUsForCapacityOptions contains the optional parameters for the CapacitiesClient.ListSKUsForCapacity
+// method.
+type CapacitiesClientListSKUsForCapacityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapacitiesListSKUsOptions contains the optional parameters for the Capacities.ListSKUs method.
-type CapacitiesListSKUsOptions struct {
+// CapacitiesClientListSKUsOptions contains the optional parameters for the CapacitiesClient.ListSKUs method.
+type CapacitiesClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -185,6 +215,9 @@ type CapacitiesListSKUsOptions struct {
 type CapacitySKU struct {
 	// REQUIRED; Name of the SKU level.
 	Name *string `json:"name,omitempty"`
+
+	// The capacity of the SKU.
+	Capacity *int32 `json:"capacity,omitempty"`
 
 	// The name of the Azure pricing tier to which the SKU applies.
 	Tier *CapacitySKUTier `json:"tier,omitempty"`
@@ -226,20 +259,42 @@ func (d DedicatedCapacities) MarshalJSON() ([]byte, error) {
 
 // DedicatedCapacity - Represents an instance of a Dedicated Capacity resource.
 type DedicatedCapacity struct {
-	Resource
+	// REQUIRED; Location of the PowerBI Dedicated resource.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; The SKU of the PowerBI Dedicated capacity resource.
 	SKU *CapacitySKU `json:"sku,omitempty"`
 
 	// Properties of the provision operation request.
 	Properties *DedicatedCapacityProperties `json:"properties,omitempty"`
+
+	// Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+
+	// Key-value pairs of additional resource provisioning properties.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; An identifier that represents the PowerBI Dedicated resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the PowerBI Dedicated resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the PowerBI Dedicated resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DedicatedCapacity.
 func (d DedicatedCapacity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "sku", d.SKU)
+	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -261,19 +316,40 @@ type DedicatedCapacityMutableProperties struct {
 	// A collection of Dedicated capacity administrators
 	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
 
-	// Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is used. Learn More
+	// Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is used.
+	// Learn More
 	// [https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2]
 	Mode *Mode `json:"mode,omitempty"`
+
+	// READ-ONLY; Capacity name
+	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Tenant ID for the capacity. Used for creating Pro Plus capacity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // DedicatedCapacityProperties - Properties of Dedicated Capacity resource.
 type DedicatedCapacityProperties struct {
-	DedicatedCapacityMutableProperties
-	// READ-ONLY; The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource provisioning.
+	// A collection of Dedicated capacity administrators
+	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
+
+	// Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is used.
+	// Learn More
+	// [https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2]
+	Mode *Mode `json:"mode,omitempty"`
+
+	// READ-ONLY; Capacity name
+	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for
+	// resource provisioning.
 	ProvisioningState *CapacityProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource provisioning.
 	State *State `json:"state,omitempty" azure:"ro"`
+
+	// READ-ONLY; Tenant ID for the capacity. Used for creating Pro Plus capacity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // DedicatedCapacityUpdateParameters - Provision request specification
@@ -298,17 +374,9 @@ func (d DedicatedCapacityUpdateParameters) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Describes the format of Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error object
-	InnerError *ErrorResponseError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseError `json:"error,omitempty"`
 }
 
 // ErrorResponseError - The error object
@@ -320,17 +388,83 @@ type ErrorResponseError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// LogSpecification - Log specification for exposing diagnostic logs to shoebox.
+type LogSpecification struct {
+	// Localizable name of the log
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// READ-ONLY; Blob duration for the log
+	BlobDuration *string `json:"blobDuration,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the log
+	Name *string `json:"name,omitempty" azure:"ro"`
+}
+
+// MetricSpecification - Metric specification for exposing performance metrics to shoebox.
+type MetricSpecification struct {
+	// For describing multi dimensional metrics
+	Dimensions []*MetricSpecificationDimensionsItem `json:"dimensions,omitempty"`
+
+	// Localizable description of metric
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+
+	// Localizable metric name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// READ-ONLY; Aggregation type for the metric
+	AggregationType *string `json:"aggregationType,omitempty" azure:"ro"`
+
+	// READ-ONLY; Pattern used to filter the metric
+	MetricFilterPattern *string `json:"metricFilterPattern,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metric name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Unit for the metric
+	Unit *string `json:"unit,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MetricSpecification.
+func (m MetricSpecification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "aggregationType", m.AggregationType)
+	populate(objectMap, "dimensions", m.Dimensions)
+	populate(objectMap, "displayDescription", m.DisplayDescription)
+	populate(objectMap, "displayName", m.DisplayName)
+	populate(objectMap, "metricFilterPattern", m.MetricFilterPattern)
+	populate(objectMap, "name", m.Name)
+	populate(objectMap, "unit", m.Unit)
+	return json.Marshal(objectMap)
+}
+
+type MetricSpecificationDimensionsItem struct {
+	// Localizable dimension of the metric
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// READ-ONLY; Dimension of the metric
+	Name *string `json:"name,omitempty" azure:"ro"`
+}
+
 // Operation - Capacities REST API operation.
 type Operation struct {
 	// The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
 
+	// Additional properties to expose performance metrics to shoebox.
+	Properties *OperationProperties `json:"properties,omitempty"`
+
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Origin of the operation.
+	Origin *string `json:"origin,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
+	// Localized description of the operation.
+	Description *string `json:"description,omitempty"`
+
 	// READ-ONLY; Operation type: create, update, delete, etc.
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
@@ -341,7 +475,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - Result listing capacities. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result listing capacities. It contains a list of operations and a URL link to get the next set of
+// results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -358,8 +493,14 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationProperties - Additional properties to expose performance metrics to shoebox.
+type OperationProperties struct {
+	// Service specification for exposing performance metrics to shoebox.
+	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+}
+
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -387,21 +528,20 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "systemData", r.SystemData)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // SKUDetailsForExistingResource - An object that represents SKU details for existing resources
 type SKUDetailsForExistingResource struct {
+	// The resource type
+	ResourceType *string `json:"resourceType,omitempty"`
+
 	// The SKU in SKU details for existing resources.
 	SKU *CapacitySKU `json:"sku,omitempty"`
 }
@@ -429,6 +569,23 @@ type SKUEnumerationForNewResourceResult struct {
 func (s SKUEnumerationForNewResourceResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// ServiceSpecification - Service specification for exposing performance metrics to shoebox.
+type ServiceSpecification struct {
+	// Log specifications for exposing diagnostic logs to shoebox.
+	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty"`
+
+	// Metric specifications for exposing performance metrics to shoebox.
+	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
+func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "logSpecifications", s.LogSpecifications)
+	populate(objectMap, "metricSpecifications", s.MetricSpecifications)
 	return json.Marshal(objectMap)
 }
 

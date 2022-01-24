@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,60 @@ import (
 // InformationProtectionPoliciesClient contains the methods for the InformationProtectionPolicies group.
 // Don't use this type directly, use NewInformationProtectionPoliciesClient() instead.
 type InformationProtectionPoliciesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewInformationProtectionPoliciesClient creates a new instance of InformationProtectionPoliciesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *InformationProtectionPoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &InformationProtectionPoliciesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &InformationProtectionPoliciesClient{
+		host: string(ep),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // CreateOrUpdate - Details of the information protection policy.
-// If the operation fails it returns the *CloudError error type.
-func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName Enum20, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesCreateOrUpdateOptions) (InformationProtectionPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+// (/providers/Microsoft.Management/managementGroups/mgName).
+// informationProtectionPolicyName - Name of the information protection policy.
+// informationProtectionPolicy - Information protection policy.
+// options - InformationProtectionPoliciesClientCreateOrUpdateOptions contains the optional parameters for the InformationProtectionPoliciesClient.CreateOrUpdate
+// method.
+func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName Enum18, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesClientCreateOrUpdateOptions) (InformationProtectionPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, informationProtectionPolicyName, informationProtectionPolicy, options)
 	if err != nil {
-		return InformationProtectionPoliciesCreateOrUpdateResponse{}, err
+		return InformationProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InformationProtectionPoliciesCreateOrUpdateResponse{}, err
+		return InformationProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return InformationProtectionPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return InformationProtectionPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum20, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum18, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if informationProtectionPolicyName == "" {
 		return nil, errors.New("parameter informationProtectionPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{informationProtectionPolicyName}", url.PathEscape(string(informationProtectionPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,53 +89,45 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *InformationProtectionPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (InformationProtectionPoliciesCreateOrUpdateResponse, error) {
-	result := InformationProtectionPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *InformationProtectionPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (InformationProtectionPoliciesClientCreateOrUpdateResponse, error) {
+	result := InformationProtectionPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicy); err != nil {
-		return InformationProtectionPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return InformationProtectionPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *InformationProtectionPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Details of the information protection policy.
-// If the operation fails it returns the *CloudError error type.
-func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scope string, informationProtectionPolicyName Enum20, options *InformationProtectionPoliciesGetOptions) (InformationProtectionPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+// (/providers/Microsoft.Management/managementGroups/mgName).
+// informationProtectionPolicyName - Name of the information protection policy.
+// options - InformationProtectionPoliciesClientGetOptions contains the optional parameters for the InformationProtectionPoliciesClient.Get
+// method.
+func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scope string, informationProtectionPolicyName Enum18, options *InformationProtectionPoliciesClientGetOptions) (InformationProtectionPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, informationProtectionPolicyName, options)
 	if err != nil {
-		return InformationProtectionPoliciesGetResponse{}, err
+		return InformationProtectionPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InformationProtectionPoliciesGetResponse{}, err
+		return InformationProtectionPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return InformationProtectionPoliciesGetResponse{}, client.getHandleError(resp)
+		return InformationProtectionPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum20, options *InformationProtectionPoliciesGetOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum18, options *InformationProtectionPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if informationProtectionPolicyName == "" {
 		return nil, errors.New("parameter informationProtectionPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{informationProtectionPolicyName}", url.PathEscape(string(informationProtectionPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,46 +139,37 @@ func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.Response) (InformationProtectionPoliciesGetResponse, error) {
-	result := InformationProtectionPoliciesGetResponse{RawResponse: resp}
+func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.Response) (InformationProtectionPoliciesClientGetResponse, error) {
+	result := InformationProtectionPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicy); err != nil {
-		return InformationProtectionPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return InformationProtectionPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *InformationProtectionPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Information protection policies of a specific management group.
-// If the operation fails it returns the *CloudError error type.
-func (client *InformationProtectionPoliciesClient) List(scope string, options *InformationProtectionPoliciesListOptions) *InformationProtectionPoliciesListPager {
-	return &InformationProtectionPoliciesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+// (/providers/Microsoft.Management/managementGroups/mgName).
+// options - InformationProtectionPoliciesClientListOptions contains the optional parameters for the InformationProtectionPoliciesClient.List
+// method.
+func (client *InformationProtectionPoliciesClient) List(scope string, options *InformationProtectionPoliciesClientListOptions) *InformationProtectionPoliciesClientListPager {
+	return &InformationProtectionPoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp InformationProtectionPoliciesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp InformationProtectionPoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.InformationProtectionPolicyList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context.Context, scope string, options *InformationProtectionPoliciesListOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context.Context, scope string, options *InformationProtectionPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,23 +181,10 @@ func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context
 }
 
 // listHandleResponse handles the List response.
-func (client *InformationProtectionPoliciesClient) listHandleResponse(resp *http.Response) (InformationProtectionPoliciesListResponse, error) {
-	result := InformationProtectionPoliciesListResponse{RawResponse: resp}
+func (client *InformationProtectionPoliciesClient) listHandleResponse(resp *http.Response) (InformationProtectionPoliciesClientListResponse, error) {
+	result := InformationProtectionPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicyList); err != nil {
-		return InformationProtectionPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return InformationProtectionPoliciesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *InformationProtectionPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

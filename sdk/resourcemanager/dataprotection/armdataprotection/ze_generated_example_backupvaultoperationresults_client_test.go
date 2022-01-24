@@ -32,5 +32,5 @@ func ExampleBackupVaultOperationResultsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupVaultResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupVaultOperationResultsClientGetResult)
 }

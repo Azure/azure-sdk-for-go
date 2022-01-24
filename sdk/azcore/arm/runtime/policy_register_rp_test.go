@@ -15,9 +15,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -56,7 +56,7 @@ const rpRegisteredResp = `{
 const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
 
 func newTestRPRegistrationPipeline(srv *mock.Server) pipeline.Pipeline {
-	opts := azcore.ClientOptions{Transport: srv}
+	opts := azpolicy.ClientOptions{Transport: srv}
 	rp := NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv))
 	return runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []azpolicy.Policy{rp}}, &opts)
 }
@@ -77,8 +77,8 @@ func (mockTokenCred) NewAuthenticationPolicy() azpolicy.Policy {
 	})
 }
 
-func (mockTokenCred) GetToken(context.Context, azpolicy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{
+func (mockTokenCred) GetToken(context.Context, shared.TokenRequestOptions) (*shared.AccessToken, error) {
+	return &shared.AccessToken{
 		Token:     "abc123",
 		ExpiresOn: time.Now().Add(1 * time.Hour),
 	}, nil

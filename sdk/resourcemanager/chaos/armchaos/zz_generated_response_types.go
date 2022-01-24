@@ -15,76 +15,76 @@ import (
 	"time"
 )
 
-// CapabilitiesCreateOrUpdateResponse contains the response from method Capabilities.CreateOrUpdate.
-type CapabilitiesCreateOrUpdateResponse struct {
-	CapabilitiesCreateOrUpdateResult
+// CapabilitiesClientCreateOrUpdateResponse contains the response from method CapabilitiesClient.CreateOrUpdate.
+type CapabilitiesClientCreateOrUpdateResponse struct {
+	CapabilitiesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CapabilitiesCreateOrUpdateResult contains the result from method Capabilities.CreateOrUpdate.
-type CapabilitiesCreateOrUpdateResult struct {
+// CapabilitiesClientCreateOrUpdateResult contains the result from method CapabilitiesClient.CreateOrUpdate.
+type CapabilitiesClientCreateOrUpdateResult struct {
 	Capability
 }
 
-// CapabilitiesDeleteResponse contains the response from method Capabilities.Delete.
-type CapabilitiesDeleteResponse struct {
+// CapabilitiesClientDeleteResponse contains the response from method CapabilitiesClient.Delete.
+type CapabilitiesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CapabilitiesGetResponse contains the response from method Capabilities.Get.
-type CapabilitiesGetResponse struct {
-	CapabilitiesGetResult
+// CapabilitiesClientGetResponse contains the response from method CapabilitiesClient.Get.
+type CapabilitiesClientGetResponse struct {
+	CapabilitiesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CapabilitiesGetResult contains the result from method Capabilities.Get.
-type CapabilitiesGetResult struct {
+// CapabilitiesClientGetResult contains the result from method CapabilitiesClient.Get.
+type CapabilitiesClientGetResult struct {
 	Capability
 }
 
-// CapabilitiesListResponse contains the response from method Capabilities.List.
-type CapabilitiesListResponse struct {
-	CapabilitiesListResult
+// CapabilitiesClientListResponse contains the response from method CapabilitiesClient.List.
+type CapabilitiesClientListResponse struct {
+	CapabilitiesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CapabilitiesListResult contains the result from method Capabilities.List.
-type CapabilitiesListResult struct {
+// CapabilitiesClientListResult contains the result from method CapabilitiesClient.List.
+type CapabilitiesClientListResult struct {
 	CapabilityListResult
 }
 
-// CapabilityTypesGetResponse contains the response from method CapabilityTypes.Get.
-type CapabilityTypesGetResponse struct {
-	CapabilityTypesGetResult
+// CapabilityTypesClientGetResponse contains the response from method CapabilityTypesClient.Get.
+type CapabilityTypesClientGetResponse struct {
+	CapabilityTypesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CapabilityTypesGetResult contains the result from method CapabilityTypes.Get.
-type CapabilityTypesGetResult struct {
+// CapabilityTypesClientGetResult contains the result from method CapabilityTypesClient.Get.
+type CapabilityTypesClientGetResult struct {
 	CapabilityType
 }
 
-// CapabilityTypesListResponse contains the response from method CapabilityTypes.List.
-type CapabilityTypesListResponse struct {
-	CapabilityTypesListResult
+// CapabilityTypesClientListResponse contains the response from method CapabilityTypesClient.List.
+type CapabilityTypesClientListResponse struct {
+	CapabilityTypesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CapabilityTypesListResult contains the result from method CapabilityTypes.List.
-type CapabilityTypesListResult struct {
+// CapabilityTypesClientListResult contains the result from method CapabilityTypesClient.List.
+type CapabilityTypesClientListResult struct {
 	CapabilityTypeListResult
 }
 
-// ExperimentsCancelPollerResponse contains the response from method Experiments.Cancel.
-type ExperimentsCancelPollerResponse struct {
+// ExperimentsClientCancelPollerResponse contains the response from method ExperimentsClient.Cancel.
+type ExperimentsClientCancelPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExperimentsCancelPoller
+	Poller *ExperimentsClientCancelPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -93,8 +93,8 @@ type ExperimentsCancelPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExperimentsCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExperimentsCancelResponse, error) {
-	respType := ExperimentsCancelResponse{}
+func (l ExperimentsClientCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExperimentsClientCancelResponse, error) {
+	respType := ExperimentsClientCancelResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ExperimentCancelOperationResult)
 	if err != nil {
 		return respType, err
@@ -103,13 +103,13 @@ func (l ExperimentsCancelPollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a ExperimentsCancelPollerResponse from the provided client and resume token.
-func (l *ExperimentsCancelPollerResponse) Resume(ctx context.Context, client *ExperimentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExperimentsClient.Cancel", token, client.pl, client.cancelHandleError)
+// Resume rehydrates a ExperimentsClientCancelPollerResponse from the provided client and resume token.
+func (l *ExperimentsClientCancelPollerResponse) Resume(ctx context.Context, client *ExperimentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExperimentsClient.Cancel", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExperimentsCancelPoller{
+	poller := &ExperimentsClientCancelPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -121,22 +121,22 @@ func (l *ExperimentsCancelPollerResponse) Resume(ctx context.Context, client *Ex
 	return nil
 }
 
-// ExperimentsCancelResponse contains the response from method Experiments.Cancel.
-type ExperimentsCancelResponse struct {
-	ExperimentsCancelResult
+// ExperimentsClientCancelResponse contains the response from method ExperimentsClient.Cancel.
+type ExperimentsClientCancelResponse struct {
+	ExperimentsClientCancelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsCancelResult contains the result from method Experiments.Cancel.
-type ExperimentsCancelResult struct {
+// ExperimentsClientCancelResult contains the result from method ExperimentsClient.Cancel.
+type ExperimentsClientCancelResult struct {
 	ExperimentCancelOperationResult
 }
 
-// ExperimentsCreateOrUpdatePollerResponse contains the response from method Experiments.CreateOrUpdate.
-type ExperimentsCreateOrUpdatePollerResponse struct {
+// ExperimentsClientCreateOrUpdatePollerResponse contains the response from method ExperimentsClient.CreateOrUpdate.
+type ExperimentsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExperimentsCreateOrUpdatePoller
+	Poller *ExperimentsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -145,8 +145,8 @@ type ExperimentsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExperimentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExperimentsCreateOrUpdateResponse, error) {
-	respType := ExperimentsCreateOrUpdateResponse{}
+func (l ExperimentsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExperimentsClientCreateOrUpdateResponse, error) {
+	respType := ExperimentsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Experiment)
 	if err != nil {
 		return respType, err
@@ -155,13 +155,13 @@ func (l ExperimentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ExperimentsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ExperimentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ExperimentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExperimentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ExperimentsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ExperimentsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ExperimentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExperimentsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExperimentsCreateOrUpdatePoller{
+	poller := &ExperimentsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -173,194 +173,194 @@ func (l *ExperimentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ExperimentsCreateOrUpdateResponse contains the response from method Experiments.CreateOrUpdate.
-type ExperimentsCreateOrUpdateResponse struct {
-	ExperimentsCreateOrUpdateResult
+// ExperimentsClientCreateOrUpdateResponse contains the response from method ExperimentsClient.CreateOrUpdate.
+type ExperimentsClientCreateOrUpdateResponse struct {
+	ExperimentsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsCreateOrUpdateResult contains the result from method Experiments.CreateOrUpdate.
-type ExperimentsCreateOrUpdateResult struct {
+// ExperimentsClientCreateOrUpdateResult contains the result from method ExperimentsClient.CreateOrUpdate.
+type ExperimentsClientCreateOrUpdateResult struct {
 	Experiment
 }
 
-// ExperimentsDeleteResponse contains the response from method Experiments.Delete.
-type ExperimentsDeleteResponse struct {
+// ExperimentsClientDeleteResponse contains the response from method ExperimentsClient.Delete.
+type ExperimentsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsGetExecutionDetailsResponse contains the response from method Experiments.GetExecutionDetails.
-type ExperimentsGetExecutionDetailsResponse struct {
-	ExperimentsGetExecutionDetailsResult
+// ExperimentsClientGetExecutionDetailsResponse contains the response from method ExperimentsClient.GetExecutionDetails.
+type ExperimentsClientGetExecutionDetailsResponse struct {
+	ExperimentsClientGetExecutionDetailsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsGetExecutionDetailsResult contains the result from method Experiments.GetExecutionDetails.
-type ExperimentsGetExecutionDetailsResult struct {
+// ExperimentsClientGetExecutionDetailsResult contains the result from method ExperimentsClient.GetExecutionDetails.
+type ExperimentsClientGetExecutionDetailsResult struct {
 	ExperimentExecutionDetails
 }
 
-// ExperimentsGetResponse contains the response from method Experiments.Get.
-type ExperimentsGetResponse struct {
-	ExperimentsGetResult
+// ExperimentsClientGetResponse contains the response from method ExperimentsClient.Get.
+type ExperimentsClientGetResponse struct {
+	ExperimentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsGetResult contains the result from method Experiments.Get.
-type ExperimentsGetResult struct {
+// ExperimentsClientGetResult contains the result from method ExperimentsClient.Get.
+type ExperimentsClientGetResult struct {
 	Experiment
 }
 
-// ExperimentsGetStatusResponse contains the response from method Experiments.GetStatus.
-type ExperimentsGetStatusResponse struct {
-	ExperimentsGetStatusResult
+// ExperimentsClientGetStatusResponse contains the response from method ExperimentsClient.GetStatus.
+type ExperimentsClientGetStatusResponse struct {
+	ExperimentsClientGetStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsGetStatusResult contains the result from method Experiments.GetStatus.
-type ExperimentsGetStatusResult struct {
+// ExperimentsClientGetStatusResult contains the result from method ExperimentsClient.GetStatus.
+type ExperimentsClientGetStatusResult struct {
 	ExperimentStatus
 }
 
-// ExperimentsListAllResponse contains the response from method Experiments.ListAll.
-type ExperimentsListAllResponse struct {
-	ExperimentsListAllResult
+// ExperimentsClientListAllResponse contains the response from method ExperimentsClient.ListAll.
+type ExperimentsClientListAllResponse struct {
+	ExperimentsClientListAllResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsListAllResult contains the result from method Experiments.ListAll.
-type ExperimentsListAllResult struct {
+// ExperimentsClientListAllResult contains the result from method ExperimentsClient.ListAll.
+type ExperimentsClientListAllResult struct {
 	ExperimentListResult
 }
 
-// ExperimentsListAllStatusesResponse contains the response from method Experiments.ListAllStatuses.
-type ExperimentsListAllStatusesResponse struct {
-	ExperimentsListAllStatusesResult
+// ExperimentsClientListAllStatusesResponse contains the response from method ExperimentsClient.ListAllStatuses.
+type ExperimentsClientListAllStatusesResponse struct {
+	ExperimentsClientListAllStatusesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsListAllStatusesResult contains the result from method Experiments.ListAllStatuses.
-type ExperimentsListAllStatusesResult struct {
+// ExperimentsClientListAllStatusesResult contains the result from method ExperimentsClient.ListAllStatuses.
+type ExperimentsClientListAllStatusesResult struct {
 	ExperimentStatusListResult
 }
 
-// ExperimentsListExecutionDetailsResponse contains the response from method Experiments.ListExecutionDetails.
-type ExperimentsListExecutionDetailsResponse struct {
-	ExperimentsListExecutionDetailsResult
+// ExperimentsClientListExecutionDetailsResponse contains the response from method ExperimentsClient.ListExecutionDetails.
+type ExperimentsClientListExecutionDetailsResponse struct {
+	ExperimentsClientListExecutionDetailsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsListExecutionDetailsResult contains the result from method Experiments.ListExecutionDetails.
-type ExperimentsListExecutionDetailsResult struct {
+// ExperimentsClientListExecutionDetailsResult contains the result from method ExperimentsClient.ListExecutionDetails.
+type ExperimentsClientListExecutionDetailsResult struct {
 	ExperimentExecutionDetailsListResult
 }
 
-// ExperimentsListResponse contains the response from method Experiments.List.
-type ExperimentsListResponse struct {
-	ExperimentsListResult
+// ExperimentsClientListResponse contains the response from method ExperimentsClient.List.
+type ExperimentsClientListResponse struct {
+	ExperimentsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsListResult contains the result from method Experiments.List.
-type ExperimentsListResult struct {
+// ExperimentsClientListResult contains the result from method ExperimentsClient.List.
+type ExperimentsClientListResult struct {
 	ExperimentListResult
 }
 
-// ExperimentsStartResponse contains the response from method Experiments.Start.
-type ExperimentsStartResponse struct {
-	ExperimentsStartResult
+// ExperimentsClientStartResponse contains the response from method ExperimentsClient.Start.
+type ExperimentsClientStartResponse struct {
+	ExperimentsClientStartResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExperimentsStartResult contains the result from method Experiments.Start.
-type ExperimentsStartResult struct {
+// ExperimentsClientStartResult contains the result from method ExperimentsClient.Start.
+type ExperimentsClientStartResult struct {
 	ExperimentStartOperationResult
 }
 
-// OperationsListAllResponse contains the response from method Operations.ListAll.
-type OperationsListAllResponse struct {
-	OperationsListAllResult
+// OperationsClientListAllResponse contains the response from method OperationsClient.ListAll.
+type OperationsClientListAllResponse struct {
+	OperationsClientListAllResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListAllResult contains the result from method Operations.ListAll.
-type OperationsListAllResult struct {
+// OperationsClientListAllResult contains the result from method OperationsClient.ListAll.
+type OperationsClientListAllResult struct {
 	OperationListResult
 }
 
-// TargetTypesGetResponse contains the response from method TargetTypes.Get.
-type TargetTypesGetResponse struct {
-	TargetTypesGetResult
+// TargetTypesClientGetResponse contains the response from method TargetTypesClient.Get.
+type TargetTypesClientGetResponse struct {
+	TargetTypesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TargetTypesGetResult contains the result from method TargetTypes.Get.
-type TargetTypesGetResult struct {
+// TargetTypesClientGetResult contains the result from method TargetTypesClient.Get.
+type TargetTypesClientGetResult struct {
 	TargetType
 }
 
-// TargetTypesListResponse contains the response from method TargetTypes.List.
-type TargetTypesListResponse struct {
-	TargetTypesListResult
+// TargetTypesClientListResponse contains the response from method TargetTypesClient.List.
+type TargetTypesClientListResponse struct {
+	TargetTypesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TargetTypesListResult contains the result from method TargetTypes.List.
-type TargetTypesListResult struct {
+// TargetTypesClientListResult contains the result from method TargetTypesClient.List.
+type TargetTypesClientListResult struct {
 	TargetTypeListResult
 }
 
-// TargetsCreateOrUpdateResponse contains the response from method Targets.CreateOrUpdate.
-type TargetsCreateOrUpdateResponse struct {
-	TargetsCreateOrUpdateResult
+// TargetsClientCreateOrUpdateResponse contains the response from method TargetsClient.CreateOrUpdate.
+type TargetsClientCreateOrUpdateResponse struct {
+	TargetsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TargetsCreateOrUpdateResult contains the result from method Targets.CreateOrUpdate.
-type TargetsCreateOrUpdateResult struct {
+// TargetsClientCreateOrUpdateResult contains the result from method TargetsClient.CreateOrUpdate.
+type TargetsClientCreateOrUpdateResult struct {
 	Target
 }
 
-// TargetsDeleteResponse contains the response from method Targets.Delete.
-type TargetsDeleteResponse struct {
+// TargetsClientDeleteResponse contains the response from method TargetsClient.Delete.
+type TargetsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TargetsGetResponse contains the response from method Targets.Get.
-type TargetsGetResponse struct {
-	TargetsGetResult
+// TargetsClientGetResponse contains the response from method TargetsClient.Get.
+type TargetsClientGetResponse struct {
+	TargetsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TargetsGetResult contains the result from method Targets.Get.
-type TargetsGetResult struct {
+// TargetsClientGetResult contains the result from method TargetsClient.Get.
+type TargetsClientGetResult struct {
 	Target
 }
 
-// TargetsListResponse contains the response from method Targets.List.
-type TargetsListResponse struct {
-	TargetsListResult
+// TargetsClientListResponse contains the response from method TargetsClient.List.
+type TargetsClientListResponse struct {
+	TargetsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TargetsListResult contains the result from method Targets.List.
-type TargetsListResult struct {
+// TargetsClientListResult contains the result from method TargetsClient.List.
+type TargetsClientListResult struct {
 	TargetListResult
 }

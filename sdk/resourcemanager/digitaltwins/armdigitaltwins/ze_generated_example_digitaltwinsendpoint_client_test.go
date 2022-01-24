@@ -20,34 +20,38 @@ import (
 )
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsEndpointsGet_example.json
-func ExampleDigitalTwinsEndpointClient_List() {
+func ExampleEndpointClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsEndpointClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DigitalTwinsEndpointResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsEndpointGet_example.json
-func ExampleDigitalTwinsEndpointClient_Get() {
+func ExampleEndpointClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsEndpointClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -56,27 +60,25 @@ func ExampleDigitalTwinsEndpointClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DigitalTwinsEndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointClientGetResult)
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsEndpointPut_example.json
-func ExampleDigitalTwinsEndpointClient_BeginCreateOrUpdate() {
+func ExampleEndpointClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsEndpointClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<endpoint-name>",
-		armdigitaltwins.DigitalTwinsEndpointResource{
+		armdigitaltwins.EndpointResource{
 			Properties: &armdigitaltwins.ServiceBus{
-				DigitalTwinsEndpointResourceProperties: armdigitaltwins.DigitalTwinsEndpointResourceProperties{
-					AuthenticationType: armdigitaltwins.AuthenticationTypeKeyBased.ToPtr(),
-					EndpointType:       armdigitaltwins.EndpointTypeServiceBus.ToPtr(),
-				},
+				AuthenticationType:        armdigitaltwins.AuthenticationType("KeyBased").ToPtr(),
+				EndpointType:              armdigitaltwins.EndpointType("ServiceBus").ToPtr(),
 				PrimaryConnectionString:   to.StringPtr("<primary-connection-string>"),
 				SecondaryConnectionString: to.StringPtr("<secondary-connection-string>"),
 			},
@@ -89,17 +91,17 @@ func ExampleDigitalTwinsEndpointClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DigitalTwinsEndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsEndpointDelete_example.json
-func ExampleDigitalTwinsEndpointClient_BeginDelete() {
+func ExampleEndpointClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsEndpointClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -112,5 +114,5 @@ func ExampleDigitalTwinsEndpointClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DigitalTwinsEndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointClientDeleteResult)
 }

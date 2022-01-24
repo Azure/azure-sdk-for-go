@@ -11,7 +11,6 @@ package armiotsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,56 @@ import (
 // IotRecommendationsClient contains the methods for the IotRecommendations group.
 // Don't use this type directly, use NewIotRecommendationsClient() instead.
 type IotRecommendationsClient struct {
-	ep                  string
-	pl                  runtime.Pipeline
+	host                string
 	subscriptionID      string
 	iotDefenderLocation string
+	pl                  runtime.Pipeline
 }
 
 // NewIotRecommendationsClient creates a new instance of IotRecommendationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// iotDefenderLocation - Defender for IoT location
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIotRecommendationsClient(subscriptionID string, iotDefenderLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotRecommendationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IotRecommendationsClient{subscriptionID: subscriptionID, iotDefenderLocation: iotDefenderLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IotRecommendationsClient{
+		subscriptionID:      subscriptionID,
+		iotDefenderLocation: iotDefenderLocation,
+		host:                string(cp.Endpoint),
+		pl:                  armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get IoT recommendation
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IotRecommendationsClient) Get(ctx context.Context, deviceGroupName string, recommendationID string, options *IotRecommendationsGetOptions) (IotRecommendationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceGroupName - Device group name
+// recommendationID - Recommendation Id
+// options - IotRecommendationsClientGetOptions contains the optional parameters for the IotRecommendationsClient.Get method.
+func (client *IotRecommendationsClient) Get(ctx context.Context, deviceGroupName string, recommendationID string, options *IotRecommendationsClientGetOptions) (IotRecommendationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, deviceGroupName, recommendationID, options)
 	if err != nil {
-		return IotRecommendationsGetResponse{}, err
+		return IotRecommendationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotRecommendationsGetResponse{}, err
+		return IotRecommendationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotRecommendationsGetResponse{}, client.getHandleError(resp)
+		return IotRecommendationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotRecommendationsClient) getCreateRequest(ctx context.Context, deviceGroupName string, recommendationID string, options *IotRecommendationsGetOptions) (*policy.Request, error) {
+func (client *IotRecommendationsClient) getCreateRequest(ctx context.Context, deviceGroupName string, recommendationID string, options *IotRecommendationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}/recommendations/{recommendationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +91,7 @@ func (client *IotRecommendationsClient) getCreateRequest(ctx context.Context, de
 		return nil, errors.New("parameter recommendationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recommendationId}", url.PathEscape(recommendationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,43 +103,32 @@ func (client *IotRecommendationsClient) getCreateRequest(ctx context.Context, de
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotRecommendationsClient) getHandleResponse(resp *http.Response) (IotRecommendationsGetResponse, error) {
-	result := IotRecommendationsGetResponse{RawResponse: resp}
+func (client *IotRecommendationsClient) getHandleResponse(resp *http.Response) (IotRecommendationsClientGetResponse, error) {
+	result := IotRecommendationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationModel); err != nil {
-		return IotRecommendationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return IotRecommendationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IotRecommendationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List IoT recommendations
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IotRecommendationsClient) List(deviceGroupName string, options *IotRecommendationsListOptions) *IotRecommendationsListPager {
-	return &IotRecommendationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceGroupName - Device group name
+// options - IotRecommendationsClientListOptions contains the optional parameters for the IotRecommendationsClient.List method.
+func (client *IotRecommendationsClient) List(deviceGroupName string, options *IotRecommendationsClientListOptions) *IotRecommendationsClientListPager {
+	return &IotRecommendationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, deviceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp IotRecommendationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IotRecommendationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationListModel.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IotRecommendationsClient) listCreateRequest(ctx context.Context, deviceGroupName string, options *IotRecommendationsListOptions) (*policy.Request, error) {
+func (client *IotRecommendationsClient) listCreateRequest(ctx context.Context, deviceGroupName string, options *IotRecommendationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}/recommendations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,7 +142,7 @@ func (client *IotRecommendationsClient) listCreateRequest(ctx context.Context, d
 		return nil, errors.New("parameter deviceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceGroupName}", url.PathEscape(deviceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,23 +157,10 @@ func (client *IotRecommendationsClient) listCreateRequest(ctx context.Context, d
 }
 
 // listHandleResponse handles the List response.
-func (client *IotRecommendationsClient) listHandleResponse(resp *http.Response) (IotRecommendationsListResponse, error) {
-	result := IotRecommendationsListResponse{RawResponse: resp}
+func (client *IotRecommendationsClient) listHandleResponse(resp *http.Response) (IotRecommendationsClientListResponse, error) {
+	result := IotRecommendationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationListModel); err != nil {
-		return IotRecommendationsListResponse{}, runtime.NewResponseError(err, resp)
+		return IotRecommendationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *IotRecommendationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

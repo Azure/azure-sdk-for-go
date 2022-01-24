@@ -11,7 +11,6 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,51 @@ import (
 // AccessReviewInstancesAssignedForMyApprovalClient contains the methods for the AccessReviewInstancesAssignedForMyApproval group.
 // Don't use this type directly, use NewAccessReviewInstancesAssignedForMyApprovalClient() instead.
 type AccessReviewInstancesAssignedForMyApprovalClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAccessReviewInstancesAssignedForMyApprovalClient creates a new instance of AccessReviewInstancesAssignedForMyApprovalClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAccessReviewInstancesAssignedForMyApprovalClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewInstancesAssignedForMyApprovalClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AccessReviewInstancesAssignedForMyApprovalClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AccessReviewInstancesAssignedForMyApprovalClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetByID - Get single access review instance assigned for my approval.
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) GetByID(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesAssignedForMyApprovalGetByIDOptions) (AccessReviewInstancesAssignedForMyApprovalGetByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scheduleDefinitionID - The id of the access review schedule definition.
+// id - The id of the access review instance.
+// options - AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.GetByID
+// method.
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) GetByID(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions) (AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, scheduleDefinitionID, id, options)
 	if err != nil {
-		return AccessReviewInstancesAssignedForMyApprovalGetByIDResponse{}, err
+		return AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewInstancesAssignedForMyApprovalGetByIDResponse{}, err
+		return AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessReviewInstancesAssignedForMyApprovalGetByIDResponse{}, client.getByIDHandleError(resp)
+		return AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByIDHandleResponse(resp)
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesAssignedForMyApprovalGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -69,7 +78,7 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateReq
 		return nil, errors.New("parameter id cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -81,49 +90,39 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateReq
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstancesAssignedForMyApprovalGetByIDResponse, error) {
-	result := AccessReviewInstancesAssignedForMyApprovalGetByIDResponse{RawResponse: resp}
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse, error) {
+	result := AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewInstance); err != nil {
-		return AccessReviewInstancesAssignedForMyApprovalGetByIDResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// getByIDHandleError handles the GetByID error response.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get access review instances assigned for my approval.
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) List(scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalListOptions) *AccessReviewInstancesAssignedForMyApprovalListPager {
-	return &AccessReviewInstancesAssignedForMyApprovalListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scheduleDefinitionID - The id of the access review schedule definition.
+// options - AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.List
+// method.
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) List(scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalClientListOptions) *AccessReviewInstancesAssignedForMyApprovalClientListPager {
+	return &AccessReviewInstancesAssignedForMyApprovalClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scheduleDefinitionID, options)
 		},
-		advancer: func(ctx context.Context, resp AccessReviewInstancesAssignedForMyApprovalListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AccessReviewInstancesAssignedForMyApprovalClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessReviewInstanceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalListOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scheduleDefinitionId}", url.PathEscape(scheduleDefinitionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,23 +134,10 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) listCreateReques
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) listHandleResponse(resp *http.Response) (AccessReviewInstancesAssignedForMyApprovalListResponse, error) {
-	result := AccessReviewInstancesAssignedForMyApprovalListResponse{RawResponse: resp}
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) listHandleResponse(resp *http.Response) (AccessReviewInstancesAssignedForMyApprovalClientListResponse, error) {
+	result := AccessReviewInstancesAssignedForMyApprovalClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewInstanceListResult); err != nil {
-		return AccessReviewInstancesAssignedForMyApprovalListResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewInstancesAssignedForMyApprovalClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

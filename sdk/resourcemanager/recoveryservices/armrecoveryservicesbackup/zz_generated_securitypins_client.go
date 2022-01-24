@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // SecurityPINsClient contains the methods for the SecurityPINs group.
 // Don't use this type directly, use NewSecurityPINsClient() instead.
 type SecurityPINsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSecurityPINsClient creates a new instance of SecurityPINsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSecurityPINsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecurityPINsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SecurityPINsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SecurityPINsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the security PIN.
-// If the operation fails it returns the *CloudError error type.
-func (client *SecurityPINsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, options *SecurityPINsGetOptions) (SecurityPINsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// options - SecurityPINsClientGetOptions contains the optional parameters for the SecurityPINsClient.Get method.
+func (client *SecurityPINsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, options *SecurityPINsClientGetOptions) (SecurityPINsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, options)
 	if err != nil {
-		return SecurityPINsGetResponse{}, err
+		return SecurityPINsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SecurityPINsGetResponse{}, err
+		return SecurityPINsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SecurityPINsGetResponse{}, client.getHandleError(resp)
+		return SecurityPINsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *SecurityPINsGetOptions) (*policy.Request, error) {
+func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *SecurityPINsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupSecurityPIN"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -74,12 +84,12 @@ func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultNam
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
@@ -89,23 +99,10 @@ func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPINsClient) getHandleResponse(resp *http.Response) (SecurityPINsGetResponse, error) {
-	result := SecurityPINsGetResponse{RawResponse: resp}
+func (client *SecurityPINsClient) getHandleResponse(resp *http.Response) (SecurityPINsClientGetResponse, error) {
+	result := SecurityPINsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TokenInformation); err != nil {
-		return SecurityPINsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SecurityPINsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SecurityPINsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

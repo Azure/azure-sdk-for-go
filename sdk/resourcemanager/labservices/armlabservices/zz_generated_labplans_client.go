@@ -11,7 +11,6 @@ package armlabservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // LabPlansClient contains the methods for the LabPlans group.
 // Don't use this type directly, use NewLabPlansClient() instead.
 type LabPlansClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLabPlansClient creates a new instance of LabPlansClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLabPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LabPlansClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &LabPlansClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LabPlansClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Operation to create or update a Lab Plan resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlan, options *LabPlansBeginCreateOrUpdateOptions) (LabPlansCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// body - The request body.
+// options - LabPlansClientBeginCreateOrUpdateOptions contains the optional parameters for the LabPlansClient.BeginCreateOrUpdate
+// method.
+func (client *LabPlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlan, options *LabPlansClientBeginCreateOrUpdateOptions) (LabPlansClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, labPlanName, body, options)
 	if err != nil {
-		return LabPlansCreateOrUpdatePollerResponse{}, err
+		return LabPlansClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := LabPlansCreateOrUpdatePollerResponse{
+	result := LabPlansClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabPlansClient.CreateOrUpdate", "original-uri", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("LabPlansClient.CreateOrUpdate", "original-uri", resp, client.pl)
 	if err != nil {
-		return LabPlansCreateOrUpdatePollerResponse{}, err
+		return LabPlansClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &LabPlansCreateOrUpdatePoller{
+	result.Poller = &LabPlansClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Operation to create or update a Lab Plan resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlan, options *LabPlansBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabPlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlan, options *LabPlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labPlanName, body, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *LabPlansClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LabPlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlan, options *LabPlansBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LabPlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlan, options *LabPlansClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +107,7 @@ func (client *LabPlansClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter labPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labPlanName}", url.PathEscape(labPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,44 +118,35 @@ func (client *LabPlansClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LabPlansClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDelete - Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor does it delete shared
-// images added to a gallery via the lab plan permission container.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansBeginDeleteOptions) (LabPlansDeletePollerResponse, error) {
+// BeginDelete - Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
+// nor does it delete shared images added to a gallery via the lab plan permission container.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// options - LabPlansClientBeginDeleteOptions contains the optional parameters for the LabPlansClient.BeginDelete method.
+func (client *LabPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansClientBeginDeleteOptions) (LabPlansClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, labPlanName, options)
 	if err != nil {
-		return LabPlansDeletePollerResponse{}, err
+		return LabPlansClientDeletePollerResponse{}, err
 	}
-	result := LabPlansDeletePollerResponse{
+	result := LabPlansClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabPlansClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("LabPlansClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return LabPlansDeletePollerResponse{}, err
+		return LabPlansClientDeletePollerResponse{}, err
 	}
-	result.Poller = &LabPlansDeletePoller{
+	result.Poller = &LabPlansClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor does it delete shared images
-// added to a gallery via the lab plan permission container.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) deleteOperation(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansBeginDeleteOptions) (*http.Response, error) {
+// Delete - Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
+// nor does it delete shared images added to a gallery via the lab plan permission container.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabPlansClient) deleteOperation(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labPlanName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +156,13 @@ func (client *LabPlansClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LabPlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansBeginDeleteOptions) (*policy.Request, error) {
+func (client *LabPlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -172,7 +176,7 @@ func (client *LabPlansClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter labPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labPlanName}", url.PathEscape(labPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -183,38 +187,29 @@ func (client *LabPlansClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LabPlansClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves the properties of a Lab Plan.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) Get(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansGetOptions) (LabPlansGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// options - LabPlansClientGetOptions contains the optional parameters for the LabPlansClient.Get method.
+func (client *LabPlansClient) Get(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansClientGetOptions) (LabPlansClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labPlanName, options)
 	if err != nil {
-		return LabPlansGetResponse{}, err
+		return LabPlansClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LabPlansGetResponse{}, err
+		return LabPlansClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LabPlansGetResponse{}, client.getHandleError(resp)
+		return LabPlansClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LabPlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansGetOptions) (*policy.Request, error) {
+func (client *LabPlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, options *LabPlansClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -228,7 +223,7 @@ func (client *LabPlansClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter labPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labPlanName}", url.PathEscape(labPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -240,43 +235,33 @@ func (client *LabPlansClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *LabPlansClient) getHandleResponse(resp *http.Response) (LabPlansGetResponse, error) {
-	result := LabPlansGetResponse{RawResponse: resp}
+func (client *LabPlansClient) getHandleResponse(resp *http.Response) (LabPlansClientGetResponse, error) {
+	result := LabPlansClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabPlan); err != nil {
-		return LabPlansGetResponse{}, runtime.NewResponseError(err, resp)
+		return LabPlansClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LabPlansClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Returns a list of all lab plans for a subscription and resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) ListByResourceGroup(resourceGroupName string, options *LabPlansListByResourceGroupOptions) *LabPlansListByResourceGroupPager {
-	return &LabPlansListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - LabPlansClientListByResourceGroupOptions contains the optional parameters for the LabPlansClient.ListByResourceGroup
+// method.
+func (client *LabPlansClient) ListByResourceGroup(resourceGroupName string, options *LabPlansClientListByResourceGroupOptions) *LabPlansClientListByResourceGroupPager {
+	return &LabPlansClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp LabPlansListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LabPlansClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedLabPlans.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *LabPlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *LabPlansListByResourceGroupOptions) (*policy.Request, error) {
+func (client *LabPlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *LabPlansClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -286,7 +271,7 @@ func (client *LabPlansClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -298,49 +283,38 @@ func (client *LabPlansClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *LabPlansClient) listByResourceGroupHandleResponse(resp *http.Response) (LabPlansListByResourceGroupResponse, error) {
-	result := LabPlansListByResourceGroupResponse{RawResponse: resp}
+func (client *LabPlansClient) listByResourceGroupHandleResponse(resp *http.Response) (LabPlansClientListByResourceGroupResponse, error) {
+	result := LabPlansClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedLabPlans); err != nil {
-		return LabPlansListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return LabPlansClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *LabPlansClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Returns a list of all lab plans within a subscription
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) ListBySubscription(options *LabPlansListBySubscriptionOptions) *LabPlansListBySubscriptionPager {
-	return &LabPlansListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - LabPlansClientListBySubscriptionOptions contains the optional parameters for the LabPlansClient.ListBySubscription
+// method.
+func (client *LabPlansClient) ListBySubscription(options *LabPlansClientListBySubscriptionOptions) *LabPlansClientListBySubscriptionPager {
+	return &LabPlansClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp LabPlansListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LabPlansClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PagedLabPlans.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *LabPlansClient) listBySubscriptionCreateRequest(ctx context.Context, options *LabPlansListBySubscriptionOptions) (*policy.Request, error) {
+func (client *LabPlansClient) listBySubscriptionCreateRequest(ctx context.Context, options *LabPlansClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/labPlans"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -355,50 +329,42 @@ func (client *LabPlansClient) listBySubscriptionCreateRequest(ctx context.Contex
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *LabPlansClient) listBySubscriptionHandleResponse(resp *http.Response) (LabPlansListBySubscriptionResponse, error) {
-	result := LabPlansListBySubscriptionResponse{RawResponse: resp}
+func (client *LabPlansClient) listBySubscriptionHandleResponse(resp *http.Response) (LabPlansClientListBySubscriptionResponse, error) {
+	result := LabPlansClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedLabPlans); err != nil {
-		return LabPlansListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return LabPlansClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *LabPlansClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginSaveImage - Saves an image from a lab VM to the attached shared image gallery.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) BeginSaveImage(ctx context.Context, resourceGroupName string, labPlanName string, body SaveImageBody, options *LabPlansBeginSaveImageOptions) (LabPlansSaveImagePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// body - The request body.
+// options - LabPlansClientBeginSaveImageOptions contains the optional parameters for the LabPlansClient.BeginSaveImage method.
+func (client *LabPlansClient) BeginSaveImage(ctx context.Context, resourceGroupName string, labPlanName string, body SaveImageBody, options *LabPlansClientBeginSaveImageOptions) (LabPlansClientSaveImagePollerResponse, error) {
 	resp, err := client.saveImage(ctx, resourceGroupName, labPlanName, body, options)
 	if err != nil {
-		return LabPlansSaveImagePollerResponse{}, err
+		return LabPlansClientSaveImagePollerResponse{}, err
 	}
-	result := LabPlansSaveImagePollerResponse{
+	result := LabPlansClientSaveImagePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabPlansClient.SaveImage", "location", resp, client.pl, client.saveImageHandleError)
+	pt, err := armruntime.NewPoller("LabPlansClient.SaveImage", "location", resp, client.pl)
 	if err != nil {
-		return LabPlansSaveImagePollerResponse{}, err
+		return LabPlansClientSaveImagePollerResponse{}, err
 	}
-	result.Poller = &LabPlansSaveImagePoller{
+	result.Poller = &LabPlansClientSaveImagePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // SaveImage - Saves an image from a lab VM to the attached shared image gallery.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) saveImage(ctx context.Context, resourceGroupName string, labPlanName string, body SaveImageBody, options *LabPlansBeginSaveImageOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabPlansClient) saveImage(ctx context.Context, resourceGroupName string, labPlanName string, body SaveImageBody, options *LabPlansClientBeginSaveImageOptions) (*http.Response, error) {
 	req, err := client.saveImageCreateRequest(ctx, resourceGroupName, labPlanName, body, options)
 	if err != nil {
 		return nil, err
@@ -408,13 +374,13 @@ func (client *LabPlansClient) saveImage(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.saveImageHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // saveImageCreateRequest creates the SaveImage request.
-func (client *LabPlansClient) saveImageCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, body SaveImageBody, options *LabPlansBeginSaveImageOptions) (*policy.Request, error) {
+func (client *LabPlansClient) saveImageCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, body SaveImageBody, options *LabPlansClientBeginSaveImageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}/saveImage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -428,7 +394,7 @@ func (client *LabPlansClient) saveImageCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter labPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labPlanName}", url.PathEscape(labPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -439,42 +405,34 @@ func (client *LabPlansClient) saveImageCreateRequest(ctx context.Context, resour
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// saveImageHandleError handles the SaveImage error response.
-func (client *LabPlansClient) saveImageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Operation to update a Lab Plan resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) BeginUpdate(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlanUpdate, options *LabPlansBeginUpdateOptions) (LabPlansUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// labPlanName - The name of the lab plan that uniquely identifies it within containing resource group. Used in resource URIs
+// and in UI.
+// body - The request body.
+// options - LabPlansClientBeginUpdateOptions contains the optional parameters for the LabPlansClient.BeginUpdate method.
+func (client *LabPlansClient) BeginUpdate(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlanUpdate, options *LabPlansClientBeginUpdateOptions) (LabPlansClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, labPlanName, body, options)
 	if err != nil {
-		return LabPlansUpdatePollerResponse{}, err
+		return LabPlansClientUpdatePollerResponse{}, err
 	}
-	result := LabPlansUpdatePollerResponse{
+	result := LabPlansClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LabPlansClient.Update", "location", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("LabPlansClient.Update", "location", resp, client.pl)
 	if err != nil {
-		return LabPlansUpdatePollerResponse{}, err
+		return LabPlansClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &LabPlansUpdatePoller{
+	result.Poller = &LabPlansClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Operation to update a Lab Plan resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LabPlansClient) update(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlanUpdate, options *LabPlansBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LabPlansClient) update(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlanUpdate, options *LabPlansClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labPlanName, body, options)
 	if err != nil {
 		return nil, err
@@ -484,13 +442,13 @@ func (client *LabPlansClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *LabPlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlanUpdate, options *LabPlansBeginUpdateOptions) (*policy.Request, error) {
+func (client *LabPlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labPlanName string, body LabPlanUpdate, options *LabPlansClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labPlans/{labPlanName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -504,7 +462,7 @@ func (client *LabPlansClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter labPlanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labPlanName}", url.PathEscape(labPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -513,17 +471,4 @@ func (client *LabPlansClient) updateCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// updateHandleError handles the Update error response.
-func (client *LabPlansClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

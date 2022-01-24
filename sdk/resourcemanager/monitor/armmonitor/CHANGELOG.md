@@ -1,5 +1,1249 @@
 # Release History
 
+## 0.4.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ScheduledQueryRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ScheduledQueryRulesDeleteOptions)` to `(context.Context, string, string, *ScheduledQueryRulesClientDeleteOptions)`
+- Function `*ScheduledQueryRulesClient.Delete` return value(s) have been changed from `(ScheduledQueryRulesDeleteResponse, error)` to `(ScheduledQueryRulesClientDeleteResponse, error)`
+- Function `*ActionGroupsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ActionGroupResource, *ActionGroupsCreateOrUpdateOptions)` to `(context.Context, string, string, ActionGroupResource, *ActionGroupsClientCreateOrUpdateOptions)`
+- Function `*ActionGroupsClient.CreateOrUpdate` return value(s) have been changed from `(ActionGroupsCreateOrUpdateResponse, error)` to `(ActionGroupsClientCreateOrUpdateResponse, error)`
+- Function `*EventCategoriesClient.List` parameter(s) have been changed from `(context.Context, *EventCategoriesListOptions)` to `(context.Context, *EventCategoriesClientListOptions)`
+- Function `*EventCategoriesClient.List` return value(s) have been changed from `(EventCategoriesListResponse, error)` to `(EventCategoriesClientListResponse, error)`
+- Function `*BaselinesClient.List` parameter(s) have been changed from `(context.Context, string, *BaselinesListOptions)` to `(context.Context, string, *BaselinesClientListOptions)`
+- Function `*BaselinesClient.List` return value(s) have been changed from `(BaselinesListResponse, error)` to `(BaselinesClientListResponse, error)`
+- Function `*DataCollectionRulesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DataCollectionRulesListByResourceGroupOptions)` to `(string, *DataCollectionRulesClientListByResourceGroupOptions)`
+- Function `*DataCollectionRulesClient.ListByResourceGroup` return value(s) have been changed from `(*DataCollectionRulesListByResourceGroupPager)` to `(*DataCollectionRulesClientListByResourceGroupPager)`
+- Function `*ActionGroupsClient.Update` parameter(s) have been changed from `(context.Context, string, string, ActionGroupPatchBody, *ActionGroupsUpdateOptions)` to `(context.Context, string, string, ActionGroupPatchBody, *ActionGroupsClientUpdateOptions)`
+- Function `*ActionGroupsClient.Update` return value(s) have been changed from `(ActionGroupsUpdateResponse, error)` to `(ActionGroupsClientUpdateResponse, error)`
+- Function `*AlertRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AlertRulesGetOptions)` to `(context.Context, string, string, *AlertRulesClientGetOptions)`
+- Function `*AlertRulesClient.Get` return value(s) have been changed from `(AlertRulesGetResponse, error)` to `(AlertRulesClientGetResponse, error)`
+- Function `*LogProfilesClient.Get` parameter(s) have been changed from `(context.Context, string, *LogProfilesGetOptions)` to `(context.Context, string, *LogProfilesClientGetOptions)`
+- Function `*LogProfilesClient.Get` return value(s) have been changed from `(LogProfilesGetResponse, error)` to `(LogProfilesClientGetResponse, error)`
+- Function `*MetricAlertsClient.Update` parameter(s) have been changed from `(context.Context, string, string, MetricAlertResourcePatch, *MetricAlertsUpdateOptions)` to `(context.Context, string, string, MetricAlertResourcePatch, *MetricAlertsClientUpdateOptions)`
+- Function `*MetricAlertsClient.Update` return value(s) have been changed from `(MetricAlertsUpdateResponse, error)` to `(MetricAlertsClientUpdateResponse, error)`
+- Function `*AutoscaleSettingsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AutoscaleSettingsListByResourceGroupOptions)` to `(string, *AutoscaleSettingsClientListByResourceGroupOptions)`
+- Function `*AutoscaleSettingsClient.ListByResourceGroup` return value(s) have been changed from `(*AutoscaleSettingsListByResourceGroupPager)` to `(*AutoscaleSettingsClientListByResourceGroupPager)`
+- Function `*MetricAlertsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, MetricAlertResource, *MetricAlertsCreateOrUpdateOptions)` to `(context.Context, string, string, MetricAlertResource, *MetricAlertsClientCreateOrUpdateOptions)`
+- Function `*MetricAlertsClient.CreateOrUpdate` return value(s) have been changed from `(MetricAlertsCreateOrUpdateResponse, error)` to `(MetricAlertsClientCreateOrUpdateResponse, error)`
+- Function `*DataCollectionRulesClient.ListBySubscription` parameter(s) have been changed from `(*DataCollectionRulesListBySubscriptionOptions)` to `(*DataCollectionRulesClientListBySubscriptionOptions)`
+- Function `*DataCollectionRulesClient.ListBySubscription` return value(s) have been changed from `(*DataCollectionRulesListBySubscriptionPager)` to `(*DataCollectionRulesClientListBySubscriptionPager)`
+- Function `*ScheduledQueryRulesClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ScheduledQueryRulesListByResourceGroupOptions)` to `(context.Context, string, *ScheduledQueryRulesClientListByResourceGroupOptions)`
+- Function `*ScheduledQueryRulesClient.ListByResourceGroup` return value(s) have been changed from `(ScheduledQueryRulesListByResourceGroupResponse, error)` to `(ScheduledQueryRulesClientListByResourceGroupResponse, error)`
+- Function `*PrivateLinkScopedResourcesClient.ListByPrivateLinkScope` parameter(s) have been changed from `(string, string, *PrivateLinkScopedResourcesListByPrivateLinkScopeOptions)` to `(string, string, *PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions)`
+- Function `*PrivateLinkScopedResourcesClient.ListByPrivateLinkScope` return value(s) have been changed from `(*PrivateLinkScopedResourcesListByPrivateLinkScopePager)` to `(*PrivateLinkScopedResourcesClientListByPrivateLinkScopePager)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*AlertRuleIncidentsClient.ListByAlertRule` parameter(s) have been changed from `(context.Context, string, string, *AlertRuleIncidentsListByAlertRuleOptions)` to `(context.Context, string, string, *AlertRuleIncidentsClientListByAlertRuleOptions)`
+- Function `*AlertRuleIncidentsClient.ListByAlertRule` return value(s) have been changed from `(AlertRuleIncidentsListByAlertRuleResponse, error)` to `(AlertRuleIncidentsClientListByAlertRuleResponse, error)`
+- Function `*ActionGroupsClient.ListBySubscriptionID` parameter(s) have been changed from `(context.Context, *ActionGroupsListBySubscriptionIDOptions)` to `(context.Context, *ActionGroupsClientListBySubscriptionIDOptions)`
+- Function `*ActionGroupsClient.ListBySubscriptionID` return value(s) have been changed from `(ActionGroupsListBySubscriptionIDResponse, error)` to `(ActionGroupsClientListBySubscriptionIDResponse, error)`
+- Function `*PrivateLinkScopeOperationStatusClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkScopeOperationStatusGetOptions)` to `(context.Context, string, string, *PrivateLinkScopeOperationStatusClientGetOptions)`
+- Function `*PrivateLinkScopeOperationStatusClient.Get` return value(s) have been changed from `(PrivateLinkScopeOperationStatusGetResponse, error)` to `(PrivateLinkScopeOperationStatusClientGetResponse, error)`
+- Function `*ScheduledQueryRulesClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *ScheduledQueryRulesListBySubscriptionOptions)` to `(context.Context, *ScheduledQueryRulesClientListBySubscriptionOptions)`
+- Function `*ScheduledQueryRulesClient.ListBySubscription` return value(s) have been changed from `(ScheduledQueryRulesListBySubscriptionResponse, error)` to `(ScheduledQueryRulesClientListBySubscriptionResponse, error)`
+- Function `*DataCollectionEndpointsClient.ListBySubscription` parameter(s) have been changed from `(*DataCollectionEndpointsListBySubscriptionOptions)` to `(*DataCollectionEndpointsClientListBySubscriptionOptions)`
+- Function `*DataCollectionEndpointsClient.ListBySubscription` return value(s) have been changed from `(*DataCollectionEndpointsListBySubscriptionPager)` to `(*DataCollectionEndpointsClientListBySubscriptionPager)`
+- Function `*ActionGroupsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ActionGroupsDeleteOptions)` to `(context.Context, string, string, *ActionGroupsClientDeleteOptions)`
+- Function `*ActionGroupsClient.Delete` return value(s) have been changed from `(ActionGroupsDeleteResponse, error)` to `(ActionGroupsClientDeleteResponse, error)`
+- Function `*AlertRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *AlertRulesDeleteOptions)` to `(context.Context, string, string, *AlertRulesClientDeleteOptions)`
+- Function `*AlertRulesClient.Delete` return value(s) have been changed from `(AlertRulesDeleteResponse, error)` to `(AlertRulesClientDeleteResponse, error)`
+- Function `*DiagnosticSettingsClient.List` parameter(s) have been changed from `(context.Context, string, *DiagnosticSettingsListOptions)` to `(context.Context, string, *DiagnosticSettingsClientListOptions)`
+- Function `*DiagnosticSettingsClient.List` return value(s) have been changed from `(DiagnosticSettingsListResponse, error)` to `(DiagnosticSettingsClientListResponse, error)`
+- Function `*ScheduledQueryRulesClient.Update` parameter(s) have been changed from `(context.Context, string, string, LogSearchRuleResourcePatch, *ScheduledQueryRulesUpdateOptions)` to `(context.Context, string, string, LogSearchRuleResourcePatch, *ScheduledQueryRulesClientUpdateOptions)`
+- Function `*ScheduledQueryRulesClient.Update` return value(s) have been changed from `(ScheduledQueryRulesUpdateResponse, error)` to `(ScheduledQueryRulesClientUpdateResponse, error)`
+- Function `*VMInsightsClient.GetOnboardingStatus` parameter(s) have been changed from `(context.Context, string, *VMInsightsGetOnboardingStatusOptions)` to `(context.Context, string, *VMInsightsClientGetOnboardingStatusOptions)`
+- Function `*VMInsightsClient.GetOnboardingStatus` return value(s) have been changed from `(VMInsightsGetOnboardingStatusResponse, error)` to `(VMInsightsClientGetOnboardingStatusResponse, error)`
+- Function `*ScheduledQueryRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, LogSearchRuleResource, *ScheduledQueryRulesCreateOrUpdateOptions)` to `(context.Context, string, string, LogSearchRuleResource, *ScheduledQueryRulesClientCreateOrUpdateOptions)`
+- Function `*ScheduledQueryRulesClient.CreateOrUpdate` return value(s) have been changed from `(ScheduledQueryRulesCreateOrUpdateResponse, error)` to `(ScheduledQueryRulesClientCreateOrUpdateResponse, error)`
+- Function `*AlertRuleIncidentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AlertRuleIncidentsGetOptions)` to `(context.Context, string, string, string, *AlertRuleIncidentsClientGetOptions)`
+- Function `*AlertRuleIncidentsClient.Get` return value(s) have been changed from `(AlertRuleIncidentsGetResponse, error)` to `(AlertRuleIncidentsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdatePollerResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DataCollectionRuleAssociationsClient.ListByRule` parameter(s) have been changed from `(string, string, *DataCollectionRuleAssociationsListByRuleOptions)` to `(string, string, *DataCollectionRuleAssociationsClientListByRuleOptions)`
+- Function `*DataCollectionRuleAssociationsClient.ListByRule` return value(s) have been changed from `(*DataCollectionRuleAssociationsListByRulePager)` to `(*DataCollectionRuleAssociationsClientListByRulePager)`
+- Function `*MetricAlertsStatusClient.List` parameter(s) have been changed from `(context.Context, string, string, *MetricAlertsStatusListOptions)` to `(context.Context, string, string, *MetricAlertsStatusClientListOptions)`
+- Function `*MetricAlertsStatusClient.List` return value(s) have been changed from `(MetricAlertsStatusListResponse, error)` to `(MetricAlertsStatusClientListResponse, error)`
+- Function `*PrivateLinkScopesClient.List` parameter(s) have been changed from `(*PrivateLinkScopesListOptions)` to `(*PrivateLinkScopesClientListOptions)`
+- Function `*PrivateLinkScopesClient.List` return value(s) have been changed from `(*PrivateLinkScopesListPager)` to `(*PrivateLinkScopesClientListPager)`
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkScope` parameter(s) have been changed from `(string, string, *PrivateLinkResourcesListByPrivateLinkScopeOptions)` to `(string, string, *PrivateLinkResourcesClientListByPrivateLinkScopeOptions)`
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkScope` return value(s) have been changed from `(*PrivateLinkResourcesListByPrivateLinkScopePager)` to `(*PrivateLinkResourcesClientListByPrivateLinkScopePager)`
+- Function `*MetricAlertsStatusClient.ListByName` parameter(s) have been changed from `(context.Context, string, string, string, *MetricAlertsStatusListByNameOptions)` to `(context.Context, string, string, string, *MetricAlertsStatusClientListByNameOptions)`
+- Function `*MetricAlertsStatusClient.ListByName` return value(s) have been changed from `(MetricAlertsStatusListByNameResponse, error)` to `(MetricAlertsStatusClientListByNameResponse, error)`
+- Function `*DataCollectionEndpointsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionEndpointsDeleteOptions)` to `(context.Context, string, string, *DataCollectionEndpointsClientDeleteOptions)`
+- Function `*DataCollectionEndpointsClient.Delete` return value(s) have been changed from `(DataCollectionEndpointsDeleteResponse, error)` to `(DataCollectionEndpointsClientDeleteResponse, error)`
+- Function `*AlertRulesClient.Update` parameter(s) have been changed from `(context.Context, string, string, AlertRuleResourcePatch, *AlertRulesUpdateOptions)` to `(context.Context, string, string, AlertRuleResourcePatch, *AlertRulesClientUpdateOptions)`
+- Function `*AlertRulesClient.Update` return value(s) have been changed from `(AlertRulesUpdateResponse, error)` to `(AlertRulesClientUpdateResponse, error)`
+- Function `*DataCollectionRulesClient.Create` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionRulesCreateOptions)` to `(context.Context, string, string, *DataCollectionRulesClientCreateOptions)`
+- Function `*DataCollectionRulesClient.Create` return value(s) have been changed from `(DataCollectionRulesCreateResponse, error)` to `(DataCollectionRulesClientCreateResponse, error)`
+- Function `*AutoscaleSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AutoscaleSettingsGetOptions)` to `(context.Context, string, string, *AutoscaleSettingsClientGetOptions)`
+- Function `*AutoscaleSettingsClient.Get` return value(s) have been changed from `(AutoscaleSettingsGetResponse, error)` to `(AutoscaleSettingsClientGetResponse, error)`
+- Function `*TenantActivityLogsClient.List` parameter(s) have been changed from `(*TenantActivityLogsListOptions)` to `(*TenantActivityLogsClientListOptions)`
+- Function `*TenantActivityLogsClient.List` return value(s) have been changed from `(*TenantActivityLogsListPager)` to `(*TenantActivityLogsClientListPager)`
+- Function `*ScheduledQueryRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ScheduledQueryRulesGetOptions)` to `(context.Context, string, string, *ScheduledQueryRulesClientGetOptions)`
+- Function `*ScheduledQueryRulesClient.Get` return value(s) have been changed from `(ScheduledQueryRulesGetResponse, error)` to `(ScheduledQueryRulesClientGetResponse, error)`
+- Function `*DataCollectionRuleAssociationsClient.ListByResource` parameter(s) have been changed from `(string, *DataCollectionRuleAssociationsListByResourceOptions)` to `(string, *DataCollectionRuleAssociationsClientListByResourceOptions)`
+- Function `*DataCollectionRuleAssociationsClient.ListByResource` return value(s) have been changed from `(*DataCollectionRuleAssociationsListByResourcePager)` to `(*DataCollectionRuleAssociationsClientListByResourcePager)`
+- Function `*DataCollectionRulesClient.Update` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionRulesUpdateOptions)` to `(context.Context, string, string, *DataCollectionRulesClientUpdateOptions)`
+- Function `*DataCollectionRulesClient.Update` return value(s) have been changed from `(DataCollectionRulesUpdateResponse, error)` to `(DataCollectionRulesClientUpdateResponse, error)`
+- Function `*DataCollectionRuleAssociationsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionRuleAssociationsDeleteOptions)` to `(context.Context, string, string, *DataCollectionRuleAssociationsClientDeleteOptions)`
+- Function `*DataCollectionRuleAssociationsClient.Delete` return value(s) have been changed from `(DataCollectionRuleAssociationsDeleteResponse, error)` to `(DataCollectionRuleAssociationsClientDeleteResponse, error)`
+- Function `*PrivateLinkScopesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkScopesBeginDeleteOptions)` to `(context.Context, string, string, *PrivateLinkScopesClientBeginDeleteOptions)`
+- Function `*PrivateLinkScopesClient.BeginDelete` return value(s) have been changed from `(PrivateLinkScopesDeletePollerResponse, error)` to `(PrivateLinkScopesClientDeletePollerResponse, error)`
+- Function `*MetricAlertsClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *MetricAlertsListByResourceGroupOptions)` to `(context.Context, string, *MetricAlertsClientListByResourceGroupOptions)`
+- Function `*MetricAlertsClient.ListByResourceGroup` return value(s) have been changed from `(MetricAlertsListByResourceGroupResponse, error)` to `(MetricAlertsClientListByResourceGroupResponse, error)`
+- Function `*ActionGroupsClient.EnableReceiver` parameter(s) have been changed from `(context.Context, string, string, EnableRequest, *ActionGroupsEnableReceiverOptions)` to `(context.Context, string, string, EnableRequest, *ActionGroupsClientEnableReceiverOptions)`
+- Function `*ActionGroupsClient.EnableReceiver` return value(s) have been changed from `(ActionGroupsEnableReceiverResponse, error)` to `(ActionGroupsClientEnableReceiverResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionsListByPrivateLinkScopeOptions)` to `(string, string, *PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope` return value(s) have been changed from `(*PrivateEndpointConnectionsListByPrivateLinkScopePager)` to `(*PrivateEndpointConnectionsClientListByPrivateLinkScopePager)`
+- Function `*ActivityLogAlertsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ActivityLogAlertResource, *ActivityLogAlertsCreateOrUpdateOptions)` to `(context.Context, string, string, ActivityLogAlertResource, *ActivityLogAlertsClientCreateOrUpdateOptions)`
+- Function `*ActivityLogAlertsClient.CreateOrUpdate` return value(s) have been changed from `(ActivityLogAlertsCreateOrUpdateResponse, error)` to `(ActivityLogAlertsClientCreateOrUpdateResponse, error)`
+- Function `*ActivityLogAlertsClient.ListBySubscriptionID` parameter(s) have been changed from `(context.Context, *ActivityLogAlertsListBySubscriptionIDOptions)` to `(*ActivityLogAlertsClientListBySubscriptionIDOptions)`
+- Function `*ActivityLogAlertsClient.ListBySubscriptionID` return value(s) have been changed from `(ActivityLogAlertsListBySubscriptionIDResponse, error)` to `(*ActivityLogAlertsClientListBySubscriptionIDPager)`
+- Function `*DataCollectionEndpointsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DataCollectionEndpointsListByResourceGroupOptions)` to `(string, *DataCollectionEndpointsClientListByResourceGroupOptions)`
+- Function `*DataCollectionEndpointsClient.ListByResourceGroup` return value(s) have been changed from `(*DataCollectionEndpointsListByResourceGroupPager)` to `(*DataCollectionEndpointsClientListByResourceGroupPager)`
+- Function `*PrivateLinkScopesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkScopesGetOptions)` to `(context.Context, string, string, *PrivateLinkScopesClientGetOptions)`
+- Function `*PrivateLinkScopesClient.Get` return value(s) have been changed from `(PrivateLinkScopesGetResponse, error)` to `(PrivateLinkScopesClientGetResponse, error)`
+- Function `*ActionGroupsClient.BeginPostTestNotifications` parameter(s) have been changed from `(context.Context, NotificationRequestBody, *ActionGroupsBeginPostTestNotificationsOptions)` to `(context.Context, NotificationRequestBody, *ActionGroupsClientBeginPostTestNotificationsOptions)`
+- Function `*ActionGroupsClient.BeginPostTestNotifications` return value(s) have been changed from `(ActionGroupsPostTestNotificationsPollerResponse, error)` to `(ActionGroupsClientPostTestNotificationsPollerResponse, error)`
+- Function `*ActionGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ActionGroupsGetOptions)` to `(context.Context, string, string, *ActionGroupsClientGetOptions)`
+- Function `*ActionGroupsClient.Get` return value(s) have been changed from `(ActionGroupsGetResponse, error)` to `(ActionGroupsClientGetResponse, error)`
+- Function `*AutoscaleSettingsClient.Update` parameter(s) have been changed from `(context.Context, string, string, AutoscaleSettingResourcePatch, *AutoscaleSettingsUpdateOptions)` to `(context.Context, string, string, AutoscaleSettingResourcePatch, *AutoscaleSettingsClientUpdateOptions)`
+- Function `*AutoscaleSettingsClient.Update` return value(s) have been changed from `(AutoscaleSettingsUpdateResponse, error)` to `(AutoscaleSettingsClientUpdateResponse, error)`
+- Function `*DataCollectionEndpointsClient.Update` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionEndpointsUpdateOptions)` to `(context.Context, string, string, *DataCollectionEndpointsClientUpdateOptions)`
+- Function `*DataCollectionEndpointsClient.Update` return value(s) have been changed from `(DataCollectionEndpointsUpdateResponse, error)` to `(DataCollectionEndpointsClientUpdateResponse, error)`
+- Function `*MetricDefinitionsClient.List` parameter(s) have been changed from `(context.Context, string, *MetricDefinitionsListOptions)` to `(context.Context, string, *MetricDefinitionsClientListOptions)`
+- Function `*MetricDefinitionsClient.List` return value(s) have been changed from `(MetricDefinitionsListResponse, error)` to `(MetricDefinitionsClientListResponse, error)`
+- Function `*DataCollectionRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionRulesGetOptions)` to `(context.Context, string, string, *DataCollectionRulesClientGetOptions)`
+- Function `*DataCollectionRulesClient.Get` return value(s) have been changed from `(DataCollectionRulesGetResponse, error)` to `(DataCollectionRulesClientGetResponse, error)`
+- Function `*MetricAlertsClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *MetricAlertsListBySubscriptionOptions)` to `(context.Context, *MetricAlertsClientListBySubscriptionOptions)`
+- Function `*MetricAlertsClient.ListBySubscription` return value(s) have been changed from `(MetricAlertsListBySubscriptionResponse, error)` to `(MetricAlertsClientListBySubscriptionResponse, error)`
+- Function `*LogProfilesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, LogProfileResource, *LogProfilesCreateOrUpdateOptions)` to `(context.Context, string, LogProfileResource, *LogProfilesClientCreateOrUpdateOptions)`
+- Function `*LogProfilesClient.CreateOrUpdate` return value(s) have been changed from `(LogProfilesCreateOrUpdateResponse, error)` to `(LogProfilesClientCreateOrUpdateResponse, error)`
+- Function `*PrivateLinkScopedResourcesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkScopedResourcesBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateLinkScopedResourcesClientBeginDeleteOptions)`
+- Function `*PrivateLinkScopedResourcesClient.BeginDelete` return value(s) have been changed from `(PrivateLinkScopedResourcesDeletePollerResponse, error)` to `(PrivateLinkScopedResourcesClientDeletePollerResponse, error)`
+- Function `*AutoscaleSettingsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, AutoscaleSettingResource, *AutoscaleSettingsCreateOrUpdateOptions)` to `(context.Context, string, string, AutoscaleSettingResource, *AutoscaleSettingsClientCreateOrUpdateOptions)`
+- Function `*AutoscaleSettingsClient.CreateOrUpdate` return value(s) have been changed from `(AutoscaleSettingsCreateOrUpdateResponse, error)` to `(AutoscaleSettingsClientCreateOrUpdateResponse, error)`
+- Function `*MetricNamespacesClient.List` parameter(s) have been changed from `(context.Context, string, *MetricNamespacesListOptions)` to `(context.Context, string, *MetricNamespacesClientListOptions)`
+- Function `*MetricNamespacesClient.List` return value(s) have been changed from `(MetricNamespacesListResponse, error)` to `(MetricNamespacesClientListResponse, error)`
+- Function `*MetricsClient.List` parameter(s) have been changed from `(context.Context, string, *MetricsListOptions)` to `(context.Context, string, *MetricsClientListOptions)`
+- Function `*MetricsClient.List` return value(s) have been changed from `(MetricsListResponse, error)` to `(MetricsClientListResponse, error)`
+- Function `*DataCollectionRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionRulesDeleteOptions)` to `(context.Context, string, string, *DataCollectionRulesClientDeleteOptions)`
+- Function `*DataCollectionRulesClient.Delete` return value(s) have been changed from `(DataCollectionRulesDeleteResponse, error)` to `(DataCollectionRulesClientDeleteResponse, error)`
+- Function `*DiagnosticSettingsCategoryClient.List` parameter(s) have been changed from `(context.Context, string, *DiagnosticSettingsCategoryListOptions)` to `(context.Context, string, *DiagnosticSettingsCategoryClientListOptions)`
+- Function `*DiagnosticSettingsCategoryClient.List` return value(s) have been changed from `(DiagnosticSettingsCategoryListResponse, error)` to `(DiagnosticSettingsCategoryClientListResponse, error)`
+- Function `*DiagnosticSettingsCategoryClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DiagnosticSettingsCategoryGetOptions)` to `(context.Context, string, string, *DiagnosticSettingsCategoryClientGetOptions)`
+- Function `*DiagnosticSettingsCategoryClient.Get` return value(s) have been changed from `(DiagnosticSettingsCategoryGetResponse, error)` to `(DiagnosticSettingsCategoryClientGetResponse, error)`
+- Function `*DataCollectionRuleAssociationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionRuleAssociationsGetOptions)` to `(context.Context, string, string, *DataCollectionRuleAssociationsClientGetOptions)`
+- Function `*DataCollectionRuleAssociationsClient.Get` return value(s) have been changed from `(DataCollectionRuleAssociationsGetResponse, error)` to `(DataCollectionRuleAssociationsClientGetResponse, error)`
+- Function `*LogProfilesClient.Update` parameter(s) have been changed from `(context.Context, string, LogProfileResourcePatch, *LogProfilesUpdateOptions)` to `(context.Context, string, LogProfileResourcePatch, *LogProfilesClientUpdateOptions)`
+- Function `*LogProfilesClient.Update` return value(s) have been changed from `(LogProfilesUpdateResponse, error)` to `(LogProfilesClientUpdateResponse, error)`
+- Function `*DiagnosticSettingsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DiagnosticSettingsResource, *DiagnosticSettingsCreateOrUpdateOptions)` to `(context.Context, string, string, DiagnosticSettingsResource, *DiagnosticSettingsClientCreateOrUpdateOptions)`
+- Function `*DiagnosticSettingsClient.CreateOrUpdate` return value(s) have been changed from `(DiagnosticSettingsCreateOrUpdateResponse, error)` to `(DiagnosticSettingsClientCreateOrUpdateResponse, error)`
+- Function `*DiagnosticSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DiagnosticSettingsGetOptions)` to `(context.Context, string, string, *DiagnosticSettingsClientGetOptions)`
+- Function `*DiagnosticSettingsClient.Get` return value(s) have been changed from `(DiagnosticSettingsGetResponse, error)` to `(DiagnosticSettingsClientGetResponse, error)`
+- Function `*AutoscaleSettingsClient.ListBySubscription` parameter(s) have been changed from `(*AutoscaleSettingsListBySubscriptionOptions)` to `(*AutoscaleSettingsClientListBySubscriptionOptions)`
+- Function `*AutoscaleSettingsClient.ListBySubscription` return value(s) have been changed from `(*AutoscaleSettingsListBySubscriptionPager)` to `(*AutoscaleSettingsClientListBySubscriptionPager)`
+- Function `*AutoscaleSettingsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *AutoscaleSettingsDeleteOptions)` to `(context.Context, string, string, *AutoscaleSettingsClientDeleteOptions)`
+- Function `*AutoscaleSettingsClient.Delete` return value(s) have been changed from `(AutoscaleSettingsDeleteResponse, error)` to `(AutoscaleSettingsClientDeleteResponse, error)`
+- Function `*ActivityLogAlertsClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ActivityLogAlertsListByResourceGroupOptions)` to `(string, *ActivityLogAlertsClientListByResourceGroupOptions)`
+- Function `*ActivityLogAlertsClient.ListByResourceGroup` return value(s) have been changed from `(ActivityLogAlertsListByResourceGroupResponse, error)` to `(*ActivityLogAlertsClientListByResourceGroupPager)`
+- Function `*LogProfilesClient.Delete` parameter(s) have been changed from `(context.Context, string, *LogProfilesDeleteOptions)` to `(context.Context, string, *LogProfilesClientDeleteOptions)`
+- Function `*LogProfilesClient.Delete` return value(s) have been changed from `(LogProfilesDeleteResponse, error)` to `(LogProfilesClientDeleteResponse, error)`
+- Function `*DataCollectionEndpointsClient.Create` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionEndpointsCreateOptions)` to `(context.Context, string, string, *DataCollectionEndpointsClientCreateOptions)`
+- Function `*DataCollectionEndpointsClient.Create` return value(s) have been changed from `(DataCollectionEndpointsCreateResponse, error)` to `(DataCollectionEndpointsClientCreateResponse, error)`
+- Function `*AlertRulesClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *AlertRulesListByResourceGroupOptions)` to `(context.Context, string, *AlertRulesClientListByResourceGroupOptions)`
+- Function `*AlertRulesClient.ListByResourceGroup` return value(s) have been changed from `(AlertRulesListByResourceGroupResponse, error)` to `(AlertRulesClientListByResourceGroupResponse, error)`
+- Function `*ActivityLogAlertsClient.Update` parameter(s) have been changed from `(context.Context, string, string, ActivityLogAlertPatchBody, *ActivityLogAlertsUpdateOptions)` to `(context.Context, string, string, AlertRulePatchObject, *ActivityLogAlertsClientUpdateOptions)`
+- Function `*ActivityLogAlertsClient.Update` return value(s) have been changed from `(ActivityLogAlertsUpdateResponse, error)` to `(ActivityLogAlertsClientUpdateResponse, error)`
+- Function `*ActivityLogsClient.List` parameter(s) have been changed from `(string, *ActivityLogsListOptions)` to `(string, *ActivityLogsClientListOptions)`
+- Function `*ActivityLogsClient.List` return value(s) have been changed from `(*ActivityLogsListPager)` to `(*ActivityLogsClientListPager)`
+- Function `*PrivateLinkScopesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, AzureMonitorPrivateLinkScope, *PrivateLinkScopesCreateOrUpdateOptions)` to `(context.Context, string, string, AzureMonitorPrivateLinkScope, *PrivateLinkScopesClientCreateOrUpdateOptions)`
+- Function `*PrivateLinkScopesClient.CreateOrUpdate` return value(s) have been changed from `(PrivateLinkScopesCreateOrUpdateResponse, error)` to `(PrivateLinkScopesClientCreateOrUpdateResponse, error)`
+- Function `*MetricAlertsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *MetricAlertsDeleteOptions)` to `(context.Context, string, string, *MetricAlertsClientDeleteOptions)`
+- Function `*MetricAlertsClient.Delete` return value(s) have been changed from `(MetricAlertsDeleteResponse, error)` to `(MetricAlertsClientDeleteResponse, error)`
+- Function `*AlertRulesClient.ListBySubscription` parameter(s) have been changed from `(context.Context, *AlertRulesListBySubscriptionOptions)` to `(context.Context, *AlertRulesClientListBySubscriptionOptions)`
+- Function `*AlertRulesClient.ListBySubscription` return value(s) have been changed from `(AlertRulesListBySubscriptionResponse, error)` to `(AlertRulesClientListBySubscriptionResponse, error)`
+- Function `*DiagnosticSettingsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *DiagnosticSettingsDeleteOptions)` to `(context.Context, string, string, *DiagnosticSettingsClientDeleteOptions)`
+- Function `*DiagnosticSettingsClient.Delete` return value(s) have been changed from `(DiagnosticSettingsDeleteResponse, error)` to `(DiagnosticSettingsClientDeleteResponse, error)`
+- Function `*DataCollectionRuleAssociationsClient.Create` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionRuleAssociationsCreateOptions)` to `(context.Context, string, string, *DataCollectionRuleAssociationsClientCreateOptions)`
+- Function `*DataCollectionRuleAssociationsClient.Create` return value(s) have been changed from `(DataCollectionRuleAssociationsCreateResponse, error)` to `(DataCollectionRuleAssociationsClientCreateResponse, error)`
+- Function `*AlertRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, AlertRuleResource, *AlertRulesCreateOrUpdateOptions)` to `(context.Context, string, string, AlertRuleResource, *AlertRulesClientCreateOrUpdateOptions)`
+- Function `*AlertRulesClient.CreateOrUpdate` return value(s) have been changed from `(AlertRulesCreateOrUpdateResponse, error)` to `(AlertRulesClientCreateOrUpdateResponse, error)`
+- Function `*ActivityLogAlertsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ActivityLogAlertsDeleteOptions)` to `(context.Context, string, string, *ActivityLogAlertsClientDeleteOptions)`
+- Function `*ActivityLogAlertsClient.Delete` return value(s) have been changed from `(ActivityLogAlertsDeleteResponse, error)` to `(ActivityLogAlertsClientDeleteResponse, error)`
+- Function `*LogProfilesClient.List` parameter(s) have been changed from `(context.Context, *LogProfilesListOptions)` to `(context.Context, *LogProfilesClientListOptions)`
+- Function `*LogProfilesClient.List` return value(s) have been changed from `(LogProfilesListResponse, error)` to `(LogProfilesClientListResponse, error)`
+- Function `*ActivityLogAlertsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ActivityLogAlertsGetOptions)` to `(context.Context, string, string, *ActivityLogAlertsClientGetOptions)`
+- Function `*ActivityLogAlertsClient.Get` return value(s) have been changed from `(ActivityLogAlertsGetResponse, error)` to `(ActivityLogAlertsClientGetResponse, error)`
+- Function `*ActionGroupsClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ActionGroupsListByResourceGroupOptions)` to `(context.Context, string, *ActionGroupsClientListByResourceGroupOptions)`
+- Function `*ActionGroupsClient.ListByResourceGroup` return value(s) have been changed from `(ActionGroupsListByResourceGroupResponse, error)` to `(ActionGroupsClientListByResourceGroupResponse, error)`
+- Function `*DataCollectionEndpointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DataCollectionEndpointsGetOptions)` to `(context.Context, string, string, *DataCollectionEndpointsClientGetOptions)`
+- Function `*DataCollectionEndpointsClient.Get` return value(s) have been changed from `(DataCollectionEndpointsGetResponse, error)` to `(DataCollectionEndpointsClientGetResponse, error)`
+- Function `*PrivateLinkScopedResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkScopedResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkScopedResourcesClientGetOptions)`
+- Function `*PrivateLinkScopedResourcesClient.Get` return value(s) have been changed from `(PrivateLinkScopedResourcesGetResponse, error)` to `(PrivateLinkScopedResourcesClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*PrivateLinkScopesClient.UpdateTags` parameter(s) have been changed from `(context.Context, string, string, TagsResource, *PrivateLinkScopesUpdateTagsOptions)` to `(context.Context, string, string, TagsResource, *PrivateLinkScopesClientUpdateTagsOptions)`
+- Function `*PrivateLinkScopesClient.UpdateTags` return value(s) have been changed from `(PrivateLinkScopesUpdateTagsResponse, error)` to `(PrivateLinkScopesClientUpdateTagsResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*PrivateLinkScopesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *PrivateLinkScopesListByResourceGroupOptions)` to `(string, *PrivateLinkScopesClientListByResourceGroupOptions)`
+- Function `*PrivateLinkScopesClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateLinkScopesListByResourceGroupPager)` to `(*PrivateLinkScopesClientListByResourceGroupPager)`
+- Function `*PrivateLinkScopedResourcesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ScopedResource, *PrivateLinkScopedResourcesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, ScopedResource, *PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateLinkScopedResourcesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateLinkScopedResourcesCreateOrUpdatePollerResponse, error)` to `(PrivateLinkScopedResourcesClientCreateOrUpdatePollerResponse, error)`
+- Function `*ActionGroupsClient.GetTestNotifications` parameter(s) have been changed from `(context.Context, string, *ActionGroupsGetTestNotificationsOptions)` to `(context.Context, string, *ActionGroupsClientGetTestNotificationsOptions)`
+- Function `*ActionGroupsClient.GetTestNotifications` return value(s) have been changed from `(ActionGroupsGetTestNotificationsResponse, error)` to `(ActionGroupsClientGetTestNotificationsResponse, error)`
+- Function `*MetricAlertsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *MetricAlertsGetOptions)` to `(context.Context, string, string, *MetricAlertsClientGetOptions)`
+- Function `*MetricAlertsClient.Get` return value(s) have been changed from `(MetricAlertsGetResponse, error)` to `(MetricAlertsClientGetResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Type of `ActivityLogAlertResource.Properties` has been changed from `*ActivityLogAlert` to `*AlertRuleProperties`
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsListByPrivateLinkScopePager.NextPage` has been removed
+- Function `*PrivateLinkScopedResourcesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkScopesListPager.NextPage` has been removed
+- Function `*PrivateLinkScopesDeletePollerResponse.Resume` has been removed
+- Function `*DataCollectionEndpointsListByResourceGroupPager.Err` has been removed
+- Function `*PrivateLinkScopesListPager.Err` has been removed
+- Function `*ActivityLogsListPager.PageResponse` has been removed
+- Function `*ActionGroupsPostTestNotificationsPoller.ResumeToken` has been removed
+- Function `ActivityLogAlertPatchBody.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `ActivityLogAlertActionGroup.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `PrivateLinkScopedResourcesDeletePollerResponse.PollUntilDone` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*DataCollectionRuleAssociationsListByResourcePager.PageResponse` has been removed
+- Function `*DataCollectionEndpointsListBySubscriptionPager.Err` has been removed
+- Function `*PrivateLinkScopedResourcesCreateOrUpdatePoller.Done` has been removed
+- Function `*AutoscaleSettingsListByResourceGroupPager.PageResponse` has been removed
+- Function `*Action.UnmarshalJSON` has been removed
+- Function `*PrivateLinkResourcesListByPrivateLinkScopePager.Err` has been removed
+- Function `*DataCollectionRuleAssociationsListByRulePager.PageResponse` has been removed
+- Function `*DataCollectionRuleAssociationsListByRulePager.Err` has been removed
+- Function `*TenantActivityLogsListPager.NextPage` has been removed
+- Function `ActionGroupsPostTestNotificationsPollerResponse.PollUntilDone` has been removed
+- Function `ActivityLogAlertAllOfCondition.MarshalJSON` has been removed
+- Function `*PrivateLinkScopesListByResourceGroupPager.PageResponse` has been removed
+- Function `*PrivateLinkScopedResourcesDeletePoller.Poll` has been removed
+- Function `PrivateLinkScopedResourcesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateLinkScopedResourcesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateLinkScopesListByResourceGroupPager.Err` has been removed
+- Function `*PrivateLinkScopedResourcesDeletePollerResponse.Resume` has been removed
+- Function `*DataCollectionRulesListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateLinkScopedResourcesListByPrivateLinkScopePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*DataCollectionEndpointsListByResourceGroupPager.NextPage` has been removed
+- Function `ErrorResponseCommonV2.Error` has been removed
+- Function `PrivateLinkScopesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AutoscaleSettingsListBySubscriptionPager.Err` has been removed
+- Function `*DataCollectionEndpointsListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateLinkScopedResourcesListByPrivateLinkScopePager.PageResponse` has been removed
+- Function `*DataCollectionRulesListByResourceGroupPager.Err` has been removed
+- Function `*PrivateLinkResourcesListByPrivateLinkScopePager.NextPage` has been removed
+- Function `*PrivateLinkScopedResourcesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ActionGroupsPostTestNotificationsPollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnectionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AutoscaleSettingsListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateLinkScopesListPager.PageResponse` has been removed
+- Function `ActivityLogAlertList.MarshalJSON` has been removed
+- Function `*ActionGroupsPostTestNotificationsPoller.Poll` has been removed
+- Function `ErrorContract.Error` has been removed
+- Function `*ActivityLogsListPager.Err` has been removed
+- Function `*DataCollectionRulesListBySubscriptionPager.Err` has been removed
+- Function `*PrivateLinkScopedResourcesDeletePoller.Done` has been removed
+- Function `ResponseWithError.Error` has been removed
+- Function `*AutoscaleSettingsListByResourceGroupPager.NextPage` has been removed
+- Function `*DataCollectionEndpointsListByResourceGroupPager.PageResponse` has been removed
+- Function `*DataCollectionRulesListByResourceGroupPager.PageResponse` has been removed
+- Function `ActivityLogAlert.MarshalJSON` has been removed
+- Function `*DataCollectionRulesListBySubscriptionPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateLinkScopesDeletePoller.ResumeToken` has been removed
+- Function `*TenantActivityLogsListPager.PageResponse` has been removed
+- Function `*PrivateLinkScopedResourcesDeletePoller.FinalResponse` has been removed
+- Function `*AutoscaleSettingsListByResourceGroupPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*PrivateLinkScopesDeletePoller.Poll` has been removed
+- Function `*AutoscaleSettingsListBySubscriptionPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateLinkResourcesListByPrivateLinkScopePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsListByPrivateLinkScopePager.Err` has been removed
+- Function `ActivityLogAlertActionList.MarshalJSON` has been removed
+- Function `*DataCollectionRuleAssociationsListByResourcePager.Err` has been removed
+- Function `*RuleDataSource.UnmarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*ActivityLogsListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsListByPrivateLinkScopePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*PrivateLinkScopedResourcesCreateOrUpdatePoller.Poll` has been removed
+- Function `*DataCollectionEndpointsListBySubscriptionPager.PageResponse` has been removed
+- Function `*PrivateLinkScopedResourcesDeletePoller.ResumeToken` has been removed
+- Function `*PrivateLinkScopesDeletePoller.Done` has been removed
+- Function `*DataCollectionRuleAssociationsListByResourcePager.NextPage` has been removed
+- Function `*PrivateLinkScopedResourcesListByPrivateLinkScopePager.NextPage` has been removed
+- Function `*ActionGroupsPostTestNotificationsPoller.Done` has been removed
+- Function `*RuleAction.UnmarshalJSON` has been removed
+- Function `*TenantActivityLogsListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DataCollectionRuleAssociationsListByRulePager.NextPage` has been removed
+- Function `*PrivateLinkScopesDeletePoller.FinalResponse` has been removed
+- Function `*ActionGroupsPostTestNotificationsPoller.FinalResponse` has been removed
+- Function `*PrivateLinkScopesListByResourceGroupPager.NextPage` has been removed
+- Function `*DataCollectionRulesListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Struct `ActionGroupsBeginPostTestNotificationsOptions` has been removed
+- Struct `ActionGroupsCreateOrUpdateOptions` has been removed
+- Struct `ActionGroupsCreateOrUpdateResponse` has been removed
+- Struct `ActionGroupsCreateOrUpdateResult` has been removed
+- Struct `ActionGroupsDeleteOptions` has been removed
+- Struct `ActionGroupsDeleteResponse` has been removed
+- Struct `ActionGroupsEnableReceiverOptions` has been removed
+- Struct `ActionGroupsEnableReceiverResponse` has been removed
+- Struct `ActionGroupsGetOptions` has been removed
+- Struct `ActionGroupsGetResponse` has been removed
+- Struct `ActionGroupsGetResult` has been removed
+- Struct `ActionGroupsGetTestNotificationsOptions` has been removed
+- Struct `ActionGroupsGetTestNotificationsResponse` has been removed
+- Struct `ActionGroupsGetTestNotificationsResult` has been removed
+- Struct `ActionGroupsListByResourceGroupOptions` has been removed
+- Struct `ActionGroupsListByResourceGroupResponse` has been removed
+- Struct `ActionGroupsListByResourceGroupResult` has been removed
+- Struct `ActionGroupsListBySubscriptionIDOptions` has been removed
+- Struct `ActionGroupsListBySubscriptionIDResponse` has been removed
+- Struct `ActionGroupsListBySubscriptionIDResult` has been removed
+- Struct `ActionGroupsPostTestNotificationsPoller` has been removed
+- Struct `ActionGroupsPostTestNotificationsPollerResponse` has been removed
+- Struct `ActionGroupsPostTestNotificationsResponse` has been removed
+- Struct `ActionGroupsPostTestNotificationsResult` has been removed
+- Struct `ActionGroupsUpdateOptions` has been removed
+- Struct `ActionGroupsUpdateResponse` has been removed
+- Struct `ActionGroupsUpdateResult` has been removed
+- Struct `ActivityLogAlert` has been removed
+- Struct `ActivityLogAlertActionGroup` has been removed
+- Struct `ActivityLogAlertActionList` has been removed
+- Struct `ActivityLogAlertAllOfCondition` has been removed
+- Struct `ActivityLogAlertLeafCondition` has been removed
+- Struct `ActivityLogAlertList` has been removed
+- Struct `ActivityLogAlertPatch` has been removed
+- Struct `ActivityLogAlertPatchBody` has been removed
+- Struct `ActivityLogAlertsCreateOrUpdateOptions` has been removed
+- Struct `ActivityLogAlertsCreateOrUpdateResponse` has been removed
+- Struct `ActivityLogAlertsCreateOrUpdateResult` has been removed
+- Struct `ActivityLogAlertsDeleteOptions` has been removed
+- Struct `ActivityLogAlertsDeleteResponse` has been removed
+- Struct `ActivityLogAlertsGetOptions` has been removed
+- Struct `ActivityLogAlertsGetResponse` has been removed
+- Struct `ActivityLogAlertsGetResult` has been removed
+- Struct `ActivityLogAlertsListByResourceGroupOptions` has been removed
+- Struct `ActivityLogAlertsListByResourceGroupResponse` has been removed
+- Struct `ActivityLogAlertsListByResourceGroupResult` has been removed
+- Struct `ActivityLogAlertsListBySubscriptionIDOptions` has been removed
+- Struct `ActivityLogAlertsListBySubscriptionIDResponse` has been removed
+- Struct `ActivityLogAlertsListBySubscriptionIDResult` has been removed
+- Struct `ActivityLogAlertsUpdateOptions` has been removed
+- Struct `ActivityLogAlertsUpdateResponse` has been removed
+- Struct `ActivityLogAlertsUpdateResult` has been removed
+- Struct `ActivityLogsListOptions` has been removed
+- Struct `ActivityLogsListPager` has been removed
+- Struct `ActivityLogsListResponse` has been removed
+- Struct `ActivityLogsListResult` has been removed
+- Struct `AlertRuleIncidentsGetOptions` has been removed
+- Struct `AlertRuleIncidentsGetResponse` has been removed
+- Struct `AlertRuleIncidentsGetResult` has been removed
+- Struct `AlertRuleIncidentsListByAlertRuleOptions` has been removed
+- Struct `AlertRuleIncidentsListByAlertRuleResponse` has been removed
+- Struct `AlertRuleIncidentsListByAlertRuleResult` has been removed
+- Struct `AlertRulesCreateOrUpdateOptions` has been removed
+- Struct `AlertRulesCreateOrUpdateResponse` has been removed
+- Struct `AlertRulesCreateOrUpdateResult` has been removed
+- Struct `AlertRulesDeleteOptions` has been removed
+- Struct `AlertRulesDeleteResponse` has been removed
+- Struct `AlertRulesGetOptions` has been removed
+- Struct `AlertRulesGetResponse` has been removed
+- Struct `AlertRulesGetResult` has been removed
+- Struct `AlertRulesListByResourceGroupOptions` has been removed
+- Struct `AlertRulesListByResourceGroupResponse` has been removed
+- Struct `AlertRulesListByResourceGroupResult` has been removed
+- Struct `AlertRulesListBySubscriptionOptions` has been removed
+- Struct `AlertRulesListBySubscriptionResponse` has been removed
+- Struct `AlertRulesListBySubscriptionResult` has been removed
+- Struct `AlertRulesUpdateOptions` has been removed
+- Struct `AlertRulesUpdateResponse` has been removed
+- Struct `AlertRulesUpdateResult` has been removed
+- Struct `AutoscaleSettingsCreateOrUpdateOptions` has been removed
+- Struct `AutoscaleSettingsCreateOrUpdateResponse` has been removed
+- Struct `AutoscaleSettingsCreateOrUpdateResult` has been removed
+- Struct `AutoscaleSettingsDeleteOptions` has been removed
+- Struct `AutoscaleSettingsDeleteResponse` has been removed
+- Struct `AutoscaleSettingsGetOptions` has been removed
+- Struct `AutoscaleSettingsGetResponse` has been removed
+- Struct `AutoscaleSettingsGetResult` has been removed
+- Struct `AutoscaleSettingsListByResourceGroupOptions` has been removed
+- Struct `AutoscaleSettingsListByResourceGroupPager` has been removed
+- Struct `AutoscaleSettingsListByResourceGroupResponse` has been removed
+- Struct `AutoscaleSettingsListByResourceGroupResult` has been removed
+- Struct `AutoscaleSettingsListBySubscriptionOptions` has been removed
+- Struct `AutoscaleSettingsListBySubscriptionPager` has been removed
+- Struct `AutoscaleSettingsListBySubscriptionResponse` has been removed
+- Struct `AutoscaleSettingsListBySubscriptionResult` has been removed
+- Struct `AutoscaleSettingsUpdateOptions` has been removed
+- Struct `AutoscaleSettingsUpdateResponse` has been removed
+- Struct `AutoscaleSettingsUpdateResult` has been removed
+- Struct `BaselinesListOptions` has been removed
+- Struct `BaselinesListResponse` has been removed
+- Struct `BaselinesListResult` has been removed
+- Struct `DataCollectionEndpointsCreateOptions` has been removed
+- Struct `DataCollectionEndpointsCreateResponse` has been removed
+- Struct `DataCollectionEndpointsCreateResult` has been removed
+- Struct `DataCollectionEndpointsDeleteOptions` has been removed
+- Struct `DataCollectionEndpointsDeleteResponse` has been removed
+- Struct `DataCollectionEndpointsGetOptions` has been removed
+- Struct `DataCollectionEndpointsGetResponse` has been removed
+- Struct `DataCollectionEndpointsGetResult` has been removed
+- Struct `DataCollectionEndpointsListByResourceGroupOptions` has been removed
+- Struct `DataCollectionEndpointsListByResourceGroupPager` has been removed
+- Struct `DataCollectionEndpointsListByResourceGroupResponse` has been removed
+- Struct `DataCollectionEndpointsListByResourceGroupResult` has been removed
+- Struct `DataCollectionEndpointsListBySubscriptionOptions` has been removed
+- Struct `DataCollectionEndpointsListBySubscriptionPager` has been removed
+- Struct `DataCollectionEndpointsListBySubscriptionResponse` has been removed
+- Struct `DataCollectionEndpointsListBySubscriptionResult` has been removed
+- Struct `DataCollectionEndpointsUpdateOptions` has been removed
+- Struct `DataCollectionEndpointsUpdateResponse` has been removed
+- Struct `DataCollectionEndpointsUpdateResult` has been removed
+- Struct `DataCollectionRuleAssociationsCreateOptions` has been removed
+- Struct `DataCollectionRuleAssociationsCreateResponse` has been removed
+- Struct `DataCollectionRuleAssociationsCreateResult` has been removed
+- Struct `DataCollectionRuleAssociationsDeleteOptions` has been removed
+- Struct `DataCollectionRuleAssociationsDeleteResponse` has been removed
+- Struct `DataCollectionRuleAssociationsGetOptions` has been removed
+- Struct `DataCollectionRuleAssociationsGetResponse` has been removed
+- Struct `DataCollectionRuleAssociationsGetResult` has been removed
+- Struct `DataCollectionRuleAssociationsListByResourceOptions` has been removed
+- Struct `DataCollectionRuleAssociationsListByResourcePager` has been removed
+- Struct `DataCollectionRuleAssociationsListByResourceResponse` has been removed
+- Struct `DataCollectionRuleAssociationsListByResourceResult` has been removed
+- Struct `DataCollectionRuleAssociationsListByRuleOptions` has been removed
+- Struct `DataCollectionRuleAssociationsListByRulePager` has been removed
+- Struct `DataCollectionRuleAssociationsListByRuleResponse` has been removed
+- Struct `DataCollectionRuleAssociationsListByRuleResult` has been removed
+- Struct `DataCollectionRulesCreateOptions` has been removed
+- Struct `DataCollectionRulesCreateResponse` has been removed
+- Struct `DataCollectionRulesCreateResult` has been removed
+- Struct `DataCollectionRulesDeleteOptions` has been removed
+- Struct `DataCollectionRulesDeleteResponse` has been removed
+- Struct `DataCollectionRulesGetOptions` has been removed
+- Struct `DataCollectionRulesGetResponse` has been removed
+- Struct `DataCollectionRulesGetResult` has been removed
+- Struct `DataCollectionRulesListByResourceGroupOptions` has been removed
+- Struct `DataCollectionRulesListByResourceGroupPager` has been removed
+- Struct `DataCollectionRulesListByResourceGroupResponse` has been removed
+- Struct `DataCollectionRulesListByResourceGroupResult` has been removed
+- Struct `DataCollectionRulesListBySubscriptionOptions` has been removed
+- Struct `DataCollectionRulesListBySubscriptionPager` has been removed
+- Struct `DataCollectionRulesListBySubscriptionResponse` has been removed
+- Struct `DataCollectionRulesListBySubscriptionResult` has been removed
+- Struct `DataCollectionRulesUpdateOptions` has been removed
+- Struct `DataCollectionRulesUpdateResponse` has been removed
+- Struct `DataCollectionRulesUpdateResult` has been removed
+- Struct `DiagnosticSettingsCategoryGetOptions` has been removed
+- Struct `DiagnosticSettingsCategoryGetResponse` has been removed
+- Struct `DiagnosticSettingsCategoryGetResult` has been removed
+- Struct `DiagnosticSettingsCategoryListOptions` has been removed
+- Struct `DiagnosticSettingsCategoryListResponse` has been removed
+- Struct `DiagnosticSettingsCategoryListResult` has been removed
+- Struct `DiagnosticSettingsCreateOrUpdateOptions` has been removed
+- Struct `DiagnosticSettingsCreateOrUpdateResponse` has been removed
+- Struct `DiagnosticSettingsCreateOrUpdateResult` has been removed
+- Struct `DiagnosticSettingsDeleteOptions` has been removed
+- Struct `DiagnosticSettingsDeleteResponse` has been removed
+- Struct `DiagnosticSettingsGetOptions` has been removed
+- Struct `DiagnosticSettingsGetResponse` has been removed
+- Struct `DiagnosticSettingsGetResult` has been removed
+- Struct `DiagnosticSettingsListOptions` has been removed
+- Struct `DiagnosticSettingsListResponse` has been removed
+- Struct `DiagnosticSettingsListResult` has been removed
+- Struct `EventCategoriesListOptions` has been removed
+- Struct `EventCategoriesListResponse` has been removed
+- Struct `EventCategoriesListResult` has been removed
+- Struct `LogProfilesCreateOrUpdateOptions` has been removed
+- Struct `LogProfilesCreateOrUpdateResponse` has been removed
+- Struct `LogProfilesCreateOrUpdateResult` has been removed
+- Struct `LogProfilesDeleteOptions` has been removed
+- Struct `LogProfilesDeleteResponse` has been removed
+- Struct `LogProfilesGetOptions` has been removed
+- Struct `LogProfilesGetResponse` has been removed
+- Struct `LogProfilesGetResult` has been removed
+- Struct `LogProfilesListOptions` has been removed
+- Struct `LogProfilesListResponse` has been removed
+- Struct `LogProfilesListResult` has been removed
+- Struct `LogProfilesUpdateOptions` has been removed
+- Struct `LogProfilesUpdateResponse` has been removed
+- Struct `LogProfilesUpdateResult` has been removed
+- Struct `MetricAlertsCreateOrUpdateOptions` has been removed
+- Struct `MetricAlertsCreateOrUpdateResponse` has been removed
+- Struct `MetricAlertsCreateOrUpdateResult` has been removed
+- Struct `MetricAlertsDeleteOptions` has been removed
+- Struct `MetricAlertsDeleteResponse` has been removed
+- Struct `MetricAlertsGetOptions` has been removed
+- Struct `MetricAlertsGetResponse` has been removed
+- Struct `MetricAlertsGetResult` has been removed
+- Struct `MetricAlertsListByResourceGroupOptions` has been removed
+- Struct `MetricAlertsListByResourceGroupResponse` has been removed
+- Struct `MetricAlertsListByResourceGroupResult` has been removed
+- Struct `MetricAlertsListBySubscriptionOptions` has been removed
+- Struct `MetricAlertsListBySubscriptionResponse` has been removed
+- Struct `MetricAlertsListBySubscriptionResult` has been removed
+- Struct `MetricAlertsStatusListByNameOptions` has been removed
+- Struct `MetricAlertsStatusListByNameResponse` has been removed
+- Struct `MetricAlertsStatusListByNameResult` has been removed
+- Struct `MetricAlertsStatusListOptions` has been removed
+- Struct `MetricAlertsStatusListResponse` has been removed
+- Struct `MetricAlertsStatusListResult` has been removed
+- Struct `MetricAlertsUpdateOptions` has been removed
+- Struct `MetricAlertsUpdateResponse` has been removed
+- Struct `MetricAlertsUpdateResult` has been removed
+- Struct `MetricDefinitionsListOptions` has been removed
+- Struct `MetricDefinitionsListResponse` has been removed
+- Struct `MetricDefinitionsListResult` has been removed
+- Struct `MetricNamespacesListOptions` has been removed
+- Struct `MetricNamespacesListResponse` has been removed
+- Struct `MetricNamespacesListResult` has been removed
+- Struct `MetricsListOptions` has been removed
+- Struct `MetricsListResponse` has been removed
+- Struct `MetricsListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListByPrivateLinkScopeOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByPrivateLinkScopePager` has been removed
+- Struct `PrivateEndpointConnectionsListByPrivateLinkScopeResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByPrivateLinkScopeResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListByPrivateLinkScopeOptions` has been removed
+- Struct `PrivateLinkResourcesListByPrivateLinkScopePager` has been removed
+- Struct `PrivateLinkResourcesListByPrivateLinkScopeResponse` has been removed
+- Struct `PrivateLinkResourcesListByPrivateLinkScopeResult` has been removed
+- Struct `PrivateLinkScopeOperationStatusGetOptions` has been removed
+- Struct `PrivateLinkScopeOperationStatusGetResponse` has been removed
+- Struct `PrivateLinkScopeOperationStatusGetResult` has been removed
+- Struct `PrivateLinkScopedResourcesBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateLinkScopedResourcesBeginDeleteOptions` has been removed
+- Struct `PrivateLinkScopedResourcesCreateOrUpdatePoller` has been removed
+- Struct `PrivateLinkScopedResourcesCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateLinkScopedResourcesCreateOrUpdateResponse` has been removed
+- Struct `PrivateLinkScopedResourcesCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkScopedResourcesDeletePoller` has been removed
+- Struct `PrivateLinkScopedResourcesDeletePollerResponse` has been removed
+- Struct `PrivateLinkScopedResourcesDeleteResponse` has been removed
+- Struct `PrivateLinkScopedResourcesGetOptions` has been removed
+- Struct `PrivateLinkScopedResourcesGetResponse` has been removed
+- Struct `PrivateLinkScopedResourcesGetResult` has been removed
+- Struct `PrivateLinkScopedResourcesListByPrivateLinkScopeOptions` has been removed
+- Struct `PrivateLinkScopedResourcesListByPrivateLinkScopePager` has been removed
+- Struct `PrivateLinkScopedResourcesListByPrivateLinkScopeResponse` has been removed
+- Struct `PrivateLinkScopedResourcesListByPrivateLinkScopeResult` has been removed
+- Struct `PrivateLinkScopesBeginDeleteOptions` has been removed
+- Struct `PrivateLinkScopesCreateOrUpdateOptions` has been removed
+- Struct `PrivateLinkScopesCreateOrUpdateResponse` has been removed
+- Struct `PrivateLinkScopesCreateOrUpdateResult` has been removed
+- Struct `PrivateLinkScopesDeletePoller` has been removed
+- Struct `PrivateLinkScopesDeletePollerResponse` has been removed
+- Struct `PrivateLinkScopesDeleteResponse` has been removed
+- Struct `PrivateLinkScopesGetOptions` has been removed
+- Struct `PrivateLinkScopesGetResponse` has been removed
+- Struct `PrivateLinkScopesGetResult` has been removed
+- Struct `PrivateLinkScopesListByResourceGroupOptions` has been removed
+- Struct `PrivateLinkScopesListByResourceGroupPager` has been removed
+- Struct `PrivateLinkScopesListByResourceGroupResponse` has been removed
+- Struct `PrivateLinkScopesListByResourceGroupResult` has been removed
+- Struct `PrivateLinkScopesListOptions` has been removed
+- Struct `PrivateLinkScopesListPager` has been removed
+- Struct `PrivateLinkScopesListResponse` has been removed
+- Struct `PrivateLinkScopesListResult` has been removed
+- Struct `PrivateLinkScopesUpdateTagsOptions` has been removed
+- Struct `PrivateLinkScopesUpdateTagsResponse` has been removed
+- Struct `PrivateLinkScopesUpdateTagsResult` has been removed
+- Struct `ScheduledQueryRulesCreateOrUpdateOptions` has been removed
+- Struct `ScheduledQueryRulesCreateOrUpdateResponse` has been removed
+- Struct `ScheduledQueryRulesCreateOrUpdateResult` has been removed
+- Struct `ScheduledQueryRulesDeleteOptions` has been removed
+- Struct `ScheduledQueryRulesDeleteResponse` has been removed
+- Struct `ScheduledQueryRulesGetOptions` has been removed
+- Struct `ScheduledQueryRulesGetResponse` has been removed
+- Struct `ScheduledQueryRulesGetResult` has been removed
+- Struct `ScheduledQueryRulesListByResourceGroupOptions` has been removed
+- Struct `ScheduledQueryRulesListByResourceGroupResponse` has been removed
+- Struct `ScheduledQueryRulesListByResourceGroupResult` has been removed
+- Struct `ScheduledQueryRulesListBySubscriptionOptions` has been removed
+- Struct `ScheduledQueryRulesListBySubscriptionResponse` has been removed
+- Struct `ScheduledQueryRulesListBySubscriptionResult` has been removed
+- Struct `ScheduledQueryRulesUpdateOptions` has been removed
+- Struct `ScheduledQueryRulesUpdateResponse` has been removed
+- Struct `ScheduledQueryRulesUpdateResult` has been removed
+- Struct `TenantActivityLogsListOptions` has been removed
+- Struct `TenantActivityLogsListPager` has been removed
+- Struct `TenantActivityLogsListResponse` has been removed
+- Struct `TenantActivityLogsListResult` has been removed
+- Struct `VMInsightsGetOnboardingStatusOptions` has been removed
+- Struct `VMInsightsGetOnboardingStatusResponse` has been removed
+- Struct `VMInsightsGetOnboardingStatusResult` has been removed
+- Field `LogsIngestionEndpointSpec` of struct `DataCollectionEndpointLogsIngestion` has been removed
+- Field `InnerError` of struct `ResponseWithError` has been removed
+- Field `ProxyResource` of struct `ScopedResource` has been removed
+- Field `Resource` of struct `AlertRuleResource` has been removed
+- Field `ProxyResource` of struct `VMInsightsOnboardingStatus` has been removed
+- Field `ErrorResponse` of struct `ErrorResponseCommon` has been removed
+- Field `PrivateLinkScopesResource` of struct `AzureMonitorPrivateLinkScope` has been removed
+- Field `MultiMetricCriteria` of struct `MetricCriteria` has been removed
+- Field `ProxyOnlyResource` of struct `DiagnosticSettingsCategoryResource` has been removed
+- Field `DataCollectionRuleAssociation` of struct `DataCollectionRuleAssociationProxyOnlyResourceProperties` has been removed
+- Field `ProxyOnlyResource` of struct `DiagnosticSettingsResource` has been removed
+- Field `InnerError` of struct `ErrorResponseCommonV2` has been removed
+- Field `DataCollectionRule` of struct `DataCollectionRuleResourceProperties` has been removed
+- Field `AzureResource` of struct `ActionGroupResource` has been removed
+- Field `MetricAlertCriteria` of struct `WebtestLocationAvailabilityCriteria` has been removed
+- Field `Action` of struct `AlertingAction` has been removed
+- Field `RuleCondition` of struct `LocationThresholdRuleCondition` has been removed
+- Field `SystemData` of struct `DataCollectionEndpointResourceSystemData` has been removed
+- Field `Resource` of struct `AutoscaleSettingResource` has been removed
+- Field `SystemData` of struct `DataCollectionRuleAssociationProxyOnlyResourceSystemData` has been removed
+- Field `RuleCondition` of struct `ManagementEventRuleCondition` has been removed
+- Field `MultiMetricCriteria` of struct `DynamicMetricCriteria` has been removed
+- Field `RuleCondition` of struct `ThresholdRuleCondition` has been removed
+- Field `ProxyResource` of struct `PrivateLinkResource` has been removed
+- Field `DataSourcesSpec` of struct `DataCollectionRuleDataSources` has been removed
+- Field `RuleAction` of struct `RuleWebhookAction` has been removed
+- Field `MetricAlertCriteria` of struct `MetricAlertSingleResourceMultipleMetricCriteria` has been removed
+- Field `TrackedEntityResource` of struct `LogSearchRuleResource` has been removed
+- Field `AzureMonitorMetricsDestination` of struct `DestinationsSpecAzureMonitorMetrics` has been removed
+- Field `RuleDataSource` of struct `RuleManagementEventDataSource` has been removed
+- Field `Action` of struct `LogToMetricAction` has been removed
+- Field `ProxyResource` of struct `PrivateEndpointConnection` has been removed
+- Field `RuleAction` of struct `RuleEmailAction` has been removed
+- Field `InnerError` of struct `ErrorContract` has been removed
+- Field `SystemData` of struct `DataCollectionRuleResourceSystemData` has been removed
+- Field `NetworkRuleSet` of struct `DataCollectionEndpointNetworkACLs` has been removed
+- Field `Resource` of struct `MetricAlertResource` has been removed
+- Field `ConfigurationAccessEndpointSpec` of struct `DataCollectionEndpointConfigurationAccess` has been removed
+- Field `Resource` of struct `LogProfileResource` has been removed
+- Field `DataCollectionEndpoint` of struct `DataCollectionEndpointResourceProperties` has been removed
+- Field `RuleDataSource` of struct `RuleMetricDataSource` has been removed
+- Field `Resource` of struct `ActivityLogAlertResource` has been removed
+- Field `MetricAlertCriteria` of struct `MetricAlertMultipleResourceMultipleMetricCriteria` has been removed
+- Field `DestinationsSpec` of struct `DataCollectionRuleDestinations` has been removed
+
+### Features Added
+
+- New function `*RuleMetricDataSource.GetRuleDataSource() *RuleDataSource`
+- New function `MultiMetricCriteria.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.PageResponse() PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse`
+- New function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.Err() error`
+- New function `*ActionGroupsClientPostTestNotificationsPollerResponse.Resume(context.Context, *ActionGroupsClient, string) error`
+- New function `*DataCollectionEndpointsClientListByResourceGroupPager.PageResponse() DataCollectionEndpointsClientListByResourceGroupResponse`
+- New function `*PrivateLinkScopesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateLinkScopedResourcesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ThresholdRuleCondition.GetRuleCondition() *RuleCondition`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*RuleEmailAction.GetRuleAction() *RuleAction`
+- New function `*ActivityLogsClientListPager.NextPage(context.Context) bool`
+- New function `*MetricAlertSingleResourceMultipleMetricCriteria.GetMetricAlertCriteria() *MetricAlertCriteria`
+- New function `*DataCollectionRulesClientListBySubscriptionPager.Err() error`
+- New function `*ActivityLogsClientListPager.Err() error`
+- New function `*PrivateLinkScopedResourcesClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateLinkScopedResourcesClient, string) error`
+- New function `*AutoscaleSettingsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*ActivityLogAlertsClientListBySubscriptionIDPager.NextPage(context.Context) bool`
+- New function `AlertRuleProperties.MarshalJSON() ([]byte, error)`
+- New function `*PrivateLinkScopedResourcesClientCreateOrUpdatePoller.Done() bool`
+- New function `*PrivateLinkScopesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.PageResponse() PrivateLinkResourcesClientListByPrivateLinkScopeResponse`
+- New function `*ActionGroupsClientPostTestNotificationsPoller.FinalResponse(context.Context) (ActionGroupsClientPostTestNotificationsResponse, error)`
+- New function `*ActivityLogAlertsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `AlertRuleAnyOfOrLeafCondition.MarshalJSON() ([]byte, error)`
+- New function `*DataCollectionRulesClientListByResourceGroupPager.PageResponse() DataCollectionRulesClientListByResourceGroupResponse`
+- New function `*DataCollectionEndpointsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*DataCollectionRuleAssociationProxyOnlyResourceSystemData.UnmarshalJSON([]byte) error`
+- New function `*PrivateLinkScopesClientListPager.NextPage(context.Context) bool`
+- New function `DataCollectionRuleAssociationProxyOnlyResourceSystemData.MarshalJSON() ([]byte, error)`
+- New function `ActionGroupsClientPostTestNotificationsPollerResponse.PollUntilDone(context.Context, time.Duration) (ActionGroupsClientPostTestNotificationsResponse, error)`
+- New function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.NextPage(context.Context) bool`
+- New function `*DataCollectionRulesClientListByResourceGroupPager.Err() error`
+- New function `*PrivateLinkScopedResourcesClientListByPrivateLinkScopePager.PageResponse() PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `AlertRuleList.MarshalJSON() ([]byte, error)`
+- New function `*DynamicMetricCriteria.GetMultiMetricCriteria() *MultiMetricCriteria`
+- New function `*RuleWebhookAction.GetRuleAction() *RuleAction`
+- New function `PrivateLinkScopesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateLinkScopesClientDeleteResponse, error)`
+- New function `*AlertingAction.GetAction() *Action`
+- New function `*PrivateLinkScopedResourcesClientDeletePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*TenantActivityLogsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*TenantActivityLogsClientListPager.Err() error`
+- New function `*AutoscaleSettingsClientListBySubscriptionPager.Err() error`
+- New function `*PrivateLinkScopedResourcesClientDeletePollerResponse.Resume(context.Context, *PrivateLinkScopedResourcesClient, string) error`
+- New function `*PrivateLinkResourcesClientListByPrivateLinkScopePager.Err() error`
+- New function `*PrivateLinkScopesClientDeletePoller.Done() bool`
+- New function `ErrorResponseCommon.MarshalJSON() ([]byte, error)`
+- New function `*DataCollectionRulesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `ActionList.MarshalJSON() ([]byte, error)`
+- New function `*AutoscaleSettingsClientListByResourceGroupPager.Err() error`
+- New function `PrivateLinkScopedResourcesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateLinkScopedResourcesClientCreateOrUpdateResponse, error)`
+- New function `*PrivateLinkScopedResourcesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ActivityLogAlertsClientListBySubscriptionIDPager.Err() error`
+- New function `DataCollectionRuleDataSources.MarshalJSON() ([]byte, error)`
+- New function `PrivateLinkScopedResourcesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateLinkScopedResourcesClientDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `DataCollectionRuleResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*AutoscaleSettingsClientListByResourceGroupPager.PageResponse() AutoscaleSettingsClientListByResourceGroupResponse`
+- New function `AlertRuleAllOfCondition.MarshalJSON() ([]byte, error)`
+- New function `*DataCollectionRuleResourceSystemData.UnmarshalJSON([]byte) error`
+- New function `*MetricCriteria.GetMultiMetricCriteria() *MultiMetricCriteria`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `AzureResourceAutoGenerated.MarshalJSON() ([]byte, error)`
+- New function `*ActivityLogAlertsClientListBySubscriptionIDPager.PageResponse() ActivityLogAlertsClientListBySubscriptionIDResponse`
+- New function `*PrivateLinkScopedResourcesClientDeletePoller.FinalResponse(context.Context) (PrivateLinkScopedResourcesClientDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*DataCollectionRuleAssociationsClientListByResourcePager.Err() error`
+- New function `*MetricAlertMultipleResourceMultipleMetricCriteria.GetMetricAlertCriteria() *MetricAlertCriteria`
+- New function `*PrivateLinkScopesClientListPager.PageResponse() PrivateLinkScopesClientListResponse`
+- New function `*DataCollectionEndpointsClientListBySubscriptionPager.Err() error`
+- New function `*ActionGroupsClientPostTestNotificationsPoller.ResumeToken() (string, error)`
+- New function `*DataCollectionRuleAssociationsClientListByRulePager.PageResponse() DataCollectionRuleAssociationsClientListByRuleResponse`
+- New function `*AutoscaleSettingsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DataCollectionEndpointResourceSystemData.UnmarshalJSON([]byte) error`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateLinkScopesClientListPager.Err() error`
+- New function `AlertRuleLeafCondition.MarshalJSON() ([]byte, error)`
+- New function `*PrivateLinkScopesClientListByResourceGroupPager.PageResponse() PrivateLinkScopesClientListByResourceGroupResponse`
+- New function `*PrivateEndpointConnectionsClientListByPrivateLinkScopePager.NextPage(context.Context) bool`
+- New function `*LocationThresholdRuleCondition.GetRuleCondition() *RuleCondition`
+- New function `*DataCollectionEndpointsClientListBySubscriptionPager.PageResponse() DataCollectionEndpointsClientListBySubscriptionResponse`
+- New function `*ActivityLogAlertsClientListByResourceGroupPager.PageResponse() ActivityLogAlertsClientListByResourceGroupResponse`
+- New function `*TenantActivityLogsClientListPager.PageResponse() TenantActivityLogsClientListResponse`
+- New function `MetricAlertCriteria.MarshalJSON() ([]byte, error)`
+- New function `*PrivateLinkScopesClientDeletePoller.FinalResponse(context.Context) (PrivateLinkScopesClientDeleteResponse, error)`
+- New function `*ActivityLogsClientListPager.PageResponse() ActivityLogsClientListResponse`
+- New function `*PrivateLinkScopesClientDeletePollerResponse.Resume(context.Context, *PrivateLinkScopesClient, string) error`
+- New function `*ActionGroupsClientPostTestNotificationsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DataCollectionRuleAssociationsClientListByResourcePager.PageResponse() DataCollectionRuleAssociationsClientListByResourceResponse`
+- New function `*PrivateLinkScopesClientListByResourceGroupPager.Err() error`
+- New function `*ActionGroupsClientPostTestNotificationsPoller.Done() bool`
+- New function `*RuleManagementEventDataSource.GetRuleDataSource() *RuleDataSource`
+- New function `*WebtestLocationAvailabilityCriteria.GetMetricAlertCriteria() *MetricAlertCriteria`
+- New function `RuleCondition.MarshalJSON() ([]byte, error)`
+- New function `*AutoscaleSettingsClientListBySubscriptionPager.PageResponse() AutoscaleSettingsClientListBySubscriptionResponse`
+- New function `ActionGroupAutoGenerated.MarshalJSON() ([]byte, error)`
+- New function `DataCollectionRuleDestinations.MarshalJSON() ([]byte, error)`
+- New function `*DataCollectionEndpointsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `DataCollectionEndpointResourceSystemData.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `AlertRulePatchObject.MarshalJSON() ([]byte, error)`
+- New function `*DataCollectionRuleAssociationsClientListByRulePager.NextPage(context.Context) bool`
+- New function `*ManagementEventRuleCondition.GetRuleCondition() *RuleCondition`
+- New function `*PrivateLinkScopedResourcesClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateLinkScopedResourcesClientCreateOrUpdateResponse, error)`
+- New function `*DataCollectionRuleAssociationsClientListByRulePager.Err() error`
+- New function `DataCollectionRuleResourceSystemData.MarshalJSON() ([]byte, error)`
+- New function `*ActivityLogAlertsClientListByResourceGroupPager.Err() error`
+- New function `*PrivateLinkScopedResourcesClientListByPrivateLinkScopePager.NextPage(context.Context) bool`
+- New function `*LogToMetricAction.GetAction() *Action`
+- New function `*DataCollectionRuleAssociationsClientListByResourcePager.NextPage(context.Context) bool`
+- New function `*PrivateLinkScopedResourcesClientListByPrivateLinkScopePager.Err() error`
+- New function `*PrivateLinkScopedResourcesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*DataCollectionEndpointsClientListByResourceGroupPager.Err() error`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*PrivateLinkScopesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DataCollectionRulesClientListBySubscriptionPager.PageResponse() DataCollectionRulesClientListBySubscriptionResponse`
+- New function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*DataCollectionRulesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkScopedResourcesClientDeletePoller.ResumeToken() (string, error)`
+- New struct `ActionGroupAutoGenerated`
+- New struct `ActionGroupsClientBeginPostTestNotificationsOptions`
+- New struct `ActionGroupsClientCreateOrUpdateOptions`
+- New struct `ActionGroupsClientCreateOrUpdateResponse`
+- New struct `ActionGroupsClientCreateOrUpdateResult`
+- New struct `ActionGroupsClientDeleteOptions`
+- New struct `ActionGroupsClientDeleteResponse`
+- New struct `ActionGroupsClientEnableReceiverOptions`
+- New struct `ActionGroupsClientEnableReceiverResponse`
+- New struct `ActionGroupsClientGetOptions`
+- New struct `ActionGroupsClientGetResponse`
+- New struct `ActionGroupsClientGetResult`
+- New struct `ActionGroupsClientGetTestNotificationsOptions`
+- New struct `ActionGroupsClientGetTestNotificationsResponse`
+- New struct `ActionGroupsClientGetTestNotificationsResult`
+- New struct `ActionGroupsClientListByResourceGroupOptions`
+- New struct `ActionGroupsClientListByResourceGroupResponse`
+- New struct `ActionGroupsClientListByResourceGroupResult`
+- New struct `ActionGroupsClientListBySubscriptionIDOptions`
+- New struct `ActionGroupsClientListBySubscriptionIDResponse`
+- New struct `ActionGroupsClientListBySubscriptionIDResult`
+- New struct `ActionGroupsClientPostTestNotificationsPoller`
+- New struct `ActionGroupsClientPostTestNotificationsPollerResponse`
+- New struct `ActionGroupsClientPostTestNotificationsResponse`
+- New struct `ActionGroupsClientPostTestNotificationsResult`
+- New struct `ActionGroupsClientUpdateOptions`
+- New struct `ActionGroupsClientUpdateResponse`
+- New struct `ActionGroupsClientUpdateResult`
+- New struct `ActionList`
+- New struct `ActivityLogAlertsClientCreateOrUpdateOptions`
+- New struct `ActivityLogAlertsClientCreateOrUpdateResponse`
+- New struct `ActivityLogAlertsClientCreateOrUpdateResult`
+- New struct `ActivityLogAlertsClientDeleteOptions`
+- New struct `ActivityLogAlertsClientDeleteResponse`
+- New struct `ActivityLogAlertsClientGetOptions`
+- New struct `ActivityLogAlertsClientGetResponse`
+- New struct `ActivityLogAlertsClientGetResult`
+- New struct `ActivityLogAlertsClientListByResourceGroupOptions`
+- New struct `ActivityLogAlertsClientListByResourceGroupPager`
+- New struct `ActivityLogAlertsClientListByResourceGroupResponse`
+- New struct `ActivityLogAlertsClientListByResourceGroupResult`
+- New struct `ActivityLogAlertsClientListBySubscriptionIDOptions`
+- New struct `ActivityLogAlertsClientListBySubscriptionIDPager`
+- New struct `ActivityLogAlertsClientListBySubscriptionIDResponse`
+- New struct `ActivityLogAlertsClientListBySubscriptionIDResult`
+- New struct `ActivityLogAlertsClientUpdateOptions`
+- New struct `ActivityLogAlertsClientUpdateResponse`
+- New struct `ActivityLogAlertsClientUpdateResult`
+- New struct `ActivityLogsClientListOptions`
+- New struct `ActivityLogsClientListPager`
+- New struct `ActivityLogsClientListResponse`
+- New struct `ActivityLogsClientListResult`
+- New struct `AlertRuleAllOfCondition`
+- New struct `AlertRuleAnyOfOrLeafCondition`
+- New struct `AlertRuleIncidentsClientGetOptions`
+- New struct `AlertRuleIncidentsClientGetResponse`
+- New struct `AlertRuleIncidentsClientGetResult`
+- New struct `AlertRuleIncidentsClientListByAlertRuleOptions`
+- New struct `AlertRuleIncidentsClientListByAlertRuleResponse`
+- New struct `AlertRuleIncidentsClientListByAlertRuleResult`
+- New struct `AlertRuleLeafCondition`
+- New struct `AlertRuleList`
+- New struct `AlertRulePatchObject`
+- New struct `AlertRulePatchProperties`
+- New struct `AlertRuleProperties`
+- New struct `AlertRulesClientCreateOrUpdateOptions`
+- New struct `AlertRulesClientCreateOrUpdateResponse`
+- New struct `AlertRulesClientCreateOrUpdateResult`
+- New struct `AlertRulesClientDeleteOptions`
+- New struct `AlertRulesClientDeleteResponse`
+- New struct `AlertRulesClientGetOptions`
+- New struct `AlertRulesClientGetResponse`
+- New struct `AlertRulesClientGetResult`
+- New struct `AlertRulesClientListByResourceGroupOptions`
+- New struct `AlertRulesClientListByResourceGroupResponse`
+- New struct `AlertRulesClientListByResourceGroupResult`
+- New struct `AlertRulesClientListBySubscriptionOptions`
+- New struct `AlertRulesClientListBySubscriptionResponse`
+- New struct `AlertRulesClientListBySubscriptionResult`
+- New struct `AlertRulesClientUpdateOptions`
+- New struct `AlertRulesClientUpdateResponse`
+- New struct `AlertRulesClientUpdateResult`
+- New struct `AutoscaleSettingsClientCreateOrUpdateOptions`
+- New struct `AutoscaleSettingsClientCreateOrUpdateResponse`
+- New struct `AutoscaleSettingsClientCreateOrUpdateResult`
+- New struct `AutoscaleSettingsClientDeleteOptions`
+- New struct `AutoscaleSettingsClientDeleteResponse`
+- New struct `AutoscaleSettingsClientGetOptions`
+- New struct `AutoscaleSettingsClientGetResponse`
+- New struct `AutoscaleSettingsClientGetResult`
+- New struct `AutoscaleSettingsClientListByResourceGroupOptions`
+- New struct `AutoscaleSettingsClientListByResourceGroupPager`
+- New struct `AutoscaleSettingsClientListByResourceGroupResponse`
+- New struct `AutoscaleSettingsClientListByResourceGroupResult`
+- New struct `AutoscaleSettingsClientListBySubscriptionOptions`
+- New struct `AutoscaleSettingsClientListBySubscriptionPager`
+- New struct `AutoscaleSettingsClientListBySubscriptionResponse`
+- New struct `AutoscaleSettingsClientListBySubscriptionResult`
+- New struct `AutoscaleSettingsClientUpdateOptions`
+- New struct `AutoscaleSettingsClientUpdateResponse`
+- New struct `AutoscaleSettingsClientUpdateResult`
+- New struct `AzureResourceAutoGenerated`
+- New struct `BaselinesClientListOptions`
+- New struct `BaselinesClientListResponse`
+- New struct `BaselinesClientListResult`
+- New struct `DataCollectionEndpointsClientCreateOptions`
+- New struct `DataCollectionEndpointsClientCreateResponse`
+- New struct `DataCollectionEndpointsClientCreateResult`
+- New struct `DataCollectionEndpointsClientDeleteOptions`
+- New struct `DataCollectionEndpointsClientDeleteResponse`
+- New struct `DataCollectionEndpointsClientGetOptions`
+- New struct `DataCollectionEndpointsClientGetResponse`
+- New struct `DataCollectionEndpointsClientGetResult`
+- New struct `DataCollectionEndpointsClientListByResourceGroupOptions`
+- New struct `DataCollectionEndpointsClientListByResourceGroupPager`
+- New struct `DataCollectionEndpointsClientListByResourceGroupResponse`
+- New struct `DataCollectionEndpointsClientListByResourceGroupResult`
+- New struct `DataCollectionEndpointsClientListBySubscriptionOptions`
+- New struct `DataCollectionEndpointsClientListBySubscriptionPager`
+- New struct `DataCollectionEndpointsClientListBySubscriptionResponse`
+- New struct `DataCollectionEndpointsClientListBySubscriptionResult`
+- New struct `DataCollectionEndpointsClientUpdateOptions`
+- New struct `DataCollectionEndpointsClientUpdateResponse`
+- New struct `DataCollectionEndpointsClientUpdateResult`
+- New struct `DataCollectionRuleAssociationsClientCreateOptions`
+- New struct `DataCollectionRuleAssociationsClientCreateResponse`
+- New struct `DataCollectionRuleAssociationsClientCreateResult`
+- New struct `DataCollectionRuleAssociationsClientDeleteOptions`
+- New struct `DataCollectionRuleAssociationsClientDeleteResponse`
+- New struct `DataCollectionRuleAssociationsClientGetOptions`
+- New struct `DataCollectionRuleAssociationsClientGetResponse`
+- New struct `DataCollectionRuleAssociationsClientGetResult`
+- New struct `DataCollectionRuleAssociationsClientListByResourceOptions`
+- New struct `DataCollectionRuleAssociationsClientListByResourcePager`
+- New struct `DataCollectionRuleAssociationsClientListByResourceResponse`
+- New struct `DataCollectionRuleAssociationsClientListByResourceResult`
+- New struct `DataCollectionRuleAssociationsClientListByRuleOptions`
+- New struct `DataCollectionRuleAssociationsClientListByRulePager`
+- New struct `DataCollectionRuleAssociationsClientListByRuleResponse`
+- New struct `DataCollectionRuleAssociationsClientListByRuleResult`
+- New struct `DataCollectionRulesClientCreateOptions`
+- New struct `DataCollectionRulesClientCreateResponse`
+- New struct `DataCollectionRulesClientCreateResult`
+- New struct `DataCollectionRulesClientDeleteOptions`
+- New struct `DataCollectionRulesClientDeleteResponse`
+- New struct `DataCollectionRulesClientGetOptions`
+- New struct `DataCollectionRulesClientGetResponse`
+- New struct `DataCollectionRulesClientGetResult`
+- New struct `DataCollectionRulesClientListByResourceGroupOptions`
+- New struct `DataCollectionRulesClientListByResourceGroupPager`
+- New struct `DataCollectionRulesClientListByResourceGroupResponse`
+- New struct `DataCollectionRulesClientListByResourceGroupResult`
+- New struct `DataCollectionRulesClientListBySubscriptionOptions`
+- New struct `DataCollectionRulesClientListBySubscriptionPager`
+- New struct `DataCollectionRulesClientListBySubscriptionResponse`
+- New struct `DataCollectionRulesClientListBySubscriptionResult`
+- New struct `DataCollectionRulesClientUpdateOptions`
+- New struct `DataCollectionRulesClientUpdateResponse`
+- New struct `DataCollectionRulesClientUpdateResult`
+- New struct `DiagnosticSettingsCategoryClientGetOptions`
+- New struct `DiagnosticSettingsCategoryClientGetResponse`
+- New struct `DiagnosticSettingsCategoryClientGetResult`
+- New struct `DiagnosticSettingsCategoryClientListOptions`
+- New struct `DiagnosticSettingsCategoryClientListResponse`
+- New struct `DiagnosticSettingsCategoryClientListResult`
+- New struct `DiagnosticSettingsClientCreateOrUpdateOptions`
+- New struct `DiagnosticSettingsClientCreateOrUpdateResponse`
+- New struct `DiagnosticSettingsClientCreateOrUpdateResult`
+- New struct `DiagnosticSettingsClientDeleteOptions`
+- New struct `DiagnosticSettingsClientDeleteResponse`
+- New struct `DiagnosticSettingsClientGetOptions`
+- New struct `DiagnosticSettingsClientGetResponse`
+- New struct `DiagnosticSettingsClientGetResult`
+- New struct `DiagnosticSettingsClientListOptions`
+- New struct `DiagnosticSettingsClientListResponse`
+- New struct `DiagnosticSettingsClientListResult`
+- New struct `ErrorResponseAutoGenerated`
+- New struct `EventCategoriesClientListOptions`
+- New struct `EventCategoriesClientListResponse`
+- New struct `EventCategoriesClientListResult`
+- New struct `LogProfilesClientCreateOrUpdateOptions`
+- New struct `LogProfilesClientCreateOrUpdateResponse`
+- New struct `LogProfilesClientCreateOrUpdateResult`
+- New struct `LogProfilesClientDeleteOptions`
+- New struct `LogProfilesClientDeleteResponse`
+- New struct `LogProfilesClientGetOptions`
+- New struct `LogProfilesClientGetResponse`
+- New struct `LogProfilesClientGetResult`
+- New struct `LogProfilesClientListOptions`
+- New struct `LogProfilesClientListResponse`
+- New struct `LogProfilesClientListResult`
+- New struct `LogProfilesClientUpdateOptions`
+- New struct `LogProfilesClientUpdateResponse`
+- New struct `LogProfilesClientUpdateResult`
+- New struct `MetricAlertsClientCreateOrUpdateOptions`
+- New struct `MetricAlertsClientCreateOrUpdateResponse`
+- New struct `MetricAlertsClientCreateOrUpdateResult`
+- New struct `MetricAlertsClientDeleteOptions`
+- New struct `MetricAlertsClientDeleteResponse`
+- New struct `MetricAlertsClientGetOptions`
+- New struct `MetricAlertsClientGetResponse`
+- New struct `MetricAlertsClientGetResult`
+- New struct `MetricAlertsClientListByResourceGroupOptions`
+- New struct `MetricAlertsClientListByResourceGroupResponse`
+- New struct `MetricAlertsClientListByResourceGroupResult`
+- New struct `MetricAlertsClientListBySubscriptionOptions`
+- New struct `MetricAlertsClientListBySubscriptionResponse`
+- New struct `MetricAlertsClientListBySubscriptionResult`
+- New struct `MetricAlertsClientUpdateOptions`
+- New struct `MetricAlertsClientUpdateResponse`
+- New struct `MetricAlertsClientUpdateResult`
+- New struct `MetricAlertsStatusClientListByNameOptions`
+- New struct `MetricAlertsStatusClientListByNameResponse`
+- New struct `MetricAlertsStatusClientListByNameResult`
+- New struct `MetricAlertsStatusClientListOptions`
+- New struct `MetricAlertsStatusClientListResponse`
+- New struct `MetricAlertsStatusClientListResult`
+- New struct `MetricDefinitionsClientListOptions`
+- New struct `MetricDefinitionsClientListResponse`
+- New struct `MetricDefinitionsClientListResult`
+- New struct `MetricNamespacesClientListOptions`
+- New struct `MetricNamespacesClientListResponse`
+- New struct `MetricNamespacesClientListResult`
+- New struct `MetricsClientListOptions`
+- New struct `MetricsClientListResponse`
+- New struct `MetricsClientListResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions`
+- New struct `PrivateEndpointConnectionsClientListByPrivateLinkScopePager`
+- New struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse`
+- New struct `PrivateEndpointConnectionsClientListByPrivateLinkScopeResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListByPrivateLinkScopeOptions`
+- New struct `PrivateLinkResourcesClientListByPrivateLinkScopePager`
+- New struct `PrivateLinkResourcesClientListByPrivateLinkScopeResponse`
+- New struct `PrivateLinkResourcesClientListByPrivateLinkScopeResult`
+- New struct `PrivateLinkScopeOperationStatusClientGetOptions`
+- New struct `PrivateLinkScopeOperationStatusClientGetResponse`
+- New struct `PrivateLinkScopeOperationStatusClientGetResult`
+- New struct `PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions`
+- New struct `PrivateLinkScopedResourcesClientBeginDeleteOptions`
+- New struct `PrivateLinkScopedResourcesClientCreateOrUpdatePoller`
+- New struct `PrivateLinkScopedResourcesClientCreateOrUpdatePollerResponse`
+- New struct `PrivateLinkScopedResourcesClientCreateOrUpdateResponse`
+- New struct `PrivateLinkScopedResourcesClientCreateOrUpdateResult`
+- New struct `PrivateLinkScopedResourcesClientDeletePoller`
+- New struct `PrivateLinkScopedResourcesClientDeletePollerResponse`
+- New struct `PrivateLinkScopedResourcesClientDeleteResponse`
+- New struct `PrivateLinkScopedResourcesClientGetOptions`
+- New struct `PrivateLinkScopedResourcesClientGetResponse`
+- New struct `PrivateLinkScopedResourcesClientGetResult`
+- New struct `PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions`
+- New struct `PrivateLinkScopedResourcesClientListByPrivateLinkScopePager`
+- New struct `PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse`
+- New struct `PrivateLinkScopedResourcesClientListByPrivateLinkScopeResult`
+- New struct `PrivateLinkScopesClientBeginDeleteOptions`
+- New struct `PrivateLinkScopesClientCreateOrUpdateOptions`
+- New struct `PrivateLinkScopesClientCreateOrUpdateResponse`
+- New struct `PrivateLinkScopesClientCreateOrUpdateResult`
+- New struct `PrivateLinkScopesClientDeletePoller`
+- New struct `PrivateLinkScopesClientDeletePollerResponse`
+- New struct `PrivateLinkScopesClientDeleteResponse`
+- New struct `PrivateLinkScopesClientGetOptions`
+- New struct `PrivateLinkScopesClientGetResponse`
+- New struct `PrivateLinkScopesClientGetResult`
+- New struct `PrivateLinkScopesClientListByResourceGroupOptions`
+- New struct `PrivateLinkScopesClientListByResourceGroupPager`
+- New struct `PrivateLinkScopesClientListByResourceGroupResponse`
+- New struct `PrivateLinkScopesClientListByResourceGroupResult`
+- New struct `PrivateLinkScopesClientListOptions`
+- New struct `PrivateLinkScopesClientListPager`
+- New struct `PrivateLinkScopesClientListResponse`
+- New struct `PrivateLinkScopesClientListResult`
+- New struct `PrivateLinkScopesClientUpdateTagsOptions`
+- New struct `PrivateLinkScopesClientUpdateTagsResponse`
+- New struct `PrivateLinkScopesClientUpdateTagsResult`
+- New struct `ScheduledQueryRulesClientCreateOrUpdateOptions`
+- New struct `ScheduledQueryRulesClientCreateOrUpdateResponse`
+- New struct `ScheduledQueryRulesClientCreateOrUpdateResult`
+- New struct `ScheduledQueryRulesClientDeleteOptions`
+- New struct `ScheduledQueryRulesClientDeleteResponse`
+- New struct `ScheduledQueryRulesClientGetOptions`
+- New struct `ScheduledQueryRulesClientGetResponse`
+- New struct `ScheduledQueryRulesClientGetResult`
+- New struct `ScheduledQueryRulesClientListByResourceGroupOptions`
+- New struct `ScheduledQueryRulesClientListByResourceGroupResponse`
+- New struct `ScheduledQueryRulesClientListByResourceGroupResult`
+- New struct `ScheduledQueryRulesClientListBySubscriptionOptions`
+- New struct `ScheduledQueryRulesClientListBySubscriptionResponse`
+- New struct `ScheduledQueryRulesClientListBySubscriptionResult`
+- New struct `ScheduledQueryRulesClientUpdateOptions`
+- New struct `ScheduledQueryRulesClientUpdateResponse`
+- New struct `ScheduledQueryRulesClientUpdateResult`
+- New struct `TenantActivityLogsClientListOptions`
+- New struct `TenantActivityLogsClientListPager`
+- New struct `TenantActivityLogsClientListResponse`
+- New struct `TenantActivityLogsClientListResult`
+- New struct `VMInsightsClientGetOnboardingStatusOptions`
+- New struct `VMInsightsClientGetOnboardingStatusResponse`
+- New struct `VMInsightsClientGetOnboardingStatusResult`
+- New field `Type` in struct `VMInsightsOnboardingStatus`
+- New field `ID` in struct `VMInsightsOnboardingStatus`
+- New field `Name` in struct `VMInsightsOnboardingStatus`
+- New field `ODataType` in struct `RuleEmailAction`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `Error` in struct `ResponseWithError`
+- New field `Code` in struct `ErrorResponseCommon`
+- New field `Message` in struct `ErrorResponseCommon`
+- New field `Error` in struct `ErrorResponseCommonV2`
+- New field `AzureMonitorMetrics` in struct `DataCollectionRuleDestinations`
+- New field `LogAnalytics` in struct `DataCollectionRuleDestinations`
+- New field `ODataType` in struct `LocationThresholdRuleCondition`
+- New field `DataSource` in struct `LocationThresholdRuleCondition`
+- New field `Error` in struct `ErrorContract`
+- New field `ID` in struct `ScopedResource`
+- New field `Name` in struct `ScopedResource`
+- New field `Type` in struct `ScopedResource`
+- New field `CreatedAt` in struct `DataCollectionEndpointResourceSystemData`
+- New field `CreatedBy` in struct `DataCollectionEndpointResourceSystemData`
+- New field `CreatedByType` in struct `DataCollectionEndpointResourceSystemData`
+- New field `LastModifiedAt` in struct `DataCollectionEndpointResourceSystemData`
+- New field `LastModifiedBy` in struct `DataCollectionEndpointResourceSystemData`
+- New field `LastModifiedByType` in struct `DataCollectionEndpointResourceSystemData`
+- New field `Dimensions` in struct `DynamicMetricCriteria`
+- New field `MetricNamespace` in struct `DynamicMetricCriteria`
+- New field `SkipMetricValidation` in struct `DynamicMetricCriteria`
+- New field `Name` in struct `DynamicMetricCriteria`
+- New field `AdditionalProperties` in struct `DynamicMetricCriteria`
+- New field `CriterionType` in struct `DynamicMetricCriteria`
+- New field `MetricName` in struct `DynamicMetricCriteria`
+- New field `TimeAggregation` in struct `DynamicMetricCriteria`
+- New field `ODataType` in struct `AlertingAction`
+- New field `DataSources` in struct `DataCollectionRuleResourceProperties`
+- New field `Description` in struct `DataCollectionRuleResourceProperties`
+- New field `Destinations` in struct `DataCollectionRuleResourceProperties`
+- New field `ImmutableID` in struct `DataCollectionRuleResourceProperties`
+- New field `ProvisioningState` in struct `DataCollectionRuleResourceProperties`
+- New field `DataFlows` in struct `DataCollectionRuleResourceProperties`
+- New field `Type` in struct `AutoscaleSettingResource`
+- New field `Location` in struct `AutoscaleSettingResource`
+- New field `Tags` in struct `AutoscaleSettingResource`
+- New field `ID` in struct `AutoscaleSettingResource`
+- New field `Name` in struct `AutoscaleSettingResource`
+- New field `PublicNetworkAccess` in struct `DataCollectionEndpointNetworkACLs`
+- New field `ID` in struct `LogSearchRuleResource`
+- New field `Kind` in struct `LogSearchRuleResource`
+- New field `Name` in struct `LogSearchRuleResource`
+- New field `Type` in struct `LogSearchRuleResource`
+- New field `Location` in struct `LogSearchRuleResource`
+- New field `Tags` in struct `LogSearchRuleResource`
+- New field `Etag` in struct `LogSearchRuleResource`
+- New field `ODataType` in struct `RuleMetricDataSource`
+- New field `LegacyResourceID` in struct `RuleMetricDataSource`
+- New field `MetricNamespace` in struct `RuleMetricDataSource`
+- New field `ResourceLocation` in struct `RuleMetricDataSource`
+- New field `ResourceURI` in struct `RuleMetricDataSource`
+- New field `Endpoint` in struct `DataCollectionEndpointLogsIngestion`
+- New field `Extensions` in struct `DataCollectionRuleDataSources`
+- New field `PerformanceCounters` in struct `DataCollectionRuleDataSources`
+- New field `Syslog` in struct `DataCollectionRuleDataSources`
+- New field `WindowsEventLogs` in struct `DataCollectionRuleDataSources`
+- New field `DataCollectionEndpointID` in struct `DataCollectionRuleAssociationProxyOnlyResourceProperties`
+- New field `DataCollectionRuleID` in struct `DataCollectionRuleAssociationProxyOnlyResourceProperties`
+- New field `Description` in struct `DataCollectionRuleAssociationProxyOnlyResourceProperties`
+- New field `ProvisioningState` in struct `DataCollectionRuleAssociationProxyOnlyResourceProperties`
+- New field `Name` in struct `MetricAlertResource`
+- New field `Type` in struct `MetricAlertResource`
+- New field `Location` in struct `MetricAlertResource`
+- New field `Tags` in struct `MetricAlertResource`
+- New field `ID` in struct `MetricAlertResource`
+- New field `ResourceLocation` in struct `RuleManagementEventDataSource`
+- New field `MetricNamespace` in struct `RuleManagementEventDataSource`
+- New field `ODataType` in struct `RuleManagementEventDataSource`
+- New field `LegacyResourceID` in struct `RuleManagementEventDataSource`
+- New field `ResourceURI` in struct `RuleManagementEventDataSource`
+- New field `ODataType` in struct `MetricAlertSingleResourceMultipleMetricCriteria`
+- New field `AdditionalProperties` in struct `MetricAlertSingleResourceMultipleMetricCriteria`
+- New field `DataSource` in struct `ManagementEventRuleCondition`
+- New field `ODataType` in struct `ManagementEventRuleCondition`
+- New field `CreatedByType` in struct `DataCollectionRuleAssociationProxyOnlyResourceSystemData`
+- New field `LastModifiedAt` in struct `DataCollectionRuleAssociationProxyOnlyResourceSystemData`
+- New field `LastModifiedBy` in struct `DataCollectionRuleAssociationProxyOnlyResourceSystemData`
+- New field `LastModifiedByType` in struct `DataCollectionRuleAssociationProxyOnlyResourceSystemData`
+- New field `CreatedAt` in struct `DataCollectionRuleAssociationProxyOnlyResourceSystemData`
+- New field `CreatedBy` in struct `DataCollectionRuleAssociationProxyOnlyResourceSystemData`
+- New field `ODataType` in struct `ThresholdRuleCondition`
+- New field `DataSource` in struct `ThresholdRuleCondition`
+- New field `Tags` in struct `ActivityLogAlertResource`
+- New field `ID` in struct `ActivityLogAlertResource`
+- New field `Name` in struct `ActivityLogAlertResource`
+- New field `Type` in struct `ActivityLogAlertResource`
+- New field `Location` in struct `ActivityLogAlertResource`
+- New field `CreatedByType` in struct `DataCollectionRuleResourceSystemData`
+- New field `LastModifiedAt` in struct `DataCollectionRuleResourceSystemData`
+- New field `LastModifiedBy` in struct `DataCollectionRuleResourceSystemData`
+- New field `LastModifiedByType` in struct `DataCollectionRuleResourceSystemData`
+- New field `CreatedAt` in struct `DataCollectionRuleResourceSystemData`
+- New field `CreatedBy` in struct `DataCollectionRuleResourceSystemData`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `Identity` in struct `ActionGroupResource`
+- New field `Kind` in struct `ActionGroupResource`
+- New field `Name` in struct `ActionGroupResource`
+- New field `Type` in struct `ActionGroupResource`
+- New field `Location` in struct `ActionGroupResource`
+- New field `Tags` in struct `ActionGroupResource`
+- New field `ID` in struct `ActionGroupResource`
+- New field `Endpoint` in struct `DataCollectionEndpointConfigurationAccess`
+- New field `ODataType` in struct `MetricAlertMultipleResourceMultipleMetricCriteria`
+- New field `AdditionalProperties` in struct `MetricAlertMultipleResourceMultipleMetricCriteria`
+- New field `Tags` in struct `LogProfileResource`
+- New field `ID` in struct `LogProfileResource`
+- New field `Name` in struct `LogProfileResource`
+- New field `Type` in struct `LogProfileResource`
+- New field `Location` in struct `LogProfileResource`
+- New field `ODataType` in struct `WebtestLocationAvailabilityCriteria`
+- New field `AdditionalProperties` in struct `WebtestLocationAvailabilityCriteria`
+- New field `ODataType` in struct `LogToMetricAction`
+- New field `TimeAggregation` in struct `MetricCriteria`
+- New field `AdditionalProperties` in struct `MetricCriteria`
+- New field `CriterionType` in struct `MetricCriteria`
+- New field `Name` in struct `MetricCriteria`
+- New field `SkipMetricValidation` in struct `MetricCriteria`
+- New field `Dimensions` in struct `MetricCriteria`
+- New field `MetricNamespace` in struct `MetricCriteria`
+- New field `MetricName` in struct `MetricCriteria`
+- New field `Description` in struct `DataCollectionEndpointResourceProperties`
+- New field `ImmutableID` in struct `DataCollectionEndpointResourceProperties`
+- New field `LogsIngestion` in struct `DataCollectionEndpointResourceProperties`
+- New field `NetworkACLs` in struct `DataCollectionEndpointResourceProperties`
+- New field `ProvisioningState` in struct `DataCollectionEndpointResourceProperties`
+- New field `ConfigurationAccess` in struct `DataCollectionEndpointResourceProperties`
+- New field `Name` in struct `DestinationsSpecAzureMonitorMetrics`
+- New field `ODataType` in struct `RuleWebhookAction`
+- New field `ID` in struct `AlertRuleResource`
+- New field `Name` in struct `AlertRuleResource`
+- New field `Type` in struct `AlertRuleResource`
+- New field `Location` in struct `AlertRuleResource`
+- New field `Tags` in struct `AlertRuleResource`
+- New field `ID` in struct `DiagnosticSettingsResource`
+- New field `Name` in struct `DiagnosticSettingsResource`
+- New field `Type` in struct `DiagnosticSettingsResource`
+- New field `Tags` in struct `AzureMonitorPrivateLinkScope`
+- New field `ID` in struct `AzureMonitorPrivateLinkScope`
+- New field `Name` in struct `AzureMonitorPrivateLinkScope`
+- New field `Type` in struct `AzureMonitorPrivateLinkScope`
+- New field `Location` in struct `AzureMonitorPrivateLinkScope`
+- New field `Name` in struct `DiagnosticSettingsCategoryResource`
+- New field `Type` in struct `DiagnosticSettingsCategoryResource`
+- New field `ID` in struct `DiagnosticSettingsCategoryResource`
+
+
 ## 0.3.0 (2021-12-16)
 
 ### Features Added

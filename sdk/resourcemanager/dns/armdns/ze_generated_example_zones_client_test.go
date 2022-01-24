@@ -31,20 +31,18 @@ func ExampleZonesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<zone-name>",
 		armdns.Zone{
-			Resource: armdns.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key1": to.StringPtr("value1"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key1": to.StringPtr("value1"),
 			},
 		},
-		&armdns.ZonesCreateOrUpdateOptions{IfMatch: nil,
+		&armdns.ZonesClientCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Zone.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ZonesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteZone.json
@@ -58,7 +56,7 @@ func ExampleZonesClient_BeginDelete() {
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<zone-name>",
-		&armdns.ZonesBeginDeleteOptions{IfMatch: nil})
+		&armdns.ZonesClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -83,7 +81,7 @@ func ExampleZonesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Zone.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ZonesClientGetResult)
 }
 
 // x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchZone.json
@@ -102,11 +100,11 @@ func ExampleZonesClient_Update() {
 				"key2": to.StringPtr("value2"),
 			},
 		},
-		&armdns.ZonesUpdateOptions{IfMatch: nil})
+		&armdns.ZonesClientUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Zone.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ZonesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListZonesByResourceGroup.json
@@ -118,13 +116,17 @@ func ExampleZonesClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armdns.NewZonesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armdns.ZonesListByResourceGroupOptions{Top: nil})
-	for pager.NextPage(ctx) {
+		&armdns.ZonesClientListByResourceGroupOptions{Top: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Zone.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -137,13 +139,17 @@ func ExampleZonesClient_List() {
 	}
 	ctx := context.Background()
 	client := armdns.NewZonesClient("<subscription-id>", cred, nil)
-	pager := client.List(&armdns.ZonesListOptions{Top: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armdns.ZonesClientListOptions{Top: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Zone.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

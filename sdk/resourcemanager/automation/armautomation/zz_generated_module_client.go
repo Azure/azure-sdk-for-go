@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ModuleClient contains the methods for the Module group.
 // Don't use this type directly, use NewModuleClient() instead.
 type ModuleClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewModuleClient creates a new instance of ModuleClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewModuleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ModuleClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ModuleClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ModuleClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or Update the module identified by module name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ModuleClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters ModuleCreateOrUpdateParameters, options *ModuleCreateOrUpdateOptions) (ModuleCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// moduleName - The name of module.
+// parameters - The create or update parameters for module.
+// options - ModuleClientCreateOrUpdateOptions contains the optional parameters for the ModuleClient.CreateOrUpdate method.
+func (client *ModuleClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters ModuleCreateOrUpdateParameters, options *ModuleClientCreateOrUpdateOptions) (ModuleClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, parameters, options)
 	if err != nil {
-		return ModuleCreateOrUpdateResponse{}, err
+		return ModuleClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ModuleCreateOrUpdateResponse{}, err
+		return ModuleClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ModuleCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ModuleClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ModuleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters ModuleCreateOrUpdateParameters, options *ModuleCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ModuleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters ModuleCreateOrUpdateParameters, options *ModuleClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +91,7 @@ func (client *ModuleClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,37 @@ func (client *ModuleClient) createOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ModuleClient) createOrUpdateHandleResponse(resp *http.Response) (ModuleCreateOrUpdateResponse, error) {
-	result := ModuleCreateOrUpdateResponse{RawResponse: resp}
+func (client *ModuleClient) createOrUpdateHandleResponse(resp *http.Response) (ModuleClientCreateOrUpdateResponse, error) {
+	result := ModuleClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return ModuleCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ModuleClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ModuleClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the module by name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ModuleClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ModuleDeleteOptions) (ModuleDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// moduleName - The module name.
+// options - ModuleClientDeleteOptions contains the optional parameters for the ModuleClient.Delete method.
+func (client *ModuleClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ModuleClientDeleteOptions) (ModuleClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, options)
 	if err != nil {
-		return ModuleDeleteResponse{}, err
+		return ModuleClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ModuleDeleteResponse{}, err
+		return ModuleClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ModuleDeleteResponse{}, client.deleteHandleError(resp)
+		return ModuleClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ModuleDeleteResponse{RawResponse: resp}, nil
+	return ModuleClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ModuleClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ModuleDeleteOptions) (*policy.Request, error) {
+func (client *ModuleClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ModuleClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,7 +151,7 @@ func (client *ModuleClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +162,29 @@ func (client *ModuleClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ModuleClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the module identified by module name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ModuleClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ModuleGetOptions) (ModuleGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// moduleName - The module name.
+// options - ModuleClientGetOptions contains the optional parameters for the ModuleClient.Get method.
+func (client *ModuleClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ModuleClientGetOptions) (ModuleClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, options)
 	if err != nil {
-		return ModuleGetResponse{}, err
+		return ModuleClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ModuleGetResponse{}, err
+		return ModuleClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ModuleGetResponse{}, client.getHandleError(resp)
+		return ModuleClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ModuleClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ModuleGetOptions) (*policy.Request, error) {
+func (client *ModuleClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ModuleClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +202,7 @@ func (client *ModuleClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +214,34 @@ func (client *ModuleClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *ModuleClient) getHandleResponse(resp *http.Response) (ModuleGetResponse, error) {
-	result := ModuleGetResponse{RawResponse: resp}
+func (client *ModuleClient) getHandleResponse(resp *http.Response) (ModuleClientGetResponse, error) {
+	result := ModuleClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return ModuleGetResponse{}, runtime.NewResponseError(err, resp)
+		return ModuleClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ModuleClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of modules.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ModuleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ModuleListByAutomationAccountOptions) *ModuleListByAutomationAccountPager {
-	return &ModuleListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.ListByAutomationAccount
+// method.
+func (client *ModuleClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *ModuleClientListByAutomationAccountOptions) *ModuleClientListByAutomationAccountPager {
+	return &ModuleClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp ModuleListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ModuleClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ModuleListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *ModuleClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *ModuleListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *ModuleClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *ModuleClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,7 +255,7 @@ func (client *ModuleClient) listByAutomationAccountCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,46 +267,38 @@ func (client *ModuleClient) listByAutomationAccountCreateRequest(ctx context.Con
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *ModuleClient) listByAutomationAccountHandleResponse(resp *http.Response) (ModuleListByAutomationAccountResponse, error) {
-	result := ModuleListByAutomationAccountResponse{RawResponse: resp}
+func (client *ModuleClient) listByAutomationAccountHandleResponse(resp *http.Response) (ModuleClientListByAutomationAccountResponse, error) {
+	result := ModuleClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModuleListResult); err != nil {
-		return ModuleListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return ModuleClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *ModuleClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update the module identified by module name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ModuleClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters ModuleUpdateParameters, options *ModuleUpdateOptions) (ModuleUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// moduleName - The name of module.
+// parameters - The update parameters for module.
+// options - ModuleClientUpdateOptions contains the optional parameters for the ModuleClient.Update method.
+func (client *ModuleClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters ModuleUpdateParameters, options *ModuleClientUpdateOptions) (ModuleClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, parameters, options)
 	if err != nil {
-		return ModuleUpdateResponse{}, err
+		return ModuleClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ModuleUpdateResponse{}, err
+		return ModuleClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ModuleUpdateResponse{}, client.updateHandleError(resp)
+		return ModuleClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ModuleClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters ModuleUpdateParameters, options *ModuleUpdateOptions) (*policy.Request, error) {
+func (client *ModuleClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, parameters ModuleUpdateParameters, options *ModuleClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -338,7 +316,7 @@ func (client *ModuleClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,23 +328,10 @@ func (client *ModuleClient) updateCreateRequest(ctx context.Context, resourceGro
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ModuleClient) updateHandleResponse(resp *http.Response) (ModuleUpdateResponse, error) {
-	result := ModuleUpdateResponse{RawResponse: resp}
+func (client *ModuleClient) updateHandleResponse(resp *http.Response) (ModuleClientUpdateResponse, error) {
+	result := ModuleClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return ModuleUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ModuleClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ModuleClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

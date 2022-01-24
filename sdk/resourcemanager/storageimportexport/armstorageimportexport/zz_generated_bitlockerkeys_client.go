@@ -11,7 +11,6 @@ package armstorageimportexport
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,56 @@ import (
 // BitLockerKeysClient contains the methods for the BitLockerKeys group.
 // Don't use this type directly, use NewBitLockerKeysClient() instead.
 type BitLockerKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
 	acceptLanguage *string
+	pl             runtime.Pipeline
 }
 
 // NewBitLockerKeysClient creates a new instance of BitLockerKeysClient with the specified values.
+// subscriptionID - The subscription ID for the Azure user.
+// acceptLanguage - Specifies the preferred language for the response.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBitLockerKeysClient(subscriptionID string, acceptLanguage *string, credential azcore.TokenCredential, options *arm.ClientOptions) *BitLockerKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BitLockerKeysClient{subscriptionID: subscriptionID, acceptLanguage: acceptLanguage, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BitLockerKeysClient{
+		subscriptionID: subscriptionID,
+		acceptLanguage: acceptLanguage,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Returns the BitLocker Keys for all drives in the specified job.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BitLockerKeysClient) List(ctx context.Context, jobName string, resourceGroupName string, options *BitLockerKeysListOptions) (BitLockerKeysListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// jobName - The name of the import/export job.
+// resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
+// options - BitLockerKeysClientListOptions contains the optional parameters for the BitLockerKeysClient.List method.
+func (client *BitLockerKeysClient) List(ctx context.Context, jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) (BitLockerKeysClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, jobName, resourceGroupName, options)
 	if err != nil {
-		return BitLockerKeysListResponse{}, err
+		return BitLockerKeysClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BitLockerKeysListResponse{}, err
+		return BitLockerKeysClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BitLockerKeysListResponse{}, client.listHandleError(resp)
+		return BitLockerKeysClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *BitLockerKeysClient) listCreateRequest(ctx context.Context, jobName string, resourceGroupName string, options *BitLockerKeysListOptions) (*policy.Request, error) {
+func (client *BitLockerKeysClient) listCreateRequest(ctx context.Context, jobName string, resourceGroupName string, options *BitLockerKeysClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}/listBitLockerKeys"
 	if jobName == "" {
 		return nil, errors.New("parameter jobName cannot be empty")
@@ -75,7 +87,7 @@ func (client *BitLockerKeysClient) listCreateRequest(ctx context.Context, jobNam
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +102,10 @@ func (client *BitLockerKeysClient) listCreateRequest(ctx context.Context, jobNam
 }
 
 // listHandleResponse handles the List response.
-func (client *BitLockerKeysClient) listHandleResponse(resp *http.Response) (BitLockerKeysListResponse, error) {
-	result := BitLockerKeysListResponse{RawResponse: resp}
+func (client *BitLockerKeysClient) listHandleResponse(resp *http.Response) (BitLockerKeysClientListResponse, error) {
+	result := BitLockerKeysClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetBitLockerKeysResponse); err != nil {
-		return BitLockerKeysListResponse{}, runtime.NewResponseError(err, resp)
+		return BitLockerKeysClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BitLockerKeysClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

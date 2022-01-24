@@ -11,7 +11,6 @@ package armproviderhub
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // NotificationRegistrationsClient contains the methods for the NotificationRegistrations group.
 // Don't use this type directly, use NewNotificationRegistrationsClient() instead.
 type NotificationRegistrationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewNotificationRegistrationsClient creates a new instance of NotificationRegistrationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewNotificationRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationRegistrationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &NotificationRegistrationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &NotificationRegistrationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a notification registration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NotificationRegistrationsClient) CreateOrUpdate(ctx context.Context, providerNamespace string, notificationRegistrationName string, properties NotificationRegistration, options *NotificationRegistrationsCreateOrUpdateOptions) (NotificationRegistrationsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// notificationRegistrationName - The notification registration.
+// properties - The required body parameters supplied to the notification registration operation.
+// options - NotificationRegistrationsClientCreateOrUpdateOptions contains the optional parameters for the NotificationRegistrationsClient.CreateOrUpdate
+// method.
+func (client *NotificationRegistrationsClient) CreateOrUpdate(ctx context.Context, providerNamespace string, notificationRegistrationName string, properties NotificationRegistration, options *NotificationRegistrationsClientCreateOrUpdateOptions) (NotificationRegistrationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, providerNamespace, notificationRegistrationName, properties, options)
 	if err != nil {
-		return NotificationRegistrationsCreateOrUpdateResponse{}, err
+		return NotificationRegistrationsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationRegistrationsCreateOrUpdateResponse{}, err
+		return NotificationRegistrationsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NotificationRegistrationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return NotificationRegistrationsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, properties NotificationRegistration, options *NotificationRegistrationsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, properties NotificationRegistration, options *NotificationRegistrationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +86,7 @@ func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter notificationRegistrationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notificationRegistrationName}", url.PathEscape(notificationRegistrationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +98,37 @@ func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NotificationRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRegistrationsCreateOrUpdateResponse, error) {
-	result := NotificationRegistrationsCreateOrUpdateResponse{RawResponse: resp}
+func (client *NotificationRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRegistrationsClientCreateOrUpdateResponse, error) {
+	result := NotificationRegistrationsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistration); err != nil {
-		return NotificationRegistrationsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationRegistrationsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *NotificationRegistrationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a notification registration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NotificationRegistrationsClient) Delete(ctx context.Context, providerNamespace string, notificationRegistrationName string, options *NotificationRegistrationsDeleteOptions) (NotificationRegistrationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// notificationRegistrationName - The notification registration.
+// options - NotificationRegistrationsClientDeleteOptions contains the optional parameters for the NotificationRegistrationsClient.Delete
+// method.
+func (client *NotificationRegistrationsClient) Delete(ctx context.Context, providerNamespace string, notificationRegistrationName string, options *NotificationRegistrationsClientDeleteOptions) (NotificationRegistrationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, providerNamespace, notificationRegistrationName, options)
 	if err != nil {
-		return NotificationRegistrationsDeleteResponse{}, err
+		return NotificationRegistrationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationRegistrationsDeleteResponse{}, err
+		return NotificationRegistrationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return NotificationRegistrationsDeleteResponse{}, client.deleteHandleError(resp)
+		return NotificationRegistrationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return NotificationRegistrationsDeleteResponse{RawResponse: resp}, nil
+	return NotificationRegistrationsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, options *NotificationRegistrationsDeleteOptions) (*policy.Request, error) {
+func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, options *NotificationRegistrationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +142,7 @@ func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter notificationRegistrationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notificationRegistrationName}", url.PathEscape(notificationRegistrationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +153,29 @@ func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *NotificationRegistrationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the notification registration details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NotificationRegistrationsClient) Get(ctx context.Context, providerNamespace string, notificationRegistrationName string, options *NotificationRegistrationsGetOptions) (NotificationRegistrationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// notificationRegistrationName - The notification registration.
+// options - NotificationRegistrationsClientGetOptions contains the optional parameters for the NotificationRegistrationsClient.Get
+// method.
+func (client *NotificationRegistrationsClient) Get(ctx context.Context, providerNamespace string, notificationRegistrationName string, options *NotificationRegistrationsClientGetOptions) (NotificationRegistrationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, providerNamespace, notificationRegistrationName, options)
 	if err != nil {
-		return NotificationRegistrationsGetResponse{}, err
+		return NotificationRegistrationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationRegistrationsGetResponse{}, err
+		return NotificationRegistrationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NotificationRegistrationsGetResponse{}, client.getHandleError(resp)
+		return NotificationRegistrationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, options *NotificationRegistrationsGetOptions) (*policy.Request, error) {
+func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Context, providerNamespace string, notificationRegistrationName string, options *NotificationRegistrationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +189,7 @@ func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter notificationRegistrationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notificationRegistrationName}", url.PathEscape(notificationRegistrationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,43 +201,33 @@ func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Response) (NotificationRegistrationsGetResponse, error) {
-	result := NotificationRegistrationsGetResponse{RawResponse: resp}
+func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Response) (NotificationRegistrationsClientGetResponse, error) {
+	result := NotificationRegistrationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistration); err != nil {
-		return NotificationRegistrationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationRegistrationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *NotificationRegistrationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProviderRegistration - Gets the list of the notification registrations for the given provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NotificationRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *NotificationRegistrationsListByProviderRegistrationOptions) *NotificationRegistrationsListByProviderRegistrationPager {
-	return &NotificationRegistrationsListByProviderRegistrationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// options - NotificationRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the NotificationRegistrationsClient.ListByProviderRegistration
+// method.
+func (client *NotificationRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *NotificationRegistrationsClientListByProviderRegistrationOptions) *NotificationRegistrationsClientListByProviderRegistrationPager {
+	return &NotificationRegistrationsClientListByProviderRegistrationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
 		},
-		advancer: func(ctx context.Context, resp NotificationRegistrationsListByProviderRegistrationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp NotificationRegistrationsClientListByProviderRegistrationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.NotificationRegistrationArrayResponseWithContinuation.NextLink)
 		},
 	}
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
-func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, options *NotificationRegistrationsListByProviderRegistrationOptions) (*policy.Request, error) {
+func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, options *NotificationRegistrationsClientListByProviderRegistrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -253,7 +237,7 @@ func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateR
 		return nil, errors.New("parameter providerNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,23 +249,10 @@ func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateR
 }
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
-func (client *NotificationRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (NotificationRegistrationsListByProviderRegistrationResponse, error) {
-	result := NotificationRegistrationsListByProviderRegistrationResponse{RawResponse: resp}
+func (client *NotificationRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (NotificationRegistrationsClientListByProviderRegistrationResponse, error) {
+	result := NotificationRegistrationsClientListByProviderRegistrationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistrationArrayResponseWithContinuation); err != nil {
-		return NotificationRegistrationsListByProviderRegistrationResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationRegistrationsClientListByProviderRegistrationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByProviderRegistrationHandleError handles the ListByProviderRegistration error response.
-func (client *NotificationRegistrationsClient) listByProviderRegistrationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

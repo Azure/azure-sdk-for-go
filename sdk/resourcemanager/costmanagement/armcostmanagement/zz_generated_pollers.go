@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// GenerateDetailedCostReportCreateOperationPoller provides polling facilities until the operation reaches a terminal state.
-type GenerateDetailedCostReportCreateOperationPoller struct {
+// GenerateDetailedCostReportClientCreateOperationPoller provides polling facilities until the operation reaches a terminal state.
+type GenerateDetailedCostReportClientCreateOperationPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *GenerateDetailedCostReportCreateOperationPoller) Done() bool {
+func (p *GenerateDetailedCostReportClientCreateOperationPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *GenerateDetailedCostReportCreateOperationPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *GenerateDetailedCostReportCreateOperationPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *GenerateDetailedCostReportClientCreateOperationPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final GenerateDetailedCostReportCreateOperationResponse will be returned.
-func (p *GenerateDetailedCostReportCreateOperationPoller) FinalResponse(ctx context.Context) (GenerateDetailedCostReportCreateOperationResponse, error) {
-	respType := GenerateDetailedCostReportCreateOperationResponse{}
+// If the final GET succeeded then the final GenerateDetailedCostReportClientCreateOperationResponse will be returned.
+func (p *GenerateDetailedCostReportClientCreateOperationPoller) FinalResponse(ctx context.Context) (GenerateDetailedCostReportClientCreateOperationResponse, error) {
+	respType := GenerateDetailedCostReportClientCreateOperationResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.GenerateDetailedCostReportOperationResult)
 	if err != nil {
-		return GenerateDetailedCostReportCreateOperationResponse{}, err
+		return GenerateDetailedCostReportClientCreateOperationResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *GenerateDetailedCostReportCreateOperationPoller) FinalResponse(ctx cont
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *GenerateDetailedCostReportCreateOperationPoller) ResumeToken() (string, error) {
+func (p *GenerateDetailedCostReportClientCreateOperationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

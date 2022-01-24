@@ -74,6 +74,53 @@ func TestSetGetSecret(t *testing.T) {
 	require.Equal(t, *getResp.Value, value)
 }
 
+func TestSecretTags(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	secret, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
+
+	resp, err := client.SetSecret(context.Background(), secret, value, &SetSecretOptions{
+		Tags: map[string]string{
+			"Tag1": "Val1",
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t, 1, len(resp.Tags))
+	require.Equal(t, "Val1", resp.Tags["Tag1"])
+
+	getResp, err := client.GetSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+	require.Equal(t, *getResp.Value, value)
+	require.Equal(t, 1, len(getResp.Tags))
+	require.Equal(t, "Val1", getResp.Tags["Tag1"])
+
+	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, Properties{
+		SecretAttributes: &Attributes{
+			Expires: to.TimePtr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
+		},
+	}, &UpdateSecretPropertiesOptions{})
+	require.NoError(t, err)
+	require.Equal(t, 1, len(updateResp.Tags))
+	require.Equal(t, "Val1", updateResp.Tags["Tag1"])
+
+	// Delete the tags
+	updateResp, err = client.UpdateSecretProperties(context.Background(), secret, Properties{
+		Tags: make(map[string]string),
+	}, nil)
+	require.NoError(t, err)
+	require.Equal(t, 0, len(updateResp.Tags))
+	require.NotEqual(t, "Val1", updateResp.Tags["Tag1"])
+}
+
 func TestListSecretVersions(t *testing.T) {
 	stop := startTest(t)
 	defer stop()

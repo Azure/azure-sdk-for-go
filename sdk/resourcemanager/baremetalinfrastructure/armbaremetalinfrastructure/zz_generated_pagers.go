@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// AzureBareMetalInstancesListByResourceGroupPager provides operations for iterating over paged responses.
-type AzureBareMetalInstancesListByResourceGroupPager struct {
+// AzureBareMetalInstancesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type AzureBareMetalInstancesClientListByResourceGroupPager struct {
 	client    *AzureBareMetalInstancesClient
-	current   AzureBareMetalInstancesListByResourceGroupResponse
+	current   AzureBareMetalInstancesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AzureBareMetalInstancesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, AzureBareMetalInstancesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AzureBareMetalInstancesListByResourceGroupPager) Err() error {
+func (p *AzureBareMetalInstancesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AzureBareMetalInstancesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *AzureBareMetalInstancesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *AzureBareMetalInstancesListByResourceGroupPager) NextPage(ctx context.C
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *AzureBareMetalInstancesListByResourceGroupPager) NextPage(ctx context.C
 	return true
 }
 
-// PageResponse returns the current AzureBareMetalInstancesListByResourceGroupResponse page.
-func (p *AzureBareMetalInstancesListByResourceGroupPager) PageResponse() AzureBareMetalInstancesListByResourceGroupResponse {
+// PageResponse returns the current AzureBareMetalInstancesClientListByResourceGroupResponse page.
+func (p *AzureBareMetalInstancesClientListByResourceGroupPager) PageResponse() AzureBareMetalInstancesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// AzureBareMetalInstancesListBySubscriptionPager provides operations for iterating over paged responses.
-type AzureBareMetalInstancesListBySubscriptionPager struct {
+// AzureBareMetalInstancesClientListBySubscriptionPager provides operations for iterating over paged responses.
+type AzureBareMetalInstancesClientListBySubscriptionPager struct {
 	client    *AzureBareMetalInstancesClient
-	current   AzureBareMetalInstancesListBySubscriptionResponse
+	current   AzureBareMetalInstancesClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AzureBareMetalInstancesListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, AzureBareMetalInstancesClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AzureBareMetalInstancesListBySubscriptionPager) Err() error {
+func (p *AzureBareMetalInstancesClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AzureBareMetalInstancesListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *AzureBareMetalInstancesClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *AzureBareMetalInstancesListBySubscriptionPager) NextPage(ctx context.Co
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -119,7 +119,7 @@ func (p *AzureBareMetalInstancesListBySubscriptionPager) NextPage(ctx context.Co
 	return true
 }
 
-// PageResponse returns the current AzureBareMetalInstancesListBySubscriptionResponse page.
-func (p *AzureBareMetalInstancesListBySubscriptionPager) PageResponse() AzureBareMetalInstancesListBySubscriptionResponse {
+// PageResponse returns the current AzureBareMetalInstancesClientListBySubscriptionResponse page.
+func (p *AzureBareMetalInstancesClientListBySubscriptionPager) PageResponse() AzureBareMetalInstancesClientListBySubscriptionResponse {
 	return p.current
 }

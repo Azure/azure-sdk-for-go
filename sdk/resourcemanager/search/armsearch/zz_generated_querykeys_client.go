@@ -11,7 +11,6 @@ package armsearch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,36 +24,50 @@ import (
 // QueryKeysClient contains the methods for the QueryKeys group.
 // Don't use this type directly, use NewQueryKeysClient() instead.
 type QueryKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewQueryKeysClient creates a new instance of QueryKeysClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewQueryKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueryKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &QueryKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &QueryKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Generates a new query key for the specified search service. You can create up to 50 query keys per service.
-// If the operation fails it returns the *CloudError error type.
-func (client *QueryKeysClient) Create(ctx context.Context, resourceGroupName string, searchServiceName string, name string, options *SearchManagementRequestOptions) (QueryKeysCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
+// Azure Resource Manager API or the portal.
+// searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
+// name - The name of the new query API key.
+// options - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get method.
+func (client *QueryKeysClient) Create(ctx context.Context, resourceGroupName string, searchServiceName string, name string, options *SearchManagementRequestOptions) (QueryKeysClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, searchServiceName, name, options)
 	if err != nil {
-		return QueryKeysCreateResponse{}, err
+		return QueryKeysClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueryKeysCreateResponse{}, err
+		return QueryKeysClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueryKeysCreateResponse{}, client.createHandleError(resp)
+		return QueryKeysClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
@@ -78,7 +91,7 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,43 +106,35 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 }
 
 // createHandleResponse handles the Create response.
-func (client *QueryKeysClient) createHandleResponse(resp *http.Response) (QueryKeysCreateResponse, error) {
-	result := QueryKeysCreateResponse{RawResponse: resp}
+func (client *QueryKeysClient) createHandleResponse(resp *http.Response) (QueryKeysClientCreateResponse, error) {
+	result := QueryKeysClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryKey); err != nil {
-		return QueryKeysCreateResponse{}, runtime.NewResponseError(err, resp)
+		return QueryKeysClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *QueryKeysClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and
-// then recreate it.
-// If the operation fails it returns the *CloudError error type.
-func (client *QueryKeysClient) Delete(ctx context.Context, resourceGroupName string, searchServiceName string, key string, options *SearchManagementRequestOptions) (QueryKeysDeleteResponse, error) {
+// Delete - Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating
+// a query key is to delete and then recreate it.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
+// Azure Resource Manager API or the portal.
+// searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
+// key - The query key to be deleted. Query keys are identified by value, not by name.
+// options - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get method.
+func (client *QueryKeysClient) Delete(ctx context.Context, resourceGroupName string, searchServiceName string, key string, options *SearchManagementRequestOptions) (QueryKeysClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, searchServiceName, key, options)
 	if err != nil {
-		return QueryKeysDeleteResponse{}, err
+		return QueryKeysClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueryKeysDeleteResponse{}, err
+		return QueryKeysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent, http.StatusNotFound) {
-		return QueryKeysDeleteResponse{}, client.deleteHandleError(resp)
+		return QueryKeysClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return QueryKeysDeleteResponse{RawResponse: resp}, nil
+	return QueryKeysClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -151,7 +156,7 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,28 +170,19 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *QueryKeysClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySearchService - Returns the list of query API keys for the given Azure Cognitive Search service.
-// If the operation fails it returns the *CloudError error type.
-func (client *QueryKeysClient) ListBySearchService(resourceGroupName string, searchServiceName string, options *SearchManagementRequestOptions) *QueryKeysListBySearchServicePager {
-	return &QueryKeysListBySearchServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
+// Azure Resource Manager API or the portal.
+// searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
+// options - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get method.
+func (client *QueryKeysClient) ListBySearchService(resourceGroupName string, searchServiceName string, options *SearchManagementRequestOptions) *QueryKeysClientListBySearchServicePager {
+	return &QueryKeysClientListBySearchServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySearchServiceCreateRequest(ctx, resourceGroupName, searchServiceName, options)
 		},
-		advancer: func(ctx context.Context, resp QueryKeysListBySearchServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp QueryKeysClientListBySearchServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListQueryKeysResult.NextLink)
 		},
 	}
@@ -207,7 +203,7 @@ func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -222,23 +218,10 @@ func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Cont
 }
 
 // listBySearchServiceHandleResponse handles the ListBySearchService response.
-func (client *QueryKeysClient) listBySearchServiceHandleResponse(resp *http.Response) (QueryKeysListBySearchServiceResponse, error) {
-	result := QueryKeysListBySearchServiceResponse{RawResponse: resp}
+func (client *QueryKeysClient) listBySearchServiceHandleResponse(resp *http.Response) (QueryKeysClientListBySearchServiceResponse, error) {
+	result := QueryKeysClientListBySearchServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListQueryKeysResult); err != nil {
-		return QueryKeysListBySearchServiceResponse{}, runtime.NewResponseError(err, resp)
+		return QueryKeysClientListBySearchServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySearchServiceHandleError handles the ListBySearchService error response.
-func (client *QueryKeysClient) listBySearchServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -25,12 +25,13 @@ func ExampleWorkbookTemplatesClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewWorkbookTemplatesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkbookTemplatesClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/WorkbookTemplateGet.json
@@ -48,7 +49,7 @@ func ExampleWorkbookTemplatesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkbookTemplate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkbookTemplatesClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/WorkbookTemplateDelete.json
@@ -80,10 +81,7 @@ func ExampleWorkbookTemplatesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<resource-name>",
 		armapplicationinsights.WorkbookTemplate{
-			WorkbookTemplateResource: armapplicationinsights.WorkbookTemplateResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armapplicationinsights.WorkbookTemplateProperties{
 				Author: to.StringPtr("<author>"),
 				Galleries: []*armapplicationinsights.WorkbookTemplateGallery{
@@ -100,20 +98,20 @@ func ExampleWorkbookTemplatesClient_CreateOrUpdate() {
 					"items": []interface{}{
 						map[string]interface{}{
 							"name": "text - 2",
-							"type": 1,
+							"type": float64(1),
 							"content": map[string]interface{}{
 								"json": "## New workbook\n---\n\nWelcome to your new workbook.  This area will display text formatted as markdown.\n\n\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.",
 							},
 						},
 						map[string]interface{}{
 							"name": "query - 2",
-							"type": 3,
+							"type": float64(3),
 							"content": map[string]interface{}{
 								"exportToExcelOptions": "visible",
 								"query":                "union withsource=TableName *\n| summarize Count=count() by TableName\n| render barchart",
-								"queryType":            0,
+								"queryType":            float64(0),
 								"resourceType":         "microsoft.operationalinsights/workspaces",
-								"size":                 1,
+								"size":                 float64(1),
 								"version":              "KqlItem/1.0",
 							},
 						},
@@ -127,7 +125,7 @@ func ExampleWorkbookTemplatesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkbookTemplate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkbookTemplatesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/WorkbookTemplateUpdate.json
@@ -141,9 +139,9 @@ func ExampleWorkbookTemplatesClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		&armapplicationinsights.WorkbookTemplatesUpdateOptions{WorkbookTemplateUpdateParameters: nil})
+		&armapplicationinsights.WorkbookTemplatesClientUpdateOptions{WorkbookTemplateUpdateParameters: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkbookTemplate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkbookTemplatesClientUpdateResult)
 }

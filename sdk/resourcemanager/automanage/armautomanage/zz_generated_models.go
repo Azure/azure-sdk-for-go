@@ -12,112 +12,164 @@ import (
 	"encoding/json"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+	"time"
 )
 
-// Account - Definition of the Automanage account.
-type Account struct {
-	TrackedResource
-	// The identity of the Automanage account.
-	Identity *AccountIdentity `json:"identity,omitempty"`
+// AssignmentReportProperties - Data related to the report detail.
+type AssignmentReportProperties struct {
+	// End time of the configuration profile assignment processing.
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Start time of the configuration profile assignment processing.
+	StartTime *string `json:"startTime,omitempty"`
+
+	// READ-ONLY; The configurationProfile linked to the assignment.
+	ConfigurationProfile *string `json:"configurationProfile,omitempty" azure:"ro"`
+
+	// READ-ONLY; Duration of the configuration profile assignment processing.
+	Duration *string `json:"duration,omitempty" azure:"ro"`
+
+	// READ-ONLY; Error message, if any, returned by the configuration profile assignment processing.
+	Error *ErrorDetail `json:"error,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last modified time of the configuration profile assignment processing.
+	LastModifiedTime *string `json:"lastModifiedTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Version of the report format
+	ReportFormatVersion *string `json:"reportFormatVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of resources processed by the configuration profile assignment.
+	Resources []*ReportResource `json:"resources,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status of the configuration profile assignment.
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the configuration profile assignment processing (Initial/Consistency).
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Account.
-func (a Account) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AssignmentReportProperties.
+func (a AssignmentReportProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "configurationProfile", a.ConfigurationProfile)
+	populate(objectMap, "duration", a.Duration)
+	populate(objectMap, "endTime", a.EndTime)
+	populate(objectMap, "error", a.Error)
+	populate(objectMap, "lastModifiedTime", a.LastModifiedTime)
+	populate(objectMap, "reportFormatVersion", a.ReportFormatVersion)
+	populate(objectMap, "resources", a.Resources)
+	populate(objectMap, "startTime", a.StartTime)
+	populate(objectMap, "status", a.Status)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
-// AccountIdentity - Identity for the Automanage account.
-type AccountIdentity struct {
-	// The type of identity used for the Automanage account. Currently, the only supported type is 'SystemAssigned', which implicitly creates an identity.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+// BestPractice - Definition of the Automanage best practice.
+type BestPractice struct {
+	// Properties of the best practice.
+	Properties *ConfigurationProfileProperties `json:"properties,omitempty"`
 
-	// READ-ONLY; The principal id of Automanage account identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	// READ-ONLY; The fully qualified ID for the best practice. For example, /providers/Microsoft.Automanage/bestPractices/azureBestPracticesProduction
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The tenant id associated with the Automanage account.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	// READ-ONLY; The name of the best practice. For example, azureBestPracticesProduction
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. For example, Microsoft.Automanage/bestPractices
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// AccountList - The response of the list Account operation.
-type AccountList struct {
-	// Result of the list Account operation.
-	Value []*Account `json:"value,omitempty"`
+// BestPracticeList - The response of the list best practice operation.
+type BestPracticeList struct {
+	// Result of the list best practice operation.
+	Value []*BestPractice `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountList.
-func (a AccountList) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type BestPracticeList.
+func (b BestPracticeList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
+	populate(objectMap, "value", b.Value)
 	return json.Marshal(objectMap)
 }
 
-// AccountUpdate - Definition of the Automanage account.
-type AccountUpdate struct {
-	UpdateResource
-	// The identity of the Automanage account.
-	Identity *AccountIdentity `json:"identity,omitempty"`
+// BestPracticesClientGetOptions contains the optional parameters for the BestPracticesClient.Get method.
+type BestPracticesClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountUpdate.
-func (a AccountUpdate) MarshalJSON() ([]byte, error) {
+// BestPracticesClientListByTenantOptions contains the optional parameters for the BestPracticesClient.ListByTenant method.
+type BestPracticesClientListByTenantOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BestPracticesVersionsClientGetOptions contains the optional parameters for the BestPracticesVersionsClient.Get method.
+type BestPracticesVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BestPracticesVersionsClientListByTenantOptions contains the optional parameters for the BestPracticesVersionsClient.ListByTenant
+// method.
+type BestPracticesVersionsClientListByTenantOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfile - Definition of the configuration profile.
+type ConfigurationProfile struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Properties of the configuration profile.
+	Properties *ConfigurationProfileProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfile.
+func (c ConfigurationProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.UpdateResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
-// AccountsCreateOrUpdateOptions contains the optional parameters for the Accounts.CreateOrUpdate method.
-type AccountsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccountsDeleteOptions contains the optional parameters for the Accounts.Delete method.
-type AccountsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccountsGetOptions contains the optional parameters for the Accounts.Get method.
-type AccountsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccountsListByResourceGroupOptions contains the optional parameters for the Accounts.ListByResourceGroup method.
-type AccountsListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccountsListBySubscriptionOptions contains the optional parameters for the Accounts.ListBySubscription method.
-type AccountsListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccountsUpdateOptions contains the optional parameters for the Accounts.Update method.
-type AccountsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationProfileAssignment - Configuration profile assignment is an association between a VM and automanage profile configuration.
+// ConfigurationProfileAssignment - Configuration profile assignment is an association between a VM and automanage profile
+// configuration.
 type ConfigurationProfileAssignment struct {
-	ProxyResource
 	// Properties of the configuration profile assignment.
 	Properties *ConfigurationProfileAssignmentProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileAssignment.
-func (c ConfigurationProfileAssignment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// ConfigurationProfileAssignmentCompliance - The compliance status for the configuration profile assignment.
-type ConfigurationProfileAssignmentCompliance struct {
-	// READ-ONLY; The state of compliance, which only appears in the response.
-	UpdateStatus *UpdateStatus `json:"updateStatus,omitempty" azure:"ro"`
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ConfigurationProfileAssignmentList - The response of the list configuration profile assignment operation.
@@ -135,169 +187,166 @@ func (c ConfigurationProfileAssignmentList) MarshalJSON() ([]byte, error) {
 
 // ConfigurationProfileAssignmentProperties - Automanage configuration profile assignment properties.
 type ConfigurationProfileAssignmentProperties struct {
-	// The Automanage account ARM Resource URI
-	AccountID *string `json:"accountId,omitempty"`
+	// The Automanage configurationProfile ARM Resource URI.
+	ConfigurationProfile *string `json:"configurationProfile,omitempty"`
 
-	// The configuration setting for the configuration profile.
-	Compliance *ConfigurationProfileAssignmentCompliance `json:"compliance,omitempty"`
-
-	// A value indicating configuration profile.
-	ConfigurationProfile *ConfigurationProfile `json:"configurationProfile,omitempty"`
-
-	// The configuration profile custom preferences ARM resource URI
-	ConfigurationProfilePreferenceID *string `json:"configurationProfilePreferenceId,omitempty"`
+	// The profileOverrides setting for the configuration profile assignment.
+	ProfileOverrides map[string]map[string]interface{} `json:"profileOverrides,omitempty"`
 
 	// The target VM resource URI
 	TargetID *string `json:"targetId,omitempty"`
 
-	// READ-ONLY; The state of onboarding, which only appears in the response.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	// READ-ONLY; The status of onboarding, which only appears in the response.
+	Status *string `json:"status,omitempty" azure:"ro"`
 }
 
-// ConfigurationProfileAssignmentsBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfileAssignments.BeginCreateOrUpdate
-// method.
-type ConfigurationProfileAssignmentsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationProfileAssignmentsDeleteOptions contains the optional parameters for the ConfigurationProfileAssignments.Delete method.
-type ConfigurationProfileAssignmentsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationProfileAssignmentsGetOptions contains the optional parameters for the ConfigurationProfileAssignments.Get method.
-type ConfigurationProfileAssignmentsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationProfileAssignmentsListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignments.ListBySubscription
-// method.
-type ConfigurationProfileAssignmentsListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationProfileAssignmentsListOptions contains the optional parameters for the ConfigurationProfileAssignments.List method.
-type ConfigurationProfileAssignmentsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationProfilePreference - Definition of the configuration profile preference.
-type ConfigurationProfilePreference struct {
-	TrackedResource
-	// Properties of the configuration profile preference.
-	Properties *ConfigurationProfilePreferenceProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfilePreference.
-func (c ConfigurationProfilePreference) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileAssignmentProperties.
+func (c ConfigurationProfileAssignmentProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "configurationProfile", c.ConfigurationProfile)
+	populate(objectMap, "profileOverrides", c.ProfileOverrides)
+	populate(objectMap, "status", c.Status)
+	populate(objectMap, "targetId", c.TargetID)
 	return json.Marshal(objectMap)
 }
 
-// ConfigurationProfilePreferenceAntiMalware - Automanage configuration profile Antimalware preferences.
-type ConfigurationProfilePreferenceAntiMalware struct {
-	// Enables or disables Real Time Protection
-	EnableRealTimeProtection *EnableRealTimeProtection `json:"enableRealTimeProtection,omitempty"`
-
-	// Extensions, Paths and Processes that must be excluded from scan
-	Exclusions map[string]interface{} `json:"exclusions,omitempty"`
-
-	// Enables or disables a periodic scan for antimalware
-	RunScheduledScan *RunScheduledScan `json:"runScheduledScan,omitempty"`
-
-	// Schedule scan settings day
-	ScanDay *string `json:"scanDay,omitempty"`
-
-	// Schedule scan settings time
-	ScanTimeInMinutes *string `json:"scanTimeInMinutes,omitempty"`
-
-	// Type of scheduled scan
-	ScanType *ScanType `json:"scanType,omitempty"`
+// ConfigurationProfileAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.CreateOrUpdate
+// method.
+type ConfigurationProfileAssignmentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilePreferenceList - The response of the list ConfigurationProfilePreference operation.
-type ConfigurationProfilePreferenceList struct {
-	// Result of the list ConfigurationProfilePreference operation.
-	Value []*ConfigurationProfilePreference `json:"value,omitempty"`
+// ConfigurationProfileAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.Delete
+// method.
+type ConfigurationProfileAssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfilePreferenceList.
-func (c ConfigurationProfilePreferenceList) MarshalJSON() ([]byte, error) {
+// ConfigurationProfileAssignmentsClientGetOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.Get
+// method.
+type ConfigurationProfileAssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListBySubscription
+// method.
+type ConfigurationProfileAssignmentsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.List
+// method.
+type ConfigurationProfileAssignmentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileList - The response of the list configuration profile operation.
+type ConfigurationProfileList struct {
+	// Result of the list ConfigurationProfile operation.
+	Value []*ConfigurationProfile `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileList.
+func (c ConfigurationProfileList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
 
-// ConfigurationProfilePreferenceProperties - Automanage configuration profile preference properties.
-type ConfigurationProfilePreferenceProperties struct {
-	// The custom preferences for Azure Antimalware.
-	AntiMalware *ConfigurationProfilePreferenceAntiMalware `json:"antiMalware,omitempty"`
+// ConfigurationProfileProperties - Automanage configuration profile properties.
+type ConfigurationProfileProperties struct {
+	// configuration dictionary of the configuration profile.
+	Configuration map[string]interface{} `json:"configuration,omitempty"`
 
-	// The custom preferences for Azure VM Backup.
-	VMBackup *ConfigurationProfilePreferenceVMBackup `json:"vmBackup,omitempty"`
+	// overrides of the configuration profile.
+	Overrides []map[string]interface{} `json:"overrides,omitempty"`
 }
 
-// ConfigurationProfilePreferenceUpdate - Definition of the configuration profile preference.
-type ConfigurationProfilePreferenceUpdate struct {
-	UpdateResource
-	// Properties of the configuration profile preference.
-	Properties *ConfigurationProfilePreferenceProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfilePreferenceUpdate.
-func (c ConfigurationProfilePreferenceUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileProperties.
+func (c ConfigurationProfileProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.UpdateResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "configuration", c.Configuration)
+	populate(objectMap, "overrides", c.Overrides)
 	return json.Marshal(objectMap)
 }
 
-// ConfigurationProfilePreferenceVMBackup - Automanage configuration profile VM Backup preferences.
-type ConfigurationProfilePreferenceVMBackup struct {
-	// Instant RP retention policy range in days
-	InstantRpRetentionRangeInDays *int32 `json:"instantRpRetentionRangeInDays,omitempty"`
+// ConfigurationProfileUpdate - Definition of the configuration profile.
+type ConfigurationProfileUpdate struct {
+	// Properties of the configuration profile.
+	Properties *ConfigurationProfileProperties `json:"properties,omitempty"`
 
-	// Retention policy with the details on backup copy retention ranges.
-	RetentionPolicy *string `json:"retentionPolicy,omitempty"`
-
-	// Backup schedule specified as part of backup policy.
-	SchedulePolicy *string `json:"schedulePolicy,omitempty"`
-
-	// TimeZone optional input as string. For example: Pacific Standard Time
-	TimeZone *string `json:"timeZone,omitempty"`
+	// The tags of the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// ConfigurationProfilePreferencesCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfilePreferences.CreateOrUpdate method.
-type ConfigurationProfilePreferencesCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+// MarshalJSON implements the json.Marshaller interface for type ConfigurationProfileUpdate.
+func (c ConfigurationProfileUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "tags", c.Tags)
+	return json.Marshal(objectMap)
 }
 
-// ConfigurationProfilePreferencesDeleteOptions contains the optional parameters for the ConfigurationProfilePreferences.Delete method.
-type ConfigurationProfilePreferencesDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationProfilePreferencesGetOptions contains the optional parameters for the ConfigurationProfilePreferences.Get method.
-type ConfigurationProfilePreferencesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationProfilePreferencesListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilePreferences.ListByResourceGroup
+// ConfigurationProfilesClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfilesClient.CreateOrUpdate
 // method.
-type ConfigurationProfilePreferencesListByResourceGroupOptions struct {
+type ConfigurationProfilesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilePreferencesListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilePreferences.ListBySubscription
+// ConfigurationProfilesClientDeleteOptions contains the optional parameters for the ConfigurationProfilesClient.Delete method.
+type ConfigurationProfilesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfilesClientGetOptions contains the optional parameters for the ConfigurationProfilesClient.Get method.
+type ConfigurationProfilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.ListByResourceGroup
 // method.
-type ConfigurationProfilePreferencesListBySubscriptionOptions struct {
+type ConfigurationProfilesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilePreferencesUpdateOptions contains the optional parameters for the ConfigurationProfilePreferences.Update method.
-type ConfigurationProfilePreferencesUpdateOptions struct {
+// ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.ListBySubscription
+// method.
+type ConfigurationProfilesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfilesClientUpdateOptions contains the optional parameters for the ConfigurationProfilesClient.Update method.
+type ConfigurationProfilesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfilesVersionsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.CreateOrUpdate
+// method.
+type ConfigurationProfilesVersionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfilesVersionsClientDeleteOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.Delete
+// method.
+type ConfigurationProfilesVersionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfilesVersionsClientGetOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.Get
+// method.
+type ConfigurationProfilesVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfilesVersionsClientListChildResourcesOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.ListChildResources
+// method.
+type ConfigurationProfilesVersionsClientListChildResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfilesVersionsClientUpdateOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.Update
+// method.
+type ConfigurationProfilesVersionsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -339,82 +388,146 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-// Operation - Automanage REST API operation
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Provider, Resource, Operation and description values.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay `json:"display,omitempty"`
 
-	// Indicates whether the operation is a data action
-	IsDataAction *string `json:"isDataAction,omitempty"`
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// Operation name: For ex. providers/Microsoft.Automanage/configurationProfileAssignments/write or read
-	Name *string `json:"name,omitempty"`
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
+	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// Provider, Resource, Operation and description values.
-	Properties *OperationProperties `json:"properties,omitempty"`
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
-// OperationDisplay - Provider, Resource, Operation and description values.
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// Description about operation.
-	Description *string `json:"description,omitempty"`
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
+	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// Service provider: Microsoft.Automanage
-	Provider *string `json:"provider,omitempty"`
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
+	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// Resource on which the operation is performed: For ex.
-	Resource *string `json:"resource,omitempty"`
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
+	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationList - The response model for the list of Automanage operations
-type OperationList struct {
-	// List of Automanage operations supported by the Automanage resource provider.
-	Value []*Operation `json:"value,omitempty"`
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
+type OperationListResult struct {
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of operations supported by the resource provider
+	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
+func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", o.NextLink)
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
 }
 
-// OperationProperties - Provider, Resource, Operation and description values.
-type OperationProperties struct {
-	// Service provider: Microsoft.Automanage
-	StatusCode *string `json:"statusCode,omitempty"`
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+// Report - Definition of the report.
+type Report struct {
+	// The properties for the report.
+	Properties *AssignmentReportProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ReportList - The response of the list report operation.
+type ReportList struct {
+	// Result of the list report operation.
+	Value []*Report `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ReportList.
+func (r ReportList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", r.Value)
+	return json.Marshal(objectMap)
+}
+
+// ReportResource - Details about the resource processed by the configuration profile assignment
+type ReportResource struct {
+	// READ-ONLY; Error message, if any, returned when deploying the resource.
+	Error *ErrorDetail `json:"error,omitempty" azure:"ro"`
+
+	// READ-ONLY; ARM id of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the resource.
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ReportsClientGetOptions contains the optional parameters for the ReportsClient.Get method.
+type ReportsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.ListByConfigurationProfileAssignments
+// method.
+type ReportsClientListByConfigurationProfileAssignmentsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -429,40 +542,102 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SystemData.
+func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populate(objectMap, "createdBy", s.CreatedBy)
+	populate(objectMap, "createdByType", s.CreatedByType)
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
+	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
 }
 
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
+// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
+func (s *SystemData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdAt":
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
+			delete(rawMsg, key)
+		case "createdBy":
+			err = unpopulate(val, &s.CreatedBy)
+			delete(rawMsg, key)
+		case "createdByType":
+			err = unpopulate(val, &s.CreatedByType)
+			delete(rawMsg, key)
+		case "lastModifiedAt":
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
+			delete(rawMsg, key)
+		case "lastModifiedBy":
+			err = unpopulate(val, &s.LastModifiedBy)
+			delete(rawMsg, key)
+		case "lastModifiedByType":
+			err = unpopulate(val, &s.LastModifiedByType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UpdateResource - Represents an update resource
@@ -474,12 +649,8 @@ type UpdateResource struct {
 // MarshalJSON implements the json.Marshaller interface for type UpdateResource.
 func (u UpdateResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	u.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (u UpdateResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", u.Tags)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {
@@ -490,4 +661,11 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	} else if !reflect.ValueOf(v).IsNil() {
 		m[k] = v
 	}
+}
+
+func unpopulate(data json.RawMessage, v interface{}) error {
+	if data == nil {
+		return nil
+	}
+	return json.Unmarshal(data, v)
 }

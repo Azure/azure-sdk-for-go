@@ -6,12 +6,15 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
+
+const usernamePasswordCredentialTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/usernamepasswordcredential/troubleshoot"
 
 // UsernamePasswordCredentialOptions contains optional parameters for UsernamePasswordCredential.
 type UsernamePasswordCredentialOptions struct {
@@ -71,8 +74,9 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 	}
 	ar, err = c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password)
 	if err != nil {
-		addGetTokenFailureLogs("Username Password Credential", err, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		error := fmt.Errorf("%s%s", err.Error(), usernamePasswordCredentialTroubleshootMessage)
+		addGetTokenFailureLogs("Username Password Credential", error, true)
+		return nil, newAuthenticationFailedError(error, nil)
 	}
 	c.account = ar.Account
 	logGetTokenSuccess(c, opts)

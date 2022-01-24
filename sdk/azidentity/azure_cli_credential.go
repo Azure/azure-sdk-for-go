@@ -20,6 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+const azureCliCredentialTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/azclicredential/troubleshoot"
+
 // used by tests to fake invoking the CLI
 type azureCLITokenProvider func(ctx context.Context, resource string, tenantID string) ([]byte, error)
 
@@ -71,8 +73,9 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	scope := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, scope)
 	if err != nil {
-		addGetTokenFailureLogs("Azure CLI Credential", err, true)
-		return nil, err
+		error := fmt.Errorf("%s%s", err.Error(), azureCliCredentialTroubleshootMessage)
+		addGetTokenFailureLogs("Azure CLI Credential", error, true)
+		return nil, error
 	}
 	logGetTokenSuccess(c, opts)
 	return at, nil
@@ -129,7 +132,8 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 				// if there's no output in stderr report the error message instead
 				msg = err.Error()
 			}
-			return nil, newCredentialUnavailableError("Azure CLI Credential", msg)
+			troubleshootMessage := fmt.Sprintf("%s%s", msg, azureCliTroubleshootMessage)
+			return nil, newCredentialUnavailableError("Azure CLI Credential", troubleshootMessage)
 		}
 
 		return output, nil

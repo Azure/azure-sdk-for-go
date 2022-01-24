@@ -6,12 +6,15 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
+
+const clientSecretCredentialTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/serviceprincipalauthentication/troubleshoot"
 
 // ClientSecretCredentialOptions contains optional parameters for ClientSecretCredential.
 type ClientSecretCredentialOptions struct {
@@ -52,7 +55,9 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 		confidential.WithHTTPClient(newPipelineAdapter(&options.ClientOptions)),
 	)
 	if err != nil {
-		return nil, err
+		error := fmt.Errorf("%s%s", err.Error(), clientSecretCredentialTroubleshootMessage)
+		logCredentialError("Client Secret Credential", error)
+		return nil, error
 	}
 	return &ClientSecretCredential{client: c}, nil
 }

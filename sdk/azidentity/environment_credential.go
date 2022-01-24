@@ -16,6 +16,7 @@ import (
 )
 
 const envVarSendCertChain = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN"
+const environmentCredentialTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/environmentcredential/troubleshoot"
 
 // EnvironmentCredentialOptions contains optional parameters for EnvironmentCredential
 type EnvironmentCredentialOptions struct {
@@ -104,7 +105,9 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			return &EnvironmentCredential{cred: cred}, nil
 		}
 	}
-	return nil, errors.New("missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD")
+	errorMessage := "missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD"
+	err := fmt.Errorf("%s%s", errorMessage, environmentCredentialTroubleshootMessage)
+	return nil, err
 }
 
 // GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.

@@ -22,7 +22,7 @@ import (
 	"golang.org/x/crypto/pkcs12"
 )
 
-var clientCertificateTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/serviceprincipalauthentication/troubleshoot"
+const clientCertificateCredentialTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/serviceprincipalauthentication/troubleshoot"
 
 // ClientCertificateCredentialOptions contains optional parameters for ClientCertificateCredential.
 type ClientCertificateCredentialOptions struct {
@@ -64,9 +64,9 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
-		error := fmt.Errorf("%s%s", err.Error(), clientCertificateTroubleshootMessage)
+		error := fmt.Errorf("%s%s", err.Error(), clientCertificateCredentialTroubleshootMessage)
 		logCredentialError("Client Certificate Credential", error)
-		return nil, err
+		return nil, error
 	}
 	cert, err := newCertContents(certs, pk, options.SendCertificateChain)
 	if err != nil {
@@ -102,9 +102,9 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		error := fmt.Errorf("%s%s", err.Error(), clientCertificateTroubleshootMessage)
+		error := fmt.Errorf("%s%s", err.Error(), clientCertificateCredentialTroubleshootMessage)
 		addGetTokenFailureLogs("Client Certificate Credential", error, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		return nil, newAuthenticationFailedError(error, nil)
 	}
 	logGetTokenSuccess(c, opts)
 	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err

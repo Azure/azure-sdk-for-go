@@ -5,12 +5,14 @@ package azidentity
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
+
+const defaultAzureCredentialTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/defaultazurecredential/troubleshoot"
 
 // DefaultAzureCredentialOptions contains optional parameters for DefaultAzureCredential.
 // These options may not apply to all credentials in the chain.
@@ -70,7 +72,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	}
 
 	if len(creds) == 0 {
-		err := errors.New(errMsg)
+		err := fmt.Errorf("%s%s", errMsg, defaultAzureCredentialTroubleshootMessage)
 		logCredentialError("Default Azure Credential", err)
 		return nil, err
 	}

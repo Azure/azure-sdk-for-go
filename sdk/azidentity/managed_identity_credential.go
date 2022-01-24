@@ -5,13 +5,14 @@ package azidentity
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
+
+const managedIdentityCredentialTroubleshootMessage string = "\nTo troubleshoot, visit https://aka.ms/azsdk/go/identity/managedidentitycredential/troubleshoot"
 
 type managedIdentityIDKind int
 
@@ -77,7 +78,8 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	}
 	client, err := newManagedIdentityClient(options)
 	if err != nil {
-		logCredentialError("Managed Identity Credential", err)
+		error := fmt.Errorf("%s%s", err.Error(), managedIdentityCredentialTroubleshootMessage)
+		logCredentialError("Managed Identity Credential", error)
 		return nil, err
 	}
 	return &ManagedIdentityCredential{id: options.ID, client: client}, nil
@@ -88,7 +90,8 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
-		err := errors.New("ManagedIdentityCredential.GetToken() requires exactly one scope")
+		errorMessage := "ManagedIdentityCredential.GetToken() requires exactly one scope"
+		err := fmt.Errorf("%s%s", errorMessage, managedIdentityCredentialTroubleshootMessage)
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
@@ -96,7 +99,8 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.To
 	scopes := []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
 	tk, err := c.client.authenticate(ctx, c.id, scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Managed Identity Credential", err, true)
+		error := fmt.Errorf("%s%s", err.Error(), managedIdentityCredentialTroubleshootMessage)
+		addGetTokenFailureLogs("Managed Identity Credential", error, true)
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)

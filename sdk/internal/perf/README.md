@@ -8,7 +8,6 @@ The `perf` sub-module provides a singular framework for writing performance test
 | `--duration` | `-d` | 10 seconds | internal.Duration (`int`) | How long to run an individual performance test |
 | `--proxy` | `-x` | N/A | internal.TestProxy (`string`) | Whether to run a test against a test proxy. If you want to run against `https` specify with `--proxy https`, likewise for `http`. If you want to run normally omit this flag |
 | `--warmup` | `-w` | 3 seconds| internal.WarmUp (`int`) | How long to allow the connection to warm up. |
-| `--timeout` | `-t` | 10 seconds| internal.TimeoutSeconds (`int`) | How long to allow an operation to block. |
 
 ## Running with the test proxy
 
@@ -34,7 +33,7 @@ func (k *keysPerfTest) GlobalSetup() error {
 
 1. Create a performance test directory at `testdata/perf` within a module.
 2. Run `go mod init` to create a new module.
-3. Create a `struct` that implements the `perf.PerfTest` interface by implementing the `GlobalSetup`, `Setup`, `Run`, `TearDown`, `GlobalTearDown`, and `GetMetadata` functions. All of these functions will take a `context.Context` type to prevent an erroneous test from blocking. `GetMetadata` should return a `string` with the name of the specific test. This is only used by the test proxy for generating and reading recordings. `GlobalSetup` and `GlobalTearDown` are called once each, at the beginning and end of the performance test respectively. These are good places to do client instantiation, create instances, etc. `Setup` and `TearDown` are called once before each test iteration. If there is nothing to do in any of these steps, you can use `return nil` for the implementation.
+3. Create a `struct` that implements the `perf.PerfTest` interface by implementing the `GlobalSetup`, `Setup`, `Run`, `Cleanup`, `GlobalCleanup`, and `GetMetadata` functions. All of these functions will take a `context.Context` type to prevent an erroneous test from blocking. `GetMetadata` should return a `string` with the name of the specific test. This is only used by the test proxy for generating and reading recordings. `GlobalSetup` and `GlobalCleanup` are called once each, at the beginning and end of the performance test respectively. These are good places to do client instantiation, create instances, etc. `Setup` and `Cleanup` are called once before each test iteration. If there is nothing to do in any of these steps, you can use `return nil` for the implementation.
 
 4. Create a main package that uses the `perf.Run` function to run performance tests.
 
@@ -75,11 +74,6 @@ go run . CreateEntityTest
 To specify flags for a performance test, add them after the second argument:
 ```pwsh
 go run . CreateEntityTest --duration 7 --proxy https
-```
-
-You can also run multiple performance tests by listing them:
-```pwsh
-go run . DownloadBobTest UploadBlobTest ListBlobsTest --duration 7 --proxy https
 ```
 
 For help run `go run . --help`. A list of registered performance tests, global command flags, and local command flags will print out.

@@ -14,14 +14,12 @@ import (
 )
 
 var (
-	debug          bool
-	Duration       int
-	TimeoutSeconds int
-	TestProxy      string
-	WarmUp         int
-	Parallel       int
-	runSync        bool
-	wg             sync.WaitGroup
+	debug     bool
+	Duration  int
+	TestProxy string
+	WarmUp    int
+	Parallel  int
+	wg        sync.WaitGroup
 )
 
 type PerfTest interface {
@@ -35,9 +33,9 @@ type PerfTest interface {
 
 	Run(context.Context) error
 
-	TearDown(context.Context) error
+	Cleanup(context.Context) error
 
-	GlobalTearDown(context.Context) error
+	GlobalCleanup(context.Context) error
 }
 
 func getLimitedContext(t time.Duration) (context.Context, context.CancelFunc) {
@@ -47,12 +45,6 @@ func getLimitedContext(t time.Duration) (context.Context, context.CancelFunc) {
 
 func runGlobalSetup(p PerfTest) error {
 	fmt.Println("Running `GlobalSetup`")
-
-	if debug {
-		fmt.Printf("Deadline of %d\n", TimeoutSeconds)
-	}
-	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
-	defer cancel()
 
 	setRecordingMode("live")
 	err := p.GlobalSetup(context.Background())
@@ -65,10 +57,7 @@ func runGlobalSetup(p PerfTest) error {
 func runSetup(p PerfTest) error {
 	fmt.Println("Running `Setup`")
 
-	ctx, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
-	defer cancel()
-
-	err := p.Setup(ctx)
+	err := p.Setup(context.Background())
 	if err != nil {
 		return err
 	}
@@ -80,14 +69,12 @@ func runSetup(p PerfTest) error {
 func runTest(p PerfTest, c chan runResult) {
 	defer wg.Done()
 	fmt.Println("Beginning `Run`")
-	ctx, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
-	defer cancel()
 
 	// If we are using the test proxy need to set up the in-memory recording.
 	if TestProxy != "" {
 		// First request goes through in Live mode
 		setRecordingMode("live")
-		err := p.Run(ctx)
+		err := p.Run(context.Background())
 		if err != nil {
 			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
@@ -95,7 +82,7 @@ func runTest(p PerfTest, c chan runResult) {
 		// 2nd request goes through in Record mode
 		setRecordingMode("record")
 		start(p.GetMetadata(), nil)
-		err = p.Run(ctx)
+		err = p.Run(context.Background())
 		if err != nil {
 			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
@@ -109,7 +96,7 @@ func runTest(p PerfTest, c chan runResult) {
 	start := time.Now()
 	count := 0
 	for time.Since(start).Seconds() < float64(Duration) {
-		err := p.Run(ctx)
+		err := p.Run(context.Background())
 		if err != nil {
 			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
@@ -124,26 +111,21 @@ func runTest(p PerfTest, c chan runResult) {
 	c <- runResult{count: count, timeInSeconds: elapsed, err: nil}
 }
 
-// runTearDown takes care of the semantics for tearing down a single iteration of a performance test.
-func runTearDown(p PerfTest) error {
-	fmt.Println("Running `Teardown`")
+// runCleanup takes care of the semantics for tearing down a single iteration of a performance test.
+func runCleanup(p PerfTest) error {
+	fmt.Println("Running `Cleanup`")
 
-	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
-	defer cancel()
-
-	err := p.TearDown(context.Background())
+	err := p.Cleanup(context.Background())
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func runGlobalTearDown(p PerfTest) error {
-	fmt.Println("Running `GlobalTeardown`")
-	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
-	defer cancel()
+func runGlobalCleanup(p PerfTest) error {
+	fmt.Println("Running `GlobalCleanup`")
 
-	err := p.GlobalTearDown(context.Background())
+	err := p.GlobalCleanup(context.Background())
 	if err != nil {
 		return err
 	}
@@ -156,14 +138,44 @@ type runResult struct {
 	err           error
 }
 
+func leftPad(i int) string {
+	if i >= 100 {
+		return fmt.Sprintf("%d", i)
+	} else if i >= 10 {
+		return fmt.Sprintf("0%d", i)
+	} else if i > 0 {
+		return fmt.Sprintf("00%d", i)
+	}
+	return "000"
+}
+
+func commaIze(i int) string {
+	if i < 1000 {
+		return fmt.Sprintf("%d", i)
+	}
+
+	copy := i
+	ret := ""
+	for copy >= 1000 {
+		temp := copy % 1000
+		tempS := leftPad(temp)
+		ret = fmt.Sprintf("%s,%s", ret, tempS)
+
+		copy /= 1000
+	}
+
+	if copy == 0 {
+		return ret
+	}
+
+	return fmt.Sprintf("%d%s", copy, ret)
+}
+
 func runPerfTest(p PerfTest) error {
 	err := runGlobalSetup(p)
 	if err != nil {
 		return err
 	}
-
-	totalCount := 0
-	totalTime := 0.0
 
 	runSetup(p)
 
@@ -178,6 +190,8 @@ func runPerfTest(p PerfTest) error {
 
 	wg.Wait()
 
+	opsPerSecond := 0.0
+	totalOperations := 0
 	// Get the results from the channels
 	for idx, channel := range channels {
 		result := <-channel
@@ -186,17 +200,20 @@ func runPerfTest(p PerfTest) error {
 		}
 		printIteration(idx, result.timeInSeconds, result.count)
 
-		totalCount += result.count
-		totalTime += result.timeInSeconds
+		opsPerSecond += float64(result.count) / result.timeInSeconds
+		totalOperations += result.count
 	}
 
-	err = runTearDown(p)
+	err = runCleanup(p)
 	if err != nil {
 		return err
 	}
 
-	err = runGlobalTearDown(p)
-	printFinal(totalCount, totalTime)
+	err = runGlobalCleanup(p)
+
+	secondsPerOp := 1.0 / opsPerSecond
+	weightedAvgSec := float64(totalOperations) / opsPerSecond
+	fmt.Printf("Completed %d operations in a weighted-average of %.2fs (%d ops/s, %.3f s/op)", totalOperations, weightedAvgSec, int(opsPerSecond), secondsPerOp)
 
 	return err
 }
@@ -204,11 +221,6 @@ func runPerfTest(p PerfTest) error {
 func printIteration(idx int, t float64, count int) {
 	perSecond := float64(count) / t
 	fmt.Printf("Thread #%d: Completed %d operations in %.4f seconds. Averaged %.4f operations per second.\n", idx+1, count, t, perSecond)
-}
-
-func printFinal(totalCount int, totalElapsed float64) {
-	perSecond := float64(totalCount) / totalElapsed
-	fmt.Printf("Summary: Completed %d operations in %.4f seconds. Averaged %.4f ops/sec.\n", totalCount, totalElapsed, perSecond)
 }
 
 // testsToRun trims the slice of PerfTest to only those that are flagged as running.
@@ -224,6 +236,11 @@ func testsToRun(registered []PerfTest) []PerfTest {
 		}
 	}
 
+	if len(ret) > 1 {
+		fmt.Println("Performance only supports running one test per process. Run the performance multiple times per performance for each test you want to run.")
+		os.Exit(1)
+	}
+
 	return ret
 }
 
@@ -232,10 +249,8 @@ func Run(perfTests []PerfTest) {
 	// Start with adding all of our arguments
 	pflag.IntVarP(&Duration, "duration", "d", 10, "Duration of the test in seconds. Default is 10.")
 	pflag.StringVarP(&TestProxy, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
-	pflag.IntVarP(&TimeoutSeconds, "timeout", "t", 10, "How long to allow an operation to block before cancelling.")
 	pflag.IntVarP(&WarmUp, "warmup", "w", 5, "Duration of warmup in seconds. Default is 5.")
 	pflag.IntVarP(&Parallel, "parallel", "p", 1, "Degree of parallelism to run with. Default is 1.")
-	pflag.BoolVarP(&runSync, "sync", "s", false, "Run tests in sync mode. Default is false.")
 
 	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
 	pflag.CommandLine.MarkHidden("debug")
@@ -251,7 +266,6 @@ func Run(perfTests []PerfTest) {
 		for _, p := range perfTests {
 			fmt.Printf("\t%s\n", p.GetMetadata())
 		}
-
 		return
 	}
 

@@ -8,7 +8,7 @@ func (n *noOpPerfTest) GlobalSetup(ctx context.Context) error {
 	return nil
 }
 
-func (n *noOpPerfTest) GlobalTearDown(ctx context.Context) error {
+func (n *noOpPerfTest) GlobalCleanup(ctx context.Context) error {
 	return nil
 }
 
@@ -20,7 +20,7 @@ func (n *noOpPerfTest) Run(ctx context.Context) error {
 	return nil
 }
 
-func (n *noOpPerfTest) TearDown(ctx context.Context) error {
+func (n *noOpPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 

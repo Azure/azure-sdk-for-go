@@ -17,7 +17,7 @@ func (s *sleepPerfTest) GlobalSetup(ctx context.Context) error {
 	return nil
 }
 
-func (s *sleepPerfTest) GlobalTearDown(ctx context.Context) error {
+func (s *sleepPerfTest) GlobalCleanup(ctx context.Context) error {
 	return nil
 }
 
@@ -30,7 +30,7 @@ func (s *sleepPerfTest) Run(ctx context.Context) error {
 	return nil
 }
 
-func (s *sleepPerfTest) TearDown(ctx context.Context) error {
+func (s *sleepPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 

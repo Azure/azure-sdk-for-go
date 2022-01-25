@@ -108,7 +108,6 @@ func NewAMQPLinks(ns NamespaceForAMQPLinks, entityPath string, createLink Create
 		audience:          ns.GetEntityAudience(entityPath),
 		createLink:        createLink,
 		closedPermanently: false,
-		id:                LinkID{},
 		ns:                ns,
 	}
 

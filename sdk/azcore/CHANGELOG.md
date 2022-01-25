@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Restore response body after reading in `Poller.FinalResponse()`
 
 ### Other Changes
 * `BearerTokenPolicy` is more resilient to transient authentication failures

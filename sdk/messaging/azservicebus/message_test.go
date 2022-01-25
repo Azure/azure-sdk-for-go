@@ -4,7 +4,6 @@
 package azservicebus
 
 import (
-	"context"
 	"testing"
 	"time"
 
@@ -52,7 +51,7 @@ func TestMessageUnitTest(t *testing.T) {
 func TestAMQPMessageToReceivedMessage(t *testing.T) {
 	t.Run("empty_message", func(t *testing.T) {
 		// nothing should blow up.
-		rm := newReceivedMessage(context.Background(), &amqp.Message{})
+		rm := newReceivedMessage(&amqp.Message{})
 		require.NotNil(t, rm)
 	})
 
@@ -72,7 +71,7 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 			},
 		}
 
-		receivedMessage := newReceivedMessage(context.Background(), amqpMessage)
+		receivedMessage := newReceivedMessage(amqpMessage)
 
 		require.EqualValues(t, lockedUntil, *receivedMessage.LockedUntil)
 		require.EqualValues(t, int64(101), *receivedMessage.SequenceNumber)
@@ -132,7 +131,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 		Data: [][]byte{[]byte("foo")},
 	}
 
-	msg := newReceivedMessage(context.Background(), amqpMsg)
+	msg := newReceivedMessage(amqpMsg)
 
 	require.EqualValues(t, msg.MessageID, amqpMsg.Properties.MessageID, "messageID")
 	require.EqualValues(t, msg.SessionID, amqpMsg.Properties.GroupID, "groupID")

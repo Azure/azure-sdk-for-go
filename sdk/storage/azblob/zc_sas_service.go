@@ -48,7 +48,7 @@ func getDirectoryDepth(path string) string {
 func (v BlobSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	resource := "c"
 	if sharedKeyCredential == nil {
-		return SASQueryParameters{}, fmt.Errorf("cannot sign SAS query without StorageAccountCredential")
+		return SASQueryParameters{}, fmt.Errorf("cannot sign SAS query without Shared Key Credential")
 	}
 
 	if !v.SnapshotTime.IsZero() {

@@ -19,64 +19,76 @@ type listBlobPerfTest struct {
 	containerName   string
 	blobName        string
 	containerClient azblob.ContainerClient
-	blobClient      azblob.BlockBlobClient
 }
 
 func (m *listBlobPerfTest) GlobalSetup(ctx context.Context) error {
-	m.blobName = "listTest"
-	m.containerName = "listtest"
-
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
-		return fmt.Errorf("the environment variable 'AZBLOB_CONNECTION_STRING' could not be found")
+		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	m.containerClient = containerClient
-	_, err = m.containerClient.Create(context.Background(), nil)
+	_, err = containerClient.Create(context.Background(), nil)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	m.blobClient = m.containerClient.NewBlockBlobClient(m.blobName)
+	// blobClient := containerClient.NewBlockBlobClient(m.blobName)
 
-	for i := 0; i < count; i++ {
-		_, err = m.blobClient.Upload(
+	for i := 0; i < 100; i++ {
+		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", m.blobName, i))
+		_, err = blobClient.Upload(
 			context.Background(),
-			NopCloser(bytes.NewReader([]byte(fmt.Sprintf("listTest%d", i)))),
+			NopCloser(bytes.NewReader([]byte(""))),
 			nil,
 		)
 		if err != nil {
-			panic(err)
+			return err
 		}
 	}
 
 	return nil
 }
 
-func (m *listBlobPerfTest) GlobalCleanup(ctx context.Context) error {
-	_, err := m.containerClient.Delete(context.Background(), nil)
-	return err
-}
-
 func (m *listBlobPerfTest) Setup(ctx context.Context) error {
-	return nil
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
+	m.containerClient = containerClient
+	return err
 }
 
 func (m *listBlobPerfTest) Run(ctx context.Context) error {
 	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobFlatSegmentOptions{Maxresults: to.Int32Ptr(int32(count))})
 	for pager.NextPage(context.Background()) {
-		for _ = range pager.PageResponse().ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-		}
 	}
 	return pager.Err()
 }
 
 func (m *listBlobPerfTest) Cleanup(ctx context.Context) error {
 	return nil
+}
+
+func (m *listBlobPerfTest) GlobalCleanup(ctx context.Context) error {
+
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.containerName, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = containerClient.Delete(context.Background(), nil)
+	return err
 }
 
 func (m *listBlobPerfTest) GetMetadata() perf.PerfTestOptions {
@@ -88,7 +100,10 @@ func NewListTest(options *perf.PerfTestOptions) perf.PerfTest {
 		options = &perf.PerfTestOptions{}
 	}
 	options.Name = "BlobListTest"
+	count = 100
 	return &listBlobPerfTest{
 		PerfTestOptions: *options,
+		blobName:        "listTest",
+		containerName:   "listtest",
 	}
 }

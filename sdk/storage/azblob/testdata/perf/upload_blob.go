@@ -16,43 +16,40 @@ import (
 type uploadPerfTest struct {
 	perf.PerfTestOptions
 	blobName        string
-	containerClient azblob.ContainerClient
 	blobClient      azblob.BlockBlobClient
 	data            string
 }
 
 func (m *uploadPerfTest) GlobalSetup(ctx context.Context) error {
-	fmt.Println("Running GlobalSetup")
-	m.blobName = "uploadtest"
-
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, "uploadtest", nil)
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.Name, nil)
 	if err != nil {
 		return err
 	}
-	m.containerClient = containerClient
-	_, err = m.containerClient.Create(context.Background(), nil)
+	_, err = containerClient.Create(context.Background(), nil)
 	if err != nil {
 		return err
 	}
-
-	m.blobClient = m.containerClient.NewBlockBlobClient(m.blobName)
-
-	m.data = "This is all placeholder random data for now. This is all placeholder random data for now. This is all placeholder random data for now."
 
 	return nil
 }
 
-func (m *uploadPerfTest) GlobalCleanup(ctx context.Context) error {
-	_, err := m.containerClient.Delete(context.Background(), nil)
-	return err
-}
-
 func (m *uploadPerfTest) Setup(ctx context.Context) error {
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.Name, nil)
+	if err != nil {
+		return err
+	}
+
+	m.blobClient = containerClient.NewBlockBlobClient(m.blobName)
 	return nil
 }
 
@@ -65,6 +62,21 @@ func (m *uploadPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
+func (m *uploadPerfTest) GlobalCleanup(ctx context.Context) error {
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, m.Name, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = containerClient.Delete(context.Background(), nil)
+	return err
+}
+
 func (m *uploadPerfTest) GetMetadata() perf.PerfTestOptions {
 	return m.PerfTestOptions
 }
@@ -74,7 +86,10 @@ func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
 		options = &perf.PerfTestOptions{}
 	}
 	options.Name = "BlobUploadTest"
+
 	return &uploadPerfTest{
 		PerfTestOptions: *options,
+		blobName:        "uploadtest",
+		data:            "This is all placeholder random data for now. This is all placeholder random data for now. This is all placeholder random data for now.",
 	}
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
@@ -76,6 +77,10 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 	if err != nil {
 		error := fmt.Errorf("%s%s", err.Error(), usernamePasswordCredentialTroubleshootMessage)
 		addGetTokenFailureLogs("Username Password Credential", error, true)
+		var e msal.CallErr
+		if errors.As(err, &e) {
+			return nil, newAuthenticationFailedError(error, e.Resp)
+		}
 		return nil, newAuthenticationFailedError(error, nil)
 	}
 	c.account = ar.Account

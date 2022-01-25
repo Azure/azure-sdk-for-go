@@ -36,8 +36,6 @@ func (m *listBlobPerfTest) GlobalSetup(ctx context.Context) error {
 		return err
 	}
 
-	// blobClient := containerClient.NewBlockBlobClient(m.blobName)
-
 	for i := 0; i < 100; i++ {
 		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", m.blobName, i))
 		_, err = blobClient.Upload(
@@ -65,7 +63,7 @@ func (m *listBlobPerfTest) Setup(ctx context.Context) error {
 }
 
 func (m *listBlobPerfTest) Run(ctx context.Context) error {
-	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobFlatSegmentOptions{Maxresults: to.Int32Ptr(int32(count))})
+	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobFlatSegmentOptions{Maxresults: to.Int32Ptr(int32(*count))})
 	for pager.NextPage(context.Background()) {
 	}
 	return pager.Err()
@@ -95,12 +93,15 @@ func (m *listBlobPerfTest) GetMetadata() perf.PerfTestOptions {
 	return m.PerfTestOptions
 }
 
+func (l *listBlobPerfTest) RegisterArguments() error {
+	return nil
+}
+
 func NewListTest(options *perf.PerfTestOptions) perf.PerfTest {
 	if options == nil {
 		options = &perf.PerfTestOptions{}
 	}
 	options.Name = "BlobListTest"
-	count = 100
 	return &listBlobPerfTest{
 		PerfTestOptions: *options,
 		blobName:        "listTest",

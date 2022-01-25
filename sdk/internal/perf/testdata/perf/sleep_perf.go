@@ -35,6 +35,11 @@ func (s *sleepPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
+
+func (s *sleepPerfTest) RegisterArguments(ctx context.Context) error {
+	return nil
+}
+
 func (s *sleepPerfTest) GetMetadata() perf.PerfTestOptions {
 	return s.PerfTestOptions
 }

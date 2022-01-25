@@ -96,6 +96,10 @@ func (d *downloadPerfTest) GetMetadata() perf.PerfTestOptions {
 	return d.PerfTestOptions
 }
 
+func (*downloadPerfTest) RegisterArguments() error {
+	return nil
+}
+
 func NewDownloadTest(options *perf.PerfTestOptions) perf.PerfTest {
 	if options == nil {
 		options = &perf.PerfTestOptions{}

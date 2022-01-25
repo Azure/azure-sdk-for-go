@@ -28,6 +28,8 @@ type PerfTest interface {
 	// TODO: Add local flags to the GetMetadata
 	GetMetadata() PerfTestOptions
 
+	RegisterArguments() error
+
 	GlobalSetup(context.Context) error
 
 	Setup(context.Context) error
@@ -283,6 +285,13 @@ func Run(perfTests []NewPerfTest) {
 	pflag.CommandLine.MarkHidden("debug")
 
 	// TODO: add individual performance tests local flags
+	for _, perfTest := range perfTests {
+		p := perfTest(nil)
+		err := p.RegisterArguments()
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	pflag.Parse()
 

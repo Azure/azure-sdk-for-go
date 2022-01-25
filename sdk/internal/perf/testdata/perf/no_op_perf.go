@@ -30,6 +30,10 @@ func (n *noOpPerfTest) Cleanup(ctx context.Context) error {
 	return nil
 }
 
+func (n *noOpPerfTest) RegisterArguments(ctx context.Context) error {
+	return nil
+}
+
 func (n *noOpPerfTest) GetMetadata() perf.PerfTestOptions {
 	return n.PerfTestOptions
 }

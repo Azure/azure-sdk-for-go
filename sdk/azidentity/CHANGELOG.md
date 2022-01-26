@@ -3,6 +3,7 @@
 ## 0.13.1 (Unreleased)
 
 ### Features Added
+* Force pipelines
 
 ### Breaking Changes
 

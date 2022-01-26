@@ -3,6 +3,7 @@
 ## 0.5.0 (Unreleased)
 
 ### Features Added
+* Force pipelines
 
 ### Breaking Changes
 * Fixes a bug where `UpdateSecretProperties` will delete properties that are not explicitly set each time. This is only a breaking change at runtime, where the request body will change.

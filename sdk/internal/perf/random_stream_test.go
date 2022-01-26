@@ -4,6 +4,7 @@
 package perf
 
 import (
+	"bytes"
 	"io"
 	"testing"
 
@@ -22,8 +23,7 @@ func TestRandomStream(t *testing.T) {
 	baseData, err := getRandomBytes(1024)
 	require.NoError(t, err)
 	r := &randomStream{
-		offset:   0,
-		baseData: baseData,
+		reader: bytes.NewReader(baseData),
 	}
 	require.NoError(t, err)
 
@@ -39,10 +39,21 @@ func TestRandomStream(t *testing.T) {
 
 	c := make([]byte, 500)
 	n, err = r.Read(c)
-	require.Equal(t, io.EOF, err)
+	require.NoError(t, err)
 	require.Equal(t, 24, n)
 
 	require.NotEqual(t, a, b)
 	require.NotEqual(t, a, c)
 	require.NotEqual(t, c, b)
+	require.NoError(t, r.Close())
+
+	pos, err := r.Seek(0, io.SeekStart)
+	require.NoError(t, err)
+	require.Equal(t, int64(0), pos)
+
+	a1 := make([]byte, 500)
+	n, err = r.Read(a1)
+	require.NoError(t, err)
+	require.Equal(t, 500, n)
+	require.Equal(t, a, a1)
 }

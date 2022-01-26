@@ -15,5 +15,5 @@ func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
 	return nopCloser{rs}
 }
 
-var size *int
-var count *int
+var size *int64
+var count *int64

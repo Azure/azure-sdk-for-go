@@ -4,9 +4,12 @@
 package perf
 
 import (
+	"bytes"
 	"crypto/rand"
-	"errors"
+	"fmt"
 	"io"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 const (
@@ -14,39 +17,18 @@ const (
 )
 
 type randomStream struct {
-	offset   int
-	baseData []byte
+	reader    *bytes.Reader
+	remaining int
 }
 
 func (r *randomStream) Read(p []byte) (n int, err error) {
-	if len(p) < len(r.baseData)-r.offset {
-		n = copy(p, r.baseData[r.offset:r.offset+len(p)])
-		r.offset += n
-		return n, nil
-	}
-
-	n = copy(p, r.baseData[r.offset:])
-	r.offset += n
-	return n, io.EOF
+	fmt.Println("read")
+	return r.reader.Read(p)
 }
 
 func (r *randomStream) Seek(offset int64, whence int) (int64, error) {
-	var i int64
-	switch whence {
-	case io.SeekStart:
-		i = offset
-	case io.SeekCurrent:
-		i = int64(r.offset) + offset
-	case io.SeekEnd:
-		i = int64(len(r.baseData)) + offset
-	default:
-		return 0, errors.New("randomStreamSeek: invalid whence")
-	}
-	if i < 0 {
-		return 0, errors.New("randomStreamSeek: negative position")
-	}
-	r.offset = int(i)
-	return i, nil
+	fmt.Println("seek")
+	return r.reader.Seek(offset, whence)
 }
 
 func (r randomStream) Close() error {
@@ -67,8 +49,6 @@ func NewRandomStream(size int) (io.ReadSeekCloser, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &randomStream{
-		offset:   0,
-		baseData: baseData,
-	}, nil
+	reader := bytes.NewReader(baseData)
+	return streaming.NopCloser(reader), nil
 }

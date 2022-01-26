@@ -1,5 +1,24 @@
 # Release History
 
+## 0.3.0 (2022-01-20)
+### Breaking Changes
+
+- Type of `QueryResponse.Data` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `FacetResult.Data` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ErrorDetails.AdditionalProperties` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Function `Error.MarshalJSON` has been removed
+- Function `Table.MarshalJSON` has been removed
+- Struct `Column` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Table` has been removed
+- Field `Object` of struct `ClientResourcesHistoryResult` has been removed
+
+### Features Added
+
+- New field `Interface` in struct `ClientResourcesHistoryResult`
+
+
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

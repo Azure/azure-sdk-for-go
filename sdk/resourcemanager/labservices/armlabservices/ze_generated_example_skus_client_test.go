@@ -24,10 +24,17 @@ func ExampleSKUsClient_List() {
 	}
 	ctx := context.Background()
 	client := armlabservices.NewSKUsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armlabservices.SKUsListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armlabservices.SKUsClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

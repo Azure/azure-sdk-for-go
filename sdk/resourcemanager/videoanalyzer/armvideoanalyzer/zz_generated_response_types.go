@@ -15,130 +15,130 @@ import (
 	"time"
 )
 
-// AccessPoliciesCreateOrUpdateResponse contains the response from method AccessPolicies.CreateOrUpdate.
-type AccessPoliciesCreateOrUpdateResponse struct {
-	AccessPoliciesCreateOrUpdateResult
+// AccessPoliciesClientCreateOrUpdateResponse contains the response from method AccessPoliciesClient.CreateOrUpdate.
+type AccessPoliciesClientCreateOrUpdateResponse struct {
+	AccessPoliciesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccessPoliciesCreateOrUpdateResult contains the result from method AccessPolicies.CreateOrUpdate.
-type AccessPoliciesCreateOrUpdateResult struct {
+// AccessPoliciesClientCreateOrUpdateResult contains the result from method AccessPoliciesClient.CreateOrUpdate.
+type AccessPoliciesClientCreateOrUpdateResult struct {
 	AccessPolicyEntity
 }
 
-// AccessPoliciesDeleteResponse contains the response from method AccessPolicies.Delete.
-type AccessPoliciesDeleteResponse struct {
+// AccessPoliciesClientDeleteResponse contains the response from method AccessPoliciesClient.Delete.
+type AccessPoliciesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccessPoliciesGetResponse contains the response from method AccessPolicies.Get.
-type AccessPoliciesGetResponse struct {
-	AccessPoliciesGetResult
+// AccessPoliciesClientGetResponse contains the response from method AccessPoliciesClient.Get.
+type AccessPoliciesClientGetResponse struct {
+	AccessPoliciesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccessPoliciesGetResult contains the result from method AccessPolicies.Get.
-type AccessPoliciesGetResult struct {
+// AccessPoliciesClientGetResult contains the result from method AccessPoliciesClient.Get.
+type AccessPoliciesClientGetResult struct {
 	AccessPolicyEntity
 }
 
-// AccessPoliciesListResponse contains the response from method AccessPolicies.List.
-type AccessPoliciesListResponse struct {
-	AccessPoliciesListResult
+// AccessPoliciesClientListResponse contains the response from method AccessPoliciesClient.List.
+type AccessPoliciesClientListResponse struct {
+	AccessPoliciesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccessPoliciesListResult contains the result from method AccessPolicies.List.
-type AccessPoliciesListResult struct {
+// AccessPoliciesClientListResult contains the result from method AccessPoliciesClient.List.
+type AccessPoliciesClientListResult struct {
 	AccessPolicyEntityCollection
 }
 
-// AccessPoliciesUpdateResponse contains the response from method AccessPolicies.Update.
-type AccessPoliciesUpdateResponse struct {
-	AccessPoliciesUpdateResult
+// AccessPoliciesClientUpdateResponse contains the response from method AccessPoliciesClient.Update.
+type AccessPoliciesClientUpdateResponse struct {
+	AccessPoliciesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccessPoliciesUpdateResult contains the result from method AccessPolicies.Update.
-type AccessPoliciesUpdateResult struct {
+// AccessPoliciesClientUpdateResult contains the result from method AccessPoliciesClient.Update.
+type AccessPoliciesClientUpdateResult struct {
 	AccessPolicyEntity
 }
 
-// EdgeModulesCreateOrUpdateResponse contains the response from method EdgeModules.CreateOrUpdate.
-type EdgeModulesCreateOrUpdateResponse struct {
-	EdgeModulesCreateOrUpdateResult
+// EdgeModulesClientCreateOrUpdateResponse contains the response from method EdgeModulesClient.CreateOrUpdate.
+type EdgeModulesClientCreateOrUpdateResponse struct {
+	EdgeModulesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeModulesCreateOrUpdateResult contains the result from method EdgeModules.CreateOrUpdate.
-type EdgeModulesCreateOrUpdateResult struct {
+// EdgeModulesClientCreateOrUpdateResult contains the result from method EdgeModulesClient.CreateOrUpdate.
+type EdgeModulesClientCreateOrUpdateResult struct {
 	EdgeModuleEntity
 }
 
-// EdgeModulesDeleteResponse contains the response from method EdgeModules.Delete.
-type EdgeModulesDeleteResponse struct {
+// EdgeModulesClientDeleteResponse contains the response from method EdgeModulesClient.Delete.
+type EdgeModulesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeModulesGetResponse contains the response from method EdgeModules.Get.
-type EdgeModulesGetResponse struct {
-	EdgeModulesGetResult
+// EdgeModulesClientGetResponse contains the response from method EdgeModulesClient.Get.
+type EdgeModulesClientGetResponse struct {
+	EdgeModulesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeModulesGetResult contains the result from method EdgeModules.Get.
-type EdgeModulesGetResult struct {
+// EdgeModulesClientGetResult contains the result from method EdgeModulesClient.Get.
+type EdgeModulesClientGetResult struct {
 	EdgeModuleEntity
 }
 
-// EdgeModulesListProvisioningTokenResponse contains the response from method EdgeModules.ListProvisioningToken.
-type EdgeModulesListProvisioningTokenResponse struct {
-	EdgeModulesListProvisioningTokenResult
+// EdgeModulesClientListProvisioningTokenResponse contains the response from method EdgeModulesClient.ListProvisioningToken.
+type EdgeModulesClientListProvisioningTokenResponse struct {
+	EdgeModulesClientListProvisioningTokenResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeModulesListProvisioningTokenResult contains the result from method EdgeModules.ListProvisioningToken.
-type EdgeModulesListProvisioningTokenResult struct {
+// EdgeModulesClientListProvisioningTokenResult contains the result from method EdgeModulesClient.ListProvisioningToken.
+type EdgeModulesClientListProvisioningTokenResult struct {
 	EdgeModuleProvisioningToken
 }
 
-// EdgeModulesListResponse contains the response from method EdgeModules.List.
-type EdgeModulesListResponse struct {
-	EdgeModulesListResult
+// EdgeModulesClientListResponse contains the response from method EdgeModulesClient.List.
+type EdgeModulesClientListResponse struct {
+	EdgeModulesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeModulesListResult contains the result from method EdgeModules.List.
-type EdgeModulesListResult struct {
+// EdgeModulesClientListResult contains the result from method EdgeModulesClient.List.
+type EdgeModulesClientListResult struct {
 	EdgeModuleEntityCollection
 }
 
-// LivePipelineOperationStatusesGetResponse contains the response from method LivePipelineOperationStatuses.Get.
-type LivePipelineOperationStatusesGetResponse struct {
-	LivePipelineOperationStatusesGetResult
+// LivePipelineOperationStatusesClientGetResponse contains the response from method LivePipelineOperationStatusesClient.Get.
+type LivePipelineOperationStatusesClientGetResponse struct {
+	LivePipelineOperationStatusesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LivePipelineOperationStatusesGetResult contains the result from method LivePipelineOperationStatuses.Get.
-type LivePipelineOperationStatusesGetResult struct {
+// LivePipelineOperationStatusesClientGetResult contains the result from method LivePipelineOperationStatusesClient.Get.
+type LivePipelineOperationStatusesClientGetResult struct {
 	LivePipelineOperationStatus
 }
 
-// LivePipelinesActivatePollerResponse contains the response from method LivePipelines.Activate.
-type LivePipelinesActivatePollerResponse struct {
+// LivePipelinesClientActivatePollerResponse contains the response from method LivePipelinesClient.Activate.
+type LivePipelinesClientActivatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *LivePipelinesActivatePoller
+	Poller *LivePipelinesClientActivatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -147,8 +147,8 @@ type LivePipelinesActivatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l LivePipelinesActivatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LivePipelinesActivateResponse, error) {
-	respType := LivePipelinesActivateResponse{}
+func (l LivePipelinesClientActivatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LivePipelinesClientActivateResponse, error) {
+	respType := LivePipelinesClientActivateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -157,13 +157,13 @@ func (l LivePipelinesActivatePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a LivePipelinesActivatePollerResponse from the provided client and resume token.
-func (l *LivePipelinesActivatePollerResponse) Resume(ctx context.Context, client *LivePipelinesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("LivePipelinesClient.Activate", token, client.pl, client.activateHandleError)
+// Resume rehydrates a LivePipelinesClientActivatePollerResponse from the provided client and resume token.
+func (l *LivePipelinesClientActivatePollerResponse) Resume(ctx context.Context, client *LivePipelinesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LivePipelinesClient.Activate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &LivePipelinesActivatePoller{
+	poller := &LivePipelinesClientActivatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -175,28 +175,28 @@ func (l *LivePipelinesActivatePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// LivePipelinesActivateResponse contains the response from method LivePipelines.Activate.
-type LivePipelinesActivateResponse struct {
+// LivePipelinesClientActivateResponse contains the response from method LivePipelinesClient.Activate.
+type LivePipelinesClientActivateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LivePipelinesCreateOrUpdateResponse contains the response from method LivePipelines.CreateOrUpdate.
-type LivePipelinesCreateOrUpdateResponse struct {
-	LivePipelinesCreateOrUpdateResult
+// LivePipelinesClientCreateOrUpdateResponse contains the response from method LivePipelinesClient.CreateOrUpdate.
+type LivePipelinesClientCreateOrUpdateResponse struct {
+	LivePipelinesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LivePipelinesCreateOrUpdateResult contains the result from method LivePipelines.CreateOrUpdate.
-type LivePipelinesCreateOrUpdateResult struct {
+// LivePipelinesClientCreateOrUpdateResult contains the result from method LivePipelinesClient.CreateOrUpdate.
+type LivePipelinesClientCreateOrUpdateResult struct {
 	LivePipeline
 }
 
-// LivePipelinesDeactivatePollerResponse contains the response from method LivePipelines.Deactivate.
-type LivePipelinesDeactivatePollerResponse struct {
+// LivePipelinesClientDeactivatePollerResponse contains the response from method LivePipelinesClient.Deactivate.
+type LivePipelinesClientDeactivatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *LivePipelinesDeactivatePoller
+	Poller *LivePipelinesClientDeactivatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -205,8 +205,8 @@ type LivePipelinesDeactivatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l LivePipelinesDeactivatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LivePipelinesDeactivateResponse, error) {
-	respType := LivePipelinesDeactivateResponse{}
+func (l LivePipelinesClientDeactivatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LivePipelinesClientDeactivateResponse, error) {
+	respType := LivePipelinesClientDeactivateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -215,13 +215,13 @@ func (l LivePipelinesDeactivatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a LivePipelinesDeactivatePollerResponse from the provided client and resume token.
-func (l *LivePipelinesDeactivatePollerResponse) Resume(ctx context.Context, client *LivePipelinesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("LivePipelinesClient.Deactivate", token, client.pl, client.deactivateHandleError)
+// Resume rehydrates a LivePipelinesClientDeactivatePollerResponse from the provided client and resume token.
+func (l *LivePipelinesClientDeactivatePollerResponse) Resume(ctx context.Context, client *LivePipelinesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LivePipelinesClient.Deactivate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &LivePipelinesDeactivatePoller{
+	poller := &LivePipelinesClientDeactivatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -233,118 +233,118 @@ func (l *LivePipelinesDeactivatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// LivePipelinesDeactivateResponse contains the response from method LivePipelines.Deactivate.
-type LivePipelinesDeactivateResponse struct {
+// LivePipelinesClientDeactivateResponse contains the response from method LivePipelinesClient.Deactivate.
+type LivePipelinesClientDeactivateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LivePipelinesDeleteResponse contains the response from method LivePipelines.Delete.
-type LivePipelinesDeleteResponse struct {
+// LivePipelinesClientDeleteResponse contains the response from method LivePipelinesClient.Delete.
+type LivePipelinesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LivePipelinesGetResponse contains the response from method LivePipelines.Get.
-type LivePipelinesGetResponse struct {
-	LivePipelinesGetResult
+// LivePipelinesClientGetResponse contains the response from method LivePipelinesClient.Get.
+type LivePipelinesClientGetResponse struct {
+	LivePipelinesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LivePipelinesGetResult contains the result from method LivePipelines.Get.
-type LivePipelinesGetResult struct {
+// LivePipelinesClientGetResult contains the result from method LivePipelinesClient.Get.
+type LivePipelinesClientGetResult struct {
 	LivePipeline
 }
 
-// LivePipelinesListResponse contains the response from method LivePipelines.List.
-type LivePipelinesListResponse struct {
-	LivePipelinesListResult
+// LivePipelinesClientListResponse contains the response from method LivePipelinesClient.List.
+type LivePipelinesClientListResponse struct {
+	LivePipelinesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LivePipelinesListResult contains the result from method LivePipelines.List.
-type LivePipelinesListResult struct {
+// LivePipelinesClientListResult contains the result from method LivePipelinesClient.List.
+type LivePipelinesClientListResult struct {
 	LivePipelineCollection
 }
 
-// LivePipelinesUpdateResponse contains the response from method LivePipelines.Update.
-type LivePipelinesUpdateResponse struct {
-	LivePipelinesUpdateResult
+// LivePipelinesClientUpdateResponse contains the response from method LivePipelinesClient.Update.
+type LivePipelinesClientUpdateResponse struct {
+	LivePipelinesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LivePipelinesUpdateResult contains the result from method LivePipelines.Update.
-type LivePipelinesUpdateResult struct {
+// LivePipelinesClientUpdateResult contains the result from method LivePipelinesClient.Update.
+type LivePipelinesClientUpdateResult struct {
 	LivePipeline
 }
 
-// LocationsCheckNameAvailabilityResponse contains the response from method Locations.CheckNameAvailability.
-type LocationsCheckNameAvailabilityResponse struct {
-	LocationsCheckNameAvailabilityResult
+// LocationsClientCheckNameAvailabilityResponse contains the response from method LocationsClient.CheckNameAvailability.
+type LocationsClientCheckNameAvailabilityResponse struct {
+	LocationsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsCheckNameAvailabilityResult contains the result from method Locations.CheckNameAvailability.
-type LocationsCheckNameAvailabilityResult struct {
+// LocationsClientCheckNameAvailabilityResult contains the result from method LocationsClient.CheckNameAvailability.
+type LocationsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResponse
 }
 
-// OperationResultsGetResponse contains the response from method OperationResults.Get.
-type OperationResultsGetResponse struct {
-	OperationResultsGetResult
+// OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
+type OperationResultsClientGetResponse struct {
+	OperationResultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationResultsGetResult contains the result from method OperationResults.Get.
-type OperationResultsGetResult struct {
-	PrivateEndpointConnection
+// OperationResultsClientGetResult contains the result from method OperationResultsClient.Get.
+type OperationResultsClientGetResult struct {
+	VideoAnalyzer
 }
 
-// OperationStatusesGetResponse contains the response from method OperationStatuses.Get.
-type OperationStatusesGetResponse struct {
-	OperationStatusesGetResult
+// OperationStatusesClientGetResponse contains the response from method OperationStatusesClient.Get.
+type OperationStatusesClientGetResponse struct {
+	OperationStatusesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationStatusesGetResult contains the result from method OperationStatuses.Get.
-type OperationStatusesGetResult struct {
-	VideoAnalyzerPrivateEndpointConnectionOperationStatus
+// OperationStatusesClientGetResult contains the result from method OperationStatusesClient.Get.
+type OperationStatusesClientGetResult struct {
+	OperationStatus
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationCollection
 }
 
-// PipelineJobOperationStatusesGetResponse contains the response from method PipelineJobOperationStatuses.Get.
-type PipelineJobOperationStatusesGetResponse struct {
-	PipelineJobOperationStatusesGetResult
+// PipelineJobOperationStatusesClientGetResponse contains the response from method PipelineJobOperationStatusesClient.Get.
+type PipelineJobOperationStatusesClientGetResponse struct {
+	PipelineJobOperationStatusesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineJobOperationStatusesGetResult contains the result from method PipelineJobOperationStatuses.Get.
-type PipelineJobOperationStatusesGetResult struct {
+// PipelineJobOperationStatusesClientGetResult contains the result from method PipelineJobOperationStatusesClient.Get.
+type PipelineJobOperationStatusesClientGetResult struct {
 	PipelineJobOperationStatus
 }
 
-// PipelineJobsCancelPollerResponse contains the response from method PipelineJobs.Cancel.
-type PipelineJobsCancelPollerResponse struct {
+// PipelineJobsClientCancelPollerResponse contains the response from method PipelineJobsClient.Cancel.
+type PipelineJobsClientCancelPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PipelineJobsCancelPoller
+	Poller *PipelineJobsClientCancelPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -353,8 +353,8 @@ type PipelineJobsCancelPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PipelineJobsCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PipelineJobsCancelResponse, error) {
-	respType := PipelineJobsCancelResponse{}
+func (l PipelineJobsClientCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PipelineJobsClientCancelResponse, error) {
+	respType := PipelineJobsClientCancelResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -363,13 +363,13 @@ func (l PipelineJobsCancelPollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a PipelineJobsCancelPollerResponse from the provided client and resume token.
-func (l *PipelineJobsCancelPollerResponse) Resume(ctx context.Context, client *PipelineJobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PipelineJobsClient.Cancel", token, client.pl, client.cancelHandleError)
+// Resume rehydrates a PipelineJobsClientCancelPollerResponse from the provided client and resume token.
+func (l *PipelineJobsClientCancelPollerResponse) Resume(ctx context.Context, client *PipelineJobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PipelineJobsClient.Cancel", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PipelineJobsCancelPoller{
+	poller := &PipelineJobsClientCancelPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -381,129 +381,129 @@ func (l *PipelineJobsCancelPollerResponse) Resume(ctx context.Context, client *P
 	return nil
 }
 
-// PipelineJobsCancelResponse contains the response from method PipelineJobs.Cancel.
-type PipelineJobsCancelResponse struct {
+// PipelineJobsClientCancelResponse contains the response from method PipelineJobsClient.Cancel.
+type PipelineJobsClientCancelResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineJobsCreateOrUpdateResponse contains the response from method PipelineJobs.CreateOrUpdate.
-type PipelineJobsCreateOrUpdateResponse struct {
-	PipelineJobsCreateOrUpdateResult
+// PipelineJobsClientCreateOrUpdateResponse contains the response from method PipelineJobsClient.CreateOrUpdate.
+type PipelineJobsClientCreateOrUpdateResponse struct {
+	PipelineJobsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineJobsCreateOrUpdateResult contains the result from method PipelineJobs.CreateOrUpdate.
-type PipelineJobsCreateOrUpdateResult struct {
+// PipelineJobsClientCreateOrUpdateResult contains the result from method PipelineJobsClient.CreateOrUpdate.
+type PipelineJobsClientCreateOrUpdateResult struct {
 	PipelineJob
 }
 
-// PipelineJobsDeleteResponse contains the response from method PipelineJobs.Delete.
-type PipelineJobsDeleteResponse struct {
+// PipelineJobsClientDeleteResponse contains the response from method PipelineJobsClient.Delete.
+type PipelineJobsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineJobsGetResponse contains the response from method PipelineJobs.Get.
-type PipelineJobsGetResponse struct {
-	PipelineJobsGetResult
+// PipelineJobsClientGetResponse contains the response from method PipelineJobsClient.Get.
+type PipelineJobsClientGetResponse struct {
+	PipelineJobsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineJobsGetResult contains the result from method PipelineJobs.Get.
-type PipelineJobsGetResult struct {
+// PipelineJobsClientGetResult contains the result from method PipelineJobsClient.Get.
+type PipelineJobsClientGetResult struct {
 	PipelineJob
 }
 
-// PipelineJobsListResponse contains the response from method PipelineJobs.List.
-type PipelineJobsListResponse struct {
-	PipelineJobsListResult
+// PipelineJobsClientListResponse contains the response from method PipelineJobsClient.List.
+type PipelineJobsClientListResponse struct {
+	PipelineJobsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineJobsListResult contains the result from method PipelineJobs.List.
-type PipelineJobsListResult struct {
+// PipelineJobsClientListResult contains the result from method PipelineJobsClient.List.
+type PipelineJobsClientListResult struct {
 	PipelineJobCollection
 }
 
-// PipelineJobsUpdateResponse contains the response from method PipelineJobs.Update.
-type PipelineJobsUpdateResponse struct {
-	PipelineJobsUpdateResult
+// PipelineJobsClientUpdateResponse contains the response from method PipelineJobsClient.Update.
+type PipelineJobsClientUpdateResponse struct {
+	PipelineJobsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineJobsUpdateResult contains the result from method PipelineJobs.Update.
-type PipelineJobsUpdateResult struct {
+// PipelineJobsClientUpdateResult contains the result from method PipelineJobsClient.Update.
+type PipelineJobsClientUpdateResult struct {
 	PipelineJob
 }
 
-// PipelineTopologiesCreateOrUpdateResponse contains the response from method PipelineTopologies.CreateOrUpdate.
-type PipelineTopologiesCreateOrUpdateResponse struct {
-	PipelineTopologiesCreateOrUpdateResult
+// PipelineTopologiesClientCreateOrUpdateResponse contains the response from method PipelineTopologiesClient.CreateOrUpdate.
+type PipelineTopologiesClientCreateOrUpdateResponse struct {
+	PipelineTopologiesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineTopologiesCreateOrUpdateResult contains the result from method PipelineTopologies.CreateOrUpdate.
-type PipelineTopologiesCreateOrUpdateResult struct {
+// PipelineTopologiesClientCreateOrUpdateResult contains the result from method PipelineTopologiesClient.CreateOrUpdate.
+type PipelineTopologiesClientCreateOrUpdateResult struct {
 	PipelineTopology
 }
 
-// PipelineTopologiesDeleteResponse contains the response from method PipelineTopologies.Delete.
-type PipelineTopologiesDeleteResponse struct {
+// PipelineTopologiesClientDeleteResponse contains the response from method PipelineTopologiesClient.Delete.
+type PipelineTopologiesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineTopologiesGetResponse contains the response from method PipelineTopologies.Get.
-type PipelineTopologiesGetResponse struct {
-	PipelineTopologiesGetResult
+// PipelineTopologiesClientGetResponse contains the response from method PipelineTopologiesClient.Get.
+type PipelineTopologiesClientGetResponse struct {
+	PipelineTopologiesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineTopologiesGetResult contains the result from method PipelineTopologies.Get.
-type PipelineTopologiesGetResult struct {
+// PipelineTopologiesClientGetResult contains the result from method PipelineTopologiesClient.Get.
+type PipelineTopologiesClientGetResult struct {
 	PipelineTopology
 }
 
-// PipelineTopologiesListResponse contains the response from method PipelineTopologies.List.
-type PipelineTopologiesListResponse struct {
-	PipelineTopologiesListResult
+// PipelineTopologiesClientListResponse contains the response from method PipelineTopologiesClient.List.
+type PipelineTopologiesClientListResponse struct {
+	PipelineTopologiesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineTopologiesListResult contains the result from method PipelineTopologies.List.
-type PipelineTopologiesListResult struct {
+// PipelineTopologiesClientListResult contains the result from method PipelineTopologiesClient.List.
+type PipelineTopologiesClientListResult struct {
 	PipelineTopologyCollection
 }
 
-// PipelineTopologiesUpdateResponse contains the response from method PipelineTopologies.Update.
-type PipelineTopologiesUpdateResponse struct {
-	PipelineTopologiesUpdateResult
+// PipelineTopologiesClientUpdateResponse contains the response from method PipelineTopologiesClient.Update.
+type PipelineTopologiesClientUpdateResponse struct {
+	PipelineTopologiesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineTopologiesUpdateResult contains the result from method PipelineTopologies.Update.
-type PipelineTopologiesUpdateResult struct {
+// PipelineTopologiesClientUpdateResult contains the result from method PipelineTopologiesClient.Update.
+type PipelineTopologiesClientUpdateResult struct {
 	PipelineTopology
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsCreateOrUpdateResult
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateResult contains the result from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
 	AzureAsyncOperation *string
@@ -515,88 +515,88 @@ type PrivateEndpointConnectionsCreateOrUpdateResult struct {
 	RetryAfter *int32
 }
 
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListResponse contains the response from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResponse struct {
-	PrivateEndpointConnectionsListResult
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsListResult contains the result from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResult struct {
+// PrivateEndpointConnectionsClientListResult contains the result from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
+// PrivateEndpointConnectionsOperationResultsClientGetResponse contains the response from method PrivateEndpointConnectionsOperationResultsClient.Get.
+type PrivateEndpointConnectionsOperationResultsClientGetResponse struct {
+	PrivateEndpointConnectionsOperationResultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
+// PrivateEndpointConnectionsOperationResultsClientGetResult contains the result from method PrivateEndpointConnectionsOperationResultsClient.Get.
+type PrivateEndpointConnectionsOperationResultsClientGetResult struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsOperationStatusesClientGetResponse contains the response from method PrivateEndpointConnectionsOperationStatusesClient.Get.
+type PrivateEndpointConnectionsOperationStatusesClientGetResponse struct {
+	PrivateEndpointConnectionsOperationStatusesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsOperationStatusesClientGetResult contains the result from method PrivateEndpointConnectionsOperationStatusesClient.Get.
+type PrivateEndpointConnectionsOperationStatusesClientGetResult struct {
+	PrivateEndpointConnectionOperationStatus
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	PrivateLinkResourcesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateLinkResourcesClientGetResult contains the result from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResult struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesListResponse contains the response from method PrivateLinkResources.List.
-type PrivateLinkResourcesListResponse struct {
-	PrivateLinkResourcesListResult
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResponse struct {
+	PrivateLinkResourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesListResult contains the result from method PrivateLinkResources.List.
-type PrivateLinkResourcesListResult struct {
+// PrivateLinkResourcesClientListResult contains the result from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResult struct {
 	PrivateLinkResourceListResult
 }
 
-// VideoAnalyzerOperationResultsGetResponse contains the response from method VideoAnalyzerOperationResults.Get.
-type VideoAnalyzerOperationResultsGetResponse struct {
-	VideoAnalyzerOperationResultsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// VideoAnalyzerOperationResultsGetResult contains the result from method VideoAnalyzerOperationResults.Get.
-type VideoAnalyzerOperationResultsGetResult struct {
-	VideoAnalyzer
-}
-
-// VideoAnalyzerOperationStatusesGetResponse contains the response from method VideoAnalyzerOperationStatuses.Get.
-type VideoAnalyzerOperationStatusesGetResponse struct {
-	VideoAnalyzerOperationStatusesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// VideoAnalyzerOperationStatusesGetResult contains the result from method VideoAnalyzerOperationStatuses.Get.
-type VideoAnalyzerOperationStatusesGetResult struct {
-	VideoAnalyzerOperationStatus
-}
-
-// VideoAnalyzersCreateOrUpdatePollerResponse contains the response from method VideoAnalyzers.CreateOrUpdate.
-type VideoAnalyzersCreateOrUpdatePollerResponse struct {
+// VideoAnalyzersClientCreateOrUpdatePollerResponse contains the response from method VideoAnalyzersClient.CreateOrUpdate.
+type VideoAnalyzersClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VideoAnalyzersCreateOrUpdatePoller
+	Poller *VideoAnalyzersClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -605,8 +605,8 @@ type VideoAnalyzersCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VideoAnalyzersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VideoAnalyzersCreateOrUpdateResponse, error) {
-	respType := VideoAnalyzersCreateOrUpdateResponse{}
+func (l VideoAnalyzersClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VideoAnalyzersClientCreateOrUpdateResponse, error) {
+	respType := VideoAnalyzersClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VideoAnalyzer)
 	if err != nil {
 		return respType, err
@@ -615,13 +615,13 @@ func (l VideoAnalyzersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a VideoAnalyzersCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *VideoAnalyzersCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VideoAnalyzersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VideoAnalyzersClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a VideoAnalyzersClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *VideoAnalyzersClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VideoAnalyzersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VideoAnalyzersClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VideoAnalyzersCreateOrUpdatePoller{
+	poller := &VideoAnalyzersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -633,64 +633,64 @@ func (l *VideoAnalyzersCreateOrUpdatePollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// VideoAnalyzersCreateOrUpdateResponse contains the response from method VideoAnalyzers.CreateOrUpdate.
-type VideoAnalyzersCreateOrUpdateResponse struct {
-	VideoAnalyzersCreateOrUpdateResult
+// VideoAnalyzersClientCreateOrUpdateResponse contains the response from method VideoAnalyzersClient.CreateOrUpdate.
+type VideoAnalyzersClientCreateOrUpdateResponse struct {
+	VideoAnalyzersClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideoAnalyzersCreateOrUpdateResult contains the result from method VideoAnalyzers.CreateOrUpdate.
-type VideoAnalyzersCreateOrUpdateResult struct {
+// VideoAnalyzersClientCreateOrUpdateResult contains the result from method VideoAnalyzersClient.CreateOrUpdate.
+type VideoAnalyzersClientCreateOrUpdateResult struct {
 	VideoAnalyzer
 }
 
-// VideoAnalyzersDeleteResponse contains the response from method VideoAnalyzers.Delete.
-type VideoAnalyzersDeleteResponse struct {
+// VideoAnalyzersClientDeleteResponse contains the response from method VideoAnalyzersClient.Delete.
+type VideoAnalyzersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideoAnalyzersGetResponse contains the response from method VideoAnalyzers.Get.
-type VideoAnalyzersGetResponse struct {
-	VideoAnalyzersGetResult
+// VideoAnalyzersClientGetResponse contains the response from method VideoAnalyzersClient.Get.
+type VideoAnalyzersClientGetResponse struct {
+	VideoAnalyzersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideoAnalyzersGetResult contains the result from method VideoAnalyzers.Get.
-type VideoAnalyzersGetResult struct {
+// VideoAnalyzersClientGetResult contains the result from method VideoAnalyzersClient.Get.
+type VideoAnalyzersClientGetResult struct {
 	VideoAnalyzer
 }
 
-// VideoAnalyzersListBySubscriptionResponse contains the response from method VideoAnalyzers.ListBySubscription.
-type VideoAnalyzersListBySubscriptionResponse struct {
-	VideoAnalyzersListBySubscriptionResult
+// VideoAnalyzersClientListBySubscriptionResponse contains the response from method VideoAnalyzersClient.ListBySubscription.
+type VideoAnalyzersClientListBySubscriptionResponse struct {
+	VideoAnalyzersClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideoAnalyzersListBySubscriptionResult contains the result from method VideoAnalyzers.ListBySubscription.
-type VideoAnalyzersListBySubscriptionResult struct {
-	VideoAnalyzerCollection
+// VideoAnalyzersClientListBySubscriptionResult contains the result from method VideoAnalyzersClient.ListBySubscription.
+type VideoAnalyzersClientListBySubscriptionResult struct {
+	Collection
 }
 
-// VideoAnalyzersListResponse contains the response from method VideoAnalyzers.List.
-type VideoAnalyzersListResponse struct {
-	VideoAnalyzersListResult
+// VideoAnalyzersClientListResponse contains the response from method VideoAnalyzersClient.List.
+type VideoAnalyzersClientListResponse struct {
+	VideoAnalyzersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideoAnalyzersListResult contains the result from method VideoAnalyzers.List.
-type VideoAnalyzersListResult struct {
-	VideoAnalyzerCollection
+// VideoAnalyzersClientListResult contains the result from method VideoAnalyzersClient.List.
+type VideoAnalyzersClientListResult struct {
+	Collection
 }
 
-// VideoAnalyzersUpdatePollerResponse contains the response from method VideoAnalyzers.Update.
-type VideoAnalyzersUpdatePollerResponse struct {
+// VideoAnalyzersClientUpdatePollerResponse contains the response from method VideoAnalyzersClient.Update.
+type VideoAnalyzersClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VideoAnalyzersUpdatePoller
+	Poller *VideoAnalyzersClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -699,8 +699,8 @@ type VideoAnalyzersUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VideoAnalyzersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VideoAnalyzersUpdateResponse, error) {
-	respType := VideoAnalyzersUpdateResponse{}
+func (l VideoAnalyzersClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VideoAnalyzersClientUpdateResponse, error) {
+	respType := VideoAnalyzersClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VideoAnalyzer)
 	if err != nil {
 		return respType, err
@@ -709,13 +709,13 @@ func (l VideoAnalyzersUpdatePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a VideoAnalyzersUpdatePollerResponse from the provided client and resume token.
-func (l *VideoAnalyzersUpdatePollerResponse) Resume(ctx context.Context, client *VideoAnalyzersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VideoAnalyzersClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a VideoAnalyzersClientUpdatePollerResponse from the provided client and resume token.
+func (l *VideoAnalyzersClientUpdatePollerResponse) Resume(ctx context.Context, client *VideoAnalyzersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VideoAnalyzersClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VideoAnalyzersUpdatePoller{
+	poller := &VideoAnalyzersClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -727,80 +727,80 @@ func (l *VideoAnalyzersUpdatePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// VideoAnalyzersUpdateResponse contains the response from method VideoAnalyzers.Update.
-type VideoAnalyzersUpdateResponse struct {
-	VideoAnalyzersUpdateResult
+// VideoAnalyzersClientUpdateResponse contains the response from method VideoAnalyzersClient.Update.
+type VideoAnalyzersClientUpdateResponse struct {
+	VideoAnalyzersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideoAnalyzersUpdateResult contains the result from method VideoAnalyzers.Update.
-type VideoAnalyzersUpdateResult struct {
+// VideoAnalyzersClientUpdateResult contains the result from method VideoAnalyzersClient.Update.
+type VideoAnalyzersClientUpdateResult struct {
 	VideoAnalyzer
 }
 
-// VideosCreateOrUpdateResponse contains the response from method Videos.CreateOrUpdate.
-type VideosCreateOrUpdateResponse struct {
-	VideosCreateOrUpdateResult
+// VideosClientCreateOrUpdateResponse contains the response from method VideosClient.CreateOrUpdate.
+type VideosClientCreateOrUpdateResponse struct {
+	VideosClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideosCreateOrUpdateResult contains the result from method Videos.CreateOrUpdate.
-type VideosCreateOrUpdateResult struct {
+// VideosClientCreateOrUpdateResult contains the result from method VideosClient.CreateOrUpdate.
+type VideosClientCreateOrUpdateResult struct {
 	VideoEntity
 }
 
-// VideosDeleteResponse contains the response from method Videos.Delete.
-type VideosDeleteResponse struct {
+// VideosClientDeleteResponse contains the response from method VideosClient.Delete.
+type VideosClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideosGetResponse contains the response from method Videos.Get.
-type VideosGetResponse struct {
-	VideosGetResult
+// VideosClientGetResponse contains the response from method VideosClient.Get.
+type VideosClientGetResponse struct {
+	VideosClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideosGetResult contains the result from method Videos.Get.
-type VideosGetResult struct {
+// VideosClientGetResult contains the result from method VideosClient.Get.
+type VideosClientGetResult struct {
 	VideoEntity
 }
 
-// VideosListContentTokenResponse contains the response from method Videos.ListContentToken.
-type VideosListContentTokenResponse struct {
-	VideosListContentTokenResult
+// VideosClientListContentTokenResponse contains the response from method VideosClient.ListContentToken.
+type VideosClientListContentTokenResponse struct {
+	VideosClientListContentTokenResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideosListContentTokenResult contains the result from method Videos.ListContentToken.
-type VideosListContentTokenResult struct {
+// VideosClientListContentTokenResult contains the result from method VideosClient.ListContentToken.
+type VideosClientListContentTokenResult struct {
 	VideoContentToken
 }
 
-// VideosListResponse contains the response from method Videos.List.
-type VideosListResponse struct {
-	VideosListResult
+// VideosClientListResponse contains the response from method VideosClient.List.
+type VideosClientListResponse struct {
+	VideosClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideosListResult contains the result from method Videos.List.
-type VideosListResult struct {
+// VideosClientListResult contains the result from method VideosClient.List.
+type VideosClientListResult struct {
 	VideoEntityCollection
 }
 
-// VideosUpdateResponse contains the response from method Videos.Update.
-type VideosUpdateResponse struct {
-	VideosUpdateResult
+// VideosClientUpdateResponse contains the response from method VideosClient.Update.
+type VideosClientUpdateResponse struct {
+	VideosClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VideosUpdateResult contains the result from method Videos.Update.
-type VideosUpdateResult struct {
+// VideosClientUpdateResult contains the result from method VideosClient.Update.
+type VideosClientUpdateResult struct {
 	VideoEntity
 }

@@ -11,7 +11,6 @@ package armlabservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,49 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &UsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // ListByLocation - Returns list of usage per SKU family for the specified subscription in the specified region.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UsagesClient) ListByLocation(location string, options *UsagesListByLocationOptions) *UsagesListByLocationPager {
-	return &UsagesListByLocationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location name.
+// options - UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+func (client *UsagesClient) ListByLocation(location string, options *UsagesClientListByLocationOptions) *UsagesClientListByLocationPager {
+	return &UsagesClientListByLocationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLocationCreateRequest(ctx, location, options)
 		},
-		advancer: func(ctx context.Context, resp UsagesListByLocationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UsagesClientListByLocationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListUsagesResult.NextLink)
 		},
 	}
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, options *UsagesListByLocationOptions) (*policy.Request, error) {
+func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, options *UsagesClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,7 +76,7 @@ func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, loc
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,23 +91,10 @@ func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, loc
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *UsagesClient) listByLocationHandleResponse(resp *http.Response) (UsagesListByLocationResponse, error) {
-	result := UsagesListByLocationResponse{RawResponse: resp}
+func (client *UsagesClient) listByLocationHandleResponse(resp *http.Response) (UsagesClientListByLocationResponse, error) {
+	result := UsagesClientListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListUsagesResult); err != nil {
-		return UsagesListByLocationResponse{}, runtime.NewResponseError(err, resp)
+		return UsagesClientListByLocationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *UsagesClient) listByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

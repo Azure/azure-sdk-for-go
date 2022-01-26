@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/754938e4cb9416358b02dcc11f444adf14b3b7b6/specification/databoxedge/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/754938e4cb9416358b02dcc11f444adf14b3b7b6/specification/databoxedge/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/cf47fa91b882618a1043e3aeb5803b3a7397cd08/specification/databoxedge/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/cf47fa91b882618a1043e3aeb5803b3a7397cd08/specification/databoxedge/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.1.0
+module-version: 0.2.0
 
 ```

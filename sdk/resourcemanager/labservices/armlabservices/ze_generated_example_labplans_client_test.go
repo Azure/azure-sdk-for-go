@@ -27,13 +27,17 @@ func ExampleLabPlansClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armlabservices.NewLabPlansClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armlabservices.LabPlansListBySubscriptionOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListBySubscription(&armlabservices.LabPlansClientListBySubscriptionOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LabPlan.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleLabPlansClient_ListByResourceGroup() {
 	client := armlabservices.NewLabPlansClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LabPlan.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleLabPlansClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LabPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LabPlansClientGetResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/putLabPlan.json
@@ -88,35 +96,31 @@ func ExampleLabPlansClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<lab-plan-name>",
 		armlabservices.LabPlan{
-			TrackedResource: armlabservices.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armlabservices.LabPlanProperties{
-				LabPlanUpdateProperties: armlabservices.LabPlanUpdateProperties{
-					DefaultAutoShutdownProfile: &armlabservices.AutoShutdownProfile{
-						DisconnectDelay:          to.StringPtr("<disconnect-delay>"),
-						IdleDelay:                to.StringPtr("<idle-delay>"),
-						NoConnectDelay:           to.StringPtr("<no-connect-delay>"),
-						ShutdownOnDisconnect:     armlabservices.EnableStateEnabled.ToPtr(),
-						ShutdownOnIdle:           armlabservices.ShutdownOnIdleModeUserAbsence.ToPtr(),
-						ShutdownWhenNotConnected: armlabservices.EnableStateEnabled.ToPtr(),
-					},
-					DefaultConnectionProfile: &armlabservices.ConnectionProfile{
-						ClientRdpAccess: armlabservices.ConnectionTypePublic.ToPtr(),
-						ClientSSHAccess: armlabservices.ConnectionTypePublic.ToPtr(),
-						WebRdpAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
-						WebSSHAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
-					},
-					DefaultNetworkProfile: &armlabservices.LabPlanNetworkProfile{
-						SubnetID: to.StringPtr("<subnet-id>"),
-					},
-					SharedGalleryID: to.StringPtr("<shared-gallery-id>"),
-					SupportInfo: &armlabservices.SupportInfo{
-						Email:        to.StringPtr("<email>"),
-						Instructions: to.StringPtr("<instructions>"),
-						Phone:        to.StringPtr("<phone>"),
-						URL:          to.StringPtr("<url>"),
-					},
+				DefaultAutoShutdownProfile: &armlabservices.AutoShutdownProfile{
+					DisconnectDelay:          to.StringPtr("<disconnect-delay>"),
+					IdleDelay:                to.StringPtr("<idle-delay>"),
+					NoConnectDelay:           to.StringPtr("<no-connect-delay>"),
+					ShutdownOnDisconnect:     armlabservices.EnableStateEnabled.ToPtr(),
+					ShutdownOnIdle:           armlabservices.ShutdownOnIdleModeUserAbsence.ToPtr(),
+					ShutdownWhenNotConnected: armlabservices.EnableStateEnabled.ToPtr(),
+				},
+				DefaultConnectionProfile: &armlabservices.ConnectionProfile{
+					ClientRdpAccess: armlabservices.ConnectionTypePublic.ToPtr(),
+					ClientSSHAccess: armlabservices.ConnectionTypePublic.ToPtr(),
+					WebRdpAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
+					WebSSHAccess:    armlabservices.ConnectionTypeNone.ToPtr(),
+				},
+				DefaultNetworkProfile: &armlabservices.LabPlanNetworkProfile{
+					SubnetID: to.StringPtr("<subnet-id>"),
+				},
+				SharedGalleryID: to.StringPtr("<shared-gallery-id>"),
+				SupportInfo: &armlabservices.SupportInfo{
+					Email:        to.StringPtr("<email>"),
+					Instructions: to.StringPtr("<instructions>"),
+					Phone:        to.StringPtr("<phone>"),
+					URL:          to.StringPtr("<url>"),
 				},
 			},
 		},
@@ -128,7 +132,7 @@ func ExampleLabPlansClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LabPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LabPlansClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/patchLabPlan.json
@@ -160,7 +164,7 @@ func ExampleLabPlansClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LabPlan.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LabPlansClientUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/deleteLabPlan.json

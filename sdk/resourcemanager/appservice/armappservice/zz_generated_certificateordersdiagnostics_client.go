@@ -11,7 +11,6 @@ package armappservice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // CertificateOrdersDiagnosticsClient contains the methods for the CertificateOrdersDiagnostics group.
 // Don't use this type directly, use NewCertificateOrdersDiagnosticsClient() instead.
 type CertificateOrdersDiagnosticsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCertificateOrdersDiagnosticsClient creates a new instance of CertificateOrdersDiagnosticsClient with the specified values.
+// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateOrdersDiagnosticsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &CertificateOrdersDiagnosticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CertificateOrdersDiagnosticsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// GetAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderDetectorResponse(ctx context.Context, resourceGroupName string, certificateOrderName string, detectorName string, options *CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions) (CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse, error) {
+// GetAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration call to get a detector
+// response from App Lens.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// certificateOrderName - The certificate order name for which the response is needed.
+// detectorName - The detector name which needs to be run.
+// options - CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions contains the optional
+// parameters for the CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse method.
+func (client *CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderDetectorResponse(ctx context.Context, resourceGroupName string, certificateOrderName string, detectorName string, options *CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions) (CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse, error) {
 	req, err := client.getAppServiceCertificateOrderDetectorResponseCreateRequest(ctx, resourceGroupName, certificateOrderName, detectorName, options)
 	if err != nil {
-		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, err
+		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, err
+		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, client.getAppServiceCertificateOrderDetectorResponseHandleError(resp)
+		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAppServiceCertificateOrderDetectorResponseHandleResponse(resp)
 }
 
 // getAppServiceCertificateOrderDetectorResponseCreateRequest creates the GetAppServiceCertificateOrderDetectorResponse request.
-func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, detectorName string, options *CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions) (*policy.Request, error) {
+func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, detectorName string, options *CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors/{detectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +92,7 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,50 +106,42 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getAppServiceCertificateOrderDetectorResponseHandleResponse handles the GetAppServiceCertificateOrderDetectorResponse response.
-func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response) (CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse, error) {
-	result := CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{RawResponse: resp}
+func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response) (CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse, error) {
+	result := CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
-		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
 	return result, nil
 }
 
-// getAppServiceCertificateOrderDetectorResponseHandleError handles the GetAppServiceCertificateOrderDetectorResponse error response.
-func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-// If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificateOrdersDiagnosticsClient) ListAppServiceCertificateOrderDetectorResponse(resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseOptions) *CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager {
-	return &CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager{
+// ListAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration to get the list of detectors
+// for this RP.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group to which the resource belongs.
+// certificateOrderName - The certificate order name for which the response is needed.
+// options - CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions contains the optional
+// parameters for the CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse method.
+func (client *CertificateOrdersDiagnosticsClient) ListAppServiceCertificateOrderDetectorResponse(resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponsePager {
+	return &CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponsePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAppServiceCertificateOrderDetectorResponseCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 		},
-		advancer: func(ctx context.Context, resp CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
 		},
 	}
 }
 
 // listAppServiceCertificateOrderDetectorResponseCreateRequest creates the ListAppServiceCertificateOrderDetectorResponse request.
-func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseOptions) (*policy.Request, error) {
+func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -150,35 +155,22 @@ func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrder
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listAppServiceCertificateOrderDetectorResponseHandleResponse handles the ListAppServiceCertificateOrderDetectorResponse response.
-func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response) (CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse, error) {
-	result := CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse{RawResponse: resp}
+func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response) (CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse, error) {
+	result := CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
-		return CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
 	return result, nil
-}
-
-// listAppServiceCertificateOrderDetectorResponseHandleError handles the ListAppServiceCertificateOrderDetectorResponse error response.
-func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

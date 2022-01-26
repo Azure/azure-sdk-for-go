@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// AFDCustomDomainsListByProfilePager provides operations for iterating over paged responses.
-type AFDCustomDomainsListByProfilePager struct {
+// AFDCustomDomainsClientListByProfilePager provides operations for iterating over paged responses.
+type AFDCustomDomainsClientListByProfilePager struct {
 	client    *AFDCustomDomainsClient
-	current   AFDCustomDomainsListByProfileResponse
+	current   AFDCustomDomainsClientListByProfileResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AFDCustomDomainsListByProfileResponse) (*policy.Request, error)
+	advancer  func(context.Context, AFDCustomDomainsClientListByProfileResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AFDCustomDomainsListByProfilePager) Err() error {
+func (p *AFDCustomDomainsClientListByProfilePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AFDCustomDomainsListByProfilePager) NextPage(ctx context.Context) bool {
+func (p *AFDCustomDomainsClientListByProfilePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *AFDCustomDomainsListByProfilePager) NextPage(ctx context.Context) bool 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByProfileHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByProfileHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *AFDCustomDomainsListByProfilePager) NextPage(ctx context.Context) bool 
 	return true
 }
 
-// PageResponse returns the current AFDCustomDomainsListByProfileResponse page.
-func (p *AFDCustomDomainsListByProfilePager) PageResponse() AFDCustomDomainsListByProfileResponse {
+// PageResponse returns the current AFDCustomDomainsClientListByProfileResponse page.
+func (p *AFDCustomDomainsClientListByProfilePager) PageResponse() AFDCustomDomainsClientListByProfileResponse {
 	return p.current
 }
 
-// AFDEndpointsListByProfilePager provides operations for iterating over paged responses.
-type AFDEndpointsListByProfilePager struct {
+// AFDEndpointsClientListByProfilePager provides operations for iterating over paged responses.
+type AFDEndpointsClientListByProfilePager struct {
 	client    *AFDEndpointsClient
-	current   AFDEndpointsListByProfileResponse
+	current   AFDEndpointsClientListByProfileResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AFDEndpointsListByProfileResponse) (*policy.Request, error)
+	advancer  func(context.Context, AFDEndpointsClientListByProfileResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AFDEndpointsListByProfilePager) Err() error {
+func (p *AFDEndpointsClientListByProfilePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AFDEndpointsListByProfilePager) NextPage(ctx context.Context) bool {
+func (p *AFDEndpointsClientListByProfilePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *AFDEndpointsListByProfilePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByProfileHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByProfileHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *AFDEndpointsListByProfilePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AFDEndpointsListByProfileResponse page.
-func (p *AFDEndpointsListByProfilePager) PageResponse() AFDEndpointsListByProfileResponse {
+// PageResponse returns the current AFDEndpointsClientListByProfileResponse page.
+func (p *AFDEndpointsClientListByProfilePager) PageResponse() AFDEndpointsClientListByProfileResponse {
 	return p.current
 }
 
-// AFDEndpointsListResourceUsagePager provides operations for iterating over paged responses.
-type AFDEndpointsListResourceUsagePager struct {
+// AFDEndpointsClientListResourceUsagePager provides operations for iterating over paged responses.
+type AFDEndpointsClientListResourceUsagePager struct {
 	client    *AFDEndpointsClient
-	current   AFDEndpointsListResourceUsageResponse
+	current   AFDEndpointsClientListResourceUsageResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AFDEndpointsListResourceUsageResponse) (*policy.Request, error)
+	advancer  func(context.Context, AFDEndpointsClientListResourceUsageResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AFDEndpointsListResourceUsagePager) Err() error {
+func (p *AFDEndpointsClientListResourceUsagePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AFDEndpointsListResourceUsagePager) NextPage(ctx context.Context) bool {
+func (p *AFDEndpointsClientListResourceUsagePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *AFDEndpointsListResourceUsagePager) NextPage(ctx context.Context) bool 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listResourceUsageHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listResourceUsageHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *AFDEndpointsListResourceUsagePager) NextPage(ctx context.Context) bool 
 	return true
 }
 
-// PageResponse returns the current AFDEndpointsListResourceUsageResponse page.
-func (p *AFDEndpointsListResourceUsagePager) PageResponse() AFDEndpointsListResourceUsageResponse {
+// PageResponse returns the current AFDEndpointsClientListResourceUsageResponse page.
+func (p *AFDEndpointsClientListResourceUsagePager) PageResponse() AFDEndpointsClientListResourceUsageResponse {
 	return p.current
 }
 
-// AFDOriginGroupsListByProfilePager provides operations for iterating over paged responses.
-type AFDOriginGroupsListByProfilePager struct {
+// AFDOriginGroupsClientListByProfilePager provides operations for iterating over paged responses.
+type AFDOriginGroupsClientListByProfilePager struct {
 	client    *AFDOriginGroupsClient
-	current   AFDOriginGroupsListByProfileResponse
+	current   AFDOriginGroupsClientListByProfileResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AFDOriginGroupsListByProfileResponse) (*policy.Request, error)
+	advancer  func(context.Context, AFDOriginGroupsClientListByProfileResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AFDOriginGroupsListByProfilePager) Err() error {
+func (p *AFDOriginGroupsClientListByProfilePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AFDOriginGroupsListByProfilePager) NextPage(ctx context.Context) bool {
+func (p *AFDOriginGroupsClientListByProfilePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *AFDOriginGroupsListByProfilePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByProfileHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByProfileHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *AFDOriginGroupsListByProfilePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AFDOriginGroupsListByProfileResponse page.
-func (p *AFDOriginGroupsListByProfilePager) PageResponse() AFDOriginGroupsListByProfileResponse {
+// PageResponse returns the current AFDOriginGroupsClientListByProfileResponse page.
+func (p *AFDOriginGroupsClientListByProfilePager) PageResponse() AFDOriginGroupsClientListByProfileResponse {
 	return p.current
 }
 
-// AFDOriginGroupsListResourceUsagePager provides operations for iterating over paged responses.
-type AFDOriginGroupsListResourceUsagePager struct {
+// AFDOriginGroupsClientListResourceUsagePager provides operations for iterating over paged responses.
+type AFDOriginGroupsClientListResourceUsagePager struct {
 	client    *AFDOriginGroupsClient
-	current   AFDOriginGroupsListResourceUsageResponse
+	current   AFDOriginGroupsClientListResourceUsageResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AFDOriginGroupsListResourceUsageResponse) (*policy.Request, error)
+	advancer  func(context.Context, AFDOriginGroupsClientListResourceUsageResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AFDOriginGroupsListResourceUsagePager) Err() error {
+func (p *AFDOriginGroupsClientListResourceUsagePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AFDOriginGroupsListResourceUsagePager) NextPage(ctx context.Context) bool {
+func (p *AFDOriginGroupsClientListResourceUsagePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *AFDOriginGroupsListResourceUsagePager) NextPage(ctx context.Context) bo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listResourceUsageHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listResourceUsageHandleResponse(resp)
@@ -281,28 +281,28 @@ func (p *AFDOriginGroupsListResourceUsagePager) NextPage(ctx context.Context) bo
 	return true
 }
 
-// PageResponse returns the current AFDOriginGroupsListResourceUsageResponse page.
-func (p *AFDOriginGroupsListResourceUsagePager) PageResponse() AFDOriginGroupsListResourceUsageResponse {
+// PageResponse returns the current AFDOriginGroupsClientListResourceUsageResponse page.
+func (p *AFDOriginGroupsClientListResourceUsagePager) PageResponse() AFDOriginGroupsClientListResourceUsageResponse {
 	return p.current
 }
 
-// AFDOriginsListByOriginGroupPager provides operations for iterating over paged responses.
-type AFDOriginsListByOriginGroupPager struct {
+// AFDOriginsClientListByOriginGroupPager provides operations for iterating over paged responses.
+type AFDOriginsClientListByOriginGroupPager struct {
 	client    *AFDOriginsClient
-	current   AFDOriginsListByOriginGroupResponse
+	current   AFDOriginsClientListByOriginGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AFDOriginsListByOriginGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, AFDOriginsClientListByOriginGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AFDOriginsListByOriginGroupPager) Err() error {
+func (p *AFDOriginsClientListByOriginGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AFDOriginsListByOriginGroupPager) NextPage(ctx context.Context) bool {
+func (p *AFDOriginsClientListByOriginGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -323,7 +323,7 @@ func (p *AFDOriginsListByOriginGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByOriginGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByOriginGroupHandleResponse(resp)
@@ -335,28 +335,28 @@ func (p *AFDOriginsListByOriginGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AFDOriginsListByOriginGroupResponse page.
-func (p *AFDOriginsListByOriginGroupPager) PageResponse() AFDOriginsListByOriginGroupResponse {
+// PageResponse returns the current AFDOriginsClientListByOriginGroupResponse page.
+func (p *AFDOriginsClientListByOriginGroupPager) PageResponse() AFDOriginsClientListByOriginGroupResponse {
 	return p.current
 }
 
-// AFDProfilesListResourceUsagePager provides operations for iterating over paged responses.
-type AFDProfilesListResourceUsagePager struct {
+// AFDProfilesClientListResourceUsagePager provides operations for iterating over paged responses.
+type AFDProfilesClientListResourceUsagePager struct {
 	client    *AFDProfilesClient
-	current   AFDProfilesListResourceUsageResponse
+	current   AFDProfilesClientListResourceUsageResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AFDProfilesListResourceUsageResponse) (*policy.Request, error)
+	advancer  func(context.Context, AFDProfilesClientListResourceUsageResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AFDProfilesListResourceUsagePager) Err() error {
+func (p *AFDProfilesClientListResourceUsagePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AFDProfilesListResourceUsagePager) NextPage(ctx context.Context) bool {
+func (p *AFDProfilesClientListResourceUsagePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -377,7 +377,7 @@ func (p *AFDProfilesListResourceUsagePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listResourceUsageHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listResourceUsageHandleResponse(resp)
@@ -389,28 +389,28 @@ func (p *AFDProfilesListResourceUsagePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AFDProfilesListResourceUsageResponse page.
-func (p *AFDProfilesListResourceUsagePager) PageResponse() AFDProfilesListResourceUsageResponse {
+// PageResponse returns the current AFDProfilesClientListResourceUsageResponse page.
+func (p *AFDProfilesClientListResourceUsagePager) PageResponse() AFDProfilesClientListResourceUsageResponse {
 	return p.current
 }
 
-// CustomDomainsListByEndpointPager provides operations for iterating over paged responses.
-type CustomDomainsListByEndpointPager struct {
+// CustomDomainsClientListByEndpointPager provides operations for iterating over paged responses.
+type CustomDomainsClientListByEndpointPager struct {
 	client    *CustomDomainsClient
-	current   CustomDomainsListByEndpointResponse
+	current   CustomDomainsClientListByEndpointResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, CustomDomainsListByEndpointResponse) (*policy.Request, error)
+	advancer  func(context.Context, CustomDomainsClientListByEndpointResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *CustomDomainsListByEndpointPager) Err() error {
+func (p *CustomDomainsClientListByEndpointPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *CustomDomainsListByEndpointPager) NextPage(ctx context.Context) bool {
+func (p *CustomDomainsClientListByEndpointPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -431,7 +431,7 @@ func (p *CustomDomainsListByEndpointPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByEndpointHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByEndpointHandleResponse(resp)
@@ -443,28 +443,28 @@ func (p *CustomDomainsListByEndpointPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current CustomDomainsListByEndpointResponse page.
-func (p *CustomDomainsListByEndpointPager) PageResponse() CustomDomainsListByEndpointResponse {
+// PageResponse returns the current CustomDomainsClientListByEndpointResponse page.
+func (p *CustomDomainsClientListByEndpointPager) PageResponse() CustomDomainsClientListByEndpointResponse {
 	return p.current
 }
 
-// EdgeNodesListPager provides operations for iterating over paged responses.
-type EdgeNodesListPager struct {
+// EdgeNodesClientListPager provides operations for iterating over paged responses.
+type EdgeNodesClientListPager struct {
 	client    *EdgeNodesClient
-	current   EdgeNodesListResponse
+	current   EdgeNodesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeNodesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, EdgeNodesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeNodesListPager) Err() error {
+func (p *EdgeNodesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeNodesListPager) NextPage(ctx context.Context) bool {
+func (p *EdgeNodesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -485,7 +485,7 @@ func (p *EdgeNodesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -497,28 +497,28 @@ func (p *EdgeNodesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current EdgeNodesListResponse page.
-func (p *EdgeNodesListPager) PageResponse() EdgeNodesListResponse {
+// PageResponse returns the current EdgeNodesClientListResponse page.
+func (p *EdgeNodesClientListPager) PageResponse() EdgeNodesClientListResponse {
 	return p.current
 }
 
-// EndpointsListByProfilePager provides operations for iterating over paged responses.
-type EndpointsListByProfilePager struct {
+// EndpointsClientListByProfilePager provides operations for iterating over paged responses.
+type EndpointsClientListByProfilePager struct {
 	client    *EndpointsClient
-	current   EndpointsListByProfileResponse
+	current   EndpointsClientListByProfileResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EndpointsListByProfileResponse) (*policy.Request, error)
+	advancer  func(context.Context, EndpointsClientListByProfileResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EndpointsListByProfilePager) Err() error {
+func (p *EndpointsClientListByProfilePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EndpointsListByProfilePager) NextPage(ctx context.Context) bool {
+func (p *EndpointsClientListByProfilePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -539,7 +539,7 @@ func (p *EndpointsListByProfilePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByProfileHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByProfileHandleResponse(resp)
@@ -551,28 +551,28 @@ func (p *EndpointsListByProfilePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current EndpointsListByProfileResponse page.
-func (p *EndpointsListByProfilePager) PageResponse() EndpointsListByProfileResponse {
+// PageResponse returns the current EndpointsClientListByProfileResponse page.
+func (p *EndpointsClientListByProfilePager) PageResponse() EndpointsClientListByProfileResponse {
 	return p.current
 }
 
-// EndpointsListResourceUsagePager provides operations for iterating over paged responses.
-type EndpointsListResourceUsagePager struct {
+// EndpointsClientListResourceUsagePager provides operations for iterating over paged responses.
+type EndpointsClientListResourceUsagePager struct {
 	client    *EndpointsClient
-	current   EndpointsListResourceUsageResponse
+	current   EndpointsClientListResourceUsageResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EndpointsListResourceUsageResponse) (*policy.Request, error)
+	advancer  func(context.Context, EndpointsClientListResourceUsageResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EndpointsListResourceUsagePager) Err() error {
+func (p *EndpointsClientListResourceUsagePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EndpointsListResourceUsagePager) NextPage(ctx context.Context) bool {
+func (p *EndpointsClientListResourceUsagePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -593,7 +593,7 @@ func (p *EndpointsListResourceUsagePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listResourceUsageHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listResourceUsageHandleResponse(resp)
@@ -605,28 +605,28 @@ func (p *EndpointsListResourceUsagePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current EndpointsListResourceUsageResponse page.
-func (p *EndpointsListResourceUsagePager) PageResponse() EndpointsListResourceUsageResponse {
+// PageResponse returns the current EndpointsClientListResourceUsageResponse page.
+func (p *EndpointsClientListResourceUsagePager) PageResponse() EndpointsClientListResourceUsageResponse {
 	return p.current
 }
 
-// ManagedRuleSetsListPager provides operations for iterating over paged responses.
-type ManagedRuleSetsListPager struct {
+// ManagedRuleSetsClientListPager provides operations for iterating over paged responses.
+type ManagedRuleSetsClientListPager struct {
 	client    *ManagedRuleSetsClient
-	current   ManagedRuleSetsListResponse
+	current   ManagedRuleSetsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ManagedRuleSetsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagedRuleSetsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ManagedRuleSetsListPager) Err() error {
+func (p *ManagedRuleSetsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ManagedRuleSetsListPager) NextPage(ctx context.Context) bool {
+func (p *ManagedRuleSetsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -647,7 +647,7 @@ func (p *ManagedRuleSetsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -659,28 +659,28 @@ func (p *ManagedRuleSetsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ManagedRuleSetsListResponse page.
-func (p *ManagedRuleSetsListPager) PageResponse() ManagedRuleSetsListResponse {
+// PageResponse returns the current ManagedRuleSetsClientListResponse page.
+func (p *ManagedRuleSetsClientListPager) PageResponse() ManagedRuleSetsClientListResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -701,7 +701,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -713,28 +713,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// OriginGroupsListByEndpointPager provides operations for iterating over paged responses.
-type OriginGroupsListByEndpointPager struct {
+// OriginGroupsClientListByEndpointPager provides operations for iterating over paged responses.
+type OriginGroupsClientListByEndpointPager struct {
 	client    *OriginGroupsClient
-	current   OriginGroupsListByEndpointResponse
+	current   OriginGroupsClientListByEndpointResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OriginGroupsListByEndpointResponse) (*policy.Request, error)
+	advancer  func(context.Context, OriginGroupsClientListByEndpointResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OriginGroupsListByEndpointPager) Err() error {
+func (p *OriginGroupsClientListByEndpointPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OriginGroupsListByEndpointPager) NextPage(ctx context.Context) bool {
+func (p *OriginGroupsClientListByEndpointPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -755,7 +755,7 @@ func (p *OriginGroupsListByEndpointPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByEndpointHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByEndpointHandleResponse(resp)
@@ -767,28 +767,28 @@ func (p *OriginGroupsListByEndpointPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OriginGroupsListByEndpointResponse page.
-func (p *OriginGroupsListByEndpointPager) PageResponse() OriginGroupsListByEndpointResponse {
+// PageResponse returns the current OriginGroupsClientListByEndpointResponse page.
+func (p *OriginGroupsClientListByEndpointPager) PageResponse() OriginGroupsClientListByEndpointResponse {
 	return p.current
 }
 
-// OriginsListByEndpointPager provides operations for iterating over paged responses.
-type OriginsListByEndpointPager struct {
+// OriginsClientListByEndpointPager provides operations for iterating over paged responses.
+type OriginsClientListByEndpointPager struct {
 	client    *OriginsClient
-	current   OriginsListByEndpointResponse
+	current   OriginsClientListByEndpointResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OriginsListByEndpointResponse) (*policy.Request, error)
+	advancer  func(context.Context, OriginsClientListByEndpointResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OriginsListByEndpointPager) Err() error {
+func (p *OriginsClientListByEndpointPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OriginsListByEndpointPager) NextPage(ctx context.Context) bool {
+func (p *OriginsClientListByEndpointPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -809,7 +809,7 @@ func (p *OriginsListByEndpointPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByEndpointHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByEndpointHandleResponse(resp)
@@ -821,32 +821,32 @@ func (p *OriginsListByEndpointPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OriginsListByEndpointResponse page.
-func (p *OriginsListByEndpointPager) PageResponse() OriginsListByEndpointResponse {
+// PageResponse returns the current OriginsClientListByEndpointResponse page.
+func (p *OriginsClientListByEndpointPager) PageResponse() OriginsClientListByEndpointResponse {
 	return p.current
 }
 
-// PoliciesListPager provides operations for iterating over paged responses.
-type PoliciesListPager struct {
+// PoliciesClientListPager provides operations for iterating over paged responses.
+type PoliciesClientListPager struct {
 	client    *PoliciesClient
-	current   PoliciesListResponse
+	current   PoliciesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PoliciesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, PoliciesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PoliciesListPager) Err() error {
+func (p *PoliciesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PoliciesListPager) NextPage(ctx context.Context) bool {
+func (p *PoliciesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.CdnWebApplicationFirewallPolicyList.NextLink == nil || len(*p.current.CdnWebApplicationFirewallPolicyList.NextLink) == 0 {
+		if p.current.WebApplicationFirewallPolicyList.NextLink == nil || len(*p.current.WebApplicationFirewallPolicyList.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -863,7 +863,7 @@ func (p *PoliciesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -875,28 +875,28 @@ func (p *PoliciesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current PoliciesListResponse page.
-func (p *PoliciesListPager) PageResponse() PoliciesListResponse {
+// PageResponse returns the current PoliciesClientListResponse page.
+func (p *PoliciesClientListPager) PageResponse() PoliciesClientListResponse {
 	return p.current
 }
 
-// ProfilesListByResourceGroupPager provides operations for iterating over paged responses.
-type ProfilesListByResourceGroupPager struct {
+// ProfilesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type ProfilesClientListByResourceGroupPager struct {
 	client    *ProfilesClient
-	current   ProfilesListByResourceGroupResponse
+	current   ProfilesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ProfilesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, ProfilesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ProfilesListByResourceGroupPager) Err() error {
+func (p *ProfilesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ProfilesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *ProfilesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -917,7 +917,7 @@ func (p *ProfilesListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -929,28 +929,28 @@ func (p *ProfilesListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ProfilesListByResourceGroupResponse page.
-func (p *ProfilesListByResourceGroupPager) PageResponse() ProfilesListByResourceGroupResponse {
+// PageResponse returns the current ProfilesClientListByResourceGroupResponse page.
+func (p *ProfilesClientListByResourceGroupPager) PageResponse() ProfilesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// ProfilesListPager provides operations for iterating over paged responses.
-type ProfilesListPager struct {
+// ProfilesClientListPager provides operations for iterating over paged responses.
+type ProfilesClientListPager struct {
 	client    *ProfilesClient
-	current   ProfilesListResponse
+	current   ProfilesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ProfilesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ProfilesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ProfilesListPager) Err() error {
+func (p *ProfilesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ProfilesListPager) NextPage(ctx context.Context) bool {
+func (p *ProfilesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -971,7 +971,7 @@ func (p *ProfilesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -983,28 +983,28 @@ func (p *ProfilesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ProfilesListResponse page.
-func (p *ProfilesListPager) PageResponse() ProfilesListResponse {
+// PageResponse returns the current ProfilesClientListResponse page.
+func (p *ProfilesClientListPager) PageResponse() ProfilesClientListResponse {
 	return p.current
 }
 
-// ProfilesListResourceUsagePager provides operations for iterating over paged responses.
-type ProfilesListResourceUsagePager struct {
+// ProfilesClientListResourceUsagePager provides operations for iterating over paged responses.
+type ProfilesClientListResourceUsagePager struct {
 	client    *ProfilesClient
-	current   ProfilesListResourceUsageResponse
+	current   ProfilesClientListResourceUsageResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ProfilesListResourceUsageResponse) (*policy.Request, error)
+	advancer  func(context.Context, ProfilesClientListResourceUsageResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ProfilesListResourceUsagePager) Err() error {
+func (p *ProfilesClientListResourceUsagePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ProfilesListResourceUsagePager) NextPage(ctx context.Context) bool {
+func (p *ProfilesClientListResourceUsagePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -1025,7 +1025,7 @@ func (p *ProfilesListResourceUsagePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listResourceUsageHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listResourceUsageHandleResponse(resp)
@@ -1037,28 +1037,28 @@ func (p *ProfilesListResourceUsagePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ProfilesListResourceUsageResponse page.
-func (p *ProfilesListResourceUsagePager) PageResponse() ProfilesListResourceUsageResponse {
+// PageResponse returns the current ProfilesClientListResourceUsageResponse page.
+func (p *ProfilesClientListResourceUsagePager) PageResponse() ProfilesClientListResourceUsageResponse {
 	return p.current
 }
 
-// ResourceUsageListPager provides operations for iterating over paged responses.
-type ResourceUsageListPager struct {
+// ResourceUsageClientListPager provides operations for iterating over paged responses.
+type ResourceUsageClientListPager struct {
 	client    *ResourceUsageClient
-	current   ResourceUsageListResponse
+	current   ResourceUsageClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ResourceUsageListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ResourceUsageClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ResourceUsageListPager) Err() error {
+func (p *ResourceUsageClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ResourceUsageListPager) NextPage(ctx context.Context) bool {
+func (p *ResourceUsageClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -1079,7 +1079,7 @@ func (p *ResourceUsageListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -1091,28 +1091,28 @@ func (p *ResourceUsageListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ResourceUsageListResponse page.
-func (p *ResourceUsageListPager) PageResponse() ResourceUsageListResponse {
+// PageResponse returns the current ResourceUsageClientListResponse page.
+func (p *ResourceUsageClientListPager) PageResponse() ResourceUsageClientListResponse {
 	return p.current
 }
 
-// RoutesListByEndpointPager provides operations for iterating over paged responses.
-type RoutesListByEndpointPager struct {
+// RoutesClientListByEndpointPager provides operations for iterating over paged responses.
+type RoutesClientListByEndpointPager struct {
 	client    *RoutesClient
-	current   RoutesListByEndpointResponse
+	current   RoutesClientListByEndpointResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RoutesListByEndpointResponse) (*policy.Request, error)
+	advancer  func(context.Context, RoutesClientListByEndpointResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *RoutesListByEndpointPager) Err() error {
+func (p *RoutesClientListByEndpointPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *RoutesListByEndpointPager) NextPage(ctx context.Context) bool {
+func (p *RoutesClientListByEndpointPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -1133,7 +1133,7 @@ func (p *RoutesListByEndpointPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByEndpointHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByEndpointHandleResponse(resp)
@@ -1145,28 +1145,28 @@ func (p *RoutesListByEndpointPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current RoutesListByEndpointResponse page.
-func (p *RoutesListByEndpointPager) PageResponse() RoutesListByEndpointResponse {
+// PageResponse returns the current RoutesClientListByEndpointResponse page.
+func (p *RoutesClientListByEndpointPager) PageResponse() RoutesClientListByEndpointResponse {
 	return p.current
 }
 
-// RuleSetsListByProfilePager provides operations for iterating over paged responses.
-type RuleSetsListByProfilePager struct {
+// RuleSetsClientListByProfilePager provides operations for iterating over paged responses.
+type RuleSetsClientListByProfilePager struct {
 	client    *RuleSetsClient
-	current   RuleSetsListByProfileResponse
+	current   RuleSetsClientListByProfileResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RuleSetsListByProfileResponse) (*policy.Request, error)
+	advancer  func(context.Context, RuleSetsClientListByProfileResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *RuleSetsListByProfilePager) Err() error {
+func (p *RuleSetsClientListByProfilePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *RuleSetsListByProfilePager) NextPage(ctx context.Context) bool {
+func (p *RuleSetsClientListByProfilePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -1187,7 +1187,7 @@ func (p *RuleSetsListByProfilePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByProfileHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByProfileHandleResponse(resp)
@@ -1199,28 +1199,28 @@ func (p *RuleSetsListByProfilePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current RuleSetsListByProfileResponse page.
-func (p *RuleSetsListByProfilePager) PageResponse() RuleSetsListByProfileResponse {
+// PageResponse returns the current RuleSetsClientListByProfileResponse page.
+func (p *RuleSetsClientListByProfilePager) PageResponse() RuleSetsClientListByProfileResponse {
 	return p.current
 }
 
-// RuleSetsListResourceUsagePager provides operations for iterating over paged responses.
-type RuleSetsListResourceUsagePager struct {
+// RuleSetsClientListResourceUsagePager provides operations for iterating over paged responses.
+type RuleSetsClientListResourceUsagePager struct {
 	client    *RuleSetsClient
-	current   RuleSetsListResourceUsageResponse
+	current   RuleSetsClientListResourceUsageResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RuleSetsListResourceUsageResponse) (*policy.Request, error)
+	advancer  func(context.Context, RuleSetsClientListResourceUsageResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *RuleSetsListResourceUsagePager) Err() error {
+func (p *RuleSetsClientListResourceUsagePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *RuleSetsListResourceUsagePager) NextPage(ctx context.Context) bool {
+func (p *RuleSetsClientListResourceUsagePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -1241,7 +1241,7 @@ func (p *RuleSetsListResourceUsagePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listResourceUsageHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listResourceUsageHandleResponse(resp)
@@ -1253,28 +1253,28 @@ func (p *RuleSetsListResourceUsagePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current RuleSetsListResourceUsageResponse page.
-func (p *RuleSetsListResourceUsagePager) PageResponse() RuleSetsListResourceUsageResponse {
+// PageResponse returns the current RuleSetsClientListResourceUsageResponse page.
+func (p *RuleSetsClientListResourceUsagePager) PageResponse() RuleSetsClientListResourceUsageResponse {
 	return p.current
 }
 
-// RulesListByRuleSetPager provides operations for iterating over paged responses.
-type RulesListByRuleSetPager struct {
+// RulesClientListByRuleSetPager provides operations for iterating over paged responses.
+type RulesClientListByRuleSetPager struct {
 	client    *RulesClient
-	current   RulesListByRuleSetResponse
+	current   RulesClientListByRuleSetResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RulesListByRuleSetResponse) (*policy.Request, error)
+	advancer  func(context.Context, RulesClientListByRuleSetResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *RulesListByRuleSetPager) Err() error {
+func (p *RulesClientListByRuleSetPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *RulesListByRuleSetPager) NextPage(ctx context.Context) bool {
+func (p *RulesClientListByRuleSetPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -1295,7 +1295,7 @@ func (p *RulesListByRuleSetPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByRuleSetHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByRuleSetHandleResponse(resp)
@@ -1307,28 +1307,28 @@ func (p *RulesListByRuleSetPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current RulesListByRuleSetResponse page.
-func (p *RulesListByRuleSetPager) PageResponse() RulesListByRuleSetResponse {
+// PageResponse returns the current RulesClientListByRuleSetResponse page.
+func (p *RulesClientListByRuleSetPager) PageResponse() RulesClientListByRuleSetResponse {
 	return p.current
 }
 
-// SecretsListByProfilePager provides operations for iterating over paged responses.
-type SecretsListByProfilePager struct {
+// SecretsClientListByProfilePager provides operations for iterating over paged responses.
+type SecretsClientListByProfilePager struct {
 	client    *SecretsClient
-	current   SecretsListByProfileResponse
+	current   SecretsClientListByProfileResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SecretsListByProfileResponse) (*policy.Request, error)
+	advancer  func(context.Context, SecretsClientListByProfileResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SecretsListByProfilePager) Err() error {
+func (p *SecretsClientListByProfilePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SecretsListByProfilePager) NextPage(ctx context.Context) bool {
+func (p *SecretsClientListByProfilePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -1349,7 +1349,7 @@ func (p *SecretsListByProfilePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByProfileHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByProfileHandleResponse(resp)
@@ -1361,28 +1361,28 @@ func (p *SecretsListByProfilePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current SecretsListByProfileResponse page.
-func (p *SecretsListByProfilePager) PageResponse() SecretsListByProfileResponse {
+// PageResponse returns the current SecretsClientListByProfileResponse page.
+func (p *SecretsClientListByProfilePager) PageResponse() SecretsClientListByProfileResponse {
 	return p.current
 }
 
-// SecurityPoliciesListByProfilePager provides operations for iterating over paged responses.
-type SecurityPoliciesListByProfilePager struct {
+// SecurityPoliciesClientListByProfilePager provides operations for iterating over paged responses.
+type SecurityPoliciesClientListByProfilePager struct {
 	client    *SecurityPoliciesClient
-	current   SecurityPoliciesListByProfileResponse
+	current   SecurityPoliciesClientListByProfileResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SecurityPoliciesListByProfileResponse) (*policy.Request, error)
+	advancer  func(context.Context, SecurityPoliciesClientListByProfileResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SecurityPoliciesListByProfilePager) Err() error {
+func (p *SecurityPoliciesClientListByProfilePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SecurityPoliciesListByProfilePager) NextPage(ctx context.Context) bool {
+func (p *SecurityPoliciesClientListByProfilePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -1403,7 +1403,7 @@ func (p *SecurityPoliciesListByProfilePager) NextPage(ctx context.Context) bool 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByProfileHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByProfileHandleResponse(resp)
@@ -1415,7 +1415,7 @@ func (p *SecurityPoliciesListByProfilePager) NextPage(ctx context.Context) bool 
 	return true
 }
 
-// PageResponse returns the current SecurityPoliciesListByProfileResponse page.
-func (p *SecurityPoliciesListByProfilePager) PageResponse() SecurityPoliciesListByProfileResponse {
+// PageResponse returns the current SecurityPoliciesClientListByProfileResponse page.
+func (p *SecurityPoliciesClientListByProfilePager) PageResponse() SecurityPoliciesClientListByProfileResponse {
 	return p.current
 }

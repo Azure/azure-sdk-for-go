@@ -26,13 +26,17 @@ func ExampleImagesClient_ListByLabPlan() {
 	client := armlabservices.NewImagesClient("<subscription-id>", cred, nil)
 	pager := client.ListByLabPlan("<resource-group-name>",
 		"<lab-plan-name>",
-		&armlabservices.ImagesListByLabPlanOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armlabservices.ImagesClientListByLabPlanOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Image.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,7 +57,7 @@ func ExampleImagesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Image.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ImagesClientGetResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Images/putImage.json
@@ -70,16 +74,14 @@ func ExampleImagesClient_CreateOrUpdate() {
 		"<image-name>",
 		armlabservices.Image{
 			Properties: &armlabservices.ImageProperties{
-				ImageUpdateProperties: armlabservices.ImageUpdateProperties{
-					EnabledState: armlabservices.EnableStateEnabled.ToPtr(),
-				},
+				EnabledState: armlabservices.EnableStateEnabled.ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Image.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ImagesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Images/patchImage.json
@@ -103,5 +105,5 @@ func ExampleImagesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Image.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ImagesClientUpdateResult)
 }

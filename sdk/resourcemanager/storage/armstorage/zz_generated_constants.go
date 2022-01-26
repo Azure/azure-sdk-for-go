@@ -10,7 +10,7 @@ package armstorage
 
 const (
 	moduleName    = "armstorage"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing.

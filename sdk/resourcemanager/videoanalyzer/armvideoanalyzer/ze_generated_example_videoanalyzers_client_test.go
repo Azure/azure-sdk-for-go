@@ -27,12 +27,13 @@ func ExampleVideoAnalyzersClient_List() {
 	}
 	ctx := context.Background()
 	client := armvideoanalyzer.NewVideoAnalyzersClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.VideoAnalyzersClientListResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-analyzer-accounts-get-by-name.json
@@ -50,7 +51,7 @@ func ExampleVideoAnalyzersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VideoAnalyzer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VideoAnalyzersClientGetResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-analyzer-accounts-create-or-update.json
@@ -65,14 +66,12 @@ func ExampleVideoAnalyzersClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<account-name>",
 		armvideoanalyzer.VideoAnalyzer{
-			TrackedResource: armvideoanalyzer.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"tag1": to.StringPtr("value1"),
-					"tag2": to.StringPtr("value2"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"tag1": to.StringPtr("value1"),
+				"tag2": to.StringPtr("value2"),
 			},
-			Identity: &armvideoanalyzer.VideoAnalyzerIdentity{
+			Identity: &armvideoanalyzer.Identity{
 				Type: to.StringPtr("<type>"),
 				UserAssignedIdentities: map[string]*armvideoanalyzer.UserAssignedManagedIdentity{
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
@@ -80,9 +79,9 @@ func ExampleVideoAnalyzersClient_BeginCreateOrUpdate() {
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id3": {},
 				},
 			},
-			Properties: &armvideoanalyzer.VideoAnalyzerProperties{
+			Properties: &armvideoanalyzer.Properties{
 				Encryption: &armvideoanalyzer.AccountEncryption{
-					Type: armvideoanalyzer.AccountEncryptionKeyTypeSystemKey.ToPtr(),
+					Type: armvideoanalyzer.AccountEncryptionKeyType("SystemKey").ToPtr(),
 				},
 				IotHubs: []*armvideoanalyzer.IotHub{
 					{
@@ -114,7 +113,7 @@ func ExampleVideoAnalyzersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VideoAnalyzer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VideoAnalyzersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-analyzer-accounts-delete.json
@@ -145,7 +144,7 @@ func ExampleVideoAnalyzersClient_BeginUpdate() {
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armvideoanalyzer.VideoAnalyzerUpdate{
+		armvideoanalyzer.Update{
 			Tags: map[string]*string{
 				"key1": to.StringPtr("value3"),
 			},
@@ -154,11 +153,10 @@ func ExampleVideoAnalyzersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VideoAnalyzer.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-analyzer-accounts-subscription-list-all-accounts.json
@@ -169,9 +167,10 @@ func ExampleVideoAnalyzersClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armvideoanalyzer.NewVideoAnalyzersClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.VideoAnalyzersClientListBySubscriptionResult)
 }

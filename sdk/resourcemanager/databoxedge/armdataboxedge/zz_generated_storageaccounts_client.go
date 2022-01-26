@@ -11,7 +11,6 @@ package armdataboxedge
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // StorageAccountsClient contains the methods for the StorageAccounts group.
 // Don't use this type directly, use NewStorageAccountsClient() instead.
 type StorageAccountsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStorageAccountsClient creates a new instance of StorageAccountsClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StorageAccountsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &StorageAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StorageAccountsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates a new StorageAccount or updates an existing StorageAccount on the device.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageAccountsClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsBeginCreateOrUpdateOptions) (StorageAccountsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// storageAccountName - The StorageAccount name.
+// resourceGroupName - The resource group name.
+// storageAccount - The StorageAccount properties.
+// options - StorageAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountsClient.BeginCreateOrUpdate
+// method.
+func (client *StorageAccountsClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsClientBeginCreateOrUpdateOptions) (StorageAccountsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, deviceName, storageAccountName, resourceGroupName, storageAccount, options)
 	if err != nil {
-		return StorageAccountsCreateOrUpdatePollerResponse{}, err
+		return StorageAccountsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := StorageAccountsCreateOrUpdatePollerResponse{
+	result := StorageAccountsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StorageAccountsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("StorageAccountsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return StorageAccountsCreateOrUpdatePollerResponse{}, err
+		return StorageAccountsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &StorageAccountsCreateOrUpdatePoller{
+	result.Poller = &StorageAccountsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a new StorageAccount or updates an existing StorageAccount on the device.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageAccountsClient) createOrUpdate(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageAccountsClient) createOrUpdate(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, deviceName, storageAccountName, resourceGroupName, storageAccount, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *StorageAccountsClient) createOrUpdate(ctx context.Context, deviceN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, options *StorageAccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts/{storageAccountName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -98,7 +111,7 @@ func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,34 @@ func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, storageAccount)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *StorageAccountsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageAccountsClient) BeginDelete(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsBeginDeleteOptions) (StorageAccountsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// storageAccountName - The StorageAccount name.
+// resourceGroupName - The resource group name.
+// options - StorageAccountsClientBeginDeleteOptions contains the optional parameters for the StorageAccountsClient.BeginDelete
+// method.
+func (client *StorageAccountsClient) BeginDelete(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientBeginDeleteOptions) (StorageAccountsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, deviceName, storageAccountName, resourceGroupName, options)
 	if err != nil {
-		return StorageAccountsDeletePollerResponse{}, err
+		return StorageAccountsClientDeletePollerResponse{}, err
 	}
-	result := StorageAccountsDeletePollerResponse{
+	result := StorageAccountsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StorageAccountsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("StorageAccountsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return StorageAccountsDeletePollerResponse{}, err
+		return StorageAccountsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &StorageAccountsDeletePoller{
+	result.Poller = &StorageAccountsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageAccountsClient) deleteOperation(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageAccountsClient) deleteOperation(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, deviceName, storageAccountName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *StorageAccountsClient) deleteOperation(ctx context.Context, device
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsBeginDeleteOptions) (*policy.Request, error) {
+func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts/{storageAccountName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -178,7 +183,7 @@ func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, de
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +194,29 @@ func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, de
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *StorageAccountsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a StorageAccount by name.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageAccountsClient) Get(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsGetOptions) (StorageAccountsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// storageAccountName - The storage account name.
+// resourceGroupName - The resource group name.
+// options - StorageAccountsClientGetOptions contains the optional parameters for the StorageAccountsClient.Get method.
+func (client *StorageAccountsClient) Get(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientGetOptions) (StorageAccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, deviceName, storageAccountName, resourceGroupName, options)
 	if err != nil {
-		return StorageAccountsGetResponse{}, err
+		return StorageAccountsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StorageAccountsGetResponse{}, err
+		return StorageAccountsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StorageAccountsGetResponse{}, client.getHandleError(resp)
+		return StorageAccountsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsGetOptions) (*policy.Request, error) {
+func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts/{storageAccountName}"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -238,7 +234,7 @@ func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, devic
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +246,34 @@ func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, devic
 }
 
 // getHandleResponse handles the Get response.
-func (client *StorageAccountsClient) getHandleResponse(resp *http.Response) (StorageAccountsGetResponse, error) {
-	result := StorageAccountsGetResponse{RawResponse: resp}
+func (client *StorageAccountsClient) getHandleResponse(resp *http.Response) (StorageAccountsClientGetResponse, error) {
+	result := StorageAccountsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccount); err != nil {
-		return StorageAccountsGetResponse{}, runtime.NewResponseError(err, resp)
+		return StorageAccountsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *StorageAccountsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByDataBoxEdgeDevice - Lists all the StorageAccounts in a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageAccountsClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *StorageAccountsListByDataBoxEdgeDeviceOptions) *StorageAccountsListByDataBoxEdgeDevicePager {
-	return &StorageAccountsListByDataBoxEdgeDevicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceName - The device name.
+// resourceGroupName - The resource group name.
+// options - StorageAccountsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccountsClient.ListByDataBoxEdgeDevice
+// method.
+func (client *StorageAccountsClient) ListByDataBoxEdgeDevice(deviceName string, resourceGroupName string, options *StorageAccountsClientListByDataBoxEdgeDeviceOptions) *StorageAccountsClientListByDataBoxEdgeDevicePager {
+	return &StorageAccountsClientListByDataBoxEdgeDevicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp StorageAccountsListByDataBoxEdgeDeviceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StorageAccountsClientListByDataBoxEdgeDeviceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageAccountList.NextLink)
 		},
 	}
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
-func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *StorageAccountsListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
+func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, options *StorageAccountsClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts"
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -300,7 +287,7 @@ func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,23 +299,10 @@ func (client *StorageAccountsClient) listByDataBoxEdgeDeviceCreateRequest(ctx co
 }
 
 // listByDataBoxEdgeDeviceHandleResponse handles the ListByDataBoxEdgeDevice response.
-func (client *StorageAccountsClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (StorageAccountsListByDataBoxEdgeDeviceResponse, error) {
-	result := StorageAccountsListByDataBoxEdgeDeviceResponse{RawResponse: resp}
+func (client *StorageAccountsClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (StorageAccountsClientListByDataBoxEdgeDeviceResponse, error) {
+	result := StorageAccountsClientListByDataBoxEdgeDeviceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountList); err != nil {
-		return StorageAccountsListByDataBoxEdgeDeviceResponse{}, runtime.NewResponseError(err, resp)
+		return StorageAccountsClientListByDataBoxEdgeDeviceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDataBoxEdgeDeviceHandleError handles the ListByDataBoxEdgeDevice error response.
-func (client *StorageAccountsClient) listByDataBoxEdgeDeviceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

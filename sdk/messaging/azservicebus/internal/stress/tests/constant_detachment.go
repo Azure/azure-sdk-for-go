@@ -18,7 +18,7 @@ func ConstantDetachment(remainingArgs []string) {
 
 	queueName := fmt.Sprintf("detach-tester-%s", sc.Nano)
 
-	shared.MustCreateAutoDeletingQueue(sc, queueName)
+	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create client", err)

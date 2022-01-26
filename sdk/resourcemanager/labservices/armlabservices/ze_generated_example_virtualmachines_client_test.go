@@ -29,13 +29,17 @@ func ExampleVirtualMachinesClient_ListByLab() {
 	client := armlabservices.NewVirtualMachinesClient("<subscription-id>", cred, nil)
 	pager := client.ListByLab("<resource-group-name>",
 		"<lab-name>",
-		&armlabservices.VirtualMachinesListByLabOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armlabservices.VirtualMachinesClientListByLabOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VirtualMachine.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleVirtualMachinesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VirtualMachine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachinesClientGetResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/VirtualMachines/startVirtualMachine.json

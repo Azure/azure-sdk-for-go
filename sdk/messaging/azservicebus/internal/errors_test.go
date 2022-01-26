@@ -77,96 +77,92 @@ func TestErrNotFound_Error(t *testing.T) {
 	assert.False(t, IsErrNotFound(otherErr))
 }
 
-func Test_isPermanentNetError(t *testing.T) {
-	require.False(t, isPermanentNetError(&fakeNetError{
-		temp: true,
-	}))
+func Test_recoveryKind(t *testing.T) {
+	t.Run("link", func(t *testing.T) {
+		linkErrorCodes := []string{
+			string(amqp.ErrorDetachForced),
+		}
 
-	require.False(t, isPermanentNetError(&fakeNetError{
-		timeout: true,
-	}))
+		for _, code := range linkErrorCodes {
+			t.Run(code, func(t *testing.T) {
+				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind, fmt.Sprintf("requires link recovery: %s", code))
+			})
+		}
 
-	require.False(t, isPermanentNetError(errors.New("not a net error")))
+		t.Run("sentintel errors", func(t *testing.T) {
+			sbe := GetSBErrInfo(amqp.ErrLinkClosed)
+			require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind)
 
-	require.True(t, isPermanentNetError(&fakeNetError{}))
+			sbe = GetSBErrInfo(amqp.ErrSessionClosed)
+			require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind)
+		})
+	})
+
+	t.Run("connection", func(t *testing.T) {
+		codes := []string{
+			string(amqp.ErrorConnectionForced),
+		}
+
+		for _, code := range codes {
+			t.Run(code, func(t *testing.T) {
+				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindConn, sbe.RecoveryKind, fmt.Sprintf("requires connection recovery: %s", code))
+			})
+		}
+
+		t.Run("sentinel errors", func(t *testing.T) {
+			sbe := GetSBErrInfo(amqp.ErrConnClosed)
+			require.EqualValues(t, RecoveryKindConn, sbe.RecoveryKind)
+		})
+	})
+
+	t.Run("nonretriable", func(t *testing.T) {
+		codes := []string{
+			string(amqp.ErrorTransferLimitExceeded),
+			string(amqp.ErrorInternalError),
+			string(amqp.ErrorUnauthorizedAccess),
+			string(amqp.ErrorNotFound),
+			string(amqp.ErrorMessageSizeExceeded),
+		}
+
+		for _, code := range codes {
+			t.Run(code, func(t *testing.T) {
+				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindFatal, sbe.RecoveryKind, fmt.Sprintf("cannot be recovered: %s", code))
+			})
+		}
+	})
+
+	t.Run("none", func(t *testing.T) {
+		codes := []string{
+			string("com.microsoft:operation-cancelled"),
+			string("com.microsoft:server-busy"),
+			string("com.microsoft:timeout"),
+		}
+
+		for _, code := range codes {
+			t.Run(code, func(t *testing.T) {
+				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindNone, sbe.RecoveryKind, fmt.Sprintf("no recovery needed: %s", code))
+			})
+		}
+	})
 }
 
-func Test_isRetryableAMQPError(t *testing.T) {
-	ctx := context.Background()
-
-	retryableCodes := []string{
-		string(amqp.ErrorInternalError),
-		string(errorServerBusy),
-		string(errorTimeout),
-		string(errorOperationCancelled),
-		"client.sender:not-enough-link-credit",
-		string(amqp.ErrorUnauthorizedAccess),
-		string(amqp.ErrorDetachForced),
-		string(amqp.ErrorConnectionForced),
-		string(amqp.ErrorTransferLimitExceeded),
-		"amqp: connection closed",
-		"unexpected frame",
-		string(amqp.ErrorNotFound),
+func Test_IsNonRetriable(t *testing.T) {
+	errs := []error{
+		context.Canceled,
+		context.DeadlineExceeded,
+		ErrNonRetriable{Message: "any message"},
+		fmt.Errorf("wrapped: %w", context.Canceled),
+		fmt.Errorf("wrapped: %w", context.DeadlineExceeded),
+		fmt.Errorf("wrapped: %w", ErrNonRetriable{Message: "any message"}),
 	}
 
-	for _, code := range retryableCodes {
-		require.True(t, isRetryableAMQPError(ctx, &amqp.Error{
-			Condition: amqp.ErrorCondition(code),
-		}))
-
-		// it works equally well if the error is just in the String().
-		// Need to narrow this down some more to see where the errors
-		// might not be getting converted properly.
-		require.True(t, isRetryableAMQPError(ctx, errors.New(code)))
+	for _, err := range errs {
+		require.EqualValues(t, RecoveryKindFatal, GetSBErrInfo(err).RecoveryKind)
 	}
-
-	require.False(t, isRetryableAMQPError(ctx, errors.New("some non-amqp related error")))
-}
-
-func Test_shouldRecreateLink(t *testing.T) {
-	require.False(t, shouldRecreateLink(nil))
-
-	require.True(t, shouldRecreateLink(&amqp.DetachError{}))
-
-	// going to treat these as "connection troubles" and throw them into the
-	// connection recovery scenario instead.
-	require.False(t, shouldRecreateLink(amqp.ErrLinkClosed))
-	require.False(t, shouldRecreateLink(amqp.ErrSessionClosed))
-}
-
-func Test_shouldRecreateConnection(t *testing.T) {
-	ctx := context.Background()
-
-	require.False(t, shouldRecreateConnection(ctx, nil))
-	require.True(t, shouldRecreateConnection(ctx, &fakeNetError{}))
-	require.True(t, shouldRecreateConnection(ctx, fmt.Errorf("%w", &fakeNetError{})))
-
-	require.False(t, shouldRecreateLink(amqp.ErrLinkClosed))
-	require.False(t, shouldRecreateLink(fmt.Errorf("wrapped: %w", amqp.ErrLinkClosed)))
-
-	require.False(t, shouldRecreateLink(amqp.ErrSessionClosed))
-	require.False(t, shouldRecreateLink(fmt.Errorf("wrapped: %w", amqp.ErrSessionClosed)))
-}
-
-// TODO: while testing it appeared there were some errors that were getting string-ized
-// We want to eliminate these. 'stress.go' reproduces most of these as you disconnect
-// and reconnect.
-func Test_stringErrorsToEliminate(t *testing.T) {
-	require.True(t, shouldRecreateLink(errors.New("detach frame link detached")))
-	require.True(t, isRetryableAMQPError(context.Background(), errors.New("amqp: connection closed")))
-	require.True(t, IsCancelError(errors.New("context canceled")))
-}
-
-func Test_IsCancelError(t *testing.T) {
-	require.False(t, IsCancelError(nil))
-	require.False(t, IsCancelError(errors.New("not a cancel error")))
-
-	require.True(t, IsCancelError(errors.New("context canceled")))
-
-	require.True(t, IsCancelError(context.Canceled))
-	require.True(t, IsCancelError(context.DeadlineExceeded))
-	require.True(t, IsCancelError(fmt.Errorf("wrapped: %w", context.Canceled)))
-	require.True(t, IsCancelError(fmt.Errorf("wrapped: %w", context.DeadlineExceeded)))
 }
 
 func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
@@ -178,10 +174,13 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		fakeNetError{temp: true},
 		fakeNetError{timeout: true},
 		fakeNetError{temp: false, timeout: false},
+		// simple timeouts from the mgmt link
+		mgmtError{Resp: &RPCResponse{Code: 408}},
+		mgmtError{Resp: &RPCResponse{Code: 503}},
 	}
 
 	for i, err := range tempErrors {
-		rk := ToSBE(context.Background(), err).RecoveryKind
+		rk := GetSBErrInfo(err).RecoveryKind
 		require.EqualValues(t, RecoveryKindNone, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 }
@@ -194,7 +193,7 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 	}
 
 	for i, err := range connErrors {
-		rk := ToSBE(context.Background(), err).RecoveryKind
+		rk := GetSBErrInfo(err).RecoveryKind
 		require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 }
@@ -205,10 +204,15 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 		amqp.ErrLinkClosed,
 		&amqp.DetachError{},
 		&amqp.Error{Condition: amqp.ErrorDetachForced},
+		// we lost the session lock, attempt link recovery
+		mgmtError{Resp: &RPCResponse{Code: 410}},
+		// this can happen when we're recovering the link - the client gets closed and the old link is still being
+		// used by this instance of the client. It needs to recover and attempt it again.
+		mgmtError{Resp: &RPCResponse{Code: 401}},
 	}
 
 	for i, err := range linkErrors {
-		rk := ToSBE(context.Background(), err).RecoveryKind
+		rk := GetSBErrInfo(err).RecoveryKind
 		require.EqualValues(t, RecoveryKindLink, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 }
@@ -226,11 +230,14 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 	}
 
 	for i, cond := range fatalConditions {
-		rk := ToSBE(context.Background(), &amqp.Error{Condition: cond}).RecoveryKind
+		rk := GetSBErrInfo(&amqp.Error{Condition: cond}).RecoveryKind
 		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
 	}
 
 	// unknown errors are also considered fatal
-	rk := ToSBE(context.Background(), errors.New("Some unknown error")).RecoveryKind
+	rk := GetSBErrInfo(errors.New("Some unknown error")).RecoveryKind
+	require.EqualValues(t, RecoveryKindFatal, rk, "some unknown error")
+
+	rk = GetSBErrInfo(mgmtError{Resp: &RPCResponse{Code: 500}}).RecoveryKind
 	require.EqualValues(t, RecoveryKindFatal, rk, "some unknown error")
 }

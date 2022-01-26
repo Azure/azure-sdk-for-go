@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse contains the response from method AppServiceCertificateOrders.CreateOrUpdateCertificate.
-type AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse struct {
+// CertificateOrdersClientCreateOrUpdateCertificatePollerResponse contains the response from method CertificateOrdersClient.CreateOrUpdateCertificate.
+type CertificateOrdersClientCreateOrUpdateCertificatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AppServiceCertificateOrdersCreateOrUpdateCertificatePoller
+	Poller *CertificateOrdersClientCreateOrUpdateCertificatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,9 +27,9 @@ type AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceCertificateOrdersCreateOrUpdateCertificateResponse, error) {
-	respType := AppServiceCertificateOrdersCreateOrUpdateCertificateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppServiceCertificateResource)
+func (l CertificateOrdersClientCreateOrUpdateCertificatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CertificateOrdersClientCreateOrUpdateCertificateResponse, error) {
+	respType := CertificateOrdersClientCreateOrUpdateCertificateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CertificateResource)
 	if err != nil {
 		return respType, err
 	}
@@ -37,13 +37,14 @@ func (l AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse) Poll
 	return respType, nil
 }
 
-// Resume rehydrates a AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse from the provided client and resume token.
-func (l *AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse) Resume(ctx context.Context, client *AppServiceCertificateOrdersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceCertificateOrdersClient.CreateOrUpdateCertificate", token, client.pl, client.createOrUpdateCertificateHandleError)
+// Resume rehydrates a CertificateOrdersClientCreateOrUpdateCertificatePollerResponse from the provided client and resume
+// token.
+func (l *CertificateOrdersClientCreateOrUpdateCertificatePollerResponse) Resume(ctx context.Context, client *CertificateOrdersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CertificateOrdersClient.CreateOrUpdateCertificate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AppServiceCertificateOrdersCreateOrUpdateCertificatePoller{
+	poller := &CertificateOrdersClientCreateOrUpdateCertificatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +56,22 @@ func (l *AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse) Res
 	return nil
 }
 
-// AppServiceCertificateOrdersCreateOrUpdateCertificateResponse contains the response from method AppServiceCertificateOrders.CreateOrUpdateCertificate.
-type AppServiceCertificateOrdersCreateOrUpdateCertificateResponse struct {
-	AppServiceCertificateOrdersCreateOrUpdateCertificateResult
+// CertificateOrdersClientCreateOrUpdateCertificateResponse contains the response from method CertificateOrdersClient.CreateOrUpdateCertificate.
+type CertificateOrdersClientCreateOrUpdateCertificateResponse struct {
+	CertificateOrdersClientCreateOrUpdateCertificateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersCreateOrUpdateCertificateResult contains the result from method AppServiceCertificateOrders.CreateOrUpdateCertificate.
-type AppServiceCertificateOrdersCreateOrUpdateCertificateResult struct {
-	AppServiceCertificateResource
+// CertificateOrdersClientCreateOrUpdateCertificateResult contains the result from method CertificateOrdersClient.CreateOrUpdateCertificate.
+type CertificateOrdersClientCreateOrUpdateCertificateResult struct {
+	CertificateResource
 }
 
-// AppServiceCertificateOrdersCreateOrUpdatePollerResponse contains the response from method AppServiceCertificateOrders.CreateOrUpdate.
-type AppServiceCertificateOrdersCreateOrUpdatePollerResponse struct {
+// CertificateOrdersClientCreateOrUpdatePollerResponse contains the response from method CertificateOrdersClient.CreateOrUpdate.
+type CertificateOrdersClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AppServiceCertificateOrdersCreateOrUpdatePoller
+	Poller *CertificateOrdersClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,9 +80,9 @@ type AppServiceCertificateOrdersCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceCertificateOrdersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceCertificateOrdersCreateOrUpdateResponse, error) {
-	respType := AppServiceCertificateOrdersCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppServiceCertificateOrder)
+func (l CertificateOrdersClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CertificateOrdersClientCreateOrUpdateResponse, error) {
+	respType := CertificateOrdersClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CertificateOrder)
 	if err != nil {
 		return respType, err
 	}
@@ -89,13 +90,13 @@ func (l AppServiceCertificateOrdersCreateOrUpdatePollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a AppServiceCertificateOrdersCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *AppServiceCertificateOrdersCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AppServiceCertificateOrdersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceCertificateOrdersClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a CertificateOrdersClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *CertificateOrdersClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *CertificateOrdersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CertificateOrdersClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AppServiceCertificateOrdersCreateOrUpdatePoller{
+	poller := &CertificateOrdersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,192 +108,297 @@ func (l *AppServiceCertificateOrdersCreateOrUpdatePollerResponse) Resume(ctx con
 	return nil
 }
 
-// AppServiceCertificateOrdersCreateOrUpdateResponse contains the response from method AppServiceCertificateOrders.CreateOrUpdate.
-type AppServiceCertificateOrdersCreateOrUpdateResponse struct {
-	AppServiceCertificateOrdersCreateOrUpdateResult
+// CertificateOrdersClientCreateOrUpdateResponse contains the response from method CertificateOrdersClient.CreateOrUpdate.
+type CertificateOrdersClientCreateOrUpdateResponse struct {
+	CertificateOrdersClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersCreateOrUpdateResult contains the result from method AppServiceCertificateOrders.CreateOrUpdate.
-type AppServiceCertificateOrdersCreateOrUpdateResult struct {
-	AppServiceCertificateOrder
+// CertificateOrdersClientCreateOrUpdateResult contains the result from method CertificateOrdersClient.CreateOrUpdate.
+type CertificateOrdersClientCreateOrUpdateResult struct {
+	CertificateOrder
 }
 
-// AppServiceCertificateOrdersDeleteCertificateResponse contains the response from method AppServiceCertificateOrders.DeleteCertificate.
-type AppServiceCertificateOrdersDeleteCertificateResponse struct {
+// CertificateOrdersClientDeleteCertificateResponse contains the response from method CertificateOrdersClient.DeleteCertificate.
+type CertificateOrdersClientDeleteCertificateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersDeleteResponse contains the response from method AppServiceCertificateOrders.Delete.
-type AppServiceCertificateOrdersDeleteResponse struct {
+// CertificateOrdersClientDeleteResponse contains the response from method CertificateOrdersClient.Delete.
+type CertificateOrdersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersGetCertificateResponse contains the response from method AppServiceCertificateOrders.GetCertificate.
-type AppServiceCertificateOrdersGetCertificateResponse struct {
-	AppServiceCertificateOrdersGetCertificateResult
+// CertificateOrdersClientGetCertificateResponse contains the response from method CertificateOrdersClient.GetCertificate.
+type CertificateOrdersClientGetCertificateResponse struct {
+	CertificateOrdersClientGetCertificateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersGetCertificateResult contains the result from method AppServiceCertificateOrders.GetCertificate.
-type AppServiceCertificateOrdersGetCertificateResult struct {
-	AppServiceCertificateResource
+// CertificateOrdersClientGetCertificateResult contains the result from method CertificateOrdersClient.GetCertificate.
+type CertificateOrdersClientGetCertificateResult struct {
+	CertificateResource
 }
 
-// AppServiceCertificateOrdersGetResponse contains the response from method AppServiceCertificateOrders.Get.
-type AppServiceCertificateOrdersGetResponse struct {
-	AppServiceCertificateOrdersGetResult
+// CertificateOrdersClientGetResponse contains the response from method CertificateOrdersClient.Get.
+type CertificateOrdersClientGetResponse struct {
+	CertificateOrdersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersGetResult contains the result from method AppServiceCertificateOrders.Get.
-type AppServiceCertificateOrdersGetResult struct {
-	AppServiceCertificateOrder
+// CertificateOrdersClientGetResult contains the result from method CertificateOrdersClient.Get.
+type CertificateOrdersClientGetResult struct {
+	CertificateOrder
 }
 
-// AppServiceCertificateOrdersListByResourceGroupResponse contains the response from method AppServiceCertificateOrders.ListByResourceGroup.
-type AppServiceCertificateOrdersListByResourceGroupResponse struct {
-	AppServiceCertificateOrdersListByResourceGroupResult
+// CertificateOrdersClientListByResourceGroupResponse contains the response from method CertificateOrdersClient.ListByResourceGroup.
+type CertificateOrdersClientListByResourceGroupResponse struct {
+	CertificateOrdersClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersListByResourceGroupResult contains the result from method AppServiceCertificateOrders.ListByResourceGroup.
-type AppServiceCertificateOrdersListByResourceGroupResult struct {
-	AppServiceCertificateOrderCollection
+// CertificateOrdersClientListByResourceGroupResult contains the result from method CertificateOrdersClient.ListByResourceGroup.
+type CertificateOrdersClientListByResourceGroupResult struct {
+	CertificateOrderCollection
 }
 
-// AppServiceCertificateOrdersListCertificatesResponse contains the response from method AppServiceCertificateOrders.ListCertificates.
-type AppServiceCertificateOrdersListCertificatesResponse struct {
-	AppServiceCertificateOrdersListCertificatesResult
+// CertificateOrdersClientListCertificatesResponse contains the response from method CertificateOrdersClient.ListCertificates.
+type CertificateOrdersClientListCertificatesResponse struct {
+	CertificateOrdersClientListCertificatesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersListCertificatesResult contains the result from method AppServiceCertificateOrders.ListCertificates.
-type AppServiceCertificateOrdersListCertificatesResult struct {
-	AppServiceCertificateCollection
+// CertificateOrdersClientListCertificatesResult contains the result from method CertificateOrdersClient.ListCertificates.
+type CertificateOrdersClientListCertificatesResult struct {
+	CertificateCollection
 }
 
-// AppServiceCertificateOrdersListResponse contains the response from method AppServiceCertificateOrders.List.
-type AppServiceCertificateOrdersListResponse struct {
-	AppServiceCertificateOrdersListResult
+// CertificateOrdersClientListResponse contains the response from method CertificateOrdersClient.List.
+type CertificateOrdersClientListResponse struct {
+	CertificateOrdersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersListResult contains the result from method AppServiceCertificateOrders.List.
-type AppServiceCertificateOrdersListResult struct {
-	AppServiceCertificateOrderCollection
+// CertificateOrdersClientListResult contains the result from method CertificateOrdersClient.List.
+type CertificateOrdersClientListResult struct {
+	CertificateOrderCollection
 }
 
-// AppServiceCertificateOrdersReissueResponse contains the response from method AppServiceCertificateOrders.Reissue.
-type AppServiceCertificateOrdersReissueResponse struct {
+// CertificateOrdersClientReissueResponse contains the response from method CertificateOrdersClient.Reissue.
+type CertificateOrdersClientReissueResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersRenewResponse contains the response from method AppServiceCertificateOrders.Renew.
-type AppServiceCertificateOrdersRenewResponse struct {
+// CertificateOrdersClientRenewResponse contains the response from method CertificateOrdersClient.Renew.
+type CertificateOrdersClientRenewResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersResendEmailResponse contains the response from method AppServiceCertificateOrders.ResendEmail.
-type AppServiceCertificateOrdersResendEmailResponse struct {
+// CertificateOrdersClientResendEmailResponse contains the response from method CertificateOrdersClient.ResendEmail.
+type CertificateOrdersClientResendEmailResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersResendRequestEmailsResponse contains the response from method AppServiceCertificateOrders.ResendRequestEmails.
-type AppServiceCertificateOrdersResendRequestEmailsResponse struct {
+// CertificateOrdersClientResendRequestEmailsResponse contains the response from method CertificateOrdersClient.ResendRequestEmails.
+type CertificateOrdersClientResendRequestEmailsResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersRetrieveCertificateActionsResponse contains the response from method AppServiceCertificateOrders.RetrieveCertificateActions.
-type AppServiceCertificateOrdersRetrieveCertificateActionsResponse struct {
-	AppServiceCertificateOrdersRetrieveCertificateActionsResult
+// CertificateOrdersClientRetrieveCertificateActionsResponse contains the response from method CertificateOrdersClient.RetrieveCertificateActions.
+type CertificateOrdersClientRetrieveCertificateActionsResponse struct {
+	CertificateOrdersClientRetrieveCertificateActionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersRetrieveCertificateActionsResult contains the result from method AppServiceCertificateOrders.RetrieveCertificateActions.
-type AppServiceCertificateOrdersRetrieveCertificateActionsResult struct {
+// CertificateOrdersClientRetrieveCertificateActionsResult contains the result from method CertificateOrdersClient.RetrieveCertificateActions.
+type CertificateOrdersClientRetrieveCertificateActionsResult struct {
 	// Array of CertificateOrderAction
 	CertificateOrderActionArray []*CertificateOrderAction
 }
 
-// AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse contains the response from method AppServiceCertificateOrders.RetrieveCertificateEmailHistory.
-type AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse struct {
-	AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResult
+// CertificateOrdersClientRetrieveCertificateEmailHistoryResponse contains the response from method CertificateOrdersClient.RetrieveCertificateEmailHistory.
+type CertificateOrdersClientRetrieveCertificateEmailHistoryResponse struct {
+	CertificateOrdersClientRetrieveCertificateEmailHistoryResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResult contains the result from method AppServiceCertificateOrders.RetrieveCertificateEmailHistory.
-type AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResult struct {
+// CertificateOrdersClientRetrieveCertificateEmailHistoryResult contains the result from method CertificateOrdersClient.RetrieveCertificateEmailHistory.
+type CertificateOrdersClientRetrieveCertificateEmailHistoryResult struct {
 	// Array of CertificateEmail
 	CertificateEmailArray []*CertificateEmail
 }
 
-// AppServiceCertificateOrdersRetrieveSiteSealResponse contains the response from method AppServiceCertificateOrders.RetrieveSiteSeal.
-type AppServiceCertificateOrdersRetrieveSiteSealResponse struct {
-	AppServiceCertificateOrdersRetrieveSiteSealResult
+// CertificateOrdersClientRetrieveSiteSealResponse contains the response from method CertificateOrdersClient.RetrieveSiteSeal.
+type CertificateOrdersClientRetrieveSiteSealResponse struct {
+	CertificateOrdersClientRetrieveSiteSealResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersRetrieveSiteSealResult contains the result from method AppServiceCertificateOrders.RetrieveSiteSeal.
-type AppServiceCertificateOrdersRetrieveSiteSealResult struct {
+// CertificateOrdersClientRetrieveSiteSealResult contains the result from method CertificateOrdersClient.RetrieveSiteSeal.
+type CertificateOrdersClientRetrieveSiteSealResult struct {
 	SiteSeal
 }
 
-// AppServiceCertificateOrdersUpdateCertificateResponse contains the response from method AppServiceCertificateOrders.UpdateCertificate.
-type AppServiceCertificateOrdersUpdateCertificateResponse struct {
-	AppServiceCertificateOrdersUpdateCertificateResult
+// CertificateOrdersClientUpdateCertificateResponse contains the response from method CertificateOrdersClient.UpdateCertificate.
+type CertificateOrdersClientUpdateCertificateResponse struct {
+	CertificateOrdersClientUpdateCertificateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersUpdateCertificateResult contains the result from method AppServiceCertificateOrders.UpdateCertificate.
-type AppServiceCertificateOrdersUpdateCertificateResult struct {
-	AppServiceCertificateResource
+// CertificateOrdersClientUpdateCertificateResult contains the result from method CertificateOrdersClient.UpdateCertificate.
+type CertificateOrdersClientUpdateCertificateResult struct {
+	CertificateResource
 }
 
-// AppServiceCertificateOrdersUpdateResponse contains the response from method AppServiceCertificateOrders.Update.
-type AppServiceCertificateOrdersUpdateResponse struct {
-	AppServiceCertificateOrdersUpdateResult
+// CertificateOrdersClientUpdateResponse contains the response from method CertificateOrdersClient.Update.
+type CertificateOrdersClientUpdateResponse struct {
+	CertificateOrdersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersUpdateResult contains the result from method AppServiceCertificateOrders.Update.
-type AppServiceCertificateOrdersUpdateResult struct {
-	AppServiceCertificateOrder
+// CertificateOrdersClientUpdateResult contains the result from method CertificateOrdersClient.Update.
+type CertificateOrdersClientUpdateResult struct {
+	CertificateOrder
 }
 
-// AppServiceCertificateOrdersValidatePurchaseInformationResponse contains the response from method AppServiceCertificateOrders.ValidatePurchaseInformation.
-type AppServiceCertificateOrdersValidatePurchaseInformationResponse struct {
+// CertificateOrdersClientValidatePurchaseInformationResponse contains the response from method CertificateOrdersClient.ValidatePurchaseInformation.
+type CertificateOrdersClientValidatePurchaseInformationResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceCertificateOrdersVerifyDomainOwnershipResponse contains the response from method AppServiceCertificateOrders.VerifyDomainOwnership.
-type AppServiceCertificateOrdersVerifyDomainOwnershipResponse struct {
+// CertificateOrdersClientVerifyDomainOwnershipResponse contains the response from method CertificateOrdersClient.VerifyDomainOwnership.
+type CertificateOrdersClientVerifyDomainOwnershipResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method AppServiceEnvironments.ApproveOrRejectPrivateEndpointConnection.
-type AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
+// CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse contains the response from method
+// CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse.
+type CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse struct {
+	CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResult contains the result from method CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse.
+type CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResult struct {
+	DetectorResponse
+}
+
+// CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse contains the response from method
+// CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse.
+type CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse struct {
+	CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResult contains the result from method
+// CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse.
+type CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResult struct {
+	DetectorResponseCollection
+}
+
+// CertificateRegistrationProviderClientListOperationsResponse contains the response from method CertificateRegistrationProviderClient.ListOperations.
+type CertificateRegistrationProviderClientListOperationsResponse struct {
+	CertificateRegistrationProviderClientListOperationsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificateRegistrationProviderClientListOperationsResult contains the result from method CertificateRegistrationProviderClient.ListOperations.
+type CertificateRegistrationProviderClientListOperationsResult struct {
+	CsmOperationCollection
+}
+
+// CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
+type CertificatesClientCreateOrUpdateResponse struct {
+	CertificatesClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificatesClientCreateOrUpdateResult contains the result from method CertificatesClient.CreateOrUpdate.
+type CertificatesClientCreateOrUpdateResult struct {
+	AppCertificate
+}
+
+// CertificatesClientDeleteResponse contains the response from method CertificatesClient.Delete.
+type CertificatesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificatesClientGetResponse contains the response from method CertificatesClient.Get.
+type CertificatesClientGetResponse struct {
+	CertificatesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificatesClientGetResult contains the result from method CertificatesClient.Get.
+type CertificatesClientGetResult struct {
+	AppCertificate
+}
+
+// CertificatesClientListByResourceGroupResponse contains the response from method CertificatesClient.ListByResourceGroup.
+type CertificatesClientListByResourceGroupResponse struct {
+	CertificatesClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificatesClientListByResourceGroupResult contains the result from method CertificatesClient.ListByResourceGroup.
+type CertificatesClientListByResourceGroupResult struct {
+	AppCertificateCollection
+}
+
+// CertificatesClientListResponse contains the response from method CertificatesClient.List.
+type CertificatesClientListResponse struct {
+	CertificatesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificatesClientListResult contains the result from method CertificatesClient.List.
+type CertificatesClientListResult struct {
+	AppCertificateCollection
+}
+
+// CertificatesClientUpdateResponse contains the response from method CertificatesClient.Update.
+type CertificatesClientUpdateResponse struct {
+	CertificatesClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CertificatesClientUpdateResult contains the result from method CertificatesClient.Update.
+type CertificatesClientUpdateResult struct {
+	AppCertificate
+}
+
+// ContainerAppsClientCreateOrUpdatePollerResponse contains the response from method ContainerAppsClient.CreateOrUpdate.
+type ContainerAppsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller
+	Poller *ContainerAppsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -301,9 +407,9 @@ type AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerRespons
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error) {
-	respType := AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+func (l ContainerAppsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContainerAppsClientCreateOrUpdateResponse, error) {
+	respType := ContainerAppsClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ContainerApp)
 	if err != nil {
 		return respType, err
 	}
@@ -311,13 +417,13 @@ func (l AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResp
 	return respType, nil
 }
 
-// Resume rehydrates a AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl, client.approveOrRejectPrivateEndpointConnectionHandleError)
+// Resume rehydrates a ContainerAppsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ContainerAppsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ContainerAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ContainerAppsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller{
+	poller := &ContainerAppsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -329,22 +435,22 @@ func (l *AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerRes
 	return nil
 }
 
-// AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse contains the response from method AppServiceEnvironments.ApproveOrRejectPrivateEndpointConnection.
-type AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse struct {
-	AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResult
+// ContainerAppsClientCreateOrUpdateResponse contains the response from method ContainerAppsClient.CreateOrUpdate.
+type ContainerAppsClientCreateOrUpdateResponse struct {
+	ContainerAppsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResult contains the result from method AppServiceEnvironments.ApproveOrRejectPrivateEndpointConnection.
-type AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResult struct {
-	RemotePrivateEndpointConnectionARMResource
+// ContainerAppsClientCreateOrUpdateResult contains the result from method ContainerAppsClient.CreateOrUpdate.
+type ContainerAppsClientCreateOrUpdateResult struct {
+	ContainerApp
 }
 
-// AppServiceEnvironmentsChangeVnetPollerResponse contains the response from method AppServiceEnvironments.ChangeVnet.
-type AppServiceEnvironmentsChangeVnetPollerResponse struct {
+// ContainerAppsClientDeletePollerResponse contains the response from method ContainerAppsClient.Delete.
+type ContainerAppsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsChangeVnetPoller
+	Poller *ContainerAppsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -353,218 +459,8 @@ type AppServiceEnvironmentsChangeVnetPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsChangeVnetPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*AppServiceEnvironmentsChangeVnetPager, error) {
-	respType := &AppServiceEnvironmentsChangeVnetPager{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
-	if err != nil {
-		return respType, err
-	}
-	respType.current.RawResponse = resp
-	respType.client = l.Poller.client
-	return respType, nil
-}
-
-// Resume rehydrates a AppServiceEnvironmentsChangeVnetPollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsChangeVnetPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.ChangeVnet", token, client.pl, client.changeVnetHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AppServiceEnvironmentsChangeVnetPoller{
-		pt:     pt,
-		client: client,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AppServiceEnvironmentsChangeVnetResponse contains the response from method AppServiceEnvironments.ChangeVnet.
-type AppServiceEnvironmentsChangeVnetResponse struct {
-	AppServiceEnvironmentsChangeVnetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsChangeVnetResult contains the result from method AppServiceEnvironments.ChangeVnet.
-type AppServiceEnvironmentsChangeVnetResult struct {
-	WebAppCollection
-}
-
-// AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse contains the response from method AppServiceEnvironments.CreateOrUpdateMultiRolePool.
-type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error) {
-	respType := AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.WorkerPoolResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdateMultiRolePool", token, client.pl, client.createOrUpdateMultiRolePoolHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse contains the response from method AppServiceEnvironments.CreateOrUpdateMultiRolePool.
-type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse struct {
-	AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResult contains the result from method AppServiceEnvironments.CreateOrUpdateMultiRolePool.
-type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResult struct {
-	WorkerPoolResource
-}
-
-// AppServiceEnvironmentsCreateOrUpdatePollerResponse contains the response from method AppServiceEnvironments.CreateOrUpdate.
-type AppServiceEnvironmentsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateResponse, error) {
-	respType := AppServiceEnvironmentsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppServiceEnvironmentResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a AppServiceEnvironmentsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AppServiceEnvironmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AppServiceEnvironmentsCreateOrUpdateResponse contains the response from method AppServiceEnvironments.CreateOrUpdate.
-type AppServiceEnvironmentsCreateOrUpdateResponse struct {
-	AppServiceEnvironmentsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsCreateOrUpdateResult contains the result from method AppServiceEnvironments.CreateOrUpdate.
-type AppServiceEnvironmentsCreateOrUpdateResult struct {
-	AppServiceEnvironmentResource
-}
-
-// AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse contains the response from method AppServiceEnvironments.CreateOrUpdateWorkerPool.
-type AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error) {
-	respType := AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.WorkerPoolResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdateWorkerPool", token, client.pl, client.createOrUpdateWorkerPoolHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse contains the response from method AppServiceEnvironments.CreateOrUpdateWorkerPool.
-type AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse struct {
-	AppServiceEnvironmentsCreateOrUpdateWorkerPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsCreateOrUpdateWorkerPoolResult contains the result from method AppServiceEnvironments.CreateOrUpdateWorkerPool.
-type AppServiceEnvironmentsCreateOrUpdateWorkerPoolResult struct {
-	WorkerPoolResource
-}
-
-// AppServiceEnvironmentsDeletePollerResponse contains the response from method AppServiceEnvironments.Delete.
-type AppServiceEnvironmentsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsDeleteResponse, error) {
-	respType := AppServiceEnvironmentsDeleteResponse{}
+func (l ContainerAppsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContainerAppsClientDeleteResponse, error) {
+	respType := ContainerAppsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -573,13 +469,13 @@ func (l AppServiceEnvironmentsDeletePollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a AppServiceEnvironmentsDeletePollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsDeletePollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ContainerAppsClientDeletePollerResponse from the provided client and resume token.
+func (l *ContainerAppsClientDeletePollerResponse) Resume(ctx context.Context, client *ContainerAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ContainerAppsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AppServiceEnvironmentsDeletePoller{
+	poller := &ContainerAppsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -591,1358 +487,442 @@ func (l *AppServiceEnvironmentsDeletePollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse contains the response from method AppServiceEnvironments.DeletePrivateEndpointConnection.
-type AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error) {
-	respType := AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Object)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.DeletePrivateEndpointConnection", token, client.pl, client.deletePrivateEndpointConnectionHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse contains the response from method AppServiceEnvironments.DeletePrivateEndpointConnection.
-type AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse struct {
-	AppServiceEnvironmentsDeletePrivateEndpointConnectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsDeletePrivateEndpointConnectionResult contains the result from method AppServiceEnvironments.DeletePrivateEndpointConnection.
-type AppServiceEnvironmentsDeletePrivateEndpointConnectionResult struct {
-	// Any object
-	Object map[string]interface{}
-}
-
-// AppServiceEnvironmentsDeleteResponse contains the response from method AppServiceEnvironments.Delete.
-type AppServiceEnvironmentsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse contains the response from method AppServiceEnvironments.GetAseV3NetworkingConfiguration.
-type AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse struct {
-	AppServiceEnvironmentsGetAseV3NetworkingConfigurationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetAseV3NetworkingConfigurationResult contains the result from method AppServiceEnvironments.GetAseV3NetworkingConfiguration.
-type AppServiceEnvironmentsGetAseV3NetworkingConfigurationResult struct {
-	AseV3NetworkingConfiguration
-}
-
-// AppServiceEnvironmentsGetDiagnosticsItemResponse contains the response from method AppServiceEnvironments.GetDiagnosticsItem.
-type AppServiceEnvironmentsGetDiagnosticsItemResponse struct {
-	AppServiceEnvironmentsGetDiagnosticsItemResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetDiagnosticsItemResult contains the result from method AppServiceEnvironments.GetDiagnosticsItem.
-type AppServiceEnvironmentsGetDiagnosticsItemResult struct {
-	HostingEnvironmentDiagnostics
-}
-
-// AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse contains the response from method AppServiceEnvironments.GetInboundNetworkDependenciesEndpoints.
-type AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse struct {
-	AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResult contains the result from method AppServiceEnvironments.GetInboundNetworkDependenciesEndpoints.
-type AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResult struct {
-	InboundEnvironmentEndpointCollection
-}
-
-// AppServiceEnvironmentsGetMultiRolePoolResponse contains the response from method AppServiceEnvironments.GetMultiRolePool.
-type AppServiceEnvironmentsGetMultiRolePoolResponse struct {
-	AppServiceEnvironmentsGetMultiRolePoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetMultiRolePoolResult contains the result from method AppServiceEnvironments.GetMultiRolePool.
-type AppServiceEnvironmentsGetMultiRolePoolResult struct {
-	WorkerPoolResource
-}
-
-// AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse contains the response from method AppServiceEnvironments.GetOutboundNetworkDependenciesEndpoints.
-type AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse struct {
-	AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResult contains the result from method AppServiceEnvironments.GetOutboundNetworkDependenciesEndpoints.
-type AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResult struct {
-	OutboundEnvironmentEndpointCollection
-}
-
-// AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse contains the response from method AppServiceEnvironments.GetPrivateEndpointConnectionList.
-type AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse struct {
-	AppServiceEnvironmentsGetPrivateEndpointConnectionListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetPrivateEndpointConnectionListResult contains the result from method AppServiceEnvironments.GetPrivateEndpointConnectionList.
-type AppServiceEnvironmentsGetPrivateEndpointConnectionListResult struct {
-	PrivateEndpointConnectionCollection
-}
-
-// AppServiceEnvironmentsGetPrivateEndpointConnectionResponse contains the response from method AppServiceEnvironments.GetPrivateEndpointConnection.
-type AppServiceEnvironmentsGetPrivateEndpointConnectionResponse struct {
-	AppServiceEnvironmentsGetPrivateEndpointConnectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetPrivateEndpointConnectionResult contains the result from method AppServiceEnvironments.GetPrivateEndpointConnection.
-type AppServiceEnvironmentsGetPrivateEndpointConnectionResult struct {
-	RemotePrivateEndpointConnectionARMResource
-}
-
-// AppServiceEnvironmentsGetPrivateLinkResourcesResponse contains the response from method AppServiceEnvironments.GetPrivateLinkResources.
-type AppServiceEnvironmentsGetPrivateLinkResourcesResponse struct {
-	AppServiceEnvironmentsGetPrivateLinkResourcesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetPrivateLinkResourcesResult contains the result from method AppServiceEnvironments.GetPrivateLinkResources.
-type AppServiceEnvironmentsGetPrivateLinkResourcesResult struct {
-	PrivateLinkResourcesWrapper
-}
-
-// AppServiceEnvironmentsGetResponse contains the response from method AppServiceEnvironments.Get.
-type AppServiceEnvironmentsGetResponse struct {
-	AppServiceEnvironmentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetResult contains the result from method AppServiceEnvironments.Get.
-type AppServiceEnvironmentsGetResult struct {
-	AppServiceEnvironmentResource
-}
-
-// AppServiceEnvironmentsGetVipInfoResponse contains the response from method AppServiceEnvironments.GetVipInfo.
-type AppServiceEnvironmentsGetVipInfoResponse struct {
-	AppServiceEnvironmentsGetVipInfoResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetVipInfoResult contains the result from method AppServiceEnvironments.GetVipInfo.
-type AppServiceEnvironmentsGetVipInfoResult struct {
-	AddressResponse
-}
-
-// AppServiceEnvironmentsGetWorkerPoolResponse contains the response from method AppServiceEnvironments.GetWorkerPool.
-type AppServiceEnvironmentsGetWorkerPoolResponse struct {
-	AppServiceEnvironmentsGetWorkerPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsGetWorkerPoolResult contains the result from method AppServiceEnvironments.GetWorkerPool.
-type AppServiceEnvironmentsGetWorkerPoolResult struct {
-	WorkerPoolResource
-}
-
-// AppServiceEnvironmentsListAppServicePlansResponse contains the response from method AppServiceEnvironments.ListAppServicePlans.
-type AppServiceEnvironmentsListAppServicePlansResponse struct {
-	AppServiceEnvironmentsListAppServicePlansResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListAppServicePlansResult contains the result from method AppServiceEnvironments.ListAppServicePlans.
-type AppServiceEnvironmentsListAppServicePlansResult struct {
-	AppServicePlanCollection
-}
-
-// AppServiceEnvironmentsListByResourceGroupResponse contains the response from method AppServiceEnvironments.ListByResourceGroup.
-type AppServiceEnvironmentsListByResourceGroupResponse struct {
-	AppServiceEnvironmentsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListByResourceGroupResult contains the result from method AppServiceEnvironments.ListByResourceGroup.
-type AppServiceEnvironmentsListByResourceGroupResult struct {
-	AppServiceEnvironmentCollection
-}
-
-// AppServiceEnvironmentsListCapacitiesResponse contains the response from method AppServiceEnvironments.ListCapacities.
-type AppServiceEnvironmentsListCapacitiesResponse struct {
-	AppServiceEnvironmentsListCapacitiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListCapacitiesResult contains the result from method AppServiceEnvironments.ListCapacities.
-type AppServiceEnvironmentsListCapacitiesResult struct {
-	StampCapacityCollection
-}
-
-// AppServiceEnvironmentsListDiagnosticsResponse contains the response from method AppServiceEnvironments.ListDiagnostics.
-type AppServiceEnvironmentsListDiagnosticsResponse struct {
-	AppServiceEnvironmentsListDiagnosticsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListDiagnosticsResult contains the result from method AppServiceEnvironments.ListDiagnostics.
-type AppServiceEnvironmentsListDiagnosticsResult struct {
-	// Array of HostingEnvironmentDiagnostics
-	HostingEnvironmentDiagnosticsArray []*HostingEnvironmentDiagnostics
-}
-
-// AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse contains the response from method AppServiceEnvironments.ListMultiRoleMetricDefinitions.
-type AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse struct {
-	AppServiceEnvironmentsListMultiRoleMetricDefinitionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListMultiRoleMetricDefinitionsResult contains the result from method AppServiceEnvironments.ListMultiRoleMetricDefinitions.
-type AppServiceEnvironmentsListMultiRoleMetricDefinitionsResult struct {
-	ResourceMetricDefinitionCollection
-}
-
-// AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse contains the response from method AppServiceEnvironments.ListMultiRolePoolInstanceMetricDefinitions.
-type AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse struct {
-	AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResult contains the result from method AppServiceEnvironments.ListMultiRolePoolInstanceMetricDefinitions.
-type AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResult struct {
-	ResourceMetricDefinitionCollection
-}
-
-// AppServiceEnvironmentsListMultiRolePoolSKUsResponse contains the response from method AppServiceEnvironments.ListMultiRolePoolSKUs.
-type AppServiceEnvironmentsListMultiRolePoolSKUsResponse struct {
-	AppServiceEnvironmentsListMultiRolePoolSKUsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListMultiRolePoolSKUsResult contains the result from method AppServiceEnvironments.ListMultiRolePoolSKUs.
-type AppServiceEnvironmentsListMultiRolePoolSKUsResult struct {
-	SKUInfoCollection
-}
-
-// AppServiceEnvironmentsListMultiRolePoolsResponse contains the response from method AppServiceEnvironments.ListMultiRolePools.
-type AppServiceEnvironmentsListMultiRolePoolsResponse struct {
-	AppServiceEnvironmentsListMultiRolePoolsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListMultiRolePoolsResult contains the result from method AppServiceEnvironments.ListMultiRolePools.
-type AppServiceEnvironmentsListMultiRolePoolsResult struct {
-	WorkerPoolCollection
-}
-
-// AppServiceEnvironmentsListMultiRoleUsagesResponse contains the response from method AppServiceEnvironments.ListMultiRoleUsages.
-type AppServiceEnvironmentsListMultiRoleUsagesResponse struct {
-	AppServiceEnvironmentsListMultiRoleUsagesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListMultiRoleUsagesResult contains the result from method AppServiceEnvironments.ListMultiRoleUsages.
-type AppServiceEnvironmentsListMultiRoleUsagesResult struct {
-	UsageCollection
-}
-
-// AppServiceEnvironmentsListOperationsResponse contains the response from method AppServiceEnvironments.ListOperations.
-type AppServiceEnvironmentsListOperationsResponse struct {
-	AppServiceEnvironmentsListOperationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListOperationsResult contains the result from method AppServiceEnvironments.ListOperations.
-type AppServiceEnvironmentsListOperationsResult struct {
-	// Array of Operation
-	OperationArray []*Operation
-}
-
-// AppServiceEnvironmentsListResponse contains the response from method AppServiceEnvironments.List.
-type AppServiceEnvironmentsListResponse struct {
-	AppServiceEnvironmentsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListResult contains the result from method AppServiceEnvironments.List.
-type AppServiceEnvironmentsListResult struct {
-	AppServiceEnvironmentCollection
-}
-
-// AppServiceEnvironmentsListUsagesResponse contains the response from method AppServiceEnvironments.ListUsages.
-type AppServiceEnvironmentsListUsagesResponse struct {
-	AppServiceEnvironmentsListUsagesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListUsagesResult contains the result from method AppServiceEnvironments.ListUsages.
-type AppServiceEnvironmentsListUsagesResult struct {
-	CsmUsageQuotaCollection
-}
-
-// AppServiceEnvironmentsListWebAppsResponse contains the response from method AppServiceEnvironments.ListWebApps.
-type AppServiceEnvironmentsListWebAppsResponse struct {
-	AppServiceEnvironmentsListWebAppsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListWebAppsResult contains the result from method AppServiceEnvironments.ListWebApps.
-type AppServiceEnvironmentsListWebAppsResult struct {
-	WebAppCollection
-}
-
-// AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse contains the response from method AppServiceEnvironments.ListWebWorkerMetricDefinitions.
-type AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse struct {
-	AppServiceEnvironmentsListWebWorkerMetricDefinitionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListWebWorkerMetricDefinitionsResult contains the result from method AppServiceEnvironments.ListWebWorkerMetricDefinitions.
-type AppServiceEnvironmentsListWebWorkerMetricDefinitionsResult struct {
-	ResourceMetricDefinitionCollection
-}
-
-// AppServiceEnvironmentsListWebWorkerUsagesResponse contains the response from method AppServiceEnvironments.ListWebWorkerUsages.
-type AppServiceEnvironmentsListWebWorkerUsagesResponse struct {
-	AppServiceEnvironmentsListWebWorkerUsagesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListWebWorkerUsagesResult contains the result from method AppServiceEnvironments.ListWebWorkerUsages.
-type AppServiceEnvironmentsListWebWorkerUsagesResult struct {
-	UsageCollection
-}
-
-// AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse contains the response from method AppServiceEnvironments.ListWorkerPoolInstanceMetricDefinitions.
-type AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse struct {
-	AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResult contains the result from method AppServiceEnvironments.ListWorkerPoolInstanceMetricDefinitions.
-type AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResult struct {
-	ResourceMetricDefinitionCollection
-}
-
-// AppServiceEnvironmentsListWorkerPoolSKUsResponse contains the response from method AppServiceEnvironments.ListWorkerPoolSKUs.
-type AppServiceEnvironmentsListWorkerPoolSKUsResponse struct {
-	AppServiceEnvironmentsListWorkerPoolSKUsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListWorkerPoolSKUsResult contains the result from method AppServiceEnvironments.ListWorkerPoolSKUs.
-type AppServiceEnvironmentsListWorkerPoolSKUsResult struct {
-	SKUInfoCollection
-}
-
-// AppServiceEnvironmentsListWorkerPoolsResponse contains the response from method AppServiceEnvironments.ListWorkerPools.
-type AppServiceEnvironmentsListWorkerPoolsResponse struct {
-	AppServiceEnvironmentsListWorkerPoolsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsListWorkerPoolsResult contains the result from method AppServiceEnvironments.ListWorkerPools.
-type AppServiceEnvironmentsListWorkerPoolsResult struct {
-	WorkerPoolCollection
-}
-
-// AppServiceEnvironmentsRebootResponse contains the response from method AppServiceEnvironments.Reboot.
-type AppServiceEnvironmentsRebootResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsResumePollerResponse contains the response from method AppServiceEnvironments.Resume.
-type AppServiceEnvironmentsResumePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsResumePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsResumePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*AppServiceEnvironmentsResumePager, error) {
-	respType := &AppServiceEnvironmentsResumePager{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
-	if err != nil {
-		return respType, err
-	}
-	respType.current.RawResponse = resp
-	respType.client = l.Poller.client
-	return respType, nil
-}
-
-// Resume rehydrates a AppServiceEnvironmentsResumePollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsResumePollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.Resume", token, client.pl, client.resumeHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AppServiceEnvironmentsResumePoller{
-		pt:     pt,
-		client: client,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AppServiceEnvironmentsResumeResponse contains the response from method AppServiceEnvironments.Resume.
-type AppServiceEnvironmentsResumeResponse struct {
-	AppServiceEnvironmentsResumeResult
+// ContainerAppsClientDeleteResponse contains the response from method ContainerAppsClient.Delete.
+type ContainerAppsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServiceEnvironmentsResumeResult contains the result from method AppServiceEnvironments.Resume.
-type AppServiceEnvironmentsResumeResult struct {
-	WebAppCollection
-}
-
-// AppServiceEnvironmentsSuspendPollerResponse contains the response from method AppServiceEnvironments.Suspend.
-type AppServiceEnvironmentsSuspendPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AppServiceEnvironmentsSuspendPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServiceEnvironmentsSuspendPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*AppServiceEnvironmentsSuspendPager, error) {
-	respType := &AppServiceEnvironmentsSuspendPager{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
-	if err != nil {
-		return respType, err
-	}
-	respType.current.RawResponse = resp
-	respType.client = l.Poller.client
-	return respType, nil
-}
-
-// Resume rehydrates a AppServiceEnvironmentsSuspendPollerResponse from the provided client and resume token.
-func (l *AppServiceEnvironmentsSuspendPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.Suspend", token, client.pl, client.suspendHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AppServiceEnvironmentsSuspendPoller{
-		pt:     pt,
-		client: client,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AppServiceEnvironmentsSuspendResponse contains the response from method AppServiceEnvironments.Suspend.
-type AppServiceEnvironmentsSuspendResponse struct {
-	AppServiceEnvironmentsSuspendResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsSuspendResult contains the result from method AppServiceEnvironments.Suspend.
-type AppServiceEnvironmentsSuspendResult struct {
-	WebAppCollection
-}
-
-// AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse contains the response from method AppServiceEnvironments.UpdateAseNetworkingConfiguration.
-type AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse struct {
-	AppServiceEnvironmentsUpdateAseNetworkingConfigurationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsUpdateAseNetworkingConfigurationResult contains the result from method AppServiceEnvironments.UpdateAseNetworkingConfiguration.
-type AppServiceEnvironmentsUpdateAseNetworkingConfigurationResult struct {
-	AseV3NetworkingConfiguration
-}
-
-// AppServiceEnvironmentsUpdateMultiRolePoolResponse contains the response from method AppServiceEnvironments.UpdateMultiRolePool.
-type AppServiceEnvironmentsUpdateMultiRolePoolResponse struct {
-	AppServiceEnvironmentsUpdateMultiRolePoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsUpdateMultiRolePoolResult contains the result from method AppServiceEnvironments.UpdateMultiRolePool.
-type AppServiceEnvironmentsUpdateMultiRolePoolResult struct {
-	WorkerPoolResource
-}
-
-// AppServiceEnvironmentsUpdateResponse contains the response from method AppServiceEnvironments.Update.
-type AppServiceEnvironmentsUpdateResponse struct {
-	AppServiceEnvironmentsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsUpdateResult contains the result from method AppServiceEnvironments.Update.
-type AppServiceEnvironmentsUpdateResult struct {
-	AppServiceEnvironmentResource
-}
-
-// AppServiceEnvironmentsUpdateWorkerPoolResponse contains the response from method AppServiceEnvironments.UpdateWorkerPool.
-type AppServiceEnvironmentsUpdateWorkerPoolResponse struct {
-	AppServiceEnvironmentsUpdateWorkerPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServiceEnvironmentsUpdateWorkerPoolResult contains the result from method AppServiceEnvironments.UpdateWorkerPool.
-type AppServiceEnvironmentsUpdateWorkerPoolResult struct {
-	WorkerPoolResource
-}
-
-// AppServicePlansCreateOrUpdatePollerResponse contains the response from method AppServicePlans.CreateOrUpdate.
-type AppServicePlansCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AppServicePlansCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppServicePlansCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServicePlansCreateOrUpdateResponse, error) {
-	respType := AppServicePlansCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppServicePlan)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a AppServicePlansCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *AppServicePlansCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AppServicePlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppServicePlansClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AppServicePlansCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AppServicePlansCreateOrUpdateResponse contains the response from method AppServicePlans.CreateOrUpdate.
-type AppServicePlansCreateOrUpdateResponse struct {
-	AppServicePlansCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansCreateOrUpdateResult contains the result from method AppServicePlans.CreateOrUpdate.
-type AppServicePlansCreateOrUpdateResult struct {
-	AppServicePlan
-}
-
-// AppServicePlansCreateOrUpdateVnetRouteResponse contains the response from method AppServicePlans.CreateOrUpdateVnetRoute.
-type AppServicePlansCreateOrUpdateVnetRouteResponse struct {
-	AppServicePlansCreateOrUpdateVnetRouteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansCreateOrUpdateVnetRouteResult contains the result from method AppServicePlans.CreateOrUpdateVnetRoute.
-type AppServicePlansCreateOrUpdateVnetRouteResult struct {
-	VnetRoute
-}
-
-// AppServicePlansDeleteHybridConnectionResponse contains the response from method AppServicePlans.DeleteHybridConnection.
-type AppServicePlansDeleteHybridConnectionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansDeleteResponse contains the response from method AppServicePlans.Delete.
-type AppServicePlansDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansDeleteVnetRouteResponse contains the response from method AppServicePlans.DeleteVnetRoute.
-type AppServicePlansDeleteVnetRouteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansGetHybridConnectionPlanLimitResponse contains the response from method AppServicePlans.GetHybridConnectionPlanLimit.
-type AppServicePlansGetHybridConnectionPlanLimitResponse struct {
-	AppServicePlansGetHybridConnectionPlanLimitResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansGetHybridConnectionPlanLimitResult contains the result from method AppServicePlans.GetHybridConnectionPlanLimit.
-type AppServicePlansGetHybridConnectionPlanLimitResult struct {
-	HybridConnectionLimits
-}
-
-// AppServicePlansGetHybridConnectionResponse contains the response from method AppServicePlans.GetHybridConnection.
-type AppServicePlansGetHybridConnectionResponse struct {
-	AppServicePlansGetHybridConnectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansGetHybridConnectionResult contains the result from method AppServicePlans.GetHybridConnection.
-type AppServicePlansGetHybridConnectionResult struct {
-	HybridConnection
-}
-
-// AppServicePlansGetResponse contains the response from method AppServicePlans.Get.
-type AppServicePlansGetResponse struct {
-	AppServicePlansGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansGetResult contains the result from method AppServicePlans.Get.
-type AppServicePlansGetResult struct {
-	AppServicePlan
-}
-
-// AppServicePlansGetRouteForVnetResponse contains the response from method AppServicePlans.GetRouteForVnet.
-type AppServicePlansGetRouteForVnetResponse struct {
-	AppServicePlansGetRouteForVnetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansGetRouteForVnetResult contains the result from method AppServicePlans.GetRouteForVnet.
-type AppServicePlansGetRouteForVnetResult struct {
-	// Array of VnetRoute
-	VnetRouteArray []*VnetRoute
-}
-
-// AppServicePlansGetServerFarmSKUsResponse contains the response from method AppServicePlans.GetServerFarmSKUs.
-type AppServicePlansGetServerFarmSKUsResponse struct {
-	AppServicePlansGetServerFarmSKUsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansGetServerFarmSKUsResult contains the result from method AppServicePlans.GetServerFarmSKUs.
-type AppServicePlansGetServerFarmSKUsResult struct {
-	// Any object
-	Object map[string]interface{}
-}
-
-// AppServicePlansGetVnetFromServerFarmResponse contains the response from method AppServicePlans.GetVnetFromServerFarm.
-type AppServicePlansGetVnetFromServerFarmResponse struct {
-	AppServicePlansGetVnetFromServerFarmResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansGetVnetFromServerFarmResult contains the result from method AppServicePlans.GetVnetFromServerFarm.
-type AppServicePlansGetVnetFromServerFarmResult struct {
-	VnetInfoResource
-}
-
-// AppServicePlansGetVnetGatewayResponse contains the response from method AppServicePlans.GetVnetGateway.
-type AppServicePlansGetVnetGatewayResponse struct {
-	AppServicePlansGetVnetGatewayResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansGetVnetGatewayResult contains the result from method AppServicePlans.GetVnetGateway.
-type AppServicePlansGetVnetGatewayResult struct {
-	VnetGateway
-}
-
-// AppServicePlansListByResourceGroupResponse contains the response from method AppServicePlans.ListByResourceGroup.
-type AppServicePlansListByResourceGroupResponse struct {
-	AppServicePlansListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListByResourceGroupResult contains the result from method AppServicePlans.ListByResourceGroup.
-type AppServicePlansListByResourceGroupResult struct {
-	AppServicePlanCollection
-}
-
-// AppServicePlansListCapabilitiesResponse contains the response from method AppServicePlans.ListCapabilities.
-type AppServicePlansListCapabilitiesResponse struct {
-	AppServicePlansListCapabilitiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListCapabilitiesResult contains the result from method AppServicePlans.ListCapabilities.
-type AppServicePlansListCapabilitiesResult struct {
-	// Array of Capability
-	CapabilityArray []*Capability
-}
-
-// AppServicePlansListHybridConnectionKeysResponse contains the response from method AppServicePlans.ListHybridConnectionKeys.
-type AppServicePlansListHybridConnectionKeysResponse struct {
-	AppServicePlansListHybridConnectionKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListHybridConnectionKeysResult contains the result from method AppServicePlans.ListHybridConnectionKeys.
-type AppServicePlansListHybridConnectionKeysResult struct {
-	HybridConnectionKey
-}
-
-// AppServicePlansListHybridConnectionsResponse contains the response from method AppServicePlans.ListHybridConnections.
-type AppServicePlansListHybridConnectionsResponse struct {
-	AppServicePlansListHybridConnectionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListHybridConnectionsResult contains the result from method AppServicePlans.ListHybridConnections.
-type AppServicePlansListHybridConnectionsResult struct {
-	HybridConnectionCollection
-}
-
-// AppServicePlansListResponse contains the response from method AppServicePlans.List.
-type AppServicePlansListResponse struct {
-	AppServicePlansListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListResult contains the result from method AppServicePlans.List.
-type AppServicePlansListResult struct {
-	AppServicePlanCollection
-}
-
-// AppServicePlansListRoutesForVnetResponse contains the response from method AppServicePlans.ListRoutesForVnet.
-type AppServicePlansListRoutesForVnetResponse struct {
-	AppServicePlansListRoutesForVnetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListRoutesForVnetResult contains the result from method AppServicePlans.ListRoutesForVnet.
-type AppServicePlansListRoutesForVnetResult struct {
-	// Array of VnetRoute
-	VnetRouteArray []*VnetRoute
-}
-
-// AppServicePlansListUsagesResponse contains the response from method AppServicePlans.ListUsages.
-type AppServicePlansListUsagesResponse struct {
-	AppServicePlansListUsagesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListUsagesResult contains the result from method AppServicePlans.ListUsages.
-type AppServicePlansListUsagesResult struct {
-	CsmUsageQuotaCollection
-}
-
-// AppServicePlansListVnetsResponse contains the response from method AppServicePlans.ListVnets.
-type AppServicePlansListVnetsResponse struct {
-	AppServicePlansListVnetsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListVnetsResult contains the result from method AppServicePlans.ListVnets.
-type AppServicePlansListVnetsResult struct {
-	// Array of VnetInfoResource
-	VnetInfoResourceArray []*VnetInfoResource
-}
-
-// AppServicePlansListWebAppsByHybridConnectionResponse contains the response from method AppServicePlans.ListWebAppsByHybridConnection.
-type AppServicePlansListWebAppsByHybridConnectionResponse struct {
-	AppServicePlansListWebAppsByHybridConnectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListWebAppsByHybridConnectionResult contains the result from method AppServicePlans.ListWebAppsByHybridConnection.
-type AppServicePlansListWebAppsByHybridConnectionResult struct {
-	ResourceCollection
-}
-
-// AppServicePlansListWebAppsResponse contains the response from method AppServicePlans.ListWebApps.
-type AppServicePlansListWebAppsResponse struct {
-	AppServicePlansListWebAppsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansListWebAppsResult contains the result from method AppServicePlans.ListWebApps.
-type AppServicePlansListWebAppsResult struct {
-	WebAppCollection
-}
-
-// AppServicePlansRebootWorkerResponse contains the response from method AppServicePlans.RebootWorker.
-type AppServicePlansRebootWorkerResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansRestartWebAppsResponse contains the response from method AppServicePlans.RestartWebApps.
-type AppServicePlansRestartWebAppsResponse struct {
+// ContainerAppsClientGetResponse contains the response from method ContainerAppsClient.Get.
+type ContainerAppsClientGetResponse struct {
+	ContainerAppsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppServicePlansUpdateResponse contains the response from method AppServicePlans.Update.
-type AppServicePlansUpdateResponse struct {
-	AppServicePlansUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansUpdateResult contains the result from method AppServicePlans.Update.
-type AppServicePlansUpdateResult struct {
-	AppServicePlan
-}
-
-// AppServicePlansUpdateVnetGatewayResponse contains the response from method AppServicePlans.UpdateVnetGateway.
-type AppServicePlansUpdateVnetGatewayResponse struct {
-	AppServicePlansUpdateVnetGatewayResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansUpdateVnetGatewayResult contains the result from method AppServicePlans.UpdateVnetGateway.
-type AppServicePlansUpdateVnetGatewayResult struct {
-	VnetGateway
-}
-
-// AppServicePlansUpdateVnetRouteResponse contains the response from method AppServicePlans.UpdateVnetRoute.
-type AppServicePlansUpdateVnetRouteResponse struct {
-	AppServicePlansUpdateVnetRouteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AppServicePlansUpdateVnetRouteResult contains the result from method AppServicePlans.UpdateVnetRoute.
-type AppServicePlansUpdateVnetRouteResult struct {
-	VnetRoute
-}
-
-// CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse contains the response from method CertificateOrdersDiagnostics.GetAppServiceCertificateOrderDetectorResponse.
-type CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse struct {
-	CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResult contains the result from method CertificateOrdersDiagnostics.GetAppServiceCertificateOrderDetectorResponse.
-type CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResult struct {
-	DetectorResponse
+// ContainerAppsClientGetResult contains the result from method ContainerAppsClient.Get.
+type ContainerAppsClientGetResult struct {
+	ContainerApp
 }
 
-// CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse contains the response from method CertificateOrdersDiagnostics.ListAppServiceCertificateOrderDetectorResponse.
-type CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse struct {
-	CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResult
+// ContainerAppsClientListByResourceGroupResponse contains the response from method ContainerAppsClient.ListByResourceGroup.
+type ContainerAppsClientListByResourceGroupResponse struct {
+	ContainerAppsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResult contains the result from method CertificateOrdersDiagnostics.ListAppServiceCertificateOrderDetectorResponse.
-type CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResult struct {
-	DetectorResponseCollection
+// ContainerAppsClientListByResourceGroupResult contains the result from method ContainerAppsClient.ListByResourceGroup.
+type ContainerAppsClientListByResourceGroupResult struct {
+	ContainerAppCollection
 }
 
-// CertificateRegistrationProviderListOperationsResponse contains the response from method CertificateRegistrationProvider.ListOperations.
-type CertificateRegistrationProviderListOperationsResponse struct {
-	CertificateRegistrationProviderListOperationsResult
+// ContainerAppsClientListBySubscriptionResponse contains the response from method ContainerAppsClient.ListBySubscription.
+type ContainerAppsClientListBySubscriptionResponse struct {
+	ContainerAppsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateRegistrationProviderListOperationsResult contains the result from method CertificateRegistrationProvider.ListOperations.
-type CertificateRegistrationProviderListOperationsResult struct {
-	CsmOperationCollection
+// ContainerAppsClientListBySubscriptionResult contains the result from method ContainerAppsClient.ListBySubscription.
+type ContainerAppsClientListBySubscriptionResult struct {
+	ContainerAppCollection
 }
 
-// CertificatesCreateOrUpdateResponse contains the response from method Certificates.CreateOrUpdate.
-type CertificatesCreateOrUpdateResponse struct {
-	CertificatesCreateOrUpdateResult
+// ContainerAppsClientListSecretsResponse contains the response from method ContainerAppsClient.ListSecrets.
+type ContainerAppsClientListSecretsResponse struct {
+	ContainerAppsClientListSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesCreateOrUpdateResult contains the result from method Certificates.CreateOrUpdate.
-type CertificatesCreateOrUpdateResult struct {
-	Certificate
+// ContainerAppsClientListSecretsResult contains the result from method ContainerAppsClient.ListSecrets.
+type ContainerAppsClientListSecretsResult struct {
+	SecretsCollection
 }
 
-// CertificatesDeleteResponse contains the response from method Certificates.Delete.
-type CertificatesDeleteResponse struct {
+// ContainerAppsRevisionsClientActivateRevisionResponse contains the response from method ContainerAppsRevisionsClient.ActivateRevision.
+type ContainerAppsRevisionsClientActivateRevisionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesGetResponse contains the response from method Certificates.Get.
-type CertificatesGetResponse struct {
-	CertificatesGetResult
+// ContainerAppsRevisionsClientDeactivateRevisionResponse contains the response from method ContainerAppsRevisionsClient.DeactivateRevision.
+type ContainerAppsRevisionsClientDeactivateRevisionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesGetResult contains the result from method Certificates.Get.
-type CertificatesGetResult struct {
-	Certificate
-}
-
-// CertificatesListByResourceGroupResponse contains the response from method Certificates.ListByResourceGroup.
-type CertificatesListByResourceGroupResponse struct {
-	CertificatesListByResourceGroupResult
+// ContainerAppsRevisionsClientGetRevisionResponse contains the response from method ContainerAppsRevisionsClient.GetRevision.
+type ContainerAppsRevisionsClientGetRevisionResponse struct {
+	ContainerAppsRevisionsClientGetRevisionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesListByResourceGroupResult contains the result from method Certificates.ListByResourceGroup.
-type CertificatesListByResourceGroupResult struct {
-	CertificateCollection
+// ContainerAppsRevisionsClientGetRevisionResult contains the result from method ContainerAppsRevisionsClient.GetRevision.
+type ContainerAppsRevisionsClientGetRevisionResult struct {
+	Revision
 }
 
-// CertificatesListResponse contains the response from method Certificates.List.
-type CertificatesListResponse struct {
-	CertificatesListResult
+// ContainerAppsRevisionsClientListRevisionsResponse contains the response from method ContainerAppsRevisionsClient.ListRevisions.
+type ContainerAppsRevisionsClientListRevisionsResponse struct {
+	ContainerAppsRevisionsClientListRevisionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificatesListResult contains the result from method Certificates.List.
-type CertificatesListResult struct {
-	CertificateCollection
+// ContainerAppsRevisionsClientListRevisionsResult contains the result from method ContainerAppsRevisionsClient.ListRevisions.
+type ContainerAppsRevisionsClientListRevisionsResult struct {
+	RevisionCollection
 }
 
-// CertificatesUpdateResponse contains the response from method Certificates.Update.
-type CertificatesUpdateResponse struct {
-	CertificatesUpdateResult
+// ContainerAppsRevisionsClientRestartRevisionResponse contains the response from method ContainerAppsRevisionsClient.RestartRevision.
+type ContainerAppsRevisionsClientRestartRevisionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-}
-
-// CertificatesUpdateResult contains the result from method Certificates.Update.
-type CertificatesUpdateResult struct {
-	Certificate
 }
 
-// DeletedWebAppsGetDeletedWebAppByLocationResponse contains the response from method DeletedWebApps.GetDeletedWebAppByLocation.
-type DeletedWebAppsGetDeletedWebAppByLocationResponse struct {
-	DeletedWebAppsGetDeletedWebAppByLocationResult
+// DeletedWebAppsClientGetDeletedWebAppByLocationResponse contains the response from method DeletedWebAppsClient.GetDeletedWebAppByLocation.
+type DeletedWebAppsClientGetDeletedWebAppByLocationResponse struct {
+	DeletedWebAppsClientGetDeletedWebAppByLocationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeletedWebAppsGetDeletedWebAppByLocationResult contains the result from method DeletedWebApps.GetDeletedWebAppByLocation.
-type DeletedWebAppsGetDeletedWebAppByLocationResult struct {
+// DeletedWebAppsClientGetDeletedWebAppByLocationResult contains the result from method DeletedWebAppsClient.GetDeletedWebAppByLocation.
+type DeletedWebAppsClientGetDeletedWebAppByLocationResult struct {
 	DeletedSite
 }
 
-// DeletedWebAppsListByLocationResponse contains the response from method DeletedWebApps.ListByLocation.
-type DeletedWebAppsListByLocationResponse struct {
-	DeletedWebAppsListByLocationResult
+// DeletedWebAppsClientListByLocationResponse contains the response from method DeletedWebAppsClient.ListByLocation.
+type DeletedWebAppsClientListByLocationResponse struct {
+	DeletedWebAppsClientListByLocationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeletedWebAppsListByLocationResult contains the result from method DeletedWebApps.ListByLocation.
-type DeletedWebAppsListByLocationResult struct {
+// DeletedWebAppsClientListByLocationResult contains the result from method DeletedWebAppsClient.ListByLocation.
+type DeletedWebAppsClientListByLocationResult struct {
 	DeletedWebAppCollection
 }
 
-// DeletedWebAppsListResponse contains the response from method DeletedWebApps.List.
-type DeletedWebAppsListResponse struct {
-	DeletedWebAppsListResult
+// DeletedWebAppsClientListResponse contains the response from method DeletedWebAppsClient.List.
+type DeletedWebAppsClientListResponse struct {
+	DeletedWebAppsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeletedWebAppsListResult contains the result from method DeletedWebApps.List.
-type DeletedWebAppsListResult struct {
+// DeletedWebAppsClientListResult contains the result from method DeletedWebAppsClient.List.
+type DeletedWebAppsClientListResult struct {
 	DeletedWebAppCollection
 }
 
-// DiagnosticsExecuteSiteAnalysisResponse contains the response from method Diagnostics.ExecuteSiteAnalysis.
-type DiagnosticsExecuteSiteAnalysisResponse struct {
-	DiagnosticsExecuteSiteAnalysisResult
+// DiagnosticsClientExecuteSiteAnalysisResponse contains the response from method DiagnosticsClient.ExecuteSiteAnalysis.
+type DiagnosticsClientExecuteSiteAnalysisResponse struct {
+	DiagnosticsClientExecuteSiteAnalysisResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsExecuteSiteAnalysisResult contains the result from method Diagnostics.ExecuteSiteAnalysis.
-type DiagnosticsExecuteSiteAnalysisResult struct {
+// DiagnosticsClientExecuteSiteAnalysisResult contains the result from method DiagnosticsClient.ExecuteSiteAnalysis.
+type DiagnosticsClientExecuteSiteAnalysisResult struct {
 	DiagnosticAnalysis
 }
 
-// DiagnosticsExecuteSiteAnalysisSlotResponse contains the response from method Diagnostics.ExecuteSiteAnalysisSlot.
-type DiagnosticsExecuteSiteAnalysisSlotResponse struct {
-	DiagnosticsExecuteSiteAnalysisSlotResult
+// DiagnosticsClientExecuteSiteAnalysisSlotResponse contains the response from method DiagnosticsClient.ExecuteSiteAnalysisSlot.
+type DiagnosticsClientExecuteSiteAnalysisSlotResponse struct {
+	DiagnosticsClientExecuteSiteAnalysisSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsExecuteSiteAnalysisSlotResult contains the result from method Diagnostics.ExecuteSiteAnalysisSlot.
-type DiagnosticsExecuteSiteAnalysisSlotResult struct {
+// DiagnosticsClientExecuteSiteAnalysisSlotResult contains the result from method DiagnosticsClient.ExecuteSiteAnalysisSlot.
+type DiagnosticsClientExecuteSiteAnalysisSlotResult struct {
 	DiagnosticAnalysis
 }
 
-// DiagnosticsExecuteSiteDetectorResponse contains the response from method Diagnostics.ExecuteSiteDetector.
-type DiagnosticsExecuteSiteDetectorResponse struct {
-	DiagnosticsExecuteSiteDetectorResult
+// DiagnosticsClientExecuteSiteDetectorResponse contains the response from method DiagnosticsClient.ExecuteSiteDetector.
+type DiagnosticsClientExecuteSiteDetectorResponse struct {
+	DiagnosticsClientExecuteSiteDetectorResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsExecuteSiteDetectorResult contains the result from method Diagnostics.ExecuteSiteDetector.
-type DiagnosticsExecuteSiteDetectorResult struct {
+// DiagnosticsClientExecuteSiteDetectorResult contains the result from method DiagnosticsClient.ExecuteSiteDetector.
+type DiagnosticsClientExecuteSiteDetectorResult struct {
 	DiagnosticDetectorResponse
 }
 
-// DiagnosticsExecuteSiteDetectorSlotResponse contains the response from method Diagnostics.ExecuteSiteDetectorSlot.
-type DiagnosticsExecuteSiteDetectorSlotResponse struct {
-	DiagnosticsExecuteSiteDetectorSlotResult
+// DiagnosticsClientExecuteSiteDetectorSlotResponse contains the response from method DiagnosticsClient.ExecuteSiteDetectorSlot.
+type DiagnosticsClientExecuteSiteDetectorSlotResponse struct {
+	DiagnosticsClientExecuteSiteDetectorSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsExecuteSiteDetectorSlotResult contains the result from method Diagnostics.ExecuteSiteDetectorSlot.
-type DiagnosticsExecuteSiteDetectorSlotResult struct {
+// DiagnosticsClientExecuteSiteDetectorSlotResult contains the result from method DiagnosticsClient.ExecuteSiteDetectorSlot.
+type DiagnosticsClientExecuteSiteDetectorSlotResult struct {
 	DiagnosticDetectorResponse
 }
 
-// DiagnosticsGetHostingEnvironmentDetectorResponseResponse contains the response from method Diagnostics.GetHostingEnvironmentDetectorResponse.
-type DiagnosticsGetHostingEnvironmentDetectorResponseResponse struct {
-	DiagnosticsGetHostingEnvironmentDetectorResponseResult
+// DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse contains the response from method DiagnosticsClient.GetHostingEnvironmentDetectorResponse.
+type DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse struct {
+	DiagnosticsClientGetHostingEnvironmentDetectorResponseResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetHostingEnvironmentDetectorResponseResult contains the result from method Diagnostics.GetHostingEnvironmentDetectorResponse.
-type DiagnosticsGetHostingEnvironmentDetectorResponseResult struct {
+// DiagnosticsClientGetHostingEnvironmentDetectorResponseResult contains the result from method DiagnosticsClient.GetHostingEnvironmentDetectorResponse.
+type DiagnosticsClientGetHostingEnvironmentDetectorResponseResult struct {
 	DetectorResponse
 }
 
-// DiagnosticsGetSiteAnalysisResponse contains the response from method Diagnostics.GetSiteAnalysis.
-type DiagnosticsGetSiteAnalysisResponse struct {
-	DiagnosticsGetSiteAnalysisResult
+// DiagnosticsClientGetSiteAnalysisResponse contains the response from method DiagnosticsClient.GetSiteAnalysis.
+type DiagnosticsClientGetSiteAnalysisResponse struct {
+	DiagnosticsClientGetSiteAnalysisResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetSiteAnalysisResult contains the result from method Diagnostics.GetSiteAnalysis.
-type DiagnosticsGetSiteAnalysisResult struct {
+// DiagnosticsClientGetSiteAnalysisResult contains the result from method DiagnosticsClient.GetSiteAnalysis.
+type DiagnosticsClientGetSiteAnalysisResult struct {
 	AnalysisDefinition
 }
 
-// DiagnosticsGetSiteAnalysisSlotResponse contains the response from method Diagnostics.GetSiteAnalysisSlot.
-type DiagnosticsGetSiteAnalysisSlotResponse struct {
-	DiagnosticsGetSiteAnalysisSlotResult
+// DiagnosticsClientGetSiteAnalysisSlotResponse contains the response from method DiagnosticsClient.GetSiteAnalysisSlot.
+type DiagnosticsClientGetSiteAnalysisSlotResponse struct {
+	DiagnosticsClientGetSiteAnalysisSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetSiteAnalysisSlotResult contains the result from method Diagnostics.GetSiteAnalysisSlot.
-type DiagnosticsGetSiteAnalysisSlotResult struct {
+// DiagnosticsClientGetSiteAnalysisSlotResult contains the result from method DiagnosticsClient.GetSiteAnalysisSlot.
+type DiagnosticsClientGetSiteAnalysisSlotResult struct {
 	AnalysisDefinition
 }
 
-// DiagnosticsGetSiteDetectorResponse contains the response from method Diagnostics.GetSiteDetector.
-type DiagnosticsGetSiteDetectorResponse struct {
-	DiagnosticsGetSiteDetectorResult
+// DiagnosticsClientGetSiteDetectorResponse contains the response from method DiagnosticsClient.GetSiteDetector.
+type DiagnosticsClientGetSiteDetectorResponse struct {
+	DiagnosticsClientGetSiteDetectorResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetSiteDetectorResponseResponse contains the response from method Diagnostics.GetSiteDetectorResponse.
-type DiagnosticsGetSiteDetectorResponseResponse struct {
-	DiagnosticsGetSiteDetectorResponseResult
+// DiagnosticsClientGetSiteDetectorResponseResponse contains the response from method DiagnosticsClient.GetSiteDetectorResponse.
+type DiagnosticsClientGetSiteDetectorResponseResponse struct {
+	DiagnosticsClientGetSiteDetectorResponseResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetSiteDetectorResponseResult contains the result from method Diagnostics.GetSiteDetectorResponse.
-type DiagnosticsGetSiteDetectorResponseResult struct {
+// DiagnosticsClientGetSiteDetectorResponseResult contains the result from method DiagnosticsClient.GetSiteDetectorResponse.
+type DiagnosticsClientGetSiteDetectorResponseResult struct {
 	DetectorResponse
 }
 
-// DiagnosticsGetSiteDetectorResponseSlotResponse contains the response from method Diagnostics.GetSiteDetectorResponseSlot.
-type DiagnosticsGetSiteDetectorResponseSlotResponse struct {
-	DiagnosticsGetSiteDetectorResponseSlotResult
+// DiagnosticsClientGetSiteDetectorResponseSlotResponse contains the response from method DiagnosticsClient.GetSiteDetectorResponseSlot.
+type DiagnosticsClientGetSiteDetectorResponseSlotResponse struct {
+	DiagnosticsClientGetSiteDetectorResponseSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetSiteDetectorResponseSlotResult contains the result from method Diagnostics.GetSiteDetectorResponseSlot.
-type DiagnosticsGetSiteDetectorResponseSlotResult struct {
+// DiagnosticsClientGetSiteDetectorResponseSlotResult contains the result from method DiagnosticsClient.GetSiteDetectorResponseSlot.
+type DiagnosticsClientGetSiteDetectorResponseSlotResult struct {
 	DetectorResponse
 }
 
-// DiagnosticsGetSiteDetectorResult contains the result from method Diagnostics.GetSiteDetector.
-type DiagnosticsGetSiteDetectorResult struct {
+// DiagnosticsClientGetSiteDetectorResult contains the result from method DiagnosticsClient.GetSiteDetector.
+type DiagnosticsClientGetSiteDetectorResult struct {
 	DetectorDefinitionResource
 }
 
-// DiagnosticsGetSiteDetectorSlotResponse contains the response from method Diagnostics.GetSiteDetectorSlot.
-type DiagnosticsGetSiteDetectorSlotResponse struct {
-	DiagnosticsGetSiteDetectorSlotResult
+// DiagnosticsClientGetSiteDetectorSlotResponse contains the response from method DiagnosticsClient.GetSiteDetectorSlot.
+type DiagnosticsClientGetSiteDetectorSlotResponse struct {
+	DiagnosticsClientGetSiteDetectorSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetSiteDetectorSlotResult contains the result from method Diagnostics.GetSiteDetectorSlot.
-type DiagnosticsGetSiteDetectorSlotResult struct {
+// DiagnosticsClientGetSiteDetectorSlotResult contains the result from method DiagnosticsClient.GetSiteDetectorSlot.
+type DiagnosticsClientGetSiteDetectorSlotResult struct {
 	DetectorDefinitionResource
 }
 
-// DiagnosticsGetSiteDiagnosticCategoryResponse contains the response from method Diagnostics.GetSiteDiagnosticCategory.
-type DiagnosticsGetSiteDiagnosticCategoryResponse struct {
-	DiagnosticsGetSiteDiagnosticCategoryResult
+// DiagnosticsClientGetSiteDiagnosticCategoryResponse contains the response from method DiagnosticsClient.GetSiteDiagnosticCategory.
+type DiagnosticsClientGetSiteDiagnosticCategoryResponse struct {
+	DiagnosticsClientGetSiteDiagnosticCategoryResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetSiteDiagnosticCategoryResult contains the result from method Diagnostics.GetSiteDiagnosticCategory.
-type DiagnosticsGetSiteDiagnosticCategoryResult struct {
+// DiagnosticsClientGetSiteDiagnosticCategoryResult contains the result from method DiagnosticsClient.GetSiteDiagnosticCategory.
+type DiagnosticsClientGetSiteDiagnosticCategoryResult struct {
 	DiagnosticCategory
 }
 
-// DiagnosticsGetSiteDiagnosticCategorySlotResponse contains the response from method Diagnostics.GetSiteDiagnosticCategorySlot.
-type DiagnosticsGetSiteDiagnosticCategorySlotResponse struct {
-	DiagnosticsGetSiteDiagnosticCategorySlotResult
+// DiagnosticsClientGetSiteDiagnosticCategorySlotResponse contains the response from method DiagnosticsClient.GetSiteDiagnosticCategorySlot.
+type DiagnosticsClientGetSiteDiagnosticCategorySlotResponse struct {
+	DiagnosticsClientGetSiteDiagnosticCategorySlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsGetSiteDiagnosticCategorySlotResult contains the result from method Diagnostics.GetSiteDiagnosticCategorySlot.
-type DiagnosticsGetSiteDiagnosticCategorySlotResult struct {
+// DiagnosticsClientGetSiteDiagnosticCategorySlotResult contains the result from method DiagnosticsClient.GetSiteDiagnosticCategorySlot.
+type DiagnosticsClientGetSiteDiagnosticCategorySlotResult struct {
 	DiagnosticCategory
 }
 
-// DiagnosticsListHostingEnvironmentDetectorResponsesResponse contains the response from method Diagnostics.ListHostingEnvironmentDetectorResponses.
-type DiagnosticsListHostingEnvironmentDetectorResponsesResponse struct {
-	DiagnosticsListHostingEnvironmentDetectorResponsesResult
+// DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse contains the response from method DiagnosticsClient.ListHostingEnvironmentDetectorResponses.
+type DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse struct {
+	DiagnosticsClientListHostingEnvironmentDetectorResponsesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListHostingEnvironmentDetectorResponsesResult contains the result from method Diagnostics.ListHostingEnvironmentDetectorResponses.
-type DiagnosticsListHostingEnvironmentDetectorResponsesResult struct {
+// DiagnosticsClientListHostingEnvironmentDetectorResponsesResult contains the result from method DiagnosticsClient.ListHostingEnvironmentDetectorResponses.
+type DiagnosticsClientListHostingEnvironmentDetectorResponsesResult struct {
 	DetectorResponseCollection
 }
 
-// DiagnosticsListSiteAnalysesResponse contains the response from method Diagnostics.ListSiteAnalyses.
-type DiagnosticsListSiteAnalysesResponse struct {
-	DiagnosticsListSiteAnalysesResult
+// DiagnosticsClientListSiteAnalysesResponse contains the response from method DiagnosticsClient.ListSiteAnalyses.
+type DiagnosticsClientListSiteAnalysesResponse struct {
+	DiagnosticsClientListSiteAnalysesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListSiteAnalysesResult contains the result from method Diagnostics.ListSiteAnalyses.
-type DiagnosticsListSiteAnalysesResult struct {
+// DiagnosticsClientListSiteAnalysesResult contains the result from method DiagnosticsClient.ListSiteAnalyses.
+type DiagnosticsClientListSiteAnalysesResult struct {
 	DiagnosticAnalysisCollection
 }
 
-// DiagnosticsListSiteAnalysesSlotResponse contains the response from method Diagnostics.ListSiteAnalysesSlot.
-type DiagnosticsListSiteAnalysesSlotResponse struct {
-	DiagnosticsListSiteAnalysesSlotResult
+// DiagnosticsClientListSiteAnalysesSlotResponse contains the response from method DiagnosticsClient.ListSiteAnalysesSlot.
+type DiagnosticsClientListSiteAnalysesSlotResponse struct {
+	DiagnosticsClientListSiteAnalysesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListSiteAnalysesSlotResult contains the result from method Diagnostics.ListSiteAnalysesSlot.
-type DiagnosticsListSiteAnalysesSlotResult struct {
+// DiagnosticsClientListSiteAnalysesSlotResult contains the result from method DiagnosticsClient.ListSiteAnalysesSlot.
+type DiagnosticsClientListSiteAnalysesSlotResult struct {
 	DiagnosticAnalysisCollection
 }
 
-// DiagnosticsListSiteDetectorResponsesResponse contains the response from method Diagnostics.ListSiteDetectorResponses.
-type DiagnosticsListSiteDetectorResponsesResponse struct {
-	DiagnosticsListSiteDetectorResponsesResult
+// DiagnosticsClientListSiteDetectorResponsesResponse contains the response from method DiagnosticsClient.ListSiteDetectorResponses.
+type DiagnosticsClientListSiteDetectorResponsesResponse struct {
+	DiagnosticsClientListSiteDetectorResponsesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListSiteDetectorResponsesResult contains the result from method Diagnostics.ListSiteDetectorResponses.
-type DiagnosticsListSiteDetectorResponsesResult struct {
+// DiagnosticsClientListSiteDetectorResponsesResult contains the result from method DiagnosticsClient.ListSiteDetectorResponses.
+type DiagnosticsClientListSiteDetectorResponsesResult struct {
 	DetectorResponseCollection
 }
 
-// DiagnosticsListSiteDetectorResponsesSlotResponse contains the response from method Diagnostics.ListSiteDetectorResponsesSlot.
-type DiagnosticsListSiteDetectorResponsesSlotResponse struct {
-	DiagnosticsListSiteDetectorResponsesSlotResult
+// DiagnosticsClientListSiteDetectorResponsesSlotResponse contains the response from method DiagnosticsClient.ListSiteDetectorResponsesSlot.
+type DiagnosticsClientListSiteDetectorResponsesSlotResponse struct {
+	DiagnosticsClientListSiteDetectorResponsesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListSiteDetectorResponsesSlotResult contains the result from method Diagnostics.ListSiteDetectorResponsesSlot.
-type DiagnosticsListSiteDetectorResponsesSlotResult struct {
+// DiagnosticsClientListSiteDetectorResponsesSlotResult contains the result from method DiagnosticsClient.ListSiteDetectorResponsesSlot.
+type DiagnosticsClientListSiteDetectorResponsesSlotResult struct {
 	DetectorResponseCollection
 }
 
-// DiagnosticsListSiteDetectorsResponse contains the response from method Diagnostics.ListSiteDetectors.
-type DiagnosticsListSiteDetectorsResponse struct {
-	DiagnosticsListSiteDetectorsResult
+// DiagnosticsClientListSiteDetectorsResponse contains the response from method DiagnosticsClient.ListSiteDetectors.
+type DiagnosticsClientListSiteDetectorsResponse struct {
+	DiagnosticsClientListSiteDetectorsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListSiteDetectorsResult contains the result from method Diagnostics.ListSiteDetectors.
-type DiagnosticsListSiteDetectorsResult struct {
+// DiagnosticsClientListSiteDetectorsResult contains the result from method DiagnosticsClient.ListSiteDetectors.
+type DiagnosticsClientListSiteDetectorsResult struct {
 	DiagnosticDetectorCollection
 }
 
-// DiagnosticsListSiteDetectorsSlotResponse contains the response from method Diagnostics.ListSiteDetectorsSlot.
-type DiagnosticsListSiteDetectorsSlotResponse struct {
-	DiagnosticsListSiteDetectorsSlotResult
+// DiagnosticsClientListSiteDetectorsSlotResponse contains the response from method DiagnosticsClient.ListSiteDetectorsSlot.
+type DiagnosticsClientListSiteDetectorsSlotResponse struct {
+	DiagnosticsClientListSiteDetectorsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListSiteDetectorsSlotResult contains the result from method Diagnostics.ListSiteDetectorsSlot.
-type DiagnosticsListSiteDetectorsSlotResult struct {
+// DiagnosticsClientListSiteDetectorsSlotResult contains the result from method DiagnosticsClient.ListSiteDetectorsSlot.
+type DiagnosticsClientListSiteDetectorsSlotResult struct {
 	DiagnosticDetectorCollection
 }
 
-// DiagnosticsListSiteDiagnosticCategoriesResponse contains the response from method Diagnostics.ListSiteDiagnosticCategories.
-type DiagnosticsListSiteDiagnosticCategoriesResponse struct {
-	DiagnosticsListSiteDiagnosticCategoriesResult
+// DiagnosticsClientListSiteDiagnosticCategoriesResponse contains the response from method DiagnosticsClient.ListSiteDiagnosticCategories.
+type DiagnosticsClientListSiteDiagnosticCategoriesResponse struct {
+	DiagnosticsClientListSiteDiagnosticCategoriesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListSiteDiagnosticCategoriesResult contains the result from method Diagnostics.ListSiteDiagnosticCategories.
-type DiagnosticsListSiteDiagnosticCategoriesResult struct {
+// DiagnosticsClientListSiteDiagnosticCategoriesResult contains the result from method DiagnosticsClient.ListSiteDiagnosticCategories.
+type DiagnosticsClientListSiteDiagnosticCategoriesResult struct {
 	DiagnosticCategoryCollection
 }
 
-// DiagnosticsListSiteDiagnosticCategoriesSlotResponse contains the response from method Diagnostics.ListSiteDiagnosticCategoriesSlot.
-type DiagnosticsListSiteDiagnosticCategoriesSlotResponse struct {
-	DiagnosticsListSiteDiagnosticCategoriesSlotResult
+// DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse contains the response from method DiagnosticsClient.ListSiteDiagnosticCategoriesSlot.
+type DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse struct {
+	DiagnosticsClientListSiteDiagnosticCategoriesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiagnosticsListSiteDiagnosticCategoriesSlotResult contains the result from method Diagnostics.ListSiteDiagnosticCategoriesSlot.
-type DiagnosticsListSiteDiagnosticCategoriesSlotResult struct {
+// DiagnosticsClientListSiteDiagnosticCategoriesSlotResult contains the result from method DiagnosticsClient.ListSiteDiagnosticCategoriesSlot.
+type DiagnosticsClientListSiteDiagnosticCategoriesSlotResult struct {
 	DiagnosticCategoryCollection
 }
 
-// DomainRegistrationProviderListOperationsResponse contains the response from method DomainRegistrationProvider.ListOperations.
-type DomainRegistrationProviderListOperationsResponse struct {
-	DomainRegistrationProviderListOperationsResult
+// DomainRegistrationProviderClientListOperationsResponse contains the response from method DomainRegistrationProviderClient.ListOperations.
+type DomainRegistrationProviderClientListOperationsResponse struct {
+	DomainRegistrationProviderClientListOperationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainRegistrationProviderListOperationsResult contains the result from method DomainRegistrationProvider.ListOperations.
-type DomainRegistrationProviderListOperationsResult struct {
+// DomainRegistrationProviderClientListOperationsResult contains the result from method DomainRegistrationProviderClient.ListOperations.
+type DomainRegistrationProviderClientListOperationsResult struct {
 	CsmOperationCollection
 }
 
-// DomainsCheckAvailabilityResponse contains the response from method Domains.CheckAvailability.
-type DomainsCheckAvailabilityResponse struct {
-	DomainsCheckAvailabilityResult
+// DomainsClientCheckAvailabilityResponse contains the response from method DomainsClient.CheckAvailability.
+type DomainsClientCheckAvailabilityResponse struct {
+	DomainsClientCheckAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsCheckAvailabilityResult contains the result from method Domains.CheckAvailability.
-type DomainsCheckAvailabilityResult struct {
+// DomainsClientCheckAvailabilityResult contains the result from method DomainsClient.CheckAvailability.
+type DomainsClientCheckAvailabilityResult struct {
 	DomainAvailabilityCheckResult
 }
 
-// DomainsCreateOrUpdateOwnershipIdentifierResponse contains the response from method Domains.CreateOrUpdateOwnershipIdentifier.
-type DomainsCreateOrUpdateOwnershipIdentifierResponse struct {
-	DomainsCreateOrUpdateOwnershipIdentifierResult
+// DomainsClientCreateOrUpdateOwnershipIdentifierResponse contains the response from method DomainsClient.CreateOrUpdateOwnershipIdentifier.
+type DomainsClientCreateOrUpdateOwnershipIdentifierResponse struct {
+	DomainsClientCreateOrUpdateOwnershipIdentifierResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsCreateOrUpdateOwnershipIdentifierResult contains the result from method Domains.CreateOrUpdateOwnershipIdentifier.
-type DomainsCreateOrUpdateOwnershipIdentifierResult struct {
+// DomainsClientCreateOrUpdateOwnershipIdentifierResult contains the result from method DomainsClient.CreateOrUpdateOwnershipIdentifier.
+type DomainsClientCreateOrUpdateOwnershipIdentifierResult struct {
 	DomainOwnershipIdentifier
 }
 
-// DomainsCreateOrUpdatePollerResponse contains the response from method Domains.CreateOrUpdate.
-type DomainsCreateOrUpdatePollerResponse struct {
+// DomainsClientCreateOrUpdatePollerResponse contains the response from method DomainsClient.CreateOrUpdate.
+type DomainsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DomainsCreateOrUpdatePoller
+	Poller *DomainsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1951,8 +931,8 @@ type DomainsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DomainsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DomainsCreateOrUpdateResponse, error) {
-	respType := DomainsCreateOrUpdateResponse{}
+func (l DomainsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DomainsClientCreateOrUpdateResponse, error) {
+	respType := DomainsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Domain)
 	if err != nil {
 		return respType, err
@@ -1961,13 +941,13 @@ func (l DomainsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a DomainsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *DomainsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DomainsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DomainsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a DomainsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *DomainsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DomainsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DomainsCreateOrUpdatePoller{
+	poller := &DomainsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1979,179 +959,160 @@ func (l *DomainsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// DomainsCreateOrUpdateResponse contains the response from method Domains.CreateOrUpdate.
-type DomainsCreateOrUpdateResponse struct {
-	DomainsCreateOrUpdateResult
+// DomainsClientCreateOrUpdateResponse contains the response from method DomainsClient.CreateOrUpdate.
+type DomainsClientCreateOrUpdateResponse struct {
+	DomainsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsCreateOrUpdateResult contains the result from method Domains.CreateOrUpdate.
-type DomainsCreateOrUpdateResult struct {
+// DomainsClientCreateOrUpdateResult contains the result from method DomainsClient.CreateOrUpdate.
+type DomainsClientCreateOrUpdateResult struct {
 	Domain
 }
 
-// DomainsDeleteOwnershipIdentifierResponse contains the response from method Domains.DeleteOwnershipIdentifier.
-type DomainsDeleteOwnershipIdentifierResponse struct {
+// DomainsClientDeleteOwnershipIdentifierResponse contains the response from method DomainsClient.DeleteOwnershipIdentifier.
+type DomainsClientDeleteOwnershipIdentifierResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsDeleteResponse contains the response from method Domains.Delete.
-type DomainsDeleteResponse struct {
+// DomainsClientDeleteResponse contains the response from method DomainsClient.Delete.
+type DomainsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsGetControlCenterSsoRequestResponse contains the response from method Domains.GetControlCenterSsoRequest.
-type DomainsGetControlCenterSsoRequestResponse struct {
-	DomainsGetControlCenterSsoRequestResult
+// DomainsClientGetControlCenterSsoRequestResponse contains the response from method DomainsClient.GetControlCenterSsoRequest.
+type DomainsClientGetControlCenterSsoRequestResponse struct {
+	DomainsClientGetControlCenterSsoRequestResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsGetControlCenterSsoRequestResult contains the result from method Domains.GetControlCenterSsoRequest.
-type DomainsGetControlCenterSsoRequestResult struct {
+// DomainsClientGetControlCenterSsoRequestResult contains the result from method DomainsClient.GetControlCenterSsoRequest.
+type DomainsClientGetControlCenterSsoRequestResult struct {
 	DomainControlCenterSsoRequest
 }
 
-// DomainsGetOwnershipIdentifierResponse contains the response from method Domains.GetOwnershipIdentifier.
-type DomainsGetOwnershipIdentifierResponse struct {
-	DomainsGetOwnershipIdentifierResult
+// DomainsClientGetOwnershipIdentifierResponse contains the response from method DomainsClient.GetOwnershipIdentifier.
+type DomainsClientGetOwnershipIdentifierResponse struct {
+	DomainsClientGetOwnershipIdentifierResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsGetOwnershipIdentifierResult contains the result from method Domains.GetOwnershipIdentifier.
-type DomainsGetOwnershipIdentifierResult struct {
+// DomainsClientGetOwnershipIdentifierResult contains the result from method DomainsClient.GetOwnershipIdentifier.
+type DomainsClientGetOwnershipIdentifierResult struct {
 	DomainOwnershipIdentifier
 }
 
-// DomainsGetResponse contains the response from method Domains.Get.
-type DomainsGetResponse struct {
-	DomainsGetResult
+// DomainsClientGetResponse contains the response from method DomainsClient.Get.
+type DomainsClientGetResponse struct {
+	DomainsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsGetResult contains the result from method Domains.Get.
-type DomainsGetResult struct {
+// DomainsClientGetResult contains the result from method DomainsClient.Get.
+type DomainsClientGetResult struct {
 	Domain
 }
 
-// DomainsListByResourceGroupResponse contains the response from method Domains.ListByResourceGroup.
-type DomainsListByResourceGroupResponse struct {
-	DomainsListByResourceGroupResult
+// DomainsClientListByResourceGroupResponse contains the response from method DomainsClient.ListByResourceGroup.
+type DomainsClientListByResourceGroupResponse struct {
+	DomainsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsListByResourceGroupResult contains the result from method Domains.ListByResourceGroup.
-type DomainsListByResourceGroupResult struct {
+// DomainsClientListByResourceGroupResult contains the result from method DomainsClient.ListByResourceGroup.
+type DomainsClientListByResourceGroupResult struct {
 	DomainCollection
 }
 
-// DomainsListOwnershipIdentifiersResponse contains the response from method Domains.ListOwnershipIdentifiers.
-type DomainsListOwnershipIdentifiersResponse struct {
-	DomainsListOwnershipIdentifiersResult
+// DomainsClientListOwnershipIdentifiersResponse contains the response from method DomainsClient.ListOwnershipIdentifiers.
+type DomainsClientListOwnershipIdentifiersResponse struct {
+	DomainsClientListOwnershipIdentifiersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsListOwnershipIdentifiersResult contains the result from method Domains.ListOwnershipIdentifiers.
-type DomainsListOwnershipIdentifiersResult struct {
+// DomainsClientListOwnershipIdentifiersResult contains the result from method DomainsClient.ListOwnershipIdentifiers.
+type DomainsClientListOwnershipIdentifiersResult struct {
 	DomainOwnershipIdentifierCollection
 }
 
-// DomainsListRecommendationsResponse contains the response from method Domains.ListRecommendations.
-type DomainsListRecommendationsResponse struct {
-	DomainsListRecommendationsResult
+// DomainsClientListRecommendationsResponse contains the response from method DomainsClient.ListRecommendations.
+type DomainsClientListRecommendationsResponse struct {
+	DomainsClientListRecommendationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsListRecommendationsResult contains the result from method Domains.ListRecommendations.
-type DomainsListRecommendationsResult struct {
+// DomainsClientListRecommendationsResult contains the result from method DomainsClient.ListRecommendations.
+type DomainsClientListRecommendationsResult struct {
 	NameIdentifierCollection
 }
 
-// DomainsListResponse contains the response from method Domains.List.
-type DomainsListResponse struct {
-	DomainsListResult
+// DomainsClientListResponse contains the response from method DomainsClient.List.
+type DomainsClientListResponse struct {
+	DomainsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsListResult contains the result from method Domains.List.
-type DomainsListResult struct {
+// DomainsClientListResult contains the result from method DomainsClient.List.
+type DomainsClientListResult struct {
 	DomainCollection
 }
 
-// DomainsRenewResponse contains the response from method Domains.Renew.
-type DomainsRenewResponse struct {
+// DomainsClientRenewResponse contains the response from method DomainsClient.Renew.
+type DomainsClientRenewResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsUpdateOwnershipIdentifierResponse contains the response from method Domains.UpdateOwnershipIdentifier.
-type DomainsUpdateOwnershipIdentifierResponse struct {
-	DomainsUpdateOwnershipIdentifierResult
+// DomainsClientTransferOutResponse contains the response from method DomainsClient.TransferOut.
+type DomainsClientTransferOutResponse struct {
+	DomainsClientTransferOutResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DomainsUpdateOwnershipIdentifierResult contains the result from method Domains.UpdateOwnershipIdentifier.
-type DomainsUpdateOwnershipIdentifierResult struct {
-	DomainOwnershipIdentifier
-}
-
-// DomainsUpdateResponse contains the response from method Domains.Update.
-type DomainsUpdateResponse struct {
-	DomainsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DomainsUpdateResult contains the result from method Domains.Update.
-type DomainsUpdateResult struct {
+// DomainsClientTransferOutResult contains the result from method DomainsClient.TransferOut.
+type DomainsClientTransferOutResult struct {
 	Domain
 }
 
-// GlobalGetDeletedWebAppResponse contains the response from method Global.GetDeletedWebApp.
-type GlobalGetDeletedWebAppResponse struct {
-	GlobalGetDeletedWebAppResult
+// DomainsClientUpdateOwnershipIdentifierResponse contains the response from method DomainsClient.UpdateOwnershipIdentifier.
+type DomainsClientUpdateOwnershipIdentifierResponse struct {
+	DomainsClientUpdateOwnershipIdentifierResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GlobalGetDeletedWebAppResult contains the result from method Global.GetDeletedWebApp.
-type GlobalGetDeletedWebAppResult struct {
-	DeletedSite
+// DomainsClientUpdateOwnershipIdentifierResult contains the result from method DomainsClient.UpdateOwnershipIdentifier.
+type DomainsClientUpdateOwnershipIdentifierResult struct {
+	DomainOwnershipIdentifier
 }
 
-// GlobalGetDeletedWebAppSnapshotsResponse contains the response from method Global.GetDeletedWebAppSnapshots.
-type GlobalGetDeletedWebAppSnapshotsResponse struct {
-	GlobalGetDeletedWebAppSnapshotsResult
+// DomainsClientUpdateResponse contains the response from method DomainsClient.Update.
+type DomainsClientUpdateResponse struct {
+	DomainsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GlobalGetDeletedWebAppSnapshotsResult contains the result from method Global.GetDeletedWebAppSnapshots.
-type GlobalGetDeletedWebAppSnapshotsResult struct {
-	// Array of Snapshot
-	SnapshotArray []*Snapshot
+// DomainsClientUpdateResult contains the result from method DomainsClient.Update.
+type DomainsClientUpdateResult struct {
+	Domain
 }
 
-// GlobalGetSubscriptionOperationWithAsyncResponseResponse contains the response from method Global.GetSubscriptionOperationWithAsyncResponse.
-type GlobalGetSubscriptionOperationWithAsyncResponseResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KubeEnvironmentsCreateOrUpdatePollerResponse contains the response from method KubeEnvironments.CreateOrUpdate.
-type KubeEnvironmentsCreateOrUpdatePollerResponse struct {
+// EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method EnvironmentsClient.ApproveOrRejectPrivateEndpointConnection.
+type EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *KubeEnvironmentsCreateOrUpdatePoller
+	Poller *EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2160,8 +1121,914 @@ type KubeEnvironmentsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l KubeEnvironmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentsCreateOrUpdateResponse, error) {
-	respType := KubeEnvironmentsCreateOrUpdateResponse{}
+func (l EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and
+// resume token.
+func (l *EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientApproveOrRejectPrivateEndpointConnectionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse contains the response from method EnvironmentsClient.ApproveOrRejectPrivateEndpointConnection.
+type EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse struct {
+	EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResult contains the result from method EnvironmentsClient.ApproveOrRejectPrivateEndpointConnection.
+type EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResult struct {
+	RemotePrivateEndpointConnectionARMResource
+}
+
+// EnvironmentsClientChangeVnetPollerResponse contains the response from method EnvironmentsClient.ChangeVnet.
+type EnvironmentsClientChangeVnetPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *EnvironmentsClientChangeVnetPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l EnvironmentsClientChangeVnetPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*EnvironmentsClientChangeVnetPager, error) {
+	respType := &EnvironmentsClientChangeVnetPager{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
+	if err != nil {
+		return respType, err
+	}
+	respType.current.RawResponse = resp
+	respType.client = l.Poller.client
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientChangeVnetPollerResponse from the provided client and resume token.
+func (l *EnvironmentsClientChangeVnetPollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.ChangeVnet", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientChangeVnetPoller{
+		pt:     pt,
+		client: client,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientChangeVnetResponse contains the response from method EnvironmentsClient.ChangeVnet.
+type EnvironmentsClientChangeVnetResponse struct {
+	EnvironmentsClientChangeVnetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientChangeVnetResult contains the result from method EnvironmentsClient.ChangeVnet.
+type EnvironmentsClientChangeVnetResult struct {
+	WebAppCollection
+}
+
+// EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse contains the response from method EnvironmentsClient.CreateOrUpdateMultiRolePool.
+type EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *EnvironmentsClientCreateOrUpdateMultiRolePoolPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EnvironmentsClientCreateOrUpdateMultiRolePoolResponse, error) {
+	respType := EnvironmentsClientCreateOrUpdateMultiRolePoolResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.WorkerPoolResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse from the provided client and resume token.
+func (l *EnvironmentsClientCreateOrUpdateMultiRolePoolPollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.CreateOrUpdateMultiRolePool", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientCreateOrUpdateMultiRolePoolPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientCreateOrUpdateMultiRolePoolResponse contains the response from method EnvironmentsClient.CreateOrUpdateMultiRolePool.
+type EnvironmentsClientCreateOrUpdateMultiRolePoolResponse struct {
+	EnvironmentsClientCreateOrUpdateMultiRolePoolResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientCreateOrUpdateMultiRolePoolResult contains the result from method EnvironmentsClient.CreateOrUpdateMultiRolePool.
+type EnvironmentsClientCreateOrUpdateMultiRolePoolResult struct {
+	WorkerPoolResource
+}
+
+// EnvironmentsClientCreateOrUpdatePollerResponse contains the response from method EnvironmentsClient.CreateOrUpdate.
+type EnvironmentsClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *EnvironmentsClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l EnvironmentsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EnvironmentsClientCreateOrUpdateResponse, error) {
+	respType := EnvironmentsClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.EnvironmentResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *EnvironmentsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientCreateOrUpdateResponse contains the response from method EnvironmentsClient.CreateOrUpdate.
+type EnvironmentsClientCreateOrUpdateResponse struct {
+	EnvironmentsClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientCreateOrUpdateResult contains the result from method EnvironmentsClient.CreateOrUpdate.
+type EnvironmentsClientCreateOrUpdateResult struct {
+	EnvironmentResource
+}
+
+// EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse contains the response from method EnvironmentsClient.CreateOrUpdateWorkerPool.
+type EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *EnvironmentsClientCreateOrUpdateWorkerPoolPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EnvironmentsClientCreateOrUpdateWorkerPoolResponse, error) {
+	respType := EnvironmentsClientCreateOrUpdateWorkerPoolResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.WorkerPoolResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse from the provided client and resume token.
+func (l *EnvironmentsClientCreateOrUpdateWorkerPoolPollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.CreateOrUpdateWorkerPool", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientCreateOrUpdateWorkerPoolPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientCreateOrUpdateWorkerPoolResponse contains the response from method EnvironmentsClient.CreateOrUpdateWorkerPool.
+type EnvironmentsClientCreateOrUpdateWorkerPoolResponse struct {
+	EnvironmentsClientCreateOrUpdateWorkerPoolResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientCreateOrUpdateWorkerPoolResult contains the result from method EnvironmentsClient.CreateOrUpdateWorkerPool.
+type EnvironmentsClientCreateOrUpdateWorkerPoolResult struct {
+	WorkerPoolResource
+}
+
+// EnvironmentsClientDeletePollerResponse contains the response from method EnvironmentsClient.Delete.
+type EnvironmentsClientDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *EnvironmentsClientDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l EnvironmentsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EnvironmentsClientDeleteResponse, error) {
+	respType := EnvironmentsClientDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientDeletePollerResponse from the provided client and resume token.
+func (l *EnvironmentsClientDeletePollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.Delete", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse contains the response from method EnvironmentsClient.DeletePrivateEndpointConnection.
+type EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *EnvironmentsClientDeletePrivateEndpointConnectionPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EnvironmentsClientDeletePrivateEndpointConnectionResponse, error) {
+	respType := EnvironmentsClientDeletePrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Interface)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse from the provided client and resume
+// token.
+func (l *EnvironmentsClientDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.DeletePrivateEndpointConnection", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientDeletePrivateEndpointConnectionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientDeletePrivateEndpointConnectionResponse contains the response from method EnvironmentsClient.DeletePrivateEndpointConnection.
+type EnvironmentsClientDeletePrivateEndpointConnectionResponse struct {
+	EnvironmentsClientDeletePrivateEndpointConnectionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientDeletePrivateEndpointConnectionResult contains the result from method EnvironmentsClient.DeletePrivateEndpointConnection.
+type EnvironmentsClientDeletePrivateEndpointConnectionResult struct {
+	// Anything
+	Interface interface{}
+}
+
+// EnvironmentsClientDeleteResponse contains the response from method EnvironmentsClient.Delete.
+type EnvironmentsClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetAseV3NetworkingConfigurationResponse contains the response from method EnvironmentsClient.GetAseV3NetworkingConfiguration.
+type EnvironmentsClientGetAseV3NetworkingConfigurationResponse struct {
+	EnvironmentsClientGetAseV3NetworkingConfigurationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetAseV3NetworkingConfigurationResult contains the result from method EnvironmentsClient.GetAseV3NetworkingConfiguration.
+type EnvironmentsClientGetAseV3NetworkingConfigurationResult struct {
+	AseV3NetworkingConfiguration
+}
+
+// EnvironmentsClientGetDiagnosticsItemResponse contains the response from method EnvironmentsClient.GetDiagnosticsItem.
+type EnvironmentsClientGetDiagnosticsItemResponse struct {
+	EnvironmentsClientGetDiagnosticsItemResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetDiagnosticsItemResult contains the result from method EnvironmentsClient.GetDiagnosticsItem.
+type EnvironmentsClientGetDiagnosticsItemResult struct {
+	HostingEnvironmentDiagnostics
+}
+
+// EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse contains the response from method EnvironmentsClient.GetInboundNetworkDependenciesEndpoints.
+type EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse struct {
+	EnvironmentsClientGetInboundNetworkDependenciesEndpointsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetInboundNetworkDependenciesEndpointsResult contains the result from method EnvironmentsClient.GetInboundNetworkDependenciesEndpoints.
+type EnvironmentsClientGetInboundNetworkDependenciesEndpointsResult struct {
+	InboundEnvironmentEndpointCollection
+}
+
+// EnvironmentsClientGetMultiRolePoolResponse contains the response from method EnvironmentsClient.GetMultiRolePool.
+type EnvironmentsClientGetMultiRolePoolResponse struct {
+	EnvironmentsClientGetMultiRolePoolResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetMultiRolePoolResult contains the result from method EnvironmentsClient.GetMultiRolePool.
+type EnvironmentsClientGetMultiRolePoolResult struct {
+	WorkerPoolResource
+}
+
+// EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse contains the response from method EnvironmentsClient.GetOutboundNetworkDependenciesEndpoints.
+type EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse struct {
+	EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResult contains the result from method EnvironmentsClient.GetOutboundNetworkDependenciesEndpoints.
+type EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResult struct {
+	OutboundEnvironmentEndpointCollection
+}
+
+// EnvironmentsClientGetPrivateEndpointConnectionListResponse contains the response from method EnvironmentsClient.GetPrivateEndpointConnectionList.
+type EnvironmentsClientGetPrivateEndpointConnectionListResponse struct {
+	EnvironmentsClientGetPrivateEndpointConnectionListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetPrivateEndpointConnectionListResult contains the result from method EnvironmentsClient.GetPrivateEndpointConnectionList.
+type EnvironmentsClientGetPrivateEndpointConnectionListResult struct {
+	PrivateEndpointConnectionCollection
+}
+
+// EnvironmentsClientGetPrivateEndpointConnectionResponse contains the response from method EnvironmentsClient.GetPrivateEndpointConnection.
+type EnvironmentsClientGetPrivateEndpointConnectionResponse struct {
+	EnvironmentsClientGetPrivateEndpointConnectionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetPrivateEndpointConnectionResult contains the result from method EnvironmentsClient.GetPrivateEndpointConnection.
+type EnvironmentsClientGetPrivateEndpointConnectionResult struct {
+	RemotePrivateEndpointConnectionARMResource
+}
+
+// EnvironmentsClientGetPrivateLinkResourcesResponse contains the response from method EnvironmentsClient.GetPrivateLinkResources.
+type EnvironmentsClientGetPrivateLinkResourcesResponse struct {
+	EnvironmentsClientGetPrivateLinkResourcesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetPrivateLinkResourcesResult contains the result from method EnvironmentsClient.GetPrivateLinkResources.
+type EnvironmentsClientGetPrivateLinkResourcesResult struct {
+	PrivateLinkResourcesWrapper
+}
+
+// EnvironmentsClientGetResponse contains the response from method EnvironmentsClient.Get.
+type EnvironmentsClientGetResponse struct {
+	EnvironmentsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetResult contains the result from method EnvironmentsClient.Get.
+type EnvironmentsClientGetResult struct {
+	EnvironmentResource
+}
+
+// EnvironmentsClientGetVipInfoResponse contains the response from method EnvironmentsClient.GetVipInfo.
+type EnvironmentsClientGetVipInfoResponse struct {
+	EnvironmentsClientGetVipInfoResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetVipInfoResult contains the result from method EnvironmentsClient.GetVipInfo.
+type EnvironmentsClientGetVipInfoResult struct {
+	AddressResponse
+}
+
+// EnvironmentsClientGetWorkerPoolResponse contains the response from method EnvironmentsClient.GetWorkerPool.
+type EnvironmentsClientGetWorkerPoolResponse struct {
+	EnvironmentsClientGetWorkerPoolResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientGetWorkerPoolResult contains the result from method EnvironmentsClient.GetWorkerPool.
+type EnvironmentsClientGetWorkerPoolResult struct {
+	WorkerPoolResource
+}
+
+// EnvironmentsClientListAppServicePlansResponse contains the response from method EnvironmentsClient.ListAppServicePlans.
+type EnvironmentsClientListAppServicePlansResponse struct {
+	EnvironmentsClientListAppServicePlansResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListAppServicePlansResult contains the result from method EnvironmentsClient.ListAppServicePlans.
+type EnvironmentsClientListAppServicePlansResult struct {
+	PlanCollection
+}
+
+// EnvironmentsClientListByResourceGroupResponse contains the response from method EnvironmentsClient.ListByResourceGroup.
+type EnvironmentsClientListByResourceGroupResponse struct {
+	EnvironmentsClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListByResourceGroupResult contains the result from method EnvironmentsClient.ListByResourceGroup.
+type EnvironmentsClientListByResourceGroupResult struct {
+	EnvironmentCollection
+}
+
+// EnvironmentsClientListCapacitiesResponse contains the response from method EnvironmentsClient.ListCapacities.
+type EnvironmentsClientListCapacitiesResponse struct {
+	EnvironmentsClientListCapacitiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListCapacitiesResult contains the result from method EnvironmentsClient.ListCapacities.
+type EnvironmentsClientListCapacitiesResult struct {
+	StampCapacityCollection
+}
+
+// EnvironmentsClientListDiagnosticsResponse contains the response from method EnvironmentsClient.ListDiagnostics.
+type EnvironmentsClientListDiagnosticsResponse struct {
+	EnvironmentsClientListDiagnosticsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListDiagnosticsResult contains the result from method EnvironmentsClient.ListDiagnostics.
+type EnvironmentsClientListDiagnosticsResult struct {
+	// Array of HostingEnvironmentDiagnostics
+	HostingEnvironmentDiagnosticsArray []*HostingEnvironmentDiagnostics
+}
+
+// EnvironmentsClientListMultiRoleMetricDefinitionsResponse contains the response from method EnvironmentsClient.ListMultiRoleMetricDefinitions.
+type EnvironmentsClientListMultiRoleMetricDefinitionsResponse struct {
+	EnvironmentsClientListMultiRoleMetricDefinitionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListMultiRoleMetricDefinitionsResult contains the result from method EnvironmentsClient.ListMultiRoleMetricDefinitions.
+type EnvironmentsClientListMultiRoleMetricDefinitionsResult struct {
+	ResourceMetricDefinitionCollection
+}
+
+// EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse contains the response from method EnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions.
+type EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse struct {
+	EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResult contains the result from method EnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions.
+type EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResult struct {
+	ResourceMetricDefinitionCollection
+}
+
+// EnvironmentsClientListMultiRolePoolSKUsResponse contains the response from method EnvironmentsClient.ListMultiRolePoolSKUs.
+type EnvironmentsClientListMultiRolePoolSKUsResponse struct {
+	EnvironmentsClientListMultiRolePoolSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListMultiRolePoolSKUsResult contains the result from method EnvironmentsClient.ListMultiRolePoolSKUs.
+type EnvironmentsClientListMultiRolePoolSKUsResult struct {
+	SKUInfoCollection
+}
+
+// EnvironmentsClientListMultiRolePoolsResponse contains the response from method EnvironmentsClient.ListMultiRolePools.
+type EnvironmentsClientListMultiRolePoolsResponse struct {
+	EnvironmentsClientListMultiRolePoolsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListMultiRolePoolsResult contains the result from method EnvironmentsClient.ListMultiRolePools.
+type EnvironmentsClientListMultiRolePoolsResult struct {
+	WorkerPoolCollection
+}
+
+// EnvironmentsClientListMultiRoleUsagesResponse contains the response from method EnvironmentsClient.ListMultiRoleUsages.
+type EnvironmentsClientListMultiRoleUsagesResponse struct {
+	EnvironmentsClientListMultiRoleUsagesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListMultiRoleUsagesResult contains the result from method EnvironmentsClient.ListMultiRoleUsages.
+type EnvironmentsClientListMultiRoleUsagesResult struct {
+	UsageCollection
+}
+
+// EnvironmentsClientListOperationsResponse contains the response from method EnvironmentsClient.ListOperations.
+type EnvironmentsClientListOperationsResponse struct {
+	EnvironmentsClientListOperationsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListOperationsResult contains the result from method EnvironmentsClient.ListOperations.
+type EnvironmentsClientListOperationsResult struct {
+	// Array of Operation
+	OperationArray []*Operation
+}
+
+// EnvironmentsClientListResponse contains the response from method EnvironmentsClient.List.
+type EnvironmentsClientListResponse struct {
+	EnvironmentsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListResult contains the result from method EnvironmentsClient.List.
+type EnvironmentsClientListResult struct {
+	EnvironmentCollection
+}
+
+// EnvironmentsClientListUsagesResponse contains the response from method EnvironmentsClient.ListUsages.
+type EnvironmentsClientListUsagesResponse struct {
+	EnvironmentsClientListUsagesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListUsagesResult contains the result from method EnvironmentsClient.ListUsages.
+type EnvironmentsClientListUsagesResult struct {
+	CsmUsageQuotaCollection
+}
+
+// EnvironmentsClientListWebAppsResponse contains the response from method EnvironmentsClient.ListWebApps.
+type EnvironmentsClientListWebAppsResponse struct {
+	EnvironmentsClientListWebAppsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListWebAppsResult contains the result from method EnvironmentsClient.ListWebApps.
+type EnvironmentsClientListWebAppsResult struct {
+	WebAppCollection
+}
+
+// EnvironmentsClientListWebWorkerMetricDefinitionsResponse contains the response from method EnvironmentsClient.ListWebWorkerMetricDefinitions.
+type EnvironmentsClientListWebWorkerMetricDefinitionsResponse struct {
+	EnvironmentsClientListWebWorkerMetricDefinitionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListWebWorkerMetricDefinitionsResult contains the result from method EnvironmentsClient.ListWebWorkerMetricDefinitions.
+type EnvironmentsClientListWebWorkerMetricDefinitionsResult struct {
+	ResourceMetricDefinitionCollection
+}
+
+// EnvironmentsClientListWebWorkerUsagesResponse contains the response from method EnvironmentsClient.ListWebWorkerUsages.
+type EnvironmentsClientListWebWorkerUsagesResponse struct {
+	EnvironmentsClientListWebWorkerUsagesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListWebWorkerUsagesResult contains the result from method EnvironmentsClient.ListWebWorkerUsages.
+type EnvironmentsClientListWebWorkerUsagesResult struct {
+	UsageCollection
+}
+
+// EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse contains the response from method EnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions.
+type EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse struct {
+	EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResult contains the result from method EnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions.
+type EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResult struct {
+	ResourceMetricDefinitionCollection
+}
+
+// EnvironmentsClientListWorkerPoolSKUsResponse contains the response from method EnvironmentsClient.ListWorkerPoolSKUs.
+type EnvironmentsClientListWorkerPoolSKUsResponse struct {
+	EnvironmentsClientListWorkerPoolSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListWorkerPoolSKUsResult contains the result from method EnvironmentsClient.ListWorkerPoolSKUs.
+type EnvironmentsClientListWorkerPoolSKUsResult struct {
+	SKUInfoCollection
+}
+
+// EnvironmentsClientListWorkerPoolsResponse contains the response from method EnvironmentsClient.ListWorkerPools.
+type EnvironmentsClientListWorkerPoolsResponse struct {
+	EnvironmentsClientListWorkerPoolsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientListWorkerPoolsResult contains the result from method EnvironmentsClient.ListWorkerPools.
+type EnvironmentsClientListWorkerPoolsResult struct {
+	WorkerPoolCollection
+}
+
+// EnvironmentsClientRebootResponse contains the response from method EnvironmentsClient.Reboot.
+type EnvironmentsClientRebootResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientResumePollerResponse contains the response from method EnvironmentsClient.Resume.
+type EnvironmentsClientResumePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *EnvironmentsClientResumePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l EnvironmentsClientResumePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*EnvironmentsClientResumePager, error) {
+	respType := &EnvironmentsClientResumePager{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
+	if err != nil {
+		return respType, err
+	}
+	respType.current.RawResponse = resp
+	respType.client = l.Poller.client
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientResumePollerResponse from the provided client and resume token.
+func (l *EnvironmentsClientResumePollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.Resume", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientResumePoller{
+		pt:     pt,
+		client: client,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientResumeResponse contains the response from method EnvironmentsClient.Resume.
+type EnvironmentsClientResumeResponse struct {
+	EnvironmentsClientResumeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientResumeResult contains the result from method EnvironmentsClient.Resume.
+type EnvironmentsClientResumeResult struct {
+	WebAppCollection
+}
+
+// EnvironmentsClientSuspendPollerResponse contains the response from method EnvironmentsClient.Suspend.
+type EnvironmentsClientSuspendPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *EnvironmentsClientSuspendPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l EnvironmentsClientSuspendPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*EnvironmentsClientSuspendPager, error) {
+	respType := &EnvironmentsClientSuspendPager{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
+	if err != nil {
+		return respType, err
+	}
+	respType.current.RawResponse = resp
+	respType.client = l.Poller.client
+	return respType, nil
+}
+
+// Resume rehydrates a EnvironmentsClientSuspendPollerResponse from the provided client and resume token.
+func (l *EnvironmentsClientSuspendPollerResponse) Resume(ctx context.Context, client *EnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EnvironmentsClient.Suspend", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &EnvironmentsClientSuspendPoller{
+		pt:     pt,
+		client: client,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// EnvironmentsClientSuspendResponse contains the response from method EnvironmentsClient.Suspend.
+type EnvironmentsClientSuspendResponse struct {
+	EnvironmentsClientSuspendResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientSuspendResult contains the result from method EnvironmentsClient.Suspend.
+type EnvironmentsClientSuspendResult struct {
+	WebAppCollection
+}
+
+// EnvironmentsClientUpdateAseNetworkingConfigurationResponse contains the response from method EnvironmentsClient.UpdateAseNetworkingConfiguration.
+type EnvironmentsClientUpdateAseNetworkingConfigurationResponse struct {
+	EnvironmentsClientUpdateAseNetworkingConfigurationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientUpdateAseNetworkingConfigurationResult contains the result from method EnvironmentsClient.UpdateAseNetworkingConfiguration.
+type EnvironmentsClientUpdateAseNetworkingConfigurationResult struct {
+	AseV3NetworkingConfiguration
+}
+
+// EnvironmentsClientUpdateMultiRolePoolResponse contains the response from method EnvironmentsClient.UpdateMultiRolePool.
+type EnvironmentsClientUpdateMultiRolePoolResponse struct {
+	EnvironmentsClientUpdateMultiRolePoolResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientUpdateMultiRolePoolResult contains the result from method EnvironmentsClient.UpdateMultiRolePool.
+type EnvironmentsClientUpdateMultiRolePoolResult struct {
+	WorkerPoolResource
+}
+
+// EnvironmentsClientUpdateResponse contains the response from method EnvironmentsClient.Update.
+type EnvironmentsClientUpdateResponse struct {
+	EnvironmentsClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientUpdateResult contains the result from method EnvironmentsClient.Update.
+type EnvironmentsClientUpdateResult struct {
+	EnvironmentResource
+}
+
+// EnvironmentsClientUpdateWorkerPoolResponse contains the response from method EnvironmentsClient.UpdateWorkerPool.
+type EnvironmentsClientUpdateWorkerPoolResponse struct {
+	EnvironmentsClientUpdateWorkerPoolResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EnvironmentsClientUpdateWorkerPoolResult contains the result from method EnvironmentsClient.UpdateWorkerPool.
+type EnvironmentsClientUpdateWorkerPoolResult struct {
+	WorkerPoolResource
+}
+
+// GlobalClientGetDeletedWebAppResponse contains the response from method GlobalClient.GetDeletedWebApp.
+type GlobalClientGetDeletedWebAppResponse struct {
+	GlobalClientGetDeletedWebAppResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GlobalClientGetDeletedWebAppResult contains the result from method GlobalClient.GetDeletedWebApp.
+type GlobalClientGetDeletedWebAppResult struct {
+	DeletedSite
+}
+
+// GlobalClientGetDeletedWebAppSnapshotsResponse contains the response from method GlobalClient.GetDeletedWebAppSnapshots.
+type GlobalClientGetDeletedWebAppSnapshotsResponse struct {
+	GlobalClientGetDeletedWebAppSnapshotsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GlobalClientGetDeletedWebAppSnapshotsResult contains the result from method GlobalClient.GetDeletedWebAppSnapshots.
+type GlobalClientGetDeletedWebAppSnapshotsResult struct {
+	// Array of Snapshot
+	SnapshotArray []*Snapshot
+}
+
+// GlobalClientGetSubscriptionOperationWithAsyncResponseResponse contains the response from method GlobalClient.GetSubscriptionOperationWithAsyncResponse.
+type GlobalClientGetSubscriptionOperationWithAsyncResponseResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// KubeEnvironmentsClientCreateOrUpdatePollerResponse contains the response from method KubeEnvironmentsClient.CreateOrUpdate.
+type KubeEnvironmentsClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *KubeEnvironmentsClientCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l KubeEnvironmentsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentsClientCreateOrUpdateResponse, error) {
+	respType := KubeEnvironmentsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.KubeEnvironment)
 	if err != nil {
 		return respType, err
@@ -2170,13 +2037,13 @@ func (l KubeEnvironmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a KubeEnvironmentsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *KubeEnvironmentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *KubeEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("KubeEnvironmentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a KubeEnvironmentsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *KubeEnvironmentsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *KubeEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("KubeEnvironmentsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &KubeEnvironmentsCreateOrUpdatePoller{
+	poller := &KubeEnvironmentsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2188,22 +2055,22 @@ func (l *KubeEnvironmentsCreateOrUpdatePollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// KubeEnvironmentsCreateOrUpdateResponse contains the response from method KubeEnvironments.CreateOrUpdate.
-type KubeEnvironmentsCreateOrUpdateResponse struct {
-	KubeEnvironmentsCreateOrUpdateResult
+// KubeEnvironmentsClientCreateOrUpdateResponse contains the response from method KubeEnvironmentsClient.CreateOrUpdate.
+type KubeEnvironmentsClientCreateOrUpdateResponse struct {
+	KubeEnvironmentsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KubeEnvironmentsCreateOrUpdateResult contains the result from method KubeEnvironments.CreateOrUpdate.
-type KubeEnvironmentsCreateOrUpdateResult struct {
+// KubeEnvironmentsClientCreateOrUpdateResult contains the result from method KubeEnvironmentsClient.CreateOrUpdate.
+type KubeEnvironmentsClientCreateOrUpdateResult struct {
 	KubeEnvironment
 }
 
-// KubeEnvironmentsDeletePollerResponse contains the response from method KubeEnvironments.Delete.
-type KubeEnvironmentsDeletePollerResponse struct {
+// KubeEnvironmentsClientDeletePollerResponse contains the response from method KubeEnvironmentsClient.Delete.
+type KubeEnvironmentsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *KubeEnvironmentsDeletePoller
+	Poller *KubeEnvironmentsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2212,8 +2079,8 @@ type KubeEnvironmentsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l KubeEnvironmentsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentsDeleteResponse, error) {
-	respType := KubeEnvironmentsDeleteResponse{}
+func (l KubeEnvironmentsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentsClientDeleteResponse, error) {
+	respType := KubeEnvironmentsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2222,13 +2089,13 @@ func (l KubeEnvironmentsDeletePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a KubeEnvironmentsDeletePollerResponse from the provided client and resume token.
-func (l *KubeEnvironmentsDeletePollerResponse) Resume(ctx context.Context, client *KubeEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("KubeEnvironmentsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a KubeEnvironmentsClientDeletePollerResponse from the provided client and resume token.
+func (l *KubeEnvironmentsClientDeletePollerResponse) Resume(ctx context.Context, client *KubeEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("KubeEnvironmentsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &KubeEnvironmentsDeletePoller{
+	poller := &KubeEnvironmentsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2240,352 +2107,64 @@ func (l *KubeEnvironmentsDeletePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// KubeEnvironmentsDeleteResponse contains the response from method KubeEnvironments.Delete.
-type KubeEnvironmentsDeleteResponse struct {
+// KubeEnvironmentsClientDeleteResponse contains the response from method KubeEnvironmentsClient.Delete.
+type KubeEnvironmentsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KubeEnvironmentsGetResponse contains the response from method KubeEnvironments.Get.
-type KubeEnvironmentsGetResponse struct {
-	KubeEnvironmentsGetResult
+// KubeEnvironmentsClientGetResponse contains the response from method KubeEnvironmentsClient.Get.
+type KubeEnvironmentsClientGetResponse struct {
+	KubeEnvironmentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KubeEnvironmentsGetResult contains the result from method KubeEnvironments.Get.
-type KubeEnvironmentsGetResult struct {
+// KubeEnvironmentsClientGetResult contains the result from method KubeEnvironmentsClient.Get.
+type KubeEnvironmentsClientGetResult struct {
 	KubeEnvironment
 }
 
-// KubeEnvironmentsListByResourceGroupResponse contains the response from method KubeEnvironments.ListByResourceGroup.
-type KubeEnvironmentsListByResourceGroupResponse struct {
-	KubeEnvironmentsListByResourceGroupResult
+// KubeEnvironmentsClientListByResourceGroupResponse contains the response from method KubeEnvironmentsClient.ListByResourceGroup.
+type KubeEnvironmentsClientListByResourceGroupResponse struct {
+	KubeEnvironmentsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KubeEnvironmentsListByResourceGroupResult contains the result from method KubeEnvironments.ListByResourceGroup.
-type KubeEnvironmentsListByResourceGroupResult struct {
+// KubeEnvironmentsClientListByResourceGroupResult contains the result from method KubeEnvironmentsClient.ListByResourceGroup.
+type KubeEnvironmentsClientListByResourceGroupResult struct {
 	KubeEnvironmentCollection
 }
 
-// KubeEnvironmentsListBySubscriptionResponse contains the response from method KubeEnvironments.ListBySubscription.
-type KubeEnvironmentsListBySubscriptionResponse struct {
-	KubeEnvironmentsListBySubscriptionResult
+// KubeEnvironmentsClientListBySubscriptionResponse contains the response from method KubeEnvironmentsClient.ListBySubscription.
+type KubeEnvironmentsClientListBySubscriptionResponse struct {
+	KubeEnvironmentsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KubeEnvironmentsListBySubscriptionResult contains the result from method KubeEnvironments.ListBySubscription.
-type KubeEnvironmentsListBySubscriptionResult struct {
+// KubeEnvironmentsClientListBySubscriptionResult contains the result from method KubeEnvironmentsClient.ListBySubscription.
+type KubeEnvironmentsClientListBySubscriptionResult struct {
 	KubeEnvironmentCollection
 }
 
-// KubeEnvironmentsUpdateResponse contains the response from method KubeEnvironments.Update.
-type KubeEnvironmentsUpdateResponse struct {
-	KubeEnvironmentsUpdateResult
+// KubeEnvironmentsClientUpdateResponse contains the response from method KubeEnvironmentsClient.Update.
+type KubeEnvironmentsClientUpdateResponse struct {
+	KubeEnvironmentsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KubeEnvironmentsUpdateResult contains the result from method KubeEnvironments.Update.
-type KubeEnvironmentsUpdateResult struct {
+// KubeEnvironmentsClientUpdateResult contains the result from method KubeEnvironmentsClient.Update.
+type KubeEnvironmentsClientUpdateResult struct {
 	KubeEnvironment
 }
 
-// ProviderGetAvailableStacksOnPremResponse contains the response from method Provider.GetAvailableStacksOnPrem.
-type ProviderGetAvailableStacksOnPremResponse struct {
-	ProviderGetAvailableStacksOnPremResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderGetAvailableStacksOnPremResult contains the result from method Provider.GetAvailableStacksOnPrem.
-type ProviderGetAvailableStacksOnPremResult struct {
-	ApplicationStackCollection
-}
-
-// ProviderGetAvailableStacksResponse contains the response from method Provider.GetAvailableStacks.
-type ProviderGetAvailableStacksResponse struct {
-	ProviderGetAvailableStacksResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderGetAvailableStacksResult contains the result from method Provider.GetAvailableStacks.
-type ProviderGetAvailableStacksResult struct {
-	ApplicationStackCollection
-}
-
-// ProviderGetFunctionAppStacksForLocationResponse contains the response from method Provider.GetFunctionAppStacksForLocation.
-type ProviderGetFunctionAppStacksForLocationResponse struct {
-	ProviderGetFunctionAppStacksForLocationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderGetFunctionAppStacksForLocationResult contains the result from method Provider.GetFunctionAppStacksForLocation.
-type ProviderGetFunctionAppStacksForLocationResult struct {
-	FunctionAppStackCollection
-}
-
-// ProviderGetFunctionAppStacksResponse contains the response from method Provider.GetFunctionAppStacks.
-type ProviderGetFunctionAppStacksResponse struct {
-	ProviderGetFunctionAppStacksResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderGetFunctionAppStacksResult contains the result from method Provider.GetFunctionAppStacks.
-type ProviderGetFunctionAppStacksResult struct {
-	FunctionAppStackCollection
-}
-
-// ProviderGetWebAppStacksForLocationResponse contains the response from method Provider.GetWebAppStacksForLocation.
-type ProviderGetWebAppStacksForLocationResponse struct {
-	ProviderGetWebAppStacksForLocationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderGetWebAppStacksForLocationResult contains the result from method Provider.GetWebAppStacksForLocation.
-type ProviderGetWebAppStacksForLocationResult struct {
-	WebAppStackCollection
-}
-
-// ProviderGetWebAppStacksResponse contains the response from method Provider.GetWebAppStacks.
-type ProviderGetWebAppStacksResponse struct {
-	ProviderGetWebAppStacksResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderGetWebAppStacksResult contains the result from method Provider.GetWebAppStacks.
-type ProviderGetWebAppStacksResult struct {
-	WebAppStackCollection
-}
-
-// ProviderListOperationsResponse contains the response from method Provider.ListOperations.
-type ProviderListOperationsResponse struct {
-	ProviderListOperationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderListOperationsResult contains the result from method Provider.ListOperations.
-type ProviderListOperationsResult struct {
-	CsmOperationCollection
-}
-
-// RecommendationsDisableAllForHostingEnvironmentResponse contains the response from method Recommendations.DisableAllForHostingEnvironment.
-type RecommendationsDisableAllForHostingEnvironmentResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsDisableAllForWebAppResponse contains the response from method Recommendations.DisableAllForWebApp.
-type RecommendationsDisableAllForWebAppResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsDisableRecommendationForHostingEnvironmentResponse contains the response from method Recommendations.DisableRecommendationForHostingEnvironment.
-type RecommendationsDisableRecommendationForHostingEnvironmentResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsDisableRecommendationForSiteResponse contains the response from method Recommendations.DisableRecommendationForSite.
-type RecommendationsDisableRecommendationForSiteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsDisableRecommendationForSubscriptionResponse contains the response from method Recommendations.DisableRecommendationForSubscription.
-type RecommendationsDisableRecommendationForSubscriptionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsGetRuleDetailsByHostingEnvironmentResponse contains the response from method Recommendations.GetRuleDetailsByHostingEnvironment.
-type RecommendationsGetRuleDetailsByHostingEnvironmentResponse struct {
-	RecommendationsGetRuleDetailsByHostingEnvironmentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsGetRuleDetailsByHostingEnvironmentResult contains the result from method Recommendations.GetRuleDetailsByHostingEnvironment.
-type RecommendationsGetRuleDetailsByHostingEnvironmentResult struct {
-	RecommendationRule
-}
-
-// RecommendationsGetRuleDetailsByWebAppResponse contains the response from method Recommendations.GetRuleDetailsByWebApp.
-type RecommendationsGetRuleDetailsByWebAppResponse struct {
-	RecommendationsGetRuleDetailsByWebAppResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsGetRuleDetailsByWebAppResult contains the result from method Recommendations.GetRuleDetailsByWebApp.
-type RecommendationsGetRuleDetailsByWebAppResult struct {
-	RecommendationRule
-}
-
-// RecommendationsListHistoryForHostingEnvironmentResponse contains the response from method Recommendations.ListHistoryForHostingEnvironment.
-type RecommendationsListHistoryForHostingEnvironmentResponse struct {
-	RecommendationsListHistoryForHostingEnvironmentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsListHistoryForHostingEnvironmentResult contains the result from method Recommendations.ListHistoryForHostingEnvironment.
-type RecommendationsListHistoryForHostingEnvironmentResult struct {
-	RecommendationCollection
-}
-
-// RecommendationsListHistoryForWebAppResponse contains the response from method Recommendations.ListHistoryForWebApp.
-type RecommendationsListHistoryForWebAppResponse struct {
-	RecommendationsListHistoryForWebAppResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsListHistoryForWebAppResult contains the result from method Recommendations.ListHistoryForWebApp.
-type RecommendationsListHistoryForWebAppResult struct {
-	RecommendationCollection
-}
-
-// RecommendationsListRecommendedRulesForHostingEnvironmentResponse contains the response from method Recommendations.ListRecommendedRulesForHostingEnvironment.
-type RecommendationsListRecommendedRulesForHostingEnvironmentResponse struct {
-	RecommendationsListRecommendedRulesForHostingEnvironmentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsListRecommendedRulesForHostingEnvironmentResult contains the result from method Recommendations.ListRecommendedRulesForHostingEnvironment.
-type RecommendationsListRecommendedRulesForHostingEnvironmentResult struct {
-	RecommendationCollection
-}
-
-// RecommendationsListRecommendedRulesForWebAppResponse contains the response from method Recommendations.ListRecommendedRulesForWebApp.
-type RecommendationsListRecommendedRulesForWebAppResponse struct {
-	RecommendationsListRecommendedRulesForWebAppResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsListRecommendedRulesForWebAppResult contains the result from method Recommendations.ListRecommendedRulesForWebApp.
-type RecommendationsListRecommendedRulesForWebAppResult struct {
-	RecommendationCollection
-}
-
-// RecommendationsListResponse contains the response from method Recommendations.List.
-type RecommendationsListResponse struct {
-	RecommendationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsListResult contains the result from method Recommendations.List.
-type RecommendationsListResult struct {
-	RecommendationCollection
-}
-
-// RecommendationsResetAllFiltersForHostingEnvironmentResponse contains the response from method Recommendations.ResetAllFiltersForHostingEnvironment.
-type RecommendationsResetAllFiltersForHostingEnvironmentResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsResetAllFiltersForWebAppResponse contains the response from method Recommendations.ResetAllFiltersForWebApp.
-type RecommendationsResetAllFiltersForWebAppResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecommendationsResetAllFiltersResponse contains the response from method Recommendations.ResetAllFilters.
-type RecommendationsResetAllFiltersResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceHealthMetadataGetBySiteResponse contains the response from method ResourceHealthMetadata.GetBySite.
-type ResourceHealthMetadataGetBySiteResponse struct {
-	ResourceHealthMetadataGetBySiteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceHealthMetadataGetBySiteResult contains the result from method ResourceHealthMetadata.GetBySite.
-type ResourceHealthMetadataGetBySiteResult struct {
-	ResourceHealthMetadata
-}
-
-// ResourceHealthMetadataGetBySiteSlotResponse contains the response from method ResourceHealthMetadata.GetBySiteSlot.
-type ResourceHealthMetadataGetBySiteSlotResponse struct {
-	ResourceHealthMetadataGetBySiteSlotResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceHealthMetadataGetBySiteSlotResult contains the result from method ResourceHealthMetadata.GetBySiteSlot.
-type ResourceHealthMetadataGetBySiteSlotResult struct {
-	ResourceHealthMetadata
-}
-
-// ResourceHealthMetadataListByResourceGroupResponse contains the response from method ResourceHealthMetadata.ListByResourceGroup.
-type ResourceHealthMetadataListByResourceGroupResponse struct {
-	ResourceHealthMetadataListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceHealthMetadataListByResourceGroupResult contains the result from method ResourceHealthMetadata.ListByResourceGroup.
-type ResourceHealthMetadataListByResourceGroupResult struct {
-	ResourceHealthMetadataCollection
-}
-
-// ResourceHealthMetadataListBySiteResponse contains the response from method ResourceHealthMetadata.ListBySite.
-type ResourceHealthMetadataListBySiteResponse struct {
-	ResourceHealthMetadataListBySiteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceHealthMetadataListBySiteResult contains the result from method ResourceHealthMetadata.ListBySite.
-type ResourceHealthMetadataListBySiteResult struct {
-	ResourceHealthMetadataCollection
-}
-
-// ResourceHealthMetadataListBySiteSlotResponse contains the response from method ResourceHealthMetadata.ListBySiteSlot.
-type ResourceHealthMetadataListBySiteSlotResponse struct {
-	ResourceHealthMetadataListBySiteSlotResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceHealthMetadataListBySiteSlotResult contains the result from method ResourceHealthMetadata.ListBySiteSlot.
-type ResourceHealthMetadataListBySiteSlotResult struct {
-	ResourceHealthMetadataCollection
-}
-
-// ResourceHealthMetadataListResponse contains the response from method ResourceHealthMetadata.List.
-type ResourceHealthMetadataListResponse struct {
-	ResourceHealthMetadataListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceHealthMetadataListResult contains the result from method ResourceHealthMetadata.List.
-type ResourceHealthMetadataListResult struct {
-	ResourceHealthMetadataCollection
-}
-
-// StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method StaticSites.ApproveOrRejectPrivateEndpointConnection.
-type StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
+// PlansClientCreateOrUpdatePollerResponse contains the response from method PlansClient.CreateOrUpdate.
+type PlansClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesApproveOrRejectPrivateEndpointConnectionPoller
+	Poller *PlansClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2594,8 +2173,635 @@ type StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesApproveOrRejectPrivateEndpointConnectionResponse, error) {
-	respType := StaticSitesApproveOrRejectPrivateEndpointConnectionResponse{}
+func (l PlansClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PlansClientCreateOrUpdateResponse, error) {
+	respType := PlansClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Plan)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a PlansClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *PlansClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PlansClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &PlansClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// PlansClientCreateOrUpdateResponse contains the response from method PlansClient.CreateOrUpdate.
+type PlansClientCreateOrUpdateResponse struct {
+	PlansClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientCreateOrUpdateResult contains the result from method PlansClient.CreateOrUpdate.
+type PlansClientCreateOrUpdateResult struct {
+	Plan
+}
+
+// PlansClientCreateOrUpdateVnetRouteResponse contains the response from method PlansClient.CreateOrUpdateVnetRoute.
+type PlansClientCreateOrUpdateVnetRouteResponse struct {
+	PlansClientCreateOrUpdateVnetRouteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientCreateOrUpdateVnetRouteResult contains the result from method PlansClient.CreateOrUpdateVnetRoute.
+type PlansClientCreateOrUpdateVnetRouteResult struct {
+	VnetRoute
+}
+
+// PlansClientDeleteHybridConnectionResponse contains the response from method PlansClient.DeleteHybridConnection.
+type PlansClientDeleteHybridConnectionResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientDeleteResponse contains the response from method PlansClient.Delete.
+type PlansClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientDeleteVnetRouteResponse contains the response from method PlansClient.DeleteVnetRoute.
+type PlansClientDeleteVnetRouteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientGetHybridConnectionPlanLimitResponse contains the response from method PlansClient.GetHybridConnectionPlanLimit.
+type PlansClientGetHybridConnectionPlanLimitResponse struct {
+	PlansClientGetHybridConnectionPlanLimitResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientGetHybridConnectionPlanLimitResult contains the result from method PlansClient.GetHybridConnectionPlanLimit.
+type PlansClientGetHybridConnectionPlanLimitResult struct {
+	HybridConnectionLimits
+}
+
+// PlansClientGetHybridConnectionResponse contains the response from method PlansClient.GetHybridConnection.
+type PlansClientGetHybridConnectionResponse struct {
+	PlansClientGetHybridConnectionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientGetHybridConnectionResult contains the result from method PlansClient.GetHybridConnection.
+type PlansClientGetHybridConnectionResult struct {
+	HybridConnection
+}
+
+// PlansClientGetResponse contains the response from method PlansClient.Get.
+type PlansClientGetResponse struct {
+	PlansClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientGetResult contains the result from method PlansClient.Get.
+type PlansClientGetResult struct {
+	Plan
+}
+
+// PlansClientGetRouteForVnetResponse contains the response from method PlansClient.GetRouteForVnet.
+type PlansClientGetRouteForVnetResponse struct {
+	PlansClientGetRouteForVnetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientGetRouteForVnetResult contains the result from method PlansClient.GetRouteForVnet.
+type PlansClientGetRouteForVnetResult struct {
+	// Array of VnetRoute
+	VnetRouteArray []*VnetRoute
+}
+
+// PlansClientGetServerFarmSKUsResponse contains the response from method PlansClient.GetServerFarmSKUs.
+type PlansClientGetServerFarmSKUsResponse struct {
+	PlansClientGetServerFarmSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientGetServerFarmSKUsResult contains the result from method PlansClient.GetServerFarmSKUs.
+type PlansClientGetServerFarmSKUsResult struct {
+	// Anything
+	Interface interface{}
+}
+
+// PlansClientGetVnetFromServerFarmResponse contains the response from method PlansClient.GetVnetFromServerFarm.
+type PlansClientGetVnetFromServerFarmResponse struct {
+	PlansClientGetVnetFromServerFarmResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientGetVnetFromServerFarmResult contains the result from method PlansClient.GetVnetFromServerFarm.
+type PlansClientGetVnetFromServerFarmResult struct {
+	VnetInfoResource
+}
+
+// PlansClientGetVnetGatewayResponse contains the response from method PlansClient.GetVnetGateway.
+type PlansClientGetVnetGatewayResponse struct {
+	PlansClientGetVnetGatewayResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientGetVnetGatewayResult contains the result from method PlansClient.GetVnetGateway.
+type PlansClientGetVnetGatewayResult struct {
+	VnetGateway
+}
+
+// PlansClientListByResourceGroupResponse contains the response from method PlansClient.ListByResourceGroup.
+type PlansClientListByResourceGroupResponse struct {
+	PlansClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListByResourceGroupResult contains the result from method PlansClient.ListByResourceGroup.
+type PlansClientListByResourceGroupResult struct {
+	PlanCollection
+}
+
+// PlansClientListCapabilitiesResponse contains the response from method PlansClient.ListCapabilities.
+type PlansClientListCapabilitiesResponse struct {
+	PlansClientListCapabilitiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListCapabilitiesResult contains the result from method PlansClient.ListCapabilities.
+type PlansClientListCapabilitiesResult struct {
+	// Array of Capability
+	CapabilityArray []*Capability
+}
+
+// PlansClientListHybridConnectionKeysResponse contains the response from method PlansClient.ListHybridConnectionKeys.
+type PlansClientListHybridConnectionKeysResponse struct {
+	PlansClientListHybridConnectionKeysResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListHybridConnectionKeysResult contains the result from method PlansClient.ListHybridConnectionKeys.
+type PlansClientListHybridConnectionKeysResult struct {
+	HybridConnectionKey
+}
+
+// PlansClientListHybridConnectionsResponse contains the response from method PlansClient.ListHybridConnections.
+type PlansClientListHybridConnectionsResponse struct {
+	PlansClientListHybridConnectionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListHybridConnectionsResult contains the result from method PlansClient.ListHybridConnections.
+type PlansClientListHybridConnectionsResult struct {
+	HybridConnectionCollection
+}
+
+// PlansClientListResponse contains the response from method PlansClient.List.
+type PlansClientListResponse struct {
+	PlansClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListResult contains the result from method PlansClient.List.
+type PlansClientListResult struct {
+	PlanCollection
+}
+
+// PlansClientListRoutesForVnetResponse contains the response from method PlansClient.ListRoutesForVnet.
+type PlansClientListRoutesForVnetResponse struct {
+	PlansClientListRoutesForVnetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListRoutesForVnetResult contains the result from method PlansClient.ListRoutesForVnet.
+type PlansClientListRoutesForVnetResult struct {
+	// Array of VnetRoute
+	VnetRouteArray []*VnetRoute
+}
+
+// PlansClientListUsagesResponse contains the response from method PlansClient.ListUsages.
+type PlansClientListUsagesResponse struct {
+	PlansClientListUsagesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListUsagesResult contains the result from method PlansClient.ListUsages.
+type PlansClientListUsagesResult struct {
+	CsmUsageQuotaCollection
+}
+
+// PlansClientListVnetsResponse contains the response from method PlansClient.ListVnets.
+type PlansClientListVnetsResponse struct {
+	PlansClientListVnetsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListVnetsResult contains the result from method PlansClient.ListVnets.
+type PlansClientListVnetsResult struct {
+	// Array of VnetInfoResource
+	VnetInfoResourceArray []*VnetInfoResource
+}
+
+// PlansClientListWebAppsByHybridConnectionResponse contains the response from method PlansClient.ListWebAppsByHybridConnection.
+type PlansClientListWebAppsByHybridConnectionResponse struct {
+	PlansClientListWebAppsByHybridConnectionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListWebAppsByHybridConnectionResult contains the result from method PlansClient.ListWebAppsByHybridConnection.
+type PlansClientListWebAppsByHybridConnectionResult struct {
+	ResourceCollection
+}
+
+// PlansClientListWebAppsResponse contains the response from method PlansClient.ListWebApps.
+type PlansClientListWebAppsResponse struct {
+	PlansClientListWebAppsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientListWebAppsResult contains the result from method PlansClient.ListWebApps.
+type PlansClientListWebAppsResult struct {
+	WebAppCollection
+}
+
+// PlansClientRebootWorkerResponse contains the response from method PlansClient.RebootWorker.
+type PlansClientRebootWorkerResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientRestartWebAppsResponse contains the response from method PlansClient.RestartWebApps.
+type PlansClientRestartWebAppsResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientUpdateResponse contains the response from method PlansClient.Update.
+type PlansClientUpdateResponse struct {
+	PlansClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientUpdateResult contains the result from method PlansClient.Update.
+type PlansClientUpdateResult struct {
+	Plan
+}
+
+// PlansClientUpdateVnetGatewayResponse contains the response from method PlansClient.UpdateVnetGateway.
+type PlansClientUpdateVnetGatewayResponse struct {
+	PlansClientUpdateVnetGatewayResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientUpdateVnetGatewayResult contains the result from method PlansClient.UpdateVnetGateway.
+type PlansClientUpdateVnetGatewayResult struct {
+	VnetGateway
+}
+
+// PlansClientUpdateVnetRouteResponse contains the response from method PlansClient.UpdateVnetRoute.
+type PlansClientUpdateVnetRouteResponse struct {
+	PlansClientUpdateVnetRouteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PlansClientUpdateVnetRouteResult contains the result from method PlansClient.UpdateVnetRoute.
+type PlansClientUpdateVnetRouteResult struct {
+	VnetRoute
+}
+
+// ProviderClientGetAvailableStacksOnPremResponse contains the response from method ProviderClient.GetAvailableStacksOnPrem.
+type ProviderClientGetAvailableStacksOnPremResponse struct {
+	ProviderClientGetAvailableStacksOnPremResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderClientGetAvailableStacksOnPremResult contains the result from method ProviderClient.GetAvailableStacksOnPrem.
+type ProviderClientGetAvailableStacksOnPremResult struct {
+	ApplicationStackCollection
+}
+
+// ProviderClientGetAvailableStacksResponse contains the response from method ProviderClient.GetAvailableStacks.
+type ProviderClientGetAvailableStacksResponse struct {
+	ProviderClientGetAvailableStacksResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderClientGetAvailableStacksResult contains the result from method ProviderClient.GetAvailableStacks.
+type ProviderClientGetAvailableStacksResult struct {
+	ApplicationStackCollection
+}
+
+// ProviderClientGetFunctionAppStacksForLocationResponse contains the response from method ProviderClient.GetFunctionAppStacksForLocation.
+type ProviderClientGetFunctionAppStacksForLocationResponse struct {
+	ProviderClientGetFunctionAppStacksForLocationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderClientGetFunctionAppStacksForLocationResult contains the result from method ProviderClient.GetFunctionAppStacksForLocation.
+type ProviderClientGetFunctionAppStacksForLocationResult struct {
+	FunctionAppStackCollection
+}
+
+// ProviderClientGetFunctionAppStacksResponse contains the response from method ProviderClient.GetFunctionAppStacks.
+type ProviderClientGetFunctionAppStacksResponse struct {
+	ProviderClientGetFunctionAppStacksResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderClientGetFunctionAppStacksResult contains the result from method ProviderClient.GetFunctionAppStacks.
+type ProviderClientGetFunctionAppStacksResult struct {
+	FunctionAppStackCollection
+}
+
+// ProviderClientGetWebAppStacksForLocationResponse contains the response from method ProviderClient.GetWebAppStacksForLocation.
+type ProviderClientGetWebAppStacksForLocationResponse struct {
+	ProviderClientGetWebAppStacksForLocationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderClientGetWebAppStacksForLocationResult contains the result from method ProviderClient.GetWebAppStacksForLocation.
+type ProviderClientGetWebAppStacksForLocationResult struct {
+	WebAppStackCollection
+}
+
+// ProviderClientGetWebAppStacksResponse contains the response from method ProviderClient.GetWebAppStacks.
+type ProviderClientGetWebAppStacksResponse struct {
+	ProviderClientGetWebAppStacksResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderClientGetWebAppStacksResult contains the result from method ProviderClient.GetWebAppStacks.
+type ProviderClientGetWebAppStacksResult struct {
+	WebAppStackCollection
+}
+
+// ProviderClientListOperationsResponse contains the response from method ProviderClient.ListOperations.
+type ProviderClientListOperationsResponse struct {
+	ProviderClientListOperationsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderClientListOperationsResult contains the result from method ProviderClient.ListOperations.
+type ProviderClientListOperationsResult struct {
+	CsmOperationCollection
+}
+
+// RecommendationsClientDisableAllForHostingEnvironmentResponse contains the response from method RecommendationsClient.DisableAllForHostingEnvironment.
+type RecommendationsClientDisableAllForHostingEnvironmentResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientDisableAllForWebAppResponse contains the response from method RecommendationsClient.DisableAllForWebApp.
+type RecommendationsClientDisableAllForWebAppResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientDisableRecommendationForHostingEnvironmentResponse contains the response from method RecommendationsClient.DisableRecommendationForHostingEnvironment.
+type RecommendationsClientDisableRecommendationForHostingEnvironmentResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientDisableRecommendationForSiteResponse contains the response from method RecommendationsClient.DisableRecommendationForSite.
+type RecommendationsClientDisableRecommendationForSiteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientDisableRecommendationForSubscriptionResponse contains the response from method RecommendationsClient.DisableRecommendationForSubscription.
+type RecommendationsClientDisableRecommendationForSubscriptionResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse contains the response from method RecommendationsClient.GetRuleDetailsByHostingEnvironment.
+type RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse struct {
+	RecommendationsClientGetRuleDetailsByHostingEnvironmentResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientGetRuleDetailsByHostingEnvironmentResult contains the result from method RecommendationsClient.GetRuleDetailsByHostingEnvironment.
+type RecommendationsClientGetRuleDetailsByHostingEnvironmentResult struct {
+	RecommendationRule
+}
+
+// RecommendationsClientGetRuleDetailsByWebAppResponse contains the response from method RecommendationsClient.GetRuleDetailsByWebApp.
+type RecommendationsClientGetRuleDetailsByWebAppResponse struct {
+	RecommendationsClientGetRuleDetailsByWebAppResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientGetRuleDetailsByWebAppResult contains the result from method RecommendationsClient.GetRuleDetailsByWebApp.
+type RecommendationsClientGetRuleDetailsByWebAppResult struct {
+	RecommendationRule
+}
+
+// RecommendationsClientListHistoryForHostingEnvironmentResponse contains the response from method RecommendationsClient.ListHistoryForHostingEnvironment.
+type RecommendationsClientListHistoryForHostingEnvironmentResponse struct {
+	RecommendationsClientListHistoryForHostingEnvironmentResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientListHistoryForHostingEnvironmentResult contains the result from method RecommendationsClient.ListHistoryForHostingEnvironment.
+type RecommendationsClientListHistoryForHostingEnvironmentResult struct {
+	RecommendationCollection
+}
+
+// RecommendationsClientListHistoryForWebAppResponse contains the response from method RecommendationsClient.ListHistoryForWebApp.
+type RecommendationsClientListHistoryForWebAppResponse struct {
+	RecommendationsClientListHistoryForWebAppResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientListHistoryForWebAppResult contains the result from method RecommendationsClient.ListHistoryForWebApp.
+type RecommendationsClientListHistoryForWebAppResult struct {
+	RecommendationCollection
+}
+
+// RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse contains the response from method RecommendationsClient.ListRecommendedRulesForHostingEnvironment.
+type RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse struct {
+	RecommendationsClientListRecommendedRulesForHostingEnvironmentResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientListRecommendedRulesForHostingEnvironmentResult contains the result from method RecommendationsClient.ListRecommendedRulesForHostingEnvironment.
+type RecommendationsClientListRecommendedRulesForHostingEnvironmentResult struct {
+	RecommendationCollection
+}
+
+// RecommendationsClientListRecommendedRulesForWebAppResponse contains the response from method RecommendationsClient.ListRecommendedRulesForWebApp.
+type RecommendationsClientListRecommendedRulesForWebAppResponse struct {
+	RecommendationsClientListRecommendedRulesForWebAppResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientListRecommendedRulesForWebAppResult contains the result from method RecommendationsClient.ListRecommendedRulesForWebApp.
+type RecommendationsClientListRecommendedRulesForWebAppResult struct {
+	RecommendationCollection
+}
+
+// RecommendationsClientListResponse contains the response from method RecommendationsClient.List.
+type RecommendationsClientListResponse struct {
+	RecommendationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientListResult contains the result from method RecommendationsClient.List.
+type RecommendationsClientListResult struct {
+	RecommendationCollection
+}
+
+// RecommendationsClientResetAllFiltersForHostingEnvironmentResponse contains the response from method RecommendationsClient.ResetAllFiltersForHostingEnvironment.
+type RecommendationsClientResetAllFiltersForHostingEnvironmentResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientResetAllFiltersForWebAppResponse contains the response from method RecommendationsClient.ResetAllFiltersForWebApp.
+type RecommendationsClientResetAllFiltersForWebAppResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecommendationsClientResetAllFiltersResponse contains the response from method RecommendationsClient.ResetAllFilters.
+type RecommendationsClientResetAllFiltersResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceHealthMetadataClientGetBySiteResponse contains the response from method ResourceHealthMetadataClient.GetBySite.
+type ResourceHealthMetadataClientGetBySiteResponse struct {
+	ResourceHealthMetadataClientGetBySiteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceHealthMetadataClientGetBySiteResult contains the result from method ResourceHealthMetadataClient.GetBySite.
+type ResourceHealthMetadataClientGetBySiteResult struct {
+	ResourceHealthMetadata
+}
+
+// ResourceHealthMetadataClientGetBySiteSlotResponse contains the response from method ResourceHealthMetadataClient.GetBySiteSlot.
+type ResourceHealthMetadataClientGetBySiteSlotResponse struct {
+	ResourceHealthMetadataClientGetBySiteSlotResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceHealthMetadataClientGetBySiteSlotResult contains the result from method ResourceHealthMetadataClient.GetBySiteSlot.
+type ResourceHealthMetadataClientGetBySiteSlotResult struct {
+	ResourceHealthMetadata
+}
+
+// ResourceHealthMetadataClientListByResourceGroupResponse contains the response from method ResourceHealthMetadataClient.ListByResourceGroup.
+type ResourceHealthMetadataClientListByResourceGroupResponse struct {
+	ResourceHealthMetadataClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceHealthMetadataClientListByResourceGroupResult contains the result from method ResourceHealthMetadataClient.ListByResourceGroup.
+type ResourceHealthMetadataClientListByResourceGroupResult struct {
+	ResourceHealthMetadataCollection
+}
+
+// ResourceHealthMetadataClientListBySiteResponse contains the response from method ResourceHealthMetadataClient.ListBySite.
+type ResourceHealthMetadataClientListBySiteResponse struct {
+	ResourceHealthMetadataClientListBySiteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceHealthMetadataClientListBySiteResult contains the result from method ResourceHealthMetadataClient.ListBySite.
+type ResourceHealthMetadataClientListBySiteResult struct {
+	ResourceHealthMetadataCollection
+}
+
+// ResourceHealthMetadataClientListBySiteSlotResponse contains the response from method ResourceHealthMetadataClient.ListBySiteSlot.
+type ResourceHealthMetadataClientListBySiteSlotResponse struct {
+	ResourceHealthMetadataClientListBySiteSlotResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceHealthMetadataClientListBySiteSlotResult contains the result from method ResourceHealthMetadataClient.ListBySiteSlot.
+type ResourceHealthMetadataClientListBySiteSlotResult struct {
+	ResourceHealthMetadataCollection
+}
+
+// ResourceHealthMetadataClientListResponse contains the response from method ResourceHealthMetadataClient.List.
+type ResourceHealthMetadataClientListResponse struct {
+	ResourceHealthMetadataClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceHealthMetadataClientListResult contains the result from method ResourceHealthMetadataClient.List.
+type ResourceHealthMetadataClientListResult struct {
+	ResourceHealthMetadataCollection
+}
+
+// StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method StaticSitesClient.ApproveOrRejectPrivateEndpointConnection.
+type StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *StaticSitesClientApproveOrRejectPrivateEndpointConnectionPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
 	if err != nil {
 		return respType, err
@@ -2604,13 +2810,14 @@ func (l StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse) PollU
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and resume token.
-func (l *StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl, client.approveOrRejectPrivateEndpointConnectionHandleError)
+// Resume rehydrates a StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and
+// resume token.
+func (l *StaticSitesClientApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesApproveOrRejectPrivateEndpointConnectionPoller{
+	poller := &StaticSitesClientApproveOrRejectPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2622,58 +2829,58 @@ func (l *StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse) Resu
 	return nil
 }
 
-// StaticSitesApproveOrRejectPrivateEndpointConnectionResponse contains the response from method StaticSites.ApproveOrRejectPrivateEndpointConnection.
-type StaticSitesApproveOrRejectPrivateEndpointConnectionResponse struct {
-	StaticSitesApproveOrRejectPrivateEndpointConnectionResult
+// StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse contains the response from method StaticSitesClient.ApproveOrRejectPrivateEndpointConnection.
+type StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse struct {
+	StaticSitesClientApproveOrRejectPrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesApproveOrRejectPrivateEndpointConnectionResult contains the result from method StaticSites.ApproveOrRejectPrivateEndpointConnection.
-type StaticSitesApproveOrRejectPrivateEndpointConnectionResult struct {
+// StaticSitesClientApproveOrRejectPrivateEndpointConnectionResult contains the result from method StaticSitesClient.ApproveOrRejectPrivateEndpointConnection.
+type StaticSitesClientApproveOrRejectPrivateEndpointConnectionResult struct {
 	RemotePrivateEndpointConnectionARMResource
 }
 
-// StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse contains the response from method StaticSites.CreateOrUpdateStaticSiteAppSettings.
-type StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse struct {
-	StaticSitesCreateOrUpdateStaticSiteAppSettingsResult
+// StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse contains the response from method StaticSitesClient.CreateOrUpdateStaticSiteAppSettings.
+type StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse struct {
+	StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesCreateOrUpdateStaticSiteAppSettingsResult contains the result from method StaticSites.CreateOrUpdateStaticSiteAppSettings.
-type StaticSitesCreateOrUpdateStaticSiteAppSettingsResult struct {
+// StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResult contains the result from method StaticSitesClient.CreateOrUpdateStaticSiteAppSettings.
+type StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResult struct {
 	StringDictionary
 }
 
-// StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse contains the response from method StaticSites.CreateOrUpdateStaticSiteBuildAppSettings.
-type StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse struct {
-	StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResult
+// StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse contains the response from method StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings.
+type StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse struct {
+	StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResult contains the result from method StaticSites.CreateOrUpdateStaticSiteBuildAppSettings.
-type StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResult struct {
+// StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResult contains the result from method StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings.
+type StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResult struct {
 	StringDictionary
 }
 
-// StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse contains the response from method StaticSites.CreateOrUpdateStaticSiteBuildFunctionAppSettings.
-type StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse struct {
-	StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult
+// StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse contains the response from method StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings.
+type StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse struct {
+	StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult contains the result from method StaticSites.CreateOrUpdateStaticSiteBuildFunctionAppSettings.
-type StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult struct {
+// StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult contains the result from method StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings.
+type StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult struct {
 	StringDictionary
 }
 
-// StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse contains the response from method StaticSites.CreateOrUpdateStaticSiteCustomDomain.
-type StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse struct {
+// StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse contains the response from method StaticSitesClient.CreateOrUpdateStaticSiteCustomDomain.
+type StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller
+	Poller *StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2682,8 +2889,8 @@ type StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse, error) {
-	respType := StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse{}
+func (l StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse, error) {
+	respType := StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StaticSiteCustomDomainOverviewARMResource)
 	if err != nil {
 		return respType, err
@@ -2692,13 +2899,14 @@ func (l StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse) PollUntil
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse from the provided client and resume token.
-func (l *StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateOrUpdateStaticSiteCustomDomain", token, client.pl, client.createOrUpdateStaticSiteCustomDomainHandleError)
+// Resume rehydrates a StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse from the provided client and resume
+// token.
+func (l *StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateOrUpdateStaticSiteCustomDomain", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller{
+	poller := &StaticSitesClientCreateOrUpdateStaticSiteCustomDomainPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2710,34 +2918,34 @@ func (l *StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse) Resume(c
 	return nil
 }
 
-// StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse contains the response from method StaticSites.CreateOrUpdateStaticSiteCustomDomain.
-type StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse struct {
-	StaticSitesCreateOrUpdateStaticSiteCustomDomainResult
+// StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse contains the response from method StaticSitesClient.CreateOrUpdateStaticSiteCustomDomain.
+type StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse struct {
+	StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesCreateOrUpdateStaticSiteCustomDomainResult contains the result from method StaticSites.CreateOrUpdateStaticSiteCustomDomain.
-type StaticSitesCreateOrUpdateStaticSiteCustomDomainResult struct {
+// StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResult contains the result from method StaticSitesClient.CreateOrUpdateStaticSiteCustomDomain.
+type StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResult struct {
 	StaticSiteCustomDomainOverviewARMResource
 }
 
-// StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse contains the response from method StaticSites.CreateOrUpdateStaticSiteFunctionAppSettings.
-type StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse struct {
-	StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResult
+// StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse contains the response from method StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings.
+type StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse struct {
+	StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResult contains the result from method StaticSites.CreateOrUpdateStaticSiteFunctionAppSettings.
-type StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResult struct {
+// StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResult contains the result from method StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings.
+type StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResult struct {
 	StringDictionary
 }
 
-// StaticSitesCreateOrUpdateStaticSitePollerResponse contains the response from method StaticSites.CreateOrUpdateStaticSite.
-type StaticSitesCreateOrUpdateStaticSitePollerResponse struct {
+// StaticSitesClientCreateOrUpdateStaticSitePollerResponse contains the response from method StaticSitesClient.CreateOrUpdateStaticSite.
+type StaticSitesClientCreateOrUpdateStaticSitePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesCreateOrUpdateStaticSitePoller
+	Poller *StaticSitesClientCreateOrUpdateStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2746,8 +2954,8 @@ type StaticSitesCreateOrUpdateStaticSitePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesCreateOrUpdateStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateOrUpdateStaticSiteResponse, error) {
-	respType := StaticSitesCreateOrUpdateStaticSiteResponse{}
+func (l StaticSitesClientCreateOrUpdateStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientCreateOrUpdateStaticSiteResponse, error) {
+	respType := StaticSitesClientCreateOrUpdateStaticSiteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StaticSiteARMResource)
 	if err != nil {
 		return respType, err
@@ -2756,13 +2964,13 @@ func (l StaticSitesCreateOrUpdateStaticSitePollerResponse) PollUntilDone(ctx con
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesCreateOrUpdateStaticSitePollerResponse from the provided client and resume token.
-func (l *StaticSitesCreateOrUpdateStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateOrUpdateStaticSite", token, client.pl, client.createOrUpdateStaticSiteHandleError)
+// Resume rehydrates a StaticSitesClientCreateOrUpdateStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesClientCreateOrUpdateStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateOrUpdateStaticSite", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesCreateOrUpdateStaticSitePoller{
+	poller := &StaticSitesClientCreateOrUpdateStaticSitePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2774,34 +2982,34 @@ func (l *StaticSitesCreateOrUpdateStaticSitePollerResponse) Resume(ctx context.C
 	return nil
 }
 
-// StaticSitesCreateOrUpdateStaticSiteResponse contains the response from method StaticSites.CreateOrUpdateStaticSite.
-type StaticSitesCreateOrUpdateStaticSiteResponse struct {
-	StaticSitesCreateOrUpdateStaticSiteResult
+// StaticSitesClientCreateOrUpdateStaticSiteResponse contains the response from method StaticSitesClient.CreateOrUpdateStaticSite.
+type StaticSitesClientCreateOrUpdateStaticSiteResponse struct {
+	StaticSitesClientCreateOrUpdateStaticSiteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesCreateOrUpdateStaticSiteResult contains the result from method StaticSites.CreateOrUpdateStaticSite.
-type StaticSitesCreateOrUpdateStaticSiteResult struct {
+// StaticSitesClientCreateOrUpdateStaticSiteResult contains the result from method StaticSitesClient.CreateOrUpdateStaticSite.
+type StaticSitesClientCreateOrUpdateStaticSiteResult struct {
 	StaticSiteARMResource
 }
 
-// StaticSitesCreateUserRolesInvitationLinkResponse contains the response from method StaticSites.CreateUserRolesInvitationLink.
-type StaticSitesCreateUserRolesInvitationLinkResponse struct {
-	StaticSitesCreateUserRolesInvitationLinkResult
+// StaticSitesClientCreateUserRolesInvitationLinkResponse contains the response from method StaticSitesClient.CreateUserRolesInvitationLink.
+type StaticSitesClientCreateUserRolesInvitationLinkResponse struct {
+	StaticSitesClientCreateUserRolesInvitationLinkResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesCreateUserRolesInvitationLinkResult contains the result from method StaticSites.CreateUserRolesInvitationLink.
-type StaticSitesCreateUserRolesInvitationLinkResult struct {
+// StaticSitesClientCreateUserRolesInvitationLinkResult contains the result from method StaticSitesClient.CreateUserRolesInvitationLink.
+type StaticSitesClientCreateUserRolesInvitationLinkResult struct {
 	StaticSiteUserInvitationResponseResource
 }
 
-// StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse contains the response from method StaticSites.CreateZipDeploymentForStaticSiteBuild.
-type StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse struct {
+// StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse contains the response from method StaticSitesClient.CreateZipDeploymentForStaticSiteBuild.
+type StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesCreateZipDeploymentForStaticSiteBuildPoller
+	Poller *StaticSitesClientCreateZipDeploymentForStaticSiteBuildPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2810,8 +3018,8 @@ type StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateZipDeploymentForStaticSiteBuildResponse, error) {
-	respType := StaticSitesCreateZipDeploymentForStaticSiteBuildResponse{}
+func (l StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse, error) {
+	respType := StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2820,13 +3028,14 @@ func (l StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse) PollUnti
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse from the provided client and resume token.
-func (l *StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateZipDeploymentForStaticSiteBuild", token, client.pl, client.createZipDeploymentForStaticSiteBuildHandleError)
+// Resume rehydrates a StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse from the provided client and resume
+// token.
+func (l *StaticSitesClientCreateZipDeploymentForStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateZipDeploymentForStaticSiteBuild", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesCreateZipDeploymentForStaticSiteBuildPoller{
+	poller := &StaticSitesClientCreateZipDeploymentForStaticSiteBuildPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2838,16 +3047,16 @@ func (l *StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse) Resume(
 	return nil
 }
 
-// StaticSitesCreateZipDeploymentForStaticSiteBuildResponse contains the response from method StaticSites.CreateZipDeploymentForStaticSiteBuild.
-type StaticSitesCreateZipDeploymentForStaticSiteBuildResponse struct {
+// StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse contains the response from method StaticSitesClient.CreateZipDeploymentForStaticSiteBuild.
+type StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesCreateZipDeploymentForStaticSitePollerResponse contains the response from method StaticSites.CreateZipDeploymentForStaticSite.
-type StaticSitesCreateZipDeploymentForStaticSitePollerResponse struct {
+// StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse contains the response from method StaticSitesClient.CreateZipDeploymentForStaticSite.
+type StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesCreateZipDeploymentForStaticSitePoller
+	Poller *StaticSitesClientCreateZipDeploymentForStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2856,8 +3065,8 @@ type StaticSitesCreateZipDeploymentForStaticSitePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesCreateZipDeploymentForStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateZipDeploymentForStaticSiteResponse, error) {
-	respType := StaticSitesCreateZipDeploymentForStaticSiteResponse{}
+func (l StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientCreateZipDeploymentForStaticSiteResponse, error) {
+	respType := StaticSitesClientCreateZipDeploymentForStaticSiteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2866,13 +3075,14 @@ func (l StaticSitesCreateZipDeploymentForStaticSitePollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesCreateZipDeploymentForStaticSitePollerResponse from the provided client and resume token.
-func (l *StaticSitesCreateZipDeploymentForStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateZipDeploymentForStaticSite", token, client.pl, client.createZipDeploymentForStaticSiteHandleError)
+// Resume rehydrates a StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse from the provided client and resume
+// token.
+func (l *StaticSitesClientCreateZipDeploymentForStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateZipDeploymentForStaticSite", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesCreateZipDeploymentForStaticSitePoller{
+	poller := &StaticSitesClientCreateZipDeploymentForStaticSitePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2884,16 +3094,16 @@ func (l *StaticSitesCreateZipDeploymentForStaticSitePollerResponse) Resume(ctx c
 	return nil
 }
 
-// StaticSitesCreateZipDeploymentForStaticSiteResponse contains the response from method StaticSites.CreateZipDeploymentForStaticSite.
-type StaticSitesCreateZipDeploymentForStaticSiteResponse struct {
+// StaticSitesClientCreateZipDeploymentForStaticSiteResponse contains the response from method StaticSitesClient.CreateZipDeploymentForStaticSite.
+type StaticSitesClientCreateZipDeploymentForStaticSiteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesDeletePrivateEndpointConnectionPollerResponse contains the response from method StaticSites.DeletePrivateEndpointConnection.
-type StaticSitesDeletePrivateEndpointConnectionPollerResponse struct {
+// StaticSitesClientDeletePrivateEndpointConnectionPollerResponse contains the response from method StaticSitesClient.DeletePrivateEndpointConnection.
+type StaticSitesClientDeletePrivateEndpointConnectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesDeletePrivateEndpointConnectionPoller
+	Poller *StaticSitesClientDeletePrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2902,9 +3112,9 @@ type StaticSitesDeletePrivateEndpointConnectionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeletePrivateEndpointConnectionResponse, error) {
-	respType := StaticSitesDeletePrivateEndpointConnectionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Object)
+func (l StaticSitesClientDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientDeletePrivateEndpointConnectionResponse, error) {
+	respType := StaticSitesClientDeletePrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Interface)
 	if err != nil {
 		return respType, err
 	}
@@ -2912,13 +3122,14 @@ func (l StaticSitesDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesDeletePrivateEndpointConnectionPollerResponse from the provided client and resume token.
-func (l *StaticSitesDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeletePrivateEndpointConnection", token, client.pl, client.deletePrivateEndpointConnectionHandleError)
+// Resume rehydrates a StaticSitesClientDeletePrivateEndpointConnectionPollerResponse from the provided client and resume
+// token.
+func (l *StaticSitesClientDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeletePrivateEndpointConnection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesDeletePrivateEndpointConnectionPoller{
+	poller := &StaticSitesClientDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2930,23 +3141,23 @@ func (l *StaticSitesDeletePrivateEndpointConnectionPollerResponse) Resume(ctx co
 	return nil
 }
 
-// StaticSitesDeletePrivateEndpointConnectionResponse contains the response from method StaticSites.DeletePrivateEndpointConnection.
-type StaticSitesDeletePrivateEndpointConnectionResponse struct {
-	StaticSitesDeletePrivateEndpointConnectionResult
+// StaticSitesClientDeletePrivateEndpointConnectionResponse contains the response from method StaticSitesClient.DeletePrivateEndpointConnection.
+type StaticSitesClientDeletePrivateEndpointConnectionResponse struct {
+	StaticSitesClientDeletePrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesDeletePrivateEndpointConnectionResult contains the result from method StaticSites.DeletePrivateEndpointConnection.
-type StaticSitesDeletePrivateEndpointConnectionResult struct {
-	// Any object
-	Object map[string]interface{}
+// StaticSitesClientDeletePrivateEndpointConnectionResult contains the result from method StaticSitesClient.DeletePrivateEndpointConnection.
+type StaticSitesClientDeletePrivateEndpointConnectionResult struct {
+	// Anything
+	Interface interface{}
 }
 
-// StaticSitesDeleteStaticSiteBuildPollerResponse contains the response from method StaticSites.DeleteStaticSiteBuild.
-type StaticSitesDeleteStaticSiteBuildPollerResponse struct {
+// StaticSitesClientDeleteStaticSiteBuildPollerResponse contains the response from method StaticSitesClient.DeleteStaticSiteBuild.
+type StaticSitesClientDeleteStaticSiteBuildPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesDeleteStaticSiteBuildPoller
+	Poller *StaticSitesClientDeleteStaticSiteBuildPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2955,8 +3166,8 @@ type StaticSitesDeleteStaticSiteBuildPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesDeleteStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteBuildResponse, error) {
-	respType := StaticSitesDeleteStaticSiteBuildResponse{}
+func (l StaticSitesClientDeleteStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientDeleteStaticSiteBuildResponse, error) {
+	respType := StaticSitesClientDeleteStaticSiteBuildResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2965,13 +3176,13 @@ func (l StaticSitesDeleteStaticSiteBuildPollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesDeleteStaticSiteBuildPollerResponse from the provided client and resume token.
-func (l *StaticSitesDeleteStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSiteBuild", token, client.pl, client.deleteStaticSiteBuildHandleError)
+// Resume rehydrates a StaticSitesClientDeleteStaticSiteBuildPollerResponse from the provided client and resume token.
+func (l *StaticSitesClientDeleteStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSiteBuild", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesDeleteStaticSiteBuildPoller{
+	poller := &StaticSitesClientDeleteStaticSiteBuildPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2983,16 +3194,16 @@ func (l *StaticSitesDeleteStaticSiteBuildPollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// StaticSitesDeleteStaticSiteBuildResponse contains the response from method StaticSites.DeleteStaticSiteBuild.
-type StaticSitesDeleteStaticSiteBuildResponse struct {
+// StaticSitesClientDeleteStaticSiteBuildResponse contains the response from method StaticSitesClient.DeleteStaticSiteBuild.
+type StaticSitesClientDeleteStaticSiteBuildResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesDeleteStaticSiteCustomDomainPollerResponse contains the response from method StaticSites.DeleteStaticSiteCustomDomain.
-type StaticSitesDeleteStaticSiteCustomDomainPollerResponse struct {
+// StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse contains the response from method StaticSitesClient.DeleteStaticSiteCustomDomain.
+type StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesDeleteStaticSiteCustomDomainPoller
+	Poller *StaticSitesClientDeleteStaticSiteCustomDomainPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3001,8 +3212,8 @@ type StaticSitesDeleteStaticSiteCustomDomainPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesDeleteStaticSiteCustomDomainPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteCustomDomainResponse, error) {
-	respType := StaticSitesDeleteStaticSiteCustomDomainResponse{}
+func (l StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientDeleteStaticSiteCustomDomainResponse, error) {
+	respType := StaticSitesClientDeleteStaticSiteCustomDomainResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3011,13 +3222,13 @@ func (l StaticSitesDeleteStaticSiteCustomDomainPollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesDeleteStaticSiteCustomDomainPollerResponse from the provided client and resume token.
-func (l *StaticSitesDeleteStaticSiteCustomDomainPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSiteCustomDomain", token, client.pl, client.deleteStaticSiteCustomDomainHandleError)
+// Resume rehydrates a StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse from the provided client and resume token.
+func (l *StaticSitesClientDeleteStaticSiteCustomDomainPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSiteCustomDomain", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesDeleteStaticSiteCustomDomainPoller{
+	poller := &StaticSitesClientDeleteStaticSiteCustomDomainPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3029,16 +3240,16 @@ func (l *StaticSitesDeleteStaticSiteCustomDomainPollerResponse) Resume(ctx conte
 	return nil
 }
 
-// StaticSitesDeleteStaticSiteCustomDomainResponse contains the response from method StaticSites.DeleteStaticSiteCustomDomain.
-type StaticSitesDeleteStaticSiteCustomDomainResponse struct {
+// StaticSitesClientDeleteStaticSiteCustomDomainResponse contains the response from method StaticSitesClient.DeleteStaticSiteCustomDomain.
+type StaticSitesClientDeleteStaticSiteCustomDomainResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesDeleteStaticSitePollerResponse contains the response from method StaticSites.DeleteStaticSite.
-type StaticSitesDeleteStaticSitePollerResponse struct {
+// StaticSitesClientDeleteStaticSitePollerResponse contains the response from method StaticSitesClient.DeleteStaticSite.
+type StaticSitesClientDeleteStaticSitePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesDeleteStaticSitePoller
+	Poller *StaticSitesClientDeleteStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3047,8 +3258,8 @@ type StaticSitesDeleteStaticSitePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesDeleteStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteResponse, error) {
-	respType := StaticSitesDeleteStaticSiteResponse{}
+func (l StaticSitesClientDeleteStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientDeleteStaticSiteResponse, error) {
+	respType := StaticSitesClientDeleteStaticSiteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3057,13 +3268,13 @@ func (l StaticSitesDeleteStaticSitePollerResponse) PollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesDeleteStaticSitePollerResponse from the provided client and resume token.
-func (l *StaticSitesDeleteStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSite", token, client.pl, client.deleteStaticSiteHandleError)
+// Resume rehydrates a StaticSitesClientDeleteStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesClientDeleteStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSite", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesDeleteStaticSitePoller{
+	poller := &StaticSitesClientDeleteStaticSitePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3075,22 +3286,22 @@ func (l *StaticSitesDeleteStaticSitePollerResponse) Resume(ctx context.Context, 
 	return nil
 }
 
-// StaticSitesDeleteStaticSiteResponse contains the response from method StaticSites.DeleteStaticSite.
-type StaticSitesDeleteStaticSiteResponse struct {
+// StaticSitesClientDeleteStaticSiteResponse contains the response from method StaticSitesClient.DeleteStaticSite.
+type StaticSitesClientDeleteStaticSiteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesDeleteStaticSiteUserResponse contains the response from method StaticSites.DeleteStaticSiteUser.
-type StaticSitesDeleteStaticSiteUserResponse struct {
+// StaticSitesClientDeleteStaticSiteUserResponse contains the response from method StaticSitesClient.DeleteStaticSiteUser.
+type StaticSitesClientDeleteStaticSiteUserResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesDetachStaticSitePollerResponse contains the response from method StaticSites.DetachStaticSite.
-type StaticSitesDetachStaticSitePollerResponse struct {
+// StaticSitesClientDetachStaticSitePollerResponse contains the response from method StaticSitesClient.DetachStaticSite.
+type StaticSitesClientDetachStaticSitePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesDetachStaticSitePoller
+	Poller *StaticSitesClientDetachStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3099,8 +3310,8 @@ type StaticSitesDetachStaticSitePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesDetachStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDetachStaticSiteResponse, error) {
-	respType := StaticSitesDetachStaticSiteResponse{}
+func (l StaticSitesClientDetachStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientDetachStaticSiteResponse, error) {
+	respType := StaticSitesClientDetachStaticSiteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3109,13 +3320,13 @@ func (l StaticSitesDetachStaticSitePollerResponse) PollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesDetachStaticSitePollerResponse from the provided client and resume token.
-func (l *StaticSitesDetachStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DetachStaticSite", token, client.pl, client.detachStaticSiteHandleError)
+// Resume rehydrates a StaticSitesClientDetachStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesClientDetachStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DetachStaticSite", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesDetachStaticSitePoller{
+	poller := &StaticSitesClientDetachStaticSitePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3127,316 +3338,316 @@ func (l *StaticSitesDetachStaticSitePollerResponse) Resume(ctx context.Context, 
 	return nil
 }
 
-// StaticSitesDetachStaticSiteResponse contains the response from method StaticSites.DetachStaticSite.
-type StaticSitesDetachStaticSiteResponse struct {
+// StaticSitesClientDetachStaticSiteResponse contains the response from method StaticSitesClient.DetachStaticSite.
+type StaticSitesClientDetachStaticSiteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse contains the response from method StaticSites.DetachUserProvidedFunctionAppFromStaticSiteBuild.
-type StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildResponse struct {
+// StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse contains the response from method StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSiteBuild.
+type StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse contains the response from method StaticSites.DetachUserProvidedFunctionAppFromStaticSite.
-type StaticSitesDetachUserProvidedFunctionAppFromStaticSiteResponse struct {
+// StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse contains the response from method StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSite.
+type StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetPrivateEndpointConnectionListResponse contains the response from method StaticSites.GetPrivateEndpointConnectionList.
-type StaticSitesGetPrivateEndpointConnectionListResponse struct {
-	StaticSitesGetPrivateEndpointConnectionListResult
+// StaticSitesClientGetPrivateEndpointConnectionListResponse contains the response from method StaticSitesClient.GetPrivateEndpointConnectionList.
+type StaticSitesClientGetPrivateEndpointConnectionListResponse struct {
+	StaticSitesClientGetPrivateEndpointConnectionListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetPrivateEndpointConnectionListResult contains the result from method StaticSites.GetPrivateEndpointConnectionList.
-type StaticSitesGetPrivateEndpointConnectionListResult struct {
+// StaticSitesClientGetPrivateEndpointConnectionListResult contains the result from method StaticSitesClient.GetPrivateEndpointConnectionList.
+type StaticSitesClientGetPrivateEndpointConnectionListResult struct {
 	PrivateEndpointConnectionCollection
 }
 
-// StaticSitesGetPrivateEndpointConnectionResponse contains the response from method StaticSites.GetPrivateEndpointConnection.
-type StaticSitesGetPrivateEndpointConnectionResponse struct {
-	StaticSitesGetPrivateEndpointConnectionResult
+// StaticSitesClientGetPrivateEndpointConnectionResponse contains the response from method StaticSitesClient.GetPrivateEndpointConnection.
+type StaticSitesClientGetPrivateEndpointConnectionResponse struct {
+	StaticSitesClientGetPrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetPrivateEndpointConnectionResult contains the result from method StaticSites.GetPrivateEndpointConnection.
-type StaticSitesGetPrivateEndpointConnectionResult struct {
+// StaticSitesClientGetPrivateEndpointConnectionResult contains the result from method StaticSitesClient.GetPrivateEndpointConnection.
+type StaticSitesClientGetPrivateEndpointConnectionResult struct {
 	RemotePrivateEndpointConnectionARMResource
 }
 
-// StaticSitesGetPrivateLinkResourcesResponse contains the response from method StaticSites.GetPrivateLinkResources.
-type StaticSitesGetPrivateLinkResourcesResponse struct {
-	StaticSitesGetPrivateLinkResourcesResult
+// StaticSitesClientGetPrivateLinkResourcesResponse contains the response from method StaticSitesClient.GetPrivateLinkResources.
+type StaticSitesClientGetPrivateLinkResourcesResponse struct {
+	StaticSitesClientGetPrivateLinkResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetPrivateLinkResourcesResult contains the result from method StaticSites.GetPrivateLinkResources.
-type StaticSitesGetPrivateLinkResourcesResult struct {
+// StaticSitesClientGetPrivateLinkResourcesResult contains the result from method StaticSitesClient.GetPrivateLinkResources.
+type StaticSitesClientGetPrivateLinkResourcesResult struct {
 	PrivateLinkResourcesWrapper
 }
 
-// StaticSitesGetStaticSiteBuildResponse contains the response from method StaticSites.GetStaticSiteBuild.
-type StaticSitesGetStaticSiteBuildResponse struct {
-	StaticSitesGetStaticSiteBuildResult
+// StaticSitesClientGetStaticSiteBuildResponse contains the response from method StaticSitesClient.GetStaticSiteBuild.
+type StaticSitesClientGetStaticSiteBuildResponse struct {
+	StaticSitesClientGetStaticSiteBuildResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetStaticSiteBuildResult contains the result from method StaticSites.GetStaticSiteBuild.
-type StaticSitesGetStaticSiteBuildResult struct {
+// StaticSitesClientGetStaticSiteBuildResult contains the result from method StaticSitesClient.GetStaticSiteBuild.
+type StaticSitesClientGetStaticSiteBuildResult struct {
 	StaticSiteBuildARMResource
 }
 
-// StaticSitesGetStaticSiteBuildsResponse contains the response from method StaticSites.GetStaticSiteBuilds.
-type StaticSitesGetStaticSiteBuildsResponse struct {
-	StaticSitesGetStaticSiteBuildsResult
+// StaticSitesClientGetStaticSiteBuildsResponse contains the response from method StaticSitesClient.GetStaticSiteBuilds.
+type StaticSitesClientGetStaticSiteBuildsResponse struct {
+	StaticSitesClientGetStaticSiteBuildsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetStaticSiteBuildsResult contains the result from method StaticSites.GetStaticSiteBuilds.
-type StaticSitesGetStaticSiteBuildsResult struct {
+// StaticSitesClientGetStaticSiteBuildsResult contains the result from method StaticSitesClient.GetStaticSiteBuilds.
+type StaticSitesClientGetStaticSiteBuildsResult struct {
 	StaticSiteBuildCollection
 }
 
-// StaticSitesGetStaticSiteCustomDomainResponse contains the response from method StaticSites.GetStaticSiteCustomDomain.
-type StaticSitesGetStaticSiteCustomDomainResponse struct {
-	StaticSitesGetStaticSiteCustomDomainResult
+// StaticSitesClientGetStaticSiteCustomDomainResponse contains the response from method StaticSitesClient.GetStaticSiteCustomDomain.
+type StaticSitesClientGetStaticSiteCustomDomainResponse struct {
+	StaticSitesClientGetStaticSiteCustomDomainResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetStaticSiteCustomDomainResult contains the result from method StaticSites.GetStaticSiteCustomDomain.
-type StaticSitesGetStaticSiteCustomDomainResult struct {
+// StaticSitesClientGetStaticSiteCustomDomainResult contains the result from method StaticSitesClient.GetStaticSiteCustomDomain.
+type StaticSitesClientGetStaticSiteCustomDomainResult struct {
 	StaticSiteCustomDomainOverviewARMResource
 }
 
-// StaticSitesGetStaticSiteResponse contains the response from method StaticSites.GetStaticSite.
-type StaticSitesGetStaticSiteResponse struct {
-	StaticSitesGetStaticSiteResult
+// StaticSitesClientGetStaticSiteResponse contains the response from method StaticSitesClient.GetStaticSite.
+type StaticSitesClientGetStaticSiteResponse struct {
+	StaticSitesClientGetStaticSiteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetStaticSiteResult contains the result from method StaticSites.GetStaticSite.
-type StaticSitesGetStaticSiteResult struct {
+// StaticSitesClientGetStaticSiteResult contains the result from method StaticSitesClient.GetStaticSite.
+type StaticSitesClientGetStaticSiteResult struct {
 	StaticSiteARMResource
 }
 
-// StaticSitesGetStaticSitesByResourceGroupResponse contains the response from method StaticSites.GetStaticSitesByResourceGroup.
-type StaticSitesGetStaticSitesByResourceGroupResponse struct {
-	StaticSitesGetStaticSitesByResourceGroupResult
+// StaticSitesClientGetStaticSitesByResourceGroupResponse contains the response from method StaticSitesClient.GetStaticSitesByResourceGroup.
+type StaticSitesClientGetStaticSitesByResourceGroupResponse struct {
+	StaticSitesClientGetStaticSitesByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetStaticSitesByResourceGroupResult contains the result from method StaticSites.GetStaticSitesByResourceGroup.
-type StaticSitesGetStaticSitesByResourceGroupResult struct {
+// StaticSitesClientGetStaticSitesByResourceGroupResult contains the result from method StaticSitesClient.GetStaticSitesByResourceGroup.
+type StaticSitesClientGetStaticSitesByResourceGroupResult struct {
 	StaticSiteCollection
 }
 
-// StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse contains the response from method StaticSites.GetUserProvidedFunctionAppForStaticSiteBuild.
-type StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse struct {
-	StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResult
+// StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse contains the response from method StaticSitesClient.GetUserProvidedFunctionAppForStaticSiteBuild.
+type StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse struct {
+	StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResult contains the result from method StaticSites.GetUserProvidedFunctionAppForStaticSiteBuild.
-type StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResult struct {
+// StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResult contains the result from method StaticSitesClient.GetUserProvidedFunctionAppForStaticSiteBuild.
+type StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResult struct {
 	StaticSiteUserProvidedFunctionAppARMResource
 }
 
-// StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse contains the response from method StaticSites.GetUserProvidedFunctionAppForStaticSite.
-type StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse struct {
-	StaticSitesGetUserProvidedFunctionAppForStaticSiteResult
+// StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse contains the response from method StaticSitesClient.GetUserProvidedFunctionAppForStaticSite.
+type StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse struct {
+	StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetUserProvidedFunctionAppForStaticSiteResult contains the result from method StaticSites.GetUserProvidedFunctionAppForStaticSite.
-type StaticSitesGetUserProvidedFunctionAppForStaticSiteResult struct {
+// StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResult contains the result from method StaticSitesClient.GetUserProvidedFunctionAppForStaticSite.
+type StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResult struct {
 	StaticSiteUserProvidedFunctionAppARMResource
 }
 
-// StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse contains the response from method StaticSites.GetUserProvidedFunctionAppsForStaticSiteBuild.
-type StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse struct {
-	StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResult
+// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse contains the response from method StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild.
+type StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse struct {
+	StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResult contains the result from method StaticSites.GetUserProvidedFunctionAppsForStaticSiteBuild.
-type StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResult struct {
+// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResult contains the result from method StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild.
+type StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResult struct {
 	StaticSiteUserProvidedFunctionAppsCollection
 }
 
-// StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse contains the response from method StaticSites.GetUserProvidedFunctionAppsForStaticSite.
-type StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse struct {
-	StaticSitesGetUserProvidedFunctionAppsForStaticSiteResult
+// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse contains the response from method StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite.
+type StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse struct {
+	StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesGetUserProvidedFunctionAppsForStaticSiteResult contains the result from method StaticSites.GetUserProvidedFunctionAppsForStaticSite.
-type StaticSitesGetUserProvidedFunctionAppsForStaticSiteResult struct {
+// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResult contains the result from method StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite.
+type StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResult struct {
 	StaticSiteUserProvidedFunctionAppsCollection
 }
 
-// StaticSitesListResponse contains the response from method StaticSites.List.
-type StaticSitesListResponse struct {
-	StaticSitesListResult
+// StaticSitesClientListResponse contains the response from method StaticSitesClient.List.
+type StaticSitesClientListResponse struct {
+	StaticSitesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListResult contains the result from method StaticSites.List.
-type StaticSitesListResult struct {
+// StaticSitesClientListResult contains the result from method StaticSitesClient.List.
+type StaticSitesClientListResult struct {
 	StaticSiteCollection
 }
 
-// StaticSitesListStaticSiteAppSettingsResponse contains the response from method StaticSites.ListStaticSiteAppSettings.
-type StaticSitesListStaticSiteAppSettingsResponse struct {
-	StaticSitesListStaticSiteAppSettingsResult
+// StaticSitesClientListStaticSiteAppSettingsResponse contains the response from method StaticSitesClient.ListStaticSiteAppSettings.
+type StaticSitesClientListStaticSiteAppSettingsResponse struct {
+	StaticSitesClientListStaticSiteAppSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteAppSettingsResult contains the result from method StaticSites.ListStaticSiteAppSettings.
-type StaticSitesListStaticSiteAppSettingsResult struct {
+// StaticSitesClientListStaticSiteAppSettingsResult contains the result from method StaticSitesClient.ListStaticSiteAppSettings.
+type StaticSitesClientListStaticSiteAppSettingsResult struct {
 	StringDictionary
 }
 
-// StaticSitesListStaticSiteBuildAppSettingsResponse contains the response from method StaticSites.ListStaticSiteBuildAppSettings.
-type StaticSitesListStaticSiteBuildAppSettingsResponse struct {
-	StaticSitesListStaticSiteBuildAppSettingsResult
+// StaticSitesClientListStaticSiteBuildAppSettingsResponse contains the response from method StaticSitesClient.ListStaticSiteBuildAppSettings.
+type StaticSitesClientListStaticSiteBuildAppSettingsResponse struct {
+	StaticSitesClientListStaticSiteBuildAppSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteBuildAppSettingsResult contains the result from method StaticSites.ListStaticSiteBuildAppSettings.
-type StaticSitesListStaticSiteBuildAppSettingsResult struct {
+// StaticSitesClientListStaticSiteBuildAppSettingsResult contains the result from method StaticSitesClient.ListStaticSiteBuildAppSettings.
+type StaticSitesClientListStaticSiteBuildAppSettingsResult struct {
 	StringDictionary
 }
 
-// StaticSitesListStaticSiteBuildFunctionAppSettingsResponse contains the response from method StaticSites.ListStaticSiteBuildFunctionAppSettings.
-type StaticSitesListStaticSiteBuildFunctionAppSettingsResponse struct {
-	StaticSitesListStaticSiteBuildFunctionAppSettingsResult
+// StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse contains the response from method StaticSitesClient.ListStaticSiteBuildFunctionAppSettings.
+type StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse struct {
+	StaticSitesClientListStaticSiteBuildFunctionAppSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteBuildFunctionAppSettingsResult contains the result from method StaticSites.ListStaticSiteBuildFunctionAppSettings.
-type StaticSitesListStaticSiteBuildFunctionAppSettingsResult struct {
+// StaticSitesClientListStaticSiteBuildFunctionAppSettingsResult contains the result from method StaticSitesClient.ListStaticSiteBuildFunctionAppSettings.
+type StaticSitesClientListStaticSiteBuildFunctionAppSettingsResult struct {
 	StringDictionary
 }
 
-// StaticSitesListStaticSiteBuildFunctionsResponse contains the response from method StaticSites.ListStaticSiteBuildFunctions.
-type StaticSitesListStaticSiteBuildFunctionsResponse struct {
-	StaticSitesListStaticSiteBuildFunctionsResult
+// StaticSitesClientListStaticSiteBuildFunctionsResponse contains the response from method StaticSitesClient.ListStaticSiteBuildFunctions.
+type StaticSitesClientListStaticSiteBuildFunctionsResponse struct {
+	StaticSitesClientListStaticSiteBuildFunctionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteBuildFunctionsResult contains the result from method StaticSites.ListStaticSiteBuildFunctions.
-type StaticSitesListStaticSiteBuildFunctionsResult struct {
+// StaticSitesClientListStaticSiteBuildFunctionsResult contains the result from method StaticSitesClient.ListStaticSiteBuildFunctions.
+type StaticSitesClientListStaticSiteBuildFunctionsResult struct {
 	StaticSiteFunctionOverviewCollection
 }
 
-// StaticSitesListStaticSiteConfiguredRolesResponse contains the response from method StaticSites.ListStaticSiteConfiguredRoles.
-type StaticSitesListStaticSiteConfiguredRolesResponse struct {
-	StaticSitesListStaticSiteConfiguredRolesResult
+// StaticSitesClientListStaticSiteConfiguredRolesResponse contains the response from method StaticSitesClient.ListStaticSiteConfiguredRoles.
+type StaticSitesClientListStaticSiteConfiguredRolesResponse struct {
+	StaticSitesClientListStaticSiteConfiguredRolesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteConfiguredRolesResult contains the result from method StaticSites.ListStaticSiteConfiguredRoles.
-type StaticSitesListStaticSiteConfiguredRolesResult struct {
+// StaticSitesClientListStaticSiteConfiguredRolesResult contains the result from method StaticSitesClient.ListStaticSiteConfiguredRoles.
+type StaticSitesClientListStaticSiteConfiguredRolesResult struct {
 	StringList
 }
 
-// StaticSitesListStaticSiteCustomDomainsResponse contains the response from method StaticSites.ListStaticSiteCustomDomains.
-type StaticSitesListStaticSiteCustomDomainsResponse struct {
-	StaticSitesListStaticSiteCustomDomainsResult
+// StaticSitesClientListStaticSiteCustomDomainsResponse contains the response from method StaticSitesClient.ListStaticSiteCustomDomains.
+type StaticSitesClientListStaticSiteCustomDomainsResponse struct {
+	StaticSitesClientListStaticSiteCustomDomainsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteCustomDomainsResult contains the result from method StaticSites.ListStaticSiteCustomDomains.
-type StaticSitesListStaticSiteCustomDomainsResult struct {
+// StaticSitesClientListStaticSiteCustomDomainsResult contains the result from method StaticSitesClient.ListStaticSiteCustomDomains.
+type StaticSitesClientListStaticSiteCustomDomainsResult struct {
 	StaticSiteCustomDomainOverviewCollection
 }
 
-// StaticSitesListStaticSiteFunctionAppSettingsResponse contains the response from method StaticSites.ListStaticSiteFunctionAppSettings.
-type StaticSitesListStaticSiteFunctionAppSettingsResponse struct {
-	StaticSitesListStaticSiteFunctionAppSettingsResult
+// StaticSitesClientListStaticSiteFunctionAppSettingsResponse contains the response from method StaticSitesClient.ListStaticSiteFunctionAppSettings.
+type StaticSitesClientListStaticSiteFunctionAppSettingsResponse struct {
+	StaticSitesClientListStaticSiteFunctionAppSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteFunctionAppSettingsResult contains the result from method StaticSites.ListStaticSiteFunctionAppSettings.
-type StaticSitesListStaticSiteFunctionAppSettingsResult struct {
+// StaticSitesClientListStaticSiteFunctionAppSettingsResult contains the result from method StaticSitesClient.ListStaticSiteFunctionAppSettings.
+type StaticSitesClientListStaticSiteFunctionAppSettingsResult struct {
 	StringDictionary
 }
 
-// StaticSitesListStaticSiteFunctionsResponse contains the response from method StaticSites.ListStaticSiteFunctions.
-type StaticSitesListStaticSiteFunctionsResponse struct {
-	StaticSitesListStaticSiteFunctionsResult
+// StaticSitesClientListStaticSiteFunctionsResponse contains the response from method StaticSitesClient.ListStaticSiteFunctions.
+type StaticSitesClientListStaticSiteFunctionsResponse struct {
+	StaticSitesClientListStaticSiteFunctionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteFunctionsResult contains the result from method StaticSites.ListStaticSiteFunctions.
-type StaticSitesListStaticSiteFunctionsResult struct {
+// StaticSitesClientListStaticSiteFunctionsResult contains the result from method StaticSitesClient.ListStaticSiteFunctions.
+type StaticSitesClientListStaticSiteFunctionsResult struct {
 	StaticSiteFunctionOverviewCollection
 }
 
-// StaticSitesListStaticSiteSecretsResponse contains the response from method StaticSites.ListStaticSiteSecrets.
-type StaticSitesListStaticSiteSecretsResponse struct {
-	StaticSitesListStaticSiteSecretsResult
+// StaticSitesClientListStaticSiteSecretsResponse contains the response from method StaticSitesClient.ListStaticSiteSecrets.
+type StaticSitesClientListStaticSiteSecretsResponse struct {
+	StaticSitesClientListStaticSiteSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteSecretsResult contains the result from method StaticSites.ListStaticSiteSecrets.
-type StaticSitesListStaticSiteSecretsResult struct {
+// StaticSitesClientListStaticSiteSecretsResult contains the result from method StaticSitesClient.ListStaticSiteSecrets.
+type StaticSitesClientListStaticSiteSecretsResult struct {
 	StringDictionary
 }
 
-// StaticSitesListStaticSiteUsersResponse contains the response from method StaticSites.ListStaticSiteUsers.
-type StaticSitesListStaticSiteUsersResponse struct {
-	StaticSitesListStaticSiteUsersResult
+// StaticSitesClientListStaticSiteUsersResponse contains the response from method StaticSitesClient.ListStaticSiteUsers.
+type StaticSitesClientListStaticSiteUsersResponse struct {
+	StaticSitesClientListStaticSiteUsersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesListStaticSiteUsersResult contains the result from method StaticSites.ListStaticSiteUsers.
-type StaticSitesListStaticSiteUsersResult struct {
+// StaticSitesClientListStaticSiteUsersResult contains the result from method StaticSitesClient.ListStaticSiteUsers.
+type StaticSitesClientListStaticSiteUsersResult struct {
 	StaticSiteUserCollection
 }
 
-// StaticSitesPreviewWorkflowResponse contains the response from method StaticSites.PreviewWorkflow.
-type StaticSitesPreviewWorkflowResponse struct {
-	StaticSitesPreviewWorkflowResult
+// StaticSitesClientPreviewWorkflowResponse contains the response from method StaticSitesClient.PreviewWorkflow.
+type StaticSitesClientPreviewWorkflowResponse struct {
+	StaticSitesClientPreviewWorkflowResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesPreviewWorkflowResult contains the result from method StaticSites.PreviewWorkflow.
-type StaticSitesPreviewWorkflowResult struct {
+// StaticSitesClientPreviewWorkflowResult contains the result from method StaticSitesClient.PreviewWorkflow.
+type StaticSitesClientPreviewWorkflowResult struct {
 	StaticSitesWorkflowPreview
 }
 
-// StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse contains the response from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSiteBuild.
-type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse struct {
+// StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse contains the response from method StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSiteBuild.
+type StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller
+	Poller *StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3445,8 +3656,8 @@ type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error) {
-	respType := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{}
+func (l StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error) {
+	respType := StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StaticSiteUserProvidedFunctionAppARMResource)
 	if err != nil {
 		return respType, err
@@ -3455,13 +3666,14 @@ func (l StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerRespo
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse from the provided client and resume token.
-func (l *StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSiteBuild", token, client.pl, client.registerUserProvidedFunctionAppWithStaticSiteBuildHandleError)
+// Resume rehydrates a StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse from the provided
+// client and resume token.
+func (l *StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSiteBuild", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller{
+	poller := &StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3473,22 +3685,22 @@ func (l *StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResp
 	return nil
 }
 
-// StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse contains the response from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSiteBuild.
-type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse struct {
-	StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResult
+// StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse contains the response from method StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSiteBuild.
+type StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse struct {
+	StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResult contains the result from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSiteBuild.
-type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResult struct {
+// StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResult contains the result from method StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSiteBuild.
+type StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResult struct {
 	StaticSiteUserProvidedFunctionAppARMResource
 }
 
-// StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse contains the response from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSite.
-type StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse struct {
+// StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse contains the response from method StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSite.
+type StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller
+	Poller *StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3497,8 +3709,8 @@ type StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse stru
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse, error) {
-	respType := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse{}
+func (l StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse, error) {
+	respType := StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StaticSiteUserProvidedFunctionAppARMResource)
 	if err != nil {
 		return respType, err
@@ -3507,13 +3719,14 @@ func (l StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse) 
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse from the provided client and resume token.
-func (l *StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSite", token, client.pl, client.registerUserProvidedFunctionAppWithStaticSiteHandleError)
+// Resume rehydrates a StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse from the provided client
+// and resume token.
+func (l *StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSite", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller{
+	poller := &StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSitePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3525,52 +3738,52 @@ func (l *StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse)
 	return nil
 }
 
-// StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse contains the response from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSite.
-type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse struct {
-	StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResult
+// StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse contains the response from method StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSite.
+type StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse struct {
+	StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResult contains the result from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSite.
-type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResult struct {
+// StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResult contains the result from method StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSite.
+type StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResult struct {
 	StaticSiteUserProvidedFunctionAppARMResource
 }
 
-// StaticSitesResetStaticSiteAPIKeyResponse contains the response from method StaticSites.ResetStaticSiteAPIKey.
-type StaticSitesResetStaticSiteAPIKeyResponse struct {
+// StaticSitesClientResetStaticSiteAPIKeyResponse contains the response from method StaticSitesClient.ResetStaticSiteAPIKey.
+type StaticSitesClientResetStaticSiteAPIKeyResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesUpdateStaticSiteResponse contains the response from method StaticSites.UpdateStaticSite.
-type StaticSitesUpdateStaticSiteResponse struct {
-	StaticSitesUpdateStaticSiteResult
+// StaticSitesClientUpdateStaticSiteResponse contains the response from method StaticSitesClient.UpdateStaticSite.
+type StaticSitesClientUpdateStaticSiteResponse struct {
+	StaticSitesClientUpdateStaticSiteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesUpdateStaticSiteResult contains the result from method StaticSites.UpdateStaticSite.
-type StaticSitesUpdateStaticSiteResult struct {
+// StaticSitesClientUpdateStaticSiteResult contains the result from method StaticSitesClient.UpdateStaticSite.
+type StaticSitesClientUpdateStaticSiteResult struct {
 	StaticSiteARMResource
 }
 
-// StaticSitesUpdateStaticSiteUserResponse contains the response from method StaticSites.UpdateStaticSiteUser.
-type StaticSitesUpdateStaticSiteUserResponse struct {
-	StaticSitesUpdateStaticSiteUserResult
+// StaticSitesClientUpdateStaticSiteUserResponse contains the response from method StaticSitesClient.UpdateStaticSiteUser.
+type StaticSitesClientUpdateStaticSiteUserResponse struct {
+	StaticSitesClientUpdateStaticSiteUserResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StaticSitesUpdateStaticSiteUserResult contains the result from method StaticSites.UpdateStaticSiteUser.
-type StaticSitesUpdateStaticSiteUserResult struct {
+// StaticSitesClientUpdateStaticSiteUserResult contains the result from method StaticSitesClient.UpdateStaticSiteUser.
+type StaticSitesClientUpdateStaticSiteUserResult struct {
 	StaticSiteUserARMResource
 }
 
-// StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse contains the response from method StaticSites.ValidateCustomDomainCanBeAddedToStaticSite.
-type StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse struct {
+// StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse contains the response from method StaticSitesClient.ValidateCustomDomainCanBeAddedToStaticSite.
+type StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller
+	Poller *StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3579,8 +3792,8 @@ type StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse struct 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse, error) {
-	respType := StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse{}
+func (l StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse, error) {
+	respType := StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3589,13 +3802,14 @@ func (l StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse) Pol
 	return respType, nil
 }
 
-// Resume rehydrates a StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse from the provided client and resume token.
-func (l *StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.ValidateCustomDomainCanBeAddedToStaticSite", token, client.pl, client.validateCustomDomainCanBeAddedToStaticSiteHandleError)
+// Resume rehydrates a StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse from the provided client
+// and resume token.
+func (l *StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.ValidateCustomDomainCanBeAddedToStaticSite", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller{
+	poller := &StaticSitesClientValidateCustomDomainCanBeAddedToStaticSitePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3607,112 +3821,112 @@ func (l *StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse) Re
 	return nil
 }
 
-// StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse contains the response from method StaticSites.ValidateCustomDomainCanBeAddedToStaticSite.
-type StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse struct {
+// StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse contains the response from method StaticSitesClient.ValidateCustomDomainCanBeAddedToStaticSite.
+type StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TopLevelDomainsGetResponse contains the response from method TopLevelDomains.Get.
-type TopLevelDomainsGetResponse struct {
-	TopLevelDomainsGetResult
+// TopLevelDomainsClientGetResponse contains the response from method TopLevelDomainsClient.Get.
+type TopLevelDomainsClientGetResponse struct {
+	TopLevelDomainsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TopLevelDomainsGetResult contains the result from method TopLevelDomains.Get.
-type TopLevelDomainsGetResult struct {
+// TopLevelDomainsClientGetResult contains the result from method TopLevelDomainsClient.Get.
+type TopLevelDomainsClientGetResult struct {
 	TopLevelDomain
 }
 
-// TopLevelDomainsListAgreementsResponse contains the response from method TopLevelDomains.ListAgreements.
-type TopLevelDomainsListAgreementsResponse struct {
-	TopLevelDomainsListAgreementsResult
+// TopLevelDomainsClientListAgreementsResponse contains the response from method TopLevelDomainsClient.ListAgreements.
+type TopLevelDomainsClientListAgreementsResponse struct {
+	TopLevelDomainsClientListAgreementsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TopLevelDomainsListAgreementsResult contains the result from method TopLevelDomains.ListAgreements.
-type TopLevelDomainsListAgreementsResult struct {
+// TopLevelDomainsClientListAgreementsResult contains the result from method TopLevelDomainsClient.ListAgreements.
+type TopLevelDomainsClientListAgreementsResult struct {
 	TldLegalAgreementCollection
 }
 
-// TopLevelDomainsListResponse contains the response from method TopLevelDomains.List.
-type TopLevelDomainsListResponse struct {
-	TopLevelDomainsListResult
+// TopLevelDomainsClientListResponse contains the response from method TopLevelDomainsClient.List.
+type TopLevelDomainsClientListResponse struct {
+	TopLevelDomainsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TopLevelDomainsListResult contains the result from method TopLevelDomains.List.
-type TopLevelDomainsListResult struct {
+// TopLevelDomainsClientListResult contains the result from method TopLevelDomainsClient.List.
+type TopLevelDomainsClientListResult struct {
 	TopLevelDomainCollection
 }
 
-// WebAppsAddPremierAddOnResponse contains the response from method WebApps.AddPremierAddOn.
-type WebAppsAddPremierAddOnResponse struct {
-	WebAppsAddPremierAddOnResult
+// WebAppsClientAddPremierAddOnResponse contains the response from method WebAppsClient.AddPremierAddOn.
+type WebAppsClientAddPremierAddOnResponse struct {
+	WebAppsClientAddPremierAddOnResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsAddPremierAddOnResult contains the result from method WebApps.AddPremierAddOn.
-type WebAppsAddPremierAddOnResult struct {
+// WebAppsClientAddPremierAddOnResult contains the result from method WebAppsClient.AddPremierAddOn.
+type WebAppsClientAddPremierAddOnResult struct {
 	PremierAddOn
 }
 
-// WebAppsAddPremierAddOnSlotResponse contains the response from method WebApps.AddPremierAddOnSlot.
-type WebAppsAddPremierAddOnSlotResponse struct {
-	WebAppsAddPremierAddOnSlotResult
+// WebAppsClientAddPremierAddOnSlotResponse contains the response from method WebAppsClient.AddPremierAddOnSlot.
+type WebAppsClientAddPremierAddOnSlotResponse struct {
+	WebAppsClientAddPremierAddOnSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsAddPremierAddOnSlotResult contains the result from method WebApps.AddPremierAddOnSlot.
-type WebAppsAddPremierAddOnSlotResult struct {
+// WebAppsClientAddPremierAddOnSlotResult contains the result from method WebAppsClient.AddPremierAddOnSlot.
+type WebAppsClientAddPremierAddOnSlotResult struct {
 	PremierAddOn
 }
 
-// WebAppsAnalyzeCustomHostnameResponse contains the response from method WebApps.AnalyzeCustomHostname.
-type WebAppsAnalyzeCustomHostnameResponse struct {
-	WebAppsAnalyzeCustomHostnameResult
+// WebAppsClientAnalyzeCustomHostnameResponse contains the response from method WebAppsClient.AnalyzeCustomHostname.
+type WebAppsClientAnalyzeCustomHostnameResponse struct {
+	WebAppsClientAnalyzeCustomHostnameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsAnalyzeCustomHostnameResult contains the result from method WebApps.AnalyzeCustomHostname.
-type WebAppsAnalyzeCustomHostnameResult struct {
+// WebAppsClientAnalyzeCustomHostnameResult contains the result from method WebAppsClient.AnalyzeCustomHostname.
+type WebAppsClientAnalyzeCustomHostnameResult struct {
 	CustomHostnameAnalysisResult
 }
 
-// WebAppsAnalyzeCustomHostnameSlotResponse contains the response from method WebApps.AnalyzeCustomHostnameSlot.
-type WebAppsAnalyzeCustomHostnameSlotResponse struct {
-	WebAppsAnalyzeCustomHostnameSlotResult
+// WebAppsClientAnalyzeCustomHostnameSlotResponse contains the response from method WebAppsClient.AnalyzeCustomHostnameSlot.
+type WebAppsClientAnalyzeCustomHostnameSlotResponse struct {
+	WebAppsClientAnalyzeCustomHostnameSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsAnalyzeCustomHostnameSlotResult contains the result from method WebApps.AnalyzeCustomHostnameSlot.
-type WebAppsAnalyzeCustomHostnameSlotResult struct {
+// WebAppsClientAnalyzeCustomHostnameSlotResult contains the result from method WebAppsClient.AnalyzeCustomHostnameSlot.
+type WebAppsClientAnalyzeCustomHostnameSlotResult struct {
 	CustomHostnameAnalysisResult
 }
 
-// WebAppsApplySlotConfigToProductionResponse contains the response from method WebApps.ApplySlotConfigToProduction.
-type WebAppsApplySlotConfigToProductionResponse struct {
+// WebAppsClientApplySlotConfigToProductionResponse contains the response from method WebAppsClient.ApplySlotConfigToProduction.
+type WebAppsClientApplySlotConfigToProductionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsApplySlotConfigurationSlotResponse contains the response from method WebApps.ApplySlotConfigurationSlot.
-type WebAppsApplySlotConfigurationSlotResponse struct {
+// WebAppsClientApplySlotConfigurationSlotResponse contains the response from method WebAppsClient.ApplySlotConfigurationSlot.
+type WebAppsClientApplySlotConfigurationSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method WebApps.ApproveOrRejectPrivateEndpointConnection.
-type WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
+// WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method WebAppsClient.ApproveOrRejectPrivateEndpointConnection.
+type WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsApproveOrRejectPrivateEndpointConnectionPoller
+	Poller *WebAppsClientApproveOrRejectPrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3721,8 +3935,8 @@ type WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionResponse, error) {
-	respType := WebAppsApproveOrRejectPrivateEndpointConnectionResponse{}
+func (l WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
 	if err != nil {
 		return respType, err
@@ -3731,13 +3945,14 @@ func (l WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntil
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and resume token.
-func (l *WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl, client.approveOrRejectPrivateEndpointConnectionHandleError)
+// Resume rehydrates a WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and resume
+// token.
+func (l *WebAppsClientApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsApproveOrRejectPrivateEndpointConnectionPoller{
+	poller := &WebAppsClientApproveOrRejectPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3749,22 +3964,22 @@ func (l *WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(c
 	return nil
 }
 
-// WebAppsApproveOrRejectPrivateEndpointConnectionResponse contains the response from method WebApps.ApproveOrRejectPrivateEndpointConnection.
-type WebAppsApproveOrRejectPrivateEndpointConnectionResponse struct {
-	WebAppsApproveOrRejectPrivateEndpointConnectionResult
+// WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse contains the response from method WebAppsClient.ApproveOrRejectPrivateEndpointConnection.
+type WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse struct {
+	WebAppsClientApproveOrRejectPrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsApproveOrRejectPrivateEndpointConnectionResult contains the result from method WebApps.ApproveOrRejectPrivateEndpointConnection.
-type WebAppsApproveOrRejectPrivateEndpointConnectionResult struct {
+// WebAppsClientApproveOrRejectPrivateEndpointConnectionResult contains the result from method WebAppsClient.ApproveOrRejectPrivateEndpointConnection.
+type WebAppsClientApproveOrRejectPrivateEndpointConnectionResult struct {
 	RemotePrivateEndpointConnectionARMResource
 }
 
-// WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse contains the response from method WebApps.ApproveOrRejectPrivateEndpointConnectionSlot.
-type WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse struct {
+// WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse contains the response from method WebAppsClient.ApproveOrRejectPrivateEndpointConnectionSlot.
+type WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller
+	Poller *WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3773,8 +3988,8 @@ type WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse, error) {
-	respType := WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse{}
+func (l WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse, error) {
+	respType := WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
 	if err != nil {
 		return respType, err
@@ -3783,13 +3998,14 @@ func (l WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse) PollU
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ApproveOrRejectPrivateEndpointConnectionSlot", token, client.pl, client.approveOrRejectPrivateEndpointConnectionSlotHandleError)
+// Resume rehydrates a WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse from the provided client and
+// resume token.
+func (l *WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ApproveOrRejectPrivateEndpointConnectionSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller{
+	poller := &WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3801,70 +4017,70 @@ func (l *WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse) Resu
 	return nil
 }
 
-// WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse contains the response from method WebApps.ApproveOrRejectPrivateEndpointConnectionSlot.
-type WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse struct {
-	WebAppsApproveOrRejectPrivateEndpointConnectionSlotResult
+// WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse contains the response from method WebAppsClient.ApproveOrRejectPrivateEndpointConnectionSlot.
+type WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse struct {
+	WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsApproveOrRejectPrivateEndpointConnectionSlotResult contains the result from method WebApps.ApproveOrRejectPrivateEndpointConnectionSlot.
-type WebAppsApproveOrRejectPrivateEndpointConnectionSlotResult struct {
+// WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResult contains the result from method WebAppsClient.ApproveOrRejectPrivateEndpointConnectionSlot.
+type WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResult struct {
 	RemotePrivateEndpointConnectionARMResource
 }
 
-// WebAppsBackupResponse contains the response from method WebApps.Backup.
-type WebAppsBackupResponse struct {
-	WebAppsBackupResult
+// WebAppsClientBackupResponse contains the response from method WebAppsClient.Backup.
+type WebAppsClientBackupResponse struct {
+	WebAppsClientBackupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsBackupResult contains the result from method WebApps.Backup.
-type WebAppsBackupResult struct {
+// WebAppsClientBackupResult contains the result from method WebAppsClient.Backup.
+type WebAppsClientBackupResult struct {
 	BackupItem
 }
 
-// WebAppsBackupSlotResponse contains the response from method WebApps.BackupSlot.
-type WebAppsBackupSlotResponse struct {
-	WebAppsBackupSlotResult
+// WebAppsClientBackupSlotResponse contains the response from method WebAppsClient.BackupSlot.
+type WebAppsClientBackupSlotResponse struct {
+	WebAppsClientBackupSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsBackupSlotResult contains the result from method WebApps.BackupSlot.
-type WebAppsBackupSlotResult struct {
+// WebAppsClientBackupSlotResult contains the result from method WebAppsClient.BackupSlot.
+type WebAppsClientBackupSlotResult struct {
 	BackupItem
 }
 
-// WebAppsCreateDeploymentResponse contains the response from method WebApps.CreateDeployment.
-type WebAppsCreateDeploymentResponse struct {
-	WebAppsCreateDeploymentResult
+// WebAppsClientCreateDeploymentResponse contains the response from method WebAppsClient.CreateDeployment.
+type WebAppsClientCreateDeploymentResponse struct {
+	WebAppsClientCreateDeploymentResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateDeploymentResult contains the result from method WebApps.CreateDeployment.
-type WebAppsCreateDeploymentResult struct {
+// WebAppsClientCreateDeploymentResult contains the result from method WebAppsClient.CreateDeployment.
+type WebAppsClientCreateDeploymentResult struct {
 	Deployment
 }
 
-// WebAppsCreateDeploymentSlotResponse contains the response from method WebApps.CreateDeploymentSlot.
-type WebAppsCreateDeploymentSlotResponse struct {
-	WebAppsCreateDeploymentSlotResult
+// WebAppsClientCreateDeploymentSlotResponse contains the response from method WebAppsClient.CreateDeploymentSlot.
+type WebAppsClientCreateDeploymentSlotResponse struct {
+	WebAppsClientCreateDeploymentSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateDeploymentSlotResult contains the result from method WebApps.CreateDeploymentSlot.
-type WebAppsCreateDeploymentSlotResult struct {
+// WebAppsClientCreateDeploymentSlotResult contains the result from method WebAppsClient.CreateDeploymentSlot.
+type WebAppsClientCreateDeploymentSlotResult struct {
 	Deployment
 }
 
-// WebAppsCreateFunctionPollerResponse contains the response from method WebApps.CreateFunction.
-type WebAppsCreateFunctionPollerResponse struct {
+// WebAppsClientCreateFunctionPollerResponse contains the response from method WebAppsClient.CreateFunction.
+type WebAppsClientCreateFunctionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateFunctionPoller
+	Poller *WebAppsClientCreateFunctionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3873,8 +4089,8 @@ type WebAppsCreateFunctionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateFunctionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateFunctionResponse, error) {
-	respType := WebAppsCreateFunctionResponse{}
+func (l WebAppsClientCreateFunctionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateFunctionResponse, error) {
+	respType := WebAppsClientCreateFunctionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.FunctionEnvelope)
 	if err != nil {
 		return respType, err
@@ -3883,13 +4099,13 @@ func (l WebAppsCreateFunctionPollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateFunctionPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateFunctionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateFunction", token, client.pl, client.createFunctionHandleError)
+// Resume rehydrates a WebAppsClientCreateFunctionPollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateFunctionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateFunction", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateFunctionPoller{
+	poller := &WebAppsClientCreateFunctionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3901,22 +4117,22 @@ func (l *WebAppsCreateFunctionPollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// WebAppsCreateFunctionResponse contains the response from method WebApps.CreateFunction.
-type WebAppsCreateFunctionResponse struct {
-	WebAppsCreateFunctionResult
+// WebAppsClientCreateFunctionResponse contains the response from method WebAppsClient.CreateFunction.
+type WebAppsClientCreateFunctionResponse struct {
+	WebAppsClientCreateFunctionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateFunctionResult contains the result from method WebApps.CreateFunction.
-type WebAppsCreateFunctionResult struct {
+// WebAppsClientCreateFunctionResult contains the result from method WebAppsClient.CreateFunction.
+type WebAppsClientCreateFunctionResult struct {
 	FunctionEnvelope
 }
 
-// WebAppsCreateInstanceFunctionSlotPollerResponse contains the response from method WebApps.CreateInstanceFunctionSlot.
-type WebAppsCreateInstanceFunctionSlotPollerResponse struct {
+// WebAppsClientCreateInstanceFunctionSlotPollerResponse contains the response from method WebAppsClient.CreateInstanceFunctionSlot.
+type WebAppsClientCreateInstanceFunctionSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateInstanceFunctionSlotPoller
+	Poller *WebAppsClientCreateInstanceFunctionSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3925,8 +4141,8 @@ type WebAppsCreateInstanceFunctionSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateInstanceFunctionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceFunctionSlotResponse, error) {
-	respType := WebAppsCreateInstanceFunctionSlotResponse{}
+func (l WebAppsClientCreateInstanceFunctionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateInstanceFunctionSlotResponse, error) {
+	respType := WebAppsClientCreateInstanceFunctionSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.FunctionEnvelope)
 	if err != nil {
 		return respType, err
@@ -3935,13 +4151,13 @@ func (l WebAppsCreateInstanceFunctionSlotPollerResponse) PollUntilDone(ctx conte
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateInstanceFunctionSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateInstanceFunctionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceFunctionSlot", token, client.pl, client.createInstanceFunctionSlotHandleError)
+// Resume rehydrates a WebAppsClientCreateInstanceFunctionSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateInstanceFunctionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceFunctionSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateInstanceFunctionSlotPoller{
+	poller := &WebAppsClientCreateInstanceFunctionSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3953,22 +4169,22 @@ func (l *WebAppsCreateInstanceFunctionSlotPollerResponse) Resume(ctx context.Con
 	return nil
 }
 
-// WebAppsCreateInstanceFunctionSlotResponse contains the response from method WebApps.CreateInstanceFunctionSlot.
-type WebAppsCreateInstanceFunctionSlotResponse struct {
-	WebAppsCreateInstanceFunctionSlotResult
+// WebAppsClientCreateInstanceFunctionSlotResponse contains the response from method WebAppsClient.CreateInstanceFunctionSlot.
+type WebAppsClientCreateInstanceFunctionSlotResponse struct {
+	WebAppsClientCreateInstanceFunctionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateInstanceFunctionSlotResult contains the result from method WebApps.CreateInstanceFunctionSlot.
-type WebAppsCreateInstanceFunctionSlotResult struct {
+// WebAppsClientCreateInstanceFunctionSlotResult contains the result from method WebAppsClient.CreateInstanceFunctionSlot.
+type WebAppsClientCreateInstanceFunctionSlotResult struct {
 	FunctionEnvelope
 }
 
-// WebAppsCreateInstanceMSDeployOperationPollerResponse contains the response from method WebApps.CreateInstanceMSDeployOperation.
-type WebAppsCreateInstanceMSDeployOperationPollerResponse struct {
+// WebAppsClientCreateInstanceMSDeployOperationPollerResponse contains the response from method WebAppsClient.CreateInstanceMSDeployOperation.
+type WebAppsClientCreateInstanceMSDeployOperationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateInstanceMSDeployOperationPoller
+	Poller *WebAppsClientCreateInstanceMSDeployOperationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3977,8 +4193,8 @@ type WebAppsCreateInstanceMSDeployOperationPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateInstanceMSDeployOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceMSDeployOperationResponse, error) {
-	respType := WebAppsCreateInstanceMSDeployOperationResponse{}
+func (l WebAppsClientCreateInstanceMSDeployOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateInstanceMSDeployOperationResponse, error) {
+	respType := WebAppsClientCreateInstanceMSDeployOperationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
 	if err != nil {
 		return respType, err
@@ -3987,13 +4203,13 @@ func (l WebAppsCreateInstanceMSDeployOperationPollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateInstanceMSDeployOperationPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateInstanceMSDeployOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceMSDeployOperation", token, client.pl, client.createInstanceMSDeployOperationHandleError)
+// Resume rehydrates a WebAppsClientCreateInstanceMSDeployOperationPollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateInstanceMSDeployOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceMSDeployOperation", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateInstanceMSDeployOperationPoller{
+	poller := &WebAppsClientCreateInstanceMSDeployOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4005,22 +4221,22 @@ func (l *WebAppsCreateInstanceMSDeployOperationPollerResponse) Resume(ctx contex
 	return nil
 }
 
-// WebAppsCreateInstanceMSDeployOperationResponse contains the response from method WebApps.CreateInstanceMSDeployOperation.
-type WebAppsCreateInstanceMSDeployOperationResponse struct {
-	WebAppsCreateInstanceMSDeployOperationResult
+// WebAppsClientCreateInstanceMSDeployOperationResponse contains the response from method WebAppsClient.CreateInstanceMSDeployOperation.
+type WebAppsClientCreateInstanceMSDeployOperationResponse struct {
+	WebAppsClientCreateInstanceMSDeployOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateInstanceMSDeployOperationResult contains the result from method WebApps.CreateInstanceMSDeployOperation.
-type WebAppsCreateInstanceMSDeployOperationResult struct {
+// WebAppsClientCreateInstanceMSDeployOperationResult contains the result from method WebAppsClient.CreateInstanceMSDeployOperation.
+type WebAppsClientCreateInstanceMSDeployOperationResult struct {
 	MSDeployStatus
 }
 
-// WebAppsCreateInstanceMSDeployOperationSlotPollerResponse contains the response from method WebApps.CreateInstanceMSDeployOperationSlot.
-type WebAppsCreateInstanceMSDeployOperationSlotPollerResponse struct {
+// WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse contains the response from method WebAppsClient.CreateInstanceMSDeployOperationSlot.
+type WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateInstanceMSDeployOperationSlotPoller
+	Poller *WebAppsClientCreateInstanceMSDeployOperationSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4029,8 +4245,8 @@ type WebAppsCreateInstanceMSDeployOperationSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateInstanceMSDeployOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceMSDeployOperationSlotResponse, error) {
-	respType := WebAppsCreateInstanceMSDeployOperationSlotResponse{}
+func (l WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateInstanceMSDeployOperationSlotResponse, error) {
+	respType := WebAppsClientCreateInstanceMSDeployOperationSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
 	if err != nil {
 		return respType, err
@@ -4039,13 +4255,14 @@ func (l WebAppsCreateInstanceMSDeployOperationSlotPollerResponse) PollUntilDone(
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateInstanceMSDeployOperationSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateInstanceMSDeployOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceMSDeployOperationSlot", token, client.pl, client.createInstanceMSDeployOperationSlotHandleError)
+// Resume rehydrates a WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse from the provided client and resume
+// token.
+func (l *WebAppsClientCreateInstanceMSDeployOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceMSDeployOperationSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateInstanceMSDeployOperationSlotPoller{
+	poller := &WebAppsClientCreateInstanceMSDeployOperationSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4057,22 +4274,22 @@ func (l *WebAppsCreateInstanceMSDeployOperationSlotPollerResponse) Resume(ctx co
 	return nil
 }
 
-// WebAppsCreateInstanceMSDeployOperationSlotResponse contains the response from method WebApps.CreateInstanceMSDeployOperationSlot.
-type WebAppsCreateInstanceMSDeployOperationSlotResponse struct {
-	WebAppsCreateInstanceMSDeployOperationSlotResult
+// WebAppsClientCreateInstanceMSDeployOperationSlotResponse contains the response from method WebAppsClient.CreateInstanceMSDeployOperationSlot.
+type WebAppsClientCreateInstanceMSDeployOperationSlotResponse struct {
+	WebAppsClientCreateInstanceMSDeployOperationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateInstanceMSDeployOperationSlotResult contains the result from method WebApps.CreateInstanceMSDeployOperationSlot.
-type WebAppsCreateInstanceMSDeployOperationSlotResult struct {
+// WebAppsClientCreateInstanceMSDeployOperationSlotResult contains the result from method WebAppsClient.CreateInstanceMSDeployOperationSlot.
+type WebAppsClientCreateInstanceMSDeployOperationSlotResult struct {
 	MSDeployStatus
 }
 
-// WebAppsCreateMSDeployOperationPollerResponse contains the response from method WebApps.CreateMSDeployOperation.
-type WebAppsCreateMSDeployOperationPollerResponse struct {
+// WebAppsClientCreateMSDeployOperationPollerResponse contains the response from method WebAppsClient.CreateMSDeployOperation.
+type WebAppsClientCreateMSDeployOperationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateMSDeployOperationPoller
+	Poller *WebAppsClientCreateMSDeployOperationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4081,8 +4298,8 @@ type WebAppsCreateMSDeployOperationPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateMSDeployOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateMSDeployOperationResponse, error) {
-	respType := WebAppsCreateMSDeployOperationResponse{}
+func (l WebAppsClientCreateMSDeployOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateMSDeployOperationResponse, error) {
+	respType := WebAppsClientCreateMSDeployOperationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
 	if err != nil {
 		return respType, err
@@ -4091,13 +4308,13 @@ func (l WebAppsCreateMSDeployOperationPollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateMSDeployOperationPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateMSDeployOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateMSDeployOperation", token, client.pl, client.createMSDeployOperationHandleError)
+// Resume rehydrates a WebAppsClientCreateMSDeployOperationPollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateMSDeployOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateMSDeployOperation", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateMSDeployOperationPoller{
+	poller := &WebAppsClientCreateMSDeployOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4109,22 +4326,22 @@ func (l *WebAppsCreateMSDeployOperationPollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// WebAppsCreateMSDeployOperationResponse contains the response from method WebApps.CreateMSDeployOperation.
-type WebAppsCreateMSDeployOperationResponse struct {
-	WebAppsCreateMSDeployOperationResult
+// WebAppsClientCreateMSDeployOperationResponse contains the response from method WebAppsClient.CreateMSDeployOperation.
+type WebAppsClientCreateMSDeployOperationResponse struct {
+	WebAppsClientCreateMSDeployOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateMSDeployOperationResult contains the result from method WebApps.CreateMSDeployOperation.
-type WebAppsCreateMSDeployOperationResult struct {
+// WebAppsClientCreateMSDeployOperationResult contains the result from method WebAppsClient.CreateMSDeployOperation.
+type WebAppsClientCreateMSDeployOperationResult struct {
 	MSDeployStatus
 }
 
-// WebAppsCreateMSDeployOperationSlotPollerResponse contains the response from method WebApps.CreateMSDeployOperationSlot.
-type WebAppsCreateMSDeployOperationSlotPollerResponse struct {
+// WebAppsClientCreateMSDeployOperationSlotPollerResponse contains the response from method WebAppsClient.CreateMSDeployOperationSlot.
+type WebAppsClientCreateMSDeployOperationSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateMSDeployOperationSlotPoller
+	Poller *WebAppsClientCreateMSDeployOperationSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4133,8 +4350,8 @@ type WebAppsCreateMSDeployOperationSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateMSDeployOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateMSDeployOperationSlotResponse, error) {
-	respType := WebAppsCreateMSDeployOperationSlotResponse{}
+func (l WebAppsClientCreateMSDeployOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateMSDeployOperationSlotResponse, error) {
+	respType := WebAppsClientCreateMSDeployOperationSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
 	if err != nil {
 		return respType, err
@@ -4143,13 +4360,13 @@ func (l WebAppsCreateMSDeployOperationSlotPollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateMSDeployOperationSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateMSDeployOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateMSDeployOperationSlot", token, client.pl, client.createMSDeployOperationSlotHandleError)
+// Resume rehydrates a WebAppsClientCreateMSDeployOperationSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateMSDeployOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateMSDeployOperationSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateMSDeployOperationSlotPoller{
+	poller := &WebAppsClientCreateMSDeployOperationSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4161,166 +4378,179 @@ func (l *WebAppsCreateMSDeployOperationSlotPollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// WebAppsCreateMSDeployOperationSlotResponse contains the response from method WebApps.CreateMSDeployOperationSlot.
-type WebAppsCreateMSDeployOperationSlotResponse struct {
-	WebAppsCreateMSDeployOperationSlotResult
+// WebAppsClientCreateMSDeployOperationSlotResponse contains the response from method WebAppsClient.CreateMSDeployOperationSlot.
+type WebAppsClientCreateMSDeployOperationSlotResponse struct {
+	WebAppsClientCreateMSDeployOperationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateMSDeployOperationSlotResult contains the result from method WebApps.CreateMSDeployOperationSlot.
-type WebAppsCreateMSDeployOperationSlotResult struct {
+// WebAppsClientCreateMSDeployOperationSlotResult contains the result from method WebAppsClient.CreateMSDeployOperationSlot.
+type WebAppsClientCreateMSDeployOperationSlotResult struct {
 	MSDeployStatus
 }
 
-// WebAppsCreateOrUpdateConfigurationResponse contains the response from method WebApps.CreateOrUpdateConfiguration.
-type WebAppsCreateOrUpdateConfigurationResponse struct {
-	WebAppsCreateOrUpdateConfigurationResult
+// WebAppsClientCreateOneDeployOperationResponse contains the response from method WebAppsClient.CreateOneDeployOperation.
+type WebAppsClientCreateOneDeployOperationResponse struct {
+	WebAppsClientCreateOneDeployOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateConfigurationResult contains the result from method WebApps.CreateOrUpdateConfiguration.
-type WebAppsCreateOrUpdateConfigurationResult struct {
+// WebAppsClientCreateOneDeployOperationResult contains the result from method WebAppsClient.CreateOneDeployOperation.
+type WebAppsClientCreateOneDeployOperationResult struct {
+	// Anything
+	Interface interface{}
+}
+
+// WebAppsClientCreateOrUpdateConfigurationResponse contains the response from method WebAppsClient.CreateOrUpdateConfiguration.
+type WebAppsClientCreateOrUpdateConfigurationResponse struct {
+	WebAppsClientCreateOrUpdateConfigurationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// WebAppsClientCreateOrUpdateConfigurationResult contains the result from method WebAppsClient.CreateOrUpdateConfiguration.
+type WebAppsClientCreateOrUpdateConfigurationResult struct {
 	SiteConfigResource
 }
 
-// WebAppsCreateOrUpdateConfigurationSlotResponse contains the response from method WebApps.CreateOrUpdateConfigurationSlot.
-type WebAppsCreateOrUpdateConfigurationSlotResponse struct {
-	WebAppsCreateOrUpdateConfigurationSlotResult
+// WebAppsClientCreateOrUpdateConfigurationSlotResponse contains the response from method WebAppsClient.CreateOrUpdateConfigurationSlot.
+type WebAppsClientCreateOrUpdateConfigurationSlotResponse struct {
+	WebAppsClientCreateOrUpdateConfigurationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateConfigurationSlotResult contains the result from method WebApps.CreateOrUpdateConfigurationSlot.
-type WebAppsCreateOrUpdateConfigurationSlotResult struct {
+// WebAppsClientCreateOrUpdateConfigurationSlotResult contains the result from method WebAppsClient.CreateOrUpdateConfigurationSlot.
+type WebAppsClientCreateOrUpdateConfigurationSlotResult struct {
 	SiteConfigResource
 }
 
-// WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse contains the response from method WebApps.CreateOrUpdateDomainOwnershipIdentifier.
-type WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse struct {
-	WebAppsCreateOrUpdateDomainOwnershipIdentifierResult
+// WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse contains the response from method WebAppsClient.CreateOrUpdateDomainOwnershipIdentifier.
+type WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse struct {
+	WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateDomainOwnershipIdentifierResult contains the result from method WebApps.CreateOrUpdateDomainOwnershipIdentifier.
-type WebAppsCreateOrUpdateDomainOwnershipIdentifierResult struct {
+// WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResult contains the result from method WebAppsClient.CreateOrUpdateDomainOwnershipIdentifier.
+type WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResult struct {
 	Identifier
 }
 
-// WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse contains the response from method WebApps.CreateOrUpdateDomainOwnershipIdentifierSlot.
-type WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse struct {
-	WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResult
+// WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse contains the response from method WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot.
+type WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse struct {
+	WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResult contains the result from method WebApps.CreateOrUpdateDomainOwnershipIdentifierSlot.
-type WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResult struct {
+// WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResult contains the result from method WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot.
+type WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResult struct {
 	Identifier
 }
 
-// WebAppsCreateOrUpdateFunctionSecretResponse contains the response from method WebApps.CreateOrUpdateFunctionSecret.
-type WebAppsCreateOrUpdateFunctionSecretResponse struct {
-	WebAppsCreateOrUpdateFunctionSecretResult
+// WebAppsClientCreateOrUpdateFunctionSecretResponse contains the response from method WebAppsClient.CreateOrUpdateFunctionSecret.
+type WebAppsClientCreateOrUpdateFunctionSecretResponse struct {
+	WebAppsClientCreateOrUpdateFunctionSecretResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateFunctionSecretResult contains the result from method WebApps.CreateOrUpdateFunctionSecret.
-type WebAppsCreateOrUpdateFunctionSecretResult struct {
+// WebAppsClientCreateOrUpdateFunctionSecretResult contains the result from method WebAppsClient.CreateOrUpdateFunctionSecret.
+type WebAppsClientCreateOrUpdateFunctionSecretResult struct {
 	KeyInfo
 }
 
-// WebAppsCreateOrUpdateFunctionSecretSlotResponse contains the response from method WebApps.CreateOrUpdateFunctionSecretSlot.
-type WebAppsCreateOrUpdateFunctionSecretSlotResponse struct {
-	WebAppsCreateOrUpdateFunctionSecretSlotResult
+// WebAppsClientCreateOrUpdateFunctionSecretSlotResponse contains the response from method WebAppsClient.CreateOrUpdateFunctionSecretSlot.
+type WebAppsClientCreateOrUpdateFunctionSecretSlotResponse struct {
+	WebAppsClientCreateOrUpdateFunctionSecretSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateFunctionSecretSlotResult contains the result from method WebApps.CreateOrUpdateFunctionSecretSlot.
-type WebAppsCreateOrUpdateFunctionSecretSlotResult struct {
+// WebAppsClientCreateOrUpdateFunctionSecretSlotResult contains the result from method WebAppsClient.CreateOrUpdateFunctionSecretSlot.
+type WebAppsClientCreateOrUpdateFunctionSecretSlotResult struct {
 	KeyInfo
 }
 
-// WebAppsCreateOrUpdateHostNameBindingResponse contains the response from method WebApps.CreateOrUpdateHostNameBinding.
-type WebAppsCreateOrUpdateHostNameBindingResponse struct {
-	WebAppsCreateOrUpdateHostNameBindingResult
+// WebAppsClientCreateOrUpdateHostNameBindingResponse contains the response from method WebAppsClient.CreateOrUpdateHostNameBinding.
+type WebAppsClientCreateOrUpdateHostNameBindingResponse struct {
+	WebAppsClientCreateOrUpdateHostNameBindingResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateHostNameBindingResult contains the result from method WebApps.CreateOrUpdateHostNameBinding.
-type WebAppsCreateOrUpdateHostNameBindingResult struct {
+// WebAppsClientCreateOrUpdateHostNameBindingResult contains the result from method WebAppsClient.CreateOrUpdateHostNameBinding.
+type WebAppsClientCreateOrUpdateHostNameBindingResult struct {
 	HostNameBinding
 }
 
-// WebAppsCreateOrUpdateHostNameBindingSlotResponse contains the response from method WebApps.CreateOrUpdateHostNameBindingSlot.
-type WebAppsCreateOrUpdateHostNameBindingSlotResponse struct {
-	WebAppsCreateOrUpdateHostNameBindingSlotResult
+// WebAppsClientCreateOrUpdateHostNameBindingSlotResponse contains the response from method WebAppsClient.CreateOrUpdateHostNameBindingSlot.
+type WebAppsClientCreateOrUpdateHostNameBindingSlotResponse struct {
+	WebAppsClientCreateOrUpdateHostNameBindingSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateHostNameBindingSlotResult contains the result from method WebApps.CreateOrUpdateHostNameBindingSlot.
-type WebAppsCreateOrUpdateHostNameBindingSlotResult struct {
+// WebAppsClientCreateOrUpdateHostNameBindingSlotResult contains the result from method WebAppsClient.CreateOrUpdateHostNameBindingSlot.
+type WebAppsClientCreateOrUpdateHostNameBindingSlotResult struct {
 	HostNameBinding
 }
 
-// WebAppsCreateOrUpdateHostSecretResponse contains the response from method WebApps.CreateOrUpdateHostSecret.
-type WebAppsCreateOrUpdateHostSecretResponse struct {
-	WebAppsCreateOrUpdateHostSecretResult
+// WebAppsClientCreateOrUpdateHostSecretResponse contains the response from method WebAppsClient.CreateOrUpdateHostSecret.
+type WebAppsClientCreateOrUpdateHostSecretResponse struct {
+	WebAppsClientCreateOrUpdateHostSecretResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateHostSecretResult contains the result from method WebApps.CreateOrUpdateHostSecret.
-type WebAppsCreateOrUpdateHostSecretResult struct {
+// WebAppsClientCreateOrUpdateHostSecretResult contains the result from method WebAppsClient.CreateOrUpdateHostSecret.
+type WebAppsClientCreateOrUpdateHostSecretResult struct {
 	KeyInfo
 }
 
-// WebAppsCreateOrUpdateHostSecretSlotResponse contains the response from method WebApps.CreateOrUpdateHostSecretSlot.
-type WebAppsCreateOrUpdateHostSecretSlotResponse struct {
-	WebAppsCreateOrUpdateHostSecretSlotResult
+// WebAppsClientCreateOrUpdateHostSecretSlotResponse contains the response from method WebAppsClient.CreateOrUpdateHostSecretSlot.
+type WebAppsClientCreateOrUpdateHostSecretSlotResponse struct {
+	WebAppsClientCreateOrUpdateHostSecretSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateHostSecretSlotResult contains the result from method WebApps.CreateOrUpdateHostSecretSlot.
-type WebAppsCreateOrUpdateHostSecretSlotResult struct {
+// WebAppsClientCreateOrUpdateHostSecretSlotResult contains the result from method WebAppsClient.CreateOrUpdateHostSecretSlot.
+type WebAppsClientCreateOrUpdateHostSecretSlotResult struct {
 	KeyInfo
 }
 
-// WebAppsCreateOrUpdateHybridConnectionResponse contains the response from method WebApps.CreateOrUpdateHybridConnection.
-type WebAppsCreateOrUpdateHybridConnectionResponse struct {
-	WebAppsCreateOrUpdateHybridConnectionResult
+// WebAppsClientCreateOrUpdateHybridConnectionResponse contains the response from method WebAppsClient.CreateOrUpdateHybridConnection.
+type WebAppsClientCreateOrUpdateHybridConnectionResponse struct {
+	WebAppsClientCreateOrUpdateHybridConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateHybridConnectionResult contains the result from method WebApps.CreateOrUpdateHybridConnection.
-type WebAppsCreateOrUpdateHybridConnectionResult struct {
+// WebAppsClientCreateOrUpdateHybridConnectionResult contains the result from method WebAppsClient.CreateOrUpdateHybridConnection.
+type WebAppsClientCreateOrUpdateHybridConnectionResult struct {
 	HybridConnection
 }
 
-// WebAppsCreateOrUpdateHybridConnectionSlotResponse contains the response from method WebApps.CreateOrUpdateHybridConnectionSlot.
-type WebAppsCreateOrUpdateHybridConnectionSlotResponse struct {
-	WebAppsCreateOrUpdateHybridConnectionSlotResult
+// WebAppsClientCreateOrUpdateHybridConnectionSlotResponse contains the response from method WebAppsClient.CreateOrUpdateHybridConnectionSlot.
+type WebAppsClientCreateOrUpdateHybridConnectionSlotResponse struct {
+	WebAppsClientCreateOrUpdateHybridConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateHybridConnectionSlotResult contains the result from method WebApps.CreateOrUpdateHybridConnectionSlot.
-type WebAppsCreateOrUpdateHybridConnectionSlotResult struct {
+// WebAppsClientCreateOrUpdateHybridConnectionSlotResult contains the result from method WebAppsClient.CreateOrUpdateHybridConnectionSlot.
+type WebAppsClientCreateOrUpdateHybridConnectionSlotResult struct {
 	HybridConnection
 }
 
-// WebAppsCreateOrUpdatePollerResponse contains the response from method WebApps.CreateOrUpdate.
-type WebAppsCreateOrUpdatePollerResponse struct {
+// WebAppsClientCreateOrUpdatePollerResponse contains the response from method WebAppsClient.CreateOrUpdate.
+type WebAppsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateOrUpdatePoller
+	Poller *WebAppsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4329,8 +4559,8 @@ type WebAppsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateResponse, error) {
-	respType := WebAppsCreateOrUpdateResponse{}
+func (l WebAppsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateOrUpdateResponse, error) {
+	respType := WebAppsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Site)
 	if err != nil {
 		return respType, err
@@ -4339,13 +4569,13 @@ func (l WebAppsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *WebAppsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a WebAppsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateOrUpdatePoller{
+	poller := &WebAppsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4357,70 +4587,70 @@ func (l *WebAppsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// WebAppsCreateOrUpdatePublicCertificateResponse contains the response from method WebApps.CreateOrUpdatePublicCertificate.
-type WebAppsCreateOrUpdatePublicCertificateResponse struct {
-	WebAppsCreateOrUpdatePublicCertificateResult
+// WebAppsClientCreateOrUpdatePublicCertificateResponse contains the response from method WebAppsClient.CreateOrUpdatePublicCertificate.
+type WebAppsClientCreateOrUpdatePublicCertificateResponse struct {
+	WebAppsClientCreateOrUpdatePublicCertificateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdatePublicCertificateResult contains the result from method WebApps.CreateOrUpdatePublicCertificate.
-type WebAppsCreateOrUpdatePublicCertificateResult struct {
+// WebAppsClientCreateOrUpdatePublicCertificateResult contains the result from method WebAppsClient.CreateOrUpdatePublicCertificate.
+type WebAppsClientCreateOrUpdatePublicCertificateResult struct {
 	PublicCertificate
 }
 
-// WebAppsCreateOrUpdatePublicCertificateSlotResponse contains the response from method WebApps.CreateOrUpdatePublicCertificateSlot.
-type WebAppsCreateOrUpdatePublicCertificateSlotResponse struct {
-	WebAppsCreateOrUpdatePublicCertificateSlotResult
+// WebAppsClientCreateOrUpdatePublicCertificateSlotResponse contains the response from method WebAppsClient.CreateOrUpdatePublicCertificateSlot.
+type WebAppsClientCreateOrUpdatePublicCertificateSlotResponse struct {
+	WebAppsClientCreateOrUpdatePublicCertificateSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdatePublicCertificateSlotResult contains the result from method WebApps.CreateOrUpdatePublicCertificateSlot.
-type WebAppsCreateOrUpdatePublicCertificateSlotResult struct {
+// WebAppsClientCreateOrUpdatePublicCertificateSlotResult contains the result from method WebAppsClient.CreateOrUpdatePublicCertificateSlot.
+type WebAppsClientCreateOrUpdatePublicCertificateSlotResult struct {
 	PublicCertificate
 }
 
-// WebAppsCreateOrUpdateRelayServiceConnectionResponse contains the response from method WebApps.CreateOrUpdateRelayServiceConnection.
-type WebAppsCreateOrUpdateRelayServiceConnectionResponse struct {
-	WebAppsCreateOrUpdateRelayServiceConnectionResult
+// WebAppsClientCreateOrUpdateRelayServiceConnectionResponse contains the response from method WebAppsClient.CreateOrUpdateRelayServiceConnection.
+type WebAppsClientCreateOrUpdateRelayServiceConnectionResponse struct {
+	WebAppsClientCreateOrUpdateRelayServiceConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateRelayServiceConnectionResult contains the result from method WebApps.CreateOrUpdateRelayServiceConnection.
-type WebAppsCreateOrUpdateRelayServiceConnectionResult struct {
+// WebAppsClientCreateOrUpdateRelayServiceConnectionResult contains the result from method WebAppsClient.CreateOrUpdateRelayServiceConnection.
+type WebAppsClientCreateOrUpdateRelayServiceConnectionResult struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse contains the response from method WebApps.CreateOrUpdateRelayServiceConnectionSlot.
-type WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse struct {
-	WebAppsCreateOrUpdateRelayServiceConnectionSlotResult
+// WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse contains the response from method WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot.
+type WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse struct {
+	WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateRelayServiceConnectionSlotResult contains the result from method WebApps.CreateOrUpdateRelayServiceConnectionSlot.
-type WebAppsCreateOrUpdateRelayServiceConnectionSlotResult struct {
+// WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResult contains the result from method WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot.
+type WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResult struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsCreateOrUpdateResponse contains the response from method WebApps.CreateOrUpdate.
-type WebAppsCreateOrUpdateResponse struct {
-	WebAppsCreateOrUpdateResult
+// WebAppsClientCreateOrUpdateResponse contains the response from method WebAppsClient.CreateOrUpdate.
+type WebAppsClientCreateOrUpdateResponse struct {
+	WebAppsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateResult contains the result from method WebApps.CreateOrUpdate.
-type WebAppsCreateOrUpdateResult struct {
+// WebAppsClientCreateOrUpdateResult contains the result from method WebAppsClient.CreateOrUpdate.
+type WebAppsClientCreateOrUpdateResult struct {
 	Site
 }
 
-// WebAppsCreateOrUpdateSlotPollerResponse contains the response from method WebApps.CreateOrUpdateSlot.
-type WebAppsCreateOrUpdateSlotPollerResponse struct {
+// WebAppsClientCreateOrUpdateSlotPollerResponse contains the response from method WebAppsClient.CreateOrUpdateSlot.
+type WebAppsClientCreateOrUpdateSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateOrUpdateSlotPoller
+	Poller *WebAppsClientCreateOrUpdateSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4429,8 +4659,8 @@ type WebAppsCreateOrUpdateSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateOrUpdateSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSlotResponse, error) {
-	respType := WebAppsCreateOrUpdateSlotResponse{}
+func (l WebAppsClientCreateOrUpdateSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateOrUpdateSlotResponse, error) {
+	respType := WebAppsClientCreateOrUpdateSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Site)
 	if err != nil {
 		return respType, err
@@ -4439,13 +4669,13 @@ func (l WebAppsCreateOrUpdateSlotPollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateOrUpdateSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateOrUpdateSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSlot", token, client.pl, client.createOrUpdateSlotHandleError)
+// Resume rehydrates a WebAppsClientCreateOrUpdateSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateOrUpdateSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateOrUpdateSlotPoller{
+	poller := &WebAppsClientCreateOrUpdateSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4457,22 +4687,22 @@ func (l *WebAppsCreateOrUpdateSlotPollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// WebAppsCreateOrUpdateSlotResponse contains the response from method WebApps.CreateOrUpdateSlot.
-type WebAppsCreateOrUpdateSlotResponse struct {
-	WebAppsCreateOrUpdateSlotResult
+// WebAppsClientCreateOrUpdateSlotResponse contains the response from method WebAppsClient.CreateOrUpdateSlot.
+type WebAppsClientCreateOrUpdateSlotResponse struct {
+	WebAppsClientCreateOrUpdateSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateSlotResult contains the result from method WebApps.CreateOrUpdateSlot.
-type WebAppsCreateOrUpdateSlotResult struct {
+// WebAppsClientCreateOrUpdateSlotResult contains the result from method WebAppsClient.CreateOrUpdateSlot.
+type WebAppsClientCreateOrUpdateSlotResult struct {
 	Site
 }
 
-// WebAppsCreateOrUpdateSourceControlPollerResponse contains the response from method WebApps.CreateOrUpdateSourceControl.
-type WebAppsCreateOrUpdateSourceControlPollerResponse struct {
+// WebAppsClientCreateOrUpdateSourceControlPollerResponse contains the response from method WebAppsClient.CreateOrUpdateSourceControl.
+type WebAppsClientCreateOrUpdateSourceControlPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateOrUpdateSourceControlPoller
+	Poller *WebAppsClientCreateOrUpdateSourceControlPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4481,8 +4711,8 @@ type WebAppsCreateOrUpdateSourceControlPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateOrUpdateSourceControlPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSourceControlResponse, error) {
-	respType := WebAppsCreateOrUpdateSourceControlResponse{}
+func (l WebAppsClientCreateOrUpdateSourceControlPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateOrUpdateSourceControlResponse, error) {
+	respType := WebAppsClientCreateOrUpdateSourceControlResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SiteSourceControl)
 	if err != nil {
 		return respType, err
@@ -4491,13 +4721,13 @@ func (l WebAppsCreateOrUpdateSourceControlPollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateOrUpdateSourceControlPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateOrUpdateSourceControlPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSourceControl", token, client.pl, client.createOrUpdateSourceControlHandleError)
+// Resume rehydrates a WebAppsClientCreateOrUpdateSourceControlPollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateOrUpdateSourceControlPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSourceControl", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateOrUpdateSourceControlPoller{
+	poller := &WebAppsClientCreateOrUpdateSourceControlPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4509,22 +4739,22 @@ func (l *WebAppsCreateOrUpdateSourceControlPollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// WebAppsCreateOrUpdateSourceControlResponse contains the response from method WebApps.CreateOrUpdateSourceControl.
-type WebAppsCreateOrUpdateSourceControlResponse struct {
-	WebAppsCreateOrUpdateSourceControlResult
+// WebAppsClientCreateOrUpdateSourceControlResponse contains the response from method WebAppsClient.CreateOrUpdateSourceControl.
+type WebAppsClientCreateOrUpdateSourceControlResponse struct {
+	WebAppsClientCreateOrUpdateSourceControlResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateSourceControlResult contains the result from method WebApps.CreateOrUpdateSourceControl.
-type WebAppsCreateOrUpdateSourceControlResult struct {
+// WebAppsClientCreateOrUpdateSourceControlResult contains the result from method WebAppsClient.CreateOrUpdateSourceControl.
+type WebAppsClientCreateOrUpdateSourceControlResult struct {
 	SiteSourceControl
 }
 
-// WebAppsCreateOrUpdateSourceControlSlotPollerResponse contains the response from method WebApps.CreateOrUpdateSourceControlSlot.
-type WebAppsCreateOrUpdateSourceControlSlotPollerResponse struct {
+// WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse contains the response from method WebAppsClient.CreateOrUpdateSourceControlSlot.
+type WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsCreateOrUpdateSourceControlSlotPoller
+	Poller *WebAppsClientCreateOrUpdateSourceControlSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4533,8 +4763,8 @@ type WebAppsCreateOrUpdateSourceControlSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsCreateOrUpdateSourceControlSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSourceControlSlotResponse, error) {
-	respType := WebAppsCreateOrUpdateSourceControlSlotResponse{}
+func (l WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientCreateOrUpdateSourceControlSlotResponse, error) {
+	respType := WebAppsClientCreateOrUpdateSourceControlSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SiteSourceControl)
 	if err != nil {
 		return respType, err
@@ -4543,13 +4773,13 @@ func (l WebAppsCreateOrUpdateSourceControlSlotPollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsCreateOrUpdateSourceControlSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsCreateOrUpdateSourceControlSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSourceControlSlot", token, client.pl, client.createOrUpdateSourceControlSlotHandleError)
+// Resume rehydrates a WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientCreateOrUpdateSourceControlSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSourceControlSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsCreateOrUpdateSourceControlSlotPoller{
+	poller := &WebAppsClientCreateOrUpdateSourceControlSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4561,238 +4791,238 @@ func (l *WebAppsCreateOrUpdateSourceControlSlotPollerResponse) Resume(ctx contex
 	return nil
 }
 
-// WebAppsCreateOrUpdateSourceControlSlotResponse contains the response from method WebApps.CreateOrUpdateSourceControlSlot.
-type WebAppsCreateOrUpdateSourceControlSlotResponse struct {
-	WebAppsCreateOrUpdateSourceControlSlotResult
+// WebAppsClientCreateOrUpdateSourceControlSlotResponse contains the response from method WebAppsClient.CreateOrUpdateSourceControlSlot.
+type WebAppsClientCreateOrUpdateSourceControlSlotResponse struct {
+	WebAppsClientCreateOrUpdateSourceControlSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateSourceControlSlotResult contains the result from method WebApps.CreateOrUpdateSourceControlSlot.
-type WebAppsCreateOrUpdateSourceControlSlotResult struct {
+// WebAppsClientCreateOrUpdateSourceControlSlotResult contains the result from method WebAppsClient.CreateOrUpdateSourceControlSlot.
+type WebAppsClientCreateOrUpdateSourceControlSlotResult struct {
 	SiteSourceControl
 }
 
-// WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse contains the response from method WebApps.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck.
-type WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse struct {
-	WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResult
+// WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse contains the response from method WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck.
+type WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse struct {
+	WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResult contains the result from method WebApps.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck.
-type WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResult struct {
+// WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResult contains the result from method WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck.
+type WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResult struct {
 	SwiftVirtualNetwork
 }
 
-// WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse contains the response from method WebApps.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot.
-type WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse struct {
-	WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult
+// WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse contains the response from method WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot.
+type WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse struct {
+	WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult contains the result from method WebApps.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot.
-type WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult struct {
+// WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult contains the result from method WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot.
+type WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult struct {
 	SwiftVirtualNetwork
 }
 
-// WebAppsCreateOrUpdateVnetConnectionGatewayResponse contains the response from method WebApps.CreateOrUpdateVnetConnectionGateway.
-type WebAppsCreateOrUpdateVnetConnectionGatewayResponse struct {
-	WebAppsCreateOrUpdateVnetConnectionGatewayResult
+// WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse contains the response from method WebAppsClient.CreateOrUpdateVnetConnectionGateway.
+type WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse struct {
+	WebAppsClientCreateOrUpdateVnetConnectionGatewayResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateVnetConnectionGatewayResult contains the result from method WebApps.CreateOrUpdateVnetConnectionGateway.
-type WebAppsCreateOrUpdateVnetConnectionGatewayResult struct {
+// WebAppsClientCreateOrUpdateVnetConnectionGatewayResult contains the result from method WebAppsClient.CreateOrUpdateVnetConnectionGateway.
+type WebAppsClientCreateOrUpdateVnetConnectionGatewayResult struct {
 	VnetGateway
 }
 
-// WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse contains the response from method WebApps.CreateOrUpdateVnetConnectionGatewaySlot.
-type WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse struct {
-	WebAppsCreateOrUpdateVnetConnectionGatewaySlotResult
+// WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse contains the response from method WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot.
+type WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse struct {
+	WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateVnetConnectionGatewaySlotResult contains the result from method WebApps.CreateOrUpdateVnetConnectionGatewaySlot.
-type WebAppsCreateOrUpdateVnetConnectionGatewaySlotResult struct {
+// WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResult contains the result from method WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot.
+type WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResult struct {
 	VnetGateway
 }
 
-// WebAppsCreateOrUpdateVnetConnectionResponse contains the response from method WebApps.CreateOrUpdateVnetConnection.
-type WebAppsCreateOrUpdateVnetConnectionResponse struct {
-	WebAppsCreateOrUpdateVnetConnectionResult
+// WebAppsClientCreateOrUpdateVnetConnectionResponse contains the response from method WebAppsClient.CreateOrUpdateVnetConnection.
+type WebAppsClientCreateOrUpdateVnetConnectionResponse struct {
+	WebAppsClientCreateOrUpdateVnetConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateVnetConnectionResult contains the result from method WebApps.CreateOrUpdateVnetConnection.
-type WebAppsCreateOrUpdateVnetConnectionResult struct {
+// WebAppsClientCreateOrUpdateVnetConnectionResult contains the result from method WebAppsClient.CreateOrUpdateVnetConnection.
+type WebAppsClientCreateOrUpdateVnetConnectionResult struct {
 	VnetInfoResource
 }
 
-// WebAppsCreateOrUpdateVnetConnectionSlotResponse contains the response from method WebApps.CreateOrUpdateVnetConnectionSlot.
-type WebAppsCreateOrUpdateVnetConnectionSlotResponse struct {
-	WebAppsCreateOrUpdateVnetConnectionSlotResult
+// WebAppsClientCreateOrUpdateVnetConnectionSlotResponse contains the response from method WebAppsClient.CreateOrUpdateVnetConnectionSlot.
+type WebAppsClientCreateOrUpdateVnetConnectionSlotResponse struct {
+	WebAppsClientCreateOrUpdateVnetConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsCreateOrUpdateVnetConnectionSlotResult contains the result from method WebApps.CreateOrUpdateVnetConnectionSlot.
-type WebAppsCreateOrUpdateVnetConnectionSlotResult struct {
+// WebAppsClientCreateOrUpdateVnetConnectionSlotResult contains the result from method WebAppsClient.CreateOrUpdateVnetConnectionSlot.
+type WebAppsClientCreateOrUpdateVnetConnectionSlotResult struct {
 	VnetInfoResource
 }
 
-// WebAppsDeleteBackupConfigurationResponse contains the response from method WebApps.DeleteBackupConfiguration.
-type WebAppsDeleteBackupConfigurationResponse struct {
+// WebAppsClientDeleteBackupConfigurationResponse contains the response from method WebAppsClient.DeleteBackupConfiguration.
+type WebAppsClientDeleteBackupConfigurationResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteBackupConfigurationSlotResponse contains the response from method WebApps.DeleteBackupConfigurationSlot.
-type WebAppsDeleteBackupConfigurationSlotResponse struct {
+// WebAppsClientDeleteBackupConfigurationSlotResponse contains the response from method WebAppsClient.DeleteBackupConfigurationSlot.
+type WebAppsClientDeleteBackupConfigurationSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteBackupResponse contains the response from method WebApps.DeleteBackup.
-type WebAppsDeleteBackupResponse struct {
+// WebAppsClientDeleteBackupResponse contains the response from method WebAppsClient.DeleteBackup.
+type WebAppsClientDeleteBackupResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteBackupSlotResponse contains the response from method WebApps.DeleteBackupSlot.
-type WebAppsDeleteBackupSlotResponse struct {
+// WebAppsClientDeleteBackupSlotResponse contains the response from method WebAppsClient.DeleteBackupSlot.
+type WebAppsClientDeleteBackupSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteContinuousWebJobResponse contains the response from method WebApps.DeleteContinuousWebJob.
-type WebAppsDeleteContinuousWebJobResponse struct {
+// WebAppsClientDeleteContinuousWebJobResponse contains the response from method WebAppsClient.DeleteContinuousWebJob.
+type WebAppsClientDeleteContinuousWebJobResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteContinuousWebJobSlotResponse contains the response from method WebApps.DeleteContinuousWebJobSlot.
-type WebAppsDeleteContinuousWebJobSlotResponse struct {
+// WebAppsClientDeleteContinuousWebJobSlotResponse contains the response from method WebAppsClient.DeleteContinuousWebJobSlot.
+type WebAppsClientDeleteContinuousWebJobSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteDeploymentResponse contains the response from method WebApps.DeleteDeployment.
-type WebAppsDeleteDeploymentResponse struct {
+// WebAppsClientDeleteDeploymentResponse contains the response from method WebAppsClient.DeleteDeployment.
+type WebAppsClientDeleteDeploymentResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteDeploymentSlotResponse contains the response from method WebApps.DeleteDeploymentSlot.
-type WebAppsDeleteDeploymentSlotResponse struct {
+// WebAppsClientDeleteDeploymentSlotResponse contains the response from method WebAppsClient.DeleteDeploymentSlot.
+type WebAppsClientDeleteDeploymentSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteDomainOwnershipIdentifierResponse contains the response from method WebApps.DeleteDomainOwnershipIdentifier.
-type WebAppsDeleteDomainOwnershipIdentifierResponse struct {
+// WebAppsClientDeleteDomainOwnershipIdentifierResponse contains the response from method WebAppsClient.DeleteDomainOwnershipIdentifier.
+type WebAppsClientDeleteDomainOwnershipIdentifierResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteDomainOwnershipIdentifierSlotResponse contains the response from method WebApps.DeleteDomainOwnershipIdentifierSlot.
-type WebAppsDeleteDomainOwnershipIdentifierSlotResponse struct {
+// WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse contains the response from method WebAppsClient.DeleteDomainOwnershipIdentifierSlot.
+type WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteFunctionResponse contains the response from method WebApps.DeleteFunction.
-type WebAppsDeleteFunctionResponse struct {
+// WebAppsClientDeleteFunctionResponse contains the response from method WebAppsClient.DeleteFunction.
+type WebAppsClientDeleteFunctionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteFunctionSecretResponse contains the response from method WebApps.DeleteFunctionSecret.
-type WebAppsDeleteFunctionSecretResponse struct {
+// WebAppsClientDeleteFunctionSecretResponse contains the response from method WebAppsClient.DeleteFunctionSecret.
+type WebAppsClientDeleteFunctionSecretResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteFunctionSecretSlotResponse contains the response from method WebApps.DeleteFunctionSecretSlot.
-type WebAppsDeleteFunctionSecretSlotResponse struct {
+// WebAppsClientDeleteFunctionSecretSlotResponse contains the response from method WebAppsClient.DeleteFunctionSecretSlot.
+type WebAppsClientDeleteFunctionSecretSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteHostNameBindingResponse contains the response from method WebApps.DeleteHostNameBinding.
-type WebAppsDeleteHostNameBindingResponse struct {
+// WebAppsClientDeleteHostNameBindingResponse contains the response from method WebAppsClient.DeleteHostNameBinding.
+type WebAppsClientDeleteHostNameBindingResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteHostNameBindingSlotResponse contains the response from method WebApps.DeleteHostNameBindingSlot.
-type WebAppsDeleteHostNameBindingSlotResponse struct {
+// WebAppsClientDeleteHostNameBindingSlotResponse contains the response from method WebAppsClient.DeleteHostNameBindingSlot.
+type WebAppsClientDeleteHostNameBindingSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteHostSecretResponse contains the response from method WebApps.DeleteHostSecret.
-type WebAppsDeleteHostSecretResponse struct {
+// WebAppsClientDeleteHostSecretResponse contains the response from method WebAppsClient.DeleteHostSecret.
+type WebAppsClientDeleteHostSecretResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteHostSecretSlotResponse contains the response from method WebApps.DeleteHostSecretSlot.
-type WebAppsDeleteHostSecretSlotResponse struct {
+// WebAppsClientDeleteHostSecretSlotResponse contains the response from method WebAppsClient.DeleteHostSecretSlot.
+type WebAppsClientDeleteHostSecretSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteHybridConnectionResponse contains the response from method WebApps.DeleteHybridConnection.
-type WebAppsDeleteHybridConnectionResponse struct {
+// WebAppsClientDeleteHybridConnectionResponse contains the response from method WebAppsClient.DeleteHybridConnection.
+type WebAppsClientDeleteHybridConnectionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteHybridConnectionSlotResponse contains the response from method WebApps.DeleteHybridConnectionSlot.
-type WebAppsDeleteHybridConnectionSlotResponse struct {
+// WebAppsClientDeleteHybridConnectionSlotResponse contains the response from method WebAppsClient.DeleteHybridConnectionSlot.
+type WebAppsClientDeleteHybridConnectionSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteInstanceFunctionSlotResponse contains the response from method WebApps.DeleteInstanceFunctionSlot.
-type WebAppsDeleteInstanceFunctionSlotResponse struct {
+// WebAppsClientDeleteInstanceFunctionSlotResponse contains the response from method WebAppsClient.DeleteInstanceFunctionSlot.
+type WebAppsClientDeleteInstanceFunctionSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteInstanceProcessResponse contains the response from method WebApps.DeleteInstanceProcess.
-type WebAppsDeleteInstanceProcessResponse struct {
+// WebAppsClientDeleteInstanceProcessResponse contains the response from method WebAppsClient.DeleteInstanceProcess.
+type WebAppsClientDeleteInstanceProcessResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteInstanceProcessSlotResponse contains the response from method WebApps.DeleteInstanceProcessSlot.
-type WebAppsDeleteInstanceProcessSlotResponse struct {
+// WebAppsClientDeleteInstanceProcessSlotResponse contains the response from method WebAppsClient.DeleteInstanceProcessSlot.
+type WebAppsClientDeleteInstanceProcessSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeletePremierAddOnResponse contains the response from method WebApps.DeletePremierAddOn.
-type WebAppsDeletePremierAddOnResponse struct {
+// WebAppsClientDeletePremierAddOnResponse contains the response from method WebAppsClient.DeletePremierAddOn.
+type WebAppsClientDeletePremierAddOnResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeletePremierAddOnSlotResponse contains the response from method WebApps.DeletePremierAddOnSlot.
-type WebAppsDeletePremierAddOnSlotResponse struct {
+// WebAppsClientDeletePremierAddOnSlotResponse contains the response from method WebAppsClient.DeletePremierAddOnSlot.
+type WebAppsClientDeletePremierAddOnSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeletePrivateEndpointConnectionPollerResponse contains the response from method WebApps.DeletePrivateEndpointConnection.
-type WebAppsDeletePrivateEndpointConnectionPollerResponse struct {
+// WebAppsClientDeletePrivateEndpointConnectionPollerResponse contains the response from method WebAppsClient.DeletePrivateEndpointConnection.
+type WebAppsClientDeletePrivateEndpointConnectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsDeletePrivateEndpointConnectionPoller
+	Poller *WebAppsClientDeletePrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4801,9 +5031,9 @@ type WebAppsDeletePrivateEndpointConnectionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsDeletePrivateEndpointConnectionResponse, error) {
-	respType := WebAppsDeletePrivateEndpointConnectionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Object)
+func (l WebAppsClientDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientDeletePrivateEndpointConnectionResponse, error) {
+	respType := WebAppsClientDeletePrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Interface)
 	if err != nil {
 		return respType, err
 	}
@@ -4811,13 +5041,13 @@ func (l WebAppsDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsDeletePrivateEndpointConnectionPollerResponse from the provided client and resume token.
-func (l *WebAppsDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.DeletePrivateEndpointConnection", token, client.pl, client.deletePrivateEndpointConnectionHandleError)
+// Resume rehydrates a WebAppsClientDeletePrivateEndpointConnectionPollerResponse from the provided client and resume token.
+func (l *WebAppsClientDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.DeletePrivateEndpointConnection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsDeletePrivateEndpointConnectionPoller{
+	poller := &WebAppsClientDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4829,23 +5059,23 @@ func (l *WebAppsDeletePrivateEndpointConnectionPollerResponse) Resume(ctx contex
 	return nil
 }
 
-// WebAppsDeletePrivateEndpointConnectionResponse contains the response from method WebApps.DeletePrivateEndpointConnection.
-type WebAppsDeletePrivateEndpointConnectionResponse struct {
-	WebAppsDeletePrivateEndpointConnectionResult
+// WebAppsClientDeletePrivateEndpointConnectionResponse contains the response from method WebAppsClient.DeletePrivateEndpointConnection.
+type WebAppsClientDeletePrivateEndpointConnectionResponse struct {
+	WebAppsClientDeletePrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeletePrivateEndpointConnectionResult contains the result from method WebApps.DeletePrivateEndpointConnection.
-type WebAppsDeletePrivateEndpointConnectionResult struct {
-	// Any object
-	Object map[string]interface{}
+// WebAppsClientDeletePrivateEndpointConnectionResult contains the result from method WebAppsClient.DeletePrivateEndpointConnection.
+type WebAppsClientDeletePrivateEndpointConnectionResult struct {
+	// Anything
+	Interface interface{}
 }
 
-// WebAppsDeletePrivateEndpointConnectionSlotPollerResponse contains the response from method WebApps.DeletePrivateEndpointConnectionSlot.
-type WebAppsDeletePrivateEndpointConnectionSlotPollerResponse struct {
+// WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse contains the response from method WebAppsClient.DeletePrivateEndpointConnectionSlot.
+type WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsDeletePrivateEndpointConnectionSlotPoller
+	Poller *WebAppsClientDeletePrivateEndpointConnectionSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4854,9 +5084,9 @@ type WebAppsDeletePrivateEndpointConnectionSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsDeletePrivateEndpointConnectionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsDeletePrivateEndpointConnectionSlotResponse, error) {
-	respType := WebAppsDeletePrivateEndpointConnectionSlotResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Object)
+func (l WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientDeletePrivateEndpointConnectionSlotResponse, error) {
+	respType := WebAppsClientDeletePrivateEndpointConnectionSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Interface)
 	if err != nil {
 		return respType, err
 	}
@@ -4864,13 +5094,14 @@ func (l WebAppsDeletePrivateEndpointConnectionSlotPollerResponse) PollUntilDone(
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsDeletePrivateEndpointConnectionSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsDeletePrivateEndpointConnectionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.DeletePrivateEndpointConnectionSlot", token, client.pl, client.deletePrivateEndpointConnectionSlotHandleError)
+// Resume rehydrates a WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse from the provided client and resume
+// token.
+func (l *WebAppsClientDeletePrivateEndpointConnectionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.DeletePrivateEndpointConnectionSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsDeletePrivateEndpointConnectionSlotPoller{
+	poller := &WebAppsClientDeletePrivateEndpointConnectionSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4882,1447 +5113,1472 @@ func (l *WebAppsDeletePrivateEndpointConnectionSlotPollerResponse) Resume(ctx co
 	return nil
 }
 
-// WebAppsDeletePrivateEndpointConnectionSlotResponse contains the response from method WebApps.DeletePrivateEndpointConnectionSlot.
-type WebAppsDeletePrivateEndpointConnectionSlotResponse struct {
-	WebAppsDeletePrivateEndpointConnectionSlotResult
+// WebAppsClientDeletePrivateEndpointConnectionSlotResponse contains the response from method WebAppsClient.DeletePrivateEndpointConnectionSlot.
+type WebAppsClientDeletePrivateEndpointConnectionSlotResponse struct {
+	WebAppsClientDeletePrivateEndpointConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeletePrivateEndpointConnectionSlotResult contains the result from method WebApps.DeletePrivateEndpointConnectionSlot.
-type WebAppsDeletePrivateEndpointConnectionSlotResult struct {
-	// Any object
-	Object map[string]interface{}
+// WebAppsClientDeletePrivateEndpointConnectionSlotResult contains the result from method WebAppsClient.DeletePrivateEndpointConnectionSlot.
+type WebAppsClientDeletePrivateEndpointConnectionSlotResult struct {
+	// Anything
+	Interface interface{}
 }
 
-// WebAppsDeleteProcessResponse contains the response from method WebApps.DeleteProcess.
-type WebAppsDeleteProcessResponse struct {
+// WebAppsClientDeleteProcessResponse contains the response from method WebAppsClient.DeleteProcess.
+type WebAppsClientDeleteProcessResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteProcessSlotResponse contains the response from method WebApps.DeleteProcessSlot.
-type WebAppsDeleteProcessSlotResponse struct {
+// WebAppsClientDeleteProcessSlotResponse contains the response from method WebAppsClient.DeleteProcessSlot.
+type WebAppsClientDeleteProcessSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeletePublicCertificateResponse contains the response from method WebApps.DeletePublicCertificate.
-type WebAppsDeletePublicCertificateResponse struct {
+// WebAppsClientDeletePublicCertificateResponse contains the response from method WebAppsClient.DeletePublicCertificate.
+type WebAppsClientDeletePublicCertificateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeletePublicCertificateSlotResponse contains the response from method WebApps.DeletePublicCertificateSlot.
-type WebAppsDeletePublicCertificateSlotResponse struct {
+// WebAppsClientDeletePublicCertificateSlotResponse contains the response from method WebAppsClient.DeletePublicCertificateSlot.
+type WebAppsClientDeletePublicCertificateSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteRelayServiceConnectionResponse contains the response from method WebApps.DeleteRelayServiceConnection.
-type WebAppsDeleteRelayServiceConnectionResponse struct {
+// WebAppsClientDeleteRelayServiceConnectionResponse contains the response from method WebAppsClient.DeleteRelayServiceConnection.
+type WebAppsClientDeleteRelayServiceConnectionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteRelayServiceConnectionSlotResponse contains the response from method WebApps.DeleteRelayServiceConnectionSlot.
-type WebAppsDeleteRelayServiceConnectionSlotResponse struct {
+// WebAppsClientDeleteRelayServiceConnectionSlotResponse contains the response from method WebAppsClient.DeleteRelayServiceConnectionSlot.
+type WebAppsClientDeleteRelayServiceConnectionSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteResponse contains the response from method WebApps.Delete.
-type WebAppsDeleteResponse struct {
+// WebAppsClientDeleteResponse contains the response from method WebAppsClient.Delete.
+type WebAppsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteSiteExtensionResponse contains the response from method WebApps.DeleteSiteExtension.
-type WebAppsDeleteSiteExtensionResponse struct {
+// WebAppsClientDeleteSiteExtensionResponse contains the response from method WebAppsClient.DeleteSiteExtension.
+type WebAppsClientDeleteSiteExtensionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteSiteExtensionSlotResponse contains the response from method WebApps.DeleteSiteExtensionSlot.
-type WebAppsDeleteSiteExtensionSlotResponse struct {
+// WebAppsClientDeleteSiteExtensionSlotResponse contains the response from method WebAppsClient.DeleteSiteExtensionSlot.
+type WebAppsClientDeleteSiteExtensionSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteSlotResponse contains the response from method WebApps.DeleteSlot.
-type WebAppsDeleteSlotResponse struct {
+// WebAppsClientDeleteSlotResponse contains the response from method WebAppsClient.DeleteSlot.
+type WebAppsClientDeleteSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteSourceControlResponse contains the response from method WebApps.DeleteSourceControl.
-type WebAppsDeleteSourceControlResponse struct {
+// WebAppsClientDeleteSourceControlResponse contains the response from method WebAppsClient.DeleteSourceControl.
+type WebAppsClientDeleteSourceControlResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteSourceControlSlotResponse contains the response from method WebApps.DeleteSourceControlSlot.
-type WebAppsDeleteSourceControlSlotResponse struct {
+// WebAppsClientDeleteSourceControlSlotResponse contains the response from method WebAppsClient.DeleteSourceControlSlot.
+type WebAppsClientDeleteSourceControlSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteSwiftVirtualNetworkResponse contains the response from method WebApps.DeleteSwiftVirtualNetwork.
-type WebAppsDeleteSwiftVirtualNetworkResponse struct {
+// WebAppsClientDeleteSwiftVirtualNetworkResponse contains the response from method WebAppsClient.DeleteSwiftVirtualNetwork.
+type WebAppsClientDeleteSwiftVirtualNetworkResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteSwiftVirtualNetworkSlotResponse contains the response from method WebApps.DeleteSwiftVirtualNetworkSlot.
-type WebAppsDeleteSwiftVirtualNetworkSlotResponse struct {
+// WebAppsClientDeleteSwiftVirtualNetworkSlotResponse contains the response from method WebAppsClient.DeleteSwiftVirtualNetworkSlot.
+type WebAppsClientDeleteSwiftVirtualNetworkSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteTriggeredWebJobResponse contains the response from method WebApps.DeleteTriggeredWebJob.
-type WebAppsDeleteTriggeredWebJobResponse struct {
+// WebAppsClientDeleteTriggeredWebJobResponse contains the response from method WebAppsClient.DeleteTriggeredWebJob.
+type WebAppsClientDeleteTriggeredWebJobResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteTriggeredWebJobSlotResponse contains the response from method WebApps.DeleteTriggeredWebJobSlot.
-type WebAppsDeleteTriggeredWebJobSlotResponse struct {
+// WebAppsClientDeleteTriggeredWebJobSlotResponse contains the response from method WebAppsClient.DeleteTriggeredWebJobSlot.
+type WebAppsClientDeleteTriggeredWebJobSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteVnetConnectionResponse contains the response from method WebApps.DeleteVnetConnection.
-type WebAppsDeleteVnetConnectionResponse struct {
+// WebAppsClientDeleteVnetConnectionResponse contains the response from method WebAppsClient.DeleteVnetConnection.
+type WebAppsClientDeleteVnetConnectionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDeleteVnetConnectionSlotResponse contains the response from method WebApps.DeleteVnetConnectionSlot.
-type WebAppsDeleteVnetConnectionSlotResponse struct {
+// WebAppsClientDeleteVnetConnectionSlotResponse contains the response from method WebAppsClient.DeleteVnetConnectionSlot.
+type WebAppsClientDeleteVnetConnectionSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDiscoverBackupResponse contains the response from method WebApps.DiscoverBackup.
-type WebAppsDiscoverBackupResponse struct {
-	WebAppsDiscoverBackupResult
+// WebAppsClientDiscoverBackupResponse contains the response from method WebAppsClient.DiscoverBackup.
+type WebAppsClientDiscoverBackupResponse struct {
+	WebAppsClientDiscoverBackupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDiscoverBackupResult contains the result from method WebApps.DiscoverBackup.
-type WebAppsDiscoverBackupResult struct {
+// WebAppsClientDiscoverBackupResult contains the result from method WebAppsClient.DiscoverBackup.
+type WebAppsClientDiscoverBackupResult struct {
 	RestoreRequest
 }
 
-// WebAppsDiscoverBackupSlotResponse contains the response from method WebApps.DiscoverBackupSlot.
-type WebAppsDiscoverBackupSlotResponse struct {
-	WebAppsDiscoverBackupSlotResult
+// WebAppsClientDiscoverBackupSlotResponse contains the response from method WebAppsClient.DiscoverBackupSlot.
+type WebAppsClientDiscoverBackupSlotResponse struct {
+	WebAppsClientDiscoverBackupSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsDiscoverBackupSlotResult contains the result from method WebApps.DiscoverBackupSlot.
-type WebAppsDiscoverBackupSlotResult struct {
+// WebAppsClientDiscoverBackupSlotResult contains the result from method WebAppsClient.DiscoverBackupSlot.
+type WebAppsClientDiscoverBackupSlotResult struct {
 	RestoreRequest
 }
 
-// WebAppsGenerateNewSitePublishingPasswordResponse contains the response from method WebApps.GenerateNewSitePublishingPassword.
-type WebAppsGenerateNewSitePublishingPasswordResponse struct {
+// WebAppsClientGenerateNewSitePublishingPasswordResponse contains the response from method WebAppsClient.GenerateNewSitePublishingPassword.
+type WebAppsClientGenerateNewSitePublishingPasswordResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGenerateNewSitePublishingPasswordSlotResponse contains the response from method WebApps.GenerateNewSitePublishingPasswordSlot.
-type WebAppsGenerateNewSitePublishingPasswordSlotResponse struct {
+// WebAppsClientGenerateNewSitePublishingPasswordSlotResponse contains the response from method WebAppsClient.GenerateNewSitePublishingPasswordSlot.
+type WebAppsClientGenerateNewSitePublishingPasswordSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAppSettingKeyVaultReferenceResponse contains the response from method WebApps.GetAppSettingKeyVaultReference.
-type WebAppsGetAppSettingKeyVaultReferenceResponse struct {
-	WebAppsGetAppSettingKeyVaultReferenceResult
+// WebAppsClientGetAppSettingKeyVaultReferenceResponse contains the response from method WebAppsClient.GetAppSettingKeyVaultReference.
+type WebAppsClientGetAppSettingKeyVaultReferenceResponse struct {
+	WebAppsClientGetAppSettingKeyVaultReferenceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAppSettingKeyVaultReferenceResult contains the result from method WebApps.GetAppSettingKeyVaultReference.
-type WebAppsGetAppSettingKeyVaultReferenceResult struct {
+// WebAppsClientGetAppSettingKeyVaultReferenceResult contains the result from method WebAppsClient.GetAppSettingKeyVaultReference.
+type WebAppsClientGetAppSettingKeyVaultReferenceResult struct {
 	APIKVReference
 }
 
-// WebAppsGetAppSettingKeyVaultReferenceSlotResponse contains the response from method WebApps.GetAppSettingKeyVaultReferenceSlot.
-type WebAppsGetAppSettingKeyVaultReferenceSlotResponse struct {
-	WebAppsGetAppSettingKeyVaultReferenceSlotResult
+// WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse contains the response from method WebAppsClient.GetAppSettingKeyVaultReferenceSlot.
+type WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse struct {
+	WebAppsClientGetAppSettingKeyVaultReferenceSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAppSettingKeyVaultReferenceSlotResult contains the result from method WebApps.GetAppSettingKeyVaultReferenceSlot.
-type WebAppsGetAppSettingKeyVaultReferenceSlotResult struct {
+// WebAppsClientGetAppSettingKeyVaultReferenceSlotResult contains the result from method WebAppsClient.GetAppSettingKeyVaultReferenceSlot.
+type WebAppsClientGetAppSettingKeyVaultReferenceSlotResult struct {
 	APIKVReference
 }
 
-// WebAppsGetAppSettingsKeyVaultReferencesResponse contains the response from method WebApps.GetAppSettingsKeyVaultReferences.
-type WebAppsGetAppSettingsKeyVaultReferencesResponse struct {
-	WebAppsGetAppSettingsKeyVaultReferencesResult
+// WebAppsClientGetAppSettingsKeyVaultReferencesResponse contains the response from method WebAppsClient.GetAppSettingsKeyVaultReferences.
+type WebAppsClientGetAppSettingsKeyVaultReferencesResponse struct {
+	WebAppsClientGetAppSettingsKeyVaultReferencesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAppSettingsKeyVaultReferencesResult contains the result from method WebApps.GetAppSettingsKeyVaultReferences.
-type WebAppsGetAppSettingsKeyVaultReferencesResult struct {
+// WebAppsClientGetAppSettingsKeyVaultReferencesResult contains the result from method WebAppsClient.GetAppSettingsKeyVaultReferences.
+type WebAppsClientGetAppSettingsKeyVaultReferencesResult struct {
 	APIKVReferenceCollection
 }
 
-// WebAppsGetAppSettingsKeyVaultReferencesSlotResponse contains the response from method WebApps.GetAppSettingsKeyVaultReferencesSlot.
-type WebAppsGetAppSettingsKeyVaultReferencesSlotResponse struct {
-	WebAppsGetAppSettingsKeyVaultReferencesSlotResult
+// WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse contains the response from method WebAppsClient.GetAppSettingsKeyVaultReferencesSlot.
+type WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse struct {
+	WebAppsClientGetAppSettingsKeyVaultReferencesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAppSettingsKeyVaultReferencesSlotResult contains the result from method WebApps.GetAppSettingsKeyVaultReferencesSlot.
-type WebAppsGetAppSettingsKeyVaultReferencesSlotResult struct {
+// WebAppsClientGetAppSettingsKeyVaultReferencesSlotResult contains the result from method WebAppsClient.GetAppSettingsKeyVaultReferencesSlot.
+type WebAppsClientGetAppSettingsKeyVaultReferencesSlotResult struct {
 	APIKVReferenceCollection
 }
 
-// WebAppsGetAuthSettingsResponse contains the response from method WebApps.GetAuthSettings.
-type WebAppsGetAuthSettingsResponse struct {
-	WebAppsGetAuthSettingsResult
+// WebAppsClientGetAuthSettingsResponse contains the response from method WebAppsClient.GetAuthSettings.
+type WebAppsClientGetAuthSettingsResponse struct {
+	WebAppsClientGetAuthSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAuthSettingsResult contains the result from method WebApps.GetAuthSettings.
-type WebAppsGetAuthSettingsResult struct {
+// WebAppsClientGetAuthSettingsResult contains the result from method WebAppsClient.GetAuthSettings.
+type WebAppsClientGetAuthSettingsResult struct {
 	SiteAuthSettings
 }
 
-// WebAppsGetAuthSettingsSlotResponse contains the response from method WebApps.GetAuthSettingsSlot.
-type WebAppsGetAuthSettingsSlotResponse struct {
-	WebAppsGetAuthSettingsSlotResult
+// WebAppsClientGetAuthSettingsSlotResponse contains the response from method WebAppsClient.GetAuthSettingsSlot.
+type WebAppsClientGetAuthSettingsSlotResponse struct {
+	WebAppsClientGetAuthSettingsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAuthSettingsSlotResult contains the result from method WebApps.GetAuthSettingsSlot.
-type WebAppsGetAuthSettingsSlotResult struct {
+// WebAppsClientGetAuthSettingsSlotResult contains the result from method WebAppsClient.GetAuthSettingsSlot.
+type WebAppsClientGetAuthSettingsSlotResult struct {
 	SiteAuthSettings
 }
 
-// WebAppsGetAuthSettingsV2Response contains the response from method WebApps.GetAuthSettingsV2.
-type WebAppsGetAuthSettingsV2Response struct {
-	WebAppsGetAuthSettingsV2Result
+// WebAppsClientGetAuthSettingsV2Response contains the response from method WebAppsClient.GetAuthSettingsV2.
+type WebAppsClientGetAuthSettingsV2Response struct {
+	WebAppsClientGetAuthSettingsV2Result
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAuthSettingsV2Result contains the result from method WebApps.GetAuthSettingsV2.
-type WebAppsGetAuthSettingsV2Result struct {
+// WebAppsClientGetAuthSettingsV2Result contains the result from method WebAppsClient.GetAuthSettingsV2.
+type WebAppsClientGetAuthSettingsV2Result struct {
 	SiteAuthSettingsV2
 }
 
-// WebAppsGetAuthSettingsV2SlotResponse contains the response from method WebApps.GetAuthSettingsV2Slot.
-type WebAppsGetAuthSettingsV2SlotResponse struct {
-	WebAppsGetAuthSettingsV2SlotResult
+// WebAppsClientGetAuthSettingsV2SlotResponse contains the response from method WebAppsClient.GetAuthSettingsV2Slot.
+type WebAppsClientGetAuthSettingsV2SlotResponse struct {
+	WebAppsClientGetAuthSettingsV2SlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetAuthSettingsV2SlotResult contains the result from method WebApps.GetAuthSettingsV2Slot.
-type WebAppsGetAuthSettingsV2SlotResult struct {
+// WebAppsClientGetAuthSettingsV2SlotResult contains the result from method WebAppsClient.GetAuthSettingsV2Slot.
+type WebAppsClientGetAuthSettingsV2SlotResult struct {
 	SiteAuthSettingsV2
 }
 
-// WebAppsGetBackupConfigurationResponse contains the response from method WebApps.GetBackupConfiguration.
-type WebAppsGetBackupConfigurationResponse struct {
-	WebAppsGetBackupConfigurationResult
+// WebAppsClientGetAuthSettingsV2WithoutSecretsResponse contains the response from method WebAppsClient.GetAuthSettingsV2WithoutSecrets.
+type WebAppsClientGetAuthSettingsV2WithoutSecretsResponse struct {
+	WebAppsClientGetAuthSettingsV2WithoutSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetBackupConfigurationResult contains the result from method WebApps.GetBackupConfiguration.
-type WebAppsGetBackupConfigurationResult struct {
+// WebAppsClientGetAuthSettingsV2WithoutSecretsResult contains the result from method WebAppsClient.GetAuthSettingsV2WithoutSecrets.
+type WebAppsClientGetAuthSettingsV2WithoutSecretsResult struct {
+	SiteAuthSettingsV2
+}
+
+// WebAppsClientGetBackupConfigurationResponse contains the response from method WebAppsClient.GetBackupConfiguration.
+type WebAppsClientGetBackupConfigurationResponse struct {
+	WebAppsClientGetBackupConfigurationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// WebAppsClientGetBackupConfigurationResult contains the result from method WebAppsClient.GetBackupConfiguration.
+type WebAppsClientGetBackupConfigurationResult struct {
 	BackupRequest
 }
 
-// WebAppsGetBackupConfigurationSlotResponse contains the response from method WebApps.GetBackupConfigurationSlot.
-type WebAppsGetBackupConfigurationSlotResponse struct {
-	WebAppsGetBackupConfigurationSlotResult
+// WebAppsClientGetBackupConfigurationSlotResponse contains the response from method WebAppsClient.GetBackupConfigurationSlot.
+type WebAppsClientGetBackupConfigurationSlotResponse struct {
+	WebAppsClientGetBackupConfigurationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetBackupConfigurationSlotResult contains the result from method WebApps.GetBackupConfigurationSlot.
-type WebAppsGetBackupConfigurationSlotResult struct {
+// WebAppsClientGetBackupConfigurationSlotResult contains the result from method WebAppsClient.GetBackupConfigurationSlot.
+type WebAppsClientGetBackupConfigurationSlotResult struct {
 	BackupRequest
 }
 
-// WebAppsGetBackupStatusResponse contains the response from method WebApps.GetBackupStatus.
-type WebAppsGetBackupStatusResponse struct {
-	WebAppsGetBackupStatusResult
+// WebAppsClientGetBackupStatusResponse contains the response from method WebAppsClient.GetBackupStatus.
+type WebAppsClientGetBackupStatusResponse struct {
+	WebAppsClientGetBackupStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetBackupStatusResult contains the result from method WebApps.GetBackupStatus.
-type WebAppsGetBackupStatusResult struct {
+// WebAppsClientGetBackupStatusResult contains the result from method WebAppsClient.GetBackupStatus.
+type WebAppsClientGetBackupStatusResult struct {
 	BackupItem
 }
 
-// WebAppsGetBackupStatusSlotResponse contains the response from method WebApps.GetBackupStatusSlot.
-type WebAppsGetBackupStatusSlotResponse struct {
-	WebAppsGetBackupStatusSlotResult
+// WebAppsClientGetBackupStatusSlotResponse contains the response from method WebAppsClient.GetBackupStatusSlot.
+type WebAppsClientGetBackupStatusSlotResponse struct {
+	WebAppsClientGetBackupStatusSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetBackupStatusSlotResult contains the result from method WebApps.GetBackupStatusSlot.
-type WebAppsGetBackupStatusSlotResult struct {
+// WebAppsClientGetBackupStatusSlotResult contains the result from method WebAppsClient.GetBackupStatusSlot.
+type WebAppsClientGetBackupStatusSlotResult struct {
 	BackupItem
 }
 
-// WebAppsGetConfigurationResponse contains the response from method WebApps.GetConfiguration.
-type WebAppsGetConfigurationResponse struct {
-	WebAppsGetConfigurationResult
+// WebAppsClientGetConfigurationResponse contains the response from method WebAppsClient.GetConfiguration.
+type WebAppsClientGetConfigurationResponse struct {
+	WebAppsClientGetConfigurationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetConfigurationResult contains the result from method WebApps.GetConfiguration.
-type WebAppsGetConfigurationResult struct {
+// WebAppsClientGetConfigurationResult contains the result from method WebAppsClient.GetConfiguration.
+type WebAppsClientGetConfigurationResult struct {
 	SiteConfigResource
 }
 
-// WebAppsGetConfigurationSlotResponse contains the response from method WebApps.GetConfigurationSlot.
-type WebAppsGetConfigurationSlotResponse struct {
-	WebAppsGetConfigurationSlotResult
+// WebAppsClientGetConfigurationSlotResponse contains the response from method WebAppsClient.GetConfigurationSlot.
+type WebAppsClientGetConfigurationSlotResponse struct {
+	WebAppsClientGetConfigurationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetConfigurationSlotResult contains the result from method WebApps.GetConfigurationSlot.
-type WebAppsGetConfigurationSlotResult struct {
+// WebAppsClientGetConfigurationSlotResult contains the result from method WebAppsClient.GetConfigurationSlot.
+type WebAppsClientGetConfigurationSlotResult struct {
 	SiteConfigResource
 }
 
-// WebAppsGetConfigurationSnapshotResponse contains the response from method WebApps.GetConfigurationSnapshot.
-type WebAppsGetConfigurationSnapshotResponse struct {
-	WebAppsGetConfigurationSnapshotResult
+// WebAppsClientGetConfigurationSnapshotResponse contains the response from method WebAppsClient.GetConfigurationSnapshot.
+type WebAppsClientGetConfigurationSnapshotResponse struct {
+	WebAppsClientGetConfigurationSnapshotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetConfigurationSnapshotResult contains the result from method WebApps.GetConfigurationSnapshot.
-type WebAppsGetConfigurationSnapshotResult struct {
+// WebAppsClientGetConfigurationSnapshotResult contains the result from method WebAppsClient.GetConfigurationSnapshot.
+type WebAppsClientGetConfigurationSnapshotResult struct {
 	SiteConfigResource
 }
 
-// WebAppsGetConfigurationSnapshotSlotResponse contains the response from method WebApps.GetConfigurationSnapshotSlot.
-type WebAppsGetConfigurationSnapshotSlotResponse struct {
-	WebAppsGetConfigurationSnapshotSlotResult
+// WebAppsClientGetConfigurationSnapshotSlotResponse contains the response from method WebAppsClient.GetConfigurationSnapshotSlot.
+type WebAppsClientGetConfigurationSnapshotSlotResponse struct {
+	WebAppsClientGetConfigurationSnapshotSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetConfigurationSnapshotSlotResult contains the result from method WebApps.GetConfigurationSnapshotSlot.
-type WebAppsGetConfigurationSnapshotSlotResult struct {
+// WebAppsClientGetConfigurationSnapshotSlotResult contains the result from method WebAppsClient.GetConfigurationSnapshotSlot.
+type WebAppsClientGetConfigurationSnapshotSlotResult struct {
 	SiteConfigResource
 }
 
-// WebAppsGetContainerLogsZipResponse contains the response from method WebApps.GetContainerLogsZip.
-type WebAppsGetContainerLogsZipResponse struct {
+// WebAppsClientGetContainerLogsZipResponse contains the response from method WebAppsClient.GetContainerLogsZip.
+type WebAppsClientGetContainerLogsZipResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetContainerLogsZipSlotResponse contains the response from method WebApps.GetContainerLogsZipSlot.
-type WebAppsGetContainerLogsZipSlotResponse struct {
+// WebAppsClientGetContainerLogsZipSlotResponse contains the response from method WebAppsClient.GetContainerLogsZipSlot.
+type WebAppsClientGetContainerLogsZipSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetContinuousWebJobResponse contains the response from method WebApps.GetContinuousWebJob.
-type WebAppsGetContinuousWebJobResponse struct {
-	WebAppsGetContinuousWebJobResult
+// WebAppsClientGetContinuousWebJobResponse contains the response from method WebAppsClient.GetContinuousWebJob.
+type WebAppsClientGetContinuousWebJobResponse struct {
+	WebAppsClientGetContinuousWebJobResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetContinuousWebJobResult contains the result from method WebApps.GetContinuousWebJob.
-type WebAppsGetContinuousWebJobResult struct {
+// WebAppsClientGetContinuousWebJobResult contains the result from method WebAppsClient.GetContinuousWebJob.
+type WebAppsClientGetContinuousWebJobResult struct {
 	ContinuousWebJob
 }
 
-// WebAppsGetContinuousWebJobSlotResponse contains the response from method WebApps.GetContinuousWebJobSlot.
-type WebAppsGetContinuousWebJobSlotResponse struct {
-	WebAppsGetContinuousWebJobSlotResult
+// WebAppsClientGetContinuousWebJobSlotResponse contains the response from method WebAppsClient.GetContinuousWebJobSlot.
+type WebAppsClientGetContinuousWebJobSlotResponse struct {
+	WebAppsClientGetContinuousWebJobSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetContinuousWebJobSlotResult contains the result from method WebApps.GetContinuousWebJobSlot.
-type WebAppsGetContinuousWebJobSlotResult struct {
+// WebAppsClientGetContinuousWebJobSlotResult contains the result from method WebAppsClient.GetContinuousWebJobSlot.
+type WebAppsClientGetContinuousWebJobSlotResult struct {
 	ContinuousWebJob
 }
 
-// WebAppsGetDeploymentResponse contains the response from method WebApps.GetDeployment.
-type WebAppsGetDeploymentResponse struct {
-	WebAppsGetDeploymentResult
+// WebAppsClientGetDeploymentResponse contains the response from method WebAppsClient.GetDeployment.
+type WebAppsClientGetDeploymentResponse struct {
+	WebAppsClientGetDeploymentResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetDeploymentResult contains the result from method WebApps.GetDeployment.
-type WebAppsGetDeploymentResult struct {
+// WebAppsClientGetDeploymentResult contains the result from method WebAppsClient.GetDeployment.
+type WebAppsClientGetDeploymentResult struct {
 	Deployment
 }
 
-// WebAppsGetDeploymentSlotResponse contains the response from method WebApps.GetDeploymentSlot.
-type WebAppsGetDeploymentSlotResponse struct {
-	WebAppsGetDeploymentSlotResult
+// WebAppsClientGetDeploymentSlotResponse contains the response from method WebAppsClient.GetDeploymentSlot.
+type WebAppsClientGetDeploymentSlotResponse struct {
+	WebAppsClientGetDeploymentSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetDeploymentSlotResult contains the result from method WebApps.GetDeploymentSlot.
-type WebAppsGetDeploymentSlotResult struct {
+// WebAppsClientGetDeploymentSlotResult contains the result from method WebAppsClient.GetDeploymentSlot.
+type WebAppsClientGetDeploymentSlotResult struct {
 	Deployment
 }
 
-// WebAppsGetDiagnosticLogsConfigurationResponse contains the response from method WebApps.GetDiagnosticLogsConfiguration.
-type WebAppsGetDiagnosticLogsConfigurationResponse struct {
-	WebAppsGetDiagnosticLogsConfigurationResult
+// WebAppsClientGetDiagnosticLogsConfigurationResponse contains the response from method WebAppsClient.GetDiagnosticLogsConfiguration.
+type WebAppsClientGetDiagnosticLogsConfigurationResponse struct {
+	WebAppsClientGetDiagnosticLogsConfigurationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetDiagnosticLogsConfigurationResult contains the result from method WebApps.GetDiagnosticLogsConfiguration.
-type WebAppsGetDiagnosticLogsConfigurationResult struct {
+// WebAppsClientGetDiagnosticLogsConfigurationResult contains the result from method WebAppsClient.GetDiagnosticLogsConfiguration.
+type WebAppsClientGetDiagnosticLogsConfigurationResult struct {
 	SiteLogsConfig
 }
 
-// WebAppsGetDiagnosticLogsConfigurationSlotResponse contains the response from method WebApps.GetDiagnosticLogsConfigurationSlot.
-type WebAppsGetDiagnosticLogsConfigurationSlotResponse struct {
-	WebAppsGetDiagnosticLogsConfigurationSlotResult
+// WebAppsClientGetDiagnosticLogsConfigurationSlotResponse contains the response from method WebAppsClient.GetDiagnosticLogsConfigurationSlot.
+type WebAppsClientGetDiagnosticLogsConfigurationSlotResponse struct {
+	WebAppsClientGetDiagnosticLogsConfigurationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetDiagnosticLogsConfigurationSlotResult contains the result from method WebApps.GetDiagnosticLogsConfigurationSlot.
-type WebAppsGetDiagnosticLogsConfigurationSlotResult struct {
+// WebAppsClientGetDiagnosticLogsConfigurationSlotResult contains the result from method WebAppsClient.GetDiagnosticLogsConfigurationSlot.
+type WebAppsClientGetDiagnosticLogsConfigurationSlotResult struct {
 	SiteLogsConfig
 }
 
-// WebAppsGetDomainOwnershipIdentifierResponse contains the response from method WebApps.GetDomainOwnershipIdentifier.
-type WebAppsGetDomainOwnershipIdentifierResponse struct {
-	WebAppsGetDomainOwnershipIdentifierResult
+// WebAppsClientGetDomainOwnershipIdentifierResponse contains the response from method WebAppsClient.GetDomainOwnershipIdentifier.
+type WebAppsClientGetDomainOwnershipIdentifierResponse struct {
+	WebAppsClientGetDomainOwnershipIdentifierResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetDomainOwnershipIdentifierResult contains the result from method WebApps.GetDomainOwnershipIdentifier.
-type WebAppsGetDomainOwnershipIdentifierResult struct {
+// WebAppsClientGetDomainOwnershipIdentifierResult contains the result from method WebAppsClient.GetDomainOwnershipIdentifier.
+type WebAppsClientGetDomainOwnershipIdentifierResult struct {
 	Identifier
 }
 
-// WebAppsGetDomainOwnershipIdentifierSlotResponse contains the response from method WebApps.GetDomainOwnershipIdentifierSlot.
-type WebAppsGetDomainOwnershipIdentifierSlotResponse struct {
-	WebAppsGetDomainOwnershipIdentifierSlotResult
+// WebAppsClientGetDomainOwnershipIdentifierSlotResponse contains the response from method WebAppsClient.GetDomainOwnershipIdentifierSlot.
+type WebAppsClientGetDomainOwnershipIdentifierSlotResponse struct {
+	WebAppsClientGetDomainOwnershipIdentifierSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetDomainOwnershipIdentifierSlotResult contains the result from method WebApps.GetDomainOwnershipIdentifierSlot.
-type WebAppsGetDomainOwnershipIdentifierSlotResult struct {
+// WebAppsClientGetDomainOwnershipIdentifierSlotResult contains the result from method WebAppsClient.GetDomainOwnershipIdentifierSlot.
+type WebAppsClientGetDomainOwnershipIdentifierSlotResult struct {
 	Identifier
 }
 
-// WebAppsGetFtpAllowedResponse contains the response from method WebApps.GetFtpAllowed.
-type WebAppsGetFtpAllowedResponse struct {
-	WebAppsGetFtpAllowedResult
+// WebAppsClientGetFtpAllowedResponse contains the response from method WebAppsClient.GetFtpAllowed.
+type WebAppsClientGetFtpAllowedResponse struct {
+	WebAppsClientGetFtpAllowedResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetFtpAllowedResult contains the result from method WebApps.GetFtpAllowed.
-type WebAppsGetFtpAllowedResult struct {
+// WebAppsClientGetFtpAllowedResult contains the result from method WebAppsClient.GetFtpAllowed.
+type WebAppsClientGetFtpAllowedResult struct {
 	CsmPublishingCredentialsPoliciesEntity
 }
 
-// WebAppsGetFtpAllowedSlotResponse contains the response from method WebApps.GetFtpAllowedSlot.
-type WebAppsGetFtpAllowedSlotResponse struct {
-	WebAppsGetFtpAllowedSlotResult
+// WebAppsClientGetFtpAllowedSlotResponse contains the response from method WebAppsClient.GetFtpAllowedSlot.
+type WebAppsClientGetFtpAllowedSlotResponse struct {
+	WebAppsClientGetFtpAllowedSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetFtpAllowedSlotResult contains the result from method WebApps.GetFtpAllowedSlot.
-type WebAppsGetFtpAllowedSlotResult struct {
+// WebAppsClientGetFtpAllowedSlotResult contains the result from method WebAppsClient.GetFtpAllowedSlot.
+type WebAppsClientGetFtpAllowedSlotResult struct {
 	CsmPublishingCredentialsPoliciesEntity
 }
 
-// WebAppsGetFunctionResponse contains the response from method WebApps.GetFunction.
-type WebAppsGetFunctionResponse struct {
-	WebAppsGetFunctionResult
+// WebAppsClientGetFunctionResponse contains the response from method WebAppsClient.GetFunction.
+type WebAppsClientGetFunctionResponse struct {
+	WebAppsClientGetFunctionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetFunctionResult contains the result from method WebApps.GetFunction.
-type WebAppsGetFunctionResult struct {
+// WebAppsClientGetFunctionResult contains the result from method WebAppsClient.GetFunction.
+type WebAppsClientGetFunctionResult struct {
 	FunctionEnvelope
 }
 
-// WebAppsGetFunctionsAdminTokenResponse contains the response from method WebApps.GetFunctionsAdminToken.
-type WebAppsGetFunctionsAdminTokenResponse struct {
-	WebAppsGetFunctionsAdminTokenResult
+// WebAppsClientGetFunctionsAdminTokenResponse contains the response from method WebAppsClient.GetFunctionsAdminToken.
+type WebAppsClientGetFunctionsAdminTokenResponse struct {
+	WebAppsClientGetFunctionsAdminTokenResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetFunctionsAdminTokenResult contains the result from method WebApps.GetFunctionsAdminToken.
-type WebAppsGetFunctionsAdminTokenResult struct {
+// WebAppsClientGetFunctionsAdminTokenResult contains the result from method WebAppsClient.GetFunctionsAdminToken.
+type WebAppsClientGetFunctionsAdminTokenResult struct {
 	Value *string
 }
 
-// WebAppsGetFunctionsAdminTokenSlotResponse contains the response from method WebApps.GetFunctionsAdminTokenSlot.
-type WebAppsGetFunctionsAdminTokenSlotResponse struct {
-	WebAppsGetFunctionsAdminTokenSlotResult
+// WebAppsClientGetFunctionsAdminTokenSlotResponse contains the response from method WebAppsClient.GetFunctionsAdminTokenSlot.
+type WebAppsClientGetFunctionsAdminTokenSlotResponse struct {
+	WebAppsClientGetFunctionsAdminTokenSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetFunctionsAdminTokenSlotResult contains the result from method WebApps.GetFunctionsAdminTokenSlot.
-type WebAppsGetFunctionsAdminTokenSlotResult struct {
+// WebAppsClientGetFunctionsAdminTokenSlotResult contains the result from method WebAppsClient.GetFunctionsAdminTokenSlot.
+type WebAppsClientGetFunctionsAdminTokenSlotResult struct {
 	Value *string
 }
 
-// WebAppsGetHostNameBindingResponse contains the response from method WebApps.GetHostNameBinding.
-type WebAppsGetHostNameBindingResponse struct {
-	WebAppsGetHostNameBindingResult
+// WebAppsClientGetHostNameBindingResponse contains the response from method WebAppsClient.GetHostNameBinding.
+type WebAppsClientGetHostNameBindingResponse struct {
+	WebAppsClientGetHostNameBindingResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetHostNameBindingResult contains the result from method WebApps.GetHostNameBinding.
-type WebAppsGetHostNameBindingResult struct {
+// WebAppsClientGetHostNameBindingResult contains the result from method WebAppsClient.GetHostNameBinding.
+type WebAppsClientGetHostNameBindingResult struct {
 	HostNameBinding
 }
 
-// WebAppsGetHostNameBindingSlotResponse contains the response from method WebApps.GetHostNameBindingSlot.
-type WebAppsGetHostNameBindingSlotResponse struct {
-	WebAppsGetHostNameBindingSlotResult
+// WebAppsClientGetHostNameBindingSlotResponse contains the response from method WebAppsClient.GetHostNameBindingSlot.
+type WebAppsClientGetHostNameBindingSlotResponse struct {
+	WebAppsClientGetHostNameBindingSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetHostNameBindingSlotResult contains the result from method WebApps.GetHostNameBindingSlot.
-type WebAppsGetHostNameBindingSlotResult struct {
+// WebAppsClientGetHostNameBindingSlotResult contains the result from method WebAppsClient.GetHostNameBindingSlot.
+type WebAppsClientGetHostNameBindingSlotResult struct {
 	HostNameBinding
 }
 
-// WebAppsGetHybridConnectionResponse contains the response from method WebApps.GetHybridConnection.
-type WebAppsGetHybridConnectionResponse struct {
-	WebAppsGetHybridConnectionResult
+// WebAppsClientGetHybridConnectionResponse contains the response from method WebAppsClient.GetHybridConnection.
+type WebAppsClientGetHybridConnectionResponse struct {
+	WebAppsClientGetHybridConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetHybridConnectionResult contains the result from method WebApps.GetHybridConnection.
-type WebAppsGetHybridConnectionResult struct {
+// WebAppsClientGetHybridConnectionResult contains the result from method WebAppsClient.GetHybridConnection.
+type WebAppsClientGetHybridConnectionResult struct {
 	HybridConnection
 }
 
-// WebAppsGetHybridConnectionSlotResponse contains the response from method WebApps.GetHybridConnectionSlot.
-type WebAppsGetHybridConnectionSlotResponse struct {
-	WebAppsGetHybridConnectionSlotResult
+// WebAppsClientGetHybridConnectionSlotResponse contains the response from method WebAppsClient.GetHybridConnectionSlot.
+type WebAppsClientGetHybridConnectionSlotResponse struct {
+	WebAppsClientGetHybridConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetHybridConnectionSlotResult contains the result from method WebApps.GetHybridConnectionSlot.
-type WebAppsGetHybridConnectionSlotResult struct {
+// WebAppsClientGetHybridConnectionSlotResult contains the result from method WebAppsClient.GetHybridConnectionSlot.
+type WebAppsClientGetHybridConnectionSlotResult struct {
 	HybridConnection
 }
 
-// WebAppsGetInstanceFunctionSlotResponse contains the response from method WebApps.GetInstanceFunctionSlot.
-type WebAppsGetInstanceFunctionSlotResponse struct {
-	WebAppsGetInstanceFunctionSlotResult
+// WebAppsClientGetInstanceFunctionSlotResponse contains the response from method WebAppsClient.GetInstanceFunctionSlot.
+type WebAppsClientGetInstanceFunctionSlotResponse struct {
+	WebAppsClientGetInstanceFunctionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceFunctionSlotResult contains the result from method WebApps.GetInstanceFunctionSlot.
-type WebAppsGetInstanceFunctionSlotResult struct {
+// WebAppsClientGetInstanceFunctionSlotResult contains the result from method WebAppsClient.GetInstanceFunctionSlot.
+type WebAppsClientGetInstanceFunctionSlotResult struct {
 	FunctionEnvelope
 }
 
-// WebAppsGetInstanceInfoResponse contains the response from method WebApps.GetInstanceInfo.
-type WebAppsGetInstanceInfoResponse struct {
-	WebAppsGetInstanceInfoResult
+// WebAppsClientGetInstanceInfoResponse contains the response from method WebAppsClient.GetInstanceInfo.
+type WebAppsClientGetInstanceInfoResponse struct {
+	WebAppsClientGetInstanceInfoResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceInfoResult contains the result from method WebApps.GetInstanceInfo.
-type WebAppsGetInstanceInfoResult struct {
+// WebAppsClientGetInstanceInfoResult contains the result from method WebAppsClient.GetInstanceInfo.
+type WebAppsClientGetInstanceInfoResult struct {
 	WebSiteInstanceStatus
 }
 
-// WebAppsGetInstanceInfoSlotResponse contains the response from method WebApps.GetInstanceInfoSlot.
-type WebAppsGetInstanceInfoSlotResponse struct {
-	WebAppsGetInstanceInfoSlotResult
+// WebAppsClientGetInstanceInfoSlotResponse contains the response from method WebAppsClient.GetInstanceInfoSlot.
+type WebAppsClientGetInstanceInfoSlotResponse struct {
+	WebAppsClientGetInstanceInfoSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceInfoSlotResult contains the result from method WebApps.GetInstanceInfoSlot.
-type WebAppsGetInstanceInfoSlotResult struct {
+// WebAppsClientGetInstanceInfoSlotResult contains the result from method WebAppsClient.GetInstanceInfoSlot.
+type WebAppsClientGetInstanceInfoSlotResult struct {
 	WebSiteInstanceStatus
 }
 
-// WebAppsGetInstanceMSDeployLogResponse contains the response from method WebApps.GetInstanceMSDeployLog.
-type WebAppsGetInstanceMSDeployLogResponse struct {
-	WebAppsGetInstanceMSDeployLogResult
+// WebAppsClientGetInstanceMSDeployLogResponse contains the response from method WebAppsClient.GetInstanceMSDeployLog.
+type WebAppsClientGetInstanceMSDeployLogResponse struct {
+	WebAppsClientGetInstanceMSDeployLogResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceMSDeployLogResult contains the result from method WebApps.GetInstanceMSDeployLog.
-type WebAppsGetInstanceMSDeployLogResult struct {
+// WebAppsClientGetInstanceMSDeployLogResult contains the result from method WebAppsClient.GetInstanceMSDeployLog.
+type WebAppsClientGetInstanceMSDeployLogResult struct {
 	MSDeployLog
 }
 
-// WebAppsGetInstanceMSDeployLogSlotResponse contains the response from method WebApps.GetInstanceMSDeployLogSlot.
-type WebAppsGetInstanceMSDeployLogSlotResponse struct {
-	WebAppsGetInstanceMSDeployLogSlotResult
+// WebAppsClientGetInstanceMSDeployLogSlotResponse contains the response from method WebAppsClient.GetInstanceMSDeployLogSlot.
+type WebAppsClientGetInstanceMSDeployLogSlotResponse struct {
+	WebAppsClientGetInstanceMSDeployLogSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceMSDeployLogSlotResult contains the result from method WebApps.GetInstanceMSDeployLogSlot.
-type WebAppsGetInstanceMSDeployLogSlotResult struct {
+// WebAppsClientGetInstanceMSDeployLogSlotResult contains the result from method WebAppsClient.GetInstanceMSDeployLogSlot.
+type WebAppsClientGetInstanceMSDeployLogSlotResult struct {
 	MSDeployLog
 }
 
-// WebAppsGetInstanceMsDeployStatusResponse contains the response from method WebApps.GetInstanceMsDeployStatus.
-type WebAppsGetInstanceMsDeployStatusResponse struct {
-	WebAppsGetInstanceMsDeployStatusResult
+// WebAppsClientGetInstanceMsDeployStatusResponse contains the response from method WebAppsClient.GetInstanceMsDeployStatus.
+type WebAppsClientGetInstanceMsDeployStatusResponse struct {
+	WebAppsClientGetInstanceMsDeployStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceMsDeployStatusResult contains the result from method WebApps.GetInstanceMsDeployStatus.
-type WebAppsGetInstanceMsDeployStatusResult struct {
+// WebAppsClientGetInstanceMsDeployStatusResult contains the result from method WebAppsClient.GetInstanceMsDeployStatus.
+type WebAppsClientGetInstanceMsDeployStatusResult struct {
 	MSDeployStatus
 }
 
-// WebAppsGetInstanceMsDeployStatusSlotResponse contains the response from method WebApps.GetInstanceMsDeployStatusSlot.
-type WebAppsGetInstanceMsDeployStatusSlotResponse struct {
-	WebAppsGetInstanceMsDeployStatusSlotResult
+// WebAppsClientGetInstanceMsDeployStatusSlotResponse contains the response from method WebAppsClient.GetInstanceMsDeployStatusSlot.
+type WebAppsClientGetInstanceMsDeployStatusSlotResponse struct {
+	WebAppsClientGetInstanceMsDeployStatusSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceMsDeployStatusSlotResult contains the result from method WebApps.GetInstanceMsDeployStatusSlot.
-type WebAppsGetInstanceMsDeployStatusSlotResult struct {
+// WebAppsClientGetInstanceMsDeployStatusSlotResult contains the result from method WebAppsClient.GetInstanceMsDeployStatusSlot.
+type WebAppsClientGetInstanceMsDeployStatusSlotResult struct {
 	MSDeployStatus
 }
 
-// WebAppsGetInstanceProcessDumpResponse contains the response from method WebApps.GetInstanceProcessDump.
-type WebAppsGetInstanceProcessDumpResponse struct {
+// WebAppsClientGetInstanceProcessDumpResponse contains the response from method WebAppsClient.GetInstanceProcessDump.
+type WebAppsClientGetInstanceProcessDumpResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceProcessDumpSlotResponse contains the response from method WebApps.GetInstanceProcessDumpSlot.
-type WebAppsGetInstanceProcessDumpSlotResponse struct {
+// WebAppsClientGetInstanceProcessDumpSlotResponse contains the response from method WebAppsClient.GetInstanceProcessDumpSlot.
+type WebAppsClientGetInstanceProcessDumpSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceProcessModuleResponse contains the response from method WebApps.GetInstanceProcessModule.
-type WebAppsGetInstanceProcessModuleResponse struct {
-	WebAppsGetInstanceProcessModuleResult
+// WebAppsClientGetInstanceProcessModuleResponse contains the response from method WebAppsClient.GetInstanceProcessModule.
+type WebAppsClientGetInstanceProcessModuleResponse struct {
+	WebAppsClientGetInstanceProcessModuleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceProcessModuleResult contains the result from method WebApps.GetInstanceProcessModule.
-type WebAppsGetInstanceProcessModuleResult struct {
+// WebAppsClientGetInstanceProcessModuleResult contains the result from method WebAppsClient.GetInstanceProcessModule.
+type WebAppsClientGetInstanceProcessModuleResult struct {
 	ProcessModuleInfo
 }
 
-// WebAppsGetInstanceProcessModuleSlotResponse contains the response from method WebApps.GetInstanceProcessModuleSlot.
-type WebAppsGetInstanceProcessModuleSlotResponse struct {
-	WebAppsGetInstanceProcessModuleSlotResult
+// WebAppsClientGetInstanceProcessModuleSlotResponse contains the response from method WebAppsClient.GetInstanceProcessModuleSlot.
+type WebAppsClientGetInstanceProcessModuleSlotResponse struct {
+	WebAppsClientGetInstanceProcessModuleSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceProcessModuleSlotResult contains the result from method WebApps.GetInstanceProcessModuleSlot.
-type WebAppsGetInstanceProcessModuleSlotResult struct {
+// WebAppsClientGetInstanceProcessModuleSlotResult contains the result from method WebAppsClient.GetInstanceProcessModuleSlot.
+type WebAppsClientGetInstanceProcessModuleSlotResult struct {
 	ProcessModuleInfo
 }
 
-// WebAppsGetInstanceProcessResponse contains the response from method WebApps.GetInstanceProcess.
-type WebAppsGetInstanceProcessResponse struct {
-	WebAppsGetInstanceProcessResult
+// WebAppsClientGetInstanceProcessResponse contains the response from method WebAppsClient.GetInstanceProcess.
+type WebAppsClientGetInstanceProcessResponse struct {
+	WebAppsClientGetInstanceProcessResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceProcessResult contains the result from method WebApps.GetInstanceProcess.
-type WebAppsGetInstanceProcessResult struct {
+// WebAppsClientGetInstanceProcessResult contains the result from method WebAppsClient.GetInstanceProcess.
+type WebAppsClientGetInstanceProcessResult struct {
 	ProcessInfo
 }
 
-// WebAppsGetInstanceProcessSlotResponse contains the response from method WebApps.GetInstanceProcessSlot.
-type WebAppsGetInstanceProcessSlotResponse struct {
-	WebAppsGetInstanceProcessSlotResult
+// WebAppsClientGetInstanceProcessSlotResponse contains the response from method WebAppsClient.GetInstanceProcessSlot.
+type WebAppsClientGetInstanceProcessSlotResponse struct {
+	WebAppsClientGetInstanceProcessSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetInstanceProcessSlotResult contains the result from method WebApps.GetInstanceProcessSlot.
-type WebAppsGetInstanceProcessSlotResult struct {
+// WebAppsClientGetInstanceProcessSlotResult contains the result from method WebAppsClient.GetInstanceProcessSlot.
+type WebAppsClientGetInstanceProcessSlotResult struct {
 	ProcessInfo
 }
 
-// WebAppsGetMSDeployLogResponse contains the response from method WebApps.GetMSDeployLog.
-type WebAppsGetMSDeployLogResponse struct {
-	WebAppsGetMSDeployLogResult
+// WebAppsClientGetMSDeployLogResponse contains the response from method WebAppsClient.GetMSDeployLog.
+type WebAppsClientGetMSDeployLogResponse struct {
+	WebAppsClientGetMSDeployLogResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetMSDeployLogResult contains the result from method WebApps.GetMSDeployLog.
-type WebAppsGetMSDeployLogResult struct {
+// WebAppsClientGetMSDeployLogResult contains the result from method WebAppsClient.GetMSDeployLog.
+type WebAppsClientGetMSDeployLogResult struct {
 	MSDeployLog
 }
 
-// WebAppsGetMSDeployLogSlotResponse contains the response from method WebApps.GetMSDeployLogSlot.
-type WebAppsGetMSDeployLogSlotResponse struct {
-	WebAppsGetMSDeployLogSlotResult
+// WebAppsClientGetMSDeployLogSlotResponse contains the response from method WebAppsClient.GetMSDeployLogSlot.
+type WebAppsClientGetMSDeployLogSlotResponse struct {
+	WebAppsClientGetMSDeployLogSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetMSDeployLogSlotResult contains the result from method WebApps.GetMSDeployLogSlot.
-type WebAppsGetMSDeployLogSlotResult struct {
+// WebAppsClientGetMSDeployLogSlotResult contains the result from method WebAppsClient.GetMSDeployLogSlot.
+type WebAppsClientGetMSDeployLogSlotResult struct {
 	MSDeployLog
 }
 
-// WebAppsGetMSDeployStatusResponse contains the response from method WebApps.GetMSDeployStatus.
-type WebAppsGetMSDeployStatusResponse struct {
-	WebAppsGetMSDeployStatusResult
+// WebAppsClientGetMSDeployStatusResponse contains the response from method WebAppsClient.GetMSDeployStatus.
+type WebAppsClientGetMSDeployStatusResponse struct {
+	WebAppsClientGetMSDeployStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetMSDeployStatusResult contains the result from method WebApps.GetMSDeployStatus.
-type WebAppsGetMSDeployStatusResult struct {
+// WebAppsClientGetMSDeployStatusResult contains the result from method WebAppsClient.GetMSDeployStatus.
+type WebAppsClientGetMSDeployStatusResult struct {
 	MSDeployStatus
 }
 
-// WebAppsGetMSDeployStatusSlotResponse contains the response from method WebApps.GetMSDeployStatusSlot.
-type WebAppsGetMSDeployStatusSlotResponse struct {
-	WebAppsGetMSDeployStatusSlotResult
+// WebAppsClientGetMSDeployStatusSlotResponse contains the response from method WebAppsClient.GetMSDeployStatusSlot.
+type WebAppsClientGetMSDeployStatusSlotResponse struct {
+	WebAppsClientGetMSDeployStatusSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetMSDeployStatusSlotResult contains the result from method WebApps.GetMSDeployStatusSlot.
-type WebAppsGetMSDeployStatusSlotResult struct {
+// WebAppsClientGetMSDeployStatusSlotResult contains the result from method WebAppsClient.GetMSDeployStatusSlot.
+type WebAppsClientGetMSDeployStatusSlotResult struct {
 	MSDeployStatus
 }
 
-// WebAppsGetMigrateMySQLStatusResponse contains the response from method WebApps.GetMigrateMySQLStatus.
-type WebAppsGetMigrateMySQLStatusResponse struct {
-	WebAppsGetMigrateMySQLStatusResult
+// WebAppsClientGetMigrateMySQLStatusResponse contains the response from method WebAppsClient.GetMigrateMySQLStatus.
+type WebAppsClientGetMigrateMySQLStatusResponse struct {
+	WebAppsClientGetMigrateMySQLStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetMigrateMySQLStatusResult contains the result from method WebApps.GetMigrateMySQLStatus.
-type WebAppsGetMigrateMySQLStatusResult struct {
+// WebAppsClientGetMigrateMySQLStatusResult contains the result from method WebAppsClient.GetMigrateMySQLStatus.
+type WebAppsClientGetMigrateMySQLStatusResult struct {
 	MigrateMySQLStatus
 }
 
-// WebAppsGetMigrateMySQLStatusSlotResponse contains the response from method WebApps.GetMigrateMySQLStatusSlot.
-type WebAppsGetMigrateMySQLStatusSlotResponse struct {
-	WebAppsGetMigrateMySQLStatusSlotResult
+// WebAppsClientGetMigrateMySQLStatusSlotResponse contains the response from method WebAppsClient.GetMigrateMySQLStatusSlot.
+type WebAppsClientGetMigrateMySQLStatusSlotResponse struct {
+	WebAppsClientGetMigrateMySQLStatusSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetMigrateMySQLStatusSlotResult contains the result from method WebApps.GetMigrateMySQLStatusSlot.
-type WebAppsGetMigrateMySQLStatusSlotResult struct {
+// WebAppsClientGetMigrateMySQLStatusSlotResult contains the result from method WebAppsClient.GetMigrateMySQLStatusSlot.
+type WebAppsClientGetMigrateMySQLStatusSlotResult struct {
 	MigrateMySQLStatus
 }
 
-// WebAppsGetNetworkTraceOperationResponse contains the response from method WebApps.GetNetworkTraceOperation.
-type WebAppsGetNetworkTraceOperationResponse struct {
-	WebAppsGetNetworkTraceOperationResult
+// WebAppsClientGetNetworkTraceOperationResponse contains the response from method WebAppsClient.GetNetworkTraceOperation.
+type WebAppsClientGetNetworkTraceOperationResponse struct {
+	WebAppsClientGetNetworkTraceOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetNetworkTraceOperationResult contains the result from method WebApps.GetNetworkTraceOperation.
-type WebAppsGetNetworkTraceOperationResult struct {
+// WebAppsClientGetNetworkTraceOperationResult contains the result from method WebAppsClient.GetNetworkTraceOperation.
+type WebAppsClientGetNetworkTraceOperationResult struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsGetNetworkTraceOperationSlotResponse contains the response from method WebApps.GetNetworkTraceOperationSlot.
-type WebAppsGetNetworkTraceOperationSlotResponse struct {
-	WebAppsGetNetworkTraceOperationSlotResult
+// WebAppsClientGetNetworkTraceOperationSlotResponse contains the response from method WebAppsClient.GetNetworkTraceOperationSlot.
+type WebAppsClientGetNetworkTraceOperationSlotResponse struct {
+	WebAppsClientGetNetworkTraceOperationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetNetworkTraceOperationSlotResult contains the result from method WebApps.GetNetworkTraceOperationSlot.
-type WebAppsGetNetworkTraceOperationSlotResult struct {
+// WebAppsClientGetNetworkTraceOperationSlotResult contains the result from method WebAppsClient.GetNetworkTraceOperationSlot.
+type WebAppsClientGetNetworkTraceOperationSlotResult struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsGetNetworkTraceOperationSlotV2Response contains the response from method WebApps.GetNetworkTraceOperationSlotV2.
-type WebAppsGetNetworkTraceOperationSlotV2Response struct {
-	WebAppsGetNetworkTraceOperationSlotV2Result
+// WebAppsClientGetNetworkTraceOperationSlotV2Response contains the response from method WebAppsClient.GetNetworkTraceOperationSlotV2.
+type WebAppsClientGetNetworkTraceOperationSlotV2Response struct {
+	WebAppsClientGetNetworkTraceOperationSlotV2Result
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetNetworkTraceOperationSlotV2Result contains the result from method WebApps.GetNetworkTraceOperationSlotV2.
-type WebAppsGetNetworkTraceOperationSlotV2Result struct {
+// WebAppsClientGetNetworkTraceOperationSlotV2Result contains the result from method WebAppsClient.GetNetworkTraceOperationSlotV2.
+type WebAppsClientGetNetworkTraceOperationSlotV2Result struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsGetNetworkTraceOperationV2Response contains the response from method WebApps.GetNetworkTraceOperationV2.
-type WebAppsGetNetworkTraceOperationV2Response struct {
-	WebAppsGetNetworkTraceOperationV2Result
+// WebAppsClientGetNetworkTraceOperationV2Response contains the response from method WebAppsClient.GetNetworkTraceOperationV2.
+type WebAppsClientGetNetworkTraceOperationV2Response struct {
+	WebAppsClientGetNetworkTraceOperationV2Result
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetNetworkTraceOperationV2Result contains the result from method WebApps.GetNetworkTraceOperationV2.
-type WebAppsGetNetworkTraceOperationV2Result struct {
+// WebAppsClientGetNetworkTraceOperationV2Result contains the result from method WebAppsClient.GetNetworkTraceOperationV2.
+type WebAppsClientGetNetworkTraceOperationV2Result struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsGetNetworkTracesResponse contains the response from method WebApps.GetNetworkTraces.
-type WebAppsGetNetworkTracesResponse struct {
-	WebAppsGetNetworkTracesResult
+// WebAppsClientGetNetworkTracesResponse contains the response from method WebAppsClient.GetNetworkTraces.
+type WebAppsClientGetNetworkTracesResponse struct {
+	WebAppsClientGetNetworkTracesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetNetworkTracesResult contains the result from method WebApps.GetNetworkTraces.
-type WebAppsGetNetworkTracesResult struct {
+// WebAppsClientGetNetworkTracesResult contains the result from method WebAppsClient.GetNetworkTraces.
+type WebAppsClientGetNetworkTracesResult struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsGetNetworkTracesSlotResponse contains the response from method WebApps.GetNetworkTracesSlot.
-type WebAppsGetNetworkTracesSlotResponse struct {
-	WebAppsGetNetworkTracesSlotResult
+// WebAppsClientGetNetworkTracesSlotResponse contains the response from method WebAppsClient.GetNetworkTracesSlot.
+type WebAppsClientGetNetworkTracesSlotResponse struct {
+	WebAppsClientGetNetworkTracesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetNetworkTracesSlotResult contains the result from method WebApps.GetNetworkTracesSlot.
-type WebAppsGetNetworkTracesSlotResult struct {
+// WebAppsClientGetNetworkTracesSlotResult contains the result from method WebAppsClient.GetNetworkTracesSlot.
+type WebAppsClientGetNetworkTracesSlotResult struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsGetNetworkTracesSlotV2Response contains the response from method WebApps.GetNetworkTracesSlotV2.
-type WebAppsGetNetworkTracesSlotV2Response struct {
-	WebAppsGetNetworkTracesSlotV2Result
+// WebAppsClientGetNetworkTracesSlotV2Response contains the response from method WebAppsClient.GetNetworkTracesSlotV2.
+type WebAppsClientGetNetworkTracesSlotV2Response struct {
+	WebAppsClientGetNetworkTracesSlotV2Result
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetNetworkTracesSlotV2Result contains the result from method WebApps.GetNetworkTracesSlotV2.
-type WebAppsGetNetworkTracesSlotV2Result struct {
+// WebAppsClientGetNetworkTracesSlotV2Result contains the result from method WebAppsClient.GetNetworkTracesSlotV2.
+type WebAppsClientGetNetworkTracesSlotV2Result struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsGetNetworkTracesV2Response contains the response from method WebApps.GetNetworkTracesV2.
-type WebAppsGetNetworkTracesV2Response struct {
-	WebAppsGetNetworkTracesV2Result
+// WebAppsClientGetNetworkTracesV2Response contains the response from method WebAppsClient.GetNetworkTracesV2.
+type WebAppsClientGetNetworkTracesV2Response struct {
+	WebAppsClientGetNetworkTracesV2Result
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetNetworkTracesV2Result contains the result from method WebApps.GetNetworkTracesV2.
-type WebAppsGetNetworkTracesV2Result struct {
+// WebAppsClientGetNetworkTracesV2Result contains the result from method WebAppsClient.GetNetworkTracesV2.
+type WebAppsClientGetNetworkTracesV2Result struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsGetPremierAddOnResponse contains the response from method WebApps.GetPremierAddOn.
-type WebAppsGetPremierAddOnResponse struct {
-	WebAppsGetPremierAddOnResult
+// WebAppsClientGetOneDeployStatusResponse contains the response from method WebAppsClient.GetOneDeployStatus.
+type WebAppsClientGetOneDeployStatusResponse struct {
+	WebAppsClientGetOneDeployStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPremierAddOnResult contains the result from method WebApps.GetPremierAddOn.
-type WebAppsGetPremierAddOnResult struct {
+// WebAppsClientGetOneDeployStatusResult contains the result from method WebAppsClient.GetOneDeployStatus.
+type WebAppsClientGetOneDeployStatusResult struct {
+	// Anything
+	Interface interface{}
+}
+
+// WebAppsClientGetPremierAddOnResponse contains the response from method WebAppsClient.GetPremierAddOn.
+type WebAppsClientGetPremierAddOnResponse struct {
+	WebAppsClientGetPremierAddOnResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// WebAppsClientGetPremierAddOnResult contains the result from method WebAppsClient.GetPremierAddOn.
+type WebAppsClientGetPremierAddOnResult struct {
 	PremierAddOn
 }
 
-// WebAppsGetPremierAddOnSlotResponse contains the response from method WebApps.GetPremierAddOnSlot.
-type WebAppsGetPremierAddOnSlotResponse struct {
-	WebAppsGetPremierAddOnSlotResult
+// WebAppsClientGetPremierAddOnSlotResponse contains the response from method WebAppsClient.GetPremierAddOnSlot.
+type WebAppsClientGetPremierAddOnSlotResponse struct {
+	WebAppsClientGetPremierAddOnSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPremierAddOnSlotResult contains the result from method WebApps.GetPremierAddOnSlot.
-type WebAppsGetPremierAddOnSlotResult struct {
+// WebAppsClientGetPremierAddOnSlotResult contains the result from method WebAppsClient.GetPremierAddOnSlot.
+type WebAppsClientGetPremierAddOnSlotResult struct {
 	PremierAddOn
 }
 
-// WebAppsGetPrivateAccessResponse contains the response from method WebApps.GetPrivateAccess.
-type WebAppsGetPrivateAccessResponse struct {
-	WebAppsGetPrivateAccessResult
+// WebAppsClientGetPrivateAccessResponse contains the response from method WebAppsClient.GetPrivateAccess.
+type WebAppsClientGetPrivateAccessResponse struct {
+	WebAppsClientGetPrivateAccessResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPrivateAccessResult contains the result from method WebApps.GetPrivateAccess.
-type WebAppsGetPrivateAccessResult struct {
+// WebAppsClientGetPrivateAccessResult contains the result from method WebAppsClient.GetPrivateAccess.
+type WebAppsClientGetPrivateAccessResult struct {
 	PrivateAccess
 }
 
-// WebAppsGetPrivateAccessSlotResponse contains the response from method WebApps.GetPrivateAccessSlot.
-type WebAppsGetPrivateAccessSlotResponse struct {
-	WebAppsGetPrivateAccessSlotResult
+// WebAppsClientGetPrivateAccessSlotResponse contains the response from method WebAppsClient.GetPrivateAccessSlot.
+type WebAppsClientGetPrivateAccessSlotResponse struct {
+	WebAppsClientGetPrivateAccessSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPrivateAccessSlotResult contains the result from method WebApps.GetPrivateAccessSlot.
-type WebAppsGetPrivateAccessSlotResult struct {
+// WebAppsClientGetPrivateAccessSlotResult contains the result from method WebAppsClient.GetPrivateAccessSlot.
+type WebAppsClientGetPrivateAccessSlotResult struct {
 	PrivateAccess
 }
 
-// WebAppsGetPrivateEndpointConnectionListResponse contains the response from method WebApps.GetPrivateEndpointConnectionList.
-type WebAppsGetPrivateEndpointConnectionListResponse struct {
-	WebAppsGetPrivateEndpointConnectionListResult
+// WebAppsClientGetPrivateEndpointConnectionListResponse contains the response from method WebAppsClient.GetPrivateEndpointConnectionList.
+type WebAppsClientGetPrivateEndpointConnectionListResponse struct {
+	WebAppsClientGetPrivateEndpointConnectionListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPrivateEndpointConnectionListResult contains the result from method WebApps.GetPrivateEndpointConnectionList.
-type WebAppsGetPrivateEndpointConnectionListResult struct {
+// WebAppsClientGetPrivateEndpointConnectionListResult contains the result from method WebAppsClient.GetPrivateEndpointConnectionList.
+type WebAppsClientGetPrivateEndpointConnectionListResult struct {
 	PrivateEndpointConnectionCollection
 }
 
-// WebAppsGetPrivateEndpointConnectionListSlotResponse contains the response from method WebApps.GetPrivateEndpointConnectionListSlot.
-type WebAppsGetPrivateEndpointConnectionListSlotResponse struct {
-	WebAppsGetPrivateEndpointConnectionListSlotResult
+// WebAppsClientGetPrivateEndpointConnectionListSlotResponse contains the response from method WebAppsClient.GetPrivateEndpointConnectionListSlot.
+type WebAppsClientGetPrivateEndpointConnectionListSlotResponse struct {
+	WebAppsClientGetPrivateEndpointConnectionListSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPrivateEndpointConnectionListSlotResult contains the result from method WebApps.GetPrivateEndpointConnectionListSlot.
-type WebAppsGetPrivateEndpointConnectionListSlotResult struct {
+// WebAppsClientGetPrivateEndpointConnectionListSlotResult contains the result from method WebAppsClient.GetPrivateEndpointConnectionListSlot.
+type WebAppsClientGetPrivateEndpointConnectionListSlotResult struct {
 	PrivateEndpointConnectionCollection
 }
 
-// WebAppsGetPrivateEndpointConnectionResponse contains the response from method WebApps.GetPrivateEndpointConnection.
-type WebAppsGetPrivateEndpointConnectionResponse struct {
-	WebAppsGetPrivateEndpointConnectionResult
+// WebAppsClientGetPrivateEndpointConnectionResponse contains the response from method WebAppsClient.GetPrivateEndpointConnection.
+type WebAppsClientGetPrivateEndpointConnectionResponse struct {
+	WebAppsClientGetPrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPrivateEndpointConnectionResult contains the result from method WebApps.GetPrivateEndpointConnection.
-type WebAppsGetPrivateEndpointConnectionResult struct {
+// WebAppsClientGetPrivateEndpointConnectionResult contains the result from method WebAppsClient.GetPrivateEndpointConnection.
+type WebAppsClientGetPrivateEndpointConnectionResult struct {
 	RemotePrivateEndpointConnectionARMResource
 }
 
-// WebAppsGetPrivateEndpointConnectionSlotResponse contains the response from method WebApps.GetPrivateEndpointConnectionSlot.
-type WebAppsGetPrivateEndpointConnectionSlotResponse struct {
-	WebAppsGetPrivateEndpointConnectionSlotResult
+// WebAppsClientGetPrivateEndpointConnectionSlotResponse contains the response from method WebAppsClient.GetPrivateEndpointConnectionSlot.
+type WebAppsClientGetPrivateEndpointConnectionSlotResponse struct {
+	WebAppsClientGetPrivateEndpointConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPrivateEndpointConnectionSlotResult contains the result from method WebApps.GetPrivateEndpointConnectionSlot.
-type WebAppsGetPrivateEndpointConnectionSlotResult struct {
+// WebAppsClientGetPrivateEndpointConnectionSlotResult contains the result from method WebAppsClient.GetPrivateEndpointConnectionSlot.
+type WebAppsClientGetPrivateEndpointConnectionSlotResult struct {
 	RemotePrivateEndpointConnectionARMResource
 }
 
-// WebAppsGetPrivateLinkResourcesResponse contains the response from method WebApps.GetPrivateLinkResources.
-type WebAppsGetPrivateLinkResourcesResponse struct {
-	WebAppsGetPrivateLinkResourcesResult
+// WebAppsClientGetPrivateLinkResourcesResponse contains the response from method WebAppsClient.GetPrivateLinkResources.
+type WebAppsClientGetPrivateLinkResourcesResponse struct {
+	WebAppsClientGetPrivateLinkResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPrivateLinkResourcesResult contains the result from method WebApps.GetPrivateLinkResources.
-type WebAppsGetPrivateLinkResourcesResult struct {
+// WebAppsClientGetPrivateLinkResourcesResult contains the result from method WebAppsClient.GetPrivateLinkResources.
+type WebAppsClientGetPrivateLinkResourcesResult struct {
 	PrivateLinkResourcesWrapper
 }
 
-// WebAppsGetPrivateLinkResourcesSlotResponse contains the response from method WebApps.GetPrivateLinkResourcesSlot.
-type WebAppsGetPrivateLinkResourcesSlotResponse struct {
-	WebAppsGetPrivateLinkResourcesSlotResult
+// WebAppsClientGetPrivateLinkResourcesSlotResponse contains the response from method WebAppsClient.GetPrivateLinkResourcesSlot.
+type WebAppsClientGetPrivateLinkResourcesSlotResponse struct {
+	WebAppsClientGetPrivateLinkResourcesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPrivateLinkResourcesSlotResult contains the result from method WebApps.GetPrivateLinkResourcesSlot.
-type WebAppsGetPrivateLinkResourcesSlotResult struct {
+// WebAppsClientGetPrivateLinkResourcesSlotResult contains the result from method WebAppsClient.GetPrivateLinkResourcesSlot.
+type WebAppsClientGetPrivateLinkResourcesSlotResult struct {
 	PrivateLinkResourcesWrapper
 }
 
-// WebAppsGetProcessDumpResponse contains the response from method WebApps.GetProcessDump.
-type WebAppsGetProcessDumpResponse struct {
+// WebAppsClientGetProcessDumpResponse contains the response from method WebAppsClient.GetProcessDump.
+type WebAppsClientGetProcessDumpResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetProcessDumpSlotResponse contains the response from method WebApps.GetProcessDumpSlot.
-type WebAppsGetProcessDumpSlotResponse struct {
+// WebAppsClientGetProcessDumpSlotResponse contains the response from method WebAppsClient.GetProcessDumpSlot.
+type WebAppsClientGetProcessDumpSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetProcessModuleResponse contains the response from method WebApps.GetProcessModule.
-type WebAppsGetProcessModuleResponse struct {
-	WebAppsGetProcessModuleResult
+// WebAppsClientGetProcessModuleResponse contains the response from method WebAppsClient.GetProcessModule.
+type WebAppsClientGetProcessModuleResponse struct {
+	WebAppsClientGetProcessModuleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetProcessModuleResult contains the result from method WebApps.GetProcessModule.
-type WebAppsGetProcessModuleResult struct {
+// WebAppsClientGetProcessModuleResult contains the result from method WebAppsClient.GetProcessModule.
+type WebAppsClientGetProcessModuleResult struct {
 	ProcessModuleInfo
 }
 
-// WebAppsGetProcessModuleSlotResponse contains the response from method WebApps.GetProcessModuleSlot.
-type WebAppsGetProcessModuleSlotResponse struct {
-	WebAppsGetProcessModuleSlotResult
+// WebAppsClientGetProcessModuleSlotResponse contains the response from method WebAppsClient.GetProcessModuleSlot.
+type WebAppsClientGetProcessModuleSlotResponse struct {
+	WebAppsClientGetProcessModuleSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetProcessModuleSlotResult contains the result from method WebApps.GetProcessModuleSlot.
-type WebAppsGetProcessModuleSlotResult struct {
+// WebAppsClientGetProcessModuleSlotResult contains the result from method WebAppsClient.GetProcessModuleSlot.
+type WebAppsClientGetProcessModuleSlotResult struct {
 	ProcessModuleInfo
 }
 
-// WebAppsGetProcessResponse contains the response from method WebApps.GetProcess.
-type WebAppsGetProcessResponse struct {
-	WebAppsGetProcessResult
+// WebAppsClientGetProcessResponse contains the response from method WebAppsClient.GetProcess.
+type WebAppsClientGetProcessResponse struct {
+	WebAppsClientGetProcessResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetProcessResult contains the result from method WebApps.GetProcess.
-type WebAppsGetProcessResult struct {
+// WebAppsClientGetProcessResult contains the result from method WebAppsClient.GetProcess.
+type WebAppsClientGetProcessResult struct {
 	ProcessInfo
 }
 
-// WebAppsGetProcessSlotResponse contains the response from method WebApps.GetProcessSlot.
-type WebAppsGetProcessSlotResponse struct {
-	WebAppsGetProcessSlotResult
+// WebAppsClientGetProcessSlotResponse contains the response from method WebAppsClient.GetProcessSlot.
+type WebAppsClientGetProcessSlotResponse struct {
+	WebAppsClientGetProcessSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetProcessSlotResult contains the result from method WebApps.GetProcessSlot.
-type WebAppsGetProcessSlotResult struct {
+// WebAppsClientGetProcessSlotResult contains the result from method WebAppsClient.GetProcessSlot.
+type WebAppsClientGetProcessSlotResult struct {
 	ProcessInfo
 }
 
-// WebAppsGetPublicCertificateResponse contains the response from method WebApps.GetPublicCertificate.
-type WebAppsGetPublicCertificateResponse struct {
-	WebAppsGetPublicCertificateResult
+// WebAppsClientGetPublicCertificateResponse contains the response from method WebAppsClient.GetPublicCertificate.
+type WebAppsClientGetPublicCertificateResponse struct {
+	WebAppsClientGetPublicCertificateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPublicCertificateResult contains the result from method WebApps.GetPublicCertificate.
-type WebAppsGetPublicCertificateResult struct {
+// WebAppsClientGetPublicCertificateResult contains the result from method WebAppsClient.GetPublicCertificate.
+type WebAppsClientGetPublicCertificateResult struct {
 	PublicCertificate
 }
 
-// WebAppsGetPublicCertificateSlotResponse contains the response from method WebApps.GetPublicCertificateSlot.
-type WebAppsGetPublicCertificateSlotResponse struct {
-	WebAppsGetPublicCertificateSlotResult
+// WebAppsClientGetPublicCertificateSlotResponse contains the response from method WebAppsClient.GetPublicCertificateSlot.
+type WebAppsClientGetPublicCertificateSlotResponse struct {
+	WebAppsClientGetPublicCertificateSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetPublicCertificateSlotResult contains the result from method WebApps.GetPublicCertificateSlot.
-type WebAppsGetPublicCertificateSlotResult struct {
+// WebAppsClientGetPublicCertificateSlotResult contains the result from method WebAppsClient.GetPublicCertificateSlot.
+type WebAppsClientGetPublicCertificateSlotResult struct {
 	PublicCertificate
 }
 
-// WebAppsGetRelayServiceConnectionResponse contains the response from method WebApps.GetRelayServiceConnection.
-type WebAppsGetRelayServiceConnectionResponse struct {
-	WebAppsGetRelayServiceConnectionResult
+// WebAppsClientGetRelayServiceConnectionResponse contains the response from method WebAppsClient.GetRelayServiceConnection.
+type WebAppsClientGetRelayServiceConnectionResponse struct {
+	WebAppsClientGetRelayServiceConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetRelayServiceConnectionResult contains the result from method WebApps.GetRelayServiceConnection.
-type WebAppsGetRelayServiceConnectionResult struct {
+// WebAppsClientGetRelayServiceConnectionResult contains the result from method WebAppsClient.GetRelayServiceConnection.
+type WebAppsClientGetRelayServiceConnectionResult struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsGetRelayServiceConnectionSlotResponse contains the response from method WebApps.GetRelayServiceConnectionSlot.
-type WebAppsGetRelayServiceConnectionSlotResponse struct {
-	WebAppsGetRelayServiceConnectionSlotResult
+// WebAppsClientGetRelayServiceConnectionSlotResponse contains the response from method WebAppsClient.GetRelayServiceConnectionSlot.
+type WebAppsClientGetRelayServiceConnectionSlotResponse struct {
+	WebAppsClientGetRelayServiceConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetRelayServiceConnectionSlotResult contains the result from method WebApps.GetRelayServiceConnectionSlot.
-type WebAppsGetRelayServiceConnectionSlotResult struct {
+// WebAppsClientGetRelayServiceConnectionSlotResult contains the result from method WebAppsClient.GetRelayServiceConnectionSlot.
+type WebAppsClientGetRelayServiceConnectionSlotResult struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsGetResponse contains the response from method WebApps.Get.
-type WebAppsGetResponse struct {
-	WebAppsGetResult
+// WebAppsClientGetResponse contains the response from method WebAppsClient.Get.
+type WebAppsClientGetResponse struct {
+	WebAppsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetResult contains the result from method WebApps.Get.
-type WebAppsGetResult struct {
+// WebAppsClientGetResult contains the result from method WebAppsClient.Get.
+type WebAppsClientGetResult struct {
 	Site
 }
 
-// WebAppsGetScmAllowedResponse contains the response from method WebApps.GetScmAllowed.
-type WebAppsGetScmAllowedResponse struct {
-	WebAppsGetScmAllowedResult
+// WebAppsClientGetScmAllowedResponse contains the response from method WebAppsClient.GetScmAllowed.
+type WebAppsClientGetScmAllowedResponse struct {
+	WebAppsClientGetScmAllowedResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetScmAllowedResult contains the result from method WebApps.GetScmAllowed.
-type WebAppsGetScmAllowedResult struct {
+// WebAppsClientGetScmAllowedResult contains the result from method WebAppsClient.GetScmAllowed.
+type WebAppsClientGetScmAllowedResult struct {
 	CsmPublishingCredentialsPoliciesEntity
 }
 
-// WebAppsGetScmAllowedSlotResponse contains the response from method WebApps.GetScmAllowedSlot.
-type WebAppsGetScmAllowedSlotResponse struct {
-	WebAppsGetScmAllowedSlotResult
+// WebAppsClientGetScmAllowedSlotResponse contains the response from method WebAppsClient.GetScmAllowedSlot.
+type WebAppsClientGetScmAllowedSlotResponse struct {
+	WebAppsClientGetScmAllowedSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetScmAllowedSlotResult contains the result from method WebApps.GetScmAllowedSlot.
-type WebAppsGetScmAllowedSlotResult struct {
+// WebAppsClientGetScmAllowedSlotResult contains the result from method WebAppsClient.GetScmAllowedSlot.
+type WebAppsClientGetScmAllowedSlotResult struct {
 	CsmPublishingCredentialsPoliciesEntity
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferenceResponse contains the response from method WebApps.GetSiteConnectionStringKeyVaultReference.
-type WebAppsGetSiteConnectionStringKeyVaultReferenceResponse struct {
-	WebAppsGetSiteConnectionStringKeyVaultReferenceResult
+// WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse contains the response from method WebAppsClient.GetSiteConnectionStringKeyVaultReference.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse struct {
+	WebAppsClientGetSiteConnectionStringKeyVaultReferenceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferenceResult contains the result from method WebApps.GetSiteConnectionStringKeyVaultReference.
-type WebAppsGetSiteConnectionStringKeyVaultReferenceResult struct {
+// WebAppsClientGetSiteConnectionStringKeyVaultReferenceResult contains the result from method WebAppsClient.GetSiteConnectionStringKeyVaultReference.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferenceResult struct {
 	APIKVReference
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse contains the response from method WebApps.GetSiteConnectionStringKeyVaultReferenceSlot.
-type WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse struct {
-	WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResult
+// WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse contains the response from method WebAppsClient.GetSiteConnectionStringKeyVaultReferenceSlot.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse struct {
+	WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResult contains the result from method WebApps.GetSiteConnectionStringKeyVaultReferenceSlot.
-type WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResult struct {
+// WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResult contains the result from method WebAppsClient.GetSiteConnectionStringKeyVaultReferenceSlot.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResult struct {
 	APIKVReference
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferencesResponse contains the response from method WebApps.GetSiteConnectionStringKeyVaultReferences.
-type WebAppsGetSiteConnectionStringKeyVaultReferencesResponse struct {
-	WebAppsGetSiteConnectionStringKeyVaultReferencesResult
+// WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse contains the response from method WebAppsClient.GetSiteConnectionStringKeyVaultReferences.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse struct {
+	WebAppsClientGetSiteConnectionStringKeyVaultReferencesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferencesResult contains the result from method WebApps.GetSiteConnectionStringKeyVaultReferences.
-type WebAppsGetSiteConnectionStringKeyVaultReferencesResult struct {
+// WebAppsClientGetSiteConnectionStringKeyVaultReferencesResult contains the result from method WebAppsClient.GetSiteConnectionStringKeyVaultReferences.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferencesResult struct {
 	APIKVReferenceCollection
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse contains the response from method WebApps.GetSiteConnectionStringKeyVaultReferencesSlot.
-type WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse struct {
-	WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResult
+// WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse contains the response from method WebAppsClient.GetSiteConnectionStringKeyVaultReferencesSlot.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse struct {
+	WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResult contains the result from method WebApps.GetSiteConnectionStringKeyVaultReferencesSlot.
-type WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResult struct {
+// WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResult contains the result from method WebAppsClient.GetSiteConnectionStringKeyVaultReferencesSlot.
+type WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResult struct {
 	APIKVReferenceCollection
 }
 
-// WebAppsGetSiteExtensionResponse contains the response from method WebApps.GetSiteExtension.
-type WebAppsGetSiteExtensionResponse struct {
-	WebAppsGetSiteExtensionResult
+// WebAppsClientGetSiteExtensionResponse contains the response from method WebAppsClient.GetSiteExtension.
+type WebAppsClientGetSiteExtensionResponse struct {
+	WebAppsClientGetSiteExtensionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSiteExtensionResult contains the result from method WebApps.GetSiteExtension.
-type WebAppsGetSiteExtensionResult struct {
+// WebAppsClientGetSiteExtensionResult contains the result from method WebAppsClient.GetSiteExtension.
+type WebAppsClientGetSiteExtensionResult struct {
 	SiteExtensionInfo
 }
 
-// WebAppsGetSiteExtensionSlotResponse contains the response from method WebApps.GetSiteExtensionSlot.
-type WebAppsGetSiteExtensionSlotResponse struct {
-	WebAppsGetSiteExtensionSlotResult
+// WebAppsClientGetSiteExtensionSlotResponse contains the response from method WebAppsClient.GetSiteExtensionSlot.
+type WebAppsClientGetSiteExtensionSlotResponse struct {
+	WebAppsClientGetSiteExtensionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSiteExtensionSlotResult contains the result from method WebApps.GetSiteExtensionSlot.
-type WebAppsGetSiteExtensionSlotResult struct {
+// WebAppsClientGetSiteExtensionSlotResult contains the result from method WebAppsClient.GetSiteExtensionSlot.
+type WebAppsClientGetSiteExtensionSlotResult struct {
 	SiteExtensionInfo
 }
 
-// WebAppsGetSitePhpErrorLogFlagResponse contains the response from method WebApps.GetSitePhpErrorLogFlag.
-type WebAppsGetSitePhpErrorLogFlagResponse struct {
-	WebAppsGetSitePhpErrorLogFlagResult
+// WebAppsClientGetSitePhpErrorLogFlagResponse contains the response from method WebAppsClient.GetSitePhpErrorLogFlag.
+type WebAppsClientGetSitePhpErrorLogFlagResponse struct {
+	WebAppsClientGetSitePhpErrorLogFlagResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSitePhpErrorLogFlagResult contains the result from method WebApps.GetSitePhpErrorLogFlag.
-type WebAppsGetSitePhpErrorLogFlagResult struct {
+// WebAppsClientGetSitePhpErrorLogFlagResult contains the result from method WebAppsClient.GetSitePhpErrorLogFlag.
+type WebAppsClientGetSitePhpErrorLogFlagResult struct {
 	SitePhpErrorLogFlag
 }
 
-// WebAppsGetSitePhpErrorLogFlagSlotResponse contains the response from method WebApps.GetSitePhpErrorLogFlagSlot.
-type WebAppsGetSitePhpErrorLogFlagSlotResponse struct {
-	WebAppsGetSitePhpErrorLogFlagSlotResult
+// WebAppsClientGetSitePhpErrorLogFlagSlotResponse contains the response from method WebAppsClient.GetSitePhpErrorLogFlagSlot.
+type WebAppsClientGetSitePhpErrorLogFlagSlotResponse struct {
+	WebAppsClientGetSitePhpErrorLogFlagSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSitePhpErrorLogFlagSlotResult contains the result from method WebApps.GetSitePhpErrorLogFlagSlot.
-type WebAppsGetSitePhpErrorLogFlagSlotResult struct {
+// WebAppsClientGetSitePhpErrorLogFlagSlotResult contains the result from method WebAppsClient.GetSitePhpErrorLogFlagSlot.
+type WebAppsClientGetSitePhpErrorLogFlagSlotResult struct {
 	SitePhpErrorLogFlag
 }
 
-// WebAppsGetSlotResponse contains the response from method WebApps.GetSlot.
-type WebAppsGetSlotResponse struct {
-	WebAppsGetSlotResult
+// WebAppsClientGetSlotResponse contains the response from method WebAppsClient.GetSlot.
+type WebAppsClientGetSlotResponse struct {
+	WebAppsClientGetSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSlotResult contains the result from method WebApps.GetSlot.
-type WebAppsGetSlotResult struct {
+// WebAppsClientGetSlotResult contains the result from method WebAppsClient.GetSlot.
+type WebAppsClientGetSlotResult struct {
 	Site
 }
 
-// WebAppsGetSourceControlResponse contains the response from method WebApps.GetSourceControl.
-type WebAppsGetSourceControlResponse struct {
-	WebAppsGetSourceControlResult
+// WebAppsClientGetSourceControlResponse contains the response from method WebAppsClient.GetSourceControl.
+type WebAppsClientGetSourceControlResponse struct {
+	WebAppsClientGetSourceControlResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSourceControlResult contains the result from method WebApps.GetSourceControl.
-type WebAppsGetSourceControlResult struct {
+// WebAppsClientGetSourceControlResult contains the result from method WebAppsClient.GetSourceControl.
+type WebAppsClientGetSourceControlResult struct {
 	SiteSourceControl
 }
 
-// WebAppsGetSourceControlSlotResponse contains the response from method WebApps.GetSourceControlSlot.
-type WebAppsGetSourceControlSlotResponse struct {
-	WebAppsGetSourceControlSlotResult
+// WebAppsClientGetSourceControlSlotResponse contains the response from method WebAppsClient.GetSourceControlSlot.
+type WebAppsClientGetSourceControlSlotResponse struct {
+	WebAppsClientGetSourceControlSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSourceControlSlotResult contains the result from method WebApps.GetSourceControlSlot.
-type WebAppsGetSourceControlSlotResult struct {
+// WebAppsClientGetSourceControlSlotResult contains the result from method WebAppsClient.GetSourceControlSlot.
+type WebAppsClientGetSourceControlSlotResult struct {
 	SiteSourceControl
 }
 
-// WebAppsGetSwiftVirtualNetworkConnectionResponse contains the response from method WebApps.GetSwiftVirtualNetworkConnection.
-type WebAppsGetSwiftVirtualNetworkConnectionResponse struct {
-	WebAppsGetSwiftVirtualNetworkConnectionResult
+// WebAppsClientGetSwiftVirtualNetworkConnectionResponse contains the response from method WebAppsClient.GetSwiftVirtualNetworkConnection.
+type WebAppsClientGetSwiftVirtualNetworkConnectionResponse struct {
+	WebAppsClientGetSwiftVirtualNetworkConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSwiftVirtualNetworkConnectionResult contains the result from method WebApps.GetSwiftVirtualNetworkConnection.
-type WebAppsGetSwiftVirtualNetworkConnectionResult struct {
+// WebAppsClientGetSwiftVirtualNetworkConnectionResult contains the result from method WebAppsClient.GetSwiftVirtualNetworkConnection.
+type WebAppsClientGetSwiftVirtualNetworkConnectionResult struct {
 	SwiftVirtualNetwork
 }
 
-// WebAppsGetSwiftVirtualNetworkConnectionSlotResponse contains the response from method WebApps.GetSwiftVirtualNetworkConnectionSlot.
-type WebAppsGetSwiftVirtualNetworkConnectionSlotResponse struct {
-	WebAppsGetSwiftVirtualNetworkConnectionSlotResult
+// WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse contains the response from method WebAppsClient.GetSwiftVirtualNetworkConnectionSlot.
+type WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse struct {
+	WebAppsClientGetSwiftVirtualNetworkConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetSwiftVirtualNetworkConnectionSlotResult contains the result from method WebApps.GetSwiftVirtualNetworkConnectionSlot.
-type WebAppsGetSwiftVirtualNetworkConnectionSlotResult struct {
+// WebAppsClientGetSwiftVirtualNetworkConnectionSlotResult contains the result from method WebAppsClient.GetSwiftVirtualNetworkConnectionSlot.
+type WebAppsClientGetSwiftVirtualNetworkConnectionSlotResult struct {
 	SwiftVirtualNetwork
 }
 
-// WebAppsGetTriggeredWebJobHistoryResponse contains the response from method WebApps.GetTriggeredWebJobHistory.
-type WebAppsGetTriggeredWebJobHistoryResponse struct {
-	WebAppsGetTriggeredWebJobHistoryResult
+// WebAppsClientGetTriggeredWebJobHistoryResponse contains the response from method WebAppsClient.GetTriggeredWebJobHistory.
+type WebAppsClientGetTriggeredWebJobHistoryResponse struct {
+	WebAppsClientGetTriggeredWebJobHistoryResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetTriggeredWebJobHistoryResult contains the result from method WebApps.GetTriggeredWebJobHistory.
-type WebAppsGetTriggeredWebJobHistoryResult struct {
+// WebAppsClientGetTriggeredWebJobHistoryResult contains the result from method WebAppsClient.GetTriggeredWebJobHistory.
+type WebAppsClientGetTriggeredWebJobHistoryResult struct {
 	TriggeredJobHistory
 }
 
-// WebAppsGetTriggeredWebJobHistorySlotResponse contains the response from method WebApps.GetTriggeredWebJobHistorySlot.
-type WebAppsGetTriggeredWebJobHistorySlotResponse struct {
-	WebAppsGetTriggeredWebJobHistorySlotResult
+// WebAppsClientGetTriggeredWebJobHistorySlotResponse contains the response from method WebAppsClient.GetTriggeredWebJobHistorySlot.
+type WebAppsClientGetTriggeredWebJobHistorySlotResponse struct {
+	WebAppsClientGetTriggeredWebJobHistorySlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetTriggeredWebJobHistorySlotResult contains the result from method WebApps.GetTriggeredWebJobHistorySlot.
-type WebAppsGetTriggeredWebJobHistorySlotResult struct {
+// WebAppsClientGetTriggeredWebJobHistorySlotResult contains the result from method WebAppsClient.GetTriggeredWebJobHistorySlot.
+type WebAppsClientGetTriggeredWebJobHistorySlotResult struct {
 	TriggeredJobHistory
 }
 
-// WebAppsGetTriggeredWebJobResponse contains the response from method WebApps.GetTriggeredWebJob.
-type WebAppsGetTriggeredWebJobResponse struct {
-	WebAppsGetTriggeredWebJobResult
+// WebAppsClientGetTriggeredWebJobResponse contains the response from method WebAppsClient.GetTriggeredWebJob.
+type WebAppsClientGetTriggeredWebJobResponse struct {
+	WebAppsClientGetTriggeredWebJobResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetTriggeredWebJobResult contains the result from method WebApps.GetTriggeredWebJob.
-type WebAppsGetTriggeredWebJobResult struct {
+// WebAppsClientGetTriggeredWebJobResult contains the result from method WebAppsClient.GetTriggeredWebJob.
+type WebAppsClientGetTriggeredWebJobResult struct {
 	TriggeredWebJob
 }
 
-// WebAppsGetTriggeredWebJobSlotResponse contains the response from method WebApps.GetTriggeredWebJobSlot.
-type WebAppsGetTriggeredWebJobSlotResponse struct {
-	WebAppsGetTriggeredWebJobSlotResult
+// WebAppsClientGetTriggeredWebJobSlotResponse contains the response from method WebAppsClient.GetTriggeredWebJobSlot.
+type WebAppsClientGetTriggeredWebJobSlotResponse struct {
+	WebAppsClientGetTriggeredWebJobSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetTriggeredWebJobSlotResult contains the result from method WebApps.GetTriggeredWebJobSlot.
-type WebAppsGetTriggeredWebJobSlotResult struct {
+// WebAppsClientGetTriggeredWebJobSlotResult contains the result from method WebAppsClient.GetTriggeredWebJobSlot.
+type WebAppsClientGetTriggeredWebJobSlotResult struct {
 	TriggeredWebJob
 }
 
-// WebAppsGetVnetConnectionGatewayResponse contains the response from method WebApps.GetVnetConnectionGateway.
-type WebAppsGetVnetConnectionGatewayResponse struct {
-	WebAppsGetVnetConnectionGatewayResult
+// WebAppsClientGetVnetConnectionGatewayResponse contains the response from method WebAppsClient.GetVnetConnectionGateway.
+type WebAppsClientGetVnetConnectionGatewayResponse struct {
+	WebAppsClientGetVnetConnectionGatewayResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetVnetConnectionGatewayResult contains the result from method WebApps.GetVnetConnectionGateway.
-type WebAppsGetVnetConnectionGatewayResult struct {
+// WebAppsClientGetVnetConnectionGatewayResult contains the result from method WebAppsClient.GetVnetConnectionGateway.
+type WebAppsClientGetVnetConnectionGatewayResult struct {
 	VnetGateway
 }
 
-// WebAppsGetVnetConnectionGatewaySlotResponse contains the response from method WebApps.GetVnetConnectionGatewaySlot.
-type WebAppsGetVnetConnectionGatewaySlotResponse struct {
-	WebAppsGetVnetConnectionGatewaySlotResult
+// WebAppsClientGetVnetConnectionGatewaySlotResponse contains the response from method WebAppsClient.GetVnetConnectionGatewaySlot.
+type WebAppsClientGetVnetConnectionGatewaySlotResponse struct {
+	WebAppsClientGetVnetConnectionGatewaySlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetVnetConnectionGatewaySlotResult contains the result from method WebApps.GetVnetConnectionGatewaySlot.
-type WebAppsGetVnetConnectionGatewaySlotResult struct {
+// WebAppsClientGetVnetConnectionGatewaySlotResult contains the result from method WebAppsClient.GetVnetConnectionGatewaySlot.
+type WebAppsClientGetVnetConnectionGatewaySlotResult struct {
 	VnetGateway
 }
 
-// WebAppsGetVnetConnectionResponse contains the response from method WebApps.GetVnetConnection.
-type WebAppsGetVnetConnectionResponse struct {
-	WebAppsGetVnetConnectionResult
+// WebAppsClientGetVnetConnectionResponse contains the response from method WebAppsClient.GetVnetConnection.
+type WebAppsClientGetVnetConnectionResponse struct {
+	WebAppsClientGetVnetConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetVnetConnectionResult contains the result from method WebApps.GetVnetConnection.
-type WebAppsGetVnetConnectionResult struct {
+// WebAppsClientGetVnetConnectionResult contains the result from method WebAppsClient.GetVnetConnection.
+type WebAppsClientGetVnetConnectionResult struct {
 	VnetInfoResource
 }
 
-// WebAppsGetVnetConnectionSlotResponse contains the response from method WebApps.GetVnetConnectionSlot.
-type WebAppsGetVnetConnectionSlotResponse struct {
-	WebAppsGetVnetConnectionSlotResult
+// WebAppsClientGetVnetConnectionSlotResponse contains the response from method WebAppsClient.GetVnetConnectionSlot.
+type WebAppsClientGetVnetConnectionSlotResponse struct {
+	WebAppsClientGetVnetConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetVnetConnectionSlotResult contains the result from method WebApps.GetVnetConnectionSlot.
-type WebAppsGetVnetConnectionSlotResult struct {
+// WebAppsClientGetVnetConnectionSlotResult contains the result from method WebAppsClient.GetVnetConnectionSlot.
+type WebAppsClientGetVnetConnectionSlotResult struct {
 	VnetInfoResource
 }
 
-// WebAppsGetWebJobResponse contains the response from method WebApps.GetWebJob.
-type WebAppsGetWebJobResponse struct {
-	WebAppsGetWebJobResult
+// WebAppsClientGetWebJobResponse contains the response from method WebAppsClient.GetWebJob.
+type WebAppsClientGetWebJobResponse struct {
+	WebAppsClientGetWebJobResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetWebJobResult contains the result from method WebApps.GetWebJob.
-type WebAppsGetWebJobResult struct {
+// WebAppsClientGetWebJobResult contains the result from method WebAppsClient.GetWebJob.
+type WebAppsClientGetWebJobResult struct {
 	WebJob
 }
 
-// WebAppsGetWebJobSlotResponse contains the response from method WebApps.GetWebJobSlot.
-type WebAppsGetWebJobSlotResponse struct {
-	WebAppsGetWebJobSlotResult
+// WebAppsClientGetWebJobSlotResponse contains the response from method WebAppsClient.GetWebJobSlot.
+type WebAppsClientGetWebJobSlotResponse struct {
+	WebAppsClientGetWebJobSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetWebJobSlotResult contains the result from method WebApps.GetWebJobSlot.
-type WebAppsGetWebJobSlotResult struct {
+// WebAppsClientGetWebJobSlotResult contains the result from method WebAppsClient.GetWebJobSlot.
+type WebAppsClientGetWebJobSlotResult struct {
 	WebJob
 }
 
-// WebAppsGetWebSiteContainerLogsResponse contains the response from method WebApps.GetWebSiteContainerLogs.
-type WebAppsGetWebSiteContainerLogsResponse struct {
+// WebAppsClientGetWebSiteContainerLogsResponse contains the response from method WebAppsClient.GetWebSiteContainerLogs.
+type WebAppsClientGetWebSiteContainerLogsResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsGetWebSiteContainerLogsSlotResponse contains the response from method WebApps.GetWebSiteContainerLogsSlot.
-type WebAppsGetWebSiteContainerLogsSlotResponse struct {
+// WebAppsClientGetWebSiteContainerLogsSlotResponse contains the response from method WebAppsClient.GetWebSiteContainerLogsSlot.
+type WebAppsClientGetWebSiteContainerLogsSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsInstallSiteExtensionPollerResponse contains the response from method WebApps.InstallSiteExtension.
-type WebAppsInstallSiteExtensionPollerResponse struct {
+// WebAppsClientInstallSiteExtensionPollerResponse contains the response from method WebAppsClient.InstallSiteExtension.
+type WebAppsClientInstallSiteExtensionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsInstallSiteExtensionPoller
+	Poller *WebAppsClientInstallSiteExtensionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -6331,8 +6587,8 @@ type WebAppsInstallSiteExtensionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsInstallSiteExtensionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsInstallSiteExtensionResponse, error) {
-	respType := WebAppsInstallSiteExtensionResponse{}
+func (l WebAppsClientInstallSiteExtensionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientInstallSiteExtensionResponse, error) {
+	respType := WebAppsClientInstallSiteExtensionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SiteExtensionInfo)
 	if err != nil {
 		return respType, err
@@ -6341,13 +6597,13 @@ func (l WebAppsInstallSiteExtensionPollerResponse) PollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsInstallSiteExtensionPollerResponse from the provided client and resume token.
-func (l *WebAppsInstallSiteExtensionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.InstallSiteExtension", token, client.pl, client.installSiteExtensionHandleError)
+// Resume rehydrates a WebAppsClientInstallSiteExtensionPollerResponse from the provided client and resume token.
+func (l *WebAppsClientInstallSiteExtensionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.InstallSiteExtension", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsInstallSiteExtensionPoller{
+	poller := &WebAppsClientInstallSiteExtensionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -6359,22 +6615,22 @@ func (l *WebAppsInstallSiteExtensionPollerResponse) Resume(ctx context.Context, 
 	return nil
 }
 
-// WebAppsInstallSiteExtensionResponse contains the response from method WebApps.InstallSiteExtension.
-type WebAppsInstallSiteExtensionResponse struct {
-	WebAppsInstallSiteExtensionResult
+// WebAppsClientInstallSiteExtensionResponse contains the response from method WebAppsClient.InstallSiteExtension.
+type WebAppsClientInstallSiteExtensionResponse struct {
+	WebAppsClientInstallSiteExtensionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsInstallSiteExtensionResult contains the result from method WebApps.InstallSiteExtension.
-type WebAppsInstallSiteExtensionResult struct {
+// WebAppsClientInstallSiteExtensionResult contains the result from method WebAppsClient.InstallSiteExtension.
+type WebAppsClientInstallSiteExtensionResult struct {
 	SiteExtensionInfo
 }
 
-// WebAppsInstallSiteExtensionSlotPollerResponse contains the response from method WebApps.InstallSiteExtensionSlot.
-type WebAppsInstallSiteExtensionSlotPollerResponse struct {
+// WebAppsClientInstallSiteExtensionSlotPollerResponse contains the response from method WebAppsClient.InstallSiteExtensionSlot.
+type WebAppsClientInstallSiteExtensionSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsInstallSiteExtensionSlotPoller
+	Poller *WebAppsClientInstallSiteExtensionSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -6383,8 +6639,8 @@ type WebAppsInstallSiteExtensionSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsInstallSiteExtensionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsInstallSiteExtensionSlotResponse, error) {
-	respType := WebAppsInstallSiteExtensionSlotResponse{}
+func (l WebAppsClientInstallSiteExtensionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientInstallSiteExtensionSlotResponse, error) {
+	respType := WebAppsClientInstallSiteExtensionSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SiteExtensionInfo)
 	if err != nil {
 		return respType, err
@@ -6393,13 +6649,13 @@ func (l WebAppsInstallSiteExtensionSlotPollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsInstallSiteExtensionSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsInstallSiteExtensionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.InstallSiteExtensionSlot", token, client.pl, client.installSiteExtensionSlotHandleError)
+// Resume rehydrates a WebAppsClientInstallSiteExtensionSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientInstallSiteExtensionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.InstallSiteExtensionSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsInstallSiteExtensionSlotPoller{
+	poller := &WebAppsClientInstallSiteExtensionSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -6411,778 +6667,778 @@ func (l *WebAppsInstallSiteExtensionSlotPollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// WebAppsInstallSiteExtensionSlotResponse contains the response from method WebApps.InstallSiteExtensionSlot.
-type WebAppsInstallSiteExtensionSlotResponse struct {
-	WebAppsInstallSiteExtensionSlotResult
+// WebAppsClientInstallSiteExtensionSlotResponse contains the response from method WebAppsClient.InstallSiteExtensionSlot.
+type WebAppsClientInstallSiteExtensionSlotResponse struct {
+	WebAppsClientInstallSiteExtensionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsInstallSiteExtensionSlotResult contains the result from method WebApps.InstallSiteExtensionSlot.
-type WebAppsInstallSiteExtensionSlotResult struct {
+// WebAppsClientInstallSiteExtensionSlotResult contains the result from method WebAppsClient.InstallSiteExtensionSlot.
+type WebAppsClientInstallSiteExtensionSlotResult struct {
 	SiteExtensionInfo
 }
 
-// WebAppsIsCloneableResponse contains the response from method WebApps.IsCloneable.
-type WebAppsIsCloneableResponse struct {
-	WebAppsIsCloneableResult
+// WebAppsClientIsCloneableResponse contains the response from method WebAppsClient.IsCloneable.
+type WebAppsClientIsCloneableResponse struct {
+	WebAppsClientIsCloneableResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsIsCloneableResult contains the result from method WebApps.IsCloneable.
-type WebAppsIsCloneableResult struct {
+// WebAppsClientIsCloneableResult contains the result from method WebAppsClient.IsCloneable.
+type WebAppsClientIsCloneableResult struct {
 	SiteCloneability
 }
 
-// WebAppsIsCloneableSlotResponse contains the response from method WebApps.IsCloneableSlot.
-type WebAppsIsCloneableSlotResponse struct {
-	WebAppsIsCloneableSlotResult
+// WebAppsClientIsCloneableSlotResponse contains the response from method WebAppsClient.IsCloneableSlot.
+type WebAppsClientIsCloneableSlotResponse struct {
+	WebAppsClientIsCloneableSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsIsCloneableSlotResult contains the result from method WebApps.IsCloneableSlot.
-type WebAppsIsCloneableSlotResult struct {
+// WebAppsClientIsCloneableSlotResult contains the result from method WebAppsClient.IsCloneableSlot.
+type WebAppsClientIsCloneableSlotResult struct {
 	SiteCloneability
 }
 
-// WebAppsListApplicationSettingsResponse contains the response from method WebApps.ListApplicationSettings.
-type WebAppsListApplicationSettingsResponse struct {
-	WebAppsListApplicationSettingsResult
+// WebAppsClientListApplicationSettingsResponse contains the response from method WebAppsClient.ListApplicationSettings.
+type WebAppsClientListApplicationSettingsResponse struct {
+	WebAppsClientListApplicationSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListApplicationSettingsResult contains the result from method WebApps.ListApplicationSettings.
-type WebAppsListApplicationSettingsResult struct {
+// WebAppsClientListApplicationSettingsResult contains the result from method WebAppsClient.ListApplicationSettings.
+type WebAppsClientListApplicationSettingsResult struct {
 	StringDictionary
 }
 
-// WebAppsListApplicationSettingsSlotResponse contains the response from method WebApps.ListApplicationSettingsSlot.
-type WebAppsListApplicationSettingsSlotResponse struct {
-	WebAppsListApplicationSettingsSlotResult
+// WebAppsClientListApplicationSettingsSlotResponse contains the response from method WebAppsClient.ListApplicationSettingsSlot.
+type WebAppsClientListApplicationSettingsSlotResponse struct {
+	WebAppsClientListApplicationSettingsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListApplicationSettingsSlotResult contains the result from method WebApps.ListApplicationSettingsSlot.
-type WebAppsListApplicationSettingsSlotResult struct {
+// WebAppsClientListApplicationSettingsSlotResult contains the result from method WebAppsClient.ListApplicationSettingsSlot.
+type WebAppsClientListApplicationSettingsSlotResult struct {
 	StringDictionary
 }
 
-// WebAppsListAzureStorageAccountsResponse contains the response from method WebApps.ListAzureStorageAccounts.
-type WebAppsListAzureStorageAccountsResponse struct {
-	WebAppsListAzureStorageAccountsResult
+// WebAppsClientListAzureStorageAccountsResponse contains the response from method WebAppsClient.ListAzureStorageAccounts.
+type WebAppsClientListAzureStorageAccountsResponse struct {
+	WebAppsClientListAzureStorageAccountsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListAzureStorageAccountsResult contains the result from method WebApps.ListAzureStorageAccounts.
-type WebAppsListAzureStorageAccountsResult struct {
+// WebAppsClientListAzureStorageAccountsResult contains the result from method WebAppsClient.ListAzureStorageAccounts.
+type WebAppsClientListAzureStorageAccountsResult struct {
 	AzureStoragePropertyDictionaryResource
 }
 
-// WebAppsListAzureStorageAccountsSlotResponse contains the response from method WebApps.ListAzureStorageAccountsSlot.
-type WebAppsListAzureStorageAccountsSlotResponse struct {
-	WebAppsListAzureStorageAccountsSlotResult
+// WebAppsClientListAzureStorageAccountsSlotResponse contains the response from method WebAppsClient.ListAzureStorageAccountsSlot.
+type WebAppsClientListAzureStorageAccountsSlotResponse struct {
+	WebAppsClientListAzureStorageAccountsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListAzureStorageAccountsSlotResult contains the result from method WebApps.ListAzureStorageAccountsSlot.
-type WebAppsListAzureStorageAccountsSlotResult struct {
+// WebAppsClientListAzureStorageAccountsSlotResult contains the result from method WebAppsClient.ListAzureStorageAccountsSlot.
+type WebAppsClientListAzureStorageAccountsSlotResult struct {
 	AzureStoragePropertyDictionaryResource
 }
 
-// WebAppsListBackupStatusSecretsResponse contains the response from method WebApps.ListBackupStatusSecrets.
-type WebAppsListBackupStatusSecretsResponse struct {
-	WebAppsListBackupStatusSecretsResult
+// WebAppsClientListBackupStatusSecretsResponse contains the response from method WebAppsClient.ListBackupStatusSecrets.
+type WebAppsClientListBackupStatusSecretsResponse struct {
+	WebAppsClientListBackupStatusSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListBackupStatusSecretsResult contains the result from method WebApps.ListBackupStatusSecrets.
-type WebAppsListBackupStatusSecretsResult struct {
+// WebAppsClientListBackupStatusSecretsResult contains the result from method WebAppsClient.ListBackupStatusSecrets.
+type WebAppsClientListBackupStatusSecretsResult struct {
 	BackupItem
 }
 
-// WebAppsListBackupStatusSecretsSlotResponse contains the response from method WebApps.ListBackupStatusSecretsSlot.
-type WebAppsListBackupStatusSecretsSlotResponse struct {
-	WebAppsListBackupStatusSecretsSlotResult
+// WebAppsClientListBackupStatusSecretsSlotResponse contains the response from method WebAppsClient.ListBackupStatusSecretsSlot.
+type WebAppsClientListBackupStatusSecretsSlotResponse struct {
+	WebAppsClientListBackupStatusSecretsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListBackupStatusSecretsSlotResult contains the result from method WebApps.ListBackupStatusSecretsSlot.
-type WebAppsListBackupStatusSecretsSlotResult struct {
+// WebAppsClientListBackupStatusSecretsSlotResult contains the result from method WebAppsClient.ListBackupStatusSecretsSlot.
+type WebAppsClientListBackupStatusSecretsSlotResult struct {
 	BackupItem
 }
 
-// WebAppsListBackupsResponse contains the response from method WebApps.ListBackups.
-type WebAppsListBackupsResponse struct {
-	WebAppsListBackupsResult
+// WebAppsClientListBackupsResponse contains the response from method WebAppsClient.ListBackups.
+type WebAppsClientListBackupsResponse struct {
+	WebAppsClientListBackupsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListBackupsResult contains the result from method WebApps.ListBackups.
-type WebAppsListBackupsResult struct {
+// WebAppsClientListBackupsResult contains the result from method WebAppsClient.ListBackups.
+type WebAppsClientListBackupsResult struct {
 	BackupItemCollection
 }
 
-// WebAppsListBackupsSlotResponse contains the response from method WebApps.ListBackupsSlot.
-type WebAppsListBackupsSlotResponse struct {
-	WebAppsListBackupsSlotResult
+// WebAppsClientListBackupsSlotResponse contains the response from method WebAppsClient.ListBackupsSlot.
+type WebAppsClientListBackupsSlotResponse struct {
+	WebAppsClientListBackupsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListBackupsSlotResult contains the result from method WebApps.ListBackupsSlot.
-type WebAppsListBackupsSlotResult struct {
+// WebAppsClientListBackupsSlotResult contains the result from method WebAppsClient.ListBackupsSlot.
+type WebAppsClientListBackupsSlotResult struct {
 	BackupItemCollection
 }
 
-// WebAppsListBasicPublishingCredentialsPoliciesResponse contains the response from method WebApps.ListBasicPublishingCredentialsPolicies.
-type WebAppsListBasicPublishingCredentialsPoliciesResponse struct {
-	WebAppsListBasicPublishingCredentialsPoliciesResult
+// WebAppsClientListBasicPublishingCredentialsPoliciesResponse contains the response from method WebAppsClient.ListBasicPublishingCredentialsPolicies.
+type WebAppsClientListBasicPublishingCredentialsPoliciesResponse struct {
+	WebAppsClientListBasicPublishingCredentialsPoliciesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListBasicPublishingCredentialsPoliciesResult contains the result from method WebApps.ListBasicPublishingCredentialsPolicies.
-type WebAppsListBasicPublishingCredentialsPoliciesResult struct {
+// WebAppsClientListBasicPublishingCredentialsPoliciesResult contains the result from method WebAppsClient.ListBasicPublishingCredentialsPolicies.
+type WebAppsClientListBasicPublishingCredentialsPoliciesResult struct {
 	PublishingCredentialsPoliciesCollection
 }
 
-// WebAppsListBasicPublishingCredentialsPoliciesSlotResponse contains the response from method WebApps.ListBasicPublishingCredentialsPoliciesSlot.
-type WebAppsListBasicPublishingCredentialsPoliciesSlotResponse struct {
-	WebAppsListBasicPublishingCredentialsPoliciesSlotResult
+// WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse contains the response from method WebAppsClient.ListBasicPublishingCredentialsPoliciesSlot.
+type WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse struct {
+	WebAppsClientListBasicPublishingCredentialsPoliciesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListBasicPublishingCredentialsPoliciesSlotResult contains the result from method WebApps.ListBasicPublishingCredentialsPoliciesSlot.
-type WebAppsListBasicPublishingCredentialsPoliciesSlotResult struct {
+// WebAppsClientListBasicPublishingCredentialsPoliciesSlotResult contains the result from method WebAppsClient.ListBasicPublishingCredentialsPoliciesSlot.
+type WebAppsClientListBasicPublishingCredentialsPoliciesSlotResult struct {
 	PublishingCredentialsPoliciesCollection
 }
 
-// WebAppsListByResourceGroupResponse contains the response from method WebApps.ListByResourceGroup.
-type WebAppsListByResourceGroupResponse struct {
-	WebAppsListByResourceGroupResult
+// WebAppsClientListByResourceGroupResponse contains the response from method WebAppsClient.ListByResourceGroup.
+type WebAppsClientListByResourceGroupResponse struct {
+	WebAppsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListByResourceGroupResult contains the result from method WebApps.ListByResourceGroup.
-type WebAppsListByResourceGroupResult struct {
+// WebAppsClientListByResourceGroupResult contains the result from method WebAppsClient.ListByResourceGroup.
+type WebAppsClientListByResourceGroupResult struct {
 	WebAppCollection
 }
 
-// WebAppsListConfigurationSnapshotInfoResponse contains the response from method WebApps.ListConfigurationSnapshotInfo.
-type WebAppsListConfigurationSnapshotInfoResponse struct {
-	WebAppsListConfigurationSnapshotInfoResult
+// WebAppsClientListConfigurationSnapshotInfoResponse contains the response from method WebAppsClient.ListConfigurationSnapshotInfo.
+type WebAppsClientListConfigurationSnapshotInfoResponse struct {
+	WebAppsClientListConfigurationSnapshotInfoResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListConfigurationSnapshotInfoResult contains the result from method WebApps.ListConfigurationSnapshotInfo.
-type WebAppsListConfigurationSnapshotInfoResult struct {
+// WebAppsClientListConfigurationSnapshotInfoResult contains the result from method WebAppsClient.ListConfigurationSnapshotInfo.
+type WebAppsClientListConfigurationSnapshotInfoResult struct {
 	SiteConfigurationSnapshotInfoCollection
 }
 
-// WebAppsListConfigurationSnapshotInfoSlotResponse contains the response from method WebApps.ListConfigurationSnapshotInfoSlot.
-type WebAppsListConfigurationSnapshotInfoSlotResponse struct {
-	WebAppsListConfigurationSnapshotInfoSlotResult
+// WebAppsClientListConfigurationSnapshotInfoSlotResponse contains the response from method WebAppsClient.ListConfigurationSnapshotInfoSlot.
+type WebAppsClientListConfigurationSnapshotInfoSlotResponse struct {
+	WebAppsClientListConfigurationSnapshotInfoSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListConfigurationSnapshotInfoSlotResult contains the result from method WebApps.ListConfigurationSnapshotInfoSlot.
-type WebAppsListConfigurationSnapshotInfoSlotResult struct {
+// WebAppsClientListConfigurationSnapshotInfoSlotResult contains the result from method WebAppsClient.ListConfigurationSnapshotInfoSlot.
+type WebAppsClientListConfigurationSnapshotInfoSlotResult struct {
 	SiteConfigurationSnapshotInfoCollection
 }
 
-// WebAppsListConfigurationsResponse contains the response from method WebApps.ListConfigurations.
-type WebAppsListConfigurationsResponse struct {
-	WebAppsListConfigurationsResult
+// WebAppsClientListConfigurationsResponse contains the response from method WebAppsClient.ListConfigurations.
+type WebAppsClientListConfigurationsResponse struct {
+	WebAppsClientListConfigurationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListConfigurationsResult contains the result from method WebApps.ListConfigurations.
-type WebAppsListConfigurationsResult struct {
+// WebAppsClientListConfigurationsResult contains the result from method WebAppsClient.ListConfigurations.
+type WebAppsClientListConfigurationsResult struct {
 	SiteConfigResourceCollection
 }
 
-// WebAppsListConfigurationsSlotResponse contains the response from method WebApps.ListConfigurationsSlot.
-type WebAppsListConfigurationsSlotResponse struct {
-	WebAppsListConfigurationsSlotResult
+// WebAppsClientListConfigurationsSlotResponse contains the response from method WebAppsClient.ListConfigurationsSlot.
+type WebAppsClientListConfigurationsSlotResponse struct {
+	WebAppsClientListConfigurationsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListConfigurationsSlotResult contains the result from method WebApps.ListConfigurationsSlot.
-type WebAppsListConfigurationsSlotResult struct {
+// WebAppsClientListConfigurationsSlotResult contains the result from method WebAppsClient.ListConfigurationsSlot.
+type WebAppsClientListConfigurationsSlotResult struct {
 	SiteConfigResourceCollection
 }
 
-// WebAppsListConnectionStringsResponse contains the response from method WebApps.ListConnectionStrings.
-type WebAppsListConnectionStringsResponse struct {
-	WebAppsListConnectionStringsResult
+// WebAppsClientListConnectionStringsResponse contains the response from method WebAppsClient.ListConnectionStrings.
+type WebAppsClientListConnectionStringsResponse struct {
+	WebAppsClientListConnectionStringsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListConnectionStringsResult contains the result from method WebApps.ListConnectionStrings.
-type WebAppsListConnectionStringsResult struct {
+// WebAppsClientListConnectionStringsResult contains the result from method WebAppsClient.ListConnectionStrings.
+type WebAppsClientListConnectionStringsResult struct {
 	ConnectionStringDictionary
 }
 
-// WebAppsListConnectionStringsSlotResponse contains the response from method WebApps.ListConnectionStringsSlot.
-type WebAppsListConnectionStringsSlotResponse struct {
-	WebAppsListConnectionStringsSlotResult
+// WebAppsClientListConnectionStringsSlotResponse contains the response from method WebAppsClient.ListConnectionStringsSlot.
+type WebAppsClientListConnectionStringsSlotResponse struct {
+	WebAppsClientListConnectionStringsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListConnectionStringsSlotResult contains the result from method WebApps.ListConnectionStringsSlot.
-type WebAppsListConnectionStringsSlotResult struct {
+// WebAppsClientListConnectionStringsSlotResult contains the result from method WebAppsClient.ListConnectionStringsSlot.
+type WebAppsClientListConnectionStringsSlotResult struct {
 	ConnectionStringDictionary
 }
 
-// WebAppsListContinuousWebJobsResponse contains the response from method WebApps.ListContinuousWebJobs.
-type WebAppsListContinuousWebJobsResponse struct {
-	WebAppsListContinuousWebJobsResult
+// WebAppsClientListContinuousWebJobsResponse contains the response from method WebAppsClient.ListContinuousWebJobs.
+type WebAppsClientListContinuousWebJobsResponse struct {
+	WebAppsClientListContinuousWebJobsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListContinuousWebJobsResult contains the result from method WebApps.ListContinuousWebJobs.
-type WebAppsListContinuousWebJobsResult struct {
+// WebAppsClientListContinuousWebJobsResult contains the result from method WebAppsClient.ListContinuousWebJobs.
+type WebAppsClientListContinuousWebJobsResult struct {
 	ContinuousWebJobCollection
 }
 
-// WebAppsListContinuousWebJobsSlotResponse contains the response from method WebApps.ListContinuousWebJobsSlot.
-type WebAppsListContinuousWebJobsSlotResponse struct {
-	WebAppsListContinuousWebJobsSlotResult
+// WebAppsClientListContinuousWebJobsSlotResponse contains the response from method WebAppsClient.ListContinuousWebJobsSlot.
+type WebAppsClientListContinuousWebJobsSlotResponse struct {
+	WebAppsClientListContinuousWebJobsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListContinuousWebJobsSlotResult contains the result from method WebApps.ListContinuousWebJobsSlot.
-type WebAppsListContinuousWebJobsSlotResult struct {
+// WebAppsClientListContinuousWebJobsSlotResult contains the result from method WebAppsClient.ListContinuousWebJobsSlot.
+type WebAppsClientListContinuousWebJobsSlotResult struct {
 	ContinuousWebJobCollection
 }
 
-// WebAppsListDeploymentLogResponse contains the response from method WebApps.ListDeploymentLog.
-type WebAppsListDeploymentLogResponse struct {
-	WebAppsListDeploymentLogResult
+// WebAppsClientListDeploymentLogResponse contains the response from method WebAppsClient.ListDeploymentLog.
+type WebAppsClientListDeploymentLogResponse struct {
+	WebAppsClientListDeploymentLogResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListDeploymentLogResult contains the result from method WebApps.ListDeploymentLog.
-type WebAppsListDeploymentLogResult struct {
+// WebAppsClientListDeploymentLogResult contains the result from method WebAppsClient.ListDeploymentLog.
+type WebAppsClientListDeploymentLogResult struct {
 	Deployment
 }
 
-// WebAppsListDeploymentLogSlotResponse contains the response from method WebApps.ListDeploymentLogSlot.
-type WebAppsListDeploymentLogSlotResponse struct {
-	WebAppsListDeploymentLogSlotResult
+// WebAppsClientListDeploymentLogSlotResponse contains the response from method WebAppsClient.ListDeploymentLogSlot.
+type WebAppsClientListDeploymentLogSlotResponse struct {
+	WebAppsClientListDeploymentLogSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListDeploymentLogSlotResult contains the result from method WebApps.ListDeploymentLogSlot.
-type WebAppsListDeploymentLogSlotResult struct {
+// WebAppsClientListDeploymentLogSlotResult contains the result from method WebAppsClient.ListDeploymentLogSlot.
+type WebAppsClientListDeploymentLogSlotResult struct {
 	Deployment
 }
 
-// WebAppsListDeploymentsResponse contains the response from method WebApps.ListDeployments.
-type WebAppsListDeploymentsResponse struct {
-	WebAppsListDeploymentsResult
+// WebAppsClientListDeploymentsResponse contains the response from method WebAppsClient.ListDeployments.
+type WebAppsClientListDeploymentsResponse struct {
+	WebAppsClientListDeploymentsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListDeploymentsResult contains the result from method WebApps.ListDeployments.
-type WebAppsListDeploymentsResult struct {
+// WebAppsClientListDeploymentsResult contains the result from method WebAppsClient.ListDeployments.
+type WebAppsClientListDeploymentsResult struct {
 	DeploymentCollection
 }
 
-// WebAppsListDeploymentsSlotResponse contains the response from method WebApps.ListDeploymentsSlot.
-type WebAppsListDeploymentsSlotResponse struct {
-	WebAppsListDeploymentsSlotResult
+// WebAppsClientListDeploymentsSlotResponse contains the response from method WebAppsClient.ListDeploymentsSlot.
+type WebAppsClientListDeploymentsSlotResponse struct {
+	WebAppsClientListDeploymentsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListDeploymentsSlotResult contains the result from method WebApps.ListDeploymentsSlot.
-type WebAppsListDeploymentsSlotResult struct {
+// WebAppsClientListDeploymentsSlotResult contains the result from method WebAppsClient.ListDeploymentsSlot.
+type WebAppsClientListDeploymentsSlotResult struct {
 	DeploymentCollection
 }
 
-// WebAppsListDomainOwnershipIdentifiersResponse contains the response from method WebApps.ListDomainOwnershipIdentifiers.
-type WebAppsListDomainOwnershipIdentifiersResponse struct {
-	WebAppsListDomainOwnershipIdentifiersResult
+// WebAppsClientListDomainOwnershipIdentifiersResponse contains the response from method WebAppsClient.ListDomainOwnershipIdentifiers.
+type WebAppsClientListDomainOwnershipIdentifiersResponse struct {
+	WebAppsClientListDomainOwnershipIdentifiersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListDomainOwnershipIdentifiersResult contains the result from method WebApps.ListDomainOwnershipIdentifiers.
-type WebAppsListDomainOwnershipIdentifiersResult struct {
+// WebAppsClientListDomainOwnershipIdentifiersResult contains the result from method WebAppsClient.ListDomainOwnershipIdentifiers.
+type WebAppsClientListDomainOwnershipIdentifiersResult struct {
 	IdentifierCollection
 }
 
-// WebAppsListDomainOwnershipIdentifiersSlotResponse contains the response from method WebApps.ListDomainOwnershipIdentifiersSlot.
-type WebAppsListDomainOwnershipIdentifiersSlotResponse struct {
-	WebAppsListDomainOwnershipIdentifiersSlotResult
+// WebAppsClientListDomainOwnershipIdentifiersSlotResponse contains the response from method WebAppsClient.ListDomainOwnershipIdentifiersSlot.
+type WebAppsClientListDomainOwnershipIdentifiersSlotResponse struct {
+	WebAppsClientListDomainOwnershipIdentifiersSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListDomainOwnershipIdentifiersSlotResult contains the result from method WebApps.ListDomainOwnershipIdentifiersSlot.
-type WebAppsListDomainOwnershipIdentifiersSlotResult struct {
+// WebAppsClientListDomainOwnershipIdentifiersSlotResult contains the result from method WebAppsClient.ListDomainOwnershipIdentifiersSlot.
+type WebAppsClientListDomainOwnershipIdentifiersSlotResult struct {
 	IdentifierCollection
 }
 
-// WebAppsListFunctionKeysResponse contains the response from method WebApps.ListFunctionKeys.
-type WebAppsListFunctionKeysResponse struct {
-	WebAppsListFunctionKeysResult
+// WebAppsClientListFunctionKeysResponse contains the response from method WebAppsClient.ListFunctionKeys.
+type WebAppsClientListFunctionKeysResponse struct {
+	WebAppsClientListFunctionKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListFunctionKeysResult contains the result from method WebApps.ListFunctionKeys.
-type WebAppsListFunctionKeysResult struct {
+// WebAppsClientListFunctionKeysResult contains the result from method WebAppsClient.ListFunctionKeys.
+type WebAppsClientListFunctionKeysResult struct {
 	StringDictionary
 }
 
-// WebAppsListFunctionKeysSlotResponse contains the response from method WebApps.ListFunctionKeysSlot.
-type WebAppsListFunctionKeysSlotResponse struct {
-	WebAppsListFunctionKeysSlotResult
+// WebAppsClientListFunctionKeysSlotResponse contains the response from method WebAppsClient.ListFunctionKeysSlot.
+type WebAppsClientListFunctionKeysSlotResponse struct {
+	WebAppsClientListFunctionKeysSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListFunctionKeysSlotResult contains the result from method WebApps.ListFunctionKeysSlot.
-type WebAppsListFunctionKeysSlotResult struct {
+// WebAppsClientListFunctionKeysSlotResult contains the result from method WebAppsClient.ListFunctionKeysSlot.
+type WebAppsClientListFunctionKeysSlotResult struct {
 	StringDictionary
 }
 
-// WebAppsListFunctionSecretsResponse contains the response from method WebApps.ListFunctionSecrets.
-type WebAppsListFunctionSecretsResponse struct {
-	WebAppsListFunctionSecretsResult
+// WebAppsClientListFunctionSecretsResponse contains the response from method WebAppsClient.ListFunctionSecrets.
+type WebAppsClientListFunctionSecretsResponse struct {
+	WebAppsClientListFunctionSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListFunctionSecretsResult contains the result from method WebApps.ListFunctionSecrets.
-type WebAppsListFunctionSecretsResult struct {
+// WebAppsClientListFunctionSecretsResult contains the result from method WebAppsClient.ListFunctionSecrets.
+type WebAppsClientListFunctionSecretsResult struct {
 	FunctionSecrets
 }
 
-// WebAppsListFunctionSecretsSlotResponse contains the response from method WebApps.ListFunctionSecretsSlot.
-type WebAppsListFunctionSecretsSlotResponse struct {
-	WebAppsListFunctionSecretsSlotResult
+// WebAppsClientListFunctionSecretsSlotResponse contains the response from method WebAppsClient.ListFunctionSecretsSlot.
+type WebAppsClientListFunctionSecretsSlotResponse struct {
+	WebAppsClientListFunctionSecretsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListFunctionSecretsSlotResult contains the result from method WebApps.ListFunctionSecretsSlot.
-type WebAppsListFunctionSecretsSlotResult struct {
+// WebAppsClientListFunctionSecretsSlotResult contains the result from method WebAppsClient.ListFunctionSecretsSlot.
+type WebAppsClientListFunctionSecretsSlotResult struct {
 	FunctionSecrets
 }
 
-// WebAppsListFunctionsResponse contains the response from method WebApps.ListFunctions.
-type WebAppsListFunctionsResponse struct {
-	WebAppsListFunctionsResult
+// WebAppsClientListFunctionsResponse contains the response from method WebAppsClient.ListFunctions.
+type WebAppsClientListFunctionsResponse struct {
+	WebAppsClientListFunctionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListFunctionsResult contains the result from method WebApps.ListFunctions.
-type WebAppsListFunctionsResult struct {
+// WebAppsClientListFunctionsResult contains the result from method WebAppsClient.ListFunctions.
+type WebAppsClientListFunctionsResult struct {
 	FunctionEnvelopeCollection
 }
 
-// WebAppsListHostKeysResponse contains the response from method WebApps.ListHostKeys.
-type WebAppsListHostKeysResponse struct {
-	WebAppsListHostKeysResult
+// WebAppsClientListHostKeysResponse contains the response from method WebAppsClient.ListHostKeys.
+type WebAppsClientListHostKeysResponse struct {
+	WebAppsClientListHostKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListHostKeysResult contains the result from method WebApps.ListHostKeys.
-type WebAppsListHostKeysResult struct {
+// WebAppsClientListHostKeysResult contains the result from method WebAppsClient.ListHostKeys.
+type WebAppsClientListHostKeysResult struct {
 	HostKeys
 }
 
-// WebAppsListHostKeysSlotResponse contains the response from method WebApps.ListHostKeysSlot.
-type WebAppsListHostKeysSlotResponse struct {
-	WebAppsListHostKeysSlotResult
+// WebAppsClientListHostKeysSlotResponse contains the response from method WebAppsClient.ListHostKeysSlot.
+type WebAppsClientListHostKeysSlotResponse struct {
+	WebAppsClientListHostKeysSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListHostKeysSlotResult contains the result from method WebApps.ListHostKeysSlot.
-type WebAppsListHostKeysSlotResult struct {
+// WebAppsClientListHostKeysSlotResult contains the result from method WebAppsClient.ListHostKeysSlot.
+type WebAppsClientListHostKeysSlotResult struct {
 	HostKeys
 }
 
-// WebAppsListHostNameBindingsResponse contains the response from method WebApps.ListHostNameBindings.
-type WebAppsListHostNameBindingsResponse struct {
-	WebAppsListHostNameBindingsResult
+// WebAppsClientListHostNameBindingsResponse contains the response from method WebAppsClient.ListHostNameBindings.
+type WebAppsClientListHostNameBindingsResponse struct {
+	WebAppsClientListHostNameBindingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListHostNameBindingsResult contains the result from method WebApps.ListHostNameBindings.
-type WebAppsListHostNameBindingsResult struct {
+// WebAppsClientListHostNameBindingsResult contains the result from method WebAppsClient.ListHostNameBindings.
+type WebAppsClientListHostNameBindingsResult struct {
 	HostNameBindingCollection
 }
 
-// WebAppsListHostNameBindingsSlotResponse contains the response from method WebApps.ListHostNameBindingsSlot.
-type WebAppsListHostNameBindingsSlotResponse struct {
-	WebAppsListHostNameBindingsSlotResult
+// WebAppsClientListHostNameBindingsSlotResponse contains the response from method WebAppsClient.ListHostNameBindingsSlot.
+type WebAppsClientListHostNameBindingsSlotResponse struct {
+	WebAppsClientListHostNameBindingsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListHostNameBindingsSlotResult contains the result from method WebApps.ListHostNameBindingsSlot.
-type WebAppsListHostNameBindingsSlotResult struct {
+// WebAppsClientListHostNameBindingsSlotResult contains the result from method WebAppsClient.ListHostNameBindingsSlot.
+type WebAppsClientListHostNameBindingsSlotResult struct {
 	HostNameBindingCollection
 }
 
-// WebAppsListHybridConnectionsResponse contains the response from method WebApps.ListHybridConnections.
-type WebAppsListHybridConnectionsResponse struct {
-	WebAppsListHybridConnectionsResult
+// WebAppsClientListHybridConnectionsResponse contains the response from method WebAppsClient.ListHybridConnections.
+type WebAppsClientListHybridConnectionsResponse struct {
+	WebAppsClientListHybridConnectionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListHybridConnectionsResult contains the result from method WebApps.ListHybridConnections.
-type WebAppsListHybridConnectionsResult struct {
+// WebAppsClientListHybridConnectionsResult contains the result from method WebAppsClient.ListHybridConnections.
+type WebAppsClientListHybridConnectionsResult struct {
 	HybridConnection
 }
 
-// WebAppsListHybridConnectionsSlotResponse contains the response from method WebApps.ListHybridConnectionsSlot.
-type WebAppsListHybridConnectionsSlotResponse struct {
-	WebAppsListHybridConnectionsSlotResult
+// WebAppsClientListHybridConnectionsSlotResponse contains the response from method WebAppsClient.ListHybridConnectionsSlot.
+type WebAppsClientListHybridConnectionsSlotResponse struct {
+	WebAppsClientListHybridConnectionsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListHybridConnectionsSlotResult contains the result from method WebApps.ListHybridConnectionsSlot.
-type WebAppsListHybridConnectionsSlotResult struct {
+// WebAppsClientListHybridConnectionsSlotResult contains the result from method WebAppsClient.ListHybridConnectionsSlot.
+type WebAppsClientListHybridConnectionsSlotResult struct {
 	HybridConnection
 }
 
-// WebAppsListInstanceFunctionsSlotResponse contains the response from method WebApps.ListInstanceFunctionsSlot.
-type WebAppsListInstanceFunctionsSlotResponse struct {
-	WebAppsListInstanceFunctionsSlotResult
+// WebAppsClientListInstanceFunctionsSlotResponse contains the response from method WebAppsClient.ListInstanceFunctionsSlot.
+type WebAppsClientListInstanceFunctionsSlotResponse struct {
+	WebAppsClientListInstanceFunctionsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceFunctionsSlotResult contains the result from method WebApps.ListInstanceFunctionsSlot.
-type WebAppsListInstanceFunctionsSlotResult struct {
+// WebAppsClientListInstanceFunctionsSlotResult contains the result from method WebAppsClient.ListInstanceFunctionsSlot.
+type WebAppsClientListInstanceFunctionsSlotResult struct {
 	FunctionEnvelopeCollection
 }
 
-// WebAppsListInstanceIdentifiersResponse contains the response from method WebApps.ListInstanceIdentifiers.
-type WebAppsListInstanceIdentifiersResponse struct {
-	WebAppsListInstanceIdentifiersResult
+// WebAppsClientListInstanceIdentifiersResponse contains the response from method WebAppsClient.ListInstanceIdentifiers.
+type WebAppsClientListInstanceIdentifiersResponse struct {
+	WebAppsClientListInstanceIdentifiersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceIdentifiersResult contains the result from method WebApps.ListInstanceIdentifiers.
-type WebAppsListInstanceIdentifiersResult struct {
+// WebAppsClientListInstanceIdentifiersResult contains the result from method WebAppsClient.ListInstanceIdentifiers.
+type WebAppsClientListInstanceIdentifiersResult struct {
 	WebAppInstanceStatusCollection
 }
 
-// WebAppsListInstanceIdentifiersSlotResponse contains the response from method WebApps.ListInstanceIdentifiersSlot.
-type WebAppsListInstanceIdentifiersSlotResponse struct {
-	WebAppsListInstanceIdentifiersSlotResult
+// WebAppsClientListInstanceIdentifiersSlotResponse contains the response from method WebAppsClient.ListInstanceIdentifiersSlot.
+type WebAppsClientListInstanceIdentifiersSlotResponse struct {
+	WebAppsClientListInstanceIdentifiersSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceIdentifiersSlotResult contains the result from method WebApps.ListInstanceIdentifiersSlot.
-type WebAppsListInstanceIdentifiersSlotResult struct {
+// WebAppsClientListInstanceIdentifiersSlotResult contains the result from method WebAppsClient.ListInstanceIdentifiersSlot.
+type WebAppsClientListInstanceIdentifiersSlotResult struct {
 	WebAppInstanceStatusCollection
 }
 
-// WebAppsListInstanceProcessModulesResponse contains the response from method WebApps.ListInstanceProcessModules.
-type WebAppsListInstanceProcessModulesResponse struct {
-	WebAppsListInstanceProcessModulesResult
+// WebAppsClientListInstanceProcessModulesResponse contains the response from method WebAppsClient.ListInstanceProcessModules.
+type WebAppsClientListInstanceProcessModulesResponse struct {
+	WebAppsClientListInstanceProcessModulesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceProcessModulesResult contains the result from method WebApps.ListInstanceProcessModules.
-type WebAppsListInstanceProcessModulesResult struct {
+// WebAppsClientListInstanceProcessModulesResult contains the result from method WebAppsClient.ListInstanceProcessModules.
+type WebAppsClientListInstanceProcessModulesResult struct {
 	ProcessModuleInfoCollection
 }
 
-// WebAppsListInstanceProcessModulesSlotResponse contains the response from method WebApps.ListInstanceProcessModulesSlot.
-type WebAppsListInstanceProcessModulesSlotResponse struct {
-	WebAppsListInstanceProcessModulesSlotResult
+// WebAppsClientListInstanceProcessModulesSlotResponse contains the response from method WebAppsClient.ListInstanceProcessModulesSlot.
+type WebAppsClientListInstanceProcessModulesSlotResponse struct {
+	WebAppsClientListInstanceProcessModulesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceProcessModulesSlotResult contains the result from method WebApps.ListInstanceProcessModulesSlot.
-type WebAppsListInstanceProcessModulesSlotResult struct {
+// WebAppsClientListInstanceProcessModulesSlotResult contains the result from method WebAppsClient.ListInstanceProcessModulesSlot.
+type WebAppsClientListInstanceProcessModulesSlotResult struct {
 	ProcessModuleInfoCollection
 }
 
-// WebAppsListInstanceProcessThreadsResponse contains the response from method WebApps.ListInstanceProcessThreads.
-type WebAppsListInstanceProcessThreadsResponse struct {
-	WebAppsListInstanceProcessThreadsResult
+// WebAppsClientListInstanceProcessThreadsResponse contains the response from method WebAppsClient.ListInstanceProcessThreads.
+type WebAppsClientListInstanceProcessThreadsResponse struct {
+	WebAppsClientListInstanceProcessThreadsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceProcessThreadsResult contains the result from method WebApps.ListInstanceProcessThreads.
-type WebAppsListInstanceProcessThreadsResult struct {
+// WebAppsClientListInstanceProcessThreadsResult contains the result from method WebAppsClient.ListInstanceProcessThreads.
+type WebAppsClientListInstanceProcessThreadsResult struct {
 	ProcessThreadInfoCollection
 }
 
-// WebAppsListInstanceProcessThreadsSlotResponse contains the response from method WebApps.ListInstanceProcessThreadsSlot.
-type WebAppsListInstanceProcessThreadsSlotResponse struct {
-	WebAppsListInstanceProcessThreadsSlotResult
+// WebAppsClientListInstanceProcessThreadsSlotResponse contains the response from method WebAppsClient.ListInstanceProcessThreadsSlot.
+type WebAppsClientListInstanceProcessThreadsSlotResponse struct {
+	WebAppsClientListInstanceProcessThreadsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceProcessThreadsSlotResult contains the result from method WebApps.ListInstanceProcessThreadsSlot.
-type WebAppsListInstanceProcessThreadsSlotResult struct {
+// WebAppsClientListInstanceProcessThreadsSlotResult contains the result from method WebAppsClient.ListInstanceProcessThreadsSlot.
+type WebAppsClientListInstanceProcessThreadsSlotResult struct {
 	ProcessThreadInfoCollection
 }
 
-// WebAppsListInstanceProcessesResponse contains the response from method WebApps.ListInstanceProcesses.
-type WebAppsListInstanceProcessesResponse struct {
-	WebAppsListInstanceProcessesResult
+// WebAppsClientListInstanceProcessesResponse contains the response from method WebAppsClient.ListInstanceProcesses.
+type WebAppsClientListInstanceProcessesResponse struct {
+	WebAppsClientListInstanceProcessesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceProcessesResult contains the result from method WebApps.ListInstanceProcesses.
-type WebAppsListInstanceProcessesResult struct {
+// WebAppsClientListInstanceProcessesResult contains the result from method WebAppsClient.ListInstanceProcesses.
+type WebAppsClientListInstanceProcessesResult struct {
 	ProcessInfoCollection
 }
 
-// WebAppsListInstanceProcessesSlotResponse contains the response from method WebApps.ListInstanceProcessesSlot.
-type WebAppsListInstanceProcessesSlotResponse struct {
-	WebAppsListInstanceProcessesSlotResult
+// WebAppsClientListInstanceProcessesSlotResponse contains the response from method WebAppsClient.ListInstanceProcessesSlot.
+type WebAppsClientListInstanceProcessesSlotResponse struct {
+	WebAppsClientListInstanceProcessesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListInstanceProcessesSlotResult contains the result from method WebApps.ListInstanceProcessesSlot.
-type WebAppsListInstanceProcessesSlotResult struct {
+// WebAppsClientListInstanceProcessesSlotResult contains the result from method WebAppsClient.ListInstanceProcessesSlot.
+type WebAppsClientListInstanceProcessesSlotResult struct {
 	ProcessInfoCollection
 }
 
-// WebAppsListMetadataResponse contains the response from method WebApps.ListMetadata.
-type WebAppsListMetadataResponse struct {
-	WebAppsListMetadataResult
+// WebAppsClientListMetadataResponse contains the response from method WebAppsClient.ListMetadata.
+type WebAppsClientListMetadataResponse struct {
+	WebAppsClientListMetadataResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListMetadataResult contains the result from method WebApps.ListMetadata.
-type WebAppsListMetadataResult struct {
+// WebAppsClientListMetadataResult contains the result from method WebAppsClient.ListMetadata.
+type WebAppsClientListMetadataResult struct {
 	StringDictionary
 }
 
-// WebAppsListMetadataSlotResponse contains the response from method WebApps.ListMetadataSlot.
-type WebAppsListMetadataSlotResponse struct {
-	WebAppsListMetadataSlotResult
+// WebAppsClientListMetadataSlotResponse contains the response from method WebAppsClient.ListMetadataSlot.
+type WebAppsClientListMetadataSlotResponse struct {
+	WebAppsClientListMetadataSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListMetadataSlotResult contains the result from method WebApps.ListMetadataSlot.
-type WebAppsListMetadataSlotResult struct {
+// WebAppsClientListMetadataSlotResult contains the result from method WebAppsClient.ListMetadataSlot.
+type WebAppsClientListMetadataSlotResult struct {
 	StringDictionary
 }
 
-// WebAppsListNetworkFeaturesResponse contains the response from method WebApps.ListNetworkFeatures.
-type WebAppsListNetworkFeaturesResponse struct {
-	WebAppsListNetworkFeaturesResult
+// WebAppsClientListNetworkFeaturesResponse contains the response from method WebAppsClient.ListNetworkFeatures.
+type WebAppsClientListNetworkFeaturesResponse struct {
+	WebAppsClientListNetworkFeaturesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListNetworkFeaturesResult contains the result from method WebApps.ListNetworkFeatures.
-type WebAppsListNetworkFeaturesResult struct {
+// WebAppsClientListNetworkFeaturesResult contains the result from method WebAppsClient.ListNetworkFeatures.
+type WebAppsClientListNetworkFeaturesResult struct {
 	NetworkFeatures
 }
 
-// WebAppsListNetworkFeaturesSlotResponse contains the response from method WebApps.ListNetworkFeaturesSlot.
-type WebAppsListNetworkFeaturesSlotResponse struct {
-	WebAppsListNetworkFeaturesSlotResult
+// WebAppsClientListNetworkFeaturesSlotResponse contains the response from method WebAppsClient.ListNetworkFeaturesSlot.
+type WebAppsClientListNetworkFeaturesSlotResponse struct {
+	WebAppsClientListNetworkFeaturesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListNetworkFeaturesSlotResult contains the result from method WebApps.ListNetworkFeaturesSlot.
-type WebAppsListNetworkFeaturesSlotResult struct {
+// WebAppsClientListNetworkFeaturesSlotResult contains the result from method WebAppsClient.ListNetworkFeaturesSlot.
+type WebAppsClientListNetworkFeaturesSlotResult struct {
 	NetworkFeatures
 }
 
-// WebAppsListPerfMonCountersResponse contains the response from method WebApps.ListPerfMonCounters.
-type WebAppsListPerfMonCountersResponse struct {
-	WebAppsListPerfMonCountersResult
+// WebAppsClientListPerfMonCountersResponse contains the response from method WebAppsClient.ListPerfMonCounters.
+type WebAppsClientListPerfMonCountersResponse struct {
+	WebAppsClientListPerfMonCountersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPerfMonCountersResult contains the result from method WebApps.ListPerfMonCounters.
-type WebAppsListPerfMonCountersResult struct {
+// WebAppsClientListPerfMonCountersResult contains the result from method WebAppsClient.ListPerfMonCounters.
+type WebAppsClientListPerfMonCountersResult struct {
 	PerfMonCounterCollection
 }
 
-// WebAppsListPerfMonCountersSlotResponse contains the response from method WebApps.ListPerfMonCountersSlot.
-type WebAppsListPerfMonCountersSlotResponse struct {
-	WebAppsListPerfMonCountersSlotResult
+// WebAppsClientListPerfMonCountersSlotResponse contains the response from method WebAppsClient.ListPerfMonCountersSlot.
+type WebAppsClientListPerfMonCountersSlotResponse struct {
+	WebAppsClientListPerfMonCountersSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPerfMonCountersSlotResult contains the result from method WebApps.ListPerfMonCountersSlot.
-type WebAppsListPerfMonCountersSlotResult struct {
+// WebAppsClientListPerfMonCountersSlotResult contains the result from method WebAppsClient.ListPerfMonCountersSlot.
+type WebAppsClientListPerfMonCountersSlotResult struct {
 	PerfMonCounterCollection
 }
 
-// WebAppsListPremierAddOnsResponse contains the response from method WebApps.ListPremierAddOns.
-type WebAppsListPremierAddOnsResponse struct {
-	WebAppsListPremierAddOnsResult
+// WebAppsClientListPremierAddOnsResponse contains the response from method WebAppsClient.ListPremierAddOns.
+type WebAppsClientListPremierAddOnsResponse struct {
+	WebAppsClientListPremierAddOnsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPremierAddOnsResult contains the result from method WebApps.ListPremierAddOns.
-type WebAppsListPremierAddOnsResult struct {
+// WebAppsClientListPremierAddOnsResult contains the result from method WebAppsClient.ListPremierAddOns.
+type WebAppsClientListPremierAddOnsResult struct {
 	PremierAddOn
 }
 
-// WebAppsListPremierAddOnsSlotResponse contains the response from method WebApps.ListPremierAddOnsSlot.
-type WebAppsListPremierAddOnsSlotResponse struct {
-	WebAppsListPremierAddOnsSlotResult
+// WebAppsClientListPremierAddOnsSlotResponse contains the response from method WebAppsClient.ListPremierAddOnsSlot.
+type WebAppsClientListPremierAddOnsSlotResponse struct {
+	WebAppsClientListPremierAddOnsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPremierAddOnsSlotResult contains the result from method WebApps.ListPremierAddOnsSlot.
-type WebAppsListPremierAddOnsSlotResult struct {
+// WebAppsClientListPremierAddOnsSlotResult contains the result from method WebAppsClient.ListPremierAddOnsSlot.
+type WebAppsClientListPremierAddOnsSlotResult struct {
 	PremierAddOn
 }
 
-// WebAppsListProcessModulesResponse contains the response from method WebApps.ListProcessModules.
-type WebAppsListProcessModulesResponse struct {
-	WebAppsListProcessModulesResult
+// WebAppsClientListProcessModulesResponse contains the response from method WebAppsClient.ListProcessModules.
+type WebAppsClientListProcessModulesResponse struct {
+	WebAppsClientListProcessModulesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListProcessModulesResult contains the result from method WebApps.ListProcessModules.
-type WebAppsListProcessModulesResult struct {
+// WebAppsClientListProcessModulesResult contains the result from method WebAppsClient.ListProcessModules.
+type WebAppsClientListProcessModulesResult struct {
 	ProcessModuleInfoCollection
 }
 
-// WebAppsListProcessModulesSlotResponse contains the response from method WebApps.ListProcessModulesSlot.
-type WebAppsListProcessModulesSlotResponse struct {
-	WebAppsListProcessModulesSlotResult
+// WebAppsClientListProcessModulesSlotResponse contains the response from method WebAppsClient.ListProcessModulesSlot.
+type WebAppsClientListProcessModulesSlotResponse struct {
+	WebAppsClientListProcessModulesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListProcessModulesSlotResult contains the result from method WebApps.ListProcessModulesSlot.
-type WebAppsListProcessModulesSlotResult struct {
+// WebAppsClientListProcessModulesSlotResult contains the result from method WebAppsClient.ListProcessModulesSlot.
+type WebAppsClientListProcessModulesSlotResult struct {
 	ProcessModuleInfoCollection
 }
 
-// WebAppsListProcessThreadsResponse contains the response from method WebApps.ListProcessThreads.
-type WebAppsListProcessThreadsResponse struct {
-	WebAppsListProcessThreadsResult
+// WebAppsClientListProcessThreadsResponse contains the response from method WebAppsClient.ListProcessThreads.
+type WebAppsClientListProcessThreadsResponse struct {
+	WebAppsClientListProcessThreadsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListProcessThreadsResult contains the result from method WebApps.ListProcessThreads.
-type WebAppsListProcessThreadsResult struct {
+// WebAppsClientListProcessThreadsResult contains the result from method WebAppsClient.ListProcessThreads.
+type WebAppsClientListProcessThreadsResult struct {
 	ProcessThreadInfoCollection
 }
 
-// WebAppsListProcessThreadsSlotResponse contains the response from method WebApps.ListProcessThreadsSlot.
-type WebAppsListProcessThreadsSlotResponse struct {
-	WebAppsListProcessThreadsSlotResult
+// WebAppsClientListProcessThreadsSlotResponse contains the response from method WebAppsClient.ListProcessThreadsSlot.
+type WebAppsClientListProcessThreadsSlotResponse struct {
+	WebAppsClientListProcessThreadsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListProcessThreadsSlotResult contains the result from method WebApps.ListProcessThreadsSlot.
-type WebAppsListProcessThreadsSlotResult struct {
+// WebAppsClientListProcessThreadsSlotResult contains the result from method WebAppsClient.ListProcessThreadsSlot.
+type WebAppsClientListProcessThreadsSlotResult struct {
 	ProcessThreadInfoCollection
 }
 
-// WebAppsListProcessesResponse contains the response from method WebApps.ListProcesses.
-type WebAppsListProcessesResponse struct {
-	WebAppsListProcessesResult
+// WebAppsClientListProcessesResponse contains the response from method WebAppsClient.ListProcesses.
+type WebAppsClientListProcessesResponse struct {
+	WebAppsClientListProcessesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListProcessesResult contains the result from method WebApps.ListProcesses.
-type WebAppsListProcessesResult struct {
+// WebAppsClientListProcessesResult contains the result from method WebAppsClient.ListProcesses.
+type WebAppsClientListProcessesResult struct {
 	ProcessInfoCollection
 }
 
-// WebAppsListProcessesSlotResponse contains the response from method WebApps.ListProcessesSlot.
-type WebAppsListProcessesSlotResponse struct {
-	WebAppsListProcessesSlotResult
+// WebAppsClientListProcessesSlotResponse contains the response from method WebAppsClient.ListProcessesSlot.
+type WebAppsClientListProcessesSlotResponse struct {
+	WebAppsClientListProcessesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListProcessesSlotResult contains the result from method WebApps.ListProcessesSlot.
-type WebAppsListProcessesSlotResult struct {
+// WebAppsClientListProcessesSlotResult contains the result from method WebAppsClient.ListProcessesSlot.
+type WebAppsClientListProcessesSlotResult struct {
 	ProcessInfoCollection
 }
 
-// WebAppsListPublicCertificatesResponse contains the response from method WebApps.ListPublicCertificates.
-type WebAppsListPublicCertificatesResponse struct {
-	WebAppsListPublicCertificatesResult
+// WebAppsClientListPublicCertificatesResponse contains the response from method WebAppsClient.ListPublicCertificates.
+type WebAppsClientListPublicCertificatesResponse struct {
+	WebAppsClientListPublicCertificatesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPublicCertificatesResult contains the result from method WebApps.ListPublicCertificates.
-type WebAppsListPublicCertificatesResult struct {
+// WebAppsClientListPublicCertificatesResult contains the result from method WebAppsClient.ListPublicCertificates.
+type WebAppsClientListPublicCertificatesResult struct {
 	PublicCertificateCollection
 }
 
-// WebAppsListPublicCertificatesSlotResponse contains the response from method WebApps.ListPublicCertificatesSlot.
-type WebAppsListPublicCertificatesSlotResponse struct {
-	WebAppsListPublicCertificatesSlotResult
+// WebAppsClientListPublicCertificatesSlotResponse contains the response from method WebAppsClient.ListPublicCertificatesSlot.
+type WebAppsClientListPublicCertificatesSlotResponse struct {
+	WebAppsClientListPublicCertificatesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPublicCertificatesSlotResult contains the result from method WebApps.ListPublicCertificatesSlot.
-type WebAppsListPublicCertificatesSlotResult struct {
+// WebAppsClientListPublicCertificatesSlotResult contains the result from method WebAppsClient.ListPublicCertificatesSlot.
+type WebAppsClientListPublicCertificatesSlotResult struct {
 	PublicCertificateCollection
 }
 
-// WebAppsListPublishingCredentialsPollerResponse contains the response from method WebApps.ListPublishingCredentials.
-type WebAppsListPublishingCredentialsPollerResponse struct {
+// WebAppsClientListPublishingCredentialsPollerResponse contains the response from method WebAppsClient.ListPublishingCredentials.
+type WebAppsClientListPublishingCredentialsPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsListPublishingCredentialsPoller
+	Poller *WebAppsClientListPublishingCredentialsPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -7191,8 +7447,8 @@ type WebAppsListPublishingCredentialsPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsListPublishingCredentialsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsListPublishingCredentialsResponse, error) {
-	respType := WebAppsListPublishingCredentialsResponse{}
+func (l WebAppsClientListPublishingCredentialsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientListPublishingCredentialsResponse, error) {
+	respType := WebAppsClientListPublishingCredentialsResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.User)
 	if err != nil {
 		return respType, err
@@ -7201,13 +7457,13 @@ func (l WebAppsListPublishingCredentialsPollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsListPublishingCredentialsPollerResponse from the provided client and resume token.
-func (l *WebAppsListPublishingCredentialsPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ListPublishingCredentials", token, client.pl, client.listPublishingCredentialsHandleError)
+// Resume rehydrates a WebAppsClientListPublishingCredentialsPollerResponse from the provided client and resume token.
+func (l *WebAppsClientListPublishingCredentialsPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ListPublishingCredentials", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsListPublishingCredentialsPoller{
+	poller := &WebAppsClientListPublishingCredentialsPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -7219,22 +7475,22 @@ func (l *WebAppsListPublishingCredentialsPollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// WebAppsListPublishingCredentialsResponse contains the response from method WebApps.ListPublishingCredentials.
-type WebAppsListPublishingCredentialsResponse struct {
-	WebAppsListPublishingCredentialsResult
+// WebAppsClientListPublishingCredentialsResponse contains the response from method WebAppsClient.ListPublishingCredentials.
+type WebAppsClientListPublishingCredentialsResponse struct {
+	WebAppsClientListPublishingCredentialsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPublishingCredentialsResult contains the result from method WebApps.ListPublishingCredentials.
-type WebAppsListPublishingCredentialsResult struct {
+// WebAppsClientListPublishingCredentialsResult contains the result from method WebAppsClient.ListPublishingCredentials.
+type WebAppsClientListPublishingCredentialsResult struct {
 	User
 }
 
-// WebAppsListPublishingCredentialsSlotPollerResponse contains the response from method WebApps.ListPublishingCredentialsSlot.
-type WebAppsListPublishingCredentialsSlotPollerResponse struct {
+// WebAppsClientListPublishingCredentialsSlotPollerResponse contains the response from method WebAppsClient.ListPublishingCredentialsSlot.
+type WebAppsClientListPublishingCredentialsSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsListPublishingCredentialsSlotPoller
+	Poller *WebAppsClientListPublishingCredentialsSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -7243,8 +7499,8 @@ type WebAppsListPublishingCredentialsSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsListPublishingCredentialsSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsListPublishingCredentialsSlotResponse, error) {
-	respType := WebAppsListPublishingCredentialsSlotResponse{}
+func (l WebAppsClientListPublishingCredentialsSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientListPublishingCredentialsSlotResponse, error) {
+	respType := WebAppsClientListPublishingCredentialsSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.User)
 	if err != nil {
 		return respType, err
@@ -7253,13 +7509,13 @@ func (l WebAppsListPublishingCredentialsSlotPollerResponse) PollUntilDone(ctx co
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsListPublishingCredentialsSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsListPublishingCredentialsSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ListPublishingCredentialsSlot", token, client.pl, client.listPublishingCredentialsSlotHandleError)
+// Resume rehydrates a WebAppsClientListPublishingCredentialsSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientListPublishingCredentialsSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ListPublishingCredentialsSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsListPublishingCredentialsSlotPoller{
+	poller := &WebAppsClientListPublishingCredentialsSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -7271,396 +7527,396 @@ func (l *WebAppsListPublishingCredentialsSlotPollerResponse) Resume(ctx context.
 	return nil
 }
 
-// WebAppsListPublishingCredentialsSlotResponse contains the response from method WebApps.ListPublishingCredentialsSlot.
-type WebAppsListPublishingCredentialsSlotResponse struct {
-	WebAppsListPublishingCredentialsSlotResult
+// WebAppsClientListPublishingCredentialsSlotResponse contains the response from method WebAppsClient.ListPublishingCredentialsSlot.
+type WebAppsClientListPublishingCredentialsSlotResponse struct {
+	WebAppsClientListPublishingCredentialsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPublishingCredentialsSlotResult contains the result from method WebApps.ListPublishingCredentialsSlot.
-type WebAppsListPublishingCredentialsSlotResult struct {
+// WebAppsClientListPublishingCredentialsSlotResult contains the result from method WebAppsClient.ListPublishingCredentialsSlot.
+type WebAppsClientListPublishingCredentialsSlotResult struct {
 	User
 }
 
-// WebAppsListPublishingProfileXMLWithSecretsResponse contains the response from method WebApps.ListPublishingProfileXMLWithSecrets.
-type WebAppsListPublishingProfileXMLWithSecretsResponse struct {
+// WebAppsClientListPublishingProfileXMLWithSecretsResponse contains the response from method WebAppsClient.ListPublishingProfileXMLWithSecrets.
+type WebAppsClientListPublishingProfileXMLWithSecretsResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListPublishingProfileXMLWithSecretsSlotResponse contains the response from method WebApps.ListPublishingProfileXMLWithSecretsSlot.
-type WebAppsListPublishingProfileXMLWithSecretsSlotResponse struct {
+// WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse contains the response from method WebAppsClient.ListPublishingProfileXMLWithSecretsSlot.
+type WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListRelayServiceConnectionsResponse contains the response from method WebApps.ListRelayServiceConnections.
-type WebAppsListRelayServiceConnectionsResponse struct {
-	WebAppsListRelayServiceConnectionsResult
+// WebAppsClientListRelayServiceConnectionsResponse contains the response from method WebAppsClient.ListRelayServiceConnections.
+type WebAppsClientListRelayServiceConnectionsResponse struct {
+	WebAppsClientListRelayServiceConnectionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListRelayServiceConnectionsResult contains the result from method WebApps.ListRelayServiceConnections.
-type WebAppsListRelayServiceConnectionsResult struct {
+// WebAppsClientListRelayServiceConnectionsResult contains the result from method WebAppsClient.ListRelayServiceConnections.
+type WebAppsClientListRelayServiceConnectionsResult struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsListRelayServiceConnectionsSlotResponse contains the response from method WebApps.ListRelayServiceConnectionsSlot.
-type WebAppsListRelayServiceConnectionsSlotResponse struct {
-	WebAppsListRelayServiceConnectionsSlotResult
+// WebAppsClientListRelayServiceConnectionsSlotResponse contains the response from method WebAppsClient.ListRelayServiceConnectionsSlot.
+type WebAppsClientListRelayServiceConnectionsSlotResponse struct {
+	WebAppsClientListRelayServiceConnectionsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListRelayServiceConnectionsSlotResult contains the result from method WebApps.ListRelayServiceConnectionsSlot.
-type WebAppsListRelayServiceConnectionsSlotResult struct {
+// WebAppsClientListRelayServiceConnectionsSlotResult contains the result from method WebAppsClient.ListRelayServiceConnectionsSlot.
+type WebAppsClientListRelayServiceConnectionsSlotResult struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsListResponse contains the response from method WebApps.List.
-type WebAppsListResponse struct {
-	WebAppsListResult
+// WebAppsClientListResponse contains the response from method WebAppsClient.List.
+type WebAppsClientListResponse struct {
+	WebAppsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListResult contains the result from method WebApps.List.
-type WebAppsListResult struct {
+// WebAppsClientListResult contains the result from method WebAppsClient.List.
+type WebAppsClientListResult struct {
 	WebAppCollection
 }
 
-// WebAppsListSiteBackupsResponse contains the response from method WebApps.ListSiteBackups.
-type WebAppsListSiteBackupsResponse struct {
-	WebAppsListSiteBackupsResult
+// WebAppsClientListSiteBackupsResponse contains the response from method WebAppsClient.ListSiteBackups.
+type WebAppsClientListSiteBackupsResponse struct {
+	WebAppsClientListSiteBackupsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSiteBackupsResult contains the result from method WebApps.ListSiteBackups.
-type WebAppsListSiteBackupsResult struct {
+// WebAppsClientListSiteBackupsResult contains the result from method WebAppsClient.ListSiteBackups.
+type WebAppsClientListSiteBackupsResult struct {
 	BackupItemCollection
 }
 
-// WebAppsListSiteBackupsSlotResponse contains the response from method WebApps.ListSiteBackupsSlot.
-type WebAppsListSiteBackupsSlotResponse struct {
-	WebAppsListSiteBackupsSlotResult
+// WebAppsClientListSiteBackupsSlotResponse contains the response from method WebAppsClient.ListSiteBackupsSlot.
+type WebAppsClientListSiteBackupsSlotResponse struct {
+	WebAppsClientListSiteBackupsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSiteBackupsSlotResult contains the result from method WebApps.ListSiteBackupsSlot.
-type WebAppsListSiteBackupsSlotResult struct {
+// WebAppsClientListSiteBackupsSlotResult contains the result from method WebAppsClient.ListSiteBackupsSlot.
+type WebAppsClientListSiteBackupsSlotResult struct {
 	BackupItemCollection
 }
 
-// WebAppsListSiteExtensionsResponse contains the response from method WebApps.ListSiteExtensions.
-type WebAppsListSiteExtensionsResponse struct {
-	WebAppsListSiteExtensionsResult
+// WebAppsClientListSiteExtensionsResponse contains the response from method WebAppsClient.ListSiteExtensions.
+type WebAppsClientListSiteExtensionsResponse struct {
+	WebAppsClientListSiteExtensionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSiteExtensionsResult contains the result from method WebApps.ListSiteExtensions.
-type WebAppsListSiteExtensionsResult struct {
+// WebAppsClientListSiteExtensionsResult contains the result from method WebAppsClient.ListSiteExtensions.
+type WebAppsClientListSiteExtensionsResult struct {
 	SiteExtensionInfoCollection
 }
 
-// WebAppsListSiteExtensionsSlotResponse contains the response from method WebApps.ListSiteExtensionsSlot.
-type WebAppsListSiteExtensionsSlotResponse struct {
-	WebAppsListSiteExtensionsSlotResult
+// WebAppsClientListSiteExtensionsSlotResponse contains the response from method WebAppsClient.ListSiteExtensionsSlot.
+type WebAppsClientListSiteExtensionsSlotResponse struct {
+	WebAppsClientListSiteExtensionsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSiteExtensionsSlotResult contains the result from method WebApps.ListSiteExtensionsSlot.
-type WebAppsListSiteExtensionsSlotResult struct {
+// WebAppsClientListSiteExtensionsSlotResult contains the result from method WebAppsClient.ListSiteExtensionsSlot.
+type WebAppsClientListSiteExtensionsSlotResult struct {
 	SiteExtensionInfoCollection
 }
 
-// WebAppsListSitePushSettingsResponse contains the response from method WebApps.ListSitePushSettings.
-type WebAppsListSitePushSettingsResponse struct {
-	WebAppsListSitePushSettingsResult
+// WebAppsClientListSitePushSettingsResponse contains the response from method WebAppsClient.ListSitePushSettings.
+type WebAppsClientListSitePushSettingsResponse struct {
+	WebAppsClientListSitePushSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSitePushSettingsResult contains the result from method WebApps.ListSitePushSettings.
-type WebAppsListSitePushSettingsResult struct {
+// WebAppsClientListSitePushSettingsResult contains the result from method WebAppsClient.ListSitePushSettings.
+type WebAppsClientListSitePushSettingsResult struct {
 	PushSettings
 }
 
-// WebAppsListSitePushSettingsSlotResponse contains the response from method WebApps.ListSitePushSettingsSlot.
-type WebAppsListSitePushSettingsSlotResponse struct {
-	WebAppsListSitePushSettingsSlotResult
+// WebAppsClientListSitePushSettingsSlotResponse contains the response from method WebAppsClient.ListSitePushSettingsSlot.
+type WebAppsClientListSitePushSettingsSlotResponse struct {
+	WebAppsClientListSitePushSettingsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSitePushSettingsSlotResult contains the result from method WebApps.ListSitePushSettingsSlot.
-type WebAppsListSitePushSettingsSlotResult struct {
+// WebAppsClientListSitePushSettingsSlotResult contains the result from method WebAppsClient.ListSitePushSettingsSlot.
+type WebAppsClientListSitePushSettingsSlotResult struct {
 	PushSettings
 }
 
-// WebAppsListSlotConfigurationNamesResponse contains the response from method WebApps.ListSlotConfigurationNames.
-type WebAppsListSlotConfigurationNamesResponse struct {
-	WebAppsListSlotConfigurationNamesResult
+// WebAppsClientListSlotConfigurationNamesResponse contains the response from method WebAppsClient.ListSlotConfigurationNames.
+type WebAppsClientListSlotConfigurationNamesResponse struct {
+	WebAppsClientListSlotConfigurationNamesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSlotConfigurationNamesResult contains the result from method WebApps.ListSlotConfigurationNames.
-type WebAppsListSlotConfigurationNamesResult struct {
+// WebAppsClientListSlotConfigurationNamesResult contains the result from method WebAppsClient.ListSlotConfigurationNames.
+type WebAppsClientListSlotConfigurationNamesResult struct {
 	SlotConfigNamesResource
 }
 
-// WebAppsListSlotDifferencesFromProductionResponse contains the response from method WebApps.ListSlotDifferencesFromProduction.
-type WebAppsListSlotDifferencesFromProductionResponse struct {
-	WebAppsListSlotDifferencesFromProductionResult
+// WebAppsClientListSlotDifferencesFromProductionResponse contains the response from method WebAppsClient.ListSlotDifferencesFromProduction.
+type WebAppsClientListSlotDifferencesFromProductionResponse struct {
+	WebAppsClientListSlotDifferencesFromProductionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSlotDifferencesFromProductionResult contains the result from method WebApps.ListSlotDifferencesFromProduction.
-type WebAppsListSlotDifferencesFromProductionResult struct {
+// WebAppsClientListSlotDifferencesFromProductionResult contains the result from method WebAppsClient.ListSlotDifferencesFromProduction.
+type WebAppsClientListSlotDifferencesFromProductionResult struct {
 	SlotDifferenceCollection
 }
 
-// WebAppsListSlotDifferencesSlotResponse contains the response from method WebApps.ListSlotDifferencesSlot.
-type WebAppsListSlotDifferencesSlotResponse struct {
-	WebAppsListSlotDifferencesSlotResult
+// WebAppsClientListSlotDifferencesSlotResponse contains the response from method WebAppsClient.ListSlotDifferencesSlot.
+type WebAppsClientListSlotDifferencesSlotResponse struct {
+	WebAppsClientListSlotDifferencesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSlotDifferencesSlotResult contains the result from method WebApps.ListSlotDifferencesSlot.
-type WebAppsListSlotDifferencesSlotResult struct {
+// WebAppsClientListSlotDifferencesSlotResult contains the result from method WebAppsClient.ListSlotDifferencesSlot.
+type WebAppsClientListSlotDifferencesSlotResult struct {
 	SlotDifferenceCollection
 }
 
-// WebAppsListSlotsResponse contains the response from method WebApps.ListSlots.
-type WebAppsListSlotsResponse struct {
-	WebAppsListSlotsResult
+// WebAppsClientListSlotsResponse contains the response from method WebAppsClient.ListSlots.
+type WebAppsClientListSlotsResponse struct {
+	WebAppsClientListSlotsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSlotsResult contains the result from method WebApps.ListSlots.
-type WebAppsListSlotsResult struct {
+// WebAppsClientListSlotsResult contains the result from method WebAppsClient.ListSlots.
+type WebAppsClientListSlotsResult struct {
 	WebAppCollection
 }
 
-// WebAppsListSnapshotsFromDRSecondaryResponse contains the response from method WebApps.ListSnapshotsFromDRSecondary.
-type WebAppsListSnapshotsFromDRSecondaryResponse struct {
-	WebAppsListSnapshotsFromDRSecondaryResult
+// WebAppsClientListSnapshotsFromDRSecondaryResponse contains the response from method WebAppsClient.ListSnapshotsFromDRSecondary.
+type WebAppsClientListSnapshotsFromDRSecondaryResponse struct {
+	WebAppsClientListSnapshotsFromDRSecondaryResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSnapshotsFromDRSecondaryResult contains the result from method WebApps.ListSnapshotsFromDRSecondary.
-type WebAppsListSnapshotsFromDRSecondaryResult struct {
+// WebAppsClientListSnapshotsFromDRSecondaryResult contains the result from method WebAppsClient.ListSnapshotsFromDRSecondary.
+type WebAppsClientListSnapshotsFromDRSecondaryResult struct {
 	SnapshotCollection
 }
 
-// WebAppsListSnapshotsFromDRSecondarySlotResponse contains the response from method WebApps.ListSnapshotsFromDRSecondarySlot.
-type WebAppsListSnapshotsFromDRSecondarySlotResponse struct {
-	WebAppsListSnapshotsFromDRSecondarySlotResult
+// WebAppsClientListSnapshotsFromDRSecondarySlotResponse contains the response from method WebAppsClient.ListSnapshotsFromDRSecondarySlot.
+type WebAppsClientListSnapshotsFromDRSecondarySlotResponse struct {
+	WebAppsClientListSnapshotsFromDRSecondarySlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSnapshotsFromDRSecondarySlotResult contains the result from method WebApps.ListSnapshotsFromDRSecondarySlot.
-type WebAppsListSnapshotsFromDRSecondarySlotResult struct {
+// WebAppsClientListSnapshotsFromDRSecondarySlotResult contains the result from method WebAppsClient.ListSnapshotsFromDRSecondarySlot.
+type WebAppsClientListSnapshotsFromDRSecondarySlotResult struct {
 	SnapshotCollection
 }
 
-// WebAppsListSnapshotsResponse contains the response from method WebApps.ListSnapshots.
-type WebAppsListSnapshotsResponse struct {
-	WebAppsListSnapshotsResult
+// WebAppsClientListSnapshotsResponse contains the response from method WebAppsClient.ListSnapshots.
+type WebAppsClientListSnapshotsResponse struct {
+	WebAppsClientListSnapshotsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSnapshotsResult contains the result from method WebApps.ListSnapshots.
-type WebAppsListSnapshotsResult struct {
+// WebAppsClientListSnapshotsResult contains the result from method WebAppsClient.ListSnapshots.
+type WebAppsClientListSnapshotsResult struct {
 	SnapshotCollection
 }
 
-// WebAppsListSnapshotsSlotResponse contains the response from method WebApps.ListSnapshotsSlot.
-type WebAppsListSnapshotsSlotResponse struct {
-	WebAppsListSnapshotsSlotResult
+// WebAppsClientListSnapshotsSlotResponse contains the response from method WebAppsClient.ListSnapshotsSlot.
+type WebAppsClientListSnapshotsSlotResponse struct {
+	WebAppsClientListSnapshotsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSnapshotsSlotResult contains the result from method WebApps.ListSnapshotsSlot.
-type WebAppsListSnapshotsSlotResult struct {
+// WebAppsClientListSnapshotsSlotResult contains the result from method WebAppsClient.ListSnapshotsSlot.
+type WebAppsClientListSnapshotsSlotResult struct {
 	SnapshotCollection
 }
 
-// WebAppsListSyncFunctionTriggersResponse contains the response from method WebApps.ListSyncFunctionTriggers.
-type WebAppsListSyncFunctionTriggersResponse struct {
-	WebAppsListSyncFunctionTriggersResult
+// WebAppsClientListSyncFunctionTriggersResponse contains the response from method WebAppsClient.ListSyncFunctionTriggers.
+type WebAppsClientListSyncFunctionTriggersResponse struct {
+	WebAppsClientListSyncFunctionTriggersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSyncFunctionTriggersResult contains the result from method WebApps.ListSyncFunctionTriggers.
-type WebAppsListSyncFunctionTriggersResult struct {
+// WebAppsClientListSyncFunctionTriggersResult contains the result from method WebAppsClient.ListSyncFunctionTriggers.
+type WebAppsClientListSyncFunctionTriggersResult struct {
 	FunctionSecrets
 }
 
-// WebAppsListSyncFunctionTriggersSlotResponse contains the response from method WebApps.ListSyncFunctionTriggersSlot.
-type WebAppsListSyncFunctionTriggersSlotResponse struct {
-	WebAppsListSyncFunctionTriggersSlotResult
+// WebAppsClientListSyncFunctionTriggersSlotResponse contains the response from method WebAppsClient.ListSyncFunctionTriggersSlot.
+type WebAppsClientListSyncFunctionTriggersSlotResponse struct {
+	WebAppsClientListSyncFunctionTriggersSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSyncFunctionTriggersSlotResult contains the result from method WebApps.ListSyncFunctionTriggersSlot.
-type WebAppsListSyncFunctionTriggersSlotResult struct {
+// WebAppsClientListSyncFunctionTriggersSlotResult contains the result from method WebAppsClient.ListSyncFunctionTriggersSlot.
+type WebAppsClientListSyncFunctionTriggersSlotResult struct {
 	FunctionSecrets
 }
 
-// WebAppsListSyncStatusResponse contains the response from method WebApps.ListSyncStatus.
-type WebAppsListSyncStatusResponse struct {
+// WebAppsClientListSyncStatusResponse contains the response from method WebAppsClient.ListSyncStatus.
+type WebAppsClientListSyncStatusResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListSyncStatusSlotResponse contains the response from method WebApps.ListSyncStatusSlot.
-type WebAppsListSyncStatusSlotResponse struct {
+// WebAppsClientListSyncStatusSlotResponse contains the response from method WebAppsClient.ListSyncStatusSlot.
+type WebAppsClientListSyncStatusSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListTriggeredWebJobHistoryResponse contains the response from method WebApps.ListTriggeredWebJobHistory.
-type WebAppsListTriggeredWebJobHistoryResponse struct {
-	WebAppsListTriggeredWebJobHistoryResult
+// WebAppsClientListTriggeredWebJobHistoryResponse contains the response from method WebAppsClient.ListTriggeredWebJobHistory.
+type WebAppsClientListTriggeredWebJobHistoryResponse struct {
+	WebAppsClientListTriggeredWebJobHistoryResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListTriggeredWebJobHistoryResult contains the result from method WebApps.ListTriggeredWebJobHistory.
-type WebAppsListTriggeredWebJobHistoryResult struct {
+// WebAppsClientListTriggeredWebJobHistoryResult contains the result from method WebAppsClient.ListTriggeredWebJobHistory.
+type WebAppsClientListTriggeredWebJobHistoryResult struct {
 	TriggeredJobHistoryCollection
 }
 
-// WebAppsListTriggeredWebJobHistorySlotResponse contains the response from method WebApps.ListTriggeredWebJobHistorySlot.
-type WebAppsListTriggeredWebJobHistorySlotResponse struct {
-	WebAppsListTriggeredWebJobHistorySlotResult
+// WebAppsClientListTriggeredWebJobHistorySlotResponse contains the response from method WebAppsClient.ListTriggeredWebJobHistorySlot.
+type WebAppsClientListTriggeredWebJobHistorySlotResponse struct {
+	WebAppsClientListTriggeredWebJobHistorySlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListTriggeredWebJobHistorySlotResult contains the result from method WebApps.ListTriggeredWebJobHistorySlot.
-type WebAppsListTriggeredWebJobHistorySlotResult struct {
+// WebAppsClientListTriggeredWebJobHistorySlotResult contains the result from method WebAppsClient.ListTriggeredWebJobHistorySlot.
+type WebAppsClientListTriggeredWebJobHistorySlotResult struct {
 	TriggeredJobHistoryCollection
 }
 
-// WebAppsListTriggeredWebJobsResponse contains the response from method WebApps.ListTriggeredWebJobs.
-type WebAppsListTriggeredWebJobsResponse struct {
-	WebAppsListTriggeredWebJobsResult
+// WebAppsClientListTriggeredWebJobsResponse contains the response from method WebAppsClient.ListTriggeredWebJobs.
+type WebAppsClientListTriggeredWebJobsResponse struct {
+	WebAppsClientListTriggeredWebJobsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListTriggeredWebJobsResult contains the result from method WebApps.ListTriggeredWebJobs.
-type WebAppsListTriggeredWebJobsResult struct {
+// WebAppsClientListTriggeredWebJobsResult contains the result from method WebAppsClient.ListTriggeredWebJobs.
+type WebAppsClientListTriggeredWebJobsResult struct {
 	TriggeredWebJobCollection
 }
 
-// WebAppsListTriggeredWebJobsSlotResponse contains the response from method WebApps.ListTriggeredWebJobsSlot.
-type WebAppsListTriggeredWebJobsSlotResponse struct {
-	WebAppsListTriggeredWebJobsSlotResult
+// WebAppsClientListTriggeredWebJobsSlotResponse contains the response from method WebAppsClient.ListTriggeredWebJobsSlot.
+type WebAppsClientListTriggeredWebJobsSlotResponse struct {
+	WebAppsClientListTriggeredWebJobsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListTriggeredWebJobsSlotResult contains the result from method WebApps.ListTriggeredWebJobsSlot.
-type WebAppsListTriggeredWebJobsSlotResult struct {
+// WebAppsClientListTriggeredWebJobsSlotResult contains the result from method WebAppsClient.ListTriggeredWebJobsSlot.
+type WebAppsClientListTriggeredWebJobsSlotResult struct {
 	TriggeredWebJobCollection
 }
 
-// WebAppsListUsagesResponse contains the response from method WebApps.ListUsages.
-type WebAppsListUsagesResponse struct {
-	WebAppsListUsagesResult
+// WebAppsClientListUsagesResponse contains the response from method WebAppsClient.ListUsages.
+type WebAppsClientListUsagesResponse struct {
+	WebAppsClientListUsagesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListUsagesResult contains the result from method WebApps.ListUsages.
-type WebAppsListUsagesResult struct {
+// WebAppsClientListUsagesResult contains the result from method WebAppsClient.ListUsages.
+type WebAppsClientListUsagesResult struct {
 	CsmUsageQuotaCollection
 }
 
-// WebAppsListUsagesSlotResponse contains the response from method WebApps.ListUsagesSlot.
-type WebAppsListUsagesSlotResponse struct {
-	WebAppsListUsagesSlotResult
+// WebAppsClientListUsagesSlotResponse contains the response from method WebAppsClient.ListUsagesSlot.
+type WebAppsClientListUsagesSlotResponse struct {
+	WebAppsClientListUsagesSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListUsagesSlotResult contains the result from method WebApps.ListUsagesSlot.
-type WebAppsListUsagesSlotResult struct {
+// WebAppsClientListUsagesSlotResult contains the result from method WebAppsClient.ListUsagesSlot.
+type WebAppsClientListUsagesSlotResult struct {
 	CsmUsageQuotaCollection
 }
 
-// WebAppsListVnetConnectionsResponse contains the response from method WebApps.ListVnetConnections.
-type WebAppsListVnetConnectionsResponse struct {
-	WebAppsListVnetConnectionsResult
+// WebAppsClientListVnetConnectionsResponse contains the response from method WebAppsClient.ListVnetConnections.
+type WebAppsClientListVnetConnectionsResponse struct {
+	WebAppsClientListVnetConnectionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListVnetConnectionsResult contains the result from method WebApps.ListVnetConnections.
-type WebAppsListVnetConnectionsResult struct {
+// WebAppsClientListVnetConnectionsResult contains the result from method WebAppsClient.ListVnetConnections.
+type WebAppsClientListVnetConnectionsResult struct {
 	// Array of VnetInfoResource
 	VnetInfoResourceArray []*VnetInfoResource
 }
 
-// WebAppsListVnetConnectionsSlotResponse contains the response from method WebApps.ListVnetConnectionsSlot.
-type WebAppsListVnetConnectionsSlotResponse struct {
-	WebAppsListVnetConnectionsSlotResult
+// WebAppsClientListVnetConnectionsSlotResponse contains the response from method WebAppsClient.ListVnetConnectionsSlot.
+type WebAppsClientListVnetConnectionsSlotResponse struct {
+	WebAppsClientListVnetConnectionsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListVnetConnectionsSlotResult contains the result from method WebApps.ListVnetConnectionsSlot.
-type WebAppsListVnetConnectionsSlotResult struct {
+// WebAppsClientListVnetConnectionsSlotResult contains the result from method WebAppsClient.ListVnetConnectionsSlot.
+type WebAppsClientListVnetConnectionsSlotResult struct {
 	// Array of VnetInfoResource
 	VnetInfoResourceArray []*VnetInfoResource
 }
 
-// WebAppsListWebJobsResponse contains the response from method WebApps.ListWebJobs.
-type WebAppsListWebJobsResponse struct {
-	WebAppsListWebJobsResult
+// WebAppsClientListWebJobsResponse contains the response from method WebAppsClient.ListWebJobs.
+type WebAppsClientListWebJobsResponse struct {
+	WebAppsClientListWebJobsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListWebJobsResult contains the result from method WebApps.ListWebJobs.
-type WebAppsListWebJobsResult struct {
+// WebAppsClientListWebJobsResult contains the result from method WebAppsClient.ListWebJobs.
+type WebAppsClientListWebJobsResult struct {
 	WebJobCollection
 }
 
-// WebAppsListWebJobsSlotResponse contains the response from method WebApps.ListWebJobsSlot.
-type WebAppsListWebJobsSlotResponse struct {
-	WebAppsListWebJobsSlotResult
+// WebAppsClientListWebJobsSlotResponse contains the response from method WebAppsClient.ListWebJobsSlot.
+type WebAppsClientListWebJobsSlotResponse struct {
+	WebAppsClientListWebJobsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsListWebJobsSlotResult contains the result from method WebApps.ListWebJobsSlot.
-type WebAppsListWebJobsSlotResult struct {
+// WebAppsClientListWebJobsSlotResult contains the result from method WebAppsClient.ListWebJobsSlot.
+type WebAppsClientListWebJobsSlotResult struct {
 	WebJobCollection
 }
 
-// WebAppsMigrateMySQLPollerResponse contains the response from method WebApps.MigrateMySQL.
-type WebAppsMigrateMySQLPollerResponse struct {
+// WebAppsClientMigrateMySQLPollerResponse contains the response from method WebAppsClient.MigrateMySQL.
+type WebAppsClientMigrateMySQLPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsMigrateMySQLPoller
+	Poller *WebAppsClientMigrateMySQLPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -7669,8 +7925,8 @@ type WebAppsMigrateMySQLPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsMigrateMySQLPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsMigrateMySQLResponse, error) {
-	respType := WebAppsMigrateMySQLResponse{}
+func (l WebAppsClientMigrateMySQLPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientMigrateMySQLResponse, error) {
+	respType := WebAppsClientMigrateMySQLResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Operation)
 	if err != nil {
 		return respType, err
@@ -7679,13 +7935,13 @@ func (l WebAppsMigrateMySQLPollerResponse) PollUntilDone(ctx context.Context, fr
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsMigrateMySQLPollerResponse from the provided client and resume token.
-func (l *WebAppsMigrateMySQLPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.MigrateMySQL", token, client.pl, client.migrateMySQLHandleError)
+// Resume rehydrates a WebAppsClientMigrateMySQLPollerResponse from the provided client and resume token.
+func (l *WebAppsClientMigrateMySQLPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.MigrateMySQL", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsMigrateMySQLPoller{
+	poller := &WebAppsClientMigrateMySQLPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -7697,22 +7953,22 @@ func (l *WebAppsMigrateMySQLPollerResponse) Resume(ctx context.Context, client *
 	return nil
 }
 
-// WebAppsMigrateMySQLResponse contains the response from method WebApps.MigrateMySQL.
-type WebAppsMigrateMySQLResponse struct {
-	WebAppsMigrateMySQLResult
+// WebAppsClientMigrateMySQLResponse contains the response from method WebAppsClient.MigrateMySQL.
+type WebAppsClientMigrateMySQLResponse struct {
+	WebAppsClientMigrateMySQLResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsMigrateMySQLResult contains the result from method WebApps.MigrateMySQL.
-type WebAppsMigrateMySQLResult struct {
+// WebAppsClientMigrateMySQLResult contains the result from method WebAppsClient.MigrateMySQL.
+type WebAppsClientMigrateMySQLResult struct {
 	Operation
 }
 
-// WebAppsMigrateStoragePollerResponse contains the response from method WebApps.MigrateStorage.
-type WebAppsMigrateStoragePollerResponse struct {
+// WebAppsClientMigrateStoragePollerResponse contains the response from method WebAppsClient.MigrateStorage.
+type WebAppsClientMigrateStoragePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsMigrateStoragePoller
+	Poller *WebAppsClientMigrateStoragePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -7721,8 +7977,8 @@ type WebAppsMigrateStoragePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsMigrateStoragePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsMigrateStorageResponse, error) {
-	respType := WebAppsMigrateStorageResponse{}
+func (l WebAppsClientMigrateStoragePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientMigrateStorageResponse, error) {
+	respType := WebAppsClientMigrateStorageResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StorageMigrationResponse)
 	if err != nil {
 		return respType, err
@@ -7731,13 +7987,13 @@ func (l WebAppsMigrateStoragePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsMigrateStoragePollerResponse from the provided client and resume token.
-func (l *WebAppsMigrateStoragePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.MigrateStorage", token, client.pl, client.migrateStorageHandleError)
+// Resume rehydrates a WebAppsClientMigrateStoragePollerResponse from the provided client and resume token.
+func (l *WebAppsClientMigrateStoragePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.MigrateStorage", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsMigrateStoragePoller{
+	poller := &WebAppsClientMigrateStoragePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -7749,82 +8005,82 @@ func (l *WebAppsMigrateStoragePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// WebAppsMigrateStorageResponse contains the response from method WebApps.MigrateStorage.
-type WebAppsMigrateStorageResponse struct {
-	WebAppsMigrateStorageResult
+// WebAppsClientMigrateStorageResponse contains the response from method WebAppsClient.MigrateStorage.
+type WebAppsClientMigrateStorageResponse struct {
+	WebAppsClientMigrateStorageResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsMigrateStorageResult contains the result from method WebApps.MigrateStorage.
-type WebAppsMigrateStorageResult struct {
+// WebAppsClientMigrateStorageResult contains the result from method WebAppsClient.MigrateStorage.
+type WebAppsClientMigrateStorageResult struct {
 	StorageMigrationResponse
 }
 
-// WebAppsPutPrivateAccessVnetResponse contains the response from method WebApps.PutPrivateAccessVnet.
-type WebAppsPutPrivateAccessVnetResponse struct {
-	WebAppsPutPrivateAccessVnetResult
+// WebAppsClientPutPrivateAccessVnetResponse contains the response from method WebAppsClient.PutPrivateAccessVnet.
+type WebAppsClientPutPrivateAccessVnetResponse struct {
+	WebAppsClientPutPrivateAccessVnetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsPutPrivateAccessVnetResult contains the result from method WebApps.PutPrivateAccessVnet.
-type WebAppsPutPrivateAccessVnetResult struct {
+// WebAppsClientPutPrivateAccessVnetResult contains the result from method WebAppsClient.PutPrivateAccessVnet.
+type WebAppsClientPutPrivateAccessVnetResult struct {
 	PrivateAccess
 }
 
-// WebAppsPutPrivateAccessVnetSlotResponse contains the response from method WebApps.PutPrivateAccessVnetSlot.
-type WebAppsPutPrivateAccessVnetSlotResponse struct {
-	WebAppsPutPrivateAccessVnetSlotResult
+// WebAppsClientPutPrivateAccessVnetSlotResponse contains the response from method WebAppsClient.PutPrivateAccessVnetSlot.
+type WebAppsClientPutPrivateAccessVnetSlotResponse struct {
+	WebAppsClientPutPrivateAccessVnetSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsPutPrivateAccessVnetSlotResult contains the result from method WebApps.PutPrivateAccessVnetSlot.
-type WebAppsPutPrivateAccessVnetSlotResult struct {
+// WebAppsClientPutPrivateAccessVnetSlotResult contains the result from method WebAppsClient.PutPrivateAccessVnetSlot.
+type WebAppsClientPutPrivateAccessVnetSlotResult struct {
 	PrivateAccess
 }
 
-// WebAppsRecoverSiteConfigurationSnapshotResponse contains the response from method WebApps.RecoverSiteConfigurationSnapshot.
-type WebAppsRecoverSiteConfigurationSnapshotResponse struct {
+// WebAppsClientRecoverSiteConfigurationSnapshotResponse contains the response from method WebAppsClient.RecoverSiteConfigurationSnapshot.
+type WebAppsClientRecoverSiteConfigurationSnapshotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRecoverSiteConfigurationSnapshotSlotResponse contains the response from method WebApps.RecoverSiteConfigurationSnapshotSlot.
-type WebAppsRecoverSiteConfigurationSnapshotSlotResponse struct {
+// WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse contains the response from method WebAppsClient.RecoverSiteConfigurationSnapshotSlot.
+type WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsResetProductionSlotConfigResponse contains the response from method WebApps.ResetProductionSlotConfig.
-type WebAppsResetProductionSlotConfigResponse struct {
+// WebAppsClientResetProductionSlotConfigResponse contains the response from method WebAppsClient.ResetProductionSlotConfig.
+type WebAppsClientResetProductionSlotConfigResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsResetSlotConfigurationSlotResponse contains the response from method WebApps.ResetSlotConfigurationSlot.
-type WebAppsResetSlotConfigurationSlotResponse struct {
+// WebAppsClientResetSlotConfigurationSlotResponse contains the response from method WebAppsClient.ResetSlotConfigurationSlot.
+type WebAppsClientResetSlotConfigurationSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestartResponse contains the response from method WebApps.Restart.
-type WebAppsRestartResponse struct {
+// WebAppsClientRestartResponse contains the response from method WebAppsClient.Restart.
+type WebAppsClientRestartResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestartSlotResponse contains the response from method WebApps.RestartSlot.
-type WebAppsRestartSlotResponse struct {
+// WebAppsClientRestartSlotResponse contains the response from method WebAppsClient.RestartSlot.
+type WebAppsClientRestartSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestoreFromBackupBlobPollerResponse contains the response from method WebApps.RestoreFromBackupBlob.
-type WebAppsRestoreFromBackupBlobPollerResponse struct {
+// WebAppsClientRestoreFromBackupBlobPollerResponse contains the response from method WebAppsClient.RestoreFromBackupBlob.
+type WebAppsClientRestoreFromBackupBlobPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsRestoreFromBackupBlobPoller
+	Poller *WebAppsClientRestoreFromBackupBlobPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -7833,8 +8089,8 @@ type WebAppsRestoreFromBackupBlobPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsRestoreFromBackupBlobPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromBackupBlobResponse, error) {
-	respType := WebAppsRestoreFromBackupBlobResponse{}
+func (l WebAppsClientRestoreFromBackupBlobPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientRestoreFromBackupBlobResponse, error) {
+	respType := WebAppsClientRestoreFromBackupBlobResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -7843,13 +8099,13 @@ func (l WebAppsRestoreFromBackupBlobPollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsRestoreFromBackupBlobPollerResponse from the provided client and resume token.
-func (l *WebAppsRestoreFromBackupBlobPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromBackupBlob", token, client.pl, client.restoreFromBackupBlobHandleError)
+// Resume rehydrates a WebAppsClientRestoreFromBackupBlobPollerResponse from the provided client and resume token.
+func (l *WebAppsClientRestoreFromBackupBlobPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromBackupBlob", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsRestoreFromBackupBlobPoller{
+	poller := &WebAppsClientRestoreFromBackupBlobPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -7861,16 +8117,16 @@ func (l *WebAppsRestoreFromBackupBlobPollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// WebAppsRestoreFromBackupBlobResponse contains the response from method WebApps.RestoreFromBackupBlob.
-type WebAppsRestoreFromBackupBlobResponse struct {
+// WebAppsClientRestoreFromBackupBlobResponse contains the response from method WebAppsClient.RestoreFromBackupBlob.
+type WebAppsClientRestoreFromBackupBlobResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestoreFromBackupBlobSlotPollerResponse contains the response from method WebApps.RestoreFromBackupBlobSlot.
-type WebAppsRestoreFromBackupBlobSlotPollerResponse struct {
+// WebAppsClientRestoreFromBackupBlobSlotPollerResponse contains the response from method WebAppsClient.RestoreFromBackupBlobSlot.
+type WebAppsClientRestoreFromBackupBlobSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsRestoreFromBackupBlobSlotPoller
+	Poller *WebAppsClientRestoreFromBackupBlobSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -7879,8 +8135,8 @@ type WebAppsRestoreFromBackupBlobSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsRestoreFromBackupBlobSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromBackupBlobSlotResponse, error) {
-	respType := WebAppsRestoreFromBackupBlobSlotResponse{}
+func (l WebAppsClientRestoreFromBackupBlobSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientRestoreFromBackupBlobSlotResponse, error) {
+	respType := WebAppsClientRestoreFromBackupBlobSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -7889,13 +8145,13 @@ func (l WebAppsRestoreFromBackupBlobSlotPollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsRestoreFromBackupBlobSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsRestoreFromBackupBlobSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromBackupBlobSlot", token, client.pl, client.restoreFromBackupBlobSlotHandleError)
+// Resume rehydrates a WebAppsClientRestoreFromBackupBlobSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientRestoreFromBackupBlobSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromBackupBlobSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsRestoreFromBackupBlobSlotPoller{
+	poller := &WebAppsClientRestoreFromBackupBlobSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -7907,16 +8163,16 @@ func (l *WebAppsRestoreFromBackupBlobSlotPollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// WebAppsRestoreFromBackupBlobSlotResponse contains the response from method WebApps.RestoreFromBackupBlobSlot.
-type WebAppsRestoreFromBackupBlobSlotResponse struct {
+// WebAppsClientRestoreFromBackupBlobSlotResponse contains the response from method WebAppsClient.RestoreFromBackupBlobSlot.
+type WebAppsClientRestoreFromBackupBlobSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestoreFromDeletedAppPollerResponse contains the response from method WebApps.RestoreFromDeletedApp.
-type WebAppsRestoreFromDeletedAppPollerResponse struct {
+// WebAppsClientRestoreFromDeletedAppPollerResponse contains the response from method WebAppsClient.RestoreFromDeletedApp.
+type WebAppsClientRestoreFromDeletedAppPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsRestoreFromDeletedAppPoller
+	Poller *WebAppsClientRestoreFromDeletedAppPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -7925,8 +8181,8 @@ type WebAppsRestoreFromDeletedAppPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsRestoreFromDeletedAppPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromDeletedAppResponse, error) {
-	respType := WebAppsRestoreFromDeletedAppResponse{}
+func (l WebAppsClientRestoreFromDeletedAppPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientRestoreFromDeletedAppResponse, error) {
+	respType := WebAppsClientRestoreFromDeletedAppResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -7935,13 +8191,13 @@ func (l WebAppsRestoreFromDeletedAppPollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsRestoreFromDeletedAppPollerResponse from the provided client and resume token.
-func (l *WebAppsRestoreFromDeletedAppPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromDeletedApp", token, client.pl, client.restoreFromDeletedAppHandleError)
+// Resume rehydrates a WebAppsClientRestoreFromDeletedAppPollerResponse from the provided client and resume token.
+func (l *WebAppsClientRestoreFromDeletedAppPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromDeletedApp", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsRestoreFromDeletedAppPoller{
+	poller := &WebAppsClientRestoreFromDeletedAppPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -7953,16 +8209,16 @@ func (l *WebAppsRestoreFromDeletedAppPollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// WebAppsRestoreFromDeletedAppResponse contains the response from method WebApps.RestoreFromDeletedApp.
-type WebAppsRestoreFromDeletedAppResponse struct {
+// WebAppsClientRestoreFromDeletedAppResponse contains the response from method WebAppsClient.RestoreFromDeletedApp.
+type WebAppsClientRestoreFromDeletedAppResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestoreFromDeletedAppSlotPollerResponse contains the response from method WebApps.RestoreFromDeletedAppSlot.
-type WebAppsRestoreFromDeletedAppSlotPollerResponse struct {
+// WebAppsClientRestoreFromDeletedAppSlotPollerResponse contains the response from method WebAppsClient.RestoreFromDeletedAppSlot.
+type WebAppsClientRestoreFromDeletedAppSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsRestoreFromDeletedAppSlotPoller
+	Poller *WebAppsClientRestoreFromDeletedAppSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -7971,8 +8227,8 @@ type WebAppsRestoreFromDeletedAppSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsRestoreFromDeletedAppSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromDeletedAppSlotResponse, error) {
-	respType := WebAppsRestoreFromDeletedAppSlotResponse{}
+func (l WebAppsClientRestoreFromDeletedAppSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientRestoreFromDeletedAppSlotResponse, error) {
+	respType := WebAppsClientRestoreFromDeletedAppSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -7981,13 +8237,13 @@ func (l WebAppsRestoreFromDeletedAppSlotPollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsRestoreFromDeletedAppSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsRestoreFromDeletedAppSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromDeletedAppSlot", token, client.pl, client.restoreFromDeletedAppSlotHandleError)
+// Resume rehydrates a WebAppsClientRestoreFromDeletedAppSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientRestoreFromDeletedAppSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromDeletedAppSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsRestoreFromDeletedAppSlotPoller{
+	poller := &WebAppsClientRestoreFromDeletedAppSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -7999,16 +8255,16 @@ func (l *WebAppsRestoreFromDeletedAppSlotPollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// WebAppsRestoreFromDeletedAppSlotResponse contains the response from method WebApps.RestoreFromDeletedAppSlot.
-type WebAppsRestoreFromDeletedAppSlotResponse struct {
+// WebAppsClientRestoreFromDeletedAppSlotResponse contains the response from method WebAppsClient.RestoreFromDeletedAppSlot.
+type WebAppsClientRestoreFromDeletedAppSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestorePollerResponse contains the response from method WebApps.Restore.
-type WebAppsRestorePollerResponse struct {
+// WebAppsClientRestorePollerResponse contains the response from method WebAppsClient.Restore.
+type WebAppsClientRestorePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsRestorePoller
+	Poller *WebAppsClientRestorePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8017,8 +8273,8 @@ type WebAppsRestorePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreResponse, error) {
-	respType := WebAppsRestoreResponse{}
+func (l WebAppsClientRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientRestoreResponse, error) {
+	respType := WebAppsClientRestoreResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -8027,13 +8283,13 @@ func (l WebAppsRestorePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsRestorePollerResponse from the provided client and resume token.
-func (l *WebAppsRestorePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.Restore", token, client.pl, client.restoreHandleError)
+// Resume rehydrates a WebAppsClientRestorePollerResponse from the provided client and resume token.
+func (l *WebAppsClientRestorePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.Restore", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsRestorePoller{
+	poller := &WebAppsClientRestorePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8045,16 +8301,16 @@ func (l *WebAppsRestorePollerResponse) Resume(ctx context.Context, client *WebAp
 	return nil
 }
 
-// WebAppsRestoreResponse contains the response from method WebApps.Restore.
-type WebAppsRestoreResponse struct {
+// WebAppsClientRestoreResponse contains the response from method WebAppsClient.Restore.
+type WebAppsClientRestoreResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestoreSlotPollerResponse contains the response from method WebApps.RestoreSlot.
-type WebAppsRestoreSlotPollerResponse struct {
+// WebAppsClientRestoreSlotPollerResponse contains the response from method WebAppsClient.RestoreSlot.
+type WebAppsClientRestoreSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsRestoreSlotPoller
+	Poller *WebAppsClientRestoreSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8063,8 +8319,8 @@ type WebAppsRestoreSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsRestoreSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSlotResponse, error) {
-	respType := WebAppsRestoreSlotResponse{}
+func (l WebAppsClientRestoreSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientRestoreSlotResponse, error) {
+	respType := WebAppsClientRestoreSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -8073,13 +8329,13 @@ func (l WebAppsRestoreSlotPollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsRestoreSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsRestoreSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSlot", token, client.pl, client.restoreSlotHandleError)
+// Resume rehydrates a WebAppsClientRestoreSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientRestoreSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsRestoreSlotPoller{
+	poller := &WebAppsClientRestoreSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8091,16 +8347,16 @@ func (l *WebAppsRestoreSlotPollerResponse) Resume(ctx context.Context, client *W
 	return nil
 }
 
-// WebAppsRestoreSlotResponse contains the response from method WebApps.RestoreSlot.
-type WebAppsRestoreSlotResponse struct {
+// WebAppsClientRestoreSlotResponse contains the response from method WebAppsClient.RestoreSlot.
+type WebAppsClientRestoreSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestoreSnapshotPollerResponse contains the response from method WebApps.RestoreSnapshot.
-type WebAppsRestoreSnapshotPollerResponse struct {
+// WebAppsClientRestoreSnapshotPollerResponse contains the response from method WebAppsClient.RestoreSnapshot.
+type WebAppsClientRestoreSnapshotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsRestoreSnapshotPoller
+	Poller *WebAppsClientRestoreSnapshotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8109,8 +8365,8 @@ type WebAppsRestoreSnapshotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsRestoreSnapshotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSnapshotResponse, error) {
-	respType := WebAppsRestoreSnapshotResponse{}
+func (l WebAppsClientRestoreSnapshotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientRestoreSnapshotResponse, error) {
+	respType := WebAppsClientRestoreSnapshotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -8119,13 +8375,13 @@ func (l WebAppsRestoreSnapshotPollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsRestoreSnapshotPollerResponse from the provided client and resume token.
-func (l *WebAppsRestoreSnapshotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSnapshot", token, client.pl, client.restoreSnapshotHandleError)
+// Resume rehydrates a WebAppsClientRestoreSnapshotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientRestoreSnapshotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSnapshot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsRestoreSnapshotPoller{
+	poller := &WebAppsClientRestoreSnapshotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8137,16 +8393,16 @@ func (l *WebAppsRestoreSnapshotPollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// WebAppsRestoreSnapshotResponse contains the response from method WebApps.RestoreSnapshot.
-type WebAppsRestoreSnapshotResponse struct {
+// WebAppsClientRestoreSnapshotResponse contains the response from method WebAppsClient.RestoreSnapshot.
+type WebAppsClientRestoreSnapshotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRestoreSnapshotSlotPollerResponse contains the response from method WebApps.RestoreSnapshotSlot.
-type WebAppsRestoreSnapshotSlotPollerResponse struct {
+// WebAppsClientRestoreSnapshotSlotPollerResponse contains the response from method WebAppsClient.RestoreSnapshotSlot.
+type WebAppsClientRestoreSnapshotSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsRestoreSnapshotSlotPoller
+	Poller *WebAppsClientRestoreSnapshotSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8155,8 +8411,8 @@ type WebAppsRestoreSnapshotSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsRestoreSnapshotSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSnapshotSlotResponse, error) {
-	respType := WebAppsRestoreSnapshotSlotResponse{}
+func (l WebAppsClientRestoreSnapshotSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientRestoreSnapshotSlotResponse, error) {
+	respType := WebAppsClientRestoreSnapshotSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -8165,13 +8421,13 @@ func (l WebAppsRestoreSnapshotSlotPollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsRestoreSnapshotSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsRestoreSnapshotSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSnapshotSlot", token, client.pl, client.restoreSnapshotSlotHandleError)
+// Resume rehydrates a WebAppsClientRestoreSnapshotSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientRestoreSnapshotSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSnapshotSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsRestoreSnapshotSlotPoller{
+	poller := &WebAppsClientRestoreSnapshotSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8183,40 +8439,40 @@ func (l *WebAppsRestoreSnapshotSlotPollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// WebAppsRestoreSnapshotSlotResponse contains the response from method WebApps.RestoreSnapshotSlot.
-type WebAppsRestoreSnapshotSlotResponse struct {
+// WebAppsClientRestoreSnapshotSlotResponse contains the response from method WebAppsClient.RestoreSnapshotSlot.
+type WebAppsClientRestoreSnapshotSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRunTriggeredWebJobResponse contains the response from method WebApps.RunTriggeredWebJob.
-type WebAppsRunTriggeredWebJobResponse struct {
+// WebAppsClientRunTriggeredWebJobResponse contains the response from method WebAppsClient.RunTriggeredWebJob.
+type WebAppsClientRunTriggeredWebJobResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsRunTriggeredWebJobSlotResponse contains the response from method WebApps.RunTriggeredWebJobSlot.
-type WebAppsRunTriggeredWebJobSlotResponse struct {
+// WebAppsClientRunTriggeredWebJobSlotResponse contains the response from method WebAppsClient.RunTriggeredWebJobSlot.
+type WebAppsClientRunTriggeredWebJobSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartContinuousWebJobResponse contains the response from method WebApps.StartContinuousWebJob.
-type WebAppsStartContinuousWebJobResponse struct {
+// WebAppsClientStartContinuousWebJobResponse contains the response from method WebAppsClient.StartContinuousWebJob.
+type WebAppsClientStartContinuousWebJobResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartContinuousWebJobSlotResponse contains the response from method WebApps.StartContinuousWebJobSlot.
-type WebAppsStartContinuousWebJobSlotResponse struct {
+// WebAppsClientStartContinuousWebJobSlotResponse contains the response from method WebAppsClient.StartContinuousWebJobSlot.
+type WebAppsClientStartContinuousWebJobSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartNetworkTracePollerResponse contains the response from method WebApps.StartNetworkTrace.
-type WebAppsStartNetworkTracePollerResponse struct {
+// WebAppsClientStartNetworkTracePollerResponse contains the response from method WebAppsClient.StartNetworkTrace.
+type WebAppsClientStartNetworkTracePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsStartNetworkTracePoller
+	Poller *WebAppsClientStartNetworkTracePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8225,8 +8481,8 @@ type WebAppsStartNetworkTracePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsStartNetworkTracePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartNetworkTraceResponse, error) {
-	respType := WebAppsStartNetworkTraceResponse{}
+func (l WebAppsClientStartNetworkTracePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientStartNetworkTraceResponse, error) {
+	respType := WebAppsClientStartNetworkTraceResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
 	if err != nil {
 		return respType, err
@@ -8235,13 +8491,13 @@ func (l WebAppsStartNetworkTracePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsStartNetworkTracePollerResponse from the provided client and resume token.
-func (l *WebAppsStartNetworkTracePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartNetworkTrace", token, client.pl, client.startNetworkTraceHandleError)
+// Resume rehydrates a WebAppsClientStartNetworkTracePollerResponse from the provided client and resume token.
+func (l *WebAppsClientStartNetworkTracePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartNetworkTrace", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsStartNetworkTracePoller{
+	poller := &WebAppsClientStartNetworkTracePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8253,23 +8509,23 @@ func (l *WebAppsStartNetworkTracePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// WebAppsStartNetworkTraceResponse contains the response from method WebApps.StartNetworkTrace.
-type WebAppsStartNetworkTraceResponse struct {
-	WebAppsStartNetworkTraceResult
+// WebAppsClientStartNetworkTraceResponse contains the response from method WebAppsClient.StartNetworkTrace.
+type WebAppsClientStartNetworkTraceResponse struct {
+	WebAppsClientStartNetworkTraceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartNetworkTraceResult contains the result from method WebApps.StartNetworkTrace.
-type WebAppsStartNetworkTraceResult struct {
+// WebAppsClientStartNetworkTraceResult contains the result from method WebAppsClient.StartNetworkTrace.
+type WebAppsClientStartNetworkTraceResult struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsStartNetworkTraceSlotPollerResponse contains the response from method WebApps.StartNetworkTraceSlot.
-type WebAppsStartNetworkTraceSlotPollerResponse struct {
+// WebAppsClientStartNetworkTraceSlotPollerResponse contains the response from method WebAppsClient.StartNetworkTraceSlot.
+type WebAppsClientStartNetworkTraceSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsStartNetworkTraceSlotPoller
+	Poller *WebAppsClientStartNetworkTraceSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8278,8 +8534,8 @@ type WebAppsStartNetworkTraceSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsStartNetworkTraceSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartNetworkTraceSlotResponse, error) {
-	respType := WebAppsStartNetworkTraceSlotResponse{}
+func (l WebAppsClientStartNetworkTraceSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientStartNetworkTraceSlotResponse, error) {
+	respType := WebAppsClientStartNetworkTraceSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
 	if err != nil {
 		return respType, err
@@ -8288,13 +8544,13 @@ func (l WebAppsStartNetworkTraceSlotPollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsStartNetworkTraceSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsStartNetworkTraceSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartNetworkTraceSlot", token, client.pl, client.startNetworkTraceSlotHandleError)
+// Resume rehydrates a WebAppsClientStartNetworkTraceSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientStartNetworkTraceSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartNetworkTraceSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsStartNetworkTraceSlotPoller{
+	poller := &WebAppsClientStartNetworkTraceSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8306,35 +8562,35 @@ func (l *WebAppsStartNetworkTraceSlotPollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// WebAppsStartNetworkTraceSlotResponse contains the response from method WebApps.StartNetworkTraceSlot.
-type WebAppsStartNetworkTraceSlotResponse struct {
-	WebAppsStartNetworkTraceSlotResult
+// WebAppsClientStartNetworkTraceSlotResponse contains the response from method WebAppsClient.StartNetworkTraceSlot.
+type WebAppsClientStartNetworkTraceSlotResponse struct {
+	WebAppsClientStartNetworkTraceSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartNetworkTraceSlotResult contains the result from method WebApps.StartNetworkTraceSlot.
-type WebAppsStartNetworkTraceSlotResult struct {
+// WebAppsClientStartNetworkTraceSlotResult contains the result from method WebAppsClient.StartNetworkTraceSlot.
+type WebAppsClientStartNetworkTraceSlotResult struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsStartResponse contains the response from method WebApps.Start.
-type WebAppsStartResponse struct {
+// WebAppsClientStartResponse contains the response from method WebAppsClient.Start.
+type WebAppsClientStartResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartSlotResponse contains the response from method WebApps.StartSlot.
-type WebAppsStartSlotResponse struct {
+// WebAppsClientStartSlotResponse contains the response from method WebAppsClient.StartSlot.
+type WebAppsClientStartSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartWebSiteNetworkTraceOperationPollerResponse contains the response from method WebApps.StartWebSiteNetworkTraceOperation.
-type WebAppsStartWebSiteNetworkTraceOperationPollerResponse struct {
+// WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse contains the response from method WebAppsClient.StartWebSiteNetworkTraceOperation.
+type WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsStartWebSiteNetworkTraceOperationPoller
+	Poller *WebAppsClientStartWebSiteNetworkTraceOperationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8343,8 +8599,8 @@ type WebAppsStartWebSiteNetworkTraceOperationPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsStartWebSiteNetworkTraceOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartWebSiteNetworkTraceOperationResponse, error) {
-	respType := WebAppsStartWebSiteNetworkTraceOperationResponse{}
+func (l WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientStartWebSiteNetworkTraceOperationResponse, error) {
+	respType := WebAppsClientStartWebSiteNetworkTraceOperationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
 	if err != nil {
 		return respType, err
@@ -8353,13 +8609,13 @@ func (l WebAppsStartWebSiteNetworkTraceOperationPollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsStartWebSiteNetworkTraceOperationPollerResponse from the provided client and resume token.
-func (l *WebAppsStartWebSiteNetworkTraceOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartWebSiteNetworkTraceOperation", token, client.pl, client.startWebSiteNetworkTraceOperationHandleError)
+// Resume rehydrates a WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse from the provided client and resume token.
+func (l *WebAppsClientStartWebSiteNetworkTraceOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartWebSiteNetworkTraceOperation", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsStartWebSiteNetworkTraceOperationPoller{
+	poller := &WebAppsClientStartWebSiteNetworkTraceOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8371,23 +8627,23 @@ func (l *WebAppsStartWebSiteNetworkTraceOperationPollerResponse) Resume(ctx cont
 	return nil
 }
 
-// WebAppsStartWebSiteNetworkTraceOperationResponse contains the response from method WebApps.StartWebSiteNetworkTraceOperation.
-type WebAppsStartWebSiteNetworkTraceOperationResponse struct {
-	WebAppsStartWebSiteNetworkTraceOperationResult
+// WebAppsClientStartWebSiteNetworkTraceOperationResponse contains the response from method WebAppsClient.StartWebSiteNetworkTraceOperation.
+type WebAppsClientStartWebSiteNetworkTraceOperationResponse struct {
+	WebAppsClientStartWebSiteNetworkTraceOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartWebSiteNetworkTraceOperationResult contains the result from method WebApps.StartWebSiteNetworkTraceOperation.
-type WebAppsStartWebSiteNetworkTraceOperationResult struct {
+// WebAppsClientStartWebSiteNetworkTraceOperationResult contains the result from method WebAppsClient.StartWebSiteNetworkTraceOperation.
+type WebAppsClientStartWebSiteNetworkTraceOperationResult struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse contains the response from method WebApps.StartWebSiteNetworkTraceOperationSlot.
-type WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse struct {
+// WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse contains the response from method WebAppsClient.StartWebSiteNetworkTraceOperationSlot.
+type WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsStartWebSiteNetworkTraceOperationSlotPoller
+	Poller *WebAppsClientStartWebSiteNetworkTraceOperationSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8396,8 +8652,8 @@ type WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartWebSiteNetworkTraceOperationSlotResponse, error) {
-	respType := WebAppsStartWebSiteNetworkTraceOperationSlotResponse{}
+func (l WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse, error) {
+	respType := WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
 	if err != nil {
 		return respType, err
@@ -8406,13 +8662,14 @@ func (l WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartWebSiteNetworkTraceOperationSlot", token, client.pl, client.startWebSiteNetworkTraceOperationSlotHandleError)
+// Resume rehydrates a WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse from the provided client and resume
+// token.
+func (l *WebAppsClientStartWebSiteNetworkTraceOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartWebSiteNetworkTraceOperationSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsStartWebSiteNetworkTraceOperationSlotPoller{
+	poller := &WebAppsClientStartWebSiteNetworkTraceOperationSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8424,95 +8681,95 @@ func (l *WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse) Resume(ctx 
 	return nil
 }
 
-// WebAppsStartWebSiteNetworkTraceOperationSlotResponse contains the response from method WebApps.StartWebSiteNetworkTraceOperationSlot.
-type WebAppsStartWebSiteNetworkTraceOperationSlotResponse struct {
-	WebAppsStartWebSiteNetworkTraceOperationSlotResult
+// WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse contains the response from method WebAppsClient.StartWebSiteNetworkTraceOperationSlot.
+type WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse struct {
+	WebAppsClientStartWebSiteNetworkTraceOperationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartWebSiteNetworkTraceOperationSlotResult contains the result from method WebApps.StartWebSiteNetworkTraceOperationSlot.
-type WebAppsStartWebSiteNetworkTraceOperationSlotResult struct {
+// WebAppsClientStartWebSiteNetworkTraceOperationSlotResult contains the result from method WebAppsClient.StartWebSiteNetworkTraceOperationSlot.
+type WebAppsClientStartWebSiteNetworkTraceOperationSlotResult struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
 }
 
-// WebAppsStartWebSiteNetworkTraceResponse contains the response from method WebApps.StartWebSiteNetworkTrace.
-type WebAppsStartWebSiteNetworkTraceResponse struct {
-	WebAppsStartWebSiteNetworkTraceResult
+// WebAppsClientStartWebSiteNetworkTraceResponse contains the response from method WebAppsClient.StartWebSiteNetworkTrace.
+type WebAppsClientStartWebSiteNetworkTraceResponse struct {
+	WebAppsClientStartWebSiteNetworkTraceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartWebSiteNetworkTraceResult contains the result from method WebApps.StartWebSiteNetworkTrace.
-type WebAppsStartWebSiteNetworkTraceResult struct {
+// WebAppsClientStartWebSiteNetworkTraceResult contains the result from method WebAppsClient.StartWebSiteNetworkTrace.
+type WebAppsClientStartWebSiteNetworkTraceResult struct {
 	Value *string
 }
 
-// WebAppsStartWebSiteNetworkTraceSlotResponse contains the response from method WebApps.StartWebSiteNetworkTraceSlot.
-type WebAppsStartWebSiteNetworkTraceSlotResponse struct {
-	WebAppsStartWebSiteNetworkTraceSlotResult
+// WebAppsClientStartWebSiteNetworkTraceSlotResponse contains the response from method WebAppsClient.StartWebSiteNetworkTraceSlot.
+type WebAppsClientStartWebSiteNetworkTraceSlotResponse struct {
+	WebAppsClientStartWebSiteNetworkTraceSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStartWebSiteNetworkTraceSlotResult contains the result from method WebApps.StartWebSiteNetworkTraceSlot.
-type WebAppsStartWebSiteNetworkTraceSlotResult struct {
+// WebAppsClientStartWebSiteNetworkTraceSlotResult contains the result from method WebAppsClient.StartWebSiteNetworkTraceSlot.
+type WebAppsClientStartWebSiteNetworkTraceSlotResult struct {
 	Value *string
 }
 
-// WebAppsStopContinuousWebJobResponse contains the response from method WebApps.StopContinuousWebJob.
-type WebAppsStopContinuousWebJobResponse struct {
+// WebAppsClientStopContinuousWebJobResponse contains the response from method WebAppsClient.StopContinuousWebJob.
+type WebAppsClientStopContinuousWebJobResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStopContinuousWebJobSlotResponse contains the response from method WebApps.StopContinuousWebJobSlot.
-type WebAppsStopContinuousWebJobSlotResponse struct {
+// WebAppsClientStopContinuousWebJobSlotResponse contains the response from method WebAppsClient.StopContinuousWebJobSlot.
+type WebAppsClientStopContinuousWebJobSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStopNetworkTraceResponse contains the response from method WebApps.StopNetworkTrace.
-type WebAppsStopNetworkTraceResponse struct {
+// WebAppsClientStopNetworkTraceResponse contains the response from method WebAppsClient.StopNetworkTrace.
+type WebAppsClientStopNetworkTraceResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStopNetworkTraceSlotResponse contains the response from method WebApps.StopNetworkTraceSlot.
-type WebAppsStopNetworkTraceSlotResponse struct {
+// WebAppsClientStopNetworkTraceSlotResponse contains the response from method WebAppsClient.StopNetworkTraceSlot.
+type WebAppsClientStopNetworkTraceSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStopResponse contains the response from method WebApps.Stop.
-type WebAppsStopResponse struct {
+// WebAppsClientStopResponse contains the response from method WebAppsClient.Stop.
+type WebAppsClientStopResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStopSlotResponse contains the response from method WebApps.StopSlot.
-type WebAppsStopSlotResponse struct {
+// WebAppsClientStopSlotResponse contains the response from method WebAppsClient.StopSlot.
+type WebAppsClientStopSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStopWebSiteNetworkTraceResponse contains the response from method WebApps.StopWebSiteNetworkTrace.
-type WebAppsStopWebSiteNetworkTraceResponse struct {
+// WebAppsClientStopWebSiteNetworkTraceResponse contains the response from method WebAppsClient.StopWebSiteNetworkTrace.
+type WebAppsClientStopWebSiteNetworkTraceResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsStopWebSiteNetworkTraceSlotResponse contains the response from method WebApps.StopWebSiteNetworkTraceSlot.
-type WebAppsStopWebSiteNetworkTraceSlotResponse struct {
+// WebAppsClientStopWebSiteNetworkTraceSlotResponse contains the response from method WebAppsClient.StopWebSiteNetworkTraceSlot.
+type WebAppsClientStopWebSiteNetworkTraceSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsSwapSlotPollerResponse contains the response from method WebApps.SwapSlot.
-type WebAppsSwapSlotPollerResponse struct {
+// WebAppsClientSwapSlotPollerResponse contains the response from method WebAppsClient.SwapSlot.
+type WebAppsClientSwapSlotPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsSwapSlotPoller
+	Poller *WebAppsClientSwapSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8521,8 +8778,8 @@ type WebAppsSwapSlotPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsSwapSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsSwapSlotResponse, error) {
-	respType := WebAppsSwapSlotResponse{}
+func (l WebAppsClientSwapSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientSwapSlotResponse, error) {
+	respType := WebAppsClientSwapSlotResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -8531,13 +8788,13 @@ func (l WebAppsSwapSlotPollerResponse) PollUntilDone(ctx context.Context, freq t
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsSwapSlotPollerResponse from the provided client and resume token.
-func (l *WebAppsSwapSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.SwapSlot", token, client.pl, client.swapSlotHandleError)
+// Resume rehydrates a WebAppsClientSwapSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsClientSwapSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.SwapSlot", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsSwapSlotPoller{
+	poller := &WebAppsClientSwapSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8549,16 +8806,16 @@ func (l *WebAppsSwapSlotPollerResponse) Resume(ctx context.Context, client *WebA
 	return nil
 }
 
-// WebAppsSwapSlotResponse contains the response from method WebApps.SwapSlot.
-type WebAppsSwapSlotResponse struct {
+// WebAppsClientSwapSlotResponse contains the response from method WebAppsClient.SwapSlot.
+type WebAppsClientSwapSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsSwapSlotWithProductionPollerResponse contains the response from method WebApps.SwapSlotWithProduction.
-type WebAppsSwapSlotWithProductionPollerResponse struct {
+// WebAppsClientSwapSlotWithProductionPollerResponse contains the response from method WebAppsClient.SwapSlotWithProduction.
+type WebAppsClientSwapSlotWithProductionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WebAppsSwapSlotWithProductionPoller
+	Poller *WebAppsClientSwapSlotWithProductionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -8567,8 +8824,8 @@ type WebAppsSwapSlotWithProductionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WebAppsSwapSlotWithProductionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsSwapSlotWithProductionResponse, error) {
-	respType := WebAppsSwapSlotWithProductionResponse{}
+func (l WebAppsClientSwapSlotWithProductionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsClientSwapSlotWithProductionResponse, error) {
+	respType := WebAppsClientSwapSlotWithProductionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -8577,13 +8834,13 @@ func (l WebAppsSwapSlotWithProductionPollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a WebAppsSwapSlotWithProductionPollerResponse from the provided client and resume token.
-func (l *WebAppsSwapSlotWithProductionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.SwapSlotWithProduction", token, client.pl, client.swapSlotWithProductionHandleError)
+// Resume rehydrates a WebAppsClientSwapSlotWithProductionPollerResponse from the provided client and resume token.
+func (l *WebAppsClientSwapSlotWithProductionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.SwapSlotWithProduction", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WebAppsSwapSlotWithProductionPoller{
+	poller := &WebAppsClientSwapSlotWithProductionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -8595,561 +8852,561 @@ func (l *WebAppsSwapSlotWithProductionPollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// WebAppsSwapSlotWithProductionResponse contains the response from method WebApps.SwapSlotWithProduction.
-type WebAppsSwapSlotWithProductionResponse struct {
+// WebAppsClientSwapSlotWithProductionResponse contains the response from method WebAppsClient.SwapSlotWithProduction.
+type WebAppsClientSwapSlotWithProductionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsSyncFunctionTriggersResponse contains the response from method WebApps.SyncFunctionTriggers.
-type WebAppsSyncFunctionTriggersResponse struct {
+// WebAppsClientSyncFunctionTriggersResponse contains the response from method WebAppsClient.SyncFunctionTriggers.
+type WebAppsClientSyncFunctionTriggersResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsSyncFunctionTriggersSlotResponse contains the response from method WebApps.SyncFunctionTriggersSlot.
-type WebAppsSyncFunctionTriggersSlotResponse struct {
+// WebAppsClientSyncFunctionTriggersSlotResponse contains the response from method WebAppsClient.SyncFunctionTriggersSlot.
+type WebAppsClientSyncFunctionTriggersSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsSyncFunctionsResponse contains the response from method WebApps.SyncFunctions.
-type WebAppsSyncFunctionsResponse struct {
+// WebAppsClientSyncFunctionsResponse contains the response from method WebAppsClient.SyncFunctions.
+type WebAppsClientSyncFunctionsResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsSyncFunctionsSlotResponse contains the response from method WebApps.SyncFunctionsSlot.
-type WebAppsSyncFunctionsSlotResponse struct {
+// WebAppsClientSyncFunctionsSlotResponse contains the response from method WebAppsClient.SyncFunctionsSlot.
+type WebAppsClientSyncFunctionsSlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsSyncRepositoryResponse contains the response from method WebApps.SyncRepository.
-type WebAppsSyncRepositoryResponse struct {
+// WebAppsClientSyncRepositoryResponse contains the response from method WebAppsClient.SyncRepository.
+type WebAppsClientSyncRepositoryResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsSyncRepositorySlotResponse contains the response from method WebApps.SyncRepositorySlot.
-type WebAppsSyncRepositorySlotResponse struct {
+// WebAppsClientSyncRepositorySlotResponse contains the response from method WebAppsClient.SyncRepositorySlot.
+type WebAppsClientSyncRepositorySlotResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateApplicationSettingsResponse contains the response from method WebApps.UpdateApplicationSettings.
-type WebAppsUpdateApplicationSettingsResponse struct {
-	WebAppsUpdateApplicationSettingsResult
+// WebAppsClientUpdateApplicationSettingsResponse contains the response from method WebAppsClient.UpdateApplicationSettings.
+type WebAppsClientUpdateApplicationSettingsResponse struct {
+	WebAppsClientUpdateApplicationSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateApplicationSettingsResult contains the result from method WebApps.UpdateApplicationSettings.
-type WebAppsUpdateApplicationSettingsResult struct {
+// WebAppsClientUpdateApplicationSettingsResult contains the result from method WebAppsClient.UpdateApplicationSettings.
+type WebAppsClientUpdateApplicationSettingsResult struct {
 	StringDictionary
 }
 
-// WebAppsUpdateApplicationSettingsSlotResponse contains the response from method WebApps.UpdateApplicationSettingsSlot.
-type WebAppsUpdateApplicationSettingsSlotResponse struct {
-	WebAppsUpdateApplicationSettingsSlotResult
+// WebAppsClientUpdateApplicationSettingsSlotResponse contains the response from method WebAppsClient.UpdateApplicationSettingsSlot.
+type WebAppsClientUpdateApplicationSettingsSlotResponse struct {
+	WebAppsClientUpdateApplicationSettingsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateApplicationSettingsSlotResult contains the result from method WebApps.UpdateApplicationSettingsSlot.
-type WebAppsUpdateApplicationSettingsSlotResult struct {
+// WebAppsClientUpdateApplicationSettingsSlotResult contains the result from method WebAppsClient.UpdateApplicationSettingsSlot.
+type WebAppsClientUpdateApplicationSettingsSlotResult struct {
 	StringDictionary
 }
 
-// WebAppsUpdateAuthSettingsResponse contains the response from method WebApps.UpdateAuthSettings.
-type WebAppsUpdateAuthSettingsResponse struct {
-	WebAppsUpdateAuthSettingsResult
+// WebAppsClientUpdateAuthSettingsResponse contains the response from method WebAppsClient.UpdateAuthSettings.
+type WebAppsClientUpdateAuthSettingsResponse struct {
+	WebAppsClientUpdateAuthSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateAuthSettingsResult contains the result from method WebApps.UpdateAuthSettings.
-type WebAppsUpdateAuthSettingsResult struct {
+// WebAppsClientUpdateAuthSettingsResult contains the result from method WebAppsClient.UpdateAuthSettings.
+type WebAppsClientUpdateAuthSettingsResult struct {
 	SiteAuthSettings
 }
 
-// WebAppsUpdateAuthSettingsSlotResponse contains the response from method WebApps.UpdateAuthSettingsSlot.
-type WebAppsUpdateAuthSettingsSlotResponse struct {
-	WebAppsUpdateAuthSettingsSlotResult
+// WebAppsClientUpdateAuthSettingsSlotResponse contains the response from method WebAppsClient.UpdateAuthSettingsSlot.
+type WebAppsClientUpdateAuthSettingsSlotResponse struct {
+	WebAppsClientUpdateAuthSettingsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateAuthSettingsSlotResult contains the result from method WebApps.UpdateAuthSettingsSlot.
-type WebAppsUpdateAuthSettingsSlotResult struct {
+// WebAppsClientUpdateAuthSettingsSlotResult contains the result from method WebAppsClient.UpdateAuthSettingsSlot.
+type WebAppsClientUpdateAuthSettingsSlotResult struct {
 	SiteAuthSettings
 }
 
-// WebAppsUpdateAuthSettingsV2Response contains the response from method WebApps.UpdateAuthSettingsV2.
-type WebAppsUpdateAuthSettingsV2Response struct {
-	WebAppsUpdateAuthSettingsV2Result
+// WebAppsClientUpdateAuthSettingsV2Response contains the response from method WebAppsClient.UpdateAuthSettingsV2.
+type WebAppsClientUpdateAuthSettingsV2Response struct {
+	WebAppsClientUpdateAuthSettingsV2Result
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateAuthSettingsV2Result contains the result from method WebApps.UpdateAuthSettingsV2.
-type WebAppsUpdateAuthSettingsV2Result struct {
+// WebAppsClientUpdateAuthSettingsV2Result contains the result from method WebAppsClient.UpdateAuthSettingsV2.
+type WebAppsClientUpdateAuthSettingsV2Result struct {
 	SiteAuthSettingsV2
 }
 
-// WebAppsUpdateAuthSettingsV2SlotResponse contains the response from method WebApps.UpdateAuthSettingsV2Slot.
-type WebAppsUpdateAuthSettingsV2SlotResponse struct {
-	WebAppsUpdateAuthSettingsV2SlotResult
+// WebAppsClientUpdateAuthSettingsV2SlotResponse contains the response from method WebAppsClient.UpdateAuthSettingsV2Slot.
+type WebAppsClientUpdateAuthSettingsV2SlotResponse struct {
+	WebAppsClientUpdateAuthSettingsV2SlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateAuthSettingsV2SlotResult contains the result from method WebApps.UpdateAuthSettingsV2Slot.
-type WebAppsUpdateAuthSettingsV2SlotResult struct {
+// WebAppsClientUpdateAuthSettingsV2SlotResult contains the result from method WebAppsClient.UpdateAuthSettingsV2Slot.
+type WebAppsClientUpdateAuthSettingsV2SlotResult struct {
 	SiteAuthSettingsV2
 }
 
-// WebAppsUpdateAzureStorageAccountsResponse contains the response from method WebApps.UpdateAzureStorageAccounts.
-type WebAppsUpdateAzureStorageAccountsResponse struct {
-	WebAppsUpdateAzureStorageAccountsResult
+// WebAppsClientUpdateAzureStorageAccountsResponse contains the response from method WebAppsClient.UpdateAzureStorageAccounts.
+type WebAppsClientUpdateAzureStorageAccountsResponse struct {
+	WebAppsClientUpdateAzureStorageAccountsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateAzureStorageAccountsResult contains the result from method WebApps.UpdateAzureStorageAccounts.
-type WebAppsUpdateAzureStorageAccountsResult struct {
+// WebAppsClientUpdateAzureStorageAccountsResult contains the result from method WebAppsClient.UpdateAzureStorageAccounts.
+type WebAppsClientUpdateAzureStorageAccountsResult struct {
 	AzureStoragePropertyDictionaryResource
 }
 
-// WebAppsUpdateAzureStorageAccountsSlotResponse contains the response from method WebApps.UpdateAzureStorageAccountsSlot.
-type WebAppsUpdateAzureStorageAccountsSlotResponse struct {
-	WebAppsUpdateAzureStorageAccountsSlotResult
+// WebAppsClientUpdateAzureStorageAccountsSlotResponse contains the response from method WebAppsClient.UpdateAzureStorageAccountsSlot.
+type WebAppsClientUpdateAzureStorageAccountsSlotResponse struct {
+	WebAppsClientUpdateAzureStorageAccountsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateAzureStorageAccountsSlotResult contains the result from method WebApps.UpdateAzureStorageAccountsSlot.
-type WebAppsUpdateAzureStorageAccountsSlotResult struct {
+// WebAppsClientUpdateAzureStorageAccountsSlotResult contains the result from method WebAppsClient.UpdateAzureStorageAccountsSlot.
+type WebAppsClientUpdateAzureStorageAccountsSlotResult struct {
 	AzureStoragePropertyDictionaryResource
 }
 
-// WebAppsUpdateBackupConfigurationResponse contains the response from method WebApps.UpdateBackupConfiguration.
-type WebAppsUpdateBackupConfigurationResponse struct {
-	WebAppsUpdateBackupConfigurationResult
+// WebAppsClientUpdateBackupConfigurationResponse contains the response from method WebAppsClient.UpdateBackupConfiguration.
+type WebAppsClientUpdateBackupConfigurationResponse struct {
+	WebAppsClientUpdateBackupConfigurationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateBackupConfigurationResult contains the result from method WebApps.UpdateBackupConfiguration.
-type WebAppsUpdateBackupConfigurationResult struct {
+// WebAppsClientUpdateBackupConfigurationResult contains the result from method WebAppsClient.UpdateBackupConfiguration.
+type WebAppsClientUpdateBackupConfigurationResult struct {
 	BackupRequest
 }
 
-// WebAppsUpdateBackupConfigurationSlotResponse contains the response from method WebApps.UpdateBackupConfigurationSlot.
-type WebAppsUpdateBackupConfigurationSlotResponse struct {
-	WebAppsUpdateBackupConfigurationSlotResult
+// WebAppsClientUpdateBackupConfigurationSlotResponse contains the response from method WebAppsClient.UpdateBackupConfigurationSlot.
+type WebAppsClientUpdateBackupConfigurationSlotResponse struct {
+	WebAppsClientUpdateBackupConfigurationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateBackupConfigurationSlotResult contains the result from method WebApps.UpdateBackupConfigurationSlot.
-type WebAppsUpdateBackupConfigurationSlotResult struct {
+// WebAppsClientUpdateBackupConfigurationSlotResult contains the result from method WebAppsClient.UpdateBackupConfigurationSlot.
+type WebAppsClientUpdateBackupConfigurationSlotResult struct {
 	BackupRequest
 }
 
-// WebAppsUpdateConfigurationResponse contains the response from method WebApps.UpdateConfiguration.
-type WebAppsUpdateConfigurationResponse struct {
-	WebAppsUpdateConfigurationResult
+// WebAppsClientUpdateConfigurationResponse contains the response from method WebAppsClient.UpdateConfiguration.
+type WebAppsClientUpdateConfigurationResponse struct {
+	WebAppsClientUpdateConfigurationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateConfigurationResult contains the result from method WebApps.UpdateConfiguration.
-type WebAppsUpdateConfigurationResult struct {
+// WebAppsClientUpdateConfigurationResult contains the result from method WebAppsClient.UpdateConfiguration.
+type WebAppsClientUpdateConfigurationResult struct {
 	SiteConfigResource
 }
 
-// WebAppsUpdateConfigurationSlotResponse contains the response from method WebApps.UpdateConfigurationSlot.
-type WebAppsUpdateConfigurationSlotResponse struct {
-	WebAppsUpdateConfigurationSlotResult
+// WebAppsClientUpdateConfigurationSlotResponse contains the response from method WebAppsClient.UpdateConfigurationSlot.
+type WebAppsClientUpdateConfigurationSlotResponse struct {
+	WebAppsClientUpdateConfigurationSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateConfigurationSlotResult contains the result from method WebApps.UpdateConfigurationSlot.
-type WebAppsUpdateConfigurationSlotResult struct {
+// WebAppsClientUpdateConfigurationSlotResult contains the result from method WebAppsClient.UpdateConfigurationSlot.
+type WebAppsClientUpdateConfigurationSlotResult struct {
 	SiteConfigResource
 }
 
-// WebAppsUpdateConnectionStringsResponse contains the response from method WebApps.UpdateConnectionStrings.
-type WebAppsUpdateConnectionStringsResponse struct {
-	WebAppsUpdateConnectionStringsResult
+// WebAppsClientUpdateConnectionStringsResponse contains the response from method WebAppsClient.UpdateConnectionStrings.
+type WebAppsClientUpdateConnectionStringsResponse struct {
+	WebAppsClientUpdateConnectionStringsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateConnectionStringsResult contains the result from method WebApps.UpdateConnectionStrings.
-type WebAppsUpdateConnectionStringsResult struct {
+// WebAppsClientUpdateConnectionStringsResult contains the result from method WebAppsClient.UpdateConnectionStrings.
+type WebAppsClientUpdateConnectionStringsResult struct {
 	ConnectionStringDictionary
 }
 
-// WebAppsUpdateConnectionStringsSlotResponse contains the response from method WebApps.UpdateConnectionStringsSlot.
-type WebAppsUpdateConnectionStringsSlotResponse struct {
-	WebAppsUpdateConnectionStringsSlotResult
+// WebAppsClientUpdateConnectionStringsSlotResponse contains the response from method WebAppsClient.UpdateConnectionStringsSlot.
+type WebAppsClientUpdateConnectionStringsSlotResponse struct {
+	WebAppsClientUpdateConnectionStringsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateConnectionStringsSlotResult contains the result from method WebApps.UpdateConnectionStringsSlot.
-type WebAppsUpdateConnectionStringsSlotResult struct {
+// WebAppsClientUpdateConnectionStringsSlotResult contains the result from method WebAppsClient.UpdateConnectionStringsSlot.
+type WebAppsClientUpdateConnectionStringsSlotResult struct {
 	ConnectionStringDictionary
 }
 
-// WebAppsUpdateDiagnosticLogsConfigResponse contains the response from method WebApps.UpdateDiagnosticLogsConfig.
-type WebAppsUpdateDiagnosticLogsConfigResponse struct {
-	WebAppsUpdateDiagnosticLogsConfigResult
+// WebAppsClientUpdateDiagnosticLogsConfigResponse contains the response from method WebAppsClient.UpdateDiagnosticLogsConfig.
+type WebAppsClientUpdateDiagnosticLogsConfigResponse struct {
+	WebAppsClientUpdateDiagnosticLogsConfigResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateDiagnosticLogsConfigResult contains the result from method WebApps.UpdateDiagnosticLogsConfig.
-type WebAppsUpdateDiagnosticLogsConfigResult struct {
+// WebAppsClientUpdateDiagnosticLogsConfigResult contains the result from method WebAppsClient.UpdateDiagnosticLogsConfig.
+type WebAppsClientUpdateDiagnosticLogsConfigResult struct {
 	SiteLogsConfig
 }
 
-// WebAppsUpdateDiagnosticLogsConfigSlotResponse contains the response from method WebApps.UpdateDiagnosticLogsConfigSlot.
-type WebAppsUpdateDiagnosticLogsConfigSlotResponse struct {
-	WebAppsUpdateDiagnosticLogsConfigSlotResult
+// WebAppsClientUpdateDiagnosticLogsConfigSlotResponse contains the response from method WebAppsClient.UpdateDiagnosticLogsConfigSlot.
+type WebAppsClientUpdateDiagnosticLogsConfigSlotResponse struct {
+	WebAppsClientUpdateDiagnosticLogsConfigSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateDiagnosticLogsConfigSlotResult contains the result from method WebApps.UpdateDiagnosticLogsConfigSlot.
-type WebAppsUpdateDiagnosticLogsConfigSlotResult struct {
+// WebAppsClientUpdateDiagnosticLogsConfigSlotResult contains the result from method WebAppsClient.UpdateDiagnosticLogsConfigSlot.
+type WebAppsClientUpdateDiagnosticLogsConfigSlotResult struct {
 	SiteLogsConfig
 }
 
-// WebAppsUpdateDomainOwnershipIdentifierResponse contains the response from method WebApps.UpdateDomainOwnershipIdentifier.
-type WebAppsUpdateDomainOwnershipIdentifierResponse struct {
-	WebAppsUpdateDomainOwnershipIdentifierResult
+// WebAppsClientUpdateDomainOwnershipIdentifierResponse contains the response from method WebAppsClient.UpdateDomainOwnershipIdentifier.
+type WebAppsClientUpdateDomainOwnershipIdentifierResponse struct {
+	WebAppsClientUpdateDomainOwnershipIdentifierResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateDomainOwnershipIdentifierResult contains the result from method WebApps.UpdateDomainOwnershipIdentifier.
-type WebAppsUpdateDomainOwnershipIdentifierResult struct {
+// WebAppsClientUpdateDomainOwnershipIdentifierResult contains the result from method WebAppsClient.UpdateDomainOwnershipIdentifier.
+type WebAppsClientUpdateDomainOwnershipIdentifierResult struct {
 	Identifier
 }
 
-// WebAppsUpdateDomainOwnershipIdentifierSlotResponse contains the response from method WebApps.UpdateDomainOwnershipIdentifierSlot.
-type WebAppsUpdateDomainOwnershipIdentifierSlotResponse struct {
-	WebAppsUpdateDomainOwnershipIdentifierSlotResult
+// WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse contains the response from method WebAppsClient.UpdateDomainOwnershipIdentifierSlot.
+type WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse struct {
+	WebAppsClientUpdateDomainOwnershipIdentifierSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateDomainOwnershipIdentifierSlotResult contains the result from method WebApps.UpdateDomainOwnershipIdentifierSlot.
-type WebAppsUpdateDomainOwnershipIdentifierSlotResult struct {
+// WebAppsClientUpdateDomainOwnershipIdentifierSlotResult contains the result from method WebAppsClient.UpdateDomainOwnershipIdentifierSlot.
+type WebAppsClientUpdateDomainOwnershipIdentifierSlotResult struct {
 	Identifier
 }
 
-// WebAppsUpdateFtpAllowedResponse contains the response from method WebApps.UpdateFtpAllowed.
-type WebAppsUpdateFtpAllowedResponse struct {
-	WebAppsUpdateFtpAllowedResult
+// WebAppsClientUpdateFtpAllowedResponse contains the response from method WebAppsClient.UpdateFtpAllowed.
+type WebAppsClientUpdateFtpAllowedResponse struct {
+	WebAppsClientUpdateFtpAllowedResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateFtpAllowedResult contains the result from method WebApps.UpdateFtpAllowed.
-type WebAppsUpdateFtpAllowedResult struct {
+// WebAppsClientUpdateFtpAllowedResult contains the result from method WebAppsClient.UpdateFtpAllowed.
+type WebAppsClientUpdateFtpAllowedResult struct {
 	CsmPublishingCredentialsPoliciesEntity
 }
 
-// WebAppsUpdateFtpAllowedSlotResponse contains the response from method WebApps.UpdateFtpAllowedSlot.
-type WebAppsUpdateFtpAllowedSlotResponse struct {
-	WebAppsUpdateFtpAllowedSlotResult
+// WebAppsClientUpdateFtpAllowedSlotResponse contains the response from method WebAppsClient.UpdateFtpAllowedSlot.
+type WebAppsClientUpdateFtpAllowedSlotResponse struct {
+	WebAppsClientUpdateFtpAllowedSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateFtpAllowedSlotResult contains the result from method WebApps.UpdateFtpAllowedSlot.
-type WebAppsUpdateFtpAllowedSlotResult struct {
+// WebAppsClientUpdateFtpAllowedSlotResult contains the result from method WebAppsClient.UpdateFtpAllowedSlot.
+type WebAppsClientUpdateFtpAllowedSlotResult struct {
 	CsmPublishingCredentialsPoliciesEntity
 }
 
-// WebAppsUpdateHybridConnectionResponse contains the response from method WebApps.UpdateHybridConnection.
-type WebAppsUpdateHybridConnectionResponse struct {
-	WebAppsUpdateHybridConnectionResult
+// WebAppsClientUpdateHybridConnectionResponse contains the response from method WebAppsClient.UpdateHybridConnection.
+type WebAppsClientUpdateHybridConnectionResponse struct {
+	WebAppsClientUpdateHybridConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateHybridConnectionResult contains the result from method WebApps.UpdateHybridConnection.
-type WebAppsUpdateHybridConnectionResult struct {
+// WebAppsClientUpdateHybridConnectionResult contains the result from method WebAppsClient.UpdateHybridConnection.
+type WebAppsClientUpdateHybridConnectionResult struct {
 	HybridConnection
 }
 
-// WebAppsUpdateHybridConnectionSlotResponse contains the response from method WebApps.UpdateHybridConnectionSlot.
-type WebAppsUpdateHybridConnectionSlotResponse struct {
-	WebAppsUpdateHybridConnectionSlotResult
+// WebAppsClientUpdateHybridConnectionSlotResponse contains the response from method WebAppsClient.UpdateHybridConnectionSlot.
+type WebAppsClientUpdateHybridConnectionSlotResponse struct {
+	WebAppsClientUpdateHybridConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateHybridConnectionSlotResult contains the result from method WebApps.UpdateHybridConnectionSlot.
-type WebAppsUpdateHybridConnectionSlotResult struct {
+// WebAppsClientUpdateHybridConnectionSlotResult contains the result from method WebAppsClient.UpdateHybridConnectionSlot.
+type WebAppsClientUpdateHybridConnectionSlotResult struct {
 	HybridConnection
 }
 
-// WebAppsUpdateMetadataResponse contains the response from method WebApps.UpdateMetadata.
-type WebAppsUpdateMetadataResponse struct {
-	WebAppsUpdateMetadataResult
+// WebAppsClientUpdateMetadataResponse contains the response from method WebAppsClient.UpdateMetadata.
+type WebAppsClientUpdateMetadataResponse struct {
+	WebAppsClientUpdateMetadataResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateMetadataResult contains the result from method WebApps.UpdateMetadata.
-type WebAppsUpdateMetadataResult struct {
+// WebAppsClientUpdateMetadataResult contains the result from method WebAppsClient.UpdateMetadata.
+type WebAppsClientUpdateMetadataResult struct {
 	StringDictionary
 }
 
-// WebAppsUpdateMetadataSlotResponse contains the response from method WebApps.UpdateMetadataSlot.
-type WebAppsUpdateMetadataSlotResponse struct {
-	WebAppsUpdateMetadataSlotResult
+// WebAppsClientUpdateMetadataSlotResponse contains the response from method WebAppsClient.UpdateMetadataSlot.
+type WebAppsClientUpdateMetadataSlotResponse struct {
+	WebAppsClientUpdateMetadataSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateMetadataSlotResult contains the result from method WebApps.UpdateMetadataSlot.
-type WebAppsUpdateMetadataSlotResult struct {
+// WebAppsClientUpdateMetadataSlotResult contains the result from method WebAppsClient.UpdateMetadataSlot.
+type WebAppsClientUpdateMetadataSlotResult struct {
 	StringDictionary
 }
 
-// WebAppsUpdatePremierAddOnResponse contains the response from method WebApps.UpdatePremierAddOn.
-type WebAppsUpdatePremierAddOnResponse struct {
-	WebAppsUpdatePremierAddOnResult
+// WebAppsClientUpdatePremierAddOnResponse contains the response from method WebAppsClient.UpdatePremierAddOn.
+type WebAppsClientUpdatePremierAddOnResponse struct {
+	WebAppsClientUpdatePremierAddOnResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdatePremierAddOnResult contains the result from method WebApps.UpdatePremierAddOn.
-type WebAppsUpdatePremierAddOnResult struct {
+// WebAppsClientUpdatePremierAddOnResult contains the result from method WebAppsClient.UpdatePremierAddOn.
+type WebAppsClientUpdatePremierAddOnResult struct {
 	PremierAddOn
 }
 
-// WebAppsUpdatePremierAddOnSlotResponse contains the response from method WebApps.UpdatePremierAddOnSlot.
-type WebAppsUpdatePremierAddOnSlotResponse struct {
-	WebAppsUpdatePremierAddOnSlotResult
+// WebAppsClientUpdatePremierAddOnSlotResponse contains the response from method WebAppsClient.UpdatePremierAddOnSlot.
+type WebAppsClientUpdatePremierAddOnSlotResponse struct {
+	WebAppsClientUpdatePremierAddOnSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdatePremierAddOnSlotResult contains the result from method WebApps.UpdatePremierAddOnSlot.
-type WebAppsUpdatePremierAddOnSlotResult struct {
+// WebAppsClientUpdatePremierAddOnSlotResult contains the result from method WebAppsClient.UpdatePremierAddOnSlot.
+type WebAppsClientUpdatePremierAddOnSlotResult struct {
 	PremierAddOn
 }
 
-// WebAppsUpdateRelayServiceConnectionResponse contains the response from method WebApps.UpdateRelayServiceConnection.
-type WebAppsUpdateRelayServiceConnectionResponse struct {
-	WebAppsUpdateRelayServiceConnectionResult
+// WebAppsClientUpdateRelayServiceConnectionResponse contains the response from method WebAppsClient.UpdateRelayServiceConnection.
+type WebAppsClientUpdateRelayServiceConnectionResponse struct {
+	WebAppsClientUpdateRelayServiceConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateRelayServiceConnectionResult contains the result from method WebApps.UpdateRelayServiceConnection.
-type WebAppsUpdateRelayServiceConnectionResult struct {
+// WebAppsClientUpdateRelayServiceConnectionResult contains the result from method WebAppsClient.UpdateRelayServiceConnection.
+type WebAppsClientUpdateRelayServiceConnectionResult struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsUpdateRelayServiceConnectionSlotResponse contains the response from method WebApps.UpdateRelayServiceConnectionSlot.
-type WebAppsUpdateRelayServiceConnectionSlotResponse struct {
-	WebAppsUpdateRelayServiceConnectionSlotResult
+// WebAppsClientUpdateRelayServiceConnectionSlotResponse contains the response from method WebAppsClient.UpdateRelayServiceConnectionSlot.
+type WebAppsClientUpdateRelayServiceConnectionSlotResponse struct {
+	WebAppsClientUpdateRelayServiceConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateRelayServiceConnectionSlotResult contains the result from method WebApps.UpdateRelayServiceConnectionSlot.
-type WebAppsUpdateRelayServiceConnectionSlotResult struct {
+// WebAppsClientUpdateRelayServiceConnectionSlotResult contains the result from method WebAppsClient.UpdateRelayServiceConnectionSlot.
+type WebAppsClientUpdateRelayServiceConnectionSlotResult struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsUpdateResponse contains the response from method WebApps.Update.
-type WebAppsUpdateResponse struct {
-	WebAppsUpdateResult
+// WebAppsClientUpdateResponse contains the response from method WebAppsClient.Update.
+type WebAppsClientUpdateResponse struct {
+	WebAppsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateResult contains the result from method WebApps.Update.
-type WebAppsUpdateResult struct {
+// WebAppsClientUpdateResult contains the result from method WebAppsClient.Update.
+type WebAppsClientUpdateResult struct {
 	Site
 }
 
-// WebAppsUpdateScmAllowedResponse contains the response from method WebApps.UpdateScmAllowed.
-type WebAppsUpdateScmAllowedResponse struct {
-	WebAppsUpdateScmAllowedResult
+// WebAppsClientUpdateScmAllowedResponse contains the response from method WebAppsClient.UpdateScmAllowed.
+type WebAppsClientUpdateScmAllowedResponse struct {
+	WebAppsClientUpdateScmAllowedResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateScmAllowedResult contains the result from method WebApps.UpdateScmAllowed.
-type WebAppsUpdateScmAllowedResult struct {
+// WebAppsClientUpdateScmAllowedResult contains the result from method WebAppsClient.UpdateScmAllowed.
+type WebAppsClientUpdateScmAllowedResult struct {
 	CsmPublishingCredentialsPoliciesEntity
 }
 
-// WebAppsUpdateScmAllowedSlotResponse contains the response from method WebApps.UpdateScmAllowedSlot.
-type WebAppsUpdateScmAllowedSlotResponse struct {
-	WebAppsUpdateScmAllowedSlotResult
+// WebAppsClientUpdateScmAllowedSlotResponse contains the response from method WebAppsClient.UpdateScmAllowedSlot.
+type WebAppsClientUpdateScmAllowedSlotResponse struct {
+	WebAppsClientUpdateScmAllowedSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateScmAllowedSlotResult contains the result from method WebApps.UpdateScmAllowedSlot.
-type WebAppsUpdateScmAllowedSlotResult struct {
+// WebAppsClientUpdateScmAllowedSlotResult contains the result from method WebAppsClient.UpdateScmAllowedSlot.
+type WebAppsClientUpdateScmAllowedSlotResult struct {
 	CsmPublishingCredentialsPoliciesEntity
 }
 
-// WebAppsUpdateSitePushSettingsResponse contains the response from method WebApps.UpdateSitePushSettings.
-type WebAppsUpdateSitePushSettingsResponse struct {
-	WebAppsUpdateSitePushSettingsResult
+// WebAppsClientUpdateSitePushSettingsResponse contains the response from method WebAppsClient.UpdateSitePushSettings.
+type WebAppsClientUpdateSitePushSettingsResponse struct {
+	WebAppsClientUpdateSitePushSettingsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateSitePushSettingsResult contains the result from method WebApps.UpdateSitePushSettings.
-type WebAppsUpdateSitePushSettingsResult struct {
+// WebAppsClientUpdateSitePushSettingsResult contains the result from method WebAppsClient.UpdateSitePushSettings.
+type WebAppsClientUpdateSitePushSettingsResult struct {
 	PushSettings
 }
 
-// WebAppsUpdateSitePushSettingsSlotResponse contains the response from method WebApps.UpdateSitePushSettingsSlot.
-type WebAppsUpdateSitePushSettingsSlotResponse struct {
-	WebAppsUpdateSitePushSettingsSlotResult
+// WebAppsClientUpdateSitePushSettingsSlotResponse contains the response from method WebAppsClient.UpdateSitePushSettingsSlot.
+type WebAppsClientUpdateSitePushSettingsSlotResponse struct {
+	WebAppsClientUpdateSitePushSettingsSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateSitePushSettingsSlotResult contains the result from method WebApps.UpdateSitePushSettingsSlot.
-type WebAppsUpdateSitePushSettingsSlotResult struct {
+// WebAppsClientUpdateSitePushSettingsSlotResult contains the result from method WebAppsClient.UpdateSitePushSettingsSlot.
+type WebAppsClientUpdateSitePushSettingsSlotResult struct {
 	PushSettings
 }
 
-// WebAppsUpdateSlotConfigurationNamesResponse contains the response from method WebApps.UpdateSlotConfigurationNames.
-type WebAppsUpdateSlotConfigurationNamesResponse struct {
-	WebAppsUpdateSlotConfigurationNamesResult
+// WebAppsClientUpdateSlotConfigurationNamesResponse contains the response from method WebAppsClient.UpdateSlotConfigurationNames.
+type WebAppsClientUpdateSlotConfigurationNamesResponse struct {
+	WebAppsClientUpdateSlotConfigurationNamesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateSlotConfigurationNamesResult contains the result from method WebApps.UpdateSlotConfigurationNames.
-type WebAppsUpdateSlotConfigurationNamesResult struct {
+// WebAppsClientUpdateSlotConfigurationNamesResult contains the result from method WebAppsClient.UpdateSlotConfigurationNames.
+type WebAppsClientUpdateSlotConfigurationNamesResult struct {
 	SlotConfigNamesResource
 }
 
-// WebAppsUpdateSlotResponse contains the response from method WebApps.UpdateSlot.
-type WebAppsUpdateSlotResponse struct {
-	WebAppsUpdateSlotResult
+// WebAppsClientUpdateSlotResponse contains the response from method WebAppsClient.UpdateSlot.
+type WebAppsClientUpdateSlotResponse struct {
+	WebAppsClientUpdateSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateSlotResult contains the result from method WebApps.UpdateSlot.
-type WebAppsUpdateSlotResult struct {
+// WebAppsClientUpdateSlotResult contains the result from method WebAppsClient.UpdateSlot.
+type WebAppsClientUpdateSlotResult struct {
 	Site
 }
 
-// WebAppsUpdateSourceControlResponse contains the response from method WebApps.UpdateSourceControl.
-type WebAppsUpdateSourceControlResponse struct {
-	WebAppsUpdateSourceControlResult
+// WebAppsClientUpdateSourceControlResponse contains the response from method WebAppsClient.UpdateSourceControl.
+type WebAppsClientUpdateSourceControlResponse struct {
+	WebAppsClientUpdateSourceControlResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateSourceControlResult contains the result from method WebApps.UpdateSourceControl.
-type WebAppsUpdateSourceControlResult struct {
+// WebAppsClientUpdateSourceControlResult contains the result from method WebAppsClient.UpdateSourceControl.
+type WebAppsClientUpdateSourceControlResult struct {
 	SiteSourceControl
 }
 
-// WebAppsUpdateSourceControlSlotResponse contains the response from method WebApps.UpdateSourceControlSlot.
-type WebAppsUpdateSourceControlSlotResponse struct {
-	WebAppsUpdateSourceControlSlotResult
+// WebAppsClientUpdateSourceControlSlotResponse contains the response from method WebAppsClient.UpdateSourceControlSlot.
+type WebAppsClientUpdateSourceControlSlotResponse struct {
+	WebAppsClientUpdateSourceControlSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateSourceControlSlotResult contains the result from method WebApps.UpdateSourceControlSlot.
-type WebAppsUpdateSourceControlSlotResult struct {
+// WebAppsClientUpdateSourceControlSlotResult contains the result from method WebAppsClient.UpdateSourceControlSlot.
+type WebAppsClientUpdateSourceControlSlotResult struct {
 	SiteSourceControl
 }
 
-// WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse contains the response from method WebApps.UpdateSwiftVirtualNetworkConnectionWithCheck.
-type WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse struct {
-	WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResult
+// WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse contains the response from method WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheck.
+type WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse struct {
+	WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResult contains the result from method WebApps.UpdateSwiftVirtualNetworkConnectionWithCheck.
-type WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResult struct {
+// WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResult contains the result from method WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheck.
+type WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResult struct {
 	SwiftVirtualNetwork
 }
 
-// WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse contains the response from method WebApps.UpdateSwiftVirtualNetworkConnectionWithCheckSlot.
-type WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse struct {
-	WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult
+// WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse contains the response from method WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheckSlot.
+type WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse struct {
+	WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult contains the result from method WebApps.UpdateSwiftVirtualNetworkConnectionWithCheckSlot.
-type WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult struct {
+// WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult contains the result from method WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheckSlot.
+type WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResult struct {
 	SwiftVirtualNetwork
 }
 
-// WebAppsUpdateVnetConnectionGatewayResponse contains the response from method WebApps.UpdateVnetConnectionGateway.
-type WebAppsUpdateVnetConnectionGatewayResponse struct {
-	WebAppsUpdateVnetConnectionGatewayResult
+// WebAppsClientUpdateVnetConnectionGatewayResponse contains the response from method WebAppsClient.UpdateVnetConnectionGateway.
+type WebAppsClientUpdateVnetConnectionGatewayResponse struct {
+	WebAppsClientUpdateVnetConnectionGatewayResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateVnetConnectionGatewayResult contains the result from method WebApps.UpdateVnetConnectionGateway.
-type WebAppsUpdateVnetConnectionGatewayResult struct {
+// WebAppsClientUpdateVnetConnectionGatewayResult contains the result from method WebAppsClient.UpdateVnetConnectionGateway.
+type WebAppsClientUpdateVnetConnectionGatewayResult struct {
 	VnetGateway
 }
 
-// WebAppsUpdateVnetConnectionGatewaySlotResponse contains the response from method WebApps.UpdateVnetConnectionGatewaySlot.
-type WebAppsUpdateVnetConnectionGatewaySlotResponse struct {
-	WebAppsUpdateVnetConnectionGatewaySlotResult
+// WebAppsClientUpdateVnetConnectionGatewaySlotResponse contains the response from method WebAppsClient.UpdateVnetConnectionGatewaySlot.
+type WebAppsClientUpdateVnetConnectionGatewaySlotResponse struct {
+	WebAppsClientUpdateVnetConnectionGatewaySlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateVnetConnectionGatewaySlotResult contains the result from method WebApps.UpdateVnetConnectionGatewaySlot.
-type WebAppsUpdateVnetConnectionGatewaySlotResult struct {
+// WebAppsClientUpdateVnetConnectionGatewaySlotResult contains the result from method WebAppsClient.UpdateVnetConnectionGatewaySlot.
+type WebAppsClientUpdateVnetConnectionGatewaySlotResult struct {
 	VnetGateway
 }
 
-// WebAppsUpdateVnetConnectionResponse contains the response from method WebApps.UpdateVnetConnection.
-type WebAppsUpdateVnetConnectionResponse struct {
-	WebAppsUpdateVnetConnectionResult
+// WebAppsClientUpdateVnetConnectionResponse contains the response from method WebAppsClient.UpdateVnetConnection.
+type WebAppsClientUpdateVnetConnectionResponse struct {
+	WebAppsClientUpdateVnetConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateVnetConnectionResult contains the result from method WebApps.UpdateVnetConnection.
-type WebAppsUpdateVnetConnectionResult struct {
+// WebAppsClientUpdateVnetConnectionResult contains the result from method WebAppsClient.UpdateVnetConnection.
+type WebAppsClientUpdateVnetConnectionResult struct {
 	VnetInfoResource
 }
 
-// WebAppsUpdateVnetConnectionSlotResponse contains the response from method WebApps.UpdateVnetConnectionSlot.
-type WebAppsUpdateVnetConnectionSlotResponse struct {
-	WebAppsUpdateVnetConnectionSlotResult
+// WebAppsClientUpdateVnetConnectionSlotResponse contains the response from method WebAppsClient.UpdateVnetConnectionSlot.
+type WebAppsClientUpdateVnetConnectionSlotResponse struct {
+	WebAppsClientUpdateVnetConnectionSlotResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebAppsUpdateVnetConnectionSlotResult contains the result from method WebApps.UpdateVnetConnectionSlot.
-type WebAppsUpdateVnetConnectionSlotResult struct {
+// WebAppsClientUpdateVnetConnectionSlotResult contains the result from method WebAppsClient.UpdateVnetConnectionSlot.
+type WebAppsClientUpdateVnetConnectionSlotResult struct {
 	VnetInfoResource
 }
 
@@ -9211,6 +9468,18 @@ type WebSiteManagementClientListBillingMetersResponse struct {
 // WebSiteManagementClientListBillingMetersResult contains the result from method WebSiteManagementClient.ListBillingMeters.
 type WebSiteManagementClientListBillingMetersResult struct {
 	BillingMeterCollection
+}
+
+// WebSiteManagementClientListCustomHostNameSitesResponse contains the response from method WebSiteManagementClient.ListCustomHostNameSites.
+type WebSiteManagementClientListCustomHostNameSitesResponse struct {
+	WebSiteManagementClientListCustomHostNameSitesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// WebSiteManagementClientListCustomHostNameSitesResult contains the result from method WebSiteManagementClient.ListCustomHostNameSites.
+type WebSiteManagementClientListCustomHostNameSitesResult struct {
+	CustomHostnameSitesCollection
 }
 
 // WebSiteManagementClientListGeoRegionsResponse contains the response from method WebSiteManagementClient.ListGeoRegions.

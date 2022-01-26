@@ -11,9 +11,6 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/devigned/tab"
 )
 
 // Simple query to view some of the stats reported by these stress tests.
@@ -25,22 +22,23 @@ import (
 
 func Run(remainingArgs []string) {
 	// turn on some simple stderr diagnostics
-	tracer := utils.NewSimpleTracer(map[string]bool{
-		tracing.SpanRecover:        true,
-		tracing.SpanNegotiateClaim: true,
-		tracing.SpanRecoverClient:  true,
-		tracing.SpanRecoverLink:    true,
-	}, nil)
+	// tracer := utils.NewSimpleTracer(map[string]bool{
+	// 	// tracing.SpanRecover:        true,
+	// 	//tracing.SpanNegotiateClaim: true,
+	// 	// tracing.SpanRecoverClient:  true,
+	// 	// tracing.SpanRecoverLink:    true,
+	// }, nil)
 
-	tab.Register(tracer)
+	// tab.Register(tracer)
 
 	allTests := map[string]func(args []string){
-		"infiniteSendAndReceive":   InfiniteSendAndReceiveRun,
-		"finiteSendAndReceive":     FiniteSendAndReceiveTest,
-		"rapidOpenClose":           RapidOpenCloseTest,
-		"longRunningRenewLock":     LongRunningRenewLockTest,
 		"constantDetach":           ConstantDetachment,
 		"constantDetachmentSender": ConstantDetachmentSender,
+		"finitePeeks":              FinitePeeks,
+		"finiteSendAndReceive":     FiniteSendAndReceiveTest,
+		"infiniteSendAndReceive":   InfiniteSendAndReceiveRun,
+		"longRunningRenewLock":     LongRunningRenewLockTest,
+		"rapidOpenClose":           RapidOpenCloseTest,
 	}
 
 	if len(remainingArgs) == 0 {

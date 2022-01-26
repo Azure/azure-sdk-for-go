@@ -3,6 +3,7 @@
 ## 0.3.0 (Unreleased)
 
 ### Features Added
+* Force pipelines
 
 ### Breaking Changes
 * Changed the `Tags` properties from `map[string]*string` to `map[string]string`

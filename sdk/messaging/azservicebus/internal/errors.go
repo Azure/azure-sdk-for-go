@@ -175,7 +175,10 @@ func GetRecoveryKind(err error) recoveryKind {
 		}
 
 		// simple timeouts
-		if me.Resp.Code == 408 || me.Resp.Code == 503 {
+		if me.Resp.Code == 408 || me.Resp.Code == 503 || 
+			// internal server errors are worth retrying (they will typically lead 
+			// to a more actionable error)
+			me.Resp.Code == 500 {
 			return RecoveryKindNone
 		}
 	}

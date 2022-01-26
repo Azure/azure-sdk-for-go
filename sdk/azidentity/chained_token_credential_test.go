@@ -29,7 +29,7 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	if cred != nil {
 		if len(cred.sources) != 2 {
@@ -74,7 +74,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
@@ -98,7 +98,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err == nil {
@@ -125,7 +125,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testin
 	}}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1, credential2, credential3}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err == nil {
@@ -157,7 +157,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 	}}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1, credential2, credential3}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err == nil {
@@ -183,7 +183,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 	}}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 	cred.name = "CustomNameCredential"
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
@@ -245,7 +245,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{failedCredential, successfulCredential}, nil)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 
 	getTokenOptions := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
@@ -280,7 +280,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{failedCredential, successfulCredential}, &ChainedTokenCredentialOptions{RetrySources: true})
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
 
 	getTokenOptions := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}

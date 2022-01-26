@@ -476,6 +476,20 @@ func init() {
 	if ok := certPool.AppendCertsFromPEM(cert); !ok {
 		log.Println("no certs appended, using system certs only")
 	}
+
+	// Set a Default matcher that ignores :path, :scheme, :authority, and :method headers
+	err = SetDefaultMatcher(
+		nil,
+		&SetDefaultMatcherOptions{ExcludedHeaders: []string{
+			":authority",
+			":method",
+			":path",
+			":scheme",
+		}},
+	)
+	if err != nil {
+		log.Println("could not set the default matcher")
+	}
 }
 
 var recordMode string

@@ -5,9 +5,11 @@ package azidentity
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
@@ -25,19 +27,66 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestDefaultAzureCredential_defaultAzureCredentialLogOrThrowError(t *testing.T) {
+func TestDefaultAzureCredential_defaultAzureCredentialErrorHandlerNoSuccessfulCredential(t *testing.T) {
+	err := os.Setenv("AZURE_SDK_GO_LOGGING", "all")
+	if err != nil {
+		t.Fatal("Unexpected error", err.Error())
+	}
+
+	logMessages := []string{}
+	log.SetListener(func(event log.Event, message string) {
+		logMessages = append(logMessages, message)
+	})
+
 	errorMessages := []string{
 		"<credential-name>: <error-message>",
 		"<credential-name>: <error-message>",
 	}
-	err := defaultAzureCredentialLogOrThrowError(0, errorMessages)
+	err = defaultAzureCredentialErrorHandler(0, errorMessages)
 	if err == nil {
 		t.Fatalf("Expected an error, but received none.")
 	}
-	expectedError := `Default Azure Credential:
+	expectedError := `Authentication failed for the Default Azure Credential:
 	<credential-name>: <error-message>
 	<credential-name>: <error-message>`
 	if err.Error() != expectedError {
 		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
+	}
+
+	expectedLogs := `Azure Identity => Authentication failed for the Default Azure Credential:
+	<credential-name>: <error-message>
+	<credential-name>: <error-message>`
+	print(logMessages)
+	if logMessages[0] != expectedLogs {
+		t.Fatalf("Did not receive the expected logs.\n\nReceived:\n%s\n\nExpected:\n%s", logMessages[0], expectedLogs)
+	}
+}
+
+func TestDefaultAzureCredential_defaultAzureCredentialErrorHandlerOneSuccessfulCredential(t *testing.T) {
+	err := os.Setenv("AZURE_SDK_GO_LOGGING", "all")
+	if err != nil {
+		t.Fatal("Unexpected error", err.Error())
+	}
+
+	logMessages := []string{}
+	log.SetListener(func(event log.Event, message string) {
+		logMessages = append(logMessages, message)
+	})
+
+	errorMessages := []string{
+		"<credential-name>: <error-message>",
+		"<credential-name>: <error-message>",
+	}
+	err = defaultAzureCredentialErrorHandler(1, errorMessages)
+	if err != nil {
+		t.Fatal("Unexpected error", err.Error())
+	}
+
+	expectedLogs := `Azure Identity => Failed to initialize some credentials on the Default Azure Credential:
+	<credential-name>: <error-message>
+	<credential-name>: <error-message>`
+	print(logMessages)
+	if logMessages[0] != expectedLogs {
+		t.Fatalf("Did not receive the expected logs.\n\nReceived:\n%s\n\nExpected:\n%s", logMessages[0], expectedLogs)
 	}
 }

@@ -729,13 +729,15 @@ type Kind string
 const (
 	// KindDatabase ...
 	KindDatabase Kind = "Database"
+	// KindReadOnlyFollowing ...
+	KindReadOnlyFollowing Kind = "ReadOnlyFollowing"
 	// KindReadWrite ...
 	KindReadWrite Kind = "ReadWrite"
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
-	return []Kind{KindDatabase, KindReadWrite}
+	return []Kind{KindDatabase, KindReadOnlyFollowing, KindReadWrite}
 }
 
 // KindBasicDataConnection enumerates the values for kind basic data connection.
@@ -875,6 +877,23 @@ const (
 // PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
 func PossibleOperationStatusValues() []OperationStatus {
 	return []OperationStatus{OperationStatusCanceled, OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded}
+}
+
+// PrincipalsModificationKind enumerates the values for principals modification kind.
+type PrincipalsModificationKind string
+
+const (
+	// PrincipalsModificationKindNone ...
+	PrincipalsModificationKindNone PrincipalsModificationKind = "None"
+	// PrincipalsModificationKindReplace ...
+	PrincipalsModificationKindReplace PrincipalsModificationKind = "Replace"
+	// PrincipalsModificationKindUnion ...
+	PrincipalsModificationKindUnion PrincipalsModificationKind = "Union"
+)
+
+// PossiblePrincipalsModificationKindValues returns an array of possible values for the PrincipalsModificationKind const type.
+func PossiblePrincipalsModificationKindValues() []PrincipalsModificationKind {
+	return []PrincipalsModificationKind{PrincipalsModificationKindNone, PrincipalsModificationKindReplace, PrincipalsModificationKindUnion}
 }
 
 // PrincipalType enumerates the values for principal type.
@@ -1336,13 +1355,11 @@ const (
 	StorageAccountTypeGRS StorageAccountType = "GRS"
 	// StorageAccountTypeLRS ...
 	StorageAccountTypeLRS StorageAccountType = "LRS"
-	// StorageAccountTypeZRS ...
-	StorageAccountTypeZRS StorageAccountType = "ZRS"
 )
 
 // PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
 func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{StorageAccountTypeGRS, StorageAccountTypeLRS, StorageAccountTypeZRS}
+	return []StorageAccountType{StorageAccountTypeGRS, StorageAccountTypeLRS}
 }
 
 // TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.

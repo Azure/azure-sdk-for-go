@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // SecureScoresClient contains the methods for the SecureScores group.
 // Don't use this type directly, use NewSecureScoresClient() instead.
 type SecureScoresClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSecureScoresClient creates a new instance of SecureScoresClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecureScoresClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &SecureScoresClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SecureScoresClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// Get - Get secure score for a specific Security Center initiative within your current scope. For the ASC Default initiative, use 'ascScore'.
-// If the operation fails it returns the *CloudError error type.
-func (client *SecureScoresClient) Get(ctx context.Context, secureScoreName string, options *SecureScoresGetOptions) (SecureScoresGetResponse, error) {
+// Get - Get secure score for a specific Security Center initiative within your current scope. For the ASC Default initiative,
+// use 'ascScore'.
+// If the operation fails it returns an *azcore.ResponseError type.
+// secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
+// options - SecureScoresClientGetOptions contains the optional parameters for the SecureScoresClient.Get method.
+func (client *SecureScoresClient) Get(ctx context.Context, secureScoreName string, options *SecureScoresClientGetOptions) (SecureScoresClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, secureScoreName, options)
 	if err != nil {
-		return SecureScoresGetResponse{}, err
+		return SecureScoresClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SecureScoresGetResponse{}, err
+		return SecureScoresClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SecureScoresGetResponse{}, client.getHandleError(resp)
+		return SecureScoresClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureScoreName string, options *SecureScoresGetOptions) (*policy.Request, error) {
+func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureScoreName string, options *SecureScoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores/{secureScoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +80,7 @@ func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureSc
 		return nil, errors.New("parameter secureScoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secureScoreName}", url.PathEscape(secureScoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,49 +92,37 @@ func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureSc
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (SecureScoresGetResponse, error) {
-	result := SecureScoresGetResponse{RawResponse: resp}
+func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (SecureScoresClientGetResponse, error) {
+	result := SecureScoresClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoreItem); err != nil {
-		return SecureScoresGetResponse{}, runtime.NewResponseError(err, resp)
+		return SecureScoresClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SecureScoresClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List secure scores for all your Security Center initiatives within your current scope.
-// If the operation fails it returns the *CloudError error type.
-func (client *SecureScoresClient) List(options *SecureScoresListOptions) *SecureScoresListPager {
-	return &SecureScoresListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SecureScoresClientListOptions contains the optional parameters for the SecureScoresClient.List method.
+func (client *SecureScoresClient) List(options *SecureScoresClientListOptions) *SecureScoresClientListPager {
+	return &SecureScoresClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SecureScoresListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SecureScoresClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecureScoresList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options *SecureScoresListOptions) (*policy.Request, error) {
+func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options *SecureScoresClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,23 +134,10 @@ func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *SecureScoresClient) listHandleResponse(resp *http.Response) (SecureScoresListResponse, error) {
-	result := SecureScoresListResponse{RawResponse: resp}
+func (client *SecureScoresClient) listHandleResponse(resp *http.Response) (SecureScoresClientListResponse, error) {
+	result := SecureScoresClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoresList); err != nil {
-		return SecureScoresListResponse{}, runtime.NewResponseError(err, resp)
+		return SecureScoresClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SecureScoresClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

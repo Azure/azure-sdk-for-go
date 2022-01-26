@@ -9,8 +9,8 @@
 package armresourcemover
 
 const (
-	module  = "armresourcemover"
-	version = "v0.1.0"
+	moduleName    = "armresourcemover"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

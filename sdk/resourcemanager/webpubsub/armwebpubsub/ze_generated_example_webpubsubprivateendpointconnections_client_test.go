@@ -20,34 +20,38 @@ import (
 )
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubPrivateEndpointConnections_List.json
-func ExampleWebPubSubPrivateEndpointConnectionsClient_List() {
+func ExamplePrivateEndpointConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnection.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubPrivateEndpointConnections_Get.json
-func ExampleWebPubSubPrivateEndpointConnectionsClient_Get() {
+func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<private-endpoint-connection-name>",
 		"<resource-group-name>",
@@ -56,17 +60,17 @@ func ExampleWebPubSubPrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubPrivateEndpointConnections_Update.json
-func ExampleWebPubSubPrivateEndpointConnectionsClient_Update() {
+func ExamplePrivateEndpointConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<private-endpoint-connection-name>",
 		"<resource-group-name>",
@@ -78,7 +82,7 @@ func ExampleWebPubSubPrivateEndpointConnectionsClient_Update() {
 				},
 				PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
 					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          armwebpubsub.PrivateLinkServiceConnectionStatusApproved.ToPtr(),
+					Status:          armwebpubsub.PrivateLinkServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -86,17 +90,17 @@ func ExampleWebPubSubPrivateEndpointConnectionsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubPrivateEndpointConnections_Delete.json
-func ExampleWebPubSubPrivateEndpointConnectionsClient_BeginDelete() {
+func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armwebpubsub.NewWebPubSubPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client := armwebpubsub.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<private-endpoint-connection-name>",
 		"<resource-group-name>",

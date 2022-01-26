@@ -9,8 +9,8 @@
 package armdatabox
 
 const (
-	module  = "armdatabox"
-	version = "v0.1.0"
+	moduleName    = "armdatabox"
+	moduleVersion = "v0.2.0"
 )
 
 type AccessProtocol string
@@ -187,6 +187,7 @@ func (c CopyStatus) ToPtr() *CopyStatus {
 	return &c
 }
 
+// CustomerResolutionCode - Resolution code provided by customer
 type CustomerResolutionCode string
 
 const (
@@ -571,7 +572,8 @@ const (
 	SKUDisabledReasonFeature SKUDisabledReason = "Feature"
 	// SKUDisabledReasonOfferType - Subscription does not have required offer types for the SKU.
 	SKUDisabledReasonOfferType SKUDisabledReason = "OfferType"
-	// SKUDisabledReasonNoSubscriptionInfo - Subscription has not registered to Microsoft.DataBox and Service does not have the subscription notification.
+	// SKUDisabledReasonNoSubscriptionInfo - Subscription has not registered to Microsoft.DataBox and Service does not have the
+	// subscription notification.
 	SKUDisabledReasonNoSubscriptionInfo SKUDisabledReason = "NoSubscriptionInfo"
 )
 
@@ -863,12 +865,13 @@ type ValidationInputDiscriminator string
 const (
 	// ValidationInputDiscriminatorValidateAddress - Identify request and response of address validation.
 	ValidationInputDiscriminatorValidateAddress ValidationInputDiscriminator = "ValidateAddress"
-	// ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob - Identify request and response for validation of subscription permission to create
-	// job.
+	// ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob - Identify request and response for validation of
+	// subscription permission to create job.
 	ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob ValidationInputDiscriminator = "ValidateSubscriptionIsAllowedToCreateJob"
 	// ValidationInputDiscriminatorValidatePreferences - Identify request and response of preference validation.
 	ValidationInputDiscriminatorValidatePreferences ValidationInputDiscriminator = "ValidatePreferences"
-	// ValidationInputDiscriminatorValidateCreateOrderLimit - Identify request and response of create order limit for subscription validation.
+	// ValidationInputDiscriminatorValidateCreateOrderLimit - Identify request and response of create order limit for subscription
+	// validation.
 	ValidationInputDiscriminatorValidateCreateOrderLimit ValidationInputDiscriminator = "ValidateCreateOrderLimit"
 	// ValidationInputDiscriminatorValidateSKUAvailability - Identify request and response of active job limit for sku availability.
 	ValidationInputDiscriminatorValidateSKUAvailability ValidationInputDiscriminator = "ValidateSkuAvailability"

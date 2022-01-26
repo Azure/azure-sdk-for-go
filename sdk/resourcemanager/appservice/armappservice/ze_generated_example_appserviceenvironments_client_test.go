@@ -16,38 +16,52 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetInboundNetworkDependenciesEndpoints.json
-func ExampleAppServiceEnvironmentsClient_GetInboundNetworkDependenciesEndpoints() {
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetInboundNetworkDependenciesEndpoints.json
+func ExampleEnvironmentsClient_GetInboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armappservice.NewAppServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client := armappservice.NewEnvironmentsClient("<subscription-id>", cred, nil)
 	pager := client.GetInboundNetworkDependenciesEndpoints("<resource-group-name>",
 		"<name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-02-01/examples/GetOutboundNetworkDependenciesEndpoints.json
-func ExampleAppServiceEnvironmentsClient_GetOutboundNetworkDependenciesEndpoints() {
+// x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetOutboundNetworkDependenciesEndpoints.json
+func ExampleEnvironmentsClient_GetOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armappservice.NewAppServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client := armappservice.NewEnvironmentsClient("<subscription-id>", cred, nil)
 	pager := client.GetOutboundNetworkDependenciesEndpoints("<resource-group-name>",
 		"<name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

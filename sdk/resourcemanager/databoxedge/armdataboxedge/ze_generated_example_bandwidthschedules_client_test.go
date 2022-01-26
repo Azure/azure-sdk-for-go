@@ -30,12 +30,16 @@ func ExampleBandwidthSchedulesClient_ListByDataBoxEdgeDevice() {
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BandwidthSchedule.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleBandwidthSchedulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BandwidthSchedule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BandwidthSchedulesClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/BandwidthSchedulePut.json
@@ -74,8 +78,8 @@ func ExampleBandwidthSchedulesClient_BeginCreateOrUpdate() {
 		armdataboxedge.BandwidthSchedule{
 			Properties: &armdataboxedge.BandwidthScheduleProperties{
 				Days: []*armdataboxedge.DayOfWeek{
-					armdataboxedge.DayOfWeekSunday.ToPtr(),
-					armdataboxedge.DayOfWeekMonday.ToPtr()},
+					armdataboxedge.DayOfWeek("Sunday").ToPtr(),
+					armdataboxedge.DayOfWeek("Monday").ToPtr()},
 				RateInMbps: to.Int32Ptr(100),
 				Start:      to.StringPtr("<start>"),
 				Stop:       to.StringPtr("<stop>"),
@@ -89,7 +93,7 @@ func ExampleBandwidthSchedulesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BandwidthSchedule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BandwidthSchedulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/BandwidthScheduleDelete.json

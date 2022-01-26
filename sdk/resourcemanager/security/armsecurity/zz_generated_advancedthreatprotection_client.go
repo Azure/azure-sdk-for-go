@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,59 @@ import (
 // AdvancedThreatProtectionClient contains the methods for the AdvancedThreatProtection group.
 // Don't use this type directly, use NewAdvancedThreatProtectionClient() instead.
 type AdvancedThreatProtectionClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAdvancedThreatProtectionClient creates a new instance of AdvancedThreatProtectionClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAdvancedThreatProtectionClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AdvancedThreatProtectionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &AdvancedThreatProtectionClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AdvancedThreatProtectionClient{
+		host: string(ep),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // Create - Creates or updates the Advanced Threat Protection settings on a specified resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *AdvancedThreatProtectionClient) Create(ctx context.Context, resourceID string, settingName Enum7, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionCreateOptions) (AdvancedThreatProtectionCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceID - The identifier of the resource.
+// settingName - Advanced Threat Protection setting name.
+// advancedThreatProtectionSetting - Advanced Threat Protection Settings
+// options - AdvancedThreatProtectionClientCreateOptions contains the optional parameters for the AdvancedThreatProtectionClient.Create
+// method.
+func (client *AdvancedThreatProtectionClient) Create(ctx context.Context, resourceID string, settingName Enum5, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionClientCreateOptions) (AdvancedThreatProtectionClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceID, settingName, advancedThreatProtectionSetting, options)
 	if err != nil {
-		return AdvancedThreatProtectionCreateResponse{}, err
+		return AdvancedThreatProtectionClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdvancedThreatProtectionCreateResponse{}, err
+		return AdvancedThreatProtectionClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AdvancedThreatProtectionCreateResponse{}, client.createHandleError(resp)
+		return AdvancedThreatProtectionClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Context, resourceID string, settingName Enum7, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionCreateOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Context, resourceID string, settingName Enum5, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if settingName == "" {
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(string(settingName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,53 +88,44 @@ func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Co
 }
 
 // createHandleResponse handles the Create response.
-func (client *AdvancedThreatProtectionClient) createHandleResponse(resp *http.Response) (AdvancedThreatProtectionCreateResponse, error) {
-	result := AdvancedThreatProtectionCreateResponse{RawResponse: resp}
+func (client *AdvancedThreatProtectionClient) createHandleResponse(resp *http.Response) (AdvancedThreatProtectionClientCreateResponse, error) {
+	result := AdvancedThreatProtectionClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedThreatProtectionSetting); err != nil {
-		return AdvancedThreatProtectionCreateResponse{}, runtime.NewResponseError(err, resp)
+		return AdvancedThreatProtectionClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *AdvancedThreatProtectionClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the Advanced Threat Protection settings for the specified resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *AdvancedThreatProtectionClient) Get(ctx context.Context, resourceID string, settingName Enum7, options *AdvancedThreatProtectionGetOptions) (AdvancedThreatProtectionGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceID - The identifier of the resource.
+// settingName - Advanced Threat Protection setting name.
+// options - AdvancedThreatProtectionClientGetOptions contains the optional parameters for the AdvancedThreatProtectionClient.Get
+// method.
+func (client *AdvancedThreatProtectionClient) Get(ctx context.Context, resourceID string, settingName Enum5, options *AdvancedThreatProtectionClientGetOptions) (AdvancedThreatProtectionClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceID, settingName, options)
 	if err != nil {
-		return AdvancedThreatProtectionGetResponse{}, err
+		return AdvancedThreatProtectionClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdvancedThreatProtectionGetResponse{}, err
+		return AdvancedThreatProtectionClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AdvancedThreatProtectionGetResponse{}, client.getHandleError(resp)
+		return AdvancedThreatProtectionClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Context, resourceID string, settingName Enum7, options *AdvancedThreatProtectionGetOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Context, resourceID string, settingName Enum5, options *AdvancedThreatProtectionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if settingName == "" {
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(string(settingName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,23 +137,10 @@ func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdvancedThreatProtectionClient) getHandleResponse(resp *http.Response) (AdvancedThreatProtectionGetResponse, error) {
-	result := AdvancedThreatProtectionGetResponse{RawResponse: resp}
+func (client *AdvancedThreatProtectionClient) getHandleResponse(resp *http.Response) (AdvancedThreatProtectionClientGetResponse, error) {
+	result := AdvancedThreatProtectionClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedThreatProtectionSetting); err != nil {
-		return AdvancedThreatProtectionGetResponse{}, runtime.NewResponseError(err, resp)
+		return AdvancedThreatProtectionClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *AdvancedThreatProtectionClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

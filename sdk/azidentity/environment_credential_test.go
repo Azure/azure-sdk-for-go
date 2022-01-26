@@ -9,7 +9,9 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func initEnvironmentVarsForTest() error {
@@ -170,6 +172,35 @@ func TestEnvironmentCredential_UsernamePasswordSet(t *testing.T) {
 	}
 	if _, ok := cred.cred.(*UsernamePasswordCredential); !ok {
 		t.Fatalf("Did not receive the right credential type. Expected *azidentity.UsernamePasswordCredential, Received: %t", cred)
+	}
+}
+
+func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse()
+	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
+	srv.AppendResponse(mock.WithPredicate(validateJWTRequestContainsHeader(t, "x5c")), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+
+	vars := map[string]string{
+		"AZURE_CLIENT_ID":               liveSP.clientID,
+		"AZURE_CLIENT_CERTIFICATE_PATH": liveSP.pfxPath,
+		"AZURE_TENANT_ID":               liveSP.tenantID,
+		envVarSendCertChain:             "true",
+	}
+	setEnvironmentVariables(t, vars)
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("unexpected token: %s", tk.Token)
 	}
 }
 

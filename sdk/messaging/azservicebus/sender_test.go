@@ -5,12 +5,14 @@ package azservicebus
 
 import (
 	"context"
+	"fmt"
 	"sort"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
@@ -274,6 +276,118 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 		// add a little wiggle room, but the scheduled time and the time we set when we scheduled it.
 		require.LessOrEqual(t, diff, time.Second, "The requested scheduled time and the actual scheduled time should be close [%s]", m.ScheduledEnqueueTime)
 	}
+}
+
+func TestSender_SendMessagesDetach(t *testing.T) {
+	// NOTE: uncomment this to see some of the background reconnects
+	// azlog.SetListener(func(e azlog.Event, s string) {
+	// 	log.Printf("%s %s", e, s)
+	// })
+
+	sbc, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	sender, err := sbc.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	// make sure the sender link is open and active.
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("0"),
+	})
+	require.NoError(t, err)
+
+	// now force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	for i := 1; i < 5; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte(fmt.Sprintf("%d", i)),
+		})
+		require.NoError(t, err)
+	}
+
+	receiver, err := sbc.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	// get all the messages
+	var all []*ReceivedMessage
+
+	for {
+		messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
+		require.NoError(t, err)
+
+		all = append(messages, all...)
+
+		if len(all) == 5 {
+			break
+		}
+	}
+
+	require.EqualValues(t, []string{"0", "1", "2", "3", "4"}, getSortedBodies(all))
+}
+
+func TestSender_SendMessageBatchDetach(t *testing.T) {
+	// NOTE: uncomment this to see some of the background reconnects
+	// azlog.SetListener(func(e azlog.Event, s string) {
+	// 	log.Printf("%s %s", e, s)
+	// })
+
+	sbc, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	sender, err := sbc.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	// make sure the sender link is open and active.
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("0"),
+	})
+	require.NoError(t, err)
+
+	// now force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{}, nil)
+	require.NoError(t, err)
+
+	for i := 1; i < 5; i++ {
+		batch, err := sender.NewMessageBatch(context.Background(), nil)
+		require.NoError(t, err)
+		require.NoError(t, batch.AddMessage(&Message{
+			Body: []byte(fmt.Sprintf("%d", i)),
+		}))
+
+		err = sender.SendMessageBatch(context.Background(), batch)
+		require.NoError(t, err)
+	}
+
+	receiver, err := sbc.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	// get all the messages
+	var all []*ReceivedMessage
+
+	for {
+		messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
+		require.NoError(t, err)
+
+		all = append(messages, all...)
+
+		if len(all) == 5 {
+			break
+		}
+	}
+
+	require.EqualValues(t, []string{"0", "1", "2", "3", "4"}, getSortedBodies(all))
 }
 
 func getSortedBodies(messages []*ReceivedMessage) []string {

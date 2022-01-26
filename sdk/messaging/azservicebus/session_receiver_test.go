@@ -274,6 +274,8 @@ func TestSessionReceiver_Detach(t *testing.T) {
 		fmt.Printf("%s %s\n", e, s)
 	})
 
+	defer azlog.SetListener(nil)
+
 	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 

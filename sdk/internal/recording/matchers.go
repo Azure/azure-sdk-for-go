@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"testing"
 )
 
@@ -69,12 +70,24 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 		req.Header["x-recording-id"] = []string{GetRecordingId(t)}
 	}
 
-	marshalled, err := json.MarshalIndent(options, "", "")
+	marshalled, err := json.MarshalIndent(struct {
+		CompareBodies       *bool  `json:"compareBodies,omitempty"`
+		ExcludedHeaders     string `json:"excludedHeaders,omitempty"`
+		IncludedHeaders     string `json:"includedHeaders,omitempty"`
+		IgnoreQueryOrdering *bool  `json:"ignoreQueryOrdering,omitempty"`
+	}{
+		CompareBodies:       options.CompareBodies,
+		ExcludedHeaders:     strings.Join(options.ExcludedHeaders, ","),
+		IncludedHeaders:     strings.Join(options.IgnoredHeaders, ","),
+		IgnoreQueryOrdering: options.IgnoreQueryOrdering,
+	}, "", "")
 	if err != nil {
 		return err
 	}
+	fmt.Println(string(marshalled))
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
 
 	return handleProxyResponse(client.Do(req))
 }

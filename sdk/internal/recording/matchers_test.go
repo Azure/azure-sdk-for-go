@@ -164,4 +164,3 @@ func TestSetDefaultMatcher(t *testing.T) {
 	err = ResetProxy(nil)
 	require.NoError(t, err)
 }
-

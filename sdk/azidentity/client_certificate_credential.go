@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
+	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 	"golang.org/x/crypto/pkcs12"
 )
 
@@ -104,6 +105,10 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 	if err != nil {
 		error := fmt.Errorf("%s%s", err.Error(), clientCertificateCredentialTroubleshootMessage)
 		addGetTokenFailureLogs("Client Certificate Credential", error, true)
+		var e msal.CallErr
+		if errors.As(err, &e) {
+			return nil, newAuthenticationFailedError(error, e.Resp)
+		}
 		return nil, newAuthenticationFailedError(error, nil)
 	}
 	logGetTokenSuccess(c, opts)

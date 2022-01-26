@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -71,7 +72,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errorMessages = append(errorMessages, fmt.Sprintf("AzureCLICredential: %s", err.Error()))
 	}
 
-	err = defaultAzureCredentialErrorHandler(len(creds), errorMessages)
+	err = defaultAzureCredentialConstructorErrorHandler(len(creds), errorMessages)
 	if err != nil {
 		return nil, err
 	}
@@ -91,18 +92,17 @@ func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.Token
 	return c.chain.GetToken(ctx, opts)
 }
 
-func defaultAzureCredentialErrorHandler(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
-	errorMessage := "Default Azure Credential:\n\t" + strings.Join(errorMessages, "\n\t")
+func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
+	errorMessage := strings.Join(errorMessages, "\n\t")
 
 	if numberOfSuccessfulCredentials == 0 {
-		err := fmt.Errorf("Authentication failed for the %s", errorMessage)
-		authErr := newAuthenticationFailedError(err, nil)
-		log.Writef(EventAuthentication, "Azure Identity => %s", authErr.Error())
+		err := errors.New(errorMessage)
+		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize the Default Azure Credential:\n\t%s", err.Error())
 		return err
 	}
 
 	if len(errorMessages) != 0 {
-		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the %s", errorMessage)
+		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:\n\t%s", errorMessage)
 	}
 
 	return nil

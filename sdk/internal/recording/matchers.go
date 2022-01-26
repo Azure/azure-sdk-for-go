@@ -45,10 +45,10 @@ func SetBodilessMatcher(t *testing.T, options *MatcherOptions) error {
 }
 
 type SetDefaultMatcherOptions struct {
-	CompareBodies       bool     `json:"compareBodies,omitempty"`
+	CompareBodies       *bool    `json:"compareBodies,omitempty"`
 	ExcludedHeaders     []string `json:"excludedHeaders,omitempty"`
 	IgnoredHeaders      []string `json:"ignoredHeaders,omitempty"`
-	IgnoreQueryOrdering bool     `json:"ignoreQueryOrdering,omitempty"`
+	IgnoreQueryOrdering *bool    `json:"ignoreQueryOrdering,omitempty"`
 }
 
 // SetDefaultMatcher adjusts the "match" operation to exclude the body when matching a request to a recording's entries.
@@ -76,13 +76,5 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 
-	// res, err := http.DefaultClient.Do(req)
 	return handleProxyResponse(client.Do(req))
-	// if err != nil {
-	// 	return err
-	// }
-	// if res.StatusCode != http.StatusOK {
-	// 	return fmt.Errorf("failed to enable CustomDefaultMatcher: %v", res)
-	// }
-	// return nil
 }

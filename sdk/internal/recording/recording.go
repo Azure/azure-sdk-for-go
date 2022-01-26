@@ -489,6 +489,8 @@ func init() {
 	)
 	if err != nil {
 		log.Println("could not set the default matcher")
+	} else {
+		log.Println("default matcher was set ")
 	}
 }
 

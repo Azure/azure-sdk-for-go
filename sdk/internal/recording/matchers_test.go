@@ -122,9 +122,6 @@ func TestSetDefaultMatcher(t *testing.T) {
 	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
-	// err = SetDefaultMatcher(t, &SetDefaultMatcherOptions{CompareBodies: true, ExcludedHeaders: []string{"ExampleHeader"}})
-	// require.NoError(t, err)
-
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
@@ -147,10 +144,10 @@ func TestSetDefaultMatcher(t *testing.T) {
 	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
-	err = SetDefaultMatcher(nil, &SetDefaultMatcherOptions{CompareBodies: true, ExcludedHeaders: []string{"ExampleHeader"}})
+	err = SetDefaultMatcher(nil, &SetDefaultMatcherOptions{ExcludedHeaders: []string{"ExampleHeader"}})
 	require.NoError(t, err)
 
-	req, err = http.NewRequest("POST", "https://localhost:5001", bytes.NewReader([]byte("abcdef")))
+	req, err = http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
 	req.Header.Set(UpstreamURIHeader, "https://bing.com")
@@ -158,7 +155,7 @@ func TestSetDefaultMatcher(t *testing.T) {
 	req.Header.Set(IDHeader, GetRecordingId(t))
 	req.Header.Set("ExampleHeader", "blah-blah-blah")
 
-	_, err = client.Do(req)
+	err = handleProxyResponse(client.Do(req))
 	require.NoError(t, err)
 
 	err = Stop(t, nil)
@@ -167,3 +164,4 @@ func TestSetDefaultMatcher(t *testing.T) {
 	err = ResetProxy(nil)
 	require.NoError(t, err)
 }
+

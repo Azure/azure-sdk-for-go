@@ -89,21 +89,8 @@ func init() {
 func TestMain(m *testing.M) {
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
-		// enable BodilessMatcher because we don't record request bodies
-		// TODO: add an API for this to sdk/internal
-		req, err := http.NewRequest("POST", "http://localhost:5000/Admin/SetMatcher", http.NoBody)
-		if err != nil {
-			panic(err)
-		}
-		req.Header["x-abstraction-identifier"] = []string{"BodilessMatcher"}
-		res, err := http.DefaultClient.Do(req)
-		if err != nil {
-			panic(err)
-		}
-		if res.StatusCode != http.StatusOK {
-			log.Panicf("failed to enable BodilessMatcher: %v", res)
-		}
-		// TODO: reset matcher
+		t := true
+		recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{CompareBodies: &t})
 	case recording.RecordingMode:
 		// remove default sanitizers such as the OAuth response sanitizer
 		err := recording.ResetProxy(nil)

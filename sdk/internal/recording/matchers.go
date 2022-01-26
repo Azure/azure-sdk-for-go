@@ -52,6 +52,14 @@ type SetDefaultMatcherOptions struct {
 	IgnoreQueryOrdering *bool
 }
 
+func addDefaults(added []string) []string {
+	if added == nil {
+		return nil
+	}
+	added = append(added, ":path", ":authority", ":path", ":scheme")
+	return added
+}
+
 // SetDefaultMatcher adjusts the "match" operation to exclude the body when matching a request to a recording's entries.
 // Pass in `nil` for `t` if you want the bodiless matcher to apply everywhere
 func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
@@ -77,7 +85,7 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 		IgnoreQueryOrdering *bool  `json:"ignoreQueryOrdering,omitempty"`
 	}{
 		CompareBodies:       options.CompareBodies,
-		ExcludedHeaders:     strings.Join(options.ExcludedHeaders, ","),
+		ExcludedHeaders:     strings.Join(addDefaults(options.ExcludedHeaders), ","),
 		IncludedHeaders:     strings.Join(options.IgnoredHeaders, ","),
 		IgnoreQueryOrdering: options.IgnoreQueryOrdering,
 	}, "", "")

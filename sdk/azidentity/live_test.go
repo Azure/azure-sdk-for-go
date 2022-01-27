@@ -145,7 +145,16 @@ func TestMain(m *testing.M) {
 			}
 		}()
 	}
-	os.Exit(m.Run())
+	val := m.Run()
+
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.SetBodilessMatcher(nil, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	os.Exit(val)
 }
 
 func initRecording(t *testing.T) (policy.ClientOptions, func()) {

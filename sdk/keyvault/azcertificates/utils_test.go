@@ -97,7 +97,7 @@ func lookupEnvVar(s string) string {
 	return ret
 }
 
-func createClient(t *testing.T) (Client, error) {
+func createClient(t *testing.T) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	var credOptions *azidentity.ClientSecretCredentialOptions
 
@@ -157,7 +157,7 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 	}, nil
 }
 
-func cleanUp(t *testing.T, client Client, certName string) {
+func cleanUp(t *testing.T, client *Client, certName string) {
 	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
 	require.NoError(t, err)
 
@@ -169,7 +169,7 @@ func cleanUp(t *testing.T, client Client, certName string) {
 	require.NoError(t, err)
 }
 
-func createCert(t *testing.T, client Client, certName string) {
+func createCert(t *testing.T, client *Client, certName string) {
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
 			Name: to.StringPtr("Self"),

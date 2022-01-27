@@ -48,7 +48,7 @@ func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 }
 
 // NewClient creates an instance of a Client for a Key Vault Certificate URL.
-func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (Client, error) {
+func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	genOptions := options.toConnectionOptions()
 
 	genOptions.PerRetryPolicies = append(
@@ -58,7 +58,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 
 	conn := generated.NewConnection(genOptions)
 
-	return Client{
+	return &Client{
 		genClient: generated.NewKeyVaultClient(conn),
 		vaultURL:  vaultURL,
 	}, nil

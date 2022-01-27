@@ -55,7 +55,7 @@ client := armpostgresql.NewFirewallRulesClient(<subscription ID>, cred, &options
 - [Configuration](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/configuration)
 - [Database](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/database)
 - [Firewall Rule](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/firewall_rule)
-- [Servers](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/servers)
+- [Postgresql Servers](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/servers)
 - [Virtual Network Rule](https://aka.ms/azsdk/go/mgmt/samples?path=postgresql/virtual_network_rule)
 
 ## Provide Feedback

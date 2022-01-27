@@ -57,9 +57,9 @@ client := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, &options)
 - [Dedicated Host](https://aka.ms/azsdk/go/mgmt/samples?path=compute/dedicated_host)
 - [Disk](https://aka.ms/azsdk/go/mgmt/samples?path=compute/disk)
 - [Gallery](https://aka.ms/azsdk/go/mgmt/samples?path=compute/gallery)
-- [Proximity](https://aka.ms/azsdk/go/mgmt/samples?path=compute/proximity)
+- [Proximity Placement Group](https://aka.ms/azsdk/go/mgmt/samples?path=compute/proximity)
 - [Snapshot](https://aka.ms/azsdk/go/mgmt/samples?path=compute/snapshot)
-- [Scale Set](https://aka.ms/azsdk/go/mgmt/samples?path=compute/vmscaleset)
+- [Virtual Machine Scale Set](https://aka.ms/azsdk/go/mgmt/samples?path=compute/vmscaleset)
 
 ## Provide Feedback
 

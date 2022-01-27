@@ -30,7 +30,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 			continue
 		}
 
-		fmt.Printf("Var: %s\n", values[0])
+		fmt.Printf("Var: %s=len(%d)\n", values[0], len(values[1]))
 	}
 
 	// test with azure identity support

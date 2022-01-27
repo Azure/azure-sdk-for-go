@@ -719,7 +719,7 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 				LifetimeActions: []*LifetimeActions{
 					{
 						Action: &LifetimeActionsType{
-							Type: ActionTypeNotify.ToPtr(),
+							Type: ActionTypes.Notify().ToPtr(),
 						},
 						Trigger: &LifetimeActionsTrigger{
 							TimeBeforeExpiry: to.StringPtr("P30D"),

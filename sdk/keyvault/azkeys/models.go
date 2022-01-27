@@ -46,7 +46,7 @@ type KeyAttributes struct {
 func (k KeyAttributes) toGenerated() *generated.KeyAttributes {
 	return &generated.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
-		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
+		RecoveryLevel:   k.RecoveryLevel,
 		Enabled:         k.Enabled,
 		Expires:         k.Expires,
 		NotBefore:       k.NotBefore,
@@ -63,7 +63,7 @@ func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyAttributes {
 
 	return &KeyAttributes{
 		RecoverableDays: i.RecoverableDays,
-		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
+		RecoveryLevel:   i.RecoveryLevel,
 		Attributes: Attributes{
 			Enabled:   i.Enabled,
 			Expires:   i.Expires,
@@ -292,7 +292,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 					Updated:   i.Attributes.Updated,
 				},
 				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
+				RecoveryLevel:   i.Attributes.RecoveryLevel,
 			},
 			KID:     i.Kid,
 			Tags:    convertGeneratedMap(i.Tags),

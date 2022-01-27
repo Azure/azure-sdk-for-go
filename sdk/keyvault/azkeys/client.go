@@ -342,7 +342,7 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
 	keyType := RSA
 
-	if options != nil && *options.HardwareProtected {
+	if options != nil && options.HardwareProtected != nil && *options.HardwareProtected {
 		keyType = RSAHSM
 	} else if options == nil {
 		options = &CreateRSAKeyOptions{}

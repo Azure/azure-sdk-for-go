@@ -69,7 +69,7 @@ Azure provides several other packages for using services from Go, listed below. 
 
 More code samples for using the management library for Go SDK can be found in the following locations
 - [Go SDK Code Samples Repo](https://github.com/azure-samples/azure-sdk-for-go-samples)
-- [Go SDK Code Samples Repo(new version)](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/new-version)
+- [Go SDK Code Samples Repo(New version)](https://aka.ms/azsdk/go/mgmt/samples)
 - Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/ze_generated_example_loadbalancernetworkinterfaces_client_test.go)
 
 ## Reporting security issues and security bugs

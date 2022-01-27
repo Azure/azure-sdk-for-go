@@ -50,6 +50,13 @@ options = arm.ClientOptions{
 client := armcontainerregistry.NewImportPipelinesClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Registry](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/registry)
+- [Replication](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/replication)
+- [Task](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/task)
+- [Token](https://aka.ms/azsdk/go/mgmt/samples?path=containerregistry/token)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

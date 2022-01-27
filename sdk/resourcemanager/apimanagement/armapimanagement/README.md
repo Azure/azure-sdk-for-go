@@ -50,6 +50,22 @@ options = arm.ClientOptions{
 client := armapimanagement.NewTagClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [API Management Service](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apimanagement_service)
+- [Operation](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apioperation)
+- [Operation Policy](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apioperationpolicy)
+- [Policy](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apipolicy)
+- [Release](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apirelease)
+- [Schema](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apischema)
+- [Tag Description](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apitagdescription)
+- [Version Set](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/apiversionset)
+- [Deleted Service](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/deleted_service)
+- [Logger](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/logger)
+- [Sign In Setting](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/signin_setting)
+- [Sign up Setting](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/signup_setting)
+- [User](https://aka.ms/azsdk/go/mgmt/samples?path=apimanagement/user)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

@@ -50,10 +50,16 @@ options = arm.ClientOptions{
 client := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, &options)
 ```
 
-## Samples
+## More sample code
 
-More code samples for using the management library for Go SDK can be found in the following locations.
-- [Compute Samples](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/new-version/compute)
+- [Availability Set](https://aka.ms/azsdk/go/mgmt/samples?path=compute/availabilityset)
+- [Virtual Machine](https://aka.ms/azsdk/go/mgmt/samples?path=compute/createVM)
+- [Dedicated Host](https://aka.ms/azsdk/go/mgmt/samples?path=compute/dedicated_host)
+- [Disk](https://aka.ms/azsdk/go/mgmt/samples?path=compute/disk)
+- [Gallery](https://aka.ms/azsdk/go/mgmt/samples?path=compute/gallery)
+- [Proximity](https://aka.ms/azsdk/go/mgmt/samples?path=compute/proximity)
+- [Snapshot](https://aka.ms/azsdk/go/mgmt/samples?path=compute/snapshot)
+- [Scale Set](https://aka.ms/azsdk/go/mgmt/samples?path=compute/vmscaleset)
 
 ## Provide Feedback
 

@@ -9,8 +9,8 @@
 package generated
 
 const (
-	module  = "generated"
-	version = "v0.1.0"
+	ModuleName = "generated"
+	ModuleVersion = "v0.1.0"
 )
 
 // ActionType - The type of the action.
@@ -18,7 +18,7 @@ type ActionType string
 
 const (
 	ActionTypeEmailContacts ActionType = "EmailContacts"
-	ActionTypeAutoRenew     ActionType = "AutoRenew"
+	ActionTypeAutoRenew ActionType = "AutoRenew"
 )
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
@@ -153,40 +153,43 @@ func (c DataAction) ToPtr() *DataAction {
 	return &c
 }
 
-// DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the
-// certificate can be permanently deleted by a privileged user; otherwise,
+// DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault.
+// If it contains 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
 // only the system can purge the certificate, at the end of the retention interval.
 type DeletionRecoveryLevel string
 
 const (
-	// DeletionRecoveryLevelCustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent
-	// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability of the deleted entity during the retention interval
-	// and while the subscription is still available.
+	// DeletionRecoveryLevelCustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility
+// for immediate and permanent deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability
+// of the deleted entity during the retention interval and while the subscription is still available.
 	DeletionRecoveryLevelCustomizedRecoverable DeletionRecoveryLevel = "CustomizedRecoverable"
-	// DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable, immediate
-	// and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled when 7<= SoftDeleteRetentionInDays
-	// < 90. This level guarantees the recoverability of the deleted entity during the retention interval, and also reflects the fact that the subscription
-	// itself cannot be cancelled.
+	// DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion
+// is recoverable, immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot
+// be permanently canceled when 7<= SoftDeleteRetentionInDays < 90. This level guarantees the recoverability of the deleted
+// entity during the retention interval, and also reflects the fact that the subscription itself cannot be cancelled.
 	DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription DeletionRecoveryLevel = "CustomizedRecoverable+ProtectedSubscription"
-	// DeletionRecoveryLevelCustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent
-	// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees the recoverability of the deleted entity during the retention interval,
-	// unless a Purge operation is requested, or the subscription is cancelled.
+	// DeletionRecoveryLevelCustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which
+// also permits immediate and permanent deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees
+// the recoverability of the deleted entity during the retention interval, unless a Purge operation is requested, or the subscription
+// is cancelled.
 	DeletionRecoveryLevelCustomizedRecoverablePurgeable DeletionRecoveryLevel = "CustomizedRecoverable+Purgeable"
-	// DeletionRecoveryLevelPurgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility for recovery. This level
-	// corresponds to no protection being available against a Delete operation; the data is irretrievably lost upon accepting a Delete operation at the entity
-	// level or higher (vault, resource group, subscription etc.)
+	// DeletionRecoveryLevelPurgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility
+// for recovery. This level corresponds to no protection being available against a Delete operation; the data is irretrievably
+// lost upon accepting a Delete operation at the entity level or higher (vault, resource group, subscription etc.)
 	DeletionRecoveryLevelPurgeable DeletionRecoveryLevel = "Purgeable"
-	// DeletionRecoveryLevelRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent deletion
-	// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval(90 days) and while the subscription is still
-	// available. System wil permanently delete it after 90 days, if not recovered
+	// DeletionRecoveryLevelRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate
+// and permanent deletion (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention
+// interval(90 days) and while the subscription is still available. System wil permanently delete it after 90 days, if not
+// recovered
 	DeletionRecoveryLevelRecoverable DeletionRecoveryLevel = "Recoverable"
-	// DeletionRecoveryLevelRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable within retention interval
-	// (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled. System
-	// wil permanently delete it after 90 days, if not recovered
+	// DeletionRecoveryLevelRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable
+// within retention interval (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription
+// itself cannot be permanently canceled. System wil permanently delete it after 90 days, if not recovered
 	DeletionRecoveryLevelRecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
-	// DeletionRecoveryLevelRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent deletion
-	// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval (90 days), unless a Purge operation is requested,
-	// or the subscription is cancelled. System wil permanently delete it after 90 days, if not recovered
+	// DeletionRecoveryLevelRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits
+// immediate and permanent deletion (i.e. purge). This level guarantees the recoverability of the deleted entity during the
+// retention interval (90 days), unless a Purge operation is requested, or the subscription is cancelled. System wil permanently
+// delete it after 90 days, if not recovered
 	DeletionRecoveryLevelRecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
 )
 
@@ -212,10 +215,10 @@ func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 type JSONWebKeyCurveName string
 
 const (
-	JSONWebKeyCurveNameP256  JSONWebKeyCurveName = "P-256"
+	JSONWebKeyCurveNameP256 JSONWebKeyCurveName = "P-256"
 	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
-	JSONWebKeyCurveNameP384  JSONWebKeyCurveName = "P-384"
-	JSONWebKeyCurveNameP521  JSONWebKeyCurveName = "P-521"
+	JSONWebKeyCurveNameP384 JSONWebKeyCurveName = "P-384"
+	JSONWebKeyCurveNameP521 JSONWebKeyCurveName = "P-521"
 )
 
 // PossibleJSONWebKeyCurveNameValues returns the possible values for the JSONWebKeyCurveName const type.
@@ -237,11 +240,11 @@ func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
 type JSONWebKeyType string
 
 const (
-	JSONWebKeyTypeEC     JSONWebKeyType = "EC"
-	JSONWebKeyTypeECHSM  JSONWebKeyType = "EC-HSM"
-	JSONWebKeyTypeOct    JSONWebKeyType = "oct"
+	JSONWebKeyTypeEC JSONWebKeyType = "EC"
+	JSONWebKeyTypeECHSM JSONWebKeyType = "EC-HSM"
+	JSONWebKeyTypeOct JSONWebKeyType = "oct"
 	JSONWebKeyTypeOctHSM JSONWebKeyType = "oct-HSM"
-	JSONWebKeyTypeRSA    JSONWebKeyType = "RSA"
+	JSONWebKeyTypeRSA JSONWebKeyType = "RSA"
 	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
 )
 
@@ -265,15 +268,15 @@ func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
 type KeyUsageType string
 
 const (
-	KeyUsageTypeCRLSign          KeyUsageType = "cRLSign"
+	KeyUsageTypeCRLSign KeyUsageType = "cRLSign"
 	KeyUsageTypeDataEncipherment KeyUsageType = "dataEncipherment"
-	KeyUsageTypeDecipherOnly     KeyUsageType = "decipherOnly"
+	KeyUsageTypeDecipherOnly KeyUsageType = "decipherOnly"
 	KeyUsageTypeDigitalSignature KeyUsageType = "digitalSignature"
-	KeyUsageTypeEncipherOnly     KeyUsageType = "encipherOnly"
-	KeyUsageTypeKeyAgreement     KeyUsageType = "keyAgreement"
-	KeyUsageTypeKeyCertSign      KeyUsageType = "keyCertSign"
-	KeyUsageTypeKeyEncipherment  KeyUsageType = "keyEncipherment"
-	KeyUsageTypeNonRepudiation   KeyUsageType = "nonRepudiation"
+	KeyUsageTypeEncipherOnly KeyUsageType = "encipherOnly"
+	KeyUsageTypeKeyAgreement KeyUsageType = "keyAgreement"
+	KeyUsageTypeKeyCertSign KeyUsageType = "keyCertSign"
+	KeyUsageTypeKeyEncipherment KeyUsageType = "keyEncipherment"
+	KeyUsageTypeNonRepudiation KeyUsageType = "nonRepudiation"
 )
 
 // PossibleKeyUsageTypeValues returns the possible values for the KeyUsageType const type.
@@ -293,29 +296,6 @@ func PossibleKeyUsageTypeValues() []KeyUsageType {
 
 // ToPtr returns a *KeyUsageType pointing to the current value.
 func (c KeyUsageType) ToPtr() *KeyUsageType {
-	return &c
-}
-
-// OperationStatus - operation status
-type OperationStatus string
-
-const (
-	OperationStatusSuccess    OperationStatus = "Success"
-	OperationStatusInProgress OperationStatus = "InProgress"
-	OperationStatusFailed     OperationStatus = "Failed"
-)
-
-// PossibleOperationStatusValues returns the possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{
-		OperationStatusSuccess,
-		OperationStatusInProgress,
-		OperationStatusFailed,
-	}
-}
-
-// ToPtr returns a *OperationStatus pointing to the current value.
-func (c OperationStatus) ToPtr() *OperationStatus {
 	return &c
 }
 
@@ -383,3 +363,4 @@ func PossibleRoleTypeValues() []RoleType {
 func (c RoleType) ToPtr() *RoleType {
 	return &c
 }
+

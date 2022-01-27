@@ -710,8 +710,8 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 	recoveredResp, err := recover.PollUntilDone(ctx, time.Second)
 	require.NoError(t, err)
 	require.Contains(t, *recoveredResp.ID, certName)
-
 }
+
 func TestClient_RestoreCertificateBackup(t *testing.T) {
 	stop := startTest(t)
 	defer stop()

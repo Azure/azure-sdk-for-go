@@ -105,15 +105,13 @@ func (c *CertificateAttributes) toGenerated() *generated.CertificateAttributes {
 	}
 
 	return &generated.CertificateAttributes{
+		Created:         c.Created,
+		Enabled:         c.Enabled,
+		Expires:         c.Expires,
+		NotBefore:       c.NotBefore,
 		RecoverableDays: c.RecoverableDays,
 		RecoveryLevel:   (*generated.DeletionRecoveryLevel)(c.RecoveryLevel),
-		Attributes: generated.Attributes{
-			Enabled:   c.Enabled,
-			Expires:   c.Expires,
-			NotBefore: c.NotBefore,
-			Created:   c.Created,
-			Updated:   c.Updated,
-		},
+		Updated:         c.Updated,
 	}
 }
 

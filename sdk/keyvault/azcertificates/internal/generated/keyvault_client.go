@@ -11,40 +11,48 @@ package generated
 import (
 	"context"
 	"errors"
-	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClient contains the methods for the KeyVaultClient group.
 // Don't use this type directly, use NewKeyVaultClient() instead.
 type KeyVaultClient struct {
-	con *Connection
+	pl runtime.Pipeline
 }
 
 // NewKeyVaultClient creates a new instance of KeyVaultClient with the specified values.
-func NewKeyVaultClient(con *Connection) *KeyVaultClient {
-	return &KeyVaultClient{con: con}
+// pl - the pipeline used for sending requests and handling responses.
+func NewKeyVaultClient(pl runtime.Pipeline) *KeyVaultClient {
+	client := &KeyVaultClient{
+		pl: pl,
+	}
+	return client
 }
 
-// BackupCertificate - Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded.
-// This operation requires the certificates/backup permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// BackupCertificate - Requests that a backup of the specified certificate be downloaded to the client. All versions of the
+// certificate will be downloaded. This operation requires the certificates/backup permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// options - KeyVaultClientBackupCertificateOptions contains the optional parameters for the KeyVaultClient.BackupCertificate
+// method.
 func (client *KeyVaultClient) BackupCertificate(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientBackupCertificateOptions) (KeyVaultClientBackupCertificateResponse, error) {
 	req, err := client.backupCertificateCreateRequest(ctx, vaultBaseURL, certificateName, options)
 	if err != nil {
 		return KeyVaultClientBackupCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientBackupCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientBackupCertificateResponse{}, client.backupCertificateHandleError(resp)
+		return KeyVaultClientBackupCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.backupCertificateHandleResponse(resp)
 }
@@ -78,32 +86,25 @@ func (client *KeyVaultClient) backupCertificateHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// backupCertificateHandleError handles the BackupCertificate error response.
-func (client *KeyVaultClient) backupCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateCertificate - If this is the first version, the certificate resource is created. This operation requires the certificates/create permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// CreateCertificate - If this is the first version, the certificate resource is created. This operation requires the certificates/create
+// permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// parameters - The parameters to create a certificate.
+// options - KeyVaultClientCreateCertificateOptions contains the optional parameters for the KeyVaultClient.CreateCertificate
+// method.
 func (client *KeyVaultClient) CreateCertificate(ctx context.Context, vaultBaseURL string, certificateName string, parameters CertificateCreateParameters, options *KeyVaultClientCreateCertificateOptions) (KeyVaultClientCreateCertificateResponse, error) {
 	req, err := client.createCertificateCreateRequest(ctx, vaultBaseURL, certificateName, parameters, options)
 	if err != nil {
 		return KeyVaultClientCreateCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientCreateCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return KeyVaultClientCreateCertificateResponse{}, client.createCertificateHandleError(resp)
+		return KeyVaultClientCreateCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createCertificateHandleResponse(resp)
 }
@@ -137,34 +138,25 @@ func (client *KeyVaultClient) createCertificateHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// createCertificateHandleError handles the CreateCertificate error response.
-func (client *KeyVaultClient) createCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteCertificate - Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used to remove individual
-// versions of a certificate object. This operation requires the
+// DeleteCertificate - Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot
+// be used to remove individual versions of a certificate object. This operation requires the
 // certificates/delete permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// options - KeyVaultClientDeleteCertificateOptions contains the optional parameters for the KeyVaultClient.DeleteCertificate
+// method.
 func (client *KeyVaultClient) DeleteCertificate(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientDeleteCertificateOptions) (KeyVaultClientDeleteCertificateResponse, error) {
 	req, err := client.deleteCertificateCreateRequest(ctx, vaultBaseURL, certificateName, options)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientDeleteCertificateResponse{}, client.deleteCertificateHandleError(resp)
+		return KeyVaultClientDeleteCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteCertificateHandleResponse(resp)
 }
@@ -198,33 +190,23 @@ func (client *KeyVaultClient) deleteCertificateHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// deleteCertificateHandleError handles the DeleteCertificate error response.
-func (client *KeyVaultClient) deleteCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteCertificateContacts - Deletes the certificate contacts for a specified key vault certificate. This operation requires the certificates/managecontacts
-// permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// DeleteCertificateContacts - Deletes the certificate contacts for a specified key vault certificate. This operation requires
+// the certificates/managecontacts permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// options - KeyVaultClientDeleteCertificateContactsOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateContacts
+// method.
 func (client *KeyVaultClient) DeleteCertificateContacts(ctx context.Context, vaultBaseURL string, options *KeyVaultClientDeleteCertificateContactsOptions) (KeyVaultClientDeleteCertificateContactsResponse, error) {
 	req, err := client.deleteCertificateContactsCreateRequest(ctx, vaultBaseURL, options)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateContactsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateContactsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientDeleteCertificateContactsResponse{}, client.deleteCertificateContactsHandleError(resp)
+		return KeyVaultClientDeleteCertificateContactsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteCertificateContactsHandleResponse(resp)
 }
@@ -254,33 +236,24 @@ func (client *KeyVaultClient) deleteCertificateContactsHandleResponse(resp *http
 	return result, nil
 }
 
-// deleteCertificateContactsHandleError handles the DeleteCertificateContacts error response.
-func (client *KeyVaultClient) deleteCertificateContactsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteCertificateIssuer - The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This operation requires
-// the certificates/manageissuers/deleteissuers permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// DeleteCertificateIssuer - The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from
+// the vault. This operation requires the certificates/manageissuers/deleteissuers permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// issuerName - The name of the issuer.
+// options - KeyVaultClientDeleteCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateIssuer
+// method.
 func (client *KeyVaultClient) DeleteCertificateIssuer(ctx context.Context, vaultBaseURL string, issuerName string, options *KeyVaultClientDeleteCertificateIssuerOptions) (KeyVaultClientDeleteCertificateIssuerResponse, error) {
 	req, err := client.deleteCertificateIssuerCreateRequest(ctx, vaultBaseURL, issuerName, options)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateIssuerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateIssuerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientDeleteCertificateIssuerResponse{}, client.deleteCertificateIssuerHandleError(resp)
+		return KeyVaultClientDeleteCertificateIssuerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteCertificateIssuerHandleResponse(resp)
 }
@@ -314,33 +287,24 @@ func (client *KeyVaultClient) deleteCertificateIssuerHandleResponse(resp *http.R
 	return result, nil
 }
 
-// deleteCertificateIssuerHandleError handles the DeleteCertificateIssuer error response.
-func (client *KeyVaultClient) deleteCertificateIssuerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteCertificateOperation - Deletes the creation operation for a specified certificate that is in the process of being created. The certificate is no
-// longer created. This operation requires the certificates/update permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// DeleteCertificateOperation - Deletes the creation operation for a specified certificate that is in the process of being
+// created. The certificate is no longer created. This operation requires the certificates/update permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// options - KeyVaultClientDeleteCertificateOperationOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateOperation
+// method.
 func (client *KeyVaultClient) DeleteCertificateOperation(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientDeleteCertificateOperationOptions) (KeyVaultClientDeleteCertificateOperationResponse, error) {
 	req, err := client.deleteCertificateOperationCreateRequest(ctx, vaultBaseURL, certificateName, options)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateOperationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateOperationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientDeleteCertificateOperationResponse{}, client.deleteCertificateOperationHandleError(resp)
+		return KeyVaultClientDeleteCertificateOperationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteCertificateOperationHandleResponse(resp)
 }
@@ -374,32 +338,24 @@ func (client *KeyVaultClient) deleteCertificateOperationHandleResponse(resp *htt
 	return result, nil
 }
 
-// deleteCertificateOperationHandleError handles the DeleteCertificateOperation error response.
-func (client *KeyVaultClient) deleteCertificateOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetCertificate - Gets information about a specific certificate. This operation requires the certificates/get permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate in the given vault.
+// certificateVersion - The version of the certificate. This URI fragment is optional. If not specified, the latest version
+// of the certificate is returned.
+// options - KeyVaultClientGetCertificateOptions contains the optional parameters for the KeyVaultClient.GetCertificate method.
 func (client *KeyVaultClient) GetCertificate(ctx context.Context, vaultBaseURL string, certificateName string, certificateVersion string, options *KeyVaultClientGetCertificateOptions) (KeyVaultClientGetCertificateResponse, error) {
 	req, err := client.getCertificateCreateRequest(ctx, vaultBaseURL, certificateName, certificateVersion, options)
 	if err != nil {
 		return KeyVaultClientGetCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetCertificateResponse{}, client.getCertificateHandleError(resp)
+		return KeyVaultClientGetCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCertificateHandleResponse(resp)
 }
@@ -437,33 +393,23 @@ func (client *KeyVaultClient) getCertificateHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// getCertificateHandleError handles the GetCertificate error response.
-func (client *KeyVaultClient) getCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetCertificateContacts - The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault. This operation
-// requires the certificates/managecontacts permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetCertificateContacts - The GetCertificateContacts operation returns the set of certificate contact resources in the specified
+// key vault. This operation requires the certificates/managecontacts permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// options - KeyVaultClientGetCertificateContactsOptions contains the optional parameters for the KeyVaultClient.GetCertificateContacts
+// method.
 func (client *KeyVaultClient) GetCertificateContacts(ctx context.Context, vaultBaseURL string, options *KeyVaultClientGetCertificateContactsOptions) (KeyVaultClientGetCertificateContactsResponse, error) {
 	req, err := client.getCertificateContactsCreateRequest(ctx, vaultBaseURL, options)
 	if err != nil {
 		return KeyVaultClientGetCertificateContactsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificateContactsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetCertificateContactsResponse{}, client.getCertificateContactsHandleError(resp)
+		return KeyVaultClientGetCertificateContactsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCertificateContactsHandleResponse(resp)
 }
@@ -493,33 +439,24 @@ func (client *KeyVaultClient) getCertificateContactsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// getCertificateContactsHandleError handles the GetCertificateContacts error response.
-func (client *KeyVaultClient) getCertificateContactsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetCertificateIssuer - The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault. This operation
-// requires the certificates/manageissuers/getissuers permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetCertificateIssuer - The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified
+// key vault. This operation requires the certificates/manageissuers/getissuers permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// issuerName - The name of the issuer.
+// options - KeyVaultClientGetCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuer
+// method.
 func (client *KeyVaultClient) GetCertificateIssuer(ctx context.Context, vaultBaseURL string, issuerName string, options *KeyVaultClientGetCertificateIssuerOptions) (KeyVaultClientGetCertificateIssuerResponse, error) {
 	req, err := client.getCertificateIssuerCreateRequest(ctx, vaultBaseURL, issuerName, options)
 	if err != nil {
 		return KeyVaultClientGetCertificateIssuerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificateIssuerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetCertificateIssuerResponse{}, client.getCertificateIssuerHandleError(resp)
+		return KeyVaultClientGetCertificateIssuerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCertificateIssuerHandleResponse(resp)
 }
@@ -553,22 +490,12 @@ func (client *KeyVaultClient) getCertificateIssuerHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// getCertificateIssuerHandleError handles the GetCertificateIssuer error response.
-func (client *KeyVaultClient) getCertificateIssuerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetCertificateIssuers - The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault. This operation
-// requires the certificates/manageissuers/getissuers permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetCertificateIssuers - The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified
+// key vault. This operation requires the certificates/manageissuers/getissuers permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// options - KeyVaultClientGetCertificateIssuersOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuers
+// method.
 func (client *KeyVaultClient) GetCertificateIssuers(vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) *KeyVaultClientGetCertificateIssuersPager {
 	return &KeyVaultClientGetCertificateIssuersPager{
 		client: client,
@@ -609,32 +536,24 @@ func (client *KeyVaultClient) getCertificateIssuersHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// getCertificateIssuersHandleError handles the GetCertificateIssuers error response.
-func (client *KeyVaultClient) getCertificateIssuersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetCertificateOperation - Gets the creation operation associated with a specified certificate. This operation requires the certificates/get permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetCertificateOperation - Gets the creation operation associated with a specified certificate. This operation requires
+// the certificates/get permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// options - KeyVaultClientGetCertificateOperationOptions contains the optional parameters for the KeyVaultClient.GetCertificateOperation
+// method.
 func (client *KeyVaultClient) GetCertificateOperation(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateOperationOptions) (KeyVaultClientGetCertificateOperationResponse, error) {
 	req, err := client.getCertificateOperationCreateRequest(ctx, vaultBaseURL, certificateName, options)
 	if err != nil {
 		return KeyVaultClientGetCertificateOperationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificateOperationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetCertificateOperationResponse{}, client.getCertificateOperationHandleError(resp)
+		return KeyVaultClientGetCertificateOperationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCertificateOperationHandleResponse(resp)
 }
@@ -668,33 +587,24 @@ func (client *KeyVaultClient) getCertificateOperationHandleResponse(resp *http.R
 	return result, nil
 }
 
-// getCertificateOperationHandleError handles the GetCertificateOperation error response.
-func (client *KeyVaultClient) getCertificateOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetCertificatePolicy - The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault. This operation
-// requires the certificates/get permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetCertificatePolicy - The GetCertificatePolicy operation returns the specified certificate policy resources in the specified
+// key vault. This operation requires the certificates/get permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate in a given key vault.
+// options - KeyVaultClientGetCertificatePolicyOptions contains the optional parameters for the KeyVaultClient.GetCertificatePolicy
+// method.
 func (client *KeyVaultClient) GetCertificatePolicy(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificatePolicyOptions) (KeyVaultClientGetCertificatePolicyResponse, error) {
 	req, err := client.getCertificatePolicyCreateRequest(ctx, vaultBaseURL, certificateName, options)
 	if err != nil {
 		return KeyVaultClientGetCertificatePolicyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificatePolicyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetCertificatePolicyResponse{}, client.getCertificatePolicyHandleError(resp)
+		return KeyVaultClientGetCertificatePolicyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCertificatePolicyHandleResponse(resp)
 }
@@ -728,22 +638,13 @@ func (client *KeyVaultClient) getCertificatePolicyHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// getCertificatePolicyHandleError handles the GetCertificatePolicy error response.
-func (client *KeyVaultClient) getCertificatePolicyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetCertificateVersions - The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This operation requires
-// the certificates/list permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetCertificateVersions - The GetCertificateVersions operation returns the versions of a certificate in the specified key
+// vault. This operation requires the certificates/list permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// options - KeyVaultClientGetCertificateVersionsOptions contains the optional parameters for the KeyVaultClient.GetCertificateVersions
+// method.
 func (client *KeyVaultClient) GetCertificateVersions(vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) *KeyVaultClientGetCertificateVersionsPager {
 	return &KeyVaultClientGetCertificateVersionsPager{
 		client: client,
@@ -788,22 +689,12 @@ func (client *KeyVaultClient) getCertificateVersionsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// getCertificateVersionsHandleError handles the GetCertificateVersions error response.
-func (client *KeyVaultClient) getCertificateVersionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetCertificates - The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires the certificates/list
-// permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetCertificates - The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+// operation requires the certificates/list permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// options - KeyVaultClientGetCertificatesOptions contains the optional parameters for the KeyVaultClient.GetCertificates
+// method.
 func (client *KeyVaultClient) GetCertificates(vaultBaseURL string, options *KeyVaultClientGetCertificatesOptions) *KeyVaultClientGetCertificatesPager {
 	return &KeyVaultClientGetCertificatesPager{
 		client: client,
@@ -847,34 +738,25 @@ func (client *KeyVaultClient) getCertificatesHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// getCertificatesHandleError handles the GetCertificates error response.
-func (client *KeyVaultClient) getCertificatesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetDeletedCertificate - The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as retention interval,
-// scheduled permanent deletion and the current deletion recovery level.
+// GetDeletedCertificate - The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes,
+// such as retention interval, scheduled permanent deletion and the current deletion recovery level.
 // This operation requires the certificates/get permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate
+// options - KeyVaultClientGetDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificate
+// method.
 func (client *KeyVaultClient) GetDeletedCertificate(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientGetDeletedCertificateOptions) (KeyVaultClientGetDeletedCertificateResponse, error) {
 	req, err := client.getDeletedCertificateCreateRequest(ctx, vaultBaseURL, certificateName, options)
 	if err != nil {
 		return KeyVaultClientGetDeletedCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetDeletedCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetDeletedCertificateResponse{}, client.getDeletedCertificateHandleError(resp)
+		return KeyVaultClientGetDeletedCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDeletedCertificateHandleResponse(resp)
 }
@@ -908,23 +790,14 @@ func (client *KeyVaultClient) getDeletedCertificateHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// getDeletedCertificateHandleError handles the GetDeletedCertificate error response.
-func (client *KeyVaultClient) getDeletedCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetDeletedCertificates - The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready
-// for recovery or purging. This operation includes deletion-specific
-// information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetDeletedCertificates - The GetDeletedCertificates operation retrieves the certificates in the current vault which are
+// in a deleted state and ready for recovery or purging. This operation includes deletion-specific
+// information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete
+// enabled vaults.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// options - KeyVaultClientGetDeletedCertificatesOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificates
+// method.
 func (client *KeyVaultClient) GetDeletedCertificates(vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) *KeyVaultClientGetDeletedCertificatesPager {
 	return &KeyVaultClientGetDeletedCertificatesPager{
 		client: client,
@@ -968,35 +841,27 @@ func (client *KeyVaultClient) getDeletedCertificatesHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// getDeletedCertificatesHandleError handles the GetDeletedCertificates error response.
-func (client *KeyVaultClient) getDeletedCertificatesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ImportCertificate - Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires the certificates/import
-// permission. The certificate to be imported can be in either PFX
-// or PEM format. If the certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only accept a key in
-// PKCS#8 format.
-// If the operation fails it returns the *KeyVaultError error type.
+// ImportCertificate - Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation
+// requires the certificates/import permission. The certificate to be imported can be in either PFX
+// or PEM format. If the certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key
+// Vault will only accept a key in PKCS#8 format.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// parameters - The parameters to import the certificate.
+// options - KeyVaultClientImportCertificateOptions contains the optional parameters for the KeyVaultClient.ImportCertificate
+// method.
 func (client *KeyVaultClient) ImportCertificate(ctx context.Context, vaultBaseURL string, certificateName string, parameters CertificateImportParameters, options *KeyVaultClientImportCertificateOptions) (KeyVaultClientImportCertificateResponse, error) {
 	req, err := client.importCertificateCreateRequest(ctx, vaultBaseURL, certificateName, parameters, options)
 	if err != nil {
 		return KeyVaultClientImportCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientImportCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientImportCertificateResponse{}, client.importCertificateHandleError(resp)
+		return KeyVaultClientImportCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.importCertificateHandleResponse(resp)
 }
@@ -1030,34 +895,26 @@ func (client *KeyVaultClient) importCertificateHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// importCertificateHandleError handles the ImportCertificate error response.
-func (client *KeyVaultClient) importCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// MergeCertificate - The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the
-// service. This operation requires the certificates/create
+// MergeCertificate - The MergeCertificate operation performs the merging of a certificate or certificate chain with a key
+// pair currently available in the service. This operation requires the certificates/create
 // permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// parameters - The parameters to merge certificate.
+// options - KeyVaultClientMergeCertificateOptions contains the optional parameters for the KeyVaultClient.MergeCertificate
+// method.
 func (client *KeyVaultClient) MergeCertificate(ctx context.Context, vaultBaseURL string, certificateName string, parameters CertificateMergeParameters, options *KeyVaultClientMergeCertificateOptions) (KeyVaultClientMergeCertificateResponse, error) {
 	req, err := client.mergeCertificateCreateRequest(ctx, vaultBaseURL, certificateName, parameters, options)
 	if err != nil {
 		return KeyVaultClientMergeCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientMergeCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return KeyVaultClientMergeCertificateResponse{}, client.mergeCertificateHandleError(resp)
+		return KeyVaultClientMergeCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.mergeCertificateHandleResponse(resp)
 }
@@ -1091,34 +948,25 @@ func (client *KeyVaultClient) mergeCertificateHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// mergeCertificateHandleError handles the MergeCertificate error response.
-func (client *KeyVaultClient) mergeCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// PurgeDeletedCertificate - The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for
-// recovery. The operation is not available if the recovery level does not
+// PurgeDeletedCertificate - The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate,
+// without possibility for recovery. The operation is not available if the recovery level does not
 // specify 'Purgeable'. This operation requires the certificate/purge permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate
+// options - KeyVaultClientPurgeDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.PurgeDeletedCertificate
+// method.
 func (client *KeyVaultClient) PurgeDeletedCertificate(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientPurgeDeletedCertificateOptions) (KeyVaultClientPurgeDeletedCertificateResponse, error) {
 	req, err := client.purgeDeletedCertificateCreateRequest(ctx, vaultBaseURL, certificateName, options)
 	if err != nil {
 		return KeyVaultClientPurgeDeletedCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientPurgeDeletedCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return KeyVaultClientPurgeDeletedCertificateResponse{}, client.purgeDeletedCertificateHandleError(resp)
+		return KeyVaultClientPurgeDeletedCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return KeyVaultClientPurgeDeletedCertificateResponse{RawResponse: resp}, nil
 }
@@ -1143,34 +991,25 @@ func (client *KeyVaultClient) purgeDeletedCertificateCreateRequest(ctx context.C
 	return req, nil
 }
 
-// purgeDeletedCertificateHandleError handles the PurgeDeletedCertificate error response.
-func (client *KeyVaultClient) purgeDeletedCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// RecoverDeletedCertificate - The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is applicable in vaults
-// enabled for soft-delete, and must be issued during the retention interval
+// RecoverDeletedCertificate - The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The
+// operation is applicable in vaults enabled for soft-delete, and must be issued during the retention interval
 // (available in the deleted certificate's attributes). This operation requires the certificates/recover permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the deleted certificate
+// options - KeyVaultClientRecoverDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.RecoverDeletedCertificate
+// method.
 func (client *KeyVaultClient) RecoverDeletedCertificate(ctx context.Context, vaultBaseURL string, certificateName string, options *KeyVaultClientRecoverDeletedCertificateOptions) (KeyVaultClientRecoverDeletedCertificateResponse, error) {
 	req, err := client.recoverDeletedCertificateCreateRequest(ctx, vaultBaseURL, certificateName, options)
 	if err != nil {
 		return KeyVaultClientRecoverDeletedCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRecoverDeletedCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientRecoverDeletedCertificateResponse{}, client.recoverDeletedCertificateHandleError(resp)
+		return KeyVaultClientRecoverDeletedCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.recoverDeletedCertificateHandleResponse(resp)
 }
@@ -1204,32 +1043,24 @@ func (client *KeyVaultClient) recoverDeletedCertificateHandleResponse(resp *http
 	return result, nil
 }
 
-// recoverDeletedCertificateHandleError handles the RecoverDeletedCertificate error response.
-func (client *KeyVaultClient) recoverDeletedCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// RestoreCertificate - Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// RestoreCertificate - Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore
+// permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// parameters - The parameters to restore the certificate.
+// options - KeyVaultClientRestoreCertificateOptions contains the optional parameters for the KeyVaultClient.RestoreCertificate
+// method.
 func (client *KeyVaultClient) RestoreCertificate(ctx context.Context, vaultBaseURL string, parameters CertificateRestoreParameters, options *KeyVaultClientRestoreCertificateOptions) (KeyVaultClientRestoreCertificateResponse, error) {
 	req, err := client.restoreCertificateCreateRequest(ctx, vaultBaseURL, parameters, options)
 	if err != nil {
 		return KeyVaultClientRestoreCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRestoreCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientRestoreCertificateResponse{}, client.restoreCertificateHandleError(resp)
+		return KeyVaultClientRestoreCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.restoreCertificateHandleResponse(resp)
 }
@@ -1259,32 +1090,24 @@ func (client *KeyVaultClient) restoreCertificateHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// restoreCertificateHandleError handles the RestoreCertificate error response.
-func (client *KeyVaultClient) restoreCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// SetCertificateContacts - Sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// SetCertificateContacts - Sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts
+// permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// contacts - The contacts for the key vault certificate.
+// options - KeyVaultClientSetCertificateContactsOptions contains the optional parameters for the KeyVaultClient.SetCertificateContacts
+// method.
 func (client *KeyVaultClient) SetCertificateContacts(ctx context.Context, vaultBaseURL string, contacts Contacts, options *KeyVaultClientSetCertificateContactsOptions) (KeyVaultClientSetCertificateContactsResponse, error) {
 	req, err := client.setCertificateContactsCreateRequest(ctx, vaultBaseURL, contacts, options)
 	if err != nil {
 		return KeyVaultClientSetCertificateContactsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientSetCertificateContactsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientSetCertificateContactsResponse{}, client.setCertificateContactsHandleError(resp)
+		return KeyVaultClientSetCertificateContactsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setCertificateContactsHandleResponse(resp)
 }
@@ -1314,33 +1137,25 @@ func (client *KeyVaultClient) setCertificateContactsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// setCertificateContactsHandleError handles the SetCertificateContacts error response.
-func (client *KeyVaultClient) setCertificateContactsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// SetCertificateIssuer - The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the certificates/setissuers
-// permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// SetCertificateIssuer - The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation
+// requires the certificates/setissuers permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// issuerName - The name of the issuer.
+// parameter - Certificate issuer set parameter.
+// options - KeyVaultClientSetCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.SetCertificateIssuer
+// method.
 func (client *KeyVaultClient) SetCertificateIssuer(ctx context.Context, vaultBaseURL string, issuerName string, parameter CertificateIssuerSetParameters, options *KeyVaultClientSetCertificateIssuerOptions) (KeyVaultClientSetCertificateIssuerResponse, error) {
 	req, err := client.setCertificateIssuerCreateRequest(ctx, vaultBaseURL, issuerName, parameter, options)
 	if err != nil {
 		return KeyVaultClientSetCertificateIssuerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientSetCertificateIssuerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientSetCertificateIssuerResponse{}, client.setCertificateIssuerHandleError(resp)
+		return KeyVaultClientSetCertificateIssuerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setCertificateIssuerHandleResponse(resp)
 }
@@ -1374,34 +1189,27 @@ func (client *KeyVaultClient) setCertificateIssuerHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// setCertificateIssuerHandleError handles the SetCertificateIssuer error response.
-func (client *KeyVaultClient) setCertificateIssuerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// UpdateCertificate - The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated are the certificate's
-// attributes. This operation requires the certificates/update
+// UpdateCertificate - The UpdateCertificate operation applies the specified update on the given certificate; the only elements
+// updated are the certificate's attributes. This operation requires the certificates/update
 // permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate in the given key vault.
+// certificateVersion - The version of the certificate.
+// parameters - The parameters for certificate update.
+// options - KeyVaultClientUpdateCertificateOptions contains the optional parameters for the KeyVaultClient.UpdateCertificate
+// method.
 func (client *KeyVaultClient) UpdateCertificate(ctx context.Context, vaultBaseURL string, certificateName string, certificateVersion string, parameters CertificateUpdateParameters, options *KeyVaultClientUpdateCertificateOptions) (KeyVaultClientUpdateCertificateResponse, error) {
 	req, err := client.updateCertificateCreateRequest(ctx, vaultBaseURL, certificateName, certificateVersion, parameters, options)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientUpdateCertificateResponse{}, client.updateCertificateHandleError(resp)
+		return KeyVaultClientUpdateCertificateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateCertificateHandleResponse(resp)
 }
@@ -1439,33 +1247,25 @@ func (client *KeyVaultClient) updateCertificateHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// updateCertificateHandleError handles the UpdateCertificate error response.
-func (client *KeyVaultClient) updateCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// UpdateCertificateIssuer - The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This operation requires
-// the certificates/setissuers permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// UpdateCertificateIssuer - The UpdateCertificateIssuer operation performs an update on the specified certificate issuer
+// entity. This operation requires the certificates/setissuers permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// issuerName - The name of the issuer.
+// parameter - Certificate issuer update parameter.
+// options - KeyVaultClientUpdateCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.UpdateCertificateIssuer
+// method.
 func (client *KeyVaultClient) UpdateCertificateIssuer(ctx context.Context, vaultBaseURL string, issuerName string, parameter CertificateIssuerUpdateParameters, options *KeyVaultClientUpdateCertificateIssuerOptions) (KeyVaultClientUpdateCertificateIssuerResponse, error) {
 	req, err := client.updateCertificateIssuerCreateRequest(ctx, vaultBaseURL, issuerName, parameter, options)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateIssuerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateIssuerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientUpdateCertificateIssuerResponse{}, client.updateCertificateIssuerHandleError(resp)
+		return KeyVaultClientUpdateCertificateIssuerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateCertificateIssuerHandleResponse(resp)
 }
@@ -1499,32 +1299,25 @@ func (client *KeyVaultClient) updateCertificateIssuerHandleResponse(resp *http.R
 	return result, nil
 }
 
-// updateCertificateIssuerHandleError handles the UpdateCertificateIssuer error response.
-func (client *KeyVaultClient) updateCertificateIssuerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// UpdateCertificateOperation - Updates a certificate creation operation that is already in progress. This operation requires the certificates/update permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// UpdateCertificateOperation - Updates a certificate creation operation that is already in progress. This operation requires
+// the certificates/update permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate.
+// certificateOperation - The certificate operation response.
+// options - KeyVaultClientUpdateCertificateOperationOptions contains the optional parameters for the KeyVaultClient.UpdateCertificateOperation
+// method.
 func (client *KeyVaultClient) UpdateCertificateOperation(ctx context.Context, vaultBaseURL string, certificateName string, certificateOperation CertificateOperationUpdateParameter, options *KeyVaultClientUpdateCertificateOperationOptions) (KeyVaultClientUpdateCertificateOperationResponse, error) {
 	req, err := client.updateCertificateOperationCreateRequest(ctx, vaultBaseURL, certificateName, certificateOperation, options)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateOperationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateOperationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientUpdateCertificateOperationResponse{}, client.updateCertificateOperationHandleError(resp)
+		return KeyVaultClientUpdateCertificateOperationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateCertificateOperationHandleResponse(resp)
 }
@@ -1558,32 +1351,25 @@ func (client *KeyVaultClient) updateCertificateOperationHandleResponse(resp *htt
 	return result, nil
 }
 
-// updateCertificateOperationHandleError handles the UpdateCertificateOperation error response.
-func (client *KeyVaultClient) updateCertificateOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// UpdateCertificatePolicy - Set specified members in the certificate policy. Leave others as null. This operation requires the certificates/update permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// UpdateCertificatePolicy - Set specified members in the certificate policy. Leave others as null. This operation requires
+// the certificates/update permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// certificateName - The name of the certificate in the given vault.
+// certificatePolicy - The policy for the certificate.
+// options - KeyVaultClientUpdateCertificatePolicyOptions contains the optional parameters for the KeyVaultClient.UpdateCertificatePolicy
+// method.
 func (client *KeyVaultClient) UpdateCertificatePolicy(ctx context.Context, vaultBaseURL string, certificateName string, certificatePolicy CertificatePolicy, options *KeyVaultClientUpdateCertificatePolicyOptions) (KeyVaultClientUpdateCertificatePolicyResponse, error) {
 	req, err := client.updateCertificatePolicyCreateRequest(ctx, vaultBaseURL, certificateName, certificatePolicy, options)
 	if err != nil {
 		return KeyVaultClientUpdateCertificatePolicyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateCertificatePolicyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientUpdateCertificatePolicyResponse{}, client.updateCertificatePolicyHandleError(resp)
+		return KeyVaultClientUpdateCertificatePolicyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateCertificatePolicyHandleResponse(resp)
 }
@@ -1615,17 +1401,4 @@ func (client *KeyVaultClient) updateCertificatePolicyHandleResponse(resp *http.R
 		return KeyVaultClientUpdateCertificatePolicyResponse{}, err
 	}
 	return result, nil
-}
-
-// updateCertificatePolicyHandleError handles the UpdateCertificatePolicy error response.
-func (client *KeyVaultClient) updateCertificatePolicyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

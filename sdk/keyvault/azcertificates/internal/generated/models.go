@@ -10,11 +10,10 @@ package generated
 
 import (
 	"encoding/json"
-	"reflect"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"reflect"
+	"time"
 )
 
 // Action - The action that will be executed.
@@ -59,7 +58,11 @@ type Attributes struct {
 // MarshalJSON implements the json.Marshaller interface for type Attributes.
 func (a Attributes) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
+	populateTimeUnix(objectMap, "created", a.Created)
+	populate(objectMap, "enabled", a.Enabled)
+	populateTimeUnix(objectMap, "exp", a.Expires)
+	populateTimeUnix(objectMap, "nbf", a.NotBefore)
+	populateTimeUnix(objectMap, "updated", a.Updated)
 	return json.Marshal(objectMap)
 }
 
@@ -69,36 +72,24 @@ func (a *Attributes) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a Attributes) marshalInternal(objectMap map[string]interface{}) {
-	populateTimeUnix(objectMap, "created", a.Created)
-	populate(objectMap, "enabled", a.Enabled)
-	populateTimeUnix(objectMap, "exp", a.Expires)
-	populateTimeUnix(objectMap, "nbf", a.NotBefore)
-	populateTimeUnix(objectMap, "updated", a.Updated)
-}
-
-func (a *Attributes) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeUnix(val, &a.Created)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &a.Created)
+				delete(rawMsg, key)
 		case "enabled":
-			err = unpopulate(val, &a.Enabled)
-			delete(rawMsg, key)
+				err = unpopulate(val, &a.Enabled)
+				delete(rawMsg, key)
 		case "exp":
-			err = unpopulateTimeUnix(val, &a.Expires)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &a.Expires)
+				delete(rawMsg, key)
 		case "nbf":
-			err = unpopulateTimeUnix(val, &a.NotBefore)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &a.NotBefore)
+				delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTimeUnix(val, &a.Updated)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &a.Updated)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -131,7 +122,7 @@ func (b *BackupCertificateResult) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &b.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -142,22 +133,40 @@ func (b *BackupCertificateResult) UnmarshalJSON(data []byte) error {
 
 // CertificateAttributes - The certificate management attributes.
 type CertificateAttributes struct {
-	Attributes
+	// Determines whether the object is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Expiry date in UTC.
+	Expires *time.Time `json:"exp,omitempty"`
+
+	// Not before date in UTC.
+	NotBefore *time.Time `json:"nbf,omitempty"`
+
+	// READ-ONLY; Creation time in UTC.
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
+
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
-	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the certificate
-	// can be permanently deleted by a privileged user; otherwise,
-	// only the system can purge the certificate, at the end of the retention interval.
+	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
+// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
+// only the system can purge the certificate, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in UTC.
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CertificateAttributes.
 func (c CertificateAttributes) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Attributes.marshalInternal(objectMap)
+	populateTimeUnix(objectMap, "created", c.Created)
+	populate(objectMap, "enabled", c.Enabled)
+	populateTimeUnix(objectMap, "exp", c.Expires)
+	populateTimeUnix(objectMap, "nbf", c.NotBefore)
 	populate(objectMap, "recoverableDays", c.RecoverableDays)
 	populate(objectMap, "recoveryLevel", c.RecoveryLevel)
+	populateTimeUnix(objectMap, "updated", c.Updated)
 	return json.Marshal(objectMap)
 }
 
@@ -170,19 +179,31 @@ func (c *CertificateAttributes) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "created":
+				err = unpopulateTimeUnix(val, &c.Created)
+				delete(rawMsg, key)
+		case "enabled":
+				err = unpopulate(val, &c.Enabled)
+				delete(rawMsg, key)
+		case "exp":
+				err = unpopulateTimeUnix(val, &c.Expires)
+				delete(rawMsg, key)
+		case "nbf":
+				err = unpopulateTimeUnix(val, &c.NotBefore)
+				delete(rawMsg, key)
 		case "recoverableDays":
-			err = unpopulate(val, &c.RecoverableDays)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.RecoverableDays)
+				delete(rawMsg, key)
 		case "recoveryLevel":
-			err = unpopulate(val, &c.RecoveryLevel)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.RecoveryLevel)
+				delete(rawMsg, key)
+		case "updated":
+				err = unpopulateTimeUnix(val, &c.Updated)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.Attributes.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -220,20 +241,6 @@ type CertificateBundle struct {
 // MarshalJSON implements the json.Marshaller interface for type CertificateBundle.
 func (c CertificateBundle) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateBundle.
-func (c *CertificateBundle) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c CertificateBundle) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "attributes", c.Attributes)
 	populateByteArray(objectMap, "cer", c.Cer, runtime.Base64StdFormat)
 	populate(objectMap, "contentType", c.ContentType)
@@ -243,39 +250,45 @@ func (c CertificateBundle) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "sid", c.Sid)
 	populate(objectMap, "tags", c.Tags)
 	populateByteArray(objectMap, "x5t", c.X509Thumbprint, runtime.Base64URLFormat)
+	return json.Marshal(objectMap)
 }
 
-func (c *CertificateBundle) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateBundle.
+func (c *CertificateBundle) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "attributes":
-			err = unpopulate(val, &c.Attributes)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Attributes)
+				delete(rawMsg, key)
 		case "cer":
 			err = runtime.DecodeByteArray(string(val), &c.Cer, runtime.Base64StdFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "contentType":
-			err = unpopulate(val, &c.ContentType)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.ContentType)
+				delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &c.ID)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.ID)
+				delete(rawMsg, key)
 		case "kid":
-			err = unpopulate(val, &c.Kid)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Kid)
+				delete(rawMsg, key)
 		case "policy":
-			err = unpopulate(val, &c.Policy)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Policy)
+				delete(rawMsg, key)
 		case "sid":
-			err = unpopulate(val, &c.Sid)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Sid)
+				delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, &c.Tags)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Tags)
+				delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &c.X509Thumbprint, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -307,7 +320,8 @@ func (c CertificateCreateParameters) MarshalJSON() ([]byte, error) {
 
 // CertificateImportParameters - The certificate import parameters.
 type CertificateImportParameters struct {
-	// REQUIRED; Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
+	// REQUIRED; Base64 encoded representation of the certificate object to import. This certificate needs to contain the private
+// key.
 	Base64EncodedCertificate *string `json:"value,omitempty"`
 
 	// The attributes of the certificate (optional).
@@ -334,22 +348,6 @@ func (c CertificateImportParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-type CertificateInfoObject struct {
-	// REQUIRED; Certificates needed from customer
-	Certificates []*SecurityDomainJSONWebKey `json:"certificates,omitempty"`
-
-	// Customer to specify the number of certificates (minimum 2 and maximum 10) to restore Security Domain
-	Required *int32 `json:"required,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CertificateInfoObject.
-func (c CertificateInfoObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "certificates", c.Certificates)
-	populate(objectMap, "required", c.Required)
-	return json.Marshal(objectMap)
-}
-
 // CertificateIssuerItem - The certificate issuer item containing certificate issuer metadata.
 type CertificateIssuerItem struct {
 	// Certificate Identifier.
@@ -364,7 +362,8 @@ type CertificateIssuerListResult struct {
 	// READ-ONLY; The URL to get the next set of certificate issuers.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page of certificate issuers.
+	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
+// of certificate issuers.
 	Value []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -434,7 +433,10 @@ type CertificateItem struct {
 // MarshalJSON implements the json.Marshaller interface for type CertificateItem.
 func (c CertificateItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
+	populate(objectMap, "attributes", c.Attributes)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "tags", c.Tags)
+	populateByteArray(objectMap, "x5t", c.X509Thumbprint, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
 }
 
@@ -444,32 +446,21 @@ func (c *CertificateItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c CertificateItem) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "attributes", c.Attributes)
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "tags", c.Tags)
-	populateByteArray(objectMap, "x5t", c.X509Thumbprint, runtime.Base64URLFormat)
-}
-
-func (c *CertificateItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "attributes":
-			err = unpopulate(val, &c.Attributes)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Attributes)
+				delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &c.ID)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.ID)
+				delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, &c.Tags)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Tags)
+				delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &c.X509Thumbprint, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -483,7 +474,8 @@ type CertificateListResult struct {
 	// READ-ONLY; The URL to get the next set of certificates.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
+	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of
+// certificates.
 	Value []*CertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -571,32 +563,32 @@ func (c *CertificateOperation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "cancellation_requested":
-			err = unpopulate(val, &c.CancellationRequested)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.CancellationRequested)
+				delete(rawMsg, key)
 		case "csr":
 			err = runtime.DecodeByteArray(string(val), &c.Csr, runtime.Base64StdFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, &c.Error)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Error)
+				delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &c.ID)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.ID)
+				delete(rawMsg, key)
 		case "issuer":
-			err = unpopulate(val, &c.IssuerParameters)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.IssuerParameters)
+				delete(rawMsg, key)
 		case "request_id":
-			err = unpopulate(val, &c.RequestID)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.RequestID)
+				delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &c.Status)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Status)
+				delete(rawMsg, key)
 		case "status_details":
-			err = unpopulate(val, &c.StatusDetails)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.StatusDetails)
+				delete(rawMsg, key)
 		case "target":
-			err = unpopulate(val, &c.Target)
-			delete(rawMsg, key)
+				err = unpopulate(val, &c.Target)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -679,7 +671,7 @@ func (c *CertificateRestoreParameters) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &c.CertificateBundleBackup, runtime.Base64URLFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -738,26 +730,61 @@ func (c Contacts) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DeletedCertificateBundle - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
+// DeletedCertificateBundle - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information
+// on when it will be purged.
 type DeletedCertificateBundle struct {
-	CertificateBundle
+	// The certificate attributes.
+	Attributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// CER contents of x509 certificate.
+	Cer []byte `json:"cer,omitempty"`
+
+	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
+	ContentType *string `json:"contentType,omitempty"`
+
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
+	// READ-ONLY; The certificate id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The key id.
+	Kid *string `json:"kid,omitempty" azure:"ro"`
+
+	// READ-ONLY; The management policy.
+	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
+
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The secret id.
+	Sid *string `json:"sid,omitempty" azure:"ro"`
+
+	// READ-ONLY; Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DeletedCertificateBundle.
 func (d DeletedCertificateBundle) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.CertificateBundle.marshalInternal(objectMap)
+	populate(objectMap, "attributes", d.Attributes)
+	populateByteArray(objectMap, "cer", d.Cer, runtime.Base64StdFormat)
+	populate(objectMap, "contentType", d.ContentType)
 	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "kid", d.Kid)
+	populate(objectMap, "policy", d.Policy)
 	populate(objectMap, "recoveryId", d.RecoveryID)
 	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
+	populate(objectMap, "sid", d.Sid)
+	populate(objectMap, "tags", d.Tags)
+	populateByteArray(objectMap, "x5t", d.X509Thumbprint, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
 }
 
@@ -770,31 +797,66 @@ func (d *DeletedCertificateBundle) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "attributes":
+				err = unpopulate(val, &d.Attributes)
+				delete(rawMsg, key)
+		case "cer":
+			err = runtime.DecodeByteArray(string(val), &d.Cer, runtime.Base64StdFormat)
+				delete(rawMsg, key)
+		case "contentType":
+				err = unpopulate(val, &d.ContentType)
+				delete(rawMsg, key)
 		case "deletedDate":
-			err = unpopulateTimeUnix(val, &d.DeletedDate)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &d.DeletedDate)
+				delete(rawMsg, key)
+		case "id":
+				err = unpopulate(val, &d.ID)
+				delete(rawMsg, key)
+		case "kid":
+				err = unpopulate(val, &d.Kid)
+				delete(rawMsg, key)
+		case "policy":
+				err = unpopulate(val, &d.Policy)
+				delete(rawMsg, key)
 		case "recoveryId":
-			err = unpopulate(val, &d.RecoveryID)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.RecoveryID)
+				delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
+				delete(rawMsg, key)
+		case "sid":
+				err = unpopulate(val, &d.Sid)
+				delete(rawMsg, key)
+		case "tags":
+				err = unpopulate(val, &d.Tags)
+				delete(rawMsg, key)
+		case "x5t":
+			err = runtime.DecodeByteArray(string(val), &d.X509Thumbprint, runtime.Base64URLFormat)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.CertificateBundle.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // DeletedCertificateItem - The deleted certificate item containing metadata about the deleted certificate.
 type DeletedCertificateItem struct {
-	CertificateItem
+	// The certificate management attributes.
+	Attributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// Certificate identifier.
+	ID *string `json:"id,omitempty"`
+
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty"`
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
@@ -806,10 +868,13 @@ type DeletedCertificateItem struct {
 // MarshalJSON implements the json.Marshaller interface for type DeletedCertificateItem.
 func (d DeletedCertificateItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.CertificateItem.marshalInternal(objectMap)
+	populate(objectMap, "attributes", d.Attributes)
 	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
+	populate(objectMap, "id", d.ID)
 	populate(objectMap, "recoveryId", d.RecoveryID)
 	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
+	populate(objectMap, "tags", d.Tags)
+	populateByteArray(objectMap, "x5t", d.X509Thumbprint, runtime.Base64URLFormat)
 	return json.Marshal(objectMap)
 }
 
@@ -822,22 +887,31 @@ func (d *DeletedCertificateItem) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "attributes":
+				err = unpopulate(val, &d.Attributes)
+				delete(rawMsg, key)
 		case "deletedDate":
-			err = unpopulateTimeUnix(val, &d.DeletedDate)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &d.DeletedDate)
+				delete(rawMsg, key)
+		case "id":
+				err = unpopulate(val, &d.ID)
+				delete(rawMsg, key)
 		case "recoveryId":
-			err = unpopulate(val, &d.RecoveryID)
-			delete(rawMsg, key)
+				err = unpopulate(val, &d.RecoveryID)
+				delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
+				delete(rawMsg, key)
+		case "tags":
+				err = unpopulate(val, &d.Tags)
+				delete(rawMsg, key)
+		case "x5t":
+			err = runtime.DecodeByteArray(string(val), &d.X509Thumbprint, runtime.Base64URLFormat)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.CertificateItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -847,7 +921,8 @@ type DeletedCertificateListResult struct {
 	// READ-ONLY; The URL to get the next set of deleted certificates.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
+	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page
+// of deleted certificates
 	Value []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -869,31 +944,6 @@ type Error struct {
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
-// HSMSecurityDomainBeginDownloadOptions contains the optional parameters for the HSMSecurityDomain.BeginDownload method.
-type HSMSecurityDomainBeginDownloadOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainBeginUploadOptions contains the optional parameters for the HSMSecurityDomain.BeginUpload method.
-type HSMSecurityDomainBeginUploadOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainDownloadPendingOptions contains the optional parameters for the HSMSecurityDomain.DownloadPending method.
-type HSMSecurityDomainDownloadPendingOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainTransferKeyOptions contains the optional parameters for the HSMSecurityDomain.TransferKey method.
-type HSMSecurityDomainTransferKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainUploadPendingOptions contains the optional parameters for the HSMSecurityDomain.UploadPending method.
-type HSMSecurityDomainUploadPendingOptions struct {
-	// placeholder for future optional parameters
 }
 
 // IssuerAttributes - The attributes of an issuer managed by the Key Vault service.
@@ -927,14 +977,14 @@ func (i *IssuerAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeUnix(val, &i.Created)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &i.Created)
+				delete(rawMsg, key)
 		case "enabled":
-			err = unpopulate(val, &i.Enabled)
-			delete(rawMsg, key)
+				err = unpopulate(val, &i.Enabled)
+				delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTimeUnix(val, &i.Updated)
-			delete(rawMsg, key)
+				err = unpopulateTimeUnix(val, &i.Updated)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1010,17 +1060,20 @@ type KeyVaultClientCreateCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientDeleteCertificateContactsOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateContacts method.
+// KeyVaultClientDeleteCertificateContactsOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateContacts
+// method.
 type KeyVaultClientDeleteCertificateContactsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientDeleteCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateIssuer method.
+// KeyVaultClientDeleteCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateIssuer
+// method.
 type KeyVaultClientDeleteCertificateIssuerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientDeleteCertificateOperationOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateOperation method.
+// KeyVaultClientDeleteCertificateOperationOptions contains the optional parameters for the KeyVaultClient.DeleteCertificateOperation
+// method.
 type KeyVaultClientDeleteCertificateOperationOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1030,23 +1083,27 @@ type KeyVaultClientDeleteCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientGetCertificateContactsOptions contains the optional parameters for the KeyVaultClient.GetCertificateContacts method.
+// KeyVaultClientGetCertificateContactsOptions contains the optional parameters for the KeyVaultClient.GetCertificateContacts
+// method.
 type KeyVaultClientGetCertificateContactsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientGetCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuer method.
+// KeyVaultClientGetCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuer
+// method.
 type KeyVaultClientGetCertificateIssuerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientGetCertificateIssuersOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuers method.
+// KeyVaultClientGetCertificateIssuersOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuers
+// method.
 type KeyVaultClientGetCertificateIssuersOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	Maxresults *int32
 }
 
-// KeyVaultClientGetCertificateOperationOptions contains the optional parameters for the KeyVaultClient.GetCertificateOperation method.
+// KeyVaultClientGetCertificateOperationOptions contains the optional parameters for the KeyVaultClient.GetCertificateOperation
+// method.
 type KeyVaultClientGetCertificateOperationOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1056,12 +1113,14 @@ type KeyVaultClientGetCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientGetCertificatePolicyOptions contains the optional parameters for the KeyVaultClient.GetCertificatePolicy method.
+// KeyVaultClientGetCertificatePolicyOptions contains the optional parameters for the KeyVaultClient.GetCertificatePolicy
+// method.
 type KeyVaultClientGetCertificatePolicyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientGetCertificateVersionsOptions contains the optional parameters for the KeyVaultClient.GetCertificateVersions method.
+// KeyVaultClientGetCertificateVersionsOptions contains the optional parameters for the KeyVaultClient.GetCertificateVersions
+// method.
 type KeyVaultClientGetCertificateVersionsOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	Maxresults *int32
@@ -1075,12 +1134,14 @@ type KeyVaultClientGetCertificatesOptions struct {
 	Maxresults *int32
 }
 
-// KeyVaultClientGetDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificate method.
+// KeyVaultClientGetDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificate
+// method.
 type KeyVaultClientGetDeletedCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientGetDeletedCertificatesOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificates method.
+// KeyVaultClientGetDeletedCertificatesOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificates
+// method.
 type KeyVaultClientGetDeletedCertificatesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
@@ -1098,12 +1159,14 @@ type KeyVaultClientMergeCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientPurgeDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.PurgeDeletedCertificate method.
+// KeyVaultClientPurgeDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.PurgeDeletedCertificate
+// method.
 type KeyVaultClientPurgeDeletedCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientRecoverDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.RecoverDeletedCertificate method.
+// KeyVaultClientRecoverDeletedCertificateOptions contains the optional parameters for the KeyVaultClient.RecoverDeletedCertificate
+// method.
 type KeyVaultClientRecoverDeletedCertificateOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1113,22 +1176,26 @@ type KeyVaultClientRestoreCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientSetCertificateContactsOptions contains the optional parameters for the KeyVaultClient.SetCertificateContacts method.
+// KeyVaultClientSetCertificateContactsOptions contains the optional parameters for the KeyVaultClient.SetCertificateContacts
+// method.
 type KeyVaultClientSetCertificateContactsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientSetCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.SetCertificateIssuer method.
+// KeyVaultClientSetCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.SetCertificateIssuer
+// method.
 type KeyVaultClientSetCertificateIssuerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientUpdateCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.UpdateCertificateIssuer method.
+// KeyVaultClientUpdateCertificateIssuerOptions contains the optional parameters for the KeyVaultClient.UpdateCertificateIssuer
+// method.
 type KeyVaultClientUpdateCertificateIssuerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientUpdateCertificateOperationOptions contains the optional parameters for the KeyVaultClient.UpdateCertificateOperation method.
+// KeyVaultClientUpdateCertificateOperationOptions contains the optional parameters for the KeyVaultClient.UpdateCertificateOperation
+// method.
 type KeyVaultClientUpdateCertificateOperationOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1138,23 +1205,16 @@ type KeyVaultClientUpdateCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyVaultClientUpdateCertificatePolicyOptions contains the optional parameters for the KeyVaultClient.UpdateCertificatePolicy method.
+// KeyVaultClientUpdateCertificatePolicyOptions contains the optional parameters for the KeyVaultClient.UpdateCertificatePolicy
+// method.
 type KeyVaultClientUpdateCertificatePolicyOptions struct {
 	// placeholder for future optional parameters
 }
 
 // KeyVaultError - The key vault error exception.
-// Implements the error and azcore.HTTPResponse interfaces.
 type KeyVaultError struct {
-	raw string
 	// READ-ONLY; The key vault server error.
-	InnerError *Error `json:"error,omitempty" azure:"ro"`
-}
-
-// Error implements the error interface for type KeyVaultError.
-// The contents of the error text are not contractual and subject to change.
-func (e KeyVaultError) Error() string {
-	return e.raw
+	Error *Error `json:"error,omitempty" azure:"ro"`
 }
 
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
@@ -1260,8 +1320,8 @@ func (r RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
 
 // RoleAssignmentProperties - Role assignment properties.
 type RoleAssignmentProperties struct {
-	// REQUIRED; The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security
-	// group.
+	// REQUIRED; The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user,
+// service principal, or security group.
 	PrincipalID *string `json:"principalId,omitempty"`
 
 	// REQUIRED; The role definition ID used in the role assignment.
@@ -1280,25 +1340,26 @@ type RoleAssignmentPropertiesWithScope struct {
 	Scope *RoleScope `json:"scope,omitempty"`
 }
 
-// RoleAssignmentsCreateOptions contains the optional parameters for the RoleAssignments.Create method.
-type RoleAssignmentsCreateOptions struct {
+// RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
+type RoleAssignmentsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentsDeleteOptions contains the optional parameters for the RoleAssignments.Delete method.
-type RoleAssignmentsDeleteOptions struct {
+// RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
+type RoleAssignmentsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentsGetOptions contains the optional parameters for the RoleAssignments.Get method.
-type RoleAssignmentsGetOptions struct {
+// RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
+type RoleAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentsListForScopeOptions contains the optional parameters for the RoleAssignments.ListForScope method.
-type RoleAssignmentsListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-	// return all role assignments at, above or below the scope for the specified principal.
+// RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope method.
+type RoleAssignmentsClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+// eq {id} to return all role assignments at, above or below the
+// scope for the specified principal.
 	Filter *string
 }
 
@@ -1375,23 +1436,24 @@ func (r RoleDefinitionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RoleDefinitionsCreateOrUpdateOptions contains the optional parameters for the RoleDefinitions.CreateOrUpdate method.
-type RoleDefinitionsCreateOrUpdateOptions struct {
+// RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
+// method.
+type RoleDefinitionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsDeleteOptions contains the optional parameters for the RoleDefinitions.Delete method.
-type RoleDefinitionsDeleteOptions struct {
+// RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
+type RoleDefinitionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsGetOptions contains the optional parameters for the RoleDefinitions.Get method.
-type RoleDefinitionsGetOptions struct {
+// RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
+type RoleDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsListOptions contains the optional parameters for the RoleDefinitions.List method.
-type RoleDefinitionsListOptions struct {
+// RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
+type RoleDefinitionsClientListOptions struct {
 	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string
 }
@@ -1400,67 +1462,6 @@ type RoleDefinitionsListOptions struct {
 type SecretProperties struct {
 	// The media type (MIME type).
 	ContentType *string `json:"contentType,omitempty"`
-}
-
-type SecurityDomainJSONWebKey struct {
-	// REQUIRED; Algorithm intended for use with the key.
-	Alg *string `json:"alg,omitempty"`
-
-	// REQUIRED; RSA public exponent.
-	E *string `json:"e,omitempty"`
-
-	// REQUIRED
-	KeyOps []*string `json:"key_ops,omitempty"`
-
-	// REQUIRED; Key identifier.
-	Kid *string `json:"kid,omitempty"`
-
-	// REQUIRED; JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. For Security Domain this value
-	// must be RSA.
-	Kty *string `json:"kty,omitempty"`
-
-	// REQUIRED; RSA modulus.
-	N *string `json:"n,omitempty"`
-
-	// REQUIRED; X509 certificate chain parameter
-	X5C []*string `json:"x5c,omitempty"`
-
-	// REQUIRED; X509 certificate SHA256 thumbprint.
-	X5TS256 *string `json:"x5t#S256,omitempty"`
-
-	// Public Key Use Parameter. This is optional and if present must be enc.
-	Use *string `json:"use,omitempty"`
-
-	// X509 certificate SHA1 thumbprint. This is optional.
-	X5T *string `json:"x5t,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecurityDomainJSONWebKey.
-func (s SecurityDomainJSONWebKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alg", s.Alg)
-	populate(objectMap, "e", s.E)
-	populate(objectMap, "key_ops", s.KeyOps)
-	populate(objectMap, "kid", s.Kid)
-	populate(objectMap, "kty", s.Kty)
-	populate(objectMap, "n", s.N)
-	populate(objectMap, "use", s.Use)
-	populate(objectMap, "x5c", s.X5C)
-	populate(objectMap, "x5t", s.X5T)
-	populate(objectMap, "x5t#S256", s.X5TS256)
-	return json.Marshal(objectMap)
-}
-
-// SecurityDomainObject - The Security Domain.
-type SecurityDomainObject struct {
-	// REQUIRED; The Security Domain.
-	Value *string `json:"value,omitempty"`
-}
-
-type SecurityDomainOperationStatus struct {
-	// operation status
-	Status        *OperationStatus `json:"status,omitempty"`
-	StatusDetails *string          `json:"status_details,omitempty"`
 }
 
 // SubjectAlternativeNames - The subject alternate names of a X509 object.
@@ -1484,18 +1485,10 @@ func (s SubjectAlternativeNames) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-type TransferKey struct {
-	// REQUIRED; Specifies the transfer key in JWK format
-	TransferKey *SecurityDomainJSONWebKey `json:"transfer_key,omitempty"`
-
-	// Specifies the format of the transfer key
-	KeyFormat *string `json:"key_format,omitempty"`
-}
-
 // Trigger - A condition to be satisfied for an action to be executed.
 type Trigger struct {
-	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths is 36, then value should
-	// be between 1 and 972 (36 * 27).
+	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths
+// is 36, then value should be between 1 and 972 (36 * 27).
 	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
 
 	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
@@ -1557,3 +1550,4 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
+

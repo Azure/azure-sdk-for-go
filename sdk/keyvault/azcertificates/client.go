@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
@@ -56,10 +57,10 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
 
-	conn := generated.NewConnection(genOptions)
+	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 
 	return &Client{
-		genClient: generated.NewKeyVaultClient(conn),
+		genClient: generated.NewKeyVaultClient(pl),
 		vaultURL:  vaultURL,
 	}, nil
 }
@@ -79,7 +80,32 @@ func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCr
 
 // CreateCertificateResponse contains the response from method Client.BeginCreateCertificate.
 type CreateCertificateResponse struct {
-	CertificateOperation
+	// Indicates if cancellation was requested on the certificate operation.
+	CancellationRequested *bool `json:"cancellation_requested,omitempty"`
+
+	// The certificate signing request (CSR) that is being used in the certificate operation.
+	Csr []byte `json:"csr,omitempty"`
+
+	// Error encountered, if any, during the certificate operation.
+	Error *CertificateError `json:"error,omitempty"`
+
+	// Parameters for the issuer of the X509 component of a certificate.
+	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
+
+	// Identifier for the certificate operation.
+	RequestID *string `json:"request_id,omitempty"`
+
+	// Status of the certificate operation.
+	Status *string `json:"status,omitempty"`
+
+	// The status details of the certificate operation.
+	StatusDetails *string `json:"status_details,omitempty"`
+
+	// Location which contains the result of the certificate operation.
+	Target *string `json:"target,omitempty"`
+
+	// READ-ONLY; The certificate id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -112,9 +138,12 @@ func (b *CreateCertificatePoller) Poll(ctx context.Context) (*http.Response, err
 		return resp.RawResponse, nil
 	}
 
-	if resp.RawResponse.StatusCode == http.StatusNotFound {
-		// The certificate has not been fully created yet
-		return b.createResponse.RawResponse, nil
+	var respErr *azcore.ResponseError
+	if errors.As(err, &respErr) {
+		if respErr.RawResponse.StatusCode == http.StatusNotFound {
+			// The certificate has not been fully created yet
+			return resp.RawResponse, nil
+		}
 	}
 
 	// There was an error in this operation, return the original raw response and the error
@@ -182,18 +211,16 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 		vaultURL:    c.vaultURL,
 		client:      c.genClient,
 		createResponse: CreateCertificateResponse{
-			RawResponse: resp.RawResponse,
-			CertificateOperation: CertificateOperation{
-				CancellationRequested: resp.CancellationRequested,
-				Csr:                   resp.Csr,
-				Error:                 certificateErrorFromGenerated(resp.Error),
-				IssuerParameters:      issuerParametersFromGenerated(resp.IssuerParameters),
-				RequestID:             resp.RequestID,
-				Status:                resp.Status,
-				StatusDetails:         resp.StatusDetails,
-				Target:                resp.Target,
-				ID:                    resp.ID,
-			},
+			RawResponse:           resp.RawResponse,
+			CancellationRequested: resp.CancellationRequested,
+			Csr:                   resp.Csr,
+			Error:                 certificateErrorFromGenerated(resp.Error),
+			IssuerParameters:      issuerParametersFromGenerated(resp.IssuerParameters),
+			RequestID:             resp.RequestID,
+			Status:                resp.Status,
+			StatusDetails:         resp.StatusDetails,
+			Target:                resp.Target,
+			ID:                    resp.ID,
 		},
 		lastResponse: generated.KeyVaultClientGetCertificateResponse{},
 	}
@@ -350,9 +377,9 @@ func (s *DeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, err
 		return resp.RawResponse, nil
 	}
 
-	var httpResponseErr azcore.HTTPResponse
+	var httpResponseErr *azcore.ResponseError
 	if errors.As(err, &httpResponseErr) {
-		if httpResponseErr.RawResponse().StatusCode == http.StatusNotFound {
+		if httpResponseErr.RawResponse.StatusCode == http.StatusNotFound {
 			// This is the expected result
 			return s.deleteResponse.RawResponse, nil
 		}
@@ -407,9 +434,9 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName str
 	}
 
 	getResp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, certificateName, nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.RawResponse.StatusCode != http.StatusNotFound {
 			return DeleteCertificatePollerResponse{}, err
 		}
 	}
@@ -1332,9 +1359,9 @@ func (b *RecoverDeletedCertificatePoller) Done() bool {
 func (b *RecoverDeletedCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetCertificate(ctx, b.vaultUrl, b.certName, "", nil)
 	b.lastResponse = resp
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		return httpErr.RawResponse(), err
+		return httpErr.RawResponse, err
 	}
 	return resp.RawResponse, nil
 }
@@ -1400,9 +1427,9 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 	}
 
 	getResp, err := c.genClient.GetCertificate(ctx, c.vaultURL, certName, "", nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.RawResponse.StatusCode != http.StatusNotFound {
 			return RecoverDeletedCertificatePollerResponse{}, err
 		}
 	}

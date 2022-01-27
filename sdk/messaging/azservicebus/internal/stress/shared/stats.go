@@ -80,28 +80,30 @@ func newStatsPrinter(ctx context.Context, prefix string, interval time.Duration,
 			}
 
 			sp.mu.RLock()
-
-			log.Printf("Stats:")
-
-			for _, stats := range sp.all {
-				log.Printf("  %s", stats.String())
-
-				if stats.Sent > 0 {
-					sp.tc.TrackMetric(fmt.Sprintf("%s.TotalSent", stats.name), float64(stats.Sent))
-				}
-
-				if stats.Received > 0 {
-					sp.tc.TrackMetric(fmt.Sprintf("%s.TotalReceived", stats.name), float64(stats.Received))
-				}
-
-				sp.tc.TrackMetric(fmt.Sprintf("%s.TotalErrors", stats.name), float64(stats.Errors))
-			}
-
+			sp.PrintStats()
 			sp.mu.RUnlock()
 		}
 	}(ctx)
 
 	return sp
+}
+
+func (sp *statsPrinter) PrintStats() {
+	log.Printf("Stats:")
+
+	for _, stats := range sp.all {
+		log.Printf("  %s", stats.String())
+
+		if stats.Sent > 0 {
+			sp.tc.TrackMetric(fmt.Sprintf("%s.TotalSent", stats.name), float64(stats.Sent))
+		}
+
+		if stats.Received > 0 {
+			sp.tc.TrackMetric(fmt.Sprintf("%s.TotalReceived", stats.name), float64(stats.Received))
+		}
+
+		sp.tc.TrackMetric(fmt.Sprintf("%s.TotalErrors", stats.name), float64(stats.Errors))
+	}
 }
 
 // NewStat creates a new stat with `name` and adds it to the list of statistics that will

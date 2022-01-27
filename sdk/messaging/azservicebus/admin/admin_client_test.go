@@ -13,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
@@ -204,7 +205,12 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 
 	updatedProps, err = adminClient.UpdateQueue(context.Background(), "non-existent-queue", createdProps.QueueProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
-	require.Contains(t, err.Error(), "error code: 404")
+	require.Contains(t, err.Error(), "404 Not Found")
+
+	var asResponseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 404, asResponseErr.StatusCode)
+
 	require.Nil(t, updatedProps)
 }
 
@@ -475,7 +481,12 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 
 	updateResp, err = adminClient.UpdateTopic(context.Background(), "non-existent-topic", addResp.TopicProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
-	require.Contains(t, err.Error(), "error code: 404")
+	require.Contains(t, err.Error(), "404 Not Found")
+
+	var asResponseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 404, asResponseErr.StatusCode)
+
 	require.Nil(t, updateResp)
 }
 
@@ -738,8 +749,12 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	require.Nil(t, updateResp)
 
 	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", addResp.CreateSubscriptionResult.SubscriptionProperties, nil)
-	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
-	require.Contains(t, err.Error(), "error code: 404")
+	require.Contains(t, err.Error(), "404 Not Found")
+
+	var asResponseErr *azcore.ResponseError
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 404, asResponseErr.StatusCode)
+
 	require.Nil(t, updateResp)
 }
 
@@ -754,21 +769,33 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	require.True(t, notFound)
 	require.NotNil(t, resp)
 
+	var re *azcore.ResponseError
+
 	_, err = testData.Client.GetQueue(ctx, testData.QueueName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
+	require.Contains(t, err.Error(), "Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	pager := testData.Client.ListQueues(nil)
 	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
+	require.Contains(t, pager.Err().Error(), "Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.CreateQueue(ctx, "canneverbecreated", nil, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityWrite")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.UpdateQueue(ctx, "canneverbecreated", QueueProperties{}, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityWrite")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.DeleteQueue(ctx, testData.QueueName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityDelete.")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 }
 
 func TestAdminClient_LackPermissions_Topic(t *testing.T) {
@@ -782,21 +809,33 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 	require.True(t, notFound)
 	require.NotNil(t, resp)
 
+	var asResponseErr *azcore.ResponseError
+
 	_, err = testData.Client.GetTopic(ctx, testData.TopicName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
+	require.Contains(t, err.Error(), ">Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	pager := testData.Client.ListTopics(nil)
 	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
+	require.Contains(t, pager.Err().Error(), ">Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.CreateTopic(ctx, "canneverbecreated", nil, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
+	require.Contains(t, err.Error(), "Authorization failed for specified action")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.UpdateTopic(ctx, "canneverbecreated", TopicProperties{}, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
+	require.Contains(t, err.Error(), "Authorization failed for specified action")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.DeleteTopic(ctx, testData.TopicName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityDelete.")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 }
 
 func TestAdminClient_LackPermissions_Subscription(t *testing.T) {

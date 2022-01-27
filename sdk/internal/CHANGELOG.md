@@ -1,6 +1,6 @@
 # Release History
 
-## 0.8.4 (Unreleased)
+## 0.9.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.9.0 (2022-01-24)
+
+### Breaking Changes
+* The `x-recording-file` is now encoded in the body of a `Start` request, previously was included in a header [#16876](https://github.com/Azure/azure-sdk-for-go/pull/16876).
 
 ## 0.8.3 (2021-12-07)
 

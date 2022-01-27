@@ -12,11 +12,18 @@ package confidentialledger
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2020-12-01-preview/confidentialledger"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2021-05-13-preview/confidentialledger"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type CheckNameAvailabilityReason = original.CheckNameAvailabilityReason
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = original.CheckNameAvailabilityReasonAlreadyExists
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = original.CheckNameAvailabilityReasonInvalid
 )
 
 type CreatedByType = original.CreatedByType
@@ -59,6 +66,8 @@ const (
 type AADBasedSecurityPrincipal = original.AADBasedSecurityPrincipal
 type BaseClient = original.BaseClient
 type CertBasedSecurityPrincipal = original.CertBasedSecurityPrincipal
+type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
+type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
@@ -111,6 +120,9 @@ func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, get
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return original.PossibleCheckNameAvailabilityReasonValues()
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()

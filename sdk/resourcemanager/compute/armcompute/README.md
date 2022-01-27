@@ -50,6 +50,11 @@ options = arm.ClientOptions{
 client := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, &options)
 ```
 
+## Samples
+
+More code samples for using the management library for Go SDK can be found in the following locations.
+- [Compute Samples](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/new-version/compute)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

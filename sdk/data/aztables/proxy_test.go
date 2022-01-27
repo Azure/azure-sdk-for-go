@@ -23,7 +23,9 @@ func TestMain(m *testing.M) {
 	// 1. Set up session level sanitizers
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
-		err := recording.SetBodilessMatcher(nil, nil)
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
+			ExcludedHeaders: []string{":path", ":auth", ":method", ":scheme"},
+		})
 		if err != nil {
 			panic(err)
 		}

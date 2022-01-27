@@ -85,22 +85,8 @@ type CreateCertificateResponse struct {
 	RawResponse *http.Response
 }
 
-// CreateCertificatePoller is the interface for the Client.BeginCreateCertificate operation.
-type CreateCertificatePoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (CreateCertificateResponse, error)
-}
-
 // the poller returned by the Client.BeginCreateCertificate
-type beginCreateCertificatePoller struct {
+type CreateCertificatePoller struct {
 	certName       string
 	certVersion    string
 	vaultURL       string
@@ -111,14 +97,14 @@ type beginCreateCertificatePoller struct {
 }
 
 // Done returns true if the LRO has reached a terminal state
-func (b *beginCreateCertificatePoller) Done() bool {
+func (b *CreateCertificatePoller) Done() bool {
 	return b.lastResponse.RawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the operations. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
-func (b *beginCreateCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (b *CreateCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetCertificate(ctx, b.vaultURL, b.certName, b.certVersion, nil)
 	if err == nil {
 		b.lastResponse = resp
@@ -136,12 +122,12 @@ func (b *beginCreateCertificatePoller) Poll(ctx context.Context) (*http.Response
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (b *beginCreateCertificatePoller) FinalResponse(ctx context.Context) (CreateCertificateResponse, error) {
+func (b *CreateCertificatePoller) FinalResponse(ctx context.Context) (CreateCertificateResponse, error) {
 	return b.createResponse, nil
 }
 
 // pollUntilDone continuallys polls the service with a 't' delay until completion.
-func (b *beginCreateCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (CreateCertificateResponse, error) {
+func (b *CreateCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (CreateCertificateResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
@@ -190,7 +176,7 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 		return CreateCertificatePollerResponse{}, err
 	}
 
-	p := &beginCreateCertificatePoller{
+	p := CreateCertificatePoller{
 		certName:    certName,
 		certVersion: "",
 		vaultURL:    c.vaultURL,
@@ -338,22 +324,8 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 	}
 }
 
-// DeleteCertificatePoller is the interface for the Client.DeleteCertificate operation.
-type DeleteCertificatePoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (DeleteCertificateResponse, error)
-}
-
 // The poller returned by the Client.BeginDeleteCertificate operation
-type beginDeleteCertificatePoller struct {
+type DeleteCertificatePoller struct {
 	certificateName string // This is the certificate to Poll for in GetDeletedCertificate
 	vaultURL        string
 	client          *generated.KeyVaultClient
@@ -363,14 +335,14 @@ type beginDeleteCertificatePoller struct {
 }
 
 // Done returns true if the LRO has reached a terminal state
-func (s *beginDeleteCertificatePoller) Done() bool {
+func (s *DeleteCertificatePoller) Done() bool {
 	return s.lastResponse.RawResponse != nil
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
-func (s *beginDeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (s *DeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := s.client.GetDeletedCertificate(ctx, s.vaultURL, s.certificateName, nil)
 	if err == nil {
 		// Service recognizes DeletedKey, operation is done
@@ -389,13 +361,13 @@ func (s *beginDeleteCertificatePoller) Poll(ctx context.Context) (*http.Response
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (s *beginDeleteCertificatePoller) FinalResponse(ctx context.Context) (DeleteCertificateResponse, error) {
+func (s *DeleteCertificatePoller) FinalResponse(ctx context.Context) (DeleteCertificateResponse, error) {
 	return deleteCertificateResponseFromGenerated(&s.deleteResponse), nil
 }
 
 // pollUntilDone continually calls the Poll operation until the operation is completed. In between each
 // Poll is a wait determined by the t parameter.
-func (s *beginDeleteCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteCertificateResponse, error) {
+func (s *DeleteCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteCertificateResponse, error) {
 	for {
 		resp, err := s.Poll(ctx)
 		if err != nil {
@@ -442,7 +414,7 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName str
 		}
 	}
 
-	s := &beginDeleteCertificatePoller{
+	s := DeleteCertificatePoller{
 		vaultURL:        c.vaultURL,
 		certificateName: certificateName,
 		client:          c.genClient,
@@ -624,37 +596,25 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 	}, nil
 }
 
-// ListCertificatesPager is a Pager for the Client.ListCertificates operation
-type ListCertificatesPager interface {
-	// PageResponse returns the current ListCertificatesPage
-	PageResponse() ListCertificatesPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-// listKeysPager implements the ListCertificatesPager interface
-type listKeysPager struct {
+// ListCertificatesPager implements the ListCertificatesPager interface
+type ListCertificatesPager struct {
 	genPager *generated.KeyVaultClientGetCertificatesPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service
-func (l *listKeysPager) PageResponse() ListCertificatesPage {
+func (l *ListCertificatesPager) PageResponse() ListCertificatesPage {
 	return listKeysPageFromGenerated(l.genPager.PageResponse())
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *listKeysPager) Err() error {
+func (l *ListCertificatesPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *listKeysPager) NextPage(ctx context.Context) bool {
+func (l *ListCertificatesPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
@@ -705,42 +665,30 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 // base certificate identifier, attributes, and tags are provided in the response. Individual versions of a
 // certificate are not listed in the response. This operation requires the certificates/list permission.
 func (c *Client) ListCertificates(options *ListCertificatesOptions) ListCertificatesPager {
-	return &listKeysPager{
+	return ListCertificatesPager{
 		genPager: c.genClient.GetCertificates(c.vaultURL, options.toGenerated()),
 	}
 }
 
-// ListCertificateVersionsPager is a Pager for Client.ListCertificateVersions results
-type ListCertificateVersionsPager interface {
-	// PageResponse returns the current ListCertificateVersionsPage
-	PageResponse() ListCertificateVersionsPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-// listKeyVersionsPager implements the ListCertificateVersionsPager interface
-type listKeyVersionsPager struct {
+// ListCertificateVersionsPager is the pager returned by Client.ListCertificateVersions
+type ListCertificateVersionsPager struct {
 	genPager *generated.KeyVaultClientGetCertificateVersionsPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
-func (l *listKeyVersionsPager) PageResponse() ListCertificateVersionsPage {
+func (l *ListCertificateVersionsPager) PageResponse() ListCertificateVersionsPage {
 	return listKeyVersionsPageFromGenerated(l.genPager.PageResponse())
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
-func (l *listKeyVersionsPager) Err() error {
+func (l *ListCertificateVersionsPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *listKeyVersionsPager) NextPage(ctx context.Context) bool {
+func (l *ListCertificateVersionsPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
@@ -792,7 +740,7 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVe
 // attributes are provided in the response. No values are returned for the certificates. This operation
 // requires the certificates/list permission.
 func (c *Client) ListCertificateVersions(certificateName string, options *ListCertificateVersionsOptions) ListCertificateVersionsPager {
-	return &listKeyVersionsPager{
+	return ListCertificateVersionsPager{
 		genPager: c.genClient.GetCertificateVersions(
 			c.vaultURL,
 			certificateName,
@@ -893,37 +841,25 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 	}, nil
 }
 
-// ListIssuersPager is a Pager for the Client.ListIssuers operation
-type ListIssuersPager interface {
-	// PageResponse returns the current ListIssuersPage
-	PageResponse() ListIssuersPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
-// listIssuersPager implements the ListIssuersPager interface
-type listIssuersPager struct {
+// ListIssuersPager is the pager returned by Client.ListIssuers
+type ListIssuersPager struct {
 	genPager *generated.KeyVaultClientGetCertificateIssuersPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service
-func (l *listIssuersPager) PageResponse() ListIssuersPage {
+func (l *ListIssuersPager) PageResponse() ListIssuersPage {
 	return listIssuersPageFromGenerated(l.genPager.PageResponse())
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil
-func (l *listIssuersPager) Err() error {
+func (l *ListIssuersPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next available page of results from the service. If the fetched page
 // contains results, the return value is true, else false. Results fetched from the service
 // can be evaluated by calling PageResponse on this Pager.
-func (l *listIssuersPager) NextPage(ctx context.Context) bool {
+func (l *ListIssuersPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
@@ -967,7 +903,7 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 // ListIssuers returns a pager that can be used to get the set of certificate issuer resources in the specified key vault. This operation
 // requires the certificates/manageissuers/getissuers permission.
 func (c *Client) ListIssuers(options *ListIssuersOptions) ListIssuersPager {
-	return &listIssuersPager{
+	return ListIssuersPager{
 		genPager: c.genClient.GetCertificateIssuers(c.vaultURL, options.toGenerated()),
 	}
 }
@@ -1375,22 +1311,8 @@ func (b *BeginRecoverDeletedCertificateOptions) toGenerated() *generated.KeyVaul
 	return &generated.KeyVaultClientRecoverDeletedCertificateOptions{}
 }
 
-// RecoverDeletedCertificatePoller is the interface for the Client.RecoverDeletedCertificate long running operation (LRO)
-type RecoverDeletedCertificatePoller interface {
-	// Done returns true if the LRO has reached a terminal state
-	Done() bool
-
-	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-	Poll(context.Context) (*http.Response, error)
-
-	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (RecoverDeletedCertificateResponse, error)
-}
-
-// beginRecoverPoller implements the RecoverDeletedCertificatePoller interface
-type beginRecoverPoller struct {
+// RecoverDeletedCertificatePoller is the poller for the Client.RecoverDeletedCertificate
+type RecoverDeletedCertificatePoller struct {
 	certName        string
 	vaultUrl        string
 	client          *generated.KeyVaultClient
@@ -1400,14 +1322,14 @@ type beginRecoverPoller struct {
 }
 
 // Done returns true when the polling operation is completed
-func (b *beginRecoverPoller) Done() bool {
+func (b *RecoverDeletedCertificatePoller) Done() bool {
 	return b.RawResponse.StatusCode == http.StatusOK
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (b *RecoverDeletedCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetCertificate(ctx, b.vaultUrl, b.certName, "", nil)
 	b.lastResponse = resp
 	var httpErr azcore.HTTPResponse
@@ -1418,12 +1340,12 @@ func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 }
 
 // FinalResponse returns the final response after the operations has finished
-func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedCertificateResponse, error) {
+func (b *RecoverDeletedCertificatePoller) FinalResponse(ctx context.Context) (RecoverDeletedCertificateResponse, error) {
 	return recoverDeletedCertificateResponseFromGenerated(b.recoverResponse), nil
 }
 
 // pollUntilDone is the method for the Response.PollUntilDone struct
-func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedCertificateResponse, error) {
+func (b *RecoverDeletedCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedCertificateResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
@@ -1485,7 +1407,7 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 		}
 	}
 
-	b := &beginRecoverPoller{
+	p := RecoverDeletedCertificatePoller{
 		lastResponse:    getResp,
 		certName:        certName,
 		client:          c.genClient,
@@ -1495,31 +1417,19 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 	}
 
 	return RecoverDeletedCertificatePollerResponse{
-		PollUntilDone: b.pollUntilDone,
-		Poller:        b,
+		PollUntilDone: p.pollUntilDone,
+		Poller:        p,
 		RawResponse:   getResp.RawResponse,
 	}, nil
 }
 
-// ListDeletedCertificatesPager is the interface for the Client.ListDeletedCertificates operation
-type ListDeletedCertificatesPager interface {
-	// PageResponse returns the current ListDeletedCertificatesPage
-	PageResponse() ListDeletedCertificatesPage
-
-	// Err returns true if there is another page of data available, false if not
-	Err() error
-
-	// NextPage returns true if there is another page of data available, false if not
-	NextPage(context.Context) bool
-}
-
 // ListDeletedCertificatesPager is the pager returned by Client.ListDeletedCertificates
-type listDeletedCertificatesPager struct {
+type ListDeletedCertificatesPager struct {
 	genPager *generated.KeyVaultClientGetDeletedCertificatesPager
 }
 
 // PageResponse returns the current page of results
-func (l *listDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPage {
+func (l *ListDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPage {
 	resp := l.genPager.PageResponse()
 
 	var vals []*DeletedCertificateItem
@@ -1545,12 +1455,12 @@ func (l *listDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPag
 }
 
 // Err returns an error if the last operation resulted in an error.
-func (l *listDeletedCertificatesPager) Err() error {
+func (l *ListDeletedCertificatesPager) Err() error {
 	return l.genPager.Err()
 }
 
 // NextPage fetches the next page of results.
-func (l *listDeletedCertificatesPager) NextPage(ctx context.Context) bool {
+func (l *ListDeletedCertificatesPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
@@ -1584,7 +1494,7 @@ func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions
 		options = &ListDeletedCertificatesOptions{}
 	}
 
-	return &listDeletedCertificatesPager{
+	return ListDeletedCertificatesPager{
 		genPager: c.genClient.GetDeletedCertificates(c.vaultURL, options.toGenerated()),
 	}
 }

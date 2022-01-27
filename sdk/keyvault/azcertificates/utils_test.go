@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"hash/fnv"
+	"log"
 	"os"
 	"testing"
 	"time"
@@ -125,14 +126,14 @@ func createClient(t *testing.T) (*Client, error) {
 }
 
 func delay() time.Duration {
-	if recording.GetRecordMode() == "playback" {
-		return 1 * time.Microsecond
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return time.Microsecond
 	}
-	return 500 * time.Millisecond
+	return time.Second
 }
 
 func longDelay() time.Duration {
-	if recording.GetRecordMode() == "playback" {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		return 1 * time.Microsecond
 	}
 	return 3 * time.Second
@@ -159,14 +160,14 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 
 func cleanUp(t *testing.T, client *Client, certName string) {
 	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
-	require.NoError(t, err)
+	if err == nil{
+		delPollerResp, err := delResp.PollUntilDone(ctx, delay())
+		require.NoError(t, err)
+		require.Contains(t, *delPollerResp.ID, certName)
 
-	delPollerResp, err := delResp.PollUntilDone(ctx, delay())
-	require.NoError(t, err)
-	require.Contains(t, *delPollerResp.ID, certName)
-
-	_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
-	require.NoError(t, err)
+		_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
+		require.NoError(t, err)
+	}
 }
 
 func createCert(t *testing.T, client *Client, certName string) {
@@ -181,4 +182,11 @@ func createCert(t *testing.T, client *Client, certName string) {
 	require.NoError(t, err)
 	_, err = resp.PollUntilDone(ctx, delay())
 	require.NoError(t, err)
+}
+
+func purgeCert(t *testing.T, client *Client, cert string) {
+	_, err := client.PurgeDeletedCertificate(ctx, cert, nil)
+	if err != nil {
+		log.Printf("Was unable to purge certificate %s. %s\n", cert, err.Error())
+	}
 }

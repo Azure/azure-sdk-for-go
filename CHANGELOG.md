@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v61.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-01-11-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2021-05-13-preview/confidentialledger`
+- `github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub`
+
 ## `v61.3.0`
 
 ### New Packages

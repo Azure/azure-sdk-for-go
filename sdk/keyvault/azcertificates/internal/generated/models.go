@@ -10,10 +10,11 @@ package generated
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Action - The action that will be executed.
@@ -76,20 +77,20 @@ func (a *Attributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-				err = unpopulateTimeUnix(val, &a.Created)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &a.Created)
+			delete(rawMsg, key)
 		case "enabled":
-				err = unpopulate(val, &a.Enabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.Enabled)
+			delete(rawMsg, key)
 		case "exp":
-				err = unpopulateTimeUnix(val, &a.Expires)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &a.Expires)
+			delete(rawMsg, key)
 		case "nbf":
-				err = unpopulateTimeUnix(val, &a.NotBefore)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &a.NotBefore)
+			delete(rawMsg, key)
 		case "updated":
-				err = unpopulateTimeUnix(val, &a.Updated)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &a.Updated)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -122,7 +123,7 @@ func (b *BackupCertificateResult) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &b.Value, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -149,8 +150,8 @@ type CertificateAttributes struct {
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
-// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
-// only the system can purge the certificate, at the end of the retention interval.
+	// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
+	// only the system can purge the certificate, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
@@ -180,26 +181,26 @@ func (c *CertificateAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-				err = unpopulateTimeUnix(val, &c.Created)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &c.Created)
+			delete(rawMsg, key)
 		case "enabled":
-				err = unpopulate(val, &c.Enabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Enabled)
+			delete(rawMsg, key)
 		case "exp":
-				err = unpopulateTimeUnix(val, &c.Expires)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &c.Expires)
+			delete(rawMsg, key)
 		case "nbf":
-				err = unpopulateTimeUnix(val, &c.NotBefore)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &c.NotBefore)
+			delete(rawMsg, key)
 		case "recoverableDays":
-				err = unpopulate(val, &c.RecoverableDays)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.RecoverableDays)
+			delete(rawMsg, key)
 		case "recoveryLevel":
-				err = unpopulate(val, &c.RecoveryLevel)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.RecoveryLevel)
+			delete(rawMsg, key)
 		case "updated":
-				err = unpopulateTimeUnix(val, &c.Updated)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &c.Updated)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -263,32 +264,32 @@ func (c *CertificateBundle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, &c.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Attributes)
+			delete(rawMsg, key)
 		case "cer":
 			err = runtime.DecodeByteArray(string(val), &c.Cer, runtime.Base64StdFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "contentType":
-				err = unpopulate(val, &c.ContentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ContentType)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ID)
+			delete(rawMsg, key)
 		case "kid":
-				err = unpopulate(val, &c.Kid)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Kid)
+			delete(rawMsg, key)
 		case "policy":
-				err = unpopulate(val, &c.Policy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Policy)
+			delete(rawMsg, key)
 		case "sid":
-				err = unpopulate(val, &c.Sid)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Sid)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &c.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Tags)
+			delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &c.X509Thumbprint, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -321,7 +322,7 @@ func (c CertificateCreateParameters) MarshalJSON() ([]byte, error) {
 // CertificateImportParameters - The certificate import parameters.
 type CertificateImportParameters struct {
 	// REQUIRED; Base64 encoded representation of the certificate object to import. This certificate needs to contain the private
-// key.
+	// key.
 	Base64EncodedCertificate *string `json:"value,omitempty"`
 
 	// The attributes of the certificate (optional).
@@ -363,7 +364,7 @@ type CertificateIssuerListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
-// of certificate issuers.
+	// of certificate issuers.
 	Value []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -450,17 +451,17 @@ func (c *CertificateItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, &c.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Attributes)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ID)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &c.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Tags)
+			delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &c.X509Thumbprint, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -475,7 +476,7 @@ type CertificateListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of
-// certificates.
+	// certificates.
 	Value []*CertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -563,32 +564,32 @@ func (c *CertificateOperation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "cancellation_requested":
-				err = unpopulate(val, &c.CancellationRequested)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.CancellationRequested)
+			delete(rawMsg, key)
 		case "csr":
 			err = runtime.DecodeByteArray(string(val), &c.Csr, runtime.Base64StdFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "error":
-				err = unpopulate(val, &c.Error)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Error)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &c.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ID)
+			delete(rawMsg, key)
 		case "issuer":
-				err = unpopulate(val, &c.IssuerParameters)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.IssuerParameters)
+			delete(rawMsg, key)
 		case "request_id":
-				err = unpopulate(val, &c.RequestID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.RequestID)
+			delete(rawMsg, key)
 		case "status":
-				err = unpopulate(val, &c.Status)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Status)
+			delete(rawMsg, key)
 		case "status_details":
-				err = unpopulate(val, &c.StatusDetails)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.StatusDetails)
+			delete(rawMsg, key)
 		case "target":
-				err = unpopulate(val, &c.Target)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Target)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -671,7 +672,7 @@ func (c *CertificateRestoreParameters) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &c.CertificateBundleBackup, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -798,41 +799,41 @@ func (d *DeletedCertificateBundle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, &d.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Attributes)
+			delete(rawMsg, key)
 		case "cer":
 			err = runtime.DecodeByteArray(string(val), &d.Cer, runtime.Base64StdFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "contentType":
-				err = unpopulate(val, &d.ContentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.ContentType)
+			delete(rawMsg, key)
 		case "deletedDate":
-				err = unpopulateTimeUnix(val, &d.DeletedDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &d.DeletedDate)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &d.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.ID)
+			delete(rawMsg, key)
 		case "kid":
-				err = unpopulate(val, &d.Kid)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Kid)
+			delete(rawMsg, key)
 		case "policy":
-				err = unpopulate(val, &d.Policy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Policy)
+			delete(rawMsg, key)
 		case "recoveryId":
-				err = unpopulate(val, &d.RecoveryID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.RecoveryID)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
+			delete(rawMsg, key)
 		case "sid":
-				err = unpopulate(val, &d.Sid)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Sid)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &d.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Tags)
+			delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &d.X509Thumbprint, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -888,26 +889,26 @@ func (d *DeletedCertificateItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, &d.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Attributes)
+			delete(rawMsg, key)
 		case "deletedDate":
-				err = unpopulateTimeUnix(val, &d.DeletedDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &d.DeletedDate)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &d.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.ID)
+			delete(rawMsg, key)
 		case "recoveryId":
-				err = unpopulate(val, &d.RecoveryID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.RecoveryID)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &d.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Tags)
+			delete(rawMsg, key)
 		case "x5t":
 			err = runtime.DecodeByteArray(string(val), &d.X509Thumbprint, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -922,7 +923,7 @@ type DeletedCertificateListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page
-// of deleted certificates
+	// of deleted certificates
 	Value []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -977,14 +978,14 @@ func (i *IssuerAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-				err = unpopulateTimeUnix(val, &i.Created)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &i.Created)
+			delete(rawMsg, key)
 		case "enabled":
-				err = unpopulate(val, &i.Enabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, &i.Enabled)
+			delete(rawMsg, key)
 		case "updated":
-				err = unpopulateTimeUnix(val, &i.Updated)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &i.Updated)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1321,7 +1322,7 @@ func (r RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
 // RoleAssignmentProperties - Role assignment properties.
 type RoleAssignmentProperties struct {
 	// REQUIRED; The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user,
-// service principal, or security group.
+	// service principal, or security group.
 	PrincipalID *string `json:"principalId,omitempty"`
 
 	// REQUIRED; The role definition ID used in the role assignment.
@@ -1358,8 +1359,8 @@ type RoleAssignmentsClientGetOptions struct {
 // RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope method.
 type RoleAssignmentsClientListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-// eq {id} to return all role assignments at, above or below the
-// scope for the specified principal.
+	// eq {id} to return all role assignments at, above or below the
+	// scope for the specified principal.
 	Filter *string
 }
 
@@ -1488,7 +1489,7 @@ func (s SubjectAlternativeNames) MarshalJSON() ([]byte, error) {
 // Trigger - A condition to be satisfied for an action to be executed.
 type Trigger struct {
 	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths
-// is 36, then value should be between 1 and 972 (36 * 27).
+	// is 36, then value should be between 1 and 972 (36 * 27).
 	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
 
 	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
@@ -1550,4 +1551,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

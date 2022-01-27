@@ -89,14 +89,28 @@ type Attributes struct {
 
 // CertificateAttributes - The certificate management attributes.
 type CertificateAttributes struct {
-	Attributes
+	// Determines whether the object is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Expiry date in UTC.
+	Expires *time.Time `json:"exp,omitempty"`
+
+	// Not before date in UTC.
+	NotBefore *time.Time `json:"nbf,omitempty"`
+
+	// READ-ONLY; Creation time in UTC.
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
+
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
-	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the certificate
-	// can be permanently deleted by a privileged user; otherwise,
+	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
+	// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
 	// only the system can purge the certificate, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in UTC.
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 func (c *CertificateAttributes) toGenerated() *generated.CertificateAttributes {
@@ -121,13 +135,11 @@ func certificateAttributesFromGenerated(g *generated.CertificateAttributes) *Cer
 	}
 
 	return &CertificateAttributes{
-		Attributes: Attributes{
-			Enabled:   g.Enabled,
-			Expires:   g.Expires,
-			NotBefore: g.NotBefore,
-			Created:   g.Created,
-			Updated:   g.Updated,
-		},
+		Enabled:         g.Enabled,
+		Expires:         g.Expires,
+		NotBefore:       g.NotBefore,
+		Created:         g.Created,
+		Updated:         g.Updated,
 		RecoverableDays: g.RecoverableDays,
 		RecoveryLevel:   (*DeletionRecoveryLevel)(g.RecoveryLevel),
 	}
@@ -396,22 +408,59 @@ func (c *Contacts) toGenerated() generated.Contacts {
 
 // DeletedCertificateBundle - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 type DeletedCertificateBundle struct {
-	CertificateBundle
+	// The certificate attributes.
+	Attributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// CER contents of x509 certificate.
+	Cer []byte `json:"cer,omitempty"`
+
+	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
+	ContentType *string `json:"contentType,omitempty"`
+
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
+	// READ-ONLY; The certificate id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The key id.
+	Kid *string `json:"kid,omitempty" azure:"ro"`
+
+	// READ-ONLY; The management policy.
+	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
+
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The secret id.
+	Sid *string `json:"sid,omitempty" azure:"ro"`
+
+	// READ-ONLY; Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
 // DeletedCertificateItem - The deleted certificate item containing metadata about the deleted certificate.
 type DeletedCertificateItem struct {
-	CertificateItem
+	// The certificate management attributes.
+	Attributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// Certificate identifier.
+	ID *string `json:"id,omitempty"`
+
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]string `json:"tags,omitempty"`
+
+	// Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty"`
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`

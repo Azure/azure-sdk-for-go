@@ -120,10 +120,8 @@ func ExampleClient_UpdateCertificateProperties() {
 	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", &azcertificates.UpdateCertificatePropertiesOptions{
 		Version: "myNewVersion",
 		CertificateAttributes: &azcertificates.CertificateAttributes{
-			Attributes: azcertificates.Attributes{
-				Enabled: to.BoolPtr(false),
-				Expires: to.TimePtr(time.Now().Add(72 * time.Hour)),
-			},
+			Enabled: to.BoolPtr(false),
+			Expires: to.TimePtr(time.Now().Add(72 * time.Hour)),
 		},
 		CertificatePolicy: &azcertificates.CertificatePolicy{
 			IssuerParameters: &azcertificates.IssuerParameters{

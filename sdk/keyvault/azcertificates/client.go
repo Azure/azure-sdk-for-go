@@ -80,32 +80,7 @@ func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCr
 
 // CreateCertificateResponse contains the response from method Client.BeginCreateCertificate.
 type CreateCertificateResponse struct {
-	// Indicates if cancellation was requested on the certificate operation.
-	CancellationRequested *bool `json:"cancellation_requested,omitempty"`
-
-	// The certificate signing request (CSR) that is being used in the certificate operation.
-	Csr []byte `json:"csr,omitempty"`
-
-	// Error encountered, if any, during the certificate operation.
-	Error *CertificateError `json:"error,omitempty"`
-
-	// Parameters for the issuer of the X509 component of a certificate.
-	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
-
-	// Identifier for the certificate operation.
-	RequestID *string `json:"request_id,omitempty"`
-
-	// Status of the certificate operation.
-	Status *string `json:"status,omitempty"`
-
-	// The status details of the certificate operation.
-	StatusDetails *string `json:"status_details,omitempty"`
-
-	// Location which contains the result of the certificate operation.
-	Target *string `json:"target,omitempty"`
-
-	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	CertificateOperation
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -211,16 +186,18 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 		vaultURL:    c.vaultURL,
 		client:      c.genClient,
 		createResponse: CreateCertificateResponse{
-			RawResponse:           resp.RawResponse,
-			CancellationRequested: resp.CancellationRequested,
-			Csr:                   resp.Csr,
-			Error:                 certificateErrorFromGenerated(resp.Error),
-			IssuerParameters:      issuerParametersFromGenerated(resp.IssuerParameters),
-			RequestID:             resp.RequestID,
-			Status:                resp.Status,
-			StatusDetails:         resp.StatusDetails,
-			Target:                resp.Target,
-			ID:                    resp.ID,
+			RawResponse: resp.RawResponse,
+			CertificateOperation: CertificateOperation{
+				CancellationRequested: resp.CancellationRequested,
+				Csr:                   resp.Csr,
+				Error:                 certificateErrorFromGenerated(resp.Error),
+				IssuerParameters:      issuerParametersFromGenerated(resp.IssuerParameters),
+				RequestID:             resp.RequestID,
+				Status:                resp.Status,
+				StatusDetails:         resp.StatusDetails,
+				Target:                resp.Target,
+				ID:                    resp.ID,
+			},
 		},
 		lastResponse: generated.KeyVaultClientGetCertificateResponse{},
 	}
@@ -336,17 +313,15 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 			RecoveryID:         g.RecoveryID,
 			DeletedDate:        g.DeletedDate,
 			ScheduledPurgeDate: g.ScheduledPurgeDate,
-			CertificateBundle: CertificateBundle{
-				Attributes:     certificateAttributesFromGenerated(g.Attributes),
-				Cer:            g.Cer,
-				ContentType:    g.ContentType,
-				Tags:           convertGeneratedMap(g.Tags),
-				ID:             g.ID,
-				Kid:            g.Kid,
-				Policy:         certificatePolicyFromGenerated(g.Policy),
-				Sid:            g.Sid,
-				X509Thumbprint: g.X509Thumbprint,
-			},
+			Attributes:         certificateAttributesFromGenerated(g.Attributes),
+			Cer:                g.Cer,
+			ContentType:        g.ContentType,
+			Tags:               convertGeneratedMap(g.Tags),
+			ID:                 g.ID,
+			Kid:                g.Kid,
+			Policy:             certificatePolicyFromGenerated(g.Policy),
+			Sid:                g.Sid,
+			X509Thumbprint:     g.X509Thumbprint,
 		},
 	}
 }
@@ -511,17 +486,15 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 			RecoveryID:         resp.RecoveryID,
 			DeletedDate:        resp.DeletedDate,
 			ScheduledPurgeDate: resp.ScheduledPurgeDate,
-			CertificateBundle: CertificateBundle{
-				Attributes:     certificateAttributesFromGenerated(resp.Attributes),
-				Cer:            resp.Cer,
-				ContentType:    resp.ContentType,
-				Tags:           convertGeneratedMap(resp.Tags),
-				ID:             resp.ID,
-				Kid:            resp.Kid,
-				Policy:         certificatePolicyFromGenerated(resp.Policy),
-				Sid:            resp.Sid,
-				X509Thumbprint: resp.X509Thumbprint,
-			},
+			Attributes:         certificateAttributesFromGenerated(resp.Attributes),
+			Cer:                resp.Cer,
+			ContentType:        resp.ContentType,
+			Tags:               convertGeneratedMap(resp.Tags),
+			ID:                 resp.ID,
+			Kid:                resp.Kid,
+			Policy:             certificatePolicyFromGenerated(resp.Policy),
+			Sid:                resp.Sid,
+			X509Thumbprint:     resp.X509Thumbprint,
 		},
 	}, nil
 }
@@ -1466,12 +1439,10 @@ func (l *ListDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPag
 			RecoveryID:         v.RecoveryID,
 			DeletedDate:        v.DeletedDate,
 			ScheduledPurgeDate: v.ScheduledPurgeDate,
-			CertificateItem: CertificateItem{
-				Attributes:     certificateAttributesFromGenerated(v.Attributes),
-				ID:             v.ID,
-				Tags:           convertGeneratedMap(v.Tags),
-				X509Thumbprint: v.X509Thumbprint,
-			},
+			Attributes:         certificateAttributesFromGenerated(v.Attributes),
+			ID:                 v.ID,
+			Tags:               convertGeneratedMap(v.Tags),
+			X509Thumbprint:     v.X509Thumbprint,
 		})
 	}
 

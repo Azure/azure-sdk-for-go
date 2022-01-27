@@ -78,8 +78,10 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 		error := fmt.Errorf("%s%s", err.Error(), usernamePasswordCredentialTroubleshootMessage)
 		addGetTokenFailureLogs("Username Password Credential", error, true)
 		var e msal.CallErr
-		errors.As(err, &e)
-		return nil, newAuthenticationFailedError(error, e.Resp)
+		if errors.As(err, &e) {
+			return nil, newAuthenticationFailedError(error, e.Resp)
+		}
+		return nil, newAuthenticationFailedError(error, nil)
 	}
 	c.account = ar.Account
 	logGetTokenSuccess(c, opts)

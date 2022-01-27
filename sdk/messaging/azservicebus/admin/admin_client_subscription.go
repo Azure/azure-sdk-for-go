@@ -149,7 +149,7 @@ func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscri
 	props, err := newSubscriptionProperties(&atomResp.Content.SubscriptionDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetSubscriptionResponse{
@@ -186,7 +186,7 @@ func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicNam
 	props, err := newSubscriptionRuntimeProperties(&atomResp.Content.SubscriptionDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetSubscriptionRuntimePropertiesResponse{
@@ -257,7 +257,7 @@ func (p *SubscriptionPager) getNext(ctx context.Context) (*ListSubscriptionsResp
 		props, err := newSubscriptionProperties(&env.Content.SubscriptionDescription)
 
 		if err != nil {
-			return nil, atom.NewResponseError(err, resp)
+			return nil, err
 		}
 
 		all = append(all, &SubscriptionPropertiesItem{
@@ -346,7 +346,7 @@ func (p *SubscriptionRuntimePropertiesPager) getNextPage(ctx context.Context) (*
 		props, err := newSubscriptionRuntimeProperties(&entry.Content.SubscriptionDescription)
 
 		if err != nil {
-			return nil, atom.NewResponseError(err, resp)
+			return nil, err
 		}
 
 		all = append(all, &SubscriptionRuntimePropertiesItem{
@@ -452,7 +452,7 @@ func (ac *Client) createOrUpdateSubscriptionImpl(ctx context.Context, topicName 
 	newProps, err := newSubscriptionProperties(&atomResp.Content.SubscriptionDescription)
 
 	if err != nil {
-		return nil, nil, atom.NewResponseError(err, resp)
+		return nil, nil, err
 	}
 
 	return newProps, resp, nil

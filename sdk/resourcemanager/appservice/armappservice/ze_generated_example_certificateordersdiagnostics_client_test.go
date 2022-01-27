@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
 )
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2021-02-01/examples/Diagnostics_ListAppServiceCertificateOrderDetectorResponse.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2021-03-01/examples/Diagnostics_ListAppServiceCertificateOrderDetectorResponse.json
 func ExampleCertificateOrdersDiagnosticsClient_ListAppServiceCertificateOrderDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,17 +27,21 @@ func ExampleCertificateOrdersDiagnosticsClient_ListAppServiceCertificateOrderDet
 	pager := client.ListAppServiceCertificateOrderDetectorResponse("<resource-group-name>",
 		"<certificate-order-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DetectorResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2021-02-01/examples/Diagnostics_GetAppServiceCertificateOrderDetectorResponse.json
+// x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2021-03-01/examples/Diagnostics_GetAppServiceCertificateOrderDetectorResponse.json
 func ExampleCertificateOrdersDiagnosticsClient_GetAppServiceCertificateOrderDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,12 +53,12 @@ func ExampleCertificateOrdersDiagnosticsClient_GetAppServiceCertificateOrderDete
 		"<resource-group-name>",
 		"<certificate-order-name>",
 		"<detector-name>",
-		&armappservice.CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions{StartTime: nil,
+		&armappservice.CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DetectorResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResult)
 }

@@ -8,8 +8,10 @@
 
 ### Breaking Changes
 * Changed the `Data` to `EncodedPolicy` on the `KeyReleasePolicy` struct.
+* Changed the `Tags` properties from `map[string]*string` to `map[string]string`
 
 ### Bugs Fixed
+* Fixed a bug in `UpdateKeyProperties` where the `KeyOps` would be deleted if the `UpdateKeyProperties.KeyOps` value was left empty.
 
 ### Other Changes
 

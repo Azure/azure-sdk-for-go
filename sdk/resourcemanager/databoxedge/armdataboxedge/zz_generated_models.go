@@ -27,49 +27,6 @@ type ARMBaseModel struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ARMBaseModel.
-func (a ARMBaseModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ARMBaseModel.
-func (a *ARMBaseModel) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a ARMBaseModel) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "type", a.Type)
-}
-
-func (a *ARMBaseModel) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AddonClassification provides polymorphic access to related types.
 // Call the interface's GetAddon() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -81,53 +38,24 @@ type AddonClassification interface {
 
 // Addon - Role Addon
 type Addon struct {
-	ARMBaseModel
 	// REQUIRED; Addon type.
 	Kind *AddonType `json:"kind,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Addon type
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetAddon implements the AddonClassification interface for type Addon.
 func (a *Addon) GetAddon() *Addon { return a }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Addon.
-func (a *Addon) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a Addon) marshalInternal(objectMap map[string]interface{}, discValue AddonType) {
-	a.ARMBaseModel.marshalInternal(objectMap)
-	a.Kind = &discValue
-	objectMap["kind"] = a.Kind
-	populate(objectMap, "systemData", a.SystemData)
-}
-
-func (a *Addon) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
 
 // AddonList - Collection of all the Role addon on the Azure Stack Edge device.
 type AddonList struct {
@@ -169,23 +97,23 @@ func (a *AddonList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// AddonsBeginCreateOrUpdateOptions contains the optional parameters for the Addons.BeginCreateOrUpdate method.
-type AddonsBeginCreateOrUpdateOptions struct {
+// AddonsClientBeginCreateOrUpdateOptions contains the optional parameters for the AddonsClient.BeginCreateOrUpdate method.
+type AddonsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AddonsBeginDeleteOptions contains the optional parameters for the Addons.BeginDelete method.
-type AddonsBeginDeleteOptions struct {
+// AddonsClientBeginDeleteOptions contains the optional parameters for the AddonsClient.BeginDelete method.
+type AddonsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AddonsGetOptions contains the optional parameters for the Addons.Get method.
-type AddonsGetOptions struct {
+// AddonsClientGetOptions contains the optional parameters for the AddonsClient.Get method.
+type AddonsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AddonsListByRoleOptions contains the optional parameters for the Addons.ListByRole method.
-type AddonsListByRoleOptions struct {
+// AddonsClientListByRoleOptions contains the optional parameters for the AddonsClient.ListByRole method.
+type AddonsClientListByRoleOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -215,47 +143,20 @@ type Address struct {
 
 // Alert on the data box edge/gateway device.
 type Alert struct {
-	ARMBaseModel
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Properties of alert.
 	Properties *AlertProperties `json:"properties,omitempty" azure:"ro"`
 
 	// READ-ONLY; Alert generated in the resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Alert.
-func (a Alert) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Alert.
-func (a *Alert) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AlertErrorDetails - Error details for the alert.
@@ -362,28 +263,58 @@ func (a *AlertProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// AlertsGetOptions contains the optional parameters for the Alerts.Get method.
-type AlertsGetOptions struct {
+// AlertsClientGetOptions contains the optional parameters for the AlertsClient.Get method.
+type AlertsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertsListByDataBoxEdgeDeviceOptions contains the optional parameters for the Alerts.ListByDataBoxEdgeDevice method.
-type AlertsListByDataBoxEdgeDeviceOptions struct {
+// AlertsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the AlertsClient.ListByDataBoxEdgeDevice
+// method.
+type AlertsClientListByDataBoxEdgeDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ArcAddon - Arc Addon.
 type ArcAddon struct {
-	Addon
+	// REQUIRED; Addon type.
+	Kind *AddonType `json:"kind,omitempty"`
+
 	// REQUIRED; Properties specific to Arc addon.
 	Properties *ArcAddonProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Addon type
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAddon implements the AddonClassification interface for type ArcAddon.
+func (a *ArcAddon) GetAddon() *Addon {
+	return &Addon{
+		Kind:       a.Kind,
+		SystemData: a.SystemData,
+		ID:         a.ID,
+		Name:       a.Name,
+		Type:       a.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ArcAddon.
 func (a ArcAddon) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Addon.marshalInternal(objectMap, AddonTypeArcForKubernetes)
+	populate(objectMap, "id", a.ID)
+	objectMap["kind"] = AddonTypeArcForKubernetes
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -396,16 +327,28 @@ func (a *ArcAddon) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &a.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &a.Kind)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &a.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &a.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &a.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.Addon.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -455,8 +398,8 @@ type Authentication struct {
 	SymmetricKey *SymmetricKey `json:"symmetricKey,omitempty"`
 }
 
-// AvailableSKUsListOptions contains the optional parameters for the AvailableSKUs.List method.
-type AvailableSKUsListOptions struct {
+// AvailableSKUsClientListOptions contains the optional parameters for the AvailableSKUsClient.List method.
+type AvailableSKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -474,47 +417,20 @@ type AzureContainerInfo struct {
 
 // BandwidthSchedule - The bandwidth schedule details.
 type BandwidthSchedule struct {
-	ARMBaseModel
 	// REQUIRED; The properties of the bandwidth schedule.
 	Properties *BandwidthScheduleProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Bandwidth object related to ASE resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type BandwidthSchedule.
-func (b BandwidthSchedule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "systemData", b.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BandwidthSchedule.
-func (b *BandwidthSchedule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &b.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BandwidthScheduleProperties - The properties of the bandwidth schedule.
@@ -542,18 +458,26 @@ func (b BandwidthScheduleProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BandwidthSchedulesBeginCreateOrUpdateOptions contains the optional parameters for the BandwidthSchedules.BeginCreateOrUpdate method.
-type BandwidthSchedulesBeginCreateOrUpdateOptions struct {
+// BandwidthSchedulesClientBeginCreateOrUpdateOptions contains the optional parameters for the BandwidthSchedulesClient.BeginCreateOrUpdate
+// method.
+type BandwidthSchedulesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BandwidthSchedulesBeginDeleteOptions contains the optional parameters for the BandwidthSchedules.BeginDelete method.
-type BandwidthSchedulesBeginDeleteOptions struct {
+// BandwidthSchedulesClientBeginDeleteOptions contains the optional parameters for the BandwidthSchedulesClient.BeginDelete
+// method.
+type BandwidthSchedulesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BandwidthSchedulesGetOptions contains the optional parameters for the BandwidthSchedules.Get method.
-type BandwidthSchedulesGetOptions struct {
+// BandwidthSchedulesClientGetOptions contains the optional parameters for the BandwidthSchedulesClient.Get method.
+type BandwidthSchedulesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BandwidthSchedulesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the BandwidthSchedulesClient.ListByDataBoxEdgeDevice
+// method.
+type BandwidthSchedulesClientListByDataBoxEdgeDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -574,11 +498,6 @@ func (b BandwidthSchedulesList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BandwidthSchedulesListByDataBoxEdgeDeviceOptions contains the optional parameters for the BandwidthSchedules.ListByDataBoxEdgeDevice method.
-type BandwidthSchedulesListByDataBoxEdgeDeviceOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ClientAccessRight - The mapping between a particular client IP and the type of access client has on the NFS share.
 type ClientAccessRight struct {
 	// REQUIRED; Type of access to be allowed for the client.
@@ -590,16 +509,45 @@ type ClientAccessRight struct {
 
 // CloudEdgeManagementRole role.
 type CloudEdgeManagementRole struct {
-	Role
+	// REQUIRED; Role type.
+	Kind *RoleTypes `json:"kind,omitempty"`
+
 	// Properties specific to CloudEdgeManagementRole role.
 	Properties *CloudEdgeManagementRoleProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Role configured on ASE resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetRole implements the RoleClassification interface for type CloudEdgeManagementRole.
+func (c *CloudEdgeManagementRole) GetRole() *Role {
+	return &Role{
+		Kind:       c.Kind,
+		SystemData: c.SystemData,
+		ID:         c.ID,
+		Name:       c.Name,
+		Type:       c.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CloudEdgeManagementRole.
 func (c CloudEdgeManagementRole) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Role.marshalInternal(objectMap, RoleTypesCloudEdgeManagement)
+	populate(objectMap, "id", c.ID)
+	objectMap["kind"] = RoleTypesCloudEdgeManagement
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -612,16 +560,28 @@ func (c *CloudEdgeManagementRole) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &c.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &c.Kind)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &c.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &c.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &c.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &c.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.Role.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -636,41 +596,6 @@ type CloudEdgeManagementRoleProperties struct {
 
 	// READ-ONLY; Local Edge Management Status
 	LocalManagementStatus *RoleStatus `json:"localManagementStatus,omitempty" azure:"ro"`
-}
-
-// CloudError - An error response from the service.
-// Implements the error and azcore.HTTPResponse interfaces.
-type CloudError struct {
-	raw string
-	// The error details.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
-}
-
-// CloudErrorBody - An error response from the service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	return json.Marshal(objectMap)
 }
 
 // CniConfig - Cni configuration
@@ -724,47 +649,20 @@ func (c ContactDetails) MarshalJSON() ([]byte, error) {
 
 // Container - Represents a container on the Data Box Edge/Gateway device.
 type Container struct {
-	ARMBaseModel
 	// REQUIRED; The container properties.
 	Properties *ContainerProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Container in DataBoxEdge Resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Container.
-func (c Container) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Container.
-func (c *Container) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &c.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ContainerList - Collection of all the containers on the Data Box Edge/Gateway device.
@@ -838,28 +736,30 @@ func (c *ContainerProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ContainersBeginCreateOrUpdateOptions contains the optional parameters for the Containers.BeginCreateOrUpdate method.
-type ContainersBeginCreateOrUpdateOptions struct {
+// ContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainersClient.BeginCreateOrUpdate
+// method.
+type ContainersClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersBeginDeleteOptions contains the optional parameters for the Containers.BeginDelete method.
-type ContainersBeginDeleteOptions struct {
+// ContainersClientBeginDeleteOptions contains the optional parameters for the ContainersClient.BeginDelete method.
+type ContainersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersBeginRefreshOptions contains the optional parameters for the Containers.BeginRefresh method.
-type ContainersBeginRefreshOptions struct {
+// ContainersClientBeginRefreshOptions contains the optional parameters for the ContainersClient.BeginRefresh method.
+type ContainersClientBeginRefreshOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersGetOptions contains the optional parameters for the Containers.Get method.
-type ContainersGetOptions struct {
+// ContainersClientGetOptions contains the optional parameters for the ContainersClient.Get method.
+type ContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersListByStorageAccountOptions contains the optional parameters for the Containers.ListByStorageAccount method.
-type ContainersListByStorageAccountOptions struct {
+// ContainersClientListByStorageAccountOptions contains the optional parameters for the ContainersClient.ListByStorageAccount
+// method.
+type ContainersClientListByStorageAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -875,11 +775,16 @@ type DCAccessCodeProperties struct {
 	AuthCode *string `json:"authCode,omitempty"`
 }
 
-// DataBoxEdgeDevice - The Data Box Edge/Gateway device.
-type DataBoxEdgeDevice struct {
-	ARMBaseModel
-	// REQUIRED; The location of the device. This is a supported and registered Azure geographical region (for example, West US, East US, or Southeast Asia).
-	// The geographical region of a device cannot be changed once
+// DataResidency - Wraps data-residency related information for edge-resource and this should be used with ARM layer.
+type DataResidency struct {
+	// DataResidencyType enum
+	Type *DataResidencyType `json:"type,omitempty"`
+}
+
+// Device - The Data Box Edge/Gateway device.
+type Device struct {
+	// REQUIRED; The location of the device. This is a supported and registered Azure geographical region (for example, West US,
+	// East US, or Southeast Asia). The geographical region of a device cannot be changed once
 	// it is created, but if an identical geographical region is specified on update, the request will succeed.
 	Location *string `json:"location,omitempty"`
 
@@ -893,117 +798,61 @@ type DataBoxEdgeDevice struct {
 	Kind *DataBoxEdgeDeviceKind `json:"kind,omitempty"`
 
 	// The properties of the Data Box Edge/Gateway device.
-	Properties *DataBoxEdgeDeviceProperties `json:"properties,omitempty"`
+	Properties *DeviceProperties `json:"properties,omitempty"`
 
 	// The SKU type.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKUInfo `json:"sku,omitempty"`
 
 	// The list of tags that describe the device. These tags can be used to view and group this device (across resource groups).
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; DataBoxEdge Resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeDevice.
-func (d DataBoxEdgeDevice) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type Device.
+func (d Device) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ARMBaseModel.marshalInternal(objectMap)
 	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "id", d.ID)
 	populate(objectMap, "identity", d.Identity)
 	populate(objectMap, "kind", d.Kind)
 	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "sku", d.SKU)
 	populate(objectMap, "systemData", d.SystemData)
 	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxEdgeDevice.
-func (d *DataBoxEdgeDevice) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &d.Etag)
-			delete(rawMsg, key)
-		case "identity":
-			err = unpopulate(val, &d.Identity)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &d.Kind)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &d.Location)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &d.SKU)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &d.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxEdgeDeviceExtendedInfo - The extended Info of the Data Box Edge/Gateway device.
-type DataBoxEdgeDeviceExtendedInfo struct {
-	ARMBaseModel
+// DeviceExtendedInfo - The extended Info of the Data Box Edge/Gateway device.
+type DeviceExtendedInfo struct {
 	// The extended info properties.
-	Properties *DataBoxEdgeDeviceExtendedInfoProperties `json:"properties,omitempty"`
+	Properties *DeviceExtendedInfoProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeDeviceExtendedInfo.
-func (d DataBoxEdgeDeviceExtendedInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataBoxEdgeDeviceExtendedInfo.
-func (d *DataBoxEdgeDeviceExtendedInfo) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataBoxEdgeDeviceExtendedInfoPatch - The Data Box Edge/Gateway device extended info patch.
-type DataBoxEdgeDeviceExtendedInfoPatch struct {
+// DeviceExtendedInfoPatch - The Data Box Edge/Gateway device extended info patch.
+type DeviceExtendedInfoPatch struct {
 	// The name for Channel Integrity Key stored in the Client Key Vault
 	ChannelIntegrityKeyName *string `json:"channelIntegrityKeyName,omitempty"`
 
@@ -1016,12 +865,13 @@ type DataBoxEdgeDeviceExtendedInfoPatch struct {
 	// The url to access the Client Key Vault
 	ClientSecretStoreURL *string `json:"clientSecretStoreUrl,omitempty"`
 
-	// For changing or to initiate the resync to key-vault set the status to KeyVaultSyncPending, rest of the status will not be applicable.
+	// For changing or to initiate the resync to key-vault set the status to KeyVaultSyncPending, rest of the status will not
+	// be applicable.
 	SyncStatus *KeyVaultSyncStatus `json:"syncStatus,omitempty"`
 }
 
-// DataBoxEdgeDeviceExtendedInfoProperties - The properties of the Data Box Edge/Gateway device extended info.
-type DataBoxEdgeDeviceExtendedInfoProperties struct {
+// DeviceExtendedInfoProperties - The properties of the Data Box Edge/Gateway device extended info.
+type DeviceExtendedInfoProperties struct {
 	// The name of Channel Integrity Key stored in the Client Key Vault
 	ChannelIntegrityKeyName *string `json:"channelIntegrityKeyName,omitempty"`
 
@@ -1050,8 +900,8 @@ type DataBoxEdgeDeviceExtendedInfoProperties struct {
 	ResourceKey *string `json:"resourceKey,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeDeviceExtendedInfoProperties.
-func (d DataBoxEdgeDeviceExtendedInfoProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DeviceExtendedInfoProperties.
+func (d DeviceExtendedInfoProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "channelIntegrityKeyName", d.ChannelIntegrityKeyName)
 	populate(objectMap, "channelIntegrityKeyVersion", d.ChannelIntegrityKeyVersion)
@@ -1065,37 +915,37 @@ func (d DataBoxEdgeDeviceExtendedInfoProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DataBoxEdgeDeviceList - The collection of Data Box Edge/Gateway devices.
-type DataBoxEdgeDeviceList struct {
+// DeviceList - The collection of Data Box Edge/Gateway devices.
+type DeviceList struct {
 	// READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of Data Box Edge/Gateway devices.
-	Value []*DataBoxEdgeDevice `json:"value,omitempty" azure:"ro"`
+	Value []*Device `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeDeviceList.
-func (d DataBoxEdgeDeviceList) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DeviceList.
+func (d DeviceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "nextLink", d.NextLink)
 	populate(objectMap, "value", d.Value)
 	return json.Marshal(objectMap)
 }
 
-// DataBoxEdgeDevicePatch - The Data Box Edge/Gateway device patch.
-type DataBoxEdgeDevicePatch struct {
+// DevicePatch - The Data Box Edge/Gateway device patch.
+type DevicePatch struct {
 	// Msi identity of the resource
 	Identity *ResourceIdentity `json:"identity,omitempty"`
 
 	// The properties associated with the Data Box Edge/Gateway resource
-	Properties *DataBoxEdgeDevicePropertiesPatch `json:"properties,omitempty"`
+	Properties *DevicePropertiesPatch `json:"properties,omitempty"`
 
 	// The tags attached to the Data Box Edge/Gateway resource.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeDevicePatch.
-func (d DataBoxEdgeDevicePatch) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DevicePatch.
+func (d DevicePatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "identity", d.Identity)
 	populate(objectMap, "properties", d.Properties)
@@ -1103,8 +953,8 @@ func (d DataBoxEdgeDevicePatch) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DataBoxEdgeDeviceProperties - The properties of the Data Box Edge/Gateway device.
-type DataBoxEdgeDeviceProperties struct {
+// DeviceProperties - The properties of the Data Box Edge/Gateway device.
+type DeviceProperties struct {
 	// The status of the Data Box Edge/Gateway device.
 	DataBoxEdgeDeviceStatus *DataBoxEdgeDeviceStatus `json:"dataBoxEdgeDeviceStatus,omitempty"`
 
@@ -1160,8 +1010,8 @@ type DataBoxEdgeDeviceProperties struct {
 	TimeZone *string `json:"timeZone,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeDeviceProperties.
-func (d DataBoxEdgeDeviceProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DeviceProperties.
+func (d DeviceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "configuredRoleTypes", d.ConfiguredRoleTypes)
 	populate(objectMap, "culture", d.Culture)
@@ -1184,291 +1034,133 @@ func (d DataBoxEdgeDeviceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DataBoxEdgeDevicePropertiesPatch - The Data Box Edge/Gateway device properties patch.
-type DataBoxEdgeDevicePropertiesPatch struct {
+// DevicePropertiesPatch - The Data Box Edge/Gateway device properties patch.
+type DevicePropertiesPatch struct {
 	// Edge Profile property of the Data Box Edge/Gateway device
 	EdgeProfile *EdgeProfilePatch `json:"edgeProfile,omitempty"`
 }
 
-// DataBoxEdgeMoveRequest - Resource Move details
-type DataBoxEdgeMoveRequest struct {
-	// REQUIRED; List of resources to be moved
-	Resources []*string `json:"resources,omitempty"`
-
-	// REQUIRED; Target resource group ARMId
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeMoveRequest.
-func (d DataBoxEdgeMoveRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "resources", d.Resources)
-	populate(objectMap, "targetResourceGroup", d.TargetResourceGroup)
-	return json.Marshal(objectMap)
-}
-
-// DataBoxEdgeSKU - The Sku information.
-type DataBoxEdgeSKU struct {
-	// READ-ONLY; The API versions in which Sku is available.
-	APIVersions []*string `json:"apiVersions,omitempty" azure:"ro"`
-
-	// READ-ONLY; Links to the next set of results
-	Availability *SKUAvailability `json:"availability,omitempty" azure:"ro"`
-
-	// READ-ONLY; The capability info of the SKU.
-	Capabilities []*SKUCapability `json:"capabilities,omitempty" azure:"ro"`
-
-	// READ-ONLY; The pricing info of the Sku.
-	Costs []*SKUCost `json:"costs,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Sku family.
-	Family *string `json:"family,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Sku kind.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
-
-	// READ-ONLY; Availability of the Sku for the location/zone/site.
-	LocationInfo []*SKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; Availability of the Sku for the region.
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Sku name.
-	Name *SKUName `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of Shipment Types supported by this SKU
-	ShipmentTypes []*ShipmentType `json:"shipmentTypes,omitempty" azure:"ro"`
-
-	// READ-ONLY; Sku can be signed up by customer or not.
-	SignupOption *SKUSignupOption `json:"signupOption,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Sku kind.
-	Size *string `json:"size,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Sku tier.
-	Tier *SKUTier `json:"tier,omitempty" azure:"ro"`
-
-	// READ-ONLY; Availability of the Sku as preview/stable.
-	Version *SKUVersion `json:"version,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeSKU.
-func (d DataBoxEdgeSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiVersions", d.APIVersions)
-	populate(objectMap, "availability", d.Availability)
-	populate(objectMap, "capabilities", d.Capabilities)
-	populate(objectMap, "costs", d.Costs)
-	populate(objectMap, "family", d.Family)
-	populate(objectMap, "kind", d.Kind)
-	populate(objectMap, "locationInfo", d.LocationInfo)
-	populate(objectMap, "locations", d.Locations)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "resourceType", d.ResourceType)
-	populate(objectMap, "shipmentTypes", d.ShipmentTypes)
-	populate(objectMap, "signupOption", d.SignupOption)
-	populate(objectMap, "size", d.Size)
-	populate(objectMap, "tier", d.Tier)
-	populate(objectMap, "version", d.Version)
-	return json.Marshal(objectMap)
-}
-
-// DataBoxEdgeSKUList - List of SKU Information objects.
-type DataBoxEdgeSKUList struct {
-	// READ-ONLY; Links to the next set of results
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of ResourceType Sku
-	Value []*DataBoxEdgeSKU `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataBoxEdgeSKUList.
-func (d DataBoxEdgeSKUList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// DataResidency - Wraps data-residency related information for edge-resource and this should be used with ARM layer.
-type DataResidency struct {
-	// DataResidencyType enum
-	Type *DataResidencyType `json:"type,omitempty"`
-}
-
-// DevicesBeginCreateOrUpdateSecuritySettingsOptions contains the optional parameters for the Devices.BeginCreateOrUpdateSecuritySettings method.
-type DevicesBeginCreateOrUpdateSecuritySettingsOptions struct {
+// DevicesClientBeginCreateOrUpdateSecuritySettingsOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdateSecuritySettings
+// method.
+type DevicesClientBeginCreateOrUpdateSecuritySettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesBeginDeleteOptions contains the optional parameters for the Devices.BeginDelete method.
-type DevicesBeginDeleteOptions struct {
+// DevicesClientBeginDeleteOptions contains the optional parameters for the DevicesClient.BeginDelete method.
+type DevicesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesBeginDownloadUpdatesOptions contains the optional parameters for the Devices.BeginDownloadUpdates method.
-type DevicesBeginDownloadUpdatesOptions struct {
+// DevicesClientBeginDownloadUpdatesOptions contains the optional parameters for the DevicesClient.BeginDownloadUpdates method.
+type DevicesClientBeginDownloadUpdatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesBeginInstallUpdatesOptions contains the optional parameters for the Devices.BeginInstallUpdates method.
-type DevicesBeginInstallUpdatesOptions struct {
+// DevicesClientBeginInstallUpdatesOptions contains the optional parameters for the DevicesClient.BeginInstallUpdates method.
+type DevicesClientBeginInstallUpdatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesBeginScanForUpdatesOptions contains the optional parameters for the Devices.BeginScanForUpdates method.
-type DevicesBeginScanForUpdatesOptions struct {
+// DevicesClientBeginScanForUpdatesOptions contains the optional parameters for the DevicesClient.BeginScanForUpdates method.
+type DevicesClientBeginScanForUpdatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesCreateOrUpdateOptions contains the optional parameters for the Devices.CreateOrUpdate method.
-type DevicesCreateOrUpdateOptions struct {
+// DevicesClientCreateOrUpdateOptions contains the optional parameters for the DevicesClient.CreateOrUpdate method.
+type DevicesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesGenerateCertificateOptions contains the optional parameters for the Devices.GenerateCertificate method.
-type DevicesGenerateCertificateOptions struct {
+// DevicesClientGenerateCertificateOptions contains the optional parameters for the DevicesClient.GenerateCertificate method.
+type DevicesClientGenerateCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesGetExtendedInformationOptions contains the optional parameters for the Devices.GetExtendedInformation method.
-type DevicesGetExtendedInformationOptions struct {
+// DevicesClientGetExtendedInformationOptions contains the optional parameters for the DevicesClient.GetExtendedInformation
+// method.
+type DevicesClientGetExtendedInformationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesGetNetworkSettingsOptions contains the optional parameters for the Devices.GetNetworkSettings method.
-type DevicesGetNetworkSettingsOptions struct {
+// DevicesClientGetNetworkSettingsOptions contains the optional parameters for the DevicesClient.GetNetworkSettings method.
+type DevicesClientGetNetworkSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesGetOptions contains the optional parameters for the Devices.Get method.
-type DevicesGetOptions struct {
+// DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
+type DevicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesGetUpdateSummaryOptions contains the optional parameters for the Devices.GetUpdateSummary method.
-type DevicesGetUpdateSummaryOptions struct {
+// DevicesClientGetUpdateSummaryOptions contains the optional parameters for the DevicesClient.GetUpdateSummary method.
+type DevicesClientGetUpdateSummaryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesListByResourceGroupOptions contains the optional parameters for the Devices.ListByResourceGroup method.
-type DevicesListByResourceGroupOptions struct {
-	// Specify $expand=details to populate additional fields related to the resource or Specify $skipToken=<token> to populate the next page in the list.
+// DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup method.
+type DevicesClientListByResourceGroupOptions struct {
+	// Specify $expand=details to populate additional fields related to the resource or Specify $skipToken= to populate the next
+	// page in the list.
 	Expand *string
 }
 
-// DevicesListBySubscriptionOptions contains the optional parameters for the Devices.ListBySubscription method.
-type DevicesListBySubscriptionOptions struct {
-	// Specify $expand=details to populate additional fields related to the resource or Specify $skipToken=<token> to populate the next page in the list.
+// DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription method.
+type DevicesClientListBySubscriptionOptions struct {
+	// Specify $expand=details to populate additional fields related to the resource or Specify $skipToken= to populate the next
+	// page in the list.
 	Expand *string
 }
 
-// DevicesUpdateExtendedInformationOptions contains the optional parameters for the Devices.UpdateExtendedInformation method.
-type DevicesUpdateExtendedInformationOptions struct {
+// DevicesClientUpdateExtendedInformationOptions contains the optional parameters for the DevicesClient.UpdateExtendedInformation
+// method.
+type DevicesClientUpdateExtendedInformationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesUpdateOptions contains the optional parameters for the Devices.Update method.
-type DevicesUpdateOptions struct {
+// DevicesClientUpdateOptions contains the optional parameters for the DevicesClient.Update method.
+type DevicesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevicesUploadCertificateOptions contains the optional parameters for the Devices.UploadCertificate method.
-type DevicesUploadCertificateOptions struct {
+// DevicesClientUploadCertificateOptions contains the optional parameters for the DevicesClient.UploadCertificate method.
+type DevicesClientUploadCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DiagnosticProactiveLogCollectionSettings - The diagnostic proactive log collection settings of a device.
 type DiagnosticProactiveLogCollectionSettings struct {
-	ARMBaseModel
 	// REQUIRED; Properties of the diagnostic proactive log collection settings.
 	Properties *ProactiveLogCollectionSettingsProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; DiagnosticProactiveLogCollectionSettings
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticProactiveLogCollectionSettings.
-func (d DiagnosticProactiveLogCollectionSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DiagnosticProactiveLogCollectionSettings.
-func (d *DiagnosticProactiveLogCollectionSettings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &d.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DiagnosticRemoteSupportSettings - The remote support settings of a device.
 type DiagnosticRemoteSupportSettings struct {
-	ARMBaseModel
 	// REQUIRED; Properties of the remote support settings.
 	Properties *DiagnosticRemoteSupportSettingsProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; DiagnosticRemoteSupportSettings
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticRemoteSupportSettings.
-func (d DiagnosticRemoteSupportSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "systemData", d.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DiagnosticRemoteSupportSettings.
-func (d *DiagnosticRemoteSupportSettings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &d.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DiagnosticRemoteSupportSettingsProperties - The properties of remote support settings.
@@ -1484,27 +1176,27 @@ func (d DiagnosticRemoteSupportSettingsProperties) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// DiagnosticSettingsBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions contains the optional parameters for the DiagnosticSettings.BeginUpdateDiagnosticProactiveLogCollectionSettings
-// method.
-type DiagnosticSettingsBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions struct {
+// DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions contains the optional parameters for
+// the DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings method.
+type DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticSettingsBeginUpdateDiagnosticRemoteSupportSettingsOptions contains the optional parameters for the DiagnosticSettings.BeginUpdateDiagnosticRemoteSupportSettings
+// DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions contains the optional parameters for the DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings
 // method.
-type DiagnosticSettingsBeginUpdateDiagnosticRemoteSupportSettingsOptions struct {
+type DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticSettingsGetDiagnosticProactiveLogCollectionSettingsOptions contains the optional parameters for the DiagnosticSettings.GetDiagnosticProactiveLogCollectionSettings
+// DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsOptions contains the optional parameters for the DiagnosticSettingsClient.GetDiagnosticProactiveLogCollectionSettings
 // method.
-type DiagnosticSettingsGetDiagnosticProactiveLogCollectionSettingsOptions struct {
+type DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticSettingsGetDiagnosticRemoteSupportSettingsOptions contains the optional parameters for the DiagnosticSettings.GetDiagnosticRemoteSupportSettings
+// DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsOptions contains the optional parameters for the DiagnosticSettingsClient.GetDiagnosticRemoteSupportSettings
 // method.
-type DiagnosticSettingsGetDiagnosticRemoteSupportSettingsOptions struct {
+type DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1550,16 +1242,45 @@ type EtcdInfo struct {
 
 // FileEventTrigger - Trigger details.
 type FileEventTrigger struct {
-	Trigger
+	// REQUIRED; Trigger Kind.
+	Kind *TriggerEventType `json:"kind,omitempty"`
+
 	// REQUIRED; File trigger properties.
 	Properties *FileTriggerProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Trigger in DataBoxEdge Resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetTrigger implements the TriggerClassification interface for type FileEventTrigger.
+func (f *FileEventTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		SystemData: f.SystemData,
+		Kind:       f.Kind,
+		ID:         f.ID,
+		Name:       f.Name,
+		Type:       f.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FileEventTrigger.
 func (f FileEventTrigger) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	f.Trigger.marshalInternal(objectMap, TriggerEventTypeFileEvent)
+	populate(objectMap, "id", f.ID)
+	objectMap["kind"] = TriggerEventTypeFileEvent
+	populate(objectMap, "name", f.Name)
 	populate(objectMap, "properties", f.Properties)
+	populate(objectMap, "systemData", f.SystemData)
+	populate(objectMap, "type", f.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1572,16 +1293,28 @@ func (f *FileEventTrigger) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &f.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &f.Kind)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &f.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &f.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &f.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &f.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := f.Trigger.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1600,8 +1333,8 @@ type FileTriggerProperties struct {
 	// REQUIRED; File event source details.
 	SourceInfo *FileSourceInfo `json:"sourceInfo,omitempty"`
 
-	// A custom context tag typically used to correlate the trigger against its usage. For example, if a periodic timer trigger is intended for certain specific
-	// IoT modules in the device, the tag can be the
+	// A custom context tag typically used to correlate the trigger against its usage. For example, if a periodic timer trigger
+	// is intended for certain specific IoT modules in the device, the tag can be the
 	// name or the image URL of the module.
 	CustomContextTag *string `json:"customContextTag,omitempty"`
 }
@@ -1656,16 +1389,45 @@ type ImageRepositoryCredential struct {
 
 // IoTAddon - IoT Addon.
 type IoTAddon struct {
-	Addon
+	// REQUIRED; Addon type.
+	Kind *AddonType `json:"kind,omitempty"`
+
 	// REQUIRED; Properties specific to IOT addon.
 	Properties *IoTAddonProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Addon type
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAddon implements the AddonClassification interface for type IoTAddon.
+func (i *IoTAddon) GetAddon() *Addon {
+	return &Addon{
+		Kind:       i.Kind,
+		SystemData: i.SystemData,
+		ID:         i.ID,
+		Name:       i.Name,
+		Type:       i.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IoTAddon.
 func (i IoTAddon) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.Addon.marshalInternal(objectMap, AddonTypeIotEdge)
+	populate(objectMap, "id", i.ID)
+	objectMap["kind"] = AddonTypeIotEdge
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "systemData", i.SystemData)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1678,16 +1440,28 @@ func (i *IoTAddon) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &i.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &i.Kind)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &i.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &i.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &i.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &i.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := i.Addon.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1728,7 +1502,8 @@ type IoTDeviceInfo struct {
 	IoTHostHubID *string `json:"ioTHostHubId,omitempty"`
 }
 
-// IoTEdgeAgentInfo - IoT edge agent details is optional, this will be used for download system Agent module while bootstrapping IoT Role if specified.
+// IoTEdgeAgentInfo - IoT edge agent details is optional, this will be used for download system Agent module while bootstrapping
+// IoT Role if specified.
 type IoTEdgeAgentInfo struct {
 	// REQUIRED; Name of the IoT edge agent image.
 	ImageName *string `json:"imageName,omitempty"`
@@ -1742,16 +1517,45 @@ type IoTEdgeAgentInfo struct {
 
 // IoTRole - Compute role.
 type IoTRole struct {
-	Role
+	// REQUIRED; Role type.
+	Kind *RoleTypes `json:"kind,omitempty"`
+
 	// Properties specific to IoT role.
 	Properties *IoTRoleProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Role configured on ASE resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetRole implements the RoleClassification interface for type IoTRole.
+func (i *IoTRole) GetRole() *Role {
+	return &Role{
+		Kind:       i.Kind,
+		SystemData: i.SystemData,
+		ID:         i.ID,
+		Name:       i.Name,
+		Type:       i.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IoTRole.
 func (i IoTRole) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.Role.marshalInternal(objectMap, RoleTypesIOT)
+	populate(objectMap, "id", i.ID)
+	objectMap["kind"] = RoleTypesIOT
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "systemData", i.SystemData)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1764,16 +1568,28 @@ func (i *IoTRole) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &i.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &i.Kind)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &i.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &i.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &i.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &i.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := i.Role.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1952,7 +1768,8 @@ func (j JobErrorItem) MarshalJSON() ([]byte, error) {
 
 // JobProperties - The properties for the job.
 type JobProperties struct {
-	// If only subfolders need to be refreshed, then the subfolder path inside the share or container. (The path is empty if there are no subfolders.)
+	// If only subfolders need to be refreshed, then the subfolder path inside the share or container. (The path is empty if there
+	// are no subfolders.)
 	Folder *string `json:"folder,omitempty"`
 
 	// READ-ONLY; Current stage of the update operation.
@@ -1977,8 +1794,8 @@ type JobProperties struct {
 	TotalRefreshErrors *int32 `json:"totalRefreshErrors,omitempty" azure:"ro"`
 }
 
-// JobsGetOptions contains the optional parameters for the Jobs.Get method.
-type JobsGetOptions struct {
+// JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2014,16 +1831,45 @@ type KubernetesIPConfiguration struct {
 
 // KubernetesRole - Kubernetes role.
 type KubernetesRole struct {
-	Role
+	// REQUIRED; Role type.
+	Kind *RoleTypes `json:"kind,omitempty"`
+
 	// Properties specific to Kubernetes role.
 	Properties *KubernetesRoleProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Role configured on ASE resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetRole implements the RoleClassification interface for type KubernetesRole.
+func (k *KubernetesRole) GetRole() *Role {
+	return &Role{
+		Kind:       k.Kind,
+		SystemData: k.SystemData,
+		ID:         k.ID,
+		Name:       k.Name,
+		Type:       k.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KubernetesRole.
 func (k KubernetesRole) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	k.Role.marshalInternal(objectMap, RoleTypesKubernetes)
+	populate(objectMap, "id", k.ID)
+	objectMap["kind"] = RoleTypesKubernetes
+	populate(objectMap, "name", k.Name)
 	populate(objectMap, "properties", k.Properties)
+	populate(objectMap, "systemData", k.SystemData)
+	populate(objectMap, "type", k.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2036,16 +1882,28 @@ func (k *KubernetesRole) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &k.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &k.Kind)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &k.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &k.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &k.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &k.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := k.Role.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2144,16 +2002,45 @@ type LoadBalancerConfig struct {
 
 // MECRole - MEC role.
 type MECRole struct {
-	Role
+	// REQUIRED; Role type.
+	Kind *RoleTypes `json:"kind,omitempty"`
+
 	// Properties specific to MEC role.
 	Properties *MECRoleProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Role configured on ASE resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetRole implements the RoleClassification interface for type MECRole.
+func (m *MECRole) GetRole() *Role {
+	return &Role{
+		Kind:       m.Kind,
+		SystemData: m.SystemData,
+		ID:         m.ID,
+		Name:       m.Name,
+		Type:       m.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MECRole.
 func (m MECRole) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.Role.marshalInternal(objectMap, RoleTypesMEC)
+	populate(objectMap, "id", m.ID)
+	objectMap["kind"] = RoleTypesMEC
+	populate(objectMap, "name", m.Name)
 	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "systemData", m.SystemData)
+	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2166,16 +2053,28 @@ func (m *MECRole) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &m.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &m.Kind)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &m.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &m.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &m.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &m.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := m.Role.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2332,69 +2231,43 @@ func (m MetricSpecificationV1) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MonitoringConfigBeginCreateOrUpdateOptions contains the optional parameters for the MonitoringConfig.BeginCreateOrUpdate method.
-type MonitoringConfigBeginCreateOrUpdateOptions struct {
+// MonitoringConfigClientBeginCreateOrUpdateOptions contains the optional parameters for the MonitoringConfigClient.BeginCreateOrUpdate
+// method.
+type MonitoringConfigClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitoringConfigBeginDeleteOptions contains the optional parameters for the MonitoringConfig.BeginDelete method.
-type MonitoringConfigBeginDeleteOptions struct {
+// MonitoringConfigClientBeginDeleteOptions contains the optional parameters for the MonitoringConfigClient.BeginDelete method.
+type MonitoringConfigClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitoringConfigGetOptions contains the optional parameters for the MonitoringConfig.Get method.
-type MonitoringConfigGetOptions struct {
+// MonitoringConfigClientGetOptions contains the optional parameters for the MonitoringConfigClient.Get method.
+type MonitoringConfigClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitoringConfigListOptions contains the optional parameters for the MonitoringConfig.List method.
-type MonitoringConfigListOptions struct {
+// MonitoringConfigClientListOptions contains the optional parameters for the MonitoringConfigClient.List method.
+type MonitoringConfigClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // MonitoringMetricConfiguration - The metric setting details for the role
 type MonitoringMetricConfiguration struct {
-	ARMBaseModel
 	// REQUIRED; The metric setting properties.
 	Properties *MonitoringMetricConfigurationProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; MonitoringConfiguration on ASE device
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MonitoringMetricConfiguration.
-func (m MonitoringMetricConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MonitoringMetricConfiguration.
-func (m *MonitoringMetricConfiguration) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &m.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MonitoringMetricConfigurationList - Collection of metric configurations.
@@ -2525,47 +2398,20 @@ type NetworkAdapterPosition struct {
 
 // NetworkSettings - The network settings of a device.
 type NetworkSettings struct {
-	ARMBaseModel
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The properties of network settings of a device.
 	Properties *NetworkSettingsProperties `json:"properties,omitempty" azure:"ro"`
 
 	// READ-ONLY; NetworkSettings on ASE device
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkSettings.
-func (n NetworkSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	populate(objectMap, "systemData", n.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkSettings.
-func (n *NetworkSettings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &n.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &n.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := n.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NetworkSettingsProperties - The properties of network settings.
@@ -2581,44 +2427,21 @@ func (n NetworkSettingsProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Node - Represents a single node in a Data box Edge/Gateway device Gateway devices, standalone Edge devices and a single node cluster Edge device will
-// all have 1 node Multi-node Edge devices will have more
+// Node - Represents a single node in a Data box Edge/Gateway device Gateway devices, standalone Edge devices and a single
+// node cluster Edge device will all have 1 node Multi-node Edge devices will have more
 // than 1 nodes
 type Node struct {
-	ARMBaseModel
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The properties of the node
 	Properties *NodeProperties `json:"properties,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Node.
-func (n Node) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Node.
-func (n *Node) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &n.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := n.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NodeInfo - Kubernetes node info
@@ -2683,8 +2506,9 @@ type NodeProperties struct {
 	NodeStatus *NodeStatus `json:"nodeStatus,omitempty" azure:"ro"`
 }
 
-// NodesListByDataBoxEdgeDeviceOptions contains the optional parameters for the Nodes.ListByDataBoxEdgeDevice method.
-type NodesListByDataBoxEdgeDeviceOptions struct {
+// NodesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the NodesClient.ListByDataBoxEdgeDevice
+// method.
+type NodesClientListByDataBoxEdgeDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2727,6 +2551,11 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsList - The list of operations used for the discovery of available provider operations.
 type OperationsList struct {
 	// REQUIRED; The value.
@@ -2744,59 +2573,27 @@ func (o OperationsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OperationsStatusGetOptions contains the optional parameters for the OperationsStatus.Get method.
-type OperationsStatusGetOptions struct {
+// OperationsStatusClientGetOptions contains the optional parameters for the OperationsStatusClient.Get method.
+type OperationsStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Order - The order details.
 type Order struct {
-	ARMBaseModel
 	// The order properties.
 	Properties *OrderProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Order configured on ASE resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Order.
-func (o Order) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Order.
-func (o *Order) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &o.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := o.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OrderList - List of order entities.
@@ -2836,7 +2633,8 @@ type OrderProperties struct {
 	// READ-ONLY; List of status changes in the order.
 	OrderHistory []*OrderStatus `json:"orderHistory,omitempty" azure:"ro"`
 
-	// READ-ONLY; Tracking information for the package returned from the customer whether it has an original or a replacement device.
+	// READ-ONLY; Tracking information for the package returned from the customer whether it has an original or a replacement
+	// device.
 	ReturnTrackingInfo []*TrackingInfo `json:"returnTrackingInfo,omitempty" azure:"ro"`
 
 	// READ-ONLY; Serial number of the device.
@@ -2918,43 +2716,73 @@ func (o *OrderStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// OrdersBeginCreateOrUpdateOptions contains the optional parameters for the Orders.BeginCreateOrUpdate method.
-type OrdersBeginCreateOrUpdateOptions struct {
+// OrdersClientBeginCreateOrUpdateOptions contains the optional parameters for the OrdersClient.BeginCreateOrUpdate method.
+type OrdersClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OrdersBeginDeleteOptions contains the optional parameters for the Orders.BeginDelete method.
-type OrdersBeginDeleteOptions struct {
+// OrdersClientBeginDeleteOptions contains the optional parameters for the OrdersClient.BeginDelete method.
+type OrdersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OrdersGetOptions contains the optional parameters for the Orders.Get method.
-type OrdersGetOptions struct {
+// OrdersClientGetOptions contains the optional parameters for the OrdersClient.Get method.
+type OrdersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OrdersListByDataBoxEdgeDeviceOptions contains the optional parameters for the Orders.ListByDataBoxEdgeDevice method.
-type OrdersListByDataBoxEdgeDeviceOptions struct {
+// OrdersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the OrdersClient.ListByDataBoxEdgeDevice
+// method.
+type OrdersClientListByDataBoxEdgeDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OrdersListDCAccessCodeOptions contains the optional parameters for the Orders.ListDCAccessCode method.
-type OrdersListDCAccessCodeOptions struct {
+// OrdersClientListDCAccessCodeOptions contains the optional parameters for the OrdersClient.ListDCAccessCode method.
+type OrdersClientListDCAccessCodeOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PeriodicTimerEventTrigger - Trigger details.
 type PeriodicTimerEventTrigger struct {
-	Trigger
+	// REQUIRED; Trigger Kind.
+	Kind *TriggerEventType `json:"kind,omitempty"`
+
 	// REQUIRED; Periodic timer trigger properties.
 	Properties *PeriodicTimerProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Trigger in DataBoxEdge Resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetTrigger implements the TriggerClassification interface for type PeriodicTimerEventTrigger.
+func (p *PeriodicTimerEventTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		SystemData: p.SystemData,
+		Kind:       p.Kind,
+		ID:         p.ID,
+		Name:       p.Name,
+		Type:       p.Type,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PeriodicTimerEventTrigger.
 func (p PeriodicTimerEventTrigger) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Trigger.marshalInternal(objectMap, TriggerEventTypePeriodicTimerEvent)
+	populate(objectMap, "id", p.ID)
+	objectMap["kind"] = TriggerEventTypePeriodicTimerEvent
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "systemData", p.SystemData)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2967,16 +2795,28 @@ func (p *PeriodicTimerEventTrigger) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &p.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &p.Kind)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &p.Name)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &p.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &p.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := p.Trigger.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2989,8 +2829,8 @@ type PeriodicTimerProperties struct {
 	// REQUIRED; Periodic timer details.
 	SourceInfo *PeriodicTimerSourceInfo `json:"sourceInfo,omitempty"`
 
-	// A custom context tag typically used to correlate the trigger against its usage. For example, if a periodic timer trigger is intended for certain specific
-	// IoT modules in the device, the tag can be the
+	// A custom context tag typically used to correlate the trigger against its usage. For example, if a periodic timer trigger
+	// is intended for certain specific IoT modules in the device, the tag can be the
 	// name or the image URL of the module.
 	CustomContextTag *string `json:"customContextTag,omitempty"`
 }
@@ -3000,8 +2840,8 @@ type PeriodicTimerSourceInfo struct {
 	// REQUIRED; Periodic frequency at which timer event needs to be raised. Supports daily, hourly, minutes, and seconds.
 	Schedule *string `json:"schedule,omitempty"`
 
-	// REQUIRED; The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified upto seconds. If timezone is
-	// not specified the time will considered to be in device
+	// REQUIRED; The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified
+	// upto seconds. If timezone is not specified the time will considered to be in device
 	// timezone. The value will always be returned as UTC time.
 	StartTime *time.Time `json:"startTime,omitempty"`
 
@@ -3061,18 +2901,20 @@ type RawCertificateData struct {
 
 // RefreshDetails - Fields for tracking refresh job on the share or container.
 type RefreshDetails struct {
-	// Indicates the relative path of the error xml for the last refresh job on this particular share or container, if any. This could be a failed job or a
-	// successful job.
+	// Indicates the relative path of the error xml for the last refresh job on this particular share or container, if any. This
+	// could be a failed job or a successful job.
 	ErrorManifestFile *string `json:"errorManifestFile,omitempty"`
 
-	// If a refresh job is currently in progress on this share or container, this field indicates the ARM resource ID of that job. The field is empty if no
-	// job is in progress.
+	// If a refresh job is currently in progress on this share or container, this field indicates the ARM resource ID of that
+	// job. The field is empty if no job is in progress.
 	InProgressRefreshJobID *string `json:"inProgressRefreshJobId,omitempty"`
 
-	// Indicates the completed time for the last refresh job on this particular share or container, if any.This could be a failed job or a successful job.
+	// Indicates the completed time for the last refresh job on this particular share or container, if any.This could be a failed
+	// job or a successful job.
 	LastCompletedRefreshJobTimeInUTC *time.Time `json:"lastCompletedRefreshJobTimeInUTC,omitempty"`
 
-	// Indicates the id of the last refresh job on this particular share or container,if any. This could be a failed job or a successful job.
+	// Indicates the id of the last refresh job on this particular share or container,if any. This could be a failed job or a
+	// successful job.
 	LastJob *string `json:"lastJob,omitempty"`
 }
 
@@ -3214,23 +3056,6 @@ func (r *ResourceMoveDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ResourceTypeSKU - Resource type Sku object
-type ResourceTypeSKU struct {
-	// READ-ONLY; The resource type.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
-
-	// READ-ONLY; The skus.
-	SKUs []*SKUInformation `json:"skus,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceTypeSKU.
-func (r ResourceTypeSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "resourceType", r.ResourceType)
-	populate(objectMap, "skus", r.SKUs)
-	return json.Marshal(objectMap)
-}
-
 // RoleClassification provides polymorphic access to related types.
 // Call the interface's GetRole() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -3242,53 +3067,24 @@ type RoleClassification interface {
 
 // Role - Compute role.
 type Role struct {
-	ARMBaseModel
 	// REQUIRED; Role type.
 	Kind *RoleTypes `json:"kind,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Role configured on ASE resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetRole implements the RoleClassification interface for type Role.
 func (r *Role) GetRole() *Role { return r }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Role.
-func (r *Role) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Role) marshalInternal(objectMap map[string]interface{}, discValue RoleTypes) {
-	r.ARMBaseModel.marshalInternal(objectMap)
-	r.Kind = &discValue
-	objectMap["kind"] = r.Kind
-	populate(objectMap, "systemData", r.SystemData)
-}
-
-func (r *Role) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &r.Kind)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &r.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := r.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
 
 // RoleList - Collection of all the roles on the Data Box Edge device.
 type RoleList struct {
@@ -3336,33 +3132,94 @@ type RoleSinkInfo struct {
 	RoleID *string `json:"roleId,omitempty"`
 }
 
-// RolesBeginCreateOrUpdateOptions contains the optional parameters for the Roles.BeginCreateOrUpdate method.
-type RolesBeginCreateOrUpdateOptions struct {
+// RolesClientBeginCreateOrUpdateOptions contains the optional parameters for the RolesClient.BeginCreateOrUpdate method.
+type RolesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RolesBeginDeleteOptions contains the optional parameters for the Roles.BeginDelete method.
-type RolesBeginDeleteOptions struct {
+// RolesClientBeginDeleteOptions contains the optional parameters for the RolesClient.BeginDelete method.
+type RolesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RolesGetOptions contains the optional parameters for the Roles.Get method.
-type RolesGetOptions struct {
+// RolesClientGetOptions contains the optional parameters for the RolesClient.Get method.
+type RolesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RolesListByDataBoxEdgeDeviceOptions contains the optional parameters for the Roles.ListByDataBoxEdgeDevice method.
-type RolesListByDataBoxEdgeDeviceOptions struct {
+// RolesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the RolesClient.ListByDataBoxEdgeDevice
+// method.
+type RolesClientListByDataBoxEdgeDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SKU - The SKU type.
+// SKU - The Sku information.
 type SKU struct {
-	// SKU name.
-	Name *SKUName `json:"name,omitempty"`
+	// READ-ONLY; The API versions in which Sku is available.
+	APIVersions []*string `json:"apiVersions,omitempty" azure:"ro"`
 
-	// The SKU tier. This is based on the SKU name.
-	Tier *SKUTier `json:"tier,omitempty"`
+	// READ-ONLY; Links to the next set of results
+	Availability *SKUAvailability `json:"availability,omitempty" azure:"ro"`
+
+	// READ-ONLY; The capability info of the SKU.
+	Capabilities []*SKUCapability `json:"capabilities,omitempty" azure:"ro"`
+
+	// READ-ONLY; The pricing info of the Sku.
+	Costs []*SKUCost `json:"costs,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Sku family.
+	Family *string `json:"family,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Sku kind.
+	Kind *string `json:"kind,omitempty" azure:"ro"`
+
+	// READ-ONLY; Availability of the Sku for the location/zone/site.
+	LocationInfo []*SKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; Availability of the Sku for the region.
+	Locations []*string `json:"locations,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Sku name.
+	Name *SKUName `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of Shipment Types supported by this SKU
+	ShipmentTypes []*ShipmentType `json:"shipmentTypes,omitempty" azure:"ro"`
+
+	// READ-ONLY; Sku can be signed up by customer or not.
+	SignupOption *SKUSignupOption `json:"signupOption,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Sku kind.
+	Size *string `json:"size,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Sku tier.
+	Tier *SKUTier `json:"tier,omitempty" azure:"ro"`
+
+	// READ-ONLY; Availability of the Sku as preview/stable.
+	Version *SKUVersion `json:"version,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKU.
+func (s SKU) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "apiVersions", s.APIVersions)
+	populate(objectMap, "availability", s.Availability)
+	populate(objectMap, "capabilities", s.Capabilities)
+	populate(objectMap, "costs", s.Costs)
+	populate(objectMap, "family", s.Family)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "locationInfo", s.LocationInfo)
+	populate(objectMap, "locations", s.Locations)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "resourceType", s.ResourceType)
+	populate(objectMap, "shipmentTypes", s.ShipmentTypes)
+	populate(objectMap, "signupOption", s.SignupOption)
+	populate(objectMap, "size", s.Size)
+	populate(objectMap, "tier", s.Tier)
+	populate(objectMap, "version", s.Version)
+	return json.Marshal(objectMap)
 }
 
 // SKUCapability - The metadata to describe the capability.
@@ -3386,62 +3243,26 @@ type SKUCost struct {
 	Quantity *int64 `json:"quantity,omitempty" azure:"ro"`
 }
 
-// SKUInformation - Sku information
-type SKUInformation struct {
-	// READ-ONLY; The pricing info of the Sku.
-	Costs []*SKUCost `json:"costs,omitempty" azure:"ro"`
+// SKUInfo - The SKU type.
+type SKUInfo struct {
+	// SKU name.
+	Name *SKUName `json:"name,omitempty"`
 
-	// READ-ONLY; The Sku family.
-	Family *string `json:"family,omitempty" azure:"ro"`
-
-	// READ-ONLY; The sku kind.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
-
-	// READ-ONLY; The locations where Sku is available with zones and sites info
-	LocationInfo []*SKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The locations where Sku is available.
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
-
-	// READ-ONLY; The sku name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The required features for the sku to be available.
-	RequiredFeatures []*string `json:"requiredFeatures,omitempty" azure:"ro"`
-
-	// READ-ONLY; The required quotaIds for the sku to be available.
-	RequiredQuotaIDs []*string `json:"requiredQuotaIds,omitempty" azure:"ro"`
-
-	// READ-ONLY; The sku tier.
-	Tier *string `json:"tier,omitempty" azure:"ro"`
+	// The SKU tier. This is based on the SKU name.
+	Tier *SKUTier `json:"tier,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SKUInformation.
-func (s SKUInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "costs", s.Costs)
-	populate(objectMap, "family", s.Family)
-	populate(objectMap, "kind", s.Kind)
-	populate(objectMap, "locationInfo", s.LocationInfo)
-	populate(objectMap, "locations", s.Locations)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "requiredFeatures", s.RequiredFeatures)
-	populate(objectMap, "requiredQuotaIds", s.RequiredQuotaIDs)
-	populate(objectMap, "tier", s.Tier)
-	return json.Marshal(objectMap)
-}
-
-// SKUInformationList - List of SKU Information objects
-type SKUInformationList struct {
+// SKUList - List of SKU Information objects.
+type SKUList struct {
 	// READ-ONLY; Links to the next set of results
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; List of ResourceTypeSku objects
-	Value []*ResourceTypeSKU `json:"value,omitempty" azure:"ro"`
+	// READ-ONLY; List of ResourceType Sku
+	Value []*SKU `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SKUInformationList.
-func (s SKUInformationList) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SKUList.
+func (s SKUList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "nextLink", s.NextLink)
 	populate(objectMap, "value", s.Value)
@@ -3480,46 +3301,23 @@ type Secret struct {
 
 // SecuritySettings - The security settings of a device.
 type SecuritySettings struct {
-	ARMBaseModel
 	// REQUIRED; Properties of the security settings.
 	Properties *SecuritySettingsProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SecuritySettings.
-func (s SecuritySettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecuritySettings.
-func (s *SecuritySettings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SecuritySettingsProperties - The properties of security settings.
 type SecuritySettingsProperties struct {
-	// REQUIRED; Device administrator password as an encrypted string (encrypted using RSA PKCS #1) is used to sign into the local web UI of the device. The
-	// Actual password should have at least 8 characters that are a
+	// REQUIRED; Device administrator password as an encrypted string (encrypted using RSA PKCS #1) is used to sign into the local
+	// web UI of the device. The Actual password should have at least 8 characters that are a
 	// combination of uppercase, lowercase, numeric, and special characters.
 	DeviceAdminPassword *AsymmetricEncryptedSecret `json:"deviceAdminPassword,omitempty"`
 }
@@ -3539,47 +3337,20 @@ func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
 
 // Share - Represents a share on the Data Box Edge/Gateway device.
 type Share struct {
-	ARMBaseModel
 	// REQUIRED; The share properties.
 	Properties *ShareProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Share on ASE device
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Share.
-func (s Share) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Share.
-func (s *Share) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ShareAccessRight - Specifies the mapping between this particular user and the type of access he has on shares on this device.
@@ -3657,119 +3428,66 @@ func (s ShareProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SharesBeginCreateOrUpdateOptions contains the optional parameters for the Shares.BeginCreateOrUpdate method.
-type SharesBeginCreateOrUpdateOptions struct {
+// SharesClientBeginCreateOrUpdateOptions contains the optional parameters for the SharesClient.BeginCreateOrUpdate method.
+type SharesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SharesBeginDeleteOptions contains the optional parameters for the Shares.BeginDelete method.
-type SharesBeginDeleteOptions struct {
+// SharesClientBeginDeleteOptions contains the optional parameters for the SharesClient.BeginDelete method.
+type SharesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SharesBeginRefreshOptions contains the optional parameters for the Shares.BeginRefresh method.
-type SharesBeginRefreshOptions struct {
+// SharesClientBeginRefreshOptions contains the optional parameters for the SharesClient.BeginRefresh method.
+type SharesClientBeginRefreshOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SharesGetOptions contains the optional parameters for the Shares.Get method.
-type SharesGetOptions struct {
+// SharesClientGetOptions contains the optional parameters for the SharesClient.Get method.
+type SharesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SharesListByDataBoxEdgeDeviceOptions contains the optional parameters for the Shares.ListByDataBoxEdgeDevice method.
-type SharesListByDataBoxEdgeDeviceOptions struct {
+// SharesClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the SharesClient.ListByDataBoxEdgeDevice
+// method.
+type SharesClientListByDataBoxEdgeDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // StorageAccount - Represents a Storage Account on the Data Box Edge/Gateway device.
 type StorageAccount struct {
-	ARMBaseModel
 	// REQUIRED; The Storage Account properties.
 	Properties *StorageAccountProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; StorageAccount object on ASE device
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StorageAccount.
-func (s StorageAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StorageAccount.
-func (s *StorageAccount) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StorageAccountCredential - The storage account credential.
 type StorageAccountCredential struct {
-	ARMBaseModel
 	// REQUIRED; The storage account credential properties.
 	Properties *StorageAccountCredentialProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; StorageAccountCredential object
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type StorageAccountCredential.
-func (s StorageAccountCredential) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StorageAccountCredential.
-func (s *StorageAccountCredential) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StorageAccountCredentialList - The collection of storage account credentials.
@@ -3816,23 +3534,27 @@ type StorageAccountCredentialProperties struct {
 	UserName *string `json:"userName,omitempty"`
 }
 
-// StorageAccountCredentialsBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountCredentials.BeginCreateOrUpdate method.
-type StorageAccountCredentialsBeginCreateOrUpdateOptions struct {
+// StorageAccountCredentialsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountCredentialsClient.BeginCreateOrUpdate
+// method.
+type StorageAccountCredentialsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountCredentialsBeginDeleteOptions contains the optional parameters for the StorageAccountCredentials.BeginDelete method.
-type StorageAccountCredentialsBeginDeleteOptions struct {
+// StorageAccountCredentialsClientBeginDeleteOptions contains the optional parameters for the StorageAccountCredentialsClient.BeginDelete
+// method.
+type StorageAccountCredentialsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountCredentialsGetOptions contains the optional parameters for the StorageAccountCredentials.Get method.
-type StorageAccountCredentialsGetOptions struct {
+// StorageAccountCredentialsClientGetOptions contains the optional parameters for the StorageAccountCredentialsClient.Get
+// method.
+type StorageAccountCredentialsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountCredentialsListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccountCredentials.ListByDataBoxEdgeDevice method.
-type StorageAccountCredentialsListByDataBoxEdgeDeviceOptions struct {
+// StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccountCredentialsClient.ListByDataBoxEdgeDevice
+// method.
+type StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3874,23 +3596,25 @@ type StorageAccountProperties struct {
 	ContainerCount *int32 `json:"containerCount,omitempty" azure:"ro"`
 }
 
-// StorageAccountsBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccounts.BeginCreateOrUpdate method.
-type StorageAccountsBeginCreateOrUpdateOptions struct {
+// StorageAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountsClient.BeginCreateOrUpdate
+// method.
+type StorageAccountsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsBeginDeleteOptions contains the optional parameters for the StorageAccounts.BeginDelete method.
-type StorageAccountsBeginDeleteOptions struct {
+// StorageAccountsClientBeginDeleteOptions contains the optional parameters for the StorageAccountsClient.BeginDelete method.
+type StorageAccountsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsGetOptions contains the optional parameters for the StorageAccounts.Get method.
-type StorageAccountsGetOptions struct {
+// StorageAccountsClientGetOptions contains the optional parameters for the StorageAccountsClient.Get method.
+type StorageAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccounts.ListByDataBoxEdgeDevice method.
-type StorageAccountsListByDataBoxEdgeDeviceOptions struct {
+// StorageAccountsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccountsClient.ListByDataBoxEdgeDevice
+// method.
+type StorageAccountsClientListByDataBoxEdgeDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3920,8 +3644,8 @@ type SubscriptionRegisteredFeatures struct {
 
 // SupportPackageRequestProperties - The share properties.
 type SupportPackageRequestProperties struct {
-	// Type of files, which need to be included in the logs This will contain the type of logs (Default/DefaultWithDumps/None/All/DefaultWithArchived) or a
-	// comma separated list of log types that are required
+	// Type of files, which need to be included in the logs This will contain the type of logs (Default/DefaultWithDumps/None/All/DefaultWithArchived)
+	// or a comma separated list of log types that are required
 	Include *string `json:"include,omitempty"`
 
 	// MaximumTimeStamp until where logs need to be collected
@@ -3966,8 +3690,9 @@ func (s *SupportPackageRequestProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SupportPackagesBeginTriggerSupportPackageOptions contains the optional parameters for the SupportPackages.BeginTriggerSupportPackage method.
-type SupportPackagesBeginTriggerSupportPackageOptions struct {
+// SupportPackagesClientBeginTriggerSupportPackageOptions contains the optional parameters for the SupportPackagesClient.BeginTriggerSupportPackage
+// method.
+type SupportPackagesClientBeginTriggerSupportPackageOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4071,53 +3796,24 @@ type TriggerClassification interface {
 
 // Trigger details.
 type Trigger struct {
-	ARMBaseModel
 	// REQUIRED; Trigger Kind.
 	Kind *TriggerEventType `json:"kind,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Trigger in DataBoxEdge Resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetTrigger implements the TriggerClassification interface for type Trigger.
 func (t *Trigger) GetTrigger() *Trigger { return t }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Trigger.
-func (t *Trigger) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return t.unmarshalInternal(rawMsg)
-}
-
-func (t Trigger) marshalInternal(objectMap map[string]interface{}, discValue TriggerEventType) {
-	t.ARMBaseModel.marshalInternal(objectMap)
-	t.Kind = &discValue
-	objectMap["kind"] = t.Kind
-	populate(objectMap, "systemData", t.SystemData)
-}
-
-func (t *Trigger) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &t.Kind)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
 
 // TriggerList - Collection of all trigger on the data box edge device.
 type TriggerList struct {
@@ -4161,60 +3857,38 @@ func (t *TriggerList) UnmarshalJSON(data []byte) error {
 
 // TriggerSupportPackageRequest - The request object for trigger support package.
 type TriggerSupportPackageRequest struct {
-	ARMBaseModel
 	// REQUIRED; The TriggerSupportPackageRequest properties.
 	Properties *SupportPackageRequestProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TriggerSupportPackageRequest.
-func (t TriggerSupportPackageRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TriggerSupportPackageRequest.
-func (t *TriggerSupportPackageRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// TriggersBeginCreateOrUpdateOptions contains the optional parameters for the Triggers.BeginCreateOrUpdate method.
-type TriggersBeginCreateOrUpdateOptions struct {
+// TriggersClientBeginCreateOrUpdateOptions contains the optional parameters for the TriggersClient.BeginCreateOrUpdate method.
+type TriggersClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TriggersBeginDeleteOptions contains the optional parameters for the Triggers.BeginDelete method.
-type TriggersBeginDeleteOptions struct {
+// TriggersClientBeginDeleteOptions contains the optional parameters for the TriggersClient.BeginDelete method.
+type TriggersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TriggersGetOptions contains the optional parameters for the Triggers.Get method.
-type TriggersGetOptions struct {
+// TriggersClientGetOptions contains the optional parameters for the TriggersClient.Get method.
+type TriggersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TriggersListByDataBoxEdgeDeviceOptions contains the optional parameters for the Triggers.ListByDataBoxEdgeDevice method.
-type TriggersListByDataBoxEdgeDeviceOptions struct {
-	// Specify $filter='CustomContextTag eq <tag>' to filter on custom context tag property
+// TriggersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the TriggersClient.ListByDataBoxEdgeDevice
+// method.
+type TriggersClientListByDataBoxEdgeDeviceOptions struct {
+	// Specify $filter='CustomContextTag eq ' to filter on custom context tag property
 	Filter *string
 }
 
@@ -4283,47 +3957,20 @@ type UpdateInstallProgress struct {
 
 // UpdateSummary - Details about ongoing updates and availability of updates on the device.
 type UpdateSummary struct {
-	ARMBaseModel
 	// The device update information summary.
 	Properties *UpdateSummaryProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; UpdateSummary Result
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateSummary.
-func (u UpdateSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "systemData", u.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateSummary.
-func (u *UpdateSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &u.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &u.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := u.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UpdateSummaryProperties - The device update information summary.
@@ -4562,47 +4209,20 @@ type UploadCertificateResponse struct {
 
 // User - Represents a user who has access to one or more shares on the Data Box Edge/Gateway device.
 type User struct {
-	ARMBaseModel
 	// REQUIRED; The storage account credential properties.
 	Properties *UserProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; The path ID that uniquely identifies the object.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; User in DataBoxEdge Resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type User.
-func (u User) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.ARMBaseModel.marshalInternal(objectMap)
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "systemData", u.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type User.
-func (u *User) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &u.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &u.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := u.ARMBaseModel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The hierarchical type of the object.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UserAccessRight - The mapping between a particular user and the access type on the SMB share.
@@ -4652,24 +4272,25 @@ func (u UserProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UsersBeginCreateOrUpdateOptions contains the optional parameters for the Users.BeginCreateOrUpdate method.
-type UsersBeginCreateOrUpdateOptions struct {
+// UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate method.
+type UsersClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersBeginDeleteOptions contains the optional parameters for the Users.BeginDelete method.
-type UsersBeginDeleteOptions struct {
+// UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
+type UsersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersGetOptions contains the optional parameters for the Users.Get method.
-type UsersGetOptions struct {
+// UsersClientGetOptions contains the optional parameters for the UsersClient.Get method.
+type UsersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersListByDataBoxEdgeDeviceOptions contains the optional parameters for the Users.ListByDataBoxEdgeDevice method.
-type UsersListByDataBoxEdgeDeviceOptions struct {
-	// Specify $filter='Type eq <type>' to filter on user type property
+// UsersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the UsersClient.ListByDataBoxEdgeDevice
+// method.
+type UsersClientListByDataBoxEdgeDeviceOptions struct {
+	// Specify $filter='Type eq ' to filter on user type property
 	Filter *string
 }
 

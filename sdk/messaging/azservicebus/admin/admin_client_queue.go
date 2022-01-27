@@ -196,7 +196,7 @@ func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQu
 	props, err := newQueueProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetQueueResponse{
@@ -234,7 +234,7 @@ func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName strin
 	props, err := newQueueRuntimeProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetQueueRuntimePropertiesResponse{
@@ -349,7 +349,7 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 	newProps, err := newQueueProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, nil, atom.NewResponseError(err, resp)
+		return nil, nil, err
 	}
 
 	return newProps, resp, nil
@@ -395,7 +395,7 @@ func (p *QueuePager) getNextPage(ctx context.Context) (*ListQueuesResponse, erro
 		props, err := newQueueProperties(&env.Content.QueueDescription)
 
 		if err != nil {
-			return nil, atom.NewResponseError(err, resp)
+			return nil, err
 		}
 
 		all = append(all, &QueueItem{

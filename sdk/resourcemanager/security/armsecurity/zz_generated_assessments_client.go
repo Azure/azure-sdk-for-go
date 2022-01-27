@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,49 +24,60 @@ import (
 // AssessmentsClient contains the methods for the Assessments group.
 // Don't use this type directly, use NewAssessmentsClient() instead.
 type AssessmentsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAssessmentsClient creates a new instance of AssessmentsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AssessmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &AssessmentsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AssessmentsClient{
+		host: string(ep),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// CreateOrUpdate - Create a security assessment on your resource. An assessment metadata that describes this assessment must be predefined with the same
-// name before inserting the assessment result
-// If the operation fails it returns the *CloudError error type.
-func (client *AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID string, assessmentName string, assessment SecurityAssessment, options *AssessmentsCreateOrUpdateOptions) (AssessmentsCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Create a security assessment on your resource. An assessment metadata that describes this assessment must
+// be predefined with the same name before inserting the assessment result
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceID - The identifier of the resource.
+// assessmentName - The Assessment Key - Unique key for the assessment type
+// assessment - Calculated assessment on a pre-defined assessment metadata
+// options - AssessmentsClientCreateOrUpdateOptions contains the optional parameters for the AssessmentsClient.CreateOrUpdate
+// method.
+func (client *AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID string, assessmentName string, assessment Assessment, options *AssessmentsClientCreateOrUpdateOptions) (AssessmentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceID, assessmentName, assessment, options)
 	if err != nil {
-		return AssessmentsCreateOrUpdateResponse{}, err
+		return AssessmentsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssessmentsCreateOrUpdateResponse{}, err
+		return AssessmentsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return AssessmentsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return AssessmentsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, assessmentName string, assessment SecurityAssessment, options *AssessmentsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, assessmentName string, assessment Assessment, options *AssessmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if assessmentName == "" {
 		return nil, errors.New("parameter assessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,54 +89,44 @@ func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AssessmentsClient) createOrUpdateHandleResponse(resp *http.Response) (AssessmentsCreateOrUpdateResponse, error) {
-	result := AssessmentsCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentResponse); err != nil {
-		return AssessmentsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *AssessmentsClient) createOrUpdateHandleResponse(resp *http.Response) (AssessmentsClientCreateOrUpdateResponse, error) {
+	result := AssessmentsClientCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentResponse); err != nil {
+		return AssessmentsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AssessmentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - Delete a security assessment on your resource. An assessment metadata that describes this assessment must be predefined with the same name before
-// inserting the assessment result
-// If the operation fails it returns the *CloudError error type.
-func (client *AssessmentsClient) Delete(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsDeleteOptions) (AssessmentsDeleteResponse, error) {
+// Delete - Delete a security assessment on your resource. An assessment metadata that describes this assessment must be predefined
+// with the same name before inserting the assessment result
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceID - The identifier of the resource.
+// assessmentName - The Assessment Key - Unique key for the assessment type
+// options - AssessmentsClientDeleteOptions contains the optional parameters for the AssessmentsClient.Delete method.
+func (client *AssessmentsClient) Delete(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsClientDeleteOptions) (AssessmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceID, assessmentName, options)
 	if err != nil {
-		return AssessmentsDeleteResponse{}, err
+		return AssessmentsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssessmentsDeleteResponse{}, err
+		return AssessmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AssessmentsDeleteResponse{}, client.deleteHandleError(resp)
+		return AssessmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AssessmentsDeleteResponse{RawResponse: resp}, nil
+	return AssessmentsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsDeleteOptions) (*policy.Request, error) {
+func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if assessmentName == "" {
 		return nil, errors.New("parameter assessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -137,45 +137,35 @@ func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AssessmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a security assessment on your scanned resource
-// If the operation fails it returns the *CloudError error type.
-func (client *AssessmentsClient) Get(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsGetOptions) (AssessmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceID - The identifier of the resource.
+// assessmentName - The Assessment Key - Unique key for the assessment type
+// options - AssessmentsClientGetOptions contains the optional parameters for the AssessmentsClient.Get method.
+func (client *AssessmentsClient) Get(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsClientGetOptions) (AssessmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceID, assessmentName, options)
 	if err != nil {
-		return AssessmentsGetResponse{}, err
+		return AssessmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssessmentsGetResponse{}, err
+		return AssessmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssessmentsGetResponse{}, client.getHandleError(resp)
+		return AssessmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsGetOptions) (*policy.Request, error) {
+func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if assessmentName == "" {
 		return nil, errors.New("parameter assessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -190,46 +180,36 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceI
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (AssessmentsGetResponse, error) {
-	result := AssessmentsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentResponse); err != nil {
-		return AssessmentsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (AssessmentsClientGetResponse, error) {
+	result := AssessmentsClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentResponse); err != nil {
+		return AssessmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AssessmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get security assessments on all your scanned resources inside a scope
-// If the operation fails it returns the *CloudError error type.
-func (client *AssessmentsClient) List(scope string, options *AssessmentsListOptions) *AssessmentsListPager {
-	return &AssessmentsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+// (/providers/Microsoft.Management/managementGroups/mgName).
+// options - AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.List method.
+func (client *AssessmentsClient) List(scope string, options *AssessmentsClientListOptions) *AssessmentsClientListPager {
+	return &AssessmentsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp AssessmentsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityAssessmentList.NextLink)
+		advancer: func(ctx context.Context, resp AssessmentsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssessmentList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope string, options *AssessmentsListOptions) (*policy.Request, error) {
+func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope string, options *AssessmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -241,23 +221,10 @@ func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope st
 }
 
 // listHandleResponse handles the List response.
-func (client *AssessmentsClient) listHandleResponse(resp *http.Response) (AssessmentsListResponse, error) {
-	result := AssessmentsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentList); err != nil {
-		return AssessmentsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *AssessmentsClient) listHandleResponse(resp *http.Response) (AssessmentsClientListResponse, error) {
+	result := AssessmentsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentList); err != nil {
+		return AssessmentsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AssessmentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

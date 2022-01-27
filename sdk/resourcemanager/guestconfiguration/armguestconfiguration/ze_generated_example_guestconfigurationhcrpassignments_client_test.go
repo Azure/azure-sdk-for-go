@@ -18,29 +18,25 @@ import (
 )
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/createOrUpdateGuestConfigurationHCRPAssignment.json
-func ExampleGuestConfigurationHCRPAssignmentsClient_CreateOrUpdate() {
+func ExampleHCRPAssignmentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationHCRPAssignmentsClient("<subscription-id>", cred, nil)
+	client := armguestconfiguration.NewHCRPAssignmentsClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<guest-configuration-assignment-name>",
 		"<resource-group-name>",
 		"<machine-name>",
-		armguestconfiguration.GuestConfigurationAssignment{
-			ProxyResource: armguestconfiguration.ProxyResource{
-				Resource: armguestconfiguration.Resource{
-					Name:     to.StringPtr("<name>"),
-					Location: to.StringPtr("<location>"),
-				},
-			},
-			Properties: &armguestconfiguration.GuestConfigurationAssignmentProperties{
+		armguestconfiguration.Assignment{
+			Name:     to.StringPtr("<name>"),
+			Location: to.StringPtr("<location>"),
+			Properties: &armguestconfiguration.AssignmentProperties{
 				Context: to.StringPtr("<context>"),
-				GuestConfiguration: &armguestconfiguration.GuestConfigurationNavigation{
+				GuestConfiguration: &armguestconfiguration.Navigation{
 					Name:           to.StringPtr("<name>"),
-					AssignmentType: armguestconfiguration.AssignmentTypeApplyAndAutoCorrect.ToPtr(),
+					AssignmentType: armguestconfiguration.AssignmentType("ApplyAndAutoCorrect").ToPtr(),
 					ConfigurationParameter: []*armguestconfiguration.ConfigurationParameter{
 						{
 							Name:  to.StringPtr("<name>"),
@@ -56,17 +52,17 @@ func ExampleGuestConfigurationHCRPAssignmentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GuestConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HCRPAssignmentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/getGuestConfigurationHCRPAssignment.json
-func ExampleGuestConfigurationHCRPAssignmentsClient_Get() {
+func ExampleHCRPAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationHCRPAssignmentsClient("<subscription-id>", cred, nil)
+	client := armguestconfiguration.NewHCRPAssignmentsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<guest-configuration-assignment-name>",
@@ -75,17 +71,17 @@ func ExampleGuestConfigurationHCRPAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GuestConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.HCRPAssignmentsClientGetResult)
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/deleteGuestConfigurationHCRPAssignment.json
-func ExampleGuestConfigurationHCRPAssignmentsClient_Delete() {
+func ExampleHCRPAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationHCRPAssignmentsClient("<subscription-id>", cred, nil)
+	client := armguestconfiguration.NewHCRPAssignmentsClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<guest-configuration-assignment-name>",
@@ -97,18 +93,19 @@ func ExampleGuestConfigurationHCRPAssignmentsClient_Delete() {
 }
 
 // x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listGuestConfigurationHCRPAssignments.json
-func ExampleGuestConfigurationHCRPAssignmentsClient_List() {
+func ExampleHCRPAssignmentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationHCRPAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	client := armguestconfiguration.NewHCRPAssignmentsClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<machine-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.HCRPAssignmentsClientListResult)
 }

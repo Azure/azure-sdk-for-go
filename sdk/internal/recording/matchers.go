@@ -9,7 +9,6 @@ package recording
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -67,7 +66,6 @@ func addDefaults(added []string) []string {
 			}
 		}
 	}
-	fmt.Println(added, needToAdd)
 	return append(added, needToAdd...)
 }
 
@@ -105,7 +103,6 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(marshalled))
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))

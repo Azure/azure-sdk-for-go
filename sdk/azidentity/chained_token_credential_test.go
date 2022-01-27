@@ -135,7 +135,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testin
 	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected CredentialUnavailableError, received %T", err)
 	}
-	expectedError := `ChainedTokenCredential: 
+	expectedError := `ChainedTokenCredential: failed to acquire a token.
 Attempted credentials:
 	unavailableCredential1: Unavailable expected error
 	unavailableCredential2: Unavailable expected error
@@ -167,7 +167,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
 	}
-	expectedError := `Authentication failed for the ChainedTokenCredential:
+	expectedError := `ChainedTokenCredential: failed to acquire a token.
 Attempted credentials:
 	unavailableCredential1: Unavailable expected error
 	unavailableCredential2: Unavailable expected error
@@ -194,7 +194,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected credentialUnavailableError, received %T", err)
 	}
-	expectedError := `CustomNameCredential: 
+	expectedError := `CustomNameCredential: failed to acquire a token.
 Attempted credentials:
 	unavailableCredential1: Unavailable expected error`
 	if err.Error() != expectedError {

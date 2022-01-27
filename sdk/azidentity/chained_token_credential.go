@@ -69,7 +69,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		} else if err != nil {
 			var authFailed AuthenticationFailedError
 			if errors.As(err, &authFailed) {
-				err = fmt.Errorf("Authentication failed for the %s:%s\n\t%s", c.name, createChainedErrorMessage(errList), err)
+				err = fmt.Errorf("%s: %s\n\t%s", c.name, createChainedErrorMessage(errList), err)
 				authErr := newAuthenticationFailedError(err, authFailed.RawResponse)
 				return nil, authErr
 			}
@@ -90,7 +90,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 }
 
 func createChainedErrorMessage(errList []credentialUnavailableError) string {
-	msg := "\nAttempted credentials:\n"
+	msg := "failed to acquire a token.\nAttempted credentials:\n"
 	for _, err := range errList {
 		msg += fmt.Sprintf("\t%s\n", err.Error())
 	}

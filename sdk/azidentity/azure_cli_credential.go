@@ -73,9 +73,8 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	scope := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, scope)
 	if err != nil {
-		error := fmt.Errorf("%s%s", err.Error(), azureCliCredentialTroubleshootMessage)
-		addGetTokenFailureLogs("Azure CLI Credential", error, true)
-		return nil, error
+		addGetTokenFailureLogs("Azure CLI Credential", err, true)
+		return nil, err
 	}
 	logGetTokenSuccess(c, opts)
 	return at, nil

@@ -65,9 +65,8 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
-		error := fmt.Errorf("%s%s", err.Error(), clientCertificateCredentialTroubleshootMessage)
-		logCredentialError("Client Certificate Credential", error)
-		return nil, error
+		logCredentialError("Client Certificate Credential", err)
+		return nil, err
 	}
 	cert, err := newCertContents(certs, pk, options.SendCertificateChain)
 	if err != nil {

@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -90,8 +91,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
-		errorMessage := "ManagedIdentityCredential.GetToken() requires exactly one scope"
-		err := fmt.Errorf("%s%s", errorMessage, managedIdentityCredentialTroubleshootMessage)
+		err := errors.New("ManagedIdentityCredential.GetToken() requires exactly one scope")
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}

@@ -58,7 +58,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		if resp.StatusCode > 299 {
+		if resp.StatusCode > 399 {
 			// the request failed, don't try any further
 			return resp, nil
 		}

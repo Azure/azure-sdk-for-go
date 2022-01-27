@@ -164,3 +164,12 @@ func TestSetDefaultMatcher(t *testing.T) {
 	err = ResetProxy(nil)
 	require.NoError(t, err)
 }
+
+func TestAddDefaults(t *testing.T) {
+	require.Equal(t, 4, len(addDefaults([]string{})))
+	require.Equal(t, 4, len(addDefaults([]string{":path"})))
+	require.Equal(t, 4, len(addDefaults([]string{":path", ":scheme"})))
+	require.Equal(t, 4, len(addDefaults([]string{":path", ":scheme", ":host"})))
+	require.Equal(t, 4, len(addDefaults([]string{":path", ":scheme", ":host", ":authority"})))
+	require.Equal(t, 5, len(addDefaults([]string{":path", ":scheme", ":host", ":authority", "extra"})))
+}

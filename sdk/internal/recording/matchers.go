@@ -23,26 +23,10 @@ type MatcherOptions struct {
 // SetBodilessMatcher adjusts the "match" operation to exclude the body when matching a request to a recording's entries.
 // Pass in `nil` for `t` if you want the bodiless matcher to apply everywhere
 func SetBodilessMatcher(t *testing.T, options *MatcherOptions) error {
-	if recordMode != PlaybackMode {
-		return nil
-	}
-	req, err := http.NewRequest("POST", "http://localhost:5000/Admin/SetMatcher", http.NoBody)
-	if err != nil {
-		panic(err)
-	}
-	req.Header["x-abstraction-identifier"] = []string{"BodilessMatcher"}
-	if t != nil {
-		req.Header["x-recording-id"] = []string{GetRecordingId(t)}
-	}
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-	if res.StatusCode != http.StatusOK {
-		return fmt.Errorf("failed to enable BodilessMatcher: %v", res)
-	}
-	return nil
+	f := false
+	return SetDefaultMatcher(t, &SetDefaultMatcherOptions{
+		CompareBodies: &f,
+	})
 }
 
 type SetDefaultMatcherOptions struct {
@@ -52,12 +36,38 @@ type SetDefaultMatcherOptions struct {
 	IgnoreQueryOrdering *bool
 }
 
+func (s *SetDefaultMatcherOptions) fillOptions() {
+	f := false
+	t := true
+	if s == nil {
+		s = &SetDefaultMatcherOptions{
+			CompareBodies:       &t,
+			IgnoreQueryOrdering: &f,
+		}
+		return
+	}
+
+	if s.CompareBodies == nil {
+		s.CompareBodies = &t
+	}
+	if s.IgnoreQueryOrdering == nil {
+		s.IgnoreQueryOrdering = &f
+	}
+}
+
 func addDefaults(added []string) []string {
 	if added == nil {
 		return nil
 	}
-	added = append(added, ":path", ":authority", ":path", ":scheme")
-	return added
+	needToAdd := []string{":path", ":authority", ":method", ":scheme"}
+	for _, a := range added {
+		for idx, n := range needToAdd {
+			if a == n {
+				needToAdd = append(needToAdd[:idx], needToAdd[idx+1:]...)
+			}
+		}
+	}
+	return append(added, needToAdd...)
 }
 
 // SetDefaultMatcher adjusts the "match" operation to exclude the body when matching a request to a recording's entries.
@@ -66,9 +76,7 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 	if recordMode != PlaybackMode {
 		return nil
 	}
-	if options == nil {
-		options = &SetDefaultMatcherOptions{}
-	}
+	options.fillOptions()
 	req, err := http.NewRequest("POST", "http://localhost:5000/Admin/SetMatcher", http.NoBody)
 	if err != nil {
 		panic(err)
@@ -76,6 +84,10 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 	req.Header["x-abstraction-identifier"] = []string{"CustomDefaultMatcher"}
 	if t != nil {
 		req.Header["x-recording-id"] = []string{GetRecordingId(t)}
+	}
+
+	if !(*options.CompareBodies) {
+		options.ExcludedHeaders = append(options.ExcludedHeaders, "Content-Length")
 	}
 
 	marshalled, err := json.MarshalIndent(struct {
@@ -92,6 +104,7 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(string(marshalled))
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))

@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -89,8 +88,10 @@ func init() {
 func TestMain(m *testing.M) {
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
-		t := true
-		recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{CompareBodies: &t})
+		err := recording.SetBodilessMatcher(nil, nil)
+		if err != nil {
+			panic(err)
+		}
 	case recording.RecordingMode:
 		// remove default sanitizers such as the OAuth response sanitizer
 		err := recording.ResetProxy(nil)
@@ -142,7 +143,6 @@ func TestMain(m *testing.M) {
 			if err != nil {
 				panic(err)
 			}
-			// TODO: reset matcher
 		}()
 	}
 	os.Exit(m.Run())

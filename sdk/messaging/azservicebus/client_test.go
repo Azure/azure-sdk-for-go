@@ -36,10 +36,22 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")
 
-	_, envCredErr := azidentity.NewEnvironmentCredential(nil)
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	var credsToAdd []azcore.TokenCredential
 
-	fmt.Printf("EnvCred: %s, DAC: %s", envCredErr, err)
+	cliCred, err := azidentity.NewAzureCLICredential(nil)
+	require.NoError(t, err)
+
+	envCred, err := azidentity.NewEnvironmentCredential(nil)
+
+	if err == nil {
+		fmt.Printf("Env cred works, being added to our chained token credential")
+		credsToAdd = append(credsToAdd, envCred)
+	}
+
+	credsToAdd = append(credsToAdd, cliCred)
+
+	cred, err := azidentity.NewChainedTokenCredential(credsToAdd, nil)
+	require.NoError(t, err)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")

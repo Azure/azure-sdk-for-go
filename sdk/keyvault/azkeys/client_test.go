@@ -388,7 +388,10 @@ func TestUpdateKeyProperties(t *testing.T) {
 func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			t.Skip("Immutable has not been rolled out to services yet.")
+			// t.Skip("Immutable has not been rolled out to services yet.")
+			if testType == HSMTEST {
+				t.Skip("HSM does not recognize immutable yet.")
+			}
 			stop := startTest(t)
 			defer stop()
 			err := recording.SetBodilessMatcher(t, nil)

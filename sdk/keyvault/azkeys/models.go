@@ -32,18 +32,38 @@ type Attributes struct {
 
 // KeyAttributes - The attributes of a key managed by the key vault service.
 type KeyAttributes struct {
-	Attributes
-	// READ-ONLY; softDelete data retention days.
+	// Determines whether the object is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Expiry date in UTC.
+	Expires *time.Time `json:"exp,omitempty"`
+
+	// Indicates if the private key can be exported.
+	Exportable *bool `json:"exportable,omitempty"`
+
+	// Not before date in UTC.
+	NotBefore *time.Time `json:"nbf,omitempty"`
+
+	// READ-ONLY; Creation time in UTC.
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
-	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently
-	// deleted by a privileged user; otherwise, only the system
+	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable'
+	// the key can be permanently deleted by a privileged user; otherwise, only the system
 	// can purge the key, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in UTC.
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // converts a KeyAttributes to *generated.KeyAttributes
-func (k KeyAttributes) toGenerated() *generated.KeyAttributes {
+func (k *KeyAttributes) toGenerated() *generated.KeyAttributes {
+	if k == nil {
+		return nil
+	}
 	return &generated.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
 		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
@@ -52,6 +72,7 @@ func (k KeyAttributes) toGenerated() *generated.KeyAttributes {
 		NotBefore:       k.NotBefore,
 		Created:         k.Created,
 		Updated:         k.Updated,
+		Exportable:      k.Exportable,
 	}
 }
 
@@ -64,13 +85,12 @@ func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyAttributes {
 	return &KeyAttributes{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
-		Attributes: Attributes{
-			Enabled:   i.Enabled,
-			Expires:   i.Expires,
-			NotBefore: i.NotBefore,
-			Created:   i.Created,
-			Updated:   i.Updated,
-		},
+		Enabled:         i.Enabled,
+		Expires:         i.Expires,
+		NotBefore:       i.NotBefore,
+		Created:         i.Created,
+		Updated:         i.Updated,
+		Exportable:      i.Exportable,
 	}
 }
 
@@ -284,13 +304,12 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
 		KeyItem: KeyItem{
 			Attributes: &KeyAttributes{
-				Attributes: Attributes{
-					Enabled:   i.Attributes.Enabled,
-					Expires:   i.Attributes.Expires,
-					NotBefore: i.Attributes.NotBefore,
-					Created:   i.Attributes.Created,
-					Updated:   i.Attributes.Updated,
-				},
+				Enabled:         i.Attributes.Enabled,
+				Expires:         i.Attributes.Expires,
+				NotBefore:       i.Attributes.NotBefore,
+				Created:         i.Attributes.Created,
+				Updated:         i.Attributes.Updated,
+				Exportable:      i.Attributes.Exportable,
 				RecoverableDays: i.Attributes.RecoverableDays,
 				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 			},

@@ -274,7 +274,7 @@ func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateO
 // CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.
 type CreateRSAKeyOptions struct {
 	// Hardware Protected OCT Key
-	HardwareProtected bool
+	HardwareProtected *bool
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -284,15 +284,35 @@ type CreateRSAKeyOptions struct {
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
+
+	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
+
+	// The attributes of a key managed by the key vault service.
+	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
+	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
 func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreateParameters {
+	var keyOps []*generated.JSONWebKeyOperation
+	if c.KeyOps != nil {
+		for _, k := range c.KeyOps {
+			keyOps = append(keyOps, (*generated.JSONWebKeyOperation)(k))
+		}
+	}
 	return generated.KeyCreateParameters{
 		Kty:            k.toGenerated(),
+		Curve:          (*generated.JSONWebKeyCurveName)(c.Curve),
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
 		Tags:           convertToGeneratedMap(c.Tags),
+		KeyAttributes:  c.KeyAttributes.toGenerated(),
+		KeyOps:         keyOps,
+		ReleasePolicy:  c.ReleasePolicy.toGenerated(),
 	}
 }
 
@@ -322,7 +342,7 @@ func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
 	keyType := RSA
 
-	if options != nil && options.HardwareProtected {
+	if options != nil && *options.HardwareProtected {
 		keyType = RSAHSM
 	} else if options == nil {
 		options = &CreateRSAKeyOptions{}

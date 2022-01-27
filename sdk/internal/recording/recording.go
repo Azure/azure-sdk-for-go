@@ -476,6 +476,22 @@ func init() {
 	if ok := certPool.AppendCertsFromPEM(cert); !ok {
 		log.Println("no certs appended, using system certs only")
 	}
+
+	// Set a Default matcher that ignores :path, :scheme, :authority, and :method headers
+	err = SetDefaultMatcher(
+		nil,
+		&SetDefaultMatcherOptions{ExcludedHeaders: []string{
+			":authority",
+			":method",
+			":path",
+			":scheme",
+		}},
+	)
+	if err != nil {
+		log.Println("could not set the default matcher")
+	} else {
+		log.Println("default matcher was set ")
+	}
 }
 
 var recordMode string
@@ -575,7 +591,14 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-recording-file", testId)
+	
+	req.Header.Set("Content-Type", "application/json")
+	marshalled, err := json.Marshal(map[string]string{"x-recording-file": testId})
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
 
 	resp, err := client.Do(req)
 	if err != nil {

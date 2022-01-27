@@ -18,6 +18,8 @@ import (
 func TestBatchAdd(t *testing.T) {
 	// recording.LiveOnly(t)
 	recording.SetBodilessMatcher(t, nil)
+	recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
+
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
@@ -38,6 +40,7 @@ func TestBatchAdd(t *testing.T) {
 			// require.NoError(t, err)
 			// resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			resp, err := client.SubmitTransaction(ctx, batch, nil)
+
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]

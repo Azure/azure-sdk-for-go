@@ -198,22 +198,20 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 	}
 	return &DeleteSecretResponse{
 		DeletedSecretBundle: DeletedSecretBundle{
-			Secret: Secret{
-				ContentType: i.ContentType,
-				ID:          i.ID,
-				Tags:        convertPtrMap(i.Tags),
-				Value:       i.Value,
-				KID:         i.Kid,
-				Managed:     i.Managed,
-				Attributes: &Attributes{
-					Enabled:         i.Attributes.Enabled,
-					Expires:         i.Attributes.Expires,
-					NotBefore:       i.Attributes.NotBefore,
-					Created:         i.Attributes.Created,
-					Updated:         i.Attributes.Updated,
-					RecoverableDays: i.Attributes.RecoverableDays,
-					RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
-				},
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        convertPtrMap(i.Tags),
+			Value:       i.Value,
+			KID:         i.Kid,
+			Managed:     i.Managed,
+			Attributes: &Attributes{
+				Enabled:         i.Attributes.Enabled,
+				Expires:         i.Attributes.Expires,
+				NotBefore:       i.Attributes.NotBefore,
+				Created:         i.Attributes.Created,
+				Updated:         i.Attributes.Updated,
+				RecoverableDays: i.Attributes.RecoverableDays,
+				RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 			},
 			RecoveryID:         i.RecoveryID,
 			DeletedDate:        i.DeletedDate,

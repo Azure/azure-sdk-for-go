@@ -479,12 +479,10 @@ func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyR
 	return GetDeletedKeyResponse{
 		RawResponse: i.RawResponse,
 		DeletedKeyBundle: DeletedKeyBundle{
-			KeyBundle: KeyBundle{
-				Attributes: keyAttributesFromGenerated(i.Attributes),
-				Key:        jsonWebKeyFromGenerated(i.Key),
-				Tags:       convertGeneratedMap(i.Tags),
-				Managed:    i.Managed,
-			},
+			Attributes:         keyAttributesFromGenerated(i.Attributes),
+			Key:                jsonWebKeyFromGenerated(i.Key),
+			Tags:               convertGeneratedMap(i.Tags),
+			Managed:            i.Managed,
 			RecoveryID:         i.RecoveryID,
 			DeletedDate:        i.DeletedDate,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,

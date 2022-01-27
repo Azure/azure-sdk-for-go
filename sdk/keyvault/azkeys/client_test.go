@@ -395,9 +395,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 					"Tag1": "Val1",
 				},
 				KeyAttributes: &KeyAttributes{
-					Attributes: Attributes{
-						Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
-					},
+					Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
 				},
 			})
 			require.NoError(t, err)

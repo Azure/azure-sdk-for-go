@@ -32,14 +32,31 @@ type Attributes struct {
 
 // KeyAttributes - The attributes of a key managed by the key vault service.
 type KeyAttributes struct {
-	Attributes
-	// READ-ONLY; softDelete data retention days.
+	// Determines whether the object is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Expiry date in UTC.
+	Expires *time.Time `json:"exp,omitempty"`
+
+	// Indicates if the private key can be exported.
+	Exportable *bool `json:"exportable,omitempty"`
+
+	// Not before date in UTC.
+	NotBefore *time.Time `json:"nbf,omitempty"`
+
+	// READ-ONLY; Creation time in UTC.
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
-	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently
-	// deleted by a privileged user; otherwise, only the system
+	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable'
+	// the key can be permanently deleted by a privileged user; otherwise, only the system
 	// can purge the key, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in UTC.
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // converts a KeyAttributes to *generated.KeyAttributes
@@ -64,13 +81,11 @@ func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyAttributes {
 	return &KeyAttributes{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
-		Attributes: Attributes{
-			Enabled:   i.Enabled,
-			Expires:   i.Expires,
-			NotBefore: i.NotBefore,
-			Created:   i.Created,
-			Updated:   i.Updated,
-		},
+		Enabled:         i.Enabled,
+		Expires:         i.Expires,
+		NotBefore:       i.NotBefore,
+		Created:         i.Created,
+		Updated:         i.Updated,
 	}
 }
 
@@ -248,12 +263,27 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 
 // DeletedKeyBundle - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
 type DeletedKeyBundle struct {
-	KeyBundle
+	// The key management attributes.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
+
+	// The Json web key.
+	Key *JSONWebKey `json:"key,omitempty"`
+
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]string `json:"tags,omitempty"`
+
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -261,12 +291,24 @@ type DeletedKeyBundle struct {
 
 // DeletedKeyItem - The deleted key item containing the deleted key metadata and information about deletion.
 type DeletedKeyItem struct {
-	KeyItem
+	// The key management attributes.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
+
+	// Key identifier.
+	KID *string `json:"kid,omitempty"`
+
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]string `json:"tags,omitempty"`
+
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -282,22 +324,18 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		KeyItem: KeyItem{
-			Attributes: &KeyAttributes{
-				Attributes: Attributes{
-					Enabled:   i.Attributes.Enabled,
-					Expires:   i.Attributes.Expires,
-					NotBefore: i.Attributes.NotBefore,
-					Created:   i.Attributes.Created,
-					Updated:   i.Attributes.Updated,
-				},
-				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
-			},
-			KID:     i.Kid,
-			Tags:    convertGeneratedMap(i.Tags),
-			Managed: i.Managed,
+		Attributes: &KeyAttributes{
+			Enabled:         i.Attributes.Enabled,
+			Expires:         i.Attributes.Expires,
+			NotBefore:       i.Attributes.NotBefore,
+			Created:         i.Attributes.Created,
+			Updated:         i.Attributes.Updated,
+			RecoverableDays: i.Attributes.RecoverableDays,
+			RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 		},
+		KID:     i.Kid,
+		Tags:    convertGeneratedMap(i.Tags),
+		Managed: i.Managed,
 	}
 }
 

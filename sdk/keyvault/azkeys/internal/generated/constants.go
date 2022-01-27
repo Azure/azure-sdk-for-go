@@ -16,19 +16,27 @@ const (
 // ActionType - The type of the action.
 type ActionType string
 
-const (
-	// ActionTypeRotate - Rotate the key based on the key policy.
-	ActionTypeRotate ActionType = "rotate"
-	// ActionTypeNotify - Trigger event grid events. For preview, the notification time is not configurable and it is default
-	// to 30 days before expiry.
-	ActionTypeNotify ActionType = "notify"
-)
+// Rotate - Rotate the key based on the key policy.
+func (ActionType) Rotate() ActionType {
+	return "rotate"
+}
 
-// PossibleActionTypeValues returns the possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
+// Notify - Trigger event grid events. For preview, the notification time is not configurable and it is default
+// to 30 days before expiry.
+func (ActionType) Notify() ActionType {
+	return "notify"
+}
+
+// Cast converts the specified string to a ActionType value.
+func (ActionType) Cast(s string) ActionType {
+	return ActionType(s)
+}
+
+// Values returns the predefined values for the ActionType type.
+func (ActionType) Values() []ActionType {
 	return []ActionType{
-		ActionTypeRotate,
-		ActionTypeNotify,
+		"rotate",
+		"notify",
 	}
 }
 
@@ -161,51 +169,74 @@ func (c DataAction) ToPtr() *DataAction {
 // can purge the key, at the end of the retention interval.
 type DeletionRecoveryLevel string
 
-const (
-	// DeletionRecoveryLevelCustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility
-	// for immediate and permanent deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability
-	// of the deleted entity during the retention interval and while the subscription is still available.
-	DeletionRecoveryLevelCustomizedRecoverable DeletionRecoveryLevel = "CustomizedRecoverable"
-	// DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion
-	// is recoverable, immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot
-	// be permanently canceled when 7<= SoftDeleteRetentionInDays < 90. This level guarantees the recoverability of the deleted
-	// entity during the retention interval, and also reflects the fact that the subscription itself cannot be cancelled.
-	DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription DeletionRecoveryLevel = "CustomizedRecoverable+ProtectedSubscription"
-	// DeletionRecoveryLevelCustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which
-	// also permits immediate and permanent deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees
-	// the recoverability of the deleted entity during the retention interval, unless a Purge operation is requested, or the subscription
-	// is cancelled.
-	DeletionRecoveryLevelCustomizedRecoverablePurgeable DeletionRecoveryLevel = "CustomizedRecoverable+Purgeable"
-	// DeletionRecoveryLevelPurgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility
-	// for recovery. This level corresponds to no protection being available against a Delete operation; the data is irretrievably
-	// lost upon accepting a Delete operation at the entity level or higher (vault, resource group, subscription etc.)
-	DeletionRecoveryLevelPurgeable DeletionRecoveryLevel = "Purgeable"
-	// DeletionRecoveryLevelRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate
-	// and permanent deletion (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention
-	// interval(90 days) and while the subscription is still available. System wil permanently delete it after 90 days, if not
-	// recovered
-	DeletionRecoveryLevelRecoverable DeletionRecoveryLevel = "Recoverable"
-	// DeletionRecoveryLevelRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable
-	// within retention interval (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription
-	// itself cannot be permanently canceled. System wil permanently delete it after 90 days, if not recovered
-	DeletionRecoveryLevelRecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
-	// DeletionRecoveryLevelRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits
-	// immediate and permanent deletion (i.e. purge). This level guarantees the recoverability of the deleted entity during the
-	// retention interval (90 days), unless a Purge operation is requested, or the subscription is cancelled. System wil permanently
-	// delete it after 90 days, if not recovered
-	DeletionRecoveryLevelRecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
-)
+// DeletionRecoveryLevelCustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility
+// for immediate and permanent deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability
+// of the deleted entity during the retention interval and while the subscription is still available.
+func (DeletionRecoveryLevel) CustomizedRecoverable() DeletionRecoveryLevel {
+	return "CustomizedRecoverable"
+}
 
-// PossibleDeletionRecoveryLevelValues returns the possible values for the DeletionRecoveryLevel const type.
-func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
+// DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion
+// is recoverable, immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot
+// be permanently canceled when 7<= SoftDeleteRetentionInDays < 90. This level guarantees the recoverability of the deleted
+// entity during the retention interval, and also reflects the fact that the subscription itself cannot be cancelled.
+func (DeletionRecoveryLevel) CustomizedRecoverableProtectedSubscription() DeletionRecoveryLevel {
+	return "CustomizedRecoverable+ProtectedSubscription"
+}
+
+// DeletionRecoveryLevelCustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which
+// also permits immediate and permanent deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees
+// the recoverability of the deleted entity during the retention interval, unless a Purge operation is requested, or the subscription
+// is cancelled.
+func (DeletionRecoveryLevel) CustomizedRecoverablePurgeable() DeletionRecoveryLevel {
+	return "CustomizedRecoverable+Purgeable"
+}
+
+// DeletionRecoveryLevelPurgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility
+// for recovery. This level corresponds to no protection being available against a Delete operation; the data is irretrievably
+// lost upon accepting a Delete operation at the entity level or higher (vault, resource group, subscription etc.)
+func (DeletionRecoveryLevel) Purgeable() DeletionRecoveryLevel {
+	return "Purgeable"
+}
+
+// DeletionRecoveryLevelRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate
+// and permanent deletion (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention
+// interval(90 days) and while the subscription is still available. System wil permanently delete it after 90 days, if not
+// recovered.
+func (DeletionRecoveryLevel) Recoverable() DeletionRecoveryLevel {
+	return "Recoverable"
+}
+
+// DeletionRecoveryLevelRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable
+// within retention interval (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription
+// itself cannot be permanently canceled. System wil permanently delete it after 90 days, if not recovered.
+func (DeletionRecoveryLevel) RecoverableProtectedSubscription() DeletionRecoveryLevel {
+	return "Recoverable+ProtectedSubscription"
+}
+
+// DeletionRecoveryLevelRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits
+// immediate and permanent deletion (i.e. purge). This level guarantees the recoverability of the deleted entity during the
+// retention interval (90 days), unless a Purge operation is requested, or the subscription is cancelled. System wil permanently
+// delete it after 90 days, if not recovered.
+func (DeletionRecoveryLevel) RecoverablePurgeable() DeletionRecoveryLevel {
+	return "Recoverable+Purgeable"
+}
+
+// Cast converts the specified string to a DeletionRecoveryLevel value.
+func (DeletionRecoveryLevel) Cast(s string) DeletionRecoveryLevel {
+	return DeletionRecoveryLevel(s)
+}
+
+// Values returns the predefined values for the DeletionRecoveryLevel type.
+func (DeletionRecoveryLevel) Values() []DeletionRecoveryLevel {
 	return []DeletionRecoveryLevel{
-		DeletionRecoveryLevelCustomizedRecoverable,
-		DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription,
-		DeletionRecoveryLevelCustomizedRecoverablePurgeable,
-		DeletionRecoveryLevelPurgeable,
-		DeletionRecoveryLevelRecoverable,
-		DeletionRecoveryLevelRecoverableProtectedSubscription,
-		DeletionRecoveryLevelRecoverablePurgeable,
+		"CustomizedRecoverable",
+		"CustomizedRecoverable+ProtectedSubscription",
+		"CustomizedRecoverable+Purgeable",
+		"Purgeable",
+		"Recoverable",
+		"Recoverable+ProtectedSubscription",
+		"Recoverable+Purgeable",
 	}
 }
 
@@ -217,24 +248,38 @@ func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 // JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 type JSONWebKeyCurveName string
 
-const (
-	// JSONWebKeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	JSONWebKeyCurveNameP256 JSONWebKeyCurveName = "P-256"
-	// JSONWebKeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
-	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
-	// JSONWebKeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	JSONWebKeyCurveNameP384 JSONWebKeyCurveName = "P-384"
-	// JSONWebKeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	JSONWebKeyCurveNameP521 JSONWebKeyCurveName = "P-521"
-)
+// JSONWebKeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+func (JSONWebKeyCurveName) P256() JSONWebKeyCurveName {
+	return "P-256"
+}
 
-// PossibleJSONWebKeyCurveNameValues returns the possible values for the JSONWebKeyCurveName const type.
-func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
+// JSONWebKeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
+func (JSONWebKeyCurveName) P256K() JSONWebKeyCurveName {
+	return "P-256K"
+}
+
+// JSONWebKeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+func (JSONWebKeyCurveName) P384() JSONWebKeyCurveName {
+	return "P-384"
+}
+
+// JSONWebKeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+func (JSONWebKeyCurveName) P521() JSONWebKeyCurveName {
+	return "P-521"
+}
+
+// Cast converts the specified string to a JSONWebKeyCurveName value.
+func (JSONWebKeyCurveName) Cast(s string) JSONWebKeyCurveName {
+	return JSONWebKeyCurveName(s)
+}
+
+// Values returns the predefined values for the JSONWebKeyCurveName type.
+func (JSONWebKeyCurveName) Values() []JSONWebKeyCurveName {
 	return []JSONWebKeyCurveName{
-		JSONWebKeyCurveNameP256,
-		JSONWebKeyCurveNameP256K,
-		JSONWebKeyCurveNameP384,
-		JSONWebKeyCurveNameP521,
+		"P-256",
+		"P-256K",
+		"P-384",
+		"P-521",
 	}
 }
 
@@ -293,28 +338,54 @@ func (c JSONWebKeyEncryptionAlgorithm) ToPtr() *JSONWebKeyEncryptionAlgorithm {
 // JSONWebKeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
 type JSONWebKeyOperation string
 
-const (
-	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
-	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
-	JSONWebKeyOperationExport    JSONWebKeyOperation = "export"
-	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
-	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
-	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
-	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
-	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
-)
+func (JSONWebKeyOperation) Decrypt() JSONWebKeyOperation {
+	return "decrypt"
+}
 
-// PossibleJSONWebKeyOperationValues returns the possible values for the JSONWebKeyOperation const type.
-func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
+func (JSONWebKeyOperation) Encrypt() JSONWebKeyOperation {
+	return "encrypt"
+}
+
+func (JSONWebKeyOperation) Export() JSONWebKeyOperation {
+	return "export"
+}
+
+func (JSONWebKeyOperation) Importxx() JSONWebKeyOperation {
+	return "import"
+}
+
+func (JSONWebKeyOperation) Sign() JSONWebKeyOperation {
+	return "sign"
+}
+
+func (JSONWebKeyOperation) UnwrapKey() JSONWebKeyOperation {
+	return "unwrapKey"
+}
+
+func (JSONWebKeyOperation) Verify() JSONWebKeyOperation {
+	return "verify"
+}
+
+func (JSONWebKeyOperation) WrapKey() JSONWebKeyOperation {
+	return "wrapKey"
+}
+
+// Cast converts the specified string to a JSONWebKeyOperation value.
+func (JSONWebKeyOperation) Cast(s string) JSONWebKeyOperation {
+	return JSONWebKeyOperation(s)
+}
+
+// Values returns the predefined values for the JSONWebKeyOperation type.
+func (JSONWebKeyOperation) Values() []JSONWebKeyOperation {
 	return []JSONWebKeyOperation{
-		JSONWebKeyOperationDecrypt,
-		JSONWebKeyOperationEncrypt,
-		JSONWebKeyOperationExport,
-		JSONWebKeyOperationImport,
-		JSONWebKeyOperationSign,
-		JSONWebKeyOperationUnwrapKey,
-		JSONWebKeyOperationVerify,
-		JSONWebKeyOperationWrapKey,
+		"decrypt",
+		"encrypt",
+		"export",
+		"import",
+		"sign",
+		"unwrapKey",
+		"verify",
+		"wrapKey",
 	}
 }
 
@@ -412,18 +483,29 @@ func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
 // KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
 type KeyEncryptionAlgorithm string
 
-const (
-	KeyEncryptionAlgorithmCKMRSAAESKEYWRAP KeyEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP256 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP384 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
-)
+func (KeyEncryptionAlgorithm) CKMRSAAESKEYWRAP() KeyEncryptionAlgorithm {
+	return "CKM_RSA_AES_KEY_WRAP"
+}
 
-// PossibleKeyEncryptionAlgorithmValues returns the possible values for the KeyEncryptionAlgorithm const type.
-func PossibleKeyEncryptionAlgorithmValues() []KeyEncryptionAlgorithm {
+func (KeyEncryptionAlgorithm) RSAAESKEYWRAP256() KeyEncryptionAlgorithm {
+	return "RSA_AES_KEY_WRAP_256"
+}
+
+func (KeyEncryptionAlgorithm) RSAAESKEYWRAP384() KeyEncryptionAlgorithm {
+	return "RSA_AES_KEY_WRAP_384"
+}
+
+// Cast converts the specified string to a KeyEncryptionAlgorithm value.
+func (KeyEncryptionAlgorithm) Cast(s string) KeyEncryptionAlgorithm {
+	return KeyEncryptionAlgorithm(s)
+}
+
+// Values returns the predefined values for the KeyEncryptionAlgorithm type.
+func (KeyEncryptionAlgorithm) Values() []KeyEncryptionAlgorithm {
 	return []KeyEncryptionAlgorithm{
-		KeyEncryptionAlgorithmCKMRSAAESKEYWRAP,
-		KeyEncryptionAlgorithmRSAAESKEYWRAP256,
-		KeyEncryptionAlgorithmRSAAESKEYWRAP384,
+		"CKM_RSA_AES_KEY_WRAP",
+		"RSA_AES_KEY_WRAP_256",
+		"RSA_AES_KEY_WRAP_384",
 	}
 }
 

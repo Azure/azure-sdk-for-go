@@ -67,6 +67,7 @@ func addDefaults(added []string) []string {
 			}
 		}
 	}
+	fmt.Println(added, needToAdd)
 	return append(added, needToAdd...)
 }
 

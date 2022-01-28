@@ -160,7 +160,7 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 
 func cleanUp(t *testing.T, client *Client, certName string) {
 	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
-	if err == nil{
+	if err == nil {
 		delPollerResp, err := delResp.PollUntilDone(ctx, delay())
 		require.NoError(t, err)
 		require.Contains(t, *delPollerResp.ID, certName)

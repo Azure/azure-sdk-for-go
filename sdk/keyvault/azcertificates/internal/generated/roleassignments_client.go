@@ -193,7 +193,7 @@ func (client *RoleAssignmentsClient) getHandleResponse(resp *http.Response) (Rol
 // scope - The scope of the role assignments.
 // options - RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope
 // method.
-func (client *RoleAssignmentsClient) ListForScope(vaultBaseURL string, scope string, options *RoleAssignmentsClientListForScopeOptions) (*RoleAssignmentsClientListForScopePager) {
+func (client *RoleAssignmentsClient) ListForScope(vaultBaseURL string, scope string, options *RoleAssignmentsClientListForScopeOptions) *RoleAssignmentsClientListForScopePager {
 	return &RoleAssignmentsClientListForScopePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -233,4 +233,3 @@ func (client *RoleAssignmentsClient) listForScopeHandleResponse(resp *http.Respo
 	}
 	return result, nil
 }
-

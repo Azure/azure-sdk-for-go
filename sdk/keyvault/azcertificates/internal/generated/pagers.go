@@ -18,11 +18,11 @@ import (
 
 // KeyVaultClientGetCertificateIssuersPager provides operations for iterating over paged responses.
 type KeyVaultClientGetCertificateIssuersPager struct {
-	client *KeyVaultClient
-	current KeyVaultClientGetCertificateIssuersResponse
-	err error
+	client    *KeyVaultClient
+	current   KeyVaultClientGetCertificateIssuersResponse
+	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, KeyVaultClientGetCertificateIssuersResponse) (*policy.Request, error)
+	advancer  func(context.Context, KeyVaultClientGetCertificateIssuersResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -72,11 +72,11 @@ func (p *KeyVaultClientGetCertificateIssuersPager) PageResponse() KeyVaultClient
 
 // KeyVaultClientGetCertificateVersionsPager provides operations for iterating over paged responses.
 type KeyVaultClientGetCertificateVersionsPager struct {
-	client *KeyVaultClient
-	current KeyVaultClientGetCertificateVersionsResponse
-	err error
+	client    *KeyVaultClient
+	current   KeyVaultClientGetCertificateVersionsResponse
+	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, KeyVaultClientGetCertificateVersionsResponse) (*policy.Request, error)
+	advancer  func(context.Context, KeyVaultClientGetCertificateVersionsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -126,11 +126,11 @@ func (p *KeyVaultClientGetCertificateVersionsPager) PageResponse() KeyVaultClien
 
 // KeyVaultClientGetCertificatesPager provides operations for iterating over paged responses.
 type KeyVaultClientGetCertificatesPager struct {
-	client *KeyVaultClient
-	current KeyVaultClientGetCertificatesResponse
-	err error
+	client    *KeyVaultClient
+	current   KeyVaultClientGetCertificatesResponse
+	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, KeyVaultClientGetCertificatesResponse) (*policy.Request, error)
+	advancer  func(context.Context, KeyVaultClientGetCertificatesResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -180,11 +180,11 @@ func (p *KeyVaultClientGetCertificatesPager) PageResponse() KeyVaultClientGetCer
 
 // KeyVaultClientGetDeletedCertificatesPager provides operations for iterating over paged responses.
 type KeyVaultClientGetDeletedCertificatesPager struct {
-	client *KeyVaultClient
-	current KeyVaultClientGetDeletedCertificatesResponse
-	err error
+	client    *KeyVaultClient
+	current   KeyVaultClientGetDeletedCertificatesResponse
+	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, KeyVaultClientGetDeletedCertificatesResponse) (*policy.Request, error)
+	advancer  func(context.Context, KeyVaultClientGetDeletedCertificatesResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -234,11 +234,11 @@ func (p *KeyVaultClientGetDeletedCertificatesPager) PageResponse() KeyVaultClien
 
 // RoleAssignmentsClientListForScopePager provides operations for iterating over paged responses.
 type RoleAssignmentsClientListForScopePager struct {
-	client *RoleAssignmentsClient
-	current RoleAssignmentsClientListForScopeResponse
-	err error
+	client    *RoleAssignmentsClient
+	current   RoleAssignmentsClientListForScopeResponse
+	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, RoleAssignmentsClientListForScopeResponse) (*policy.Request, error)
+	advancer  func(context.Context, RoleAssignmentsClientListForScopeResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -288,11 +288,11 @@ func (p *RoleAssignmentsClientListForScopePager) PageResponse() RoleAssignmentsC
 
 // RoleDefinitionsClientListPager provides operations for iterating over paged responses.
 type RoleDefinitionsClientListPager struct {
-	client *RoleDefinitionsClient
-	current RoleDefinitionsClientListResponse
-	err error
+	client    *RoleDefinitionsClient
+	current   RoleDefinitionsClientListResponse
+	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer func(context.Context, RoleDefinitionsClientListResponse) (*policy.Request, error)
+	advancer  func(context.Context, RoleDefinitionsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -339,4 +339,3 @@ func (p *RoleDefinitionsClientListPager) NextPage(ctx context.Context) bool {
 func (p *RoleDefinitionsClientListPager) PageResponse() RoleDefinitionsClientListResponse {
 	return p.current
 }
-

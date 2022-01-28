@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/responses"
 	"github.com/stretchr/testify/require"
 )
 
@@ -158,7 +159,7 @@ func TestListKeys(t *testing.T) {
 				key, err := createRandomName(t, fmt.Sprintf("key-%d", i))
 				require.NoError(t, err)
 
-				_, err = client.CreateKey(ctx, key, RSA, nil)
+				_, err = client.CreateKey(ctx, key, KeyTypes.RSA(), nil)
 				require.NoError(t, err)
 			}
 
@@ -196,14 +197,14 @@ func TestGetKey(t *testing.T) {
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			_, err = client.CreateKey(ctx, key, RSA, nil)
+			_, err = client.CreateKey(ctx, key, KeyTypes.RSA(), nil)
 			require.NoError(t, err)
 
 			resp, err := client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
 
-			invalid, err := client.CreateKey(ctx, "invalidkey[]()", RSA, nil)
+			invalid, err := client.CreateKey(ctx, "invalidkey[]()", KeyTypes.RSA(), nil)
 			require.Error(t, err)
 			require.Nil(t, invalid.Attributes)
 		})
@@ -224,7 +225,7 @@ func TestDeleteKey(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			_, err = client.CreateKey(ctx, key, RSA, nil)
+			_, err = client.CreateKey(ctx, key, KeyTypes.RSA(), nil)
 			require.NoError(t, err)
 
 			resp, err := client.BeginDeleteKey(ctx, key, nil)
@@ -301,7 +302,7 @@ func TestBackupKey(t *testing.T) {
 
 			time.Sleep(30 * delay())
 			// Poll this operation manually
-			var restoreResp RestoreKeyBackupResponse
+			var restoreResp responses.RestoreKeyBackup
 			var i int
 			for i = 0; i < 10; i++ {
 				restoreResp, err = client.RestoreKeyBackup(ctx, backupResp.Value, nil)
@@ -508,7 +509,7 @@ func TestImportKey(t *testing.T) {
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
-			r := RSA
+			r := KeyTypes.RSA()
 			jwk := JSONWebKey{
 				KeyType: &r,
 				KeyOps:  to.StringPtrArray("encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"),

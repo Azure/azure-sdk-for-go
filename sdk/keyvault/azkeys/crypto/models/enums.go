@@ -4,13 +4,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package crypto
+package models
 
 // Key wrapping algorithms
 type KeyWrapAlgorithm string
-
-// KeyWrapAlgorithm provides access to the predefined values of KeyWrapAlgorithm.
-const KeyWrapAlgorithms = KeyWrapAlgorithm("")
 
 func (KeyWrapAlgorithm) AES128() KeyWrapAlgorithm {
 	return "A128KW"
@@ -48,9 +45,6 @@ func (k KeyWrapAlgorithm) ToPtr() *KeyWrapAlgorithm {
 
 // EncryptionAlgorithm - algorithm identifier
 type EncryptionAlgorithm string
-
-// EncryptionAlgorithm provides access to the predefined values of EncryptionAlgorithm.
-const EncryptionAlgorithms = EncryptionAlgorithm("")
 
 func (EncryptionAlgorithm) A128CBC() EncryptionAlgorithm {
 	return "A128CBC"
@@ -124,9 +118,6 @@ func (c EncryptionAlgorithm) ToPtr() *EncryptionAlgorithm {
 
 // SignatureAlgorithm - The signing/verification algorithm identifier.
 type SignatureAlgorithm string
-
-// SignatureAlgorithms provides access to the predefined values of SignatureAlgorithm.
-const SignatureAlgorithms = SignatureAlgorithm("")
 
 // ES256 - ECDSA using P-256 and SHA-256, as described in https://tools.ietf.org/html/rfc7518.
 func (SignatureAlgorithm) ES256() SignatureAlgorithm {

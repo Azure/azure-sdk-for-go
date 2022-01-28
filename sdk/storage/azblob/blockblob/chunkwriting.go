@@ -13,12 +13,12 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"io"
 	"sync"
 	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // blockWriter provides methods to upload blocks that represent a file to a server and commit them.
@@ -188,9 +188,7 @@ func (c *copier) write(chunk copierChunk) {
 
 // close commits our blocks to blob storage and closes our writer.
 func (c *copier) close() error {
-	c.wg.Wait()
-
-	if err := c.getErr(); err != nil {
+	if err := c.waitForFinish(); err != nil {
 		return err
 	}
 
@@ -198,6 +196,44 @@ func (c *copier) close() error {
 	commitBlockListOptions := c.o.getCommitBlockListOptions()
 	c.result, err = c.to.CommitBlockList(c.ctx, c.id.issued(), commitBlockListOptions)
 	return err
+}
+
+// waitForFinish waits for all writes to complete while combining errors from errCh
+func (c *copier) waitForFinish() error {
+	var err error
+	done := make(chan struct{})
+	go func() {
+		// when write latencies are long, several errors might have occurred
+		// drain them all as we wait for writes to complete.
+		err = c.drainErrs(done)
+	}()
+
+	c.wg.Wait()
+	close(done)
+	return err
+}
+
+// drainErrs drains all outstanding errors from writes
+func (c *copier) drainErrs(done chan struct{}) error {
+	var err error
+	for {
+		select {
+		case <-done:
+			return err
+		default:
+			if writeErr := c.getErr(); writeErr != nil {
+				err = combineErrs(err, writeErr)
+			}
+		}
+	}
+}
+
+// combineErrs combines err with newErr so multiple errors can be represented
+func combineErrs(err, newErr error) error {
+	if err == nil {
+		return newErr
+	}
+	return fmt.Errorf("%s, %w", err.Error(), newErr)
 }
 
 // id allows the creation of unique IDs based on UUID4 + an int32. This auto-increments.

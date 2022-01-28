@@ -58,8 +58,8 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		if resp.StatusCode > 399 {
-			// the request failed, don't try any further
+		if resp.StatusCode > 399 && resp.StatusCode != http.StatusUnauthorized {
+			// the request failed for some other reason, don't try any further
 			return resp, nil
 		}
 		err = k.findScopeAndTenant(resp)

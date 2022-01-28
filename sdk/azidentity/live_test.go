@@ -148,7 +148,7 @@ func TestMain(m *testing.M) {
 	val := m.Run()
 
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.SetBodilessMatcher(nil, nil)
+		err := recording.ResetProxy(nil)
 		if err != nil {
 			panic(err)
 		}

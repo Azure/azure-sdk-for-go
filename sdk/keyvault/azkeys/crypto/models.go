@@ -6,20 +6,7 @@
 
 package crypto
 
+import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto/models"
+
 // KeyOperationResult - The key operation result.
-type KeyOperationResult struct {
-	// READ-ONLY
-	AdditionalAuthenticatedData []byte `json:"aad,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	AuthenticationTag []byte `json:"tag,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	IV []byte `json:"iv,omitempty" azure:"ro"`
-
-	// READ-ONLY; Key identifier
-	KeyID *string `json:"kid,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	Result []byte `json:"value,omitempty" azure:"ro"`
-}
+type KeyOperationResult = models.KeyOperationResult

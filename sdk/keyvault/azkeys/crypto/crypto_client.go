@@ -9,13 +9,13 @@ package crypto
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto/responses"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -140,15 +140,8 @@ func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorit
 	}
 }
 
-type EncryptResponse struct {
-	KeyOperationResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) EncryptResponse {
-	return EncryptResponse{
+func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) responses.EncryptResponse {
+	return responses.EncryptResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
@@ -167,7 +160,7 @@ func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) Enc
 // can be performed using public portion of the key. This operation is supported for asymmetric keys as a
 // convenience for callers that have a key-reference but do not have access to the public key material.
 // This operation requires the keys/encrypt permission.
-func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlgorithm, value []byte, options *EncryptOptions) (EncryptResponse, error) {
+func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlgorithm, value []byte, options *EncryptOptions) (responses.EncryptResponse, error) {
 	if options == nil {
 		options = &EncryptOptions{}
 	}
@@ -181,7 +174,7 @@ func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlgorithm, value []b
 		&generated.KeyVaultClientEncryptOptions{},
 	)
 	if err != nil {
-		return EncryptResponse{}, err
+		return responses.EncryptResponse{}, err
 	}
 
 	return encryptResponseFromGenerated(resp), nil
@@ -209,14 +202,8 @@ func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorit
 	}
 }
 
-type DecryptResponse struct {
-	KeyOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) DecryptResponse {
-	return DecryptResponse{
+func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) responses.DecryptResponse {
+	return responses.DecryptResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
@@ -233,7 +220,7 @@ func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) Dec
 // data may be decrypted, the size of this block is dependent on the target key and the algorithm to be
 // used. The DECRYPT operation applies to asymmetric and symmetric keys stored in Azure Key Vault since
 // it uses the private portion of the key. This operation requires the keys/decrypt permission.
-func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlgorithm, ciphertext []byte, options *DecryptOptions) (DecryptResponse, error) {
+func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlgorithm, ciphertext []byte, options *DecryptOptions) (responses.DecryptResponse, error) {
 	if options == nil {
 		options = &DecryptOptions{}
 	}
@@ -248,7 +235,7 @@ func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlgorithm, ciphertex
 	)
 
 	if err != nil {
-		return DecryptResponse{}, err
+		return responses.DecryptResponse{}, err
 	}
 
 	return decryptResponseFromGenerated(resp), nil
@@ -276,15 +263,8 @@ func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorithm,
 	}
 }
 
-// WrapKeyResponse contains the response for the Client.WrapKey method
-type WrapKeyResponse struct {
-	KeyOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) WrapKeyResponse {
-	return WrapKeyResponse{
+func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) responses.WrapKeyResponse {
+	return responses.WrapKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
@@ -301,7 +281,7 @@ func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) Wra
 //in Azure Key Vault since protection with an asymmetric key can be performed using the public portion of
 // the key. This operation is supported for asymmetric keys as a convenience for callers that have a
 // key-reference but do not have access to the public key material. This operation requires the keys/wrapKey permission.
-func (c *Client) WrapKey(ctx context.Context, alg KeyWrapAlgorithm, key []byte, options *WrapKeyOptions) (WrapKeyResponse, error) {
+func (c *Client) WrapKey(ctx context.Context, alg KeyWrapAlgorithm, key []byte, options *WrapKeyOptions) (responses.WrapKeyResponse, error) {
 	if options == nil {
 		options = &WrapKeyOptions{}
 	}
@@ -316,7 +296,7 @@ func (c *Client) WrapKey(ctx context.Context, alg KeyWrapAlgorithm, key []byte, 
 	)
 
 	if err != nil {
-		return WrapKeyResponse{}, err
+		return responses.WrapKeyResponse{}, err
 	}
 
 	return wrapKeyResponseFromGenerated(resp), nil
@@ -344,15 +324,8 @@ func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorith
 	}
 }
 
-// UnwrapKeyResponse contains the response for the Client.UnwrapKey method
-type UnwrapKeyResponse struct {
-	KeyOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse) UnwrapKeyResponse {
-	return UnwrapKeyResponse{
+func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse) responses.UnwrapKeyResponse {
+	return responses.UnwrapKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
@@ -368,7 +341,7 @@ func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse)
 // This operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric
 // keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
 // keys/unwrapKey permission.
-func (c *Client) UnwrapKey(ctx context.Context, alg KeyWrapAlgorithm, encryptedKey []byte, options *UnwrapKeyOptions) (UnwrapKeyResponse, error) {
+func (c *Client) UnwrapKey(ctx context.Context, alg KeyWrapAlgorithm, encryptedKey []byte, options *UnwrapKeyOptions) (responses.UnwrapKeyResponse, error) {
 	if options == nil {
 		options = &UnwrapKeyOptions{}
 	}
@@ -382,7 +355,7 @@ func (c *Client) UnwrapKey(ctx context.Context, alg KeyWrapAlgorithm, encryptedK
 		&generated.KeyVaultClientUnwrapKeyOptions{},
 	)
 	if err != nil {
-		return UnwrapKeyResponse{}, err
+		return responses.UnwrapKeyResponse{}, err
 	}
 
 	return unwrapKeyResponseFromGenerated(resp), nil
@@ -395,15 +368,8 @@ func (s SignOptions) toGenerated() *generated.KeyVaultClientSignOptions {
 	return &generated.KeyVaultClientSignOptions{}
 }
 
-// SignResponse contains the response for the Client.Sign method.
-type SignResponse struct {
-	KeyOperationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) SignResponse {
-	return SignResponse{
+func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) responses.SignResponse {
+	return responses.SignResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
 			AdditionalAuthenticatedData: i.AdditionalAuthenticatedData,
@@ -417,7 +383,7 @@ func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) SignRespo
 
 // The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since
 // this operation uses the private portion of the key. This operation requires the keys/sign permission.
-func (c *Client) Sign(ctx context.Context, algorithm SignatureAlgorithm, digest []byte, options *SignOptions) (SignResponse, error) {
+func (c *Client) Sign(ctx context.Context, algorithm SignatureAlgorithm, digest []byte, options *SignOptions) (responses.SignResponse, error) {
 	if options == nil {
 		options = &SignOptions{}
 	}
@@ -434,7 +400,7 @@ func (c *Client) Sign(ctx context.Context, algorithm SignatureAlgorithm, digest 
 		options.toGenerated(),
 	)
 	if err != nil {
-		return SignResponse{}, err
+		return responses.SignResponse{}, err
 	}
 
 	return signResponseFromGenerated(resp), nil
@@ -447,17 +413,8 @@ func (v VerifyOptions) toGenerated() *generated.KeyVaultClientVerifyOptions {
 	return &generated.KeyVaultClientVerifyOptions{}
 }
 
-// VerifyResponse contains the response for the Client.Verify method
-type VerifyResponse struct {
-	// READ-ONLY; True if the signature is verified, otherwise false.
-	IsValid *bool `json:"value,omitempty" azure:"ro"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse) VerifyResponse {
-	return VerifyResponse{
+func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse) responses.VerifyResponse {
+	return responses.VerifyResponse{
 		RawResponse: i.RawResponse,
 		IsValid:     i.Value,
 	}
@@ -467,7 +424,7 @@ func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse) Verif
 // necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed
 // using the public portion of the key but this operation is supported as a convenience for callers that
 // only have a key-reference and not the public portion of the key. This operation requires the keys/verify permission.
-func (c *Client) Verify(ctx context.Context, algorithm SignatureAlgorithm, digest []byte, signature []byte, options *VerifyOptions) (VerifyResponse, error) {
+func (c *Client) Verify(ctx context.Context, algorithm SignatureAlgorithm, digest []byte, signature []byte, options *VerifyOptions) (responses.VerifyResponse, error) {
 	if options == nil {
 		options = &VerifyOptions{}
 	}
@@ -486,7 +443,7 @@ func (c *Client) Verify(ctx context.Context, algorithm SignatureAlgorithm, diges
 	)
 
 	if err != nil {
-		return VerifyResponse{}, err
+		return responses.VerifyResponse{}, err
 	}
 
 	return verifyResponseFromGenerated(resp), nil

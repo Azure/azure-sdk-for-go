@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -22,16 +21,6 @@ import (
 func TestNewClientWithAzureIdentity(t *testing.T) {
 	queue, cleanup := createQueue(t, test.GetConnectionString(t), nil)
 	defer cleanup()
-
-	for _, v := range os.Environ() {
-		values := strings.SplitN(v, "=", 2)
-
-		if len(values) != 2 {
-			continue
-		}
-
-		fmt.Printf("Var: %s=len(%d)\n", values[0], len(values[1]))
-	}
 
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")

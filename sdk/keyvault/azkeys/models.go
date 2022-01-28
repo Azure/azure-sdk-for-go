@@ -399,7 +399,10 @@ type LifetimeActions struct {
 	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
 }
 
-func (l LifetimeActions) toGenerated() *generated.LifetimeActions {
+func (l *LifetimeActions) toGenerated() *generated.LifetimeActions {
+	if l == nil {
+		return nil
+	}
 	return &generated.LifetimeActions{
 		Action: &generated.LifetimeActionsType{
 			Type: (*generated.ActionType)(l.Action.Type),

@@ -98,8 +98,11 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 	}
 
 	var ops []*generated.JSONWebKeyOperation
-	for _, o := range c.KeyOps {
-		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
+	if c.KeyOps != nil {
+		ops = make([]*generated.JSONWebKeyOperation, len(c.KeyOps))
+		for i, o := range c.KeyOps {
+			ops[i] = (*generated.JSONWebKeyOperation)(o)
+		}
 	}
 
 	return generated.KeyCreateParameters{
@@ -300,8 +303,9 @@ type CreateRSAKeyOptions struct {
 func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreateParameters {
 	var keyOps []*generated.JSONWebKeyOperation
 	if c.KeyOps != nil {
-		for _, k := range c.KeyOps {
-			keyOps = append(keyOps, (*generated.JSONWebKeyOperation)(k))
+		keyOps = make([]*generated.JSONWebKeyOperation, len(c.KeyOps))
+		for i, k := range c.KeyOps {
+			keyOps[i] = (*generated.JSONWebKeyOperation)(k)
 		}
 	}
 	return generated.KeyCreateParameters{
@@ -915,8 +919,11 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateP
 	}
 
 	var ops []*generated.JSONWebKeyOperation
-	for _, o := range u.KeyOps {
-		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
+	if u.KeyOps != nil {
+		ops = make([]*generated.JSONWebKeyOperation, len(u.KeyOps))
+		for i, o := range u.KeyOps {
+			ops[i] = (*generated.JSONWebKeyOperation)(o)
+		}
 	}
 
 	return generated.KeyUpdateParameters{
@@ -1454,11 +1461,10 @@ func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.KeyRotationPolic
 		attribs = u.Attributes.toGenerated()
 	}
 	var la []*generated.LifetimeActions
-	for _, l := range u.LifetimeActions {
-		if l == nil {
-			la = append(la, nil)
-		} else {
-			la = append(la, l.toGenerated())
+	if la != nil {
+		la = make([]*generated.LifetimeActions, len(u.LifetimeActions))
+		for i, l := range u.LifetimeActions {
+			la[i] = l.toGenerated()
 		}
 	}
 

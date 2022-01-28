@@ -22,13 +22,26 @@ func ReceiveCancellation(remainingArgs []string) {
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create client", err)
 
-	receiver, err := client.NewReceiverForQueue(queueName, nil)
-	sc.PanicOnError("failed to create receiver", err)
+	for i := 0; i < 2000; i += 100 {
+		func() {
+			receiver, err := client.NewReceiverForQueue(queueName, nil)
+			sc.PanicOnError("failed to create receiver", err)
 
-	for i := 0; i < 10000; i++ {
-		ctx, cancel := context.WithTimeout(context.Background(), 0*time.Nanosecond)
-		defer cancel()
-		_, err := receiver.ReceiveMessages(ctx, 95, nil)
-		sc.PanicOnError("failed to receive messages", err)
+			defer receiver.Close(context.Background())
+
+			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(i)*time.Millisecond)
+			defer cancel()
+
+			// from a cold receiver link
+			_, err = receiver.ReceiveMessages(ctx, 95, nil)
+			sc.PanicOnError("failed to receive messages (1)", err)
+
+			ctx, cancel = context.WithTimeout(context.Background(), time.Duration(i)*time.Millisecond)
+			defer cancel()
+
+			// and one more time, now that the link has been warmed up
+			_, err = receiver.ReceiveMessages(ctx, 95, nil)
+			sc.PanicOnError("failed to receive messages (2)", err)
+		}()
 	}
 }

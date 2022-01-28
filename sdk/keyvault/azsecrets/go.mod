@@ -9,3 +9,5 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.2.0
 	github.com/stretchr/testify v1.7.0
 )
+
+replace github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal => ../internal

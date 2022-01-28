@@ -7,8 +7,12 @@
 package runtime
 
 import (
+	"fmt"
+	"reflect"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -16,16 +20,16 @@ import (
 
 // NewPipeline creates a pipeline from connection options.
 // The telemetry policy, when enabled, will use the specified module and version info.
-func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) pipeline.Pipeline {
+func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (pipeline.Pipeline, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	conf, err := getConfiguration(options)
+	if err != nil {
+		return pipeline.Pipeline{}, err
 	}
 	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{
-		Scopes:           []string{shared.EndpointToScope(string(ep))},
+		Scopes:           []string{shared.EndpointToScope(conf.Endpoint)},
 		AuxiliaryTenants: options.AuxiliaryTenants,
 	})
 	perRetry := make([]pipeline.Policy, 0, len(plOpts.PerRetry)+1)
@@ -33,10 +37,22 @@ func NewPipeline(module, version string, cred shared.TokenCredential, plOpts azr
 	plOpts.PerRetry = append(perRetry, authPolicy)
 	if !options.DisableRPRegistration {
 		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}
-		regPolicy := NewRPRegistrationPolicy(string(ep), cred, &regRPOpts)
+		regPolicy := NewRPRegistrationPolicy(conf.Endpoint, cred, &regRPOpts)
 		perCall := make([]pipeline.Policy, 0, len(plOpts.PerCall)+1)
 		copy(perCall, plOpts.PerCall)
 		plOpts.PerCall = append(perCall, regPolicy)
 	}
-	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions)
+	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions), nil
+}
+
+func getConfiguration(o *arm.ClientOptions) (cloud.ServiceConfiguration, error) {
+	c := cloud.WellKnownClouds[cloud.AzurePublicCloud]
+	if !reflect.ValueOf(o.Cloud).IsZero() {
+		c = o.Cloud
+	}
+	if conf, ok := c.Services[cloud.ResourceManager]; ok && conf.Endpoint != "" && len(conf.Audiences) > 0 {
+		return conf, nil
+	} else {
+		return conf, fmt.Errorf(`missing Azure Resource Manager configuration for cloud "%s"`, c.Name)
+	}
 }

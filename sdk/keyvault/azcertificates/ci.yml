@@ -20,6 +20,7 @@ pr:
   paths:
     include:
     - sdk/keyvault/azcertificates
+    - sdk/keyvault/internal
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml

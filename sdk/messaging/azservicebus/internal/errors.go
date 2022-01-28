@@ -175,7 +175,13 @@ func GetRecoveryKind(err error) recoveryKind {
 		}
 
 		// simple timeouts
-		if me.Resp.Code == 408 || me.Resp.Code == 503 {
+		if me.Resp.Code == 408 || me.Resp.Code == 503 ||
+			// internal server errors are worth retrying (they will typically lead
+			// to a more actionable error). A simple example of this is when you're
+			// in the middle of an operation and the link is detached. Sometimes you'll get
+			// the detached event immediately, but sometimes you'll get an intermediate 500
+			// indicating your original operation was cancelled.
+			me.Resp.Code == 500 {
 			return RecoveryKindNone
 		}
 	}

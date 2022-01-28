@@ -86,6 +86,22 @@ func init() {
 }
 
 func TestMain(m *testing.M) {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		// Start from a fresh proxy
+		err := recording.ResetProxy(nil)
+		if err != nil {
+			panic(err)
+		}
+
+		// At the end of testing we want to reset as to not interfere with other tests.
+		defer func() {
+			err := recording.ResetProxy(nil)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
 		err := recording.SetBodilessMatcher(nil, nil)
@@ -93,11 +109,6 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 	case recording.RecordingMode:
-		// remove default sanitizers such as the OAuth response sanitizer
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
 		// replace path variables with fake values to simplify matching (the real values aren't secret)
 		pathVars := map[string]string{
 			liveManagedIdentity.clientID:                    fakeClientID,
@@ -108,7 +119,7 @@ func TestMain(m *testing.M) {
 		}
 		for target, replacement := range pathVars {
 			if target != "" {
-				err = recording.AddURISanitizer(replacement, target, nil)
+				err := recording.AddURISanitizer(replacement, target, nil)
 				if err != nil {
 					panic(err)
 				}
@@ -127,7 +138,7 @@ func TestMain(m *testing.M) {
 		// remove token request bodies (which are form encoded) because they contain
 		// secrets, are irrelevant in matching, and are formed by MSAL anyway
 		// (note: Cloud Shell would need an exemption from this, and that would be okay--its requests contain no secrets)
-		err = recording.AddBodyRegexSanitizer("{}", `^\S+=.*`, nil)
+		err := recording.AddBodyRegexSanitizer("{}", `^\S+=.*`, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -138,21 +149,8 @@ func TestMain(m *testing.M) {
 				panic(err)
 			}
 		}
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
 	}
 	val := m.Run()
-
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-	}
 
 	os.Exit(val)
 }

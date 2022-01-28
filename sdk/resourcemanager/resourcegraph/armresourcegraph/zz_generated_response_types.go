@@ -19,8 +19,8 @@ type ClientResourcesHistoryResponse struct {
 
 // ClientResourcesHistoryResult contains the result from method Client.ResourcesHistory.
 type ClientResourcesHistoryResult struct {
-	// Any object
-	Object map[string]interface{}
+	// Anything
+	Interface interface{}
 }
 
 // ClientResourcesResponse contains the response from method Client.Resources.

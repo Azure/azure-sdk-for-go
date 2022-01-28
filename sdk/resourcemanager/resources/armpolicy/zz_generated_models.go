@@ -146,7 +146,7 @@ type AssignmentProperties struct {
 	EnforcementMode *EnforcementMode `json:"enforcementMode,omitempty"`
 
 	// The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// The messages that describe why a resource is non-compliant with the policy.
 	NonComplianceMessages []*NonComplianceMessage `json:"nonComplianceMessages,omitempty"`
@@ -170,7 +170,7 @@ func (a AssignmentProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "displayName", a.DisplayName)
 	populate(objectMap, "enforcementMode", a.EnforcementMode)
-	populate(objectMap, "metadata", a.Metadata)
+	populate(objectMap, "metadata", &a.Metadata)
 	populate(objectMap, "nonComplianceMessages", a.NonComplianceMessages)
 	populate(objectMap, "notScopes", a.NotScopes)
 	populate(objectMap, "parameters", a.Parameters)
@@ -293,17 +293,10 @@ type AssignmentsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudError - An error response from a policy operation.
-type CloudError struct {
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
-	// the OData error response format.)
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // DataEffect - The data effect definition.
 type DataEffect struct {
 	// The data effect details schema.
-	DetailsSchema map[string]interface{} `json:"detailsSchema,omitempty"`
+	DetailsSchema interface{} `json:"detailsSchema,omitempty"`
 
 	// The data effect name.
 	Name *string `json:"name,omitempty"`
@@ -498,7 +491,7 @@ type DefinitionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The policy definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
 	Mode *string `json:"mode,omitempty"`
@@ -507,7 +500,7 @@ type DefinitionProperties struct {
 	Parameters map[string]*ParameterDefinitionsValue `json:"parameters,omitempty"`
 
 	// The policy rule.
-	PolicyRule map[string]interface{} `json:"policyRule,omitempty"`
+	PolicyRule interface{} `json:"policyRule,omitempty"`
 
 	// The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
 	PolicyType *PolicyType `json:"policyType,omitempty"`
@@ -518,10 +511,10 @@ func (d DefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "description", d.Description)
 	populate(objectMap, "displayName", d.DisplayName)
-	populate(objectMap, "metadata", d.Metadata)
+	populate(objectMap, "metadata", &d.Metadata)
 	populate(objectMap, "mode", d.Mode)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "policyRule", d.PolicyRule)
+	populate(objectMap, "policyRule", &d.PolicyRule)
 	populate(objectMap, "policyType", d.PolicyType)
 	return json.Marshal(objectMap)
 }
@@ -632,45 +625,6 @@ type DefinitionsClientListOptions struct {
 	Top *int32
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
-
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.)
-type ErrorResponse struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (e ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // Exemption - The policy exemption.
 type Exemption struct {
 	// REQUIRED; Properties for the policy exemption.
@@ -724,7 +678,7 @@ type ExemptionProperties struct {
 	ExpiresOn *time.Time `json:"expiresOn,omitempty"`
 
 	// The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
 	PolicyDefinitionReferenceIDs []*string `json:"policyDefinitionReferenceIds,omitempty"`
@@ -737,7 +691,7 @@ func (e ExemptionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayName", e.DisplayName)
 	populate(objectMap, "exemptionCategory", e.ExemptionCategory)
 	populateTimeRFC3339(objectMap, "expiresOn", e.ExpiresOn)
-	populate(objectMap, "metadata", e.Metadata)
+	populate(objectMap, "metadata", &e.Metadata)
 	populate(objectMap, "policyAssignmentId", e.PolicyAssignmentID)
 	populate(objectMap, "policyDefinitionReferenceIds", e.PolicyDefinitionReferenceIDs)
 	return json.Marshal(objectMap)
@@ -906,10 +860,10 @@ type NonComplianceMessage struct {
 // ParameterDefinitionsValue - The definition of a parameter that can be provided to the policy.
 type ParameterDefinitionsValue struct {
 	// The allowed values for the parameter.
-	AllowedValues []map[string]interface{} `json:"allowedValues,omitempty"`
+	AllowedValues []interface{} `json:"allowedValues,omitempty"`
 
 	// The default value for the parameter if no value is provided.
-	DefaultValue map[string]interface{} `json:"defaultValue,omitempty"`
+	DefaultValue interface{} `json:"defaultValue,omitempty"`
 
 	// General metadata for the parameter.
 	Metadata *ParameterDefinitionsValueMetadata `json:"metadata,omitempty"`
@@ -922,7 +876,7 @@ type ParameterDefinitionsValue struct {
 func (p ParameterDefinitionsValue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "allowedValues", p.AllowedValues)
-	populate(objectMap, "defaultValue", p.DefaultValue)
+	populate(objectMap, "defaultValue", &p.DefaultValue)
 	populate(objectMap, "metadata", p.Metadata)
 	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
@@ -931,7 +885,7 @@ func (p ParameterDefinitionsValue) MarshalJSON() ([]byte, error) {
 // ParameterDefinitionsValueMetadata - General metadata for the parameter.
 type ParameterDefinitionsValueMetadata struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
+	AdditionalProperties map[string]interface{}
 
 	// Set to true to have Azure portal create role assignments on the resource ID or resource scope value of this parameter during
 	// policy assignment. This property is useful in case you wish to assign
@@ -987,10 +941,10 @@ func (p *ParameterDefinitionsValueMetadata) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		default:
 			if p.AdditionalProperties == nil {
-				p.AdditionalProperties = map[string]map[string]interface{}{}
+				p.AdditionalProperties = map[string]interface{}{}
 			}
 			if val != nil {
-				var aux map[string]interface{}
+				var aux interface{}
 				err = json.Unmarshal(val, &aux)
 				p.AdditionalProperties[key] = aux
 			}
@@ -1006,7 +960,7 @@ func (p *ParameterDefinitionsValueMetadata) UnmarshalJSON(data []byte) error {
 // ParameterValuesValue - The value of a parameter.
 type ParameterValuesValue struct {
 	// The value of the parameter.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 }
 
 // ResourceTypeAliases - The resource type aliases definition.
@@ -1073,7 +1027,7 @@ type SetDefinitionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The policy set definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// The policy set definition parameters that can be used in policy definition references.
 	Parameters map[string]*ParameterDefinitionsValue `json:"parameters,omitempty"`
@@ -1090,7 +1044,7 @@ func (s SetDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "description", s.Description)
 	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "metadata", s.Metadata)
+	populate(objectMap, "metadata", &s.Metadata)
 	populate(objectMap, "parameters", s.Parameters)
 	populate(objectMap, "policyDefinitionGroups", s.PolicyDefinitionGroups)
 	populate(objectMap, "policyDefinitions", s.PolicyDefinitions)

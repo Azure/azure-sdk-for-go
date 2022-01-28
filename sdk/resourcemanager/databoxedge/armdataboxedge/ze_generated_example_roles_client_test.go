@@ -30,12 +30,16 @@ func ExampleRolesClient_ListByDataBoxEdgeDevice() {
 	pager := client.ListByDataBoxEdgeDevice("<device-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RoleClassification.GetRole().ID: %s\n", *v.GetRole().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleRolesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RoleClassification.GetRole().ID: %s\n", *res.GetRole().ID)
+	log.Printf("Response result: %#v\n", res.RolesClientGetResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/RolePut.json
@@ -72,16 +76,14 @@ func ExampleRolesClient_BeginCreateOrUpdate() {
 		"<name>",
 		"<resource-group-name>",
 		&armdataboxedge.IoTRole{
-			Role: armdataboxedge.Role{
-				Kind: armdataboxedge.RoleTypesIOT.ToPtr(),
-			},
+			Kind: armdataboxedge.RoleTypes("IOT").ToPtr(),
 			Properties: &armdataboxedge.IoTRoleProperties{
-				HostPlatform: armdataboxedge.PlatformTypeLinux.ToPtr(),
+				HostPlatform: armdataboxedge.PlatformType("Linux").ToPtr(),
 				IoTDeviceDetails: &armdataboxedge.IoTDeviceInfo{
 					Authentication: &armdataboxedge.Authentication{
 						SymmetricKey: &armdataboxedge.SymmetricKey{
 							ConnectionString: &armdataboxedge.AsymmetricEncryptedSecret{
-								EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithmAES256.ToPtr(),
+								EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithm("AES256").ToPtr(),
 								EncryptionCertThumbprint: to.StringPtr("<encryption-cert-thumbprint>"),
 								Value:                    to.StringPtr("<value>"),
 							},
@@ -94,7 +96,7 @@ func ExampleRolesClient_BeginCreateOrUpdate() {
 					Authentication: &armdataboxedge.Authentication{
 						SymmetricKey: &armdataboxedge.SymmetricKey{
 							ConnectionString: &armdataboxedge.AsymmetricEncryptedSecret{
-								EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithmAES256.ToPtr(),
+								EncryptionAlgorithm:      armdataboxedge.EncryptionAlgorithm("AES256").ToPtr(),
 								EncryptionCertThumbprint: to.StringPtr("<encryption-cert-thumbprint>"),
 								Value:                    to.StringPtr("<value>"),
 							},
@@ -103,7 +105,7 @@ func ExampleRolesClient_BeginCreateOrUpdate() {
 					DeviceID:   to.StringPtr("<device-id>"),
 					IoTHostHub: to.StringPtr("<io-thost-hub>"),
 				},
-				RoleStatus:    armdataboxedge.RoleStatusEnabled.ToPtr(),
+				RoleStatus:    armdataboxedge.RoleStatus("Enabled").ToPtr(),
 				ShareMappings: []*armdataboxedge.MountPointMap{},
 			},
 		},
@@ -115,7 +117,7 @@ func ExampleRolesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RoleClassification.GetRole().ID: %s\n", *res.GetRole().ID)
+	log.Printf("Response result: %#v\n", res.RolesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/RoleDelete.json

@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,57 @@ import (
 // AlertsClient contains the methods for the Alerts group.
 // Don't use this type directly, use NewAlertsClient() instead.
 type AlertsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
 	ascLocation    string
+	pl             runtime.Pipeline
 }
 
 // NewAlertsClient creates a new instance of AlertsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAlertsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &AlertsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AlertsClient{
+		subscriptionID: subscriptionID,
+		ascLocation:    ascLocation,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
 // GetResourceGroupLevel - Get an alert that is associated a resource group or a resource in a resource group
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) GetResourceGroupLevel(ctx context.Context, alertName string, resourceGroupName string, options *AlertsGetResourceGroupLevelOptions) (AlertsGetResourceGroupLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertName - Name of the alert object
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - AlertsClientGetResourceGroupLevelOptions contains the optional parameters for the AlertsClient.GetResourceGroupLevel
+// method.
+func (client *AlertsClient) GetResourceGroupLevel(ctx context.Context, alertName string, resourceGroupName string, options *AlertsClientGetResourceGroupLevelOptions) (AlertsClientGetResourceGroupLevelResponse, error) {
 	req, err := client.getResourceGroupLevelCreateRequest(ctx, alertName, resourceGroupName, options)
 	if err != nil {
-		return AlertsGetResourceGroupLevelResponse{}, err
+		return AlertsClientGetResourceGroupLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertsGetResourceGroupLevelResponse{}, err
+		return AlertsClientGetResourceGroupLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AlertsGetResourceGroupLevelResponse{}, client.getResourceGroupLevelHandleError(resp)
+		return AlertsClientGetResourceGroupLevelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getResourceGroupLevelHandleResponse(resp)
 }
 
 // getResourceGroupLevelCreateRequest creates the GetResourceGroupLevel request.
-func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Context, alertName string, resourceGroupName string, options *AlertsGetResourceGroupLevelOptions) (*policy.Request, error) {
+func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Context, alertName string, resourceGroupName string, options *AlertsClientGetResourceGroupLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,36 @@ func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Conte
 }
 
 // getResourceGroupLevelHandleResponse handles the GetResourceGroupLevel response.
-func (client *AlertsClient) getResourceGroupLevelHandleResponse(resp *http.Response) (AlertsGetResourceGroupLevelResponse, error) {
-	result := AlertsGetResourceGroupLevelResponse{RawResponse: resp}
+func (client *AlertsClient) getResourceGroupLevelHandleResponse(resp *http.Response) (AlertsClientGetResourceGroupLevelResponse, error) {
+	result := AlertsClientGetResourceGroupLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
-		return AlertsGetResourceGroupLevelResponse{}, runtime.NewResponseError(err, resp)
+		return AlertsClientGetResourceGroupLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// getResourceGroupLevelHandleError handles the GetResourceGroupLevel error response.
-func (client *AlertsClient) getResourceGroupLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSubscriptionLevel - Get an alert that is associated with a subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) GetSubscriptionLevel(ctx context.Context, alertName string, options *AlertsGetSubscriptionLevelOptions) (AlertsGetSubscriptionLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertName - Name of the alert object
+// options - AlertsClientGetSubscriptionLevelOptions contains the optional parameters for the AlertsClient.GetSubscriptionLevel
+// method.
+func (client *AlertsClient) GetSubscriptionLevel(ctx context.Context, alertName string, options *AlertsClientGetSubscriptionLevelOptions) (AlertsClientGetSubscriptionLevelResponse, error) {
 	req, err := client.getSubscriptionLevelCreateRequest(ctx, alertName, options)
 	if err != nil {
-		return AlertsGetSubscriptionLevelResponse{}, err
+		return AlertsClientGetSubscriptionLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertsGetSubscriptionLevelResponse{}, err
+		return AlertsClientGetSubscriptionLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AlertsGetSubscriptionLevelResponse{}, client.getSubscriptionLevelHandleError(resp)
+		return AlertsClientGetSubscriptionLevelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSubscriptionLevelHandleResponse(resp)
 }
 
 // getSubscriptionLevelCreateRequest creates the GetSubscriptionLevel request.
-func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Context, alertName string, options *AlertsGetSubscriptionLevelOptions) (*policy.Request, error) {
+func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Context, alertName string, options *AlertsClientGetSubscriptionLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -144,7 +147,7 @@ func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter alertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertName}", url.PathEscape(alertName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,49 +159,37 @@ func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Contex
 }
 
 // getSubscriptionLevelHandleResponse handles the GetSubscriptionLevel response.
-func (client *AlertsClient) getSubscriptionLevelHandleResponse(resp *http.Response) (AlertsGetSubscriptionLevelResponse, error) {
-	result := AlertsGetSubscriptionLevelResponse{RawResponse: resp}
+func (client *AlertsClient) getSubscriptionLevelHandleResponse(resp *http.Response) (AlertsClientGetSubscriptionLevelResponse, error) {
+	result := AlertsClientGetSubscriptionLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
-		return AlertsGetSubscriptionLevelResponse{}, runtime.NewResponseError(err, resp)
+		return AlertsClientGetSubscriptionLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// getSubscriptionLevelHandleError handles the GetSubscriptionLevel error response.
-func (client *AlertsClient) getSubscriptionLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List all the alerts that are associated with the subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) List(options *AlertsListOptions) *AlertsListPager {
-	return &AlertsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AlertsClientListOptions contains the optional parameters for the AlertsClient.List method.
+func (client *AlertsClient) List(options *AlertsClientListOptions) *AlertsClientListPager {
+	return &AlertsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AlertsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AlertsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AlertsClient) listCreateRequest(ctx context.Context, options *AlertsListOptions) (*policy.Request, error) {
+func (client *AlertsClient) listCreateRequest(ctx context.Context, options *AlertsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -210,43 +201,33 @@ func (client *AlertsClient) listCreateRequest(ctx context.Context, options *Aler
 }
 
 // listHandleResponse handles the List response.
-func (client *AlertsClient) listHandleResponse(resp *http.Response) (AlertsListResponse, error) {
-	result := AlertsListResponse{RawResponse: resp}
+func (client *AlertsClient) listHandleResponse(resp *http.Response) (AlertsClientListResponse, error) {
+	result := AlertsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsListResponse{}, runtime.NewResponseError(err, resp)
+		return AlertsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AlertsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - List all the alerts that are associated with the resource group
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) ListByResourceGroup(resourceGroupName string, options *AlertsListByResourceGroupOptions) *AlertsListByResourceGroupPager {
-	return &AlertsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - AlertsClientListByResourceGroupOptions contains the optional parameters for the AlertsClient.ListByResourceGroup
+// method.
+func (client *AlertsClient) ListByResourceGroup(resourceGroupName string, options *AlertsClientListByResourceGroupOptions) *AlertsClientListByResourceGroupPager {
+	return &AlertsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AlertsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AlertsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AlertsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AlertsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/alerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -256,7 +237,7 @@ func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,43 +249,34 @@ func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (AlertsListByResourceGroupResponse, error) {
-	result := AlertsListByResourceGroupResponse{RawResponse: resp}
+func (client *AlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (AlertsClientListByResourceGroupResponse, error) {
+	result := AlertsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return AlertsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AlertsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListResourceGroupLevelByRegion - List all the alerts that are associated with the resource group that are stored in a specific location
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) ListResourceGroupLevelByRegion(resourceGroupName string, options *AlertsListResourceGroupLevelByRegionOptions) *AlertsListResourceGroupLevelByRegionPager {
-	return &AlertsListResourceGroupLevelByRegionPager{
+// ListResourceGroupLevelByRegion - List all the alerts that are associated with the resource group that are stored in a specific
+// location
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - AlertsClientListResourceGroupLevelByRegionOptions contains the optional parameters for the AlertsClient.ListResourceGroupLevelByRegion
+// method.
+func (client *AlertsClient) ListResourceGroupLevelByRegion(resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions) *AlertsClientListResourceGroupLevelByRegionPager {
+	return &AlertsClientListResourceGroupLevelByRegionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listResourceGroupLevelByRegionCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AlertsListResourceGroupLevelByRegionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AlertsClientListResourceGroupLevelByRegionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertList.NextLink)
 		},
 	}
 }
 
 // listResourceGroupLevelByRegionCreateRequest creates the ListResourceGroupLevelByRegion request.
-func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx context.Context, resourceGroupName string, options *AlertsListResourceGroupLevelByRegionOptions) (*policy.Request, error) {
+func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx context.Context, resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -318,7 +290,7 @@ func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -330,43 +302,33 @@ func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx cont
 }
 
 // listResourceGroupLevelByRegionHandleResponse handles the ListResourceGroupLevelByRegion response.
-func (client *AlertsClient) listResourceGroupLevelByRegionHandleResponse(resp *http.Response) (AlertsListResourceGroupLevelByRegionResponse, error) {
-	result := AlertsListResourceGroupLevelByRegionResponse{RawResponse: resp}
+func (client *AlertsClient) listResourceGroupLevelByRegionHandleResponse(resp *http.Response) (AlertsClientListResourceGroupLevelByRegionResponse, error) {
+	result := AlertsClientListResourceGroupLevelByRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsListResourceGroupLevelByRegionResponse{}, runtime.NewResponseError(err, resp)
+		return AlertsClientListResourceGroupLevelByRegionResponse{}, err
 	}
 	return result, nil
 }
 
-// listResourceGroupLevelByRegionHandleError handles the ListResourceGroupLevelByRegion error response.
-func (client *AlertsClient) listResourceGroupLevelByRegionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListSubscriptionLevelByRegion - List all the alerts that are associated with the subscription that are stored in a specific location
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) ListSubscriptionLevelByRegion(options *AlertsListSubscriptionLevelByRegionOptions) *AlertsListSubscriptionLevelByRegionPager {
-	return &AlertsListSubscriptionLevelByRegionPager{
+// ListSubscriptionLevelByRegion - List all the alerts that are associated with the subscription that are stored in a specific
+// location
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AlertsClientListSubscriptionLevelByRegionOptions contains the optional parameters for the AlertsClient.ListSubscriptionLevelByRegion
+// method.
+func (client *AlertsClient) ListSubscriptionLevelByRegion(options *AlertsClientListSubscriptionLevelByRegionOptions) *AlertsClientListSubscriptionLevelByRegionPager {
+	return &AlertsClientListSubscriptionLevelByRegionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listSubscriptionLevelByRegionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AlertsListSubscriptionLevelByRegionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AlertsClientListSubscriptionLevelByRegionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertList.NextLink)
 		},
 	}
 }
 
 // listSubscriptionLevelByRegionCreateRequest creates the ListSubscriptionLevelByRegion request.
-func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx context.Context, options *AlertsListSubscriptionLevelByRegionOptions) (*policy.Request, error) {
+func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx context.Context, options *AlertsClientListSubscriptionLevelByRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -376,7 +338,7 @@ func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx conte
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -388,50 +350,39 @@ func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx conte
 }
 
 // listSubscriptionLevelByRegionHandleResponse handles the ListSubscriptionLevelByRegion response.
-func (client *AlertsClient) listSubscriptionLevelByRegionHandleResponse(resp *http.Response) (AlertsListSubscriptionLevelByRegionResponse, error) {
-	result := AlertsListSubscriptionLevelByRegionResponse{RawResponse: resp}
+func (client *AlertsClient) listSubscriptionLevelByRegionHandleResponse(resp *http.Response) (AlertsClientListSubscriptionLevelByRegionResponse, error) {
+	result := AlertsClientListSubscriptionLevelByRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsListSubscriptionLevelByRegionResponse{}, runtime.NewResponseError(err, resp)
+		return AlertsClientListSubscriptionLevelByRegionResponse{}, err
 	}
 	return result, nil
 }
 
-// listSubscriptionLevelByRegionHandleError handles the ListSubscriptionLevelByRegion error response.
-func (client *AlertsClient) listSubscriptionLevelByRegionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginSimulate - Simulate security alerts
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) BeginSimulate(ctx context.Context, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsBeginSimulateOptions) (AlertsSimulatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertSimulatorRequestBody - Alert Simulator Request Properties
+// options - AlertsClientBeginSimulateOptions contains the optional parameters for the AlertsClient.BeginSimulate method.
+func (client *AlertsClient) BeginSimulate(ctx context.Context, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsClientBeginSimulateOptions) (AlertsClientSimulatePollerResponse, error) {
 	resp, err := client.simulate(ctx, alertSimulatorRequestBody, options)
 	if err != nil {
-		return AlertsSimulatePollerResponse{}, err
+		return AlertsClientSimulatePollerResponse{}, err
 	}
-	result := AlertsSimulatePollerResponse{
+	result := AlertsClientSimulatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AlertsClient.Simulate", "original-uri", resp, client.pl, client.simulateHandleError)
+	pt, err := armruntime.NewPoller("AlertsClient.Simulate", "original-uri", resp, client.pl)
 	if err != nil {
-		return AlertsSimulatePollerResponse{}, err
+		return AlertsClientSimulatePollerResponse{}, err
 	}
-	result.Poller = &AlertsSimulatePoller{
+	result.Poller = &AlertsClientSimulatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Simulate - Simulate security alerts
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) simulate(ctx context.Context, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsBeginSimulateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AlertsClient) simulate(ctx context.Context, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsClientBeginSimulateOptions) (*http.Response, error) {
 	req, err := client.simulateCreateRequest(ctx, alertSimulatorRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -441,13 +392,13 @@ func (client *AlertsClient) simulate(ctx context.Context, alertSimulatorRequestB
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.simulateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // simulateCreateRequest creates the Simulate request.
-func (client *AlertsClient) simulateCreateRequest(ctx context.Context, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsBeginSimulateOptions) (*policy.Request, error) {
+func (client *AlertsClient) simulateCreateRequest(ctx context.Context, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsClientBeginSimulateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/default/simulate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -457,7 +408,7 @@ func (client *AlertsClient) simulateCreateRequest(ctx context.Context, alertSimu
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -468,38 +419,29 @@ func (client *AlertsClient) simulateCreateRequest(ctx context.Context, alertSimu
 	return req, runtime.MarshalAsJSON(req, alertSimulatorRequestBody)
 }
 
-// simulateHandleError handles the Simulate error response.
-func (client *AlertsClient) simulateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateResourceGroupLevelStateToActivate - Update the alert's state
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) UpdateResourceGroupLevelStateToActivate(ctx context.Context, alertName string, resourceGroupName string, options *AlertsUpdateResourceGroupLevelStateToActivateOptions) (AlertsUpdateResourceGroupLevelStateToActivateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertName - Name of the alert object
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - AlertsClientUpdateResourceGroupLevelStateToActivateOptions contains the optional parameters for the AlertsClient.UpdateResourceGroupLevelStateToActivate
+// method.
+func (client *AlertsClient) UpdateResourceGroupLevelStateToActivate(ctx context.Context, alertName string, resourceGroupName string, options *AlertsClientUpdateResourceGroupLevelStateToActivateOptions) (AlertsClientUpdateResourceGroupLevelStateToActivateResponse, error) {
 	req, err := client.updateResourceGroupLevelStateToActivateCreateRequest(ctx, alertName, resourceGroupName, options)
 	if err != nil {
-		return AlertsUpdateResourceGroupLevelStateToActivateResponse{}, err
+		return AlertsClientUpdateResourceGroupLevelStateToActivateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertsUpdateResourceGroupLevelStateToActivateResponse{}, err
+		return AlertsClientUpdateResourceGroupLevelStateToActivateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AlertsUpdateResourceGroupLevelStateToActivateResponse{}, client.updateResourceGroupLevelStateToActivateHandleError(resp)
+		return AlertsClientUpdateResourceGroupLevelStateToActivateResponse{}, runtime.NewResponseError(resp)
 	}
-	return AlertsUpdateResourceGroupLevelStateToActivateResponse{RawResponse: resp}, nil
+	return AlertsClientUpdateResourceGroupLevelStateToActivateResponse{RawResponse: resp}, nil
 }
 
 // updateResourceGroupLevelStateToActivateCreateRequest creates the UpdateResourceGroupLevelStateToActivate request.
-func (client *AlertsClient) updateResourceGroupLevelStateToActivateCreateRequest(ctx context.Context, alertName string, resourceGroupName string, options *AlertsUpdateResourceGroupLevelStateToActivateOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateResourceGroupLevelStateToActivateCreateRequest(ctx context.Context, alertName string, resourceGroupName string, options *AlertsClientUpdateResourceGroupLevelStateToActivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/activate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -517,7 +459,7 @@ func (client *AlertsClient) updateResourceGroupLevelStateToActivateCreateRequest
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -528,38 +470,29 @@ func (client *AlertsClient) updateResourceGroupLevelStateToActivateCreateRequest
 	return req, nil
 }
 
-// updateResourceGroupLevelStateToActivateHandleError handles the UpdateResourceGroupLevelStateToActivate error response.
-func (client *AlertsClient) updateResourceGroupLevelStateToActivateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateResourceGroupLevelStateToDismiss - Update the alert's state
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) UpdateResourceGroupLevelStateToDismiss(ctx context.Context, alertName string, resourceGroupName string, options *AlertsUpdateResourceGroupLevelStateToDismissOptions) (AlertsUpdateResourceGroupLevelStateToDismissResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertName - Name of the alert object
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - AlertsClientUpdateResourceGroupLevelStateToDismissOptions contains the optional parameters for the AlertsClient.UpdateResourceGroupLevelStateToDismiss
+// method.
+func (client *AlertsClient) UpdateResourceGroupLevelStateToDismiss(ctx context.Context, alertName string, resourceGroupName string, options *AlertsClientUpdateResourceGroupLevelStateToDismissOptions) (AlertsClientUpdateResourceGroupLevelStateToDismissResponse, error) {
 	req, err := client.updateResourceGroupLevelStateToDismissCreateRequest(ctx, alertName, resourceGroupName, options)
 	if err != nil {
-		return AlertsUpdateResourceGroupLevelStateToDismissResponse{}, err
+		return AlertsClientUpdateResourceGroupLevelStateToDismissResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertsUpdateResourceGroupLevelStateToDismissResponse{}, err
+		return AlertsClientUpdateResourceGroupLevelStateToDismissResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AlertsUpdateResourceGroupLevelStateToDismissResponse{}, client.updateResourceGroupLevelStateToDismissHandleError(resp)
+		return AlertsClientUpdateResourceGroupLevelStateToDismissResponse{}, runtime.NewResponseError(resp)
 	}
-	return AlertsUpdateResourceGroupLevelStateToDismissResponse{RawResponse: resp}, nil
+	return AlertsClientUpdateResourceGroupLevelStateToDismissResponse{RawResponse: resp}, nil
 }
 
 // updateResourceGroupLevelStateToDismissCreateRequest creates the UpdateResourceGroupLevelStateToDismiss request.
-func (client *AlertsClient) updateResourceGroupLevelStateToDismissCreateRequest(ctx context.Context, alertName string, resourceGroupName string, options *AlertsUpdateResourceGroupLevelStateToDismissOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateResourceGroupLevelStateToDismissCreateRequest(ctx context.Context, alertName string, resourceGroupName string, options *AlertsClientUpdateResourceGroupLevelStateToDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/dismiss"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -577,7 +510,7 @@ func (client *AlertsClient) updateResourceGroupLevelStateToDismissCreateRequest(
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -588,38 +521,29 @@ func (client *AlertsClient) updateResourceGroupLevelStateToDismissCreateRequest(
 	return req, nil
 }
 
-// updateResourceGroupLevelStateToDismissHandleError handles the UpdateResourceGroupLevelStateToDismiss error response.
-func (client *AlertsClient) updateResourceGroupLevelStateToDismissHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateResourceGroupLevelStateToResolve - Update the alert's state
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) UpdateResourceGroupLevelStateToResolve(ctx context.Context, alertName string, resourceGroupName string, options *AlertsUpdateResourceGroupLevelStateToResolveOptions) (AlertsUpdateResourceGroupLevelStateToResolveResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertName - Name of the alert object
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - AlertsClientUpdateResourceGroupLevelStateToResolveOptions contains the optional parameters for the AlertsClient.UpdateResourceGroupLevelStateToResolve
+// method.
+func (client *AlertsClient) UpdateResourceGroupLevelStateToResolve(ctx context.Context, alertName string, resourceGroupName string, options *AlertsClientUpdateResourceGroupLevelStateToResolveOptions) (AlertsClientUpdateResourceGroupLevelStateToResolveResponse, error) {
 	req, err := client.updateResourceGroupLevelStateToResolveCreateRequest(ctx, alertName, resourceGroupName, options)
 	if err != nil {
-		return AlertsUpdateResourceGroupLevelStateToResolveResponse{}, err
+		return AlertsClientUpdateResourceGroupLevelStateToResolveResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertsUpdateResourceGroupLevelStateToResolveResponse{}, err
+		return AlertsClientUpdateResourceGroupLevelStateToResolveResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AlertsUpdateResourceGroupLevelStateToResolveResponse{}, client.updateResourceGroupLevelStateToResolveHandleError(resp)
+		return AlertsClientUpdateResourceGroupLevelStateToResolveResponse{}, runtime.NewResponseError(resp)
 	}
-	return AlertsUpdateResourceGroupLevelStateToResolveResponse{RawResponse: resp}, nil
+	return AlertsClientUpdateResourceGroupLevelStateToResolveResponse{RawResponse: resp}, nil
 }
 
 // updateResourceGroupLevelStateToResolveCreateRequest creates the UpdateResourceGroupLevelStateToResolve request.
-func (client *AlertsClient) updateResourceGroupLevelStateToResolveCreateRequest(ctx context.Context, alertName string, resourceGroupName string, options *AlertsUpdateResourceGroupLevelStateToResolveOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateResourceGroupLevelStateToResolveCreateRequest(ctx context.Context, alertName string, resourceGroupName string, options *AlertsClientUpdateResourceGroupLevelStateToResolveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/resolve"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -637,7 +561,7 @@ func (client *AlertsClient) updateResourceGroupLevelStateToResolveCreateRequest(
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -648,38 +572,28 @@ func (client *AlertsClient) updateResourceGroupLevelStateToResolveCreateRequest(
 	return req, nil
 }
 
-// updateResourceGroupLevelStateToResolveHandleError handles the UpdateResourceGroupLevelStateToResolve error response.
-func (client *AlertsClient) updateResourceGroupLevelStateToResolveHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateSubscriptionLevelStateToActivate - Update the alert's state
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) UpdateSubscriptionLevelStateToActivate(ctx context.Context, alertName string, options *AlertsUpdateSubscriptionLevelStateToActivateOptions) (AlertsUpdateSubscriptionLevelStateToActivateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertName - Name of the alert object
+// options - AlertsClientUpdateSubscriptionLevelStateToActivateOptions contains the optional parameters for the AlertsClient.UpdateSubscriptionLevelStateToActivate
+// method.
+func (client *AlertsClient) UpdateSubscriptionLevelStateToActivate(ctx context.Context, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToActivateOptions) (AlertsClientUpdateSubscriptionLevelStateToActivateResponse, error) {
 	req, err := client.updateSubscriptionLevelStateToActivateCreateRequest(ctx, alertName, options)
 	if err != nil {
-		return AlertsUpdateSubscriptionLevelStateToActivateResponse{}, err
+		return AlertsClientUpdateSubscriptionLevelStateToActivateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertsUpdateSubscriptionLevelStateToActivateResponse{}, err
+		return AlertsClientUpdateSubscriptionLevelStateToActivateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AlertsUpdateSubscriptionLevelStateToActivateResponse{}, client.updateSubscriptionLevelStateToActivateHandleError(resp)
+		return AlertsClientUpdateSubscriptionLevelStateToActivateResponse{}, runtime.NewResponseError(resp)
 	}
-	return AlertsUpdateSubscriptionLevelStateToActivateResponse{RawResponse: resp}, nil
+	return AlertsClientUpdateSubscriptionLevelStateToActivateResponse{RawResponse: resp}, nil
 }
 
 // updateSubscriptionLevelStateToActivateCreateRequest creates the UpdateSubscriptionLevelStateToActivate request.
-func (client *AlertsClient) updateSubscriptionLevelStateToActivateCreateRequest(ctx context.Context, alertName string, options *AlertsUpdateSubscriptionLevelStateToActivateOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateSubscriptionLevelStateToActivateCreateRequest(ctx context.Context, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToActivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/activate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -693,7 +607,7 @@ func (client *AlertsClient) updateSubscriptionLevelStateToActivateCreateRequest(
 		return nil, errors.New("parameter alertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertName}", url.PathEscape(alertName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -704,38 +618,28 @@ func (client *AlertsClient) updateSubscriptionLevelStateToActivateCreateRequest(
 	return req, nil
 }
 
-// updateSubscriptionLevelStateToActivateHandleError handles the UpdateSubscriptionLevelStateToActivate error response.
-func (client *AlertsClient) updateSubscriptionLevelStateToActivateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateSubscriptionLevelStateToDismiss - Update the alert's state
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) UpdateSubscriptionLevelStateToDismiss(ctx context.Context, alertName string, options *AlertsUpdateSubscriptionLevelStateToDismissOptions) (AlertsUpdateSubscriptionLevelStateToDismissResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertName - Name of the alert object
+// options - AlertsClientUpdateSubscriptionLevelStateToDismissOptions contains the optional parameters for the AlertsClient.UpdateSubscriptionLevelStateToDismiss
+// method.
+func (client *AlertsClient) UpdateSubscriptionLevelStateToDismiss(ctx context.Context, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToDismissOptions) (AlertsClientUpdateSubscriptionLevelStateToDismissResponse, error) {
 	req, err := client.updateSubscriptionLevelStateToDismissCreateRequest(ctx, alertName, options)
 	if err != nil {
-		return AlertsUpdateSubscriptionLevelStateToDismissResponse{}, err
+		return AlertsClientUpdateSubscriptionLevelStateToDismissResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertsUpdateSubscriptionLevelStateToDismissResponse{}, err
+		return AlertsClientUpdateSubscriptionLevelStateToDismissResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AlertsUpdateSubscriptionLevelStateToDismissResponse{}, client.updateSubscriptionLevelStateToDismissHandleError(resp)
+		return AlertsClientUpdateSubscriptionLevelStateToDismissResponse{}, runtime.NewResponseError(resp)
 	}
-	return AlertsUpdateSubscriptionLevelStateToDismissResponse{RawResponse: resp}, nil
+	return AlertsClientUpdateSubscriptionLevelStateToDismissResponse{RawResponse: resp}, nil
 }
 
 // updateSubscriptionLevelStateToDismissCreateRequest creates the UpdateSubscriptionLevelStateToDismiss request.
-func (client *AlertsClient) updateSubscriptionLevelStateToDismissCreateRequest(ctx context.Context, alertName string, options *AlertsUpdateSubscriptionLevelStateToDismissOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateSubscriptionLevelStateToDismissCreateRequest(ctx context.Context, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/dismiss"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -749,7 +653,7 @@ func (client *AlertsClient) updateSubscriptionLevelStateToDismissCreateRequest(c
 		return nil, errors.New("parameter alertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertName}", url.PathEscape(alertName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -760,38 +664,28 @@ func (client *AlertsClient) updateSubscriptionLevelStateToDismissCreateRequest(c
 	return req, nil
 }
 
-// updateSubscriptionLevelStateToDismissHandleError handles the UpdateSubscriptionLevelStateToDismiss error response.
-func (client *AlertsClient) updateSubscriptionLevelStateToDismissHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateSubscriptionLevelStateToResolve - Update the alert's state
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertsClient) UpdateSubscriptionLevelStateToResolve(ctx context.Context, alertName string, options *AlertsUpdateSubscriptionLevelStateToResolveOptions) (AlertsUpdateSubscriptionLevelStateToResolveResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertName - Name of the alert object
+// options - AlertsClientUpdateSubscriptionLevelStateToResolveOptions contains the optional parameters for the AlertsClient.UpdateSubscriptionLevelStateToResolve
+// method.
+func (client *AlertsClient) UpdateSubscriptionLevelStateToResolve(ctx context.Context, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToResolveOptions) (AlertsClientUpdateSubscriptionLevelStateToResolveResponse, error) {
 	req, err := client.updateSubscriptionLevelStateToResolveCreateRequest(ctx, alertName, options)
 	if err != nil {
-		return AlertsUpdateSubscriptionLevelStateToResolveResponse{}, err
+		return AlertsClientUpdateSubscriptionLevelStateToResolveResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertsUpdateSubscriptionLevelStateToResolveResponse{}, err
+		return AlertsClientUpdateSubscriptionLevelStateToResolveResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AlertsUpdateSubscriptionLevelStateToResolveResponse{}, client.updateSubscriptionLevelStateToResolveHandleError(resp)
+		return AlertsClientUpdateSubscriptionLevelStateToResolveResponse{}, runtime.NewResponseError(resp)
 	}
-	return AlertsUpdateSubscriptionLevelStateToResolveResponse{RawResponse: resp}, nil
+	return AlertsClientUpdateSubscriptionLevelStateToResolveResponse{RawResponse: resp}, nil
 }
 
 // updateSubscriptionLevelStateToResolveCreateRequest creates the UpdateSubscriptionLevelStateToResolve request.
-func (client *AlertsClient) updateSubscriptionLevelStateToResolveCreateRequest(ctx context.Context, alertName string, options *AlertsUpdateSubscriptionLevelStateToResolveOptions) (*policy.Request, error) {
+func (client *AlertsClient) updateSubscriptionLevelStateToResolveCreateRequest(ctx context.Context, alertName string, options *AlertsClientUpdateSubscriptionLevelStateToResolveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/resolve"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -805,7 +699,7 @@ func (client *AlertsClient) updateSubscriptionLevelStateToResolveCreateRequest(c
 		return nil, errors.New("parameter alertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertName}", url.PathEscape(alertName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -814,17 +708,4 @@ func (client *AlertsClient) updateSubscriptionLevelStateToResolveCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// updateSubscriptionLevelStateToResolveHandleError handles the UpdateSubscriptionLevelStateToResolve error response.
-func (client *AlertsClient) updateSubscriptionLevelStateToResolveHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

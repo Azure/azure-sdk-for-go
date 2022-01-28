@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,43 +25,56 @@ import (
 // IotSecuritySolutionsAnalyticsRecommendationClient contains the methods for the IotSecuritySolutionsAnalyticsRecommendation group.
 // Don't use this type directly, use NewIotSecuritySolutionsAnalyticsRecommendationClient() instead.
 type IotSecuritySolutionsAnalyticsRecommendationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIotSecuritySolutionsAnalyticsRecommendationClient creates a new instance of IotSecuritySolutionsAnalyticsRecommendationClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotSecuritySolutionsAnalyticsRecommendationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &IotSecuritySolutionsAnalyticsRecommendationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IotSecuritySolutionsAnalyticsRecommendationClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// Get - Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This aggregation is performed by recommendation
-// name.
-// If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string, options *IotSecuritySolutionsAnalyticsRecommendationGetOptions) (IotSecuritySolutionsAnalyticsRecommendationGetResponse, error) {
+// Get - Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This aggregation
+// is performed by recommendation name.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// solutionName - The name of the IoT Security solution.
+// aggregatedRecommendationName - Name of the recommendation aggregated for this query.
+// options - IotSecuritySolutionsAnalyticsRecommendationClientGetOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsRecommendationClient.Get
+// method.
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string, options *IotSecuritySolutionsAnalyticsRecommendationClientGetOptions) (IotSecuritySolutionsAnalyticsRecommendationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, solutionName, aggregatedRecommendationName, options)
 	if err != nil {
-		return IotSecuritySolutionsAnalyticsRecommendationGetResponse{}, err
+		return IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IotSecuritySolutionsAnalyticsRecommendationGetResponse{}, err
+		return IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IotSecuritySolutionsAnalyticsRecommendationGetResponse{}, client.getHandleError(resp)
+		return IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string, options *IotSecuritySolutionsAnalyticsRecommendationGetOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string, options *IotSecuritySolutionsAnalyticsRecommendationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations/{aggregatedRecommendationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -80,7 +92,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateReques
 		return nil, errors.New("parameter aggregatedRecommendationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{aggregatedRecommendationName}", url.PathEscape(aggregatedRecommendationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -92,43 +104,34 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateReques
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsRecommendationGetResponse, error) {
-	result := IotSecuritySolutionsAnalyticsRecommendationGetResponse{RawResponse: resp}
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsRecommendationClientGetResponse, error) {
+	result := IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedRecommendation); err != nil {
-		return IotSecuritySolutionsAnalyticsRecommendationGetResponse{}, runtime.NewResponseError(err, resp)
+		return IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Use this method to get the list of aggregated security analytics recommendations of yours IoT Security solution.
-// If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) List(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsRecommendationListOptions) *IotSecuritySolutionsAnalyticsRecommendationListPager {
-	return &IotSecuritySolutionsAnalyticsRecommendationListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// solutionName - The name of the IoT Security solution.
+// options - IotSecuritySolutionsAnalyticsRecommendationClientListOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsRecommendationClient.List
+// method.
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) List(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsRecommendationClientListOptions) *IotSecuritySolutionsAnalyticsRecommendationClientListPager {
+	return &IotSecuritySolutionsAnalyticsRecommendationClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, solutionName, options)
 		},
-		advancer: func(ctx context.Context, resp IotSecuritySolutionsAnalyticsRecommendationListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IotSecuritySolutionsAnalyticsRecommendationClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IoTSecurityAggregatedRecommendationList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsRecommendationListOptions) (*policy.Request, error) {
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsRecommendationClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -142,7 +145,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateReque
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -157,23 +160,10 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateReque
 }
 
 // listHandleResponse handles the List response.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsRecommendationListResponse, error) {
-	result := IotSecuritySolutionsAnalyticsRecommendationListResponse{RawResponse: resp}
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsRecommendationClientListResponse, error) {
+	result := IotSecuritySolutionsAnalyticsRecommendationClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedRecommendationList); err != nil {
-		return IotSecuritySolutionsAnalyticsRecommendationListResponse{}, runtime.NewResponseError(err, resp)
+		return IotSecuritySolutionsAnalyticsRecommendationClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

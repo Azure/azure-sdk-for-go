@@ -17,39 +17,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// implements `Retrier` interface.
-type fakeRetrier struct {
-	tryCalled  int
-	copyCalled int
-}
-
-func (r *fakeRetrier) Copy() Retrier {
-	r.copyCalled++
-
-	// NOTE: purposefully not making a copy so I can keep track of the
-	// try/copy counts.
-	return r
-}
-
-func (r *fakeRetrier) Exhausted() bool {
-	return false
-}
-
-func (r *fakeRetrier) Try(ctx context.Context) bool {
-	select {
-	case <-ctx.Done():
-		return false
-	default:
-	}
-
-	r.tryCalled++
-	return true
-}
-
-func (r *fakeRetrier) CurrentTry() int {
-	return r.tryCalled
-}
-
 type fakeTokenCredential struct {
 	azcore.TokenCredential
 	expires time.Time
@@ -62,12 +29,10 @@ func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.Tok
 }
 
 func TestNamespaceNegotiateClaim(t *testing.T) {
-	retrier := &fakeRetrier{}
-
 	expires := time.Now().Add(24 * time.Hour)
 
 	ns := &Namespace{
-		baseRetrier:   retrier,
+		retryOptions:  retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
@@ -106,17 +71,13 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 
 	require.EqualValues(t, getAMQPClientCalled, 1)
 	require.EqualValues(t, 1, cbsNegotiateClaimCalled)
-	require.EqualValues(t, 1, retrier.copyCalled)
-	require.EqualValues(t, 1, retrier.tryCalled)
 }
 
 func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
-	retrier := &fakeRetrier{}
-
 	expires := time.Now().Add(24 * time.Hour)
 
 	ns := &Namespace{
-		baseRetrier:   retrier,
+		retryOptions:  retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
@@ -163,8 +124,6 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 
 	require.GreaterOrEqual(t, getAMQPClientCalled, 2+1) // that last +1 is when we blocked to prevent us renewing too much for our test!
 
-	require.EqualValues(t, 3, retrier.copyCalled)
-	require.EqualValues(t, 3, retrier.tryCalled)
 	require.EqualValues(t, 2, nextRefreshDurationChecks)
 
 	require.EqualValues(t, 2, cbsNegotiateClaimCalled)
@@ -175,7 +134,6 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 
 func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	ns := &Namespace{
-		baseRetrier:   noRetryRetrier.Copy(),
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
@@ -197,7 +155,6 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 
 func TestNamespaceNegotiateClaimFails(t *testing.T) {
 	ns := &Namespace{
-		baseRetrier:   noRetryRetrier.Copy(),
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
@@ -232,13 +189,3 @@ func TestNamespaceNextClaimRefreshDuration(t *testing.T) {
 
 	require.EqualValues(t, 3*time.Minute, nextClaimRefreshDuration(now.Add(3*time.Minute+clockDrift), now))
 }
-
-var noRetryRetrier = NewBackoffRetrier(struct {
-	MaxRetries int
-	Factor     float64
-	Jitter     bool
-	Min        time.Duration
-	Max        time.Duration
-}{
-	MaxRetries: 0,
-})

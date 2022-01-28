@@ -29,13 +29,17 @@ func ExampleSchedulesClient_ListByLab() {
 	client := armlabservices.NewSchedulesClient("<subscription-id>", cred, nil)
 	pager := client.ListByLab("<resource-group-name>",
 		"<lab-name>",
-		&armlabservices.SchedulesListByLabOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armlabservices.SchedulesClientListByLabOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Schedule.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleSchedulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Schedule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SchedulesClientGetResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/putSchedule.json
@@ -73,24 +77,22 @@ func ExampleSchedulesClient_CreateOrUpdate() {
 		"<schedule-name>",
 		armlabservices.Schedule{
 			Properties: &armlabservices.ScheduleProperties{
-				ScheduleUpdateProperties: armlabservices.ScheduleUpdateProperties{
-					Notes: to.StringPtr("<notes>"),
-					RecurrencePattern: &armlabservices.RecurrencePattern{
-						ExpirationDate: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-14"); return t }()),
-						Frequency:      armlabservices.RecurrenceFrequencyDaily.ToPtr(),
-						Interval:       to.Int32Ptr(2),
-					},
-					StartAt:    to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T12:00:00Z"); return t }()),
-					StopAt:     to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T18:00:00Z"); return t }()),
-					TimeZoneID: to.StringPtr("<time-zone-id>"),
+				Notes: to.StringPtr("<notes>"),
+				RecurrencePattern: &armlabservices.RecurrencePattern{
+					ExpirationDate: to.TimePtr(func() time.Time { t, _ := time.Parse("2006-01-02", "2020-08-14"); return t }()),
+					Frequency:      armlabservices.RecurrenceFrequencyDaily.ToPtr(),
+					Interval:       to.Int32Ptr(2),
 				},
+				StartAt:    to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T12:00:00Z"); return t }()),
+				StopAt:     to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-26T18:00:00Z"); return t }()),
+				TimeZoneID: to.StringPtr("<time-zone-id>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Schedule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SchedulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/patchSchedule.json
@@ -108,7 +110,7 @@ func ExampleSchedulesClient_Update() {
 		armlabservices.ScheduleUpdate{
 			Properties: &armlabservices.ScheduleUpdateProperties{
 				RecurrencePattern: &armlabservices.RecurrencePattern{
-					ExpirationDate: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-14"); return t }()),
+					ExpirationDate: to.TimePtr(func() time.Time { t, _ := time.Parse("2006-01-02", "2020-08-14"); return t }()),
 					Frequency:      armlabservices.RecurrenceFrequencyDaily.ToPtr(),
 					Interval:       to.Int32Ptr(2),
 				},
@@ -118,7 +120,7 @@ func ExampleSchedulesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Schedule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SchedulesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/deleteSchedule.json

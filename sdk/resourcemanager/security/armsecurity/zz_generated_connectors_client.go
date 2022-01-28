@@ -11,7 +11,6 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,252 +21,337 @@ import (
 	"strings"
 )
 
-// ConnectorsClient contains the methods for the Connectors group.
+// ConnectorsClient contains the methods for the SecurityConnectors group.
 // Don't use this type directly, use NewConnectorsClient() instead.
 type ConnectorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewConnectorsClient creates a new instance of ConnectorsClient with the specified values.
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConnectorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = arm.AzurePublicCloud
 	}
-	return &ConnectorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ConnectorsClient{
+		subscriptionID: subscriptionID,
+		host:           string(ep),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+	}
+	return client
 }
 
-// CreateOrUpdate - Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either account credentials or
-// role-based authentication. For GCP, use account organization
-// credentials.
-// If the operation fails it returns the *CloudError error type.
-func (client *ConnectorsClient) CreateOrUpdate(ctx context.Context, connectorName string, connectorSetting ConnectorSetting, options *ConnectorsCreateOrUpdateOptions) (ConnectorsCreateOrUpdateResponse, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, connectorName, connectorSetting, options)
+// CreateOrUpdate - Creates or updates a security connector. If a security connector is already created and a subsequent request
+// is issued for the same security connector id, then it will be updated.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// securityConnectorName - The security connector name.
+// securityConnector - The security connector resource
+// options - ConnectorsClientCreateOrUpdateOptions contains the optional parameters for the ConnectorsClient.CreateOrUpdate
+// method.
+func (client *ConnectorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector, options *ConnectorsClientCreateOrUpdateOptions) (ConnectorsClientCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, securityConnectorName, securityConnector, options)
 	if err != nil {
-		return ConnectorsCreateOrUpdateResponse{}, err
+		return ConnectorsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConnectorsCreateOrUpdateResponse{}, err
+		return ConnectorsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConnectorsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return ConnectorsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, connectorName string, connectorSetting ConnectorSetting, options *ConnectorsCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}"
+func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector, options *ConnectorsClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if connectorName == "" {
-		return nil, errors.New("parameter connectorName cannot be empty")
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if securityConnectorName == "" {
+		return nil, errors.New("parameter securityConnectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01-preview")
+	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, connectorSetting)
+	return req, runtime.MarshalAsJSON(req, securityConnector)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConnectorsClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectorsCreateOrUpdateResponse, error) {
-	result := ConnectorsCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSetting); err != nil {
-		return ConnectorsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *ConnectorsClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectorsClientCreateOrUpdateResponse, error) {
+	result := ConnectorsClientCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
+		return ConnectorsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ConnectorsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// Delete - Deletes a security connector.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// securityConnectorName - The security connector name.
+// options - ConnectorsClientDeleteOptions contains the optional parameters for the ConnectorsClient.Delete method.
+func (client *ConnectorsClient) Delete(ctx context.Context, resourceGroupName string, securityConnectorName string, options *ConnectorsClientDeleteOptions) (ConnectorsClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, securityConnectorName, options)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - Delete a cloud account connector from a subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *ConnectorsClient) Delete(ctx context.Context, connectorName string, options *ConnectorsDeleteOptions) (ConnectorsDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, connectorName, options)
-	if err != nil {
-		return ConnectorsDeleteResponse{}, err
+		return ConnectorsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConnectorsDeleteResponse{}, err
+		return ConnectorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ConnectorsDeleteResponse{}, client.deleteHandleError(resp)
+		return ConnectorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ConnectorsDeleteResponse{RawResponse: resp}, nil
+	return ConnectorsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, connectorName string, options *ConnectorsDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}"
+func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, options *ConnectorsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if connectorName == "" {
-		return nil, errors.New("parameter connectorName cannot be empty")
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if securityConnectorName == "" {
+		return nil, errors.New("parameter securityConnectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01-preview")
+	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ConnectorsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// Get - Retrieves details of a specific security connector
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// securityConnectorName - The security connector name.
+// options - ConnectorsClientGetOptions contains the optional parameters for the ConnectorsClient.Get method.
+func (client *ConnectorsClient) Get(ctx context.Context, resourceGroupName string, securityConnectorName string, options *ConnectorsClientGetOptions) (ConnectorsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, securityConnectorName, options)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Details of a specific cloud account connector
-// If the operation fails it returns the *CloudError error type.
-func (client *ConnectorsClient) Get(ctx context.Context, connectorName string, options *ConnectorsGetOptions) (ConnectorsGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, connectorName, options)
-	if err != nil {
-		return ConnectorsGetResponse{}, err
+		return ConnectorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConnectorsGetResponse{}, err
+		return ConnectorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConnectorsGetResponse{}, client.getHandleError(resp)
+		return ConnectorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConnectorsClient) getCreateRequest(ctx context.Context, connectorName string, options *ConnectorsGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}"
+func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, options *ConnectorsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if connectorName == "" {
-		return nil, errors.New("parameter connectorName cannot be empty")
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if securityConnectorName == "" {
+		return nil, errors.New("parameter securityConnectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01-preview")
+	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (ConnectorsGetResponse, error) {
-	result := ConnectorsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSetting); err != nil {
-		return ConnectorsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (ConnectorsClientGetResponse, error) {
+	result := ConnectorsClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
+		return ConnectorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ConnectorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Cloud accounts connectors of a subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *ConnectorsClient) List(options *ConnectorsListOptions) *ConnectorsListPager {
-	return &ConnectorsListPager{
+// List - Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
+// get the next page of security connectors for the specified subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ConnectorsClientListOptions contains the optional parameters for the ConnectorsClient.List method.
+func (client *ConnectorsClient) List(options *ConnectorsClientListOptions) *ConnectorsClientListPager {
+	return &ConnectorsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ConnectorsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectorSettingList.NextLink)
+		advancer: func(ctx context.Context, resp ConnectorsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectorsList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *ConnectorsListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors"
+func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *ConnectorsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityConnectors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01-preview")
+	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (ConnectorsListResponse, error) {
-	result := ConnectorsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSettingList); err != nil {
-		return ConnectorsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (ConnectorsClientListResponse, error) {
+	result := ConnectorsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorsList); err != nil {
+		return ConnectorsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ConnectorsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// ListByResourceGroup - Lists all the security connectors in the specified resource group. Use the 'nextLink' property in
+// the response to get the next page of security connectors for the specified resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - ConnectorsClientListByResourceGroupOptions contains the optional parameters for the ConnectorsClient.ListByResourceGroup
+// method.
+func (client *ConnectorsClient) ListByResourceGroup(resourceGroupName string, options *ConnectorsClientListByResourceGroupOptions) *ConnectorsClientListByResourceGroupPager {
+	return &ConnectorsClientListByResourceGroupPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+		},
+		advancer: func(ctx context.Context, resp ConnectorsClientListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectorsList.NextLink)
+		},
+	}
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *ConnectorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ConnectorsClientListByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return nil, err
 	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *ConnectorsClient) listByResourceGroupHandleResponse(resp *http.Response) (ConnectorsClientListByResourceGroupResponse, error) {
+	result := ConnectorsClientListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorsList); err != nil {
+		return ConnectorsClientListByResourceGroupResponse{}, err
 	}
-	return runtime.NewResponseError(&errType, resp)
+	return result, nil
+}
+
+// Update - Updates a security connector
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// securityConnectorName - The security connector name.
+// securityConnector - The security connector resource
+// options - ConnectorsClientUpdateOptions contains the optional parameters for the ConnectorsClient.Update method.
+func (client *ConnectorsClient) Update(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector, options *ConnectorsClientUpdateOptions) (ConnectorsClientUpdateResponse, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, securityConnectorName, securityConnector, options)
+	if err != nil {
+		return ConnectorsClientUpdateResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return ConnectorsClientUpdateResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ConnectorsClientUpdateResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.updateHandleResponse(resp)
+}
+
+// updateCreateRequest creates the Update request.
+func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector, options *ConnectorsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if securityConnectorName == "" {
+		return nil, errors.New("parameter securityConnectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, securityConnector)
+}
+
+// updateHandleResponse handles the Update response.
+func (client *ConnectorsClient) updateHandleResponse(resp *http.Response) (ConnectorsClientUpdateResponse, error) {
+	result := ConnectorsClientUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
+		return ConnectorsClientUpdateResponse{}, err
+	}
+	return result, nil
 }

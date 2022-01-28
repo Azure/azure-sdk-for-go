@@ -50,18 +50,24 @@ func MustGenerateMessages(sc *StressContext, sender *azservicebus.Sender, messag
 }
 
 // MustCreateAutoDeletingQueue creates a queue that will auto-delete 10 minutes after activity has ceased.
-func MustCreateAutoDeletingQueue(sc *StressContext, queueName string) {
+func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.QueueProperties) {
 	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create adminClient", err)
 
 	autoDeleteOnIdle := 10 * time.Minute
 
-	_, err = adminClient.CreateQueue(context.Background(), queueName, &admin.QueueProperties{
-		AutoDeleteOnIdle: &autoDeleteOnIdle,
+	var newQP admin.QueueProperties
 
-		// mostly useful for tracking backwards in case something goes wrong.
-		UserMetadata: &sc.TestRunID,
-	}, nil)
+	if qp != nil {
+		newQP = *qp
+	}
+
+	newQP.AutoDeleteOnIdle = &autoDeleteOnIdle
+
+	// mostly useful for tracking backwards in case something goes wrong.
+	newQP.UserMetadata = &sc.TestRunID
+
+	_, err = adminClient.CreateQueue(context.Background(), queueName, &newQP, nil)
 	sc.PanicOnError("failed to create queue", err)
 }
 

@@ -521,6 +521,7 @@ func TestBadAzureRecordMode(t *testing.T) {
 }
 
 func TestBackwardSlashPath(t *testing.T) {
+	t.Skip("Temporarily skipping due to changes in test-proxy.")
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 

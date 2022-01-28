@@ -9,8 +9,8 @@
 package armredis
 
 const (
-	module  = "armredis"
-	version = "v0.2.1"
+	moduleName    = "armredis"
+	moduleVersion = "v0.3.0"
 )
 
 // DayOfWeek - Day of the week when a cache can be patched.
@@ -63,6 +63,31 @@ func PossibleDefaultNameValues() []DefaultName {
 
 // ToPtr returns a *DefaultName pointing to the current value.
 func (c DefaultName) ToPtr() *DefaultName {
+	return &c
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
+func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
 	return &c
 }
 
@@ -155,8 +180,8 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// PublicNetworkAccess - Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
-// If 'Disabled', private endpoints are the exclusive access method.
+// PublicNetworkAccess - Whether or not public endpoint access is allowed for this cache. Value is optional but if passed
+// in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
 // Default value is 'Enabled'
 type PublicNetworkAccess string
 

@@ -130,7 +130,7 @@ func TestNewClientUnitTests(t *testing.T) {
 
 		// (really all part of the same functionality)
 		ns := &internal.Namespace{}
-		require.NoError(t, internal.NamespacesWithTokenCredential("mysb.windows.servicebus.net",
+		require.NoError(t, internal.NamespaceWithTokenCredential("mysb.windows.servicebus.net",
 			fakeTokenCredential)(ns))
 
 		require.EqualValues(t, ns.FQDN, "mysb.windows.servicebus.net")
@@ -173,26 +173,6 @@ func TestNewClientUnitTests(t *testing.T) {
 
 		client, ns = setupClient()
 		_, err = client.NewReceiverForSubscription("hello", "world", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
-
-		client, ns = setupClient()
-		_, err = newProcessorForQueue(client, "hello", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
-
-		client, ns = setupClient()
-		_, err = newProcessorForSubscription(client, "hello", "world", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))

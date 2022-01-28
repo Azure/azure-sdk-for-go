@@ -86,7 +86,7 @@ type KeyBundle struct {
 	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
@@ -226,7 +226,7 @@ type KeyItem struct {
 	KID *string `json:"kid,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
@@ -241,7 +241,7 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 	return &KeyItem{
 		Attributes: keyAttributesFromGenerated(i.Attributes),
 		KID:        i.Kid,
-		Tags:       i.Tags,
+		Tags:       convertGeneratedMap(i.Tags),
 		Managed:    i.Managed,
 	}
 }
@@ -295,7 +295,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 			},
 			KID:     i.Kid,
-			Tags:    i.Tags,
+			Tags:    convertGeneratedMap(i.Tags),
 			Managed: i.Managed,
 		},
 	}
@@ -403,4 +403,28 @@ type LifetimeActionsTrigger struct {
 
 	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
 	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
+}
+
+func convertToGeneratedMap(m map[string]string) map[string]*string {
+	if m == nil {
+		return nil
+	}
+
+	ret := make(map[string]*string)
+	for k, v := range m {
+		ret[k] = &v
+	}
+	return ret
+}
+
+func convertGeneratedMap(m map[string]*string) map[string]string {
+	if m == nil {
+		return nil
+	}
+
+	ret := make(map[string]string)
+	for k, v := range m {
+		ret[k] = *v
+	}
+	return ret
 }

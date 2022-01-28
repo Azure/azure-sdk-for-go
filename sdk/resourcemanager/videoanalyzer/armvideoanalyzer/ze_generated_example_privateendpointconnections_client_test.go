@@ -25,13 +25,14 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	}
 	ctx := context.Background()
 	client := armvideoanalyzer.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientListResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-analyzer-private-endpoint-connection-get-by-name.json
@@ -50,7 +51,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-analyzer-private-endpoint-connection-put.json
@@ -61,7 +62,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	}
 	ctx := context.Background()
 	client := armvideoanalyzer.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	_, err = client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<name>",
@@ -69,7 +70,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 			Properties: &armvideoanalyzer.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armvideoanalyzer.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armvideoanalyzer.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Status:      armvideoanalyzer.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -77,7 +78,6 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/videoanalyzer/resource-manager/Microsoft.Media/preview/2021-11-01-preview/examples/video-analyzer-private-endpoint-connection-delete.json

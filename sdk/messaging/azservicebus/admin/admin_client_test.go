@@ -25,13 +25,13 @@ import (
 func TestAdminClient_UsingIdentity(t *testing.T) {
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")
-	envCred, err := azidentity.NewEnvironmentCredential(nil)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	adminClient, err := NewClient(ns, envCred, nil)
+	adminClient, err := NewClient(ns, cred, nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())

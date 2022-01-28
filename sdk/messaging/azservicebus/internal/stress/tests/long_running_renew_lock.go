@@ -17,7 +17,7 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("LongRunningRenewLockTest")
 
 	queueName := fmt.Sprintf("renew-lock-test-%s", sc.Nano)
-	shared.MustCreateAutoDeletingQueue(sc, queueName)
+	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create admin.Client", err)

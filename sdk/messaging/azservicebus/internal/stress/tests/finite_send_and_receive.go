@@ -5,6 +5,7 @@ package tests
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
 )
 
@@ -19,23 +21,29 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("FiniteSendAndReceiveTest")
 
 	sc.TrackEvent("Start")
-	defer sc.TrackEvent("End")
+	defer sc.End()
 
 	queueName := strings.ToLower(fmt.Sprintf("queue-%X", time.Now().UnixNano()))
 
 	log.Printf("Creating queue")
-	shared.MustCreateAutoDeletingQueue(sc, queueName)
+
+	lockDuration := 5 * time.Minute
+
+	shared.MustCreateAutoDeletingQueue(sc, queueName, &admin.QueueProperties{
+		LockDuration: &lockDuration,
+	})
 
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create client", err)
 
 	sender, err := client.NewSender(queueName, nil)
 	sc.PanicOnError("failed to create sender", err)
-	const messageLimit = 50000
 
-	shared.MustGenerateMessages(sc, sender, messageLimit, 100, sc.NewStat("sender"))
+	const messageLimit = 500
 
 	log.Printf("Sending %d messages (all messages will be sent before receiving begins)", messageLimit)
+	shared.MustGenerateMessages(sc, sender, messageLimit, 100, sc.NewStat("sender"))
+
 	log.Printf("Starting receiving...")
 
 	receiver, err := client.NewReceiverForQueue(queueName, nil)
@@ -45,7 +53,7 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 
 	receiverStats := sc.NewStat("receiver")
 
-	for receiverStats.Received == messageLimit {
+	for receiverStats.Received < messageLimit {
 		log.Printf("[start] Receiving messages...")
 		messages, err := receiver.ReceiveMessages(context.Background(), 100, nil)
 		log.Printf("[done] Receiving messages... %v, %v", len(messages), err)
@@ -53,23 +61,36 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 
 		wg := sync.WaitGroup{}
 
+		log.Printf("About to complete %d messages", len(messages))
+		time.Sleep(10 * time.Second)
+
 		for _, msg := range messages {
 			wg.Add(1)
+
 			go func(msg *azservicebus.ReceivedMessage) {
 				completions <- struct{}{}
 				defer wg.Done()
 				defer func() { <-completions }()
 
-				ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+				ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 				defer cancel()
 
 				err := receiver.CompleteMessage(ctx, msg)
+
+				var rpcCodeErr interface{ RPCCode() int }
+
+				if errors.As(err, &rpcCodeErr) {
+					if rpcCodeErr.RPCCode() == 410 {
+						receiverStats.AddError("lock lost", err)
+						return
+					}
+				}
+
 				sc.PanicOnError("failed to complete message", err)
+				receiverStats.AddReceived(1)
 			}(msg)
 		}
 
 		wg.Wait()
-
-		receiverStats.AddReceived(int32(len(messages)))
 	}
 }

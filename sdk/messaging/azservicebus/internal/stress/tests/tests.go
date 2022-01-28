@@ -39,6 +39,7 @@ func Run(remainingArgs []string) {
 		"infiniteSendAndReceive":   InfiniteSendAndReceiveRun,
 		"longRunningRenewLock":     LongRunningRenewLockTest,
 		"rapidOpenClose":           RapidOpenCloseTest,
+		"receiveCancellation":      ReceiveCancellation,
 	}
 
 	if len(remainingArgs) == 0 {

@@ -3,6 +3,7 @@
 ## 0.9.1 (Unreleased)
 
 ### Features Added
+* Adds a `CustomDefaultMatcher` that adds headers `:path`, `:authority`, `:method`, and `:scheme` to the 
 
 ### Breaking Changes
 

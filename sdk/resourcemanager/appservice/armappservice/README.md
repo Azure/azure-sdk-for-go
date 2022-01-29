@@ -50,6 +50,12 @@ options = arm.ClientOptions{
 client := armappservice.NewWebAppsClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Static Site](https://aka.ms/azsdk/go/mgmt/samples?path=appservice/staticsite)
+- [App Service Plan](https://aka.ms/azsdk/go/mgmt/samples?path=appservice/web_plans)
+- [Web Site](https://aka.ms/azsdk/go/mgmt/samples?path=appservice/webapp)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

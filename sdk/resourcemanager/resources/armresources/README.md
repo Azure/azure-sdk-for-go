@@ -50,6 +50,13 @@ options = arm.ClientOptions{
 client := armresources.NewResourcesClient(<subscription ID>, cred, &options)
 ```
 
+## More sample code
+
+- [Deployment](https://aka.ms/azsdk/go/mgmt/samples?path=resource/deployment)
+- [Provider](https://aka.ms/azsdk/go/mgmt/samples?path=resource/provider)
+- [Resource Group](https://aka.ms/azsdk/go/mgmt/samples?path=resource/resourcegroups)
+- [Resource](https://aka.ms/azsdk/go/mgmt/samples?path=resource/resources)
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

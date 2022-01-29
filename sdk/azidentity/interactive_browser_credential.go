@@ -88,7 +88,7 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	}
 	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes, o...)
 	if err != nil {
-		addGetTokenFailureLogs("Interactive Browser Credential", err, true)
+		addGetTokenFailureLogs("InteractiveBrowserCredential", err, true)
 		return nil, newAuthenticationFailedError(err, nil)
 	}
 	c.account = ar.Account

@@ -106,7 +106,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	}
 	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Device Code Credential", err, true)
+		addGetTokenFailureLogs("DeviceCodeCredential", err, true)
 		return nil, newAuthenticationFailedError(err, nil)
 	}
 	err = c.userPrompt(ctx, DeviceCodeMessage{
@@ -119,7 +119,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	}
 	ar, err = dc.AuthenticationResult(ctx)
 	if err != nil {
-		addGetTokenFailureLogs("Device Code Credential", err, true)
+		addGetTokenFailureLogs("DeviceCodeCredential", err, true)
 		return nil, newAuthenticationFailedError(err, nil)
 	}
 	c.account = ar.Account

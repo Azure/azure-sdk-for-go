@@ -71,7 +71,7 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	scope := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, scope)
 	if err != nil {
-		addGetTokenFailureLogs("Azure CLI Credential", err, true)
+		addGetTokenFailureLogs("AzureCLICredential", err, true)
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)
@@ -132,7 +132,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 			if msg == "" {
 				msg = err.Error()
 			}
-			return nil, newCredentialUnavailableError("Azure CLI Credential", msg)
+			return nil, newCredentialUnavailableError("AzureCLICredential", msg)
 		}
 
 		return output, nil

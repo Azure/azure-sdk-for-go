@@ -69,7 +69,7 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts policy.Token
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Client Secret Credential", err, true)
+		addGetTokenFailureLogs("ClientSecretCredential", err, true)
 		return nil, newAuthenticationFailedError(err, nil)
 	}
 	logGetTokenSuccess(c, opts)

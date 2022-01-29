@@ -169,7 +169,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 	resp, err := c.pipeline.Do(msg)
 	if err != nil {
 		if cancel != nil && errors.Is(err, context.DeadlineExceeded) {
-			return nil, newCredentialUnavailableError("Managed Identity Credential", "IMDS token request timed out")
+			return nil, newCredentialUnavailableError("ManagedIdentityCredential", "IMDS token request timed out")
 		}
 		return nil, newAuthenticationFailedError(err, nil)
 	}
@@ -185,7 +185,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		if id != nil {
 			return nil, newAuthenticationFailedError(errors.New("the requested identity isn't assigned to this resource"), resp)
 		}
-		return nil, newCredentialUnavailableError("Managed Identity Credential", "no default identity is assigned to this resource")
+		return nil, newCredentialUnavailableError("ManagedIdentityCredential", "no default identity is assigned to this resource")
 	}
 
 	return nil, newAuthenticationFailedError(errors.New("authentication failed"), resp)
@@ -252,7 +252,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id Manage
 	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(ctx, id, scopes)
 	default:
-		return nil, newCredentialUnavailableError("Managed Identity Credential", "managed identity isn't supported in this environment")
+		return nil, newCredentialUnavailableError("ManagedIdentityCredential", "managed identity isn't supported in this environment")
 	}
 }
 

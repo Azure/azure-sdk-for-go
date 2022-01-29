@@ -90,7 +90,7 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts policy.
 		}
 		ar, err = c.cca.AcquireTokenByAuthCode(ctx, c.authCode, c.redirectURI, opts.Scopes)
 		if err != nil {
-			addGetTokenFailureLogs("Authorization Code Credential", err, true)
+			addGetTokenFailureLogs("AuthorizationCodeCredential", err, true)
 			return nil, newAuthenticationFailedError(err, nil)
 		}
 		logGetTokenSuccess(c, opts)
@@ -105,7 +105,7 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts policy.
 	}
 	ar, err = c.pca.AcquireTokenByAuthCode(ctx, c.authCode, c.redirectURI, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Authorization Code Credential", err, true)
+		addGetTokenFailureLogs("AuthorizationCodeCredential", err, true)
 		return nil, newAuthenticationFailedError(err, nil)
 	}
 	logGetTokenSuccess(c, opts)

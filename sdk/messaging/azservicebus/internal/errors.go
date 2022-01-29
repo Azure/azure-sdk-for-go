@@ -158,6 +158,13 @@ func isRetryableAMQPError(ctxForLogging context.Context, err error) bool {
 		return ok
 	}
 
+	var amqpDetachErr *amqp.DetachError
+	var isAMQPDetachError = errors.As(err, &amqpDetachErr)
+
+	if isAMQPDetachError {
+		return isRetryableAMQPError(ctxForLogging, amqpDetachErr.RemoteError)
+	}
+
 	// TODO: there is a bug somewhere that seems to be errorString'ing errors. Need to track that down.
 	// In the meantime, try string matching instead
 	for condition := range retryableAMQPConditions {

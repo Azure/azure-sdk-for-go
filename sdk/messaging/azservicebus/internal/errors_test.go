@@ -113,6 +113,11 @@ func Test_isRetryableAMQPError(t *testing.T) {
 		require.True(t, isRetryableAMQPError(ctx, &amqp.Error{
 			Condition: amqp.ErrorCondition(code),
 		}))
+		require.True(t, isRetryableAMQPError(ctx, &amqp.DetachError{
+			RemoteError: &amqp.Error{
+				Condition: amqp.ErrorCondition(code),
+			},
+		}))
 
 		// it works equally well if the error is just in the String().
 		// Need to narrow this down some more to see where the errors

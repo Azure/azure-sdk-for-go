@@ -6,10 +6,13 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // DefaultAzureCredentialOptions contains optional parameters for DefaultAzureCredential.
@@ -39,7 +42,7 @@ type DefaultAzureCredential struct {
 // NewDefaultAzureCredential creates a DefaultAzureCredential.
 func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*DefaultAzureCredential, error) {
 	var creds []azcore.TokenCredential
-	errMsg := ""
+	var errorMessages []string
 
 	if options == nil {
 		options = &DefaultAzureCredentialOptions{}
@@ -51,7 +54,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {
-		errMsg += err.Error()
+		errorMessages = append(errorMessages, fmt.Sprintf("EnvironmentCredential: %s", err.Error()))
 	}
 
 	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions})
@@ -59,25 +62,26 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, msiCred)
 		msiCred.client.imdsTimeout = time.Second
 	} else {
-		errMsg += err.Error()
+		errorMessages = append(errorMessages, fmt.Sprintf("ManagedIdentityCredential: %s", err.Error()))
 	}
 
 	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {
-		errMsg += err.Error()
+		errorMessages = append(errorMessages, fmt.Sprintf("AzureCLICredential: %s", err.Error()))
 	}
 
-	if len(creds) == 0 {
-		err := errors.New(errMsg)
-		logCredentialError("Default Azure Credential", err)
+	err = defaultAzureCredentialConstructorErrorHandler(len(creds), errorMessages)
+	if err != nil {
 		return nil, err
 	}
+
 	chain, err := NewChainedTokenCredential(creds, nil)
 	if err != nil {
 		return nil, err
 	}
+	chain.name = "DefaultAzureCredential"
 	return &DefaultAzureCredential{chain: chain}, nil
 }
 
@@ -86,4 +90,20 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	return c.chain.GetToken(ctx, opts)
+}
+
+func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
+	errorMessage := strings.Join(errorMessages, "\n\t")
+
+	if numberOfSuccessfulCredentials == 0 {
+		err := errors.New(errorMessage)
+		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize the Default Azure Credential:\n\t%s", err.Error())
+		return err
+	}
+
+	if len(errorMessages) != 0 {
+		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:\n\t%s", errorMessage)
+	}
+
+	return nil
 }

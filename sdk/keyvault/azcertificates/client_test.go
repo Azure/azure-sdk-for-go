@@ -43,7 +43,7 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	certName, err := createRandomName(t, "cert")
+	certName, err := createRandomName(t, "beginCreate")
 	require.NoError(t, err)
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{

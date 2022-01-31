@@ -3,6 +3,7 @@
 ## 0.3.0 (Unreleased)
 
 ### Features Added
+* Exported fields `Offset` and `Count` on `HttpRange`
 
 ### Breaking Changes
 * Updated to latest `azcore`.  Public surface area is unchanged.

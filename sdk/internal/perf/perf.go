@@ -97,12 +97,10 @@ func runTest(p PerfTest, c chan runResult) {
 	if WarmUp > 0 {
 		warmUpStart := time.Now()
 		for time.Since(warmUpStart).Seconds() < float64(WarmUp) {
-			fmt.Println("Warmup pre-run")
 			err := p.Run(context.Background())
 			if err != nil {
 				c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 			}
-			fmt.Println("Warmup post-run")
 		}
 	}
 
@@ -112,13 +110,11 @@ func runTest(p PerfTest, c chan runResult) {
 	perSecondCount := make([]int, 0)
 	w := tabwriter.NewWriter(os.Stdout, 16, 8, 1, ' ', tabwriter.AlignRight|tabwriter.Debug)
 	for time.Since(start).Seconds() < float64(Duration) {
-		fmt.Println("Run pre-run")
 		err := p.Run(context.Background())
 		if err != nil {
 			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
 		totalCount += 1
-		fmt.Println("Warmup post-run")
 
 		// Every second (roughly) we print out an update
 		if time.Since(start).Seconds() > float64(lastPrint) {
@@ -271,7 +267,7 @@ func testsToRun(registered []NewPerfTest) NewPerfTest {
 		fmt.Println("Performance only supports running one test per process. Run the performance multiple times per performance for each test you want to run.")
 		os.Exit(1)
 	} else if len(ret) == 0 {
-		// return nil
+		return nil
 	}
 
 	return registered[0]

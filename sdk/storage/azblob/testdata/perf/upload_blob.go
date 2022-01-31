@@ -59,9 +59,11 @@ func (m *uploadPerfTest) Setup(ctx context.Context) error {
 }
 
 func (m *uploadPerfTest) Run(ctx context.Context) error {
-	fmt.Println(1)
 	_, err := m.blobClient.Upload(ctx, m.data, &azblob.UploadBlockBlobOptions{})
-	fmt.Println(2)
+	_, seekErr := m.data.Seek(0, io.SeekStart) // we have to manually seek, is this expected?
+	if seekErr != nil {
+		return seekErr
+	}
 	return err
 }
 
@@ -109,6 +111,7 @@ func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
 		count = to.Int64Ptr(100)
 	}
 	data, err := perf.NewRandomStream(int(*size))
+	// data := streaming.NopCloser(strings.NewReader("blahblahblah"))
 	if err != nil {
 		panic(err)
 	}
@@ -117,6 +120,5 @@ func NewUploadTest(options *perf.PerfTestOptions) perf.PerfTest {
 		blobName:        "uploadtest",
 		containerName:   "uploadcontainer",
 		data:            data,
-		// data:            "This is all placeholder random data for now. This is all placeholder random data for now. This is all placeholder random data for now.",
 	}
 }

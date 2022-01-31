@@ -48,3 +48,10 @@ func commaIze(i int) string {
 
 	return fmt.Sprintf("%d,%s", copy, ret)
 }
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}

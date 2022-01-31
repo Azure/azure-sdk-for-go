@@ -26,8 +26,6 @@ func TestRandomStream(t *testing.T) {
 	n, err := r.Read(a)
 	require.NoError(t, err)
 	require.Equal(t, 500, n)
-	require.Equal(t, 524, r.(*randomStream).remaining)
-	require.Equal(t, 500, r.(*randomStream).position)
 	require.NotEqual(t, a, make([]byte, 500))
 
 	b := make([]byte, 500)
@@ -48,7 +46,6 @@ func TestRandomStream(t *testing.T) {
 	pos, err := r.Seek(0, io.SeekStart)
 	require.NoError(t, err)
 	require.Equal(t, int64(0), pos)
-	require.Equal(t, 0, r.(*randomStream).position)
 
 	a1 := make([]byte, 500)
 	n, err = r.Read(a1)

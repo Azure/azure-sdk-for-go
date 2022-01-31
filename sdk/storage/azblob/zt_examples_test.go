@@ -27,8 +27,7 @@ import (
 
 // This example shows you how to get started using the Azure Storage Blob SDK for Go.
 func Example() {
-	// Use your storage account's name and key to create a credential object, used to access your account.
-	// You can obtain these details from the Azure Portal.
+	// Your account name and key can be obtained from the Azure Portal.
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
@@ -43,71 +42,67 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	// Open up a service client.
-	// You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
-	service, err := azblob.NewServiceClientWithSharedKey("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	// The service URL for blobs endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
+	service, err := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// All operations in the Azure Storage Blob SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
-	ctx := context.Background() // This example has no expiry.
-
-	// This example showcases several common operations to help you get started, such as:
-
 	// ===== 1. Creating a container =====
 
-	// First, branch off of the service client and create a container client.
+	// First, create a container client, and use the Create method to create a new container in your account
 	container := service.NewContainerClient("myContainer")
-	// Then, fire off a create operation on the container client.
-	// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
-	// Specifying nil omits all options.
-	_, err = container.Create(ctx, nil)
+	// All functions that make service requests have an options struct as the final parameter.
+	// The options struct allows you to specify optional parameters such as metadata, public access types, etc.
+	// If you want to use the default options, pass in nil.
+	_, err = container.Create(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// ===== 2. Uploading/downloading a block blob =====
-	// We'll specify our data up-front, rather than reading a file for simplicity's sake.
 	data := "Hello world!"
 
-	// Branch off of the container into a block blob client
+	// Create a new BlockBlobClient from the ContainerClient
 	blockBlob := container.NewBlockBlobClient("HelloWorld.txt")
 
 	// Upload data to the block blob
-	_, err = blockBlob.Upload(ctx, streaming.NopCloser(strings.NewReader(data)), nil)
+	_, err = blockBlob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader(data)), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Download the blob's contents and ensure that the download worked properly
-	get, err := blockBlob.Download(ctx, nil)
+	get, err := blockBlob.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Open a buffer, reader, and then download!
+	// Use the bytes.Buffer object to read the downloaded data.
 	downloadedData := &bytes.Buffer{}
-	reader := get.Body(azblob.RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
+	reader := get.Body(azblob.RetryReaderOptions{}) // RetryReaderOptions options for tuning downloads.
 	_, err = downloadedData.ReadFrom(reader)
 	if err != nil {
 		return
 	}
+
 	err = reader.Close()
 	if err != nil {
 		return
 	}
 	if data != downloadedData.String() {
-		log.Fatal("downloaded data doesn't match uploaded data")
+		log.Fatal("downloaded data does not match uploaded data")
+	} else {
+		fmt.Printf("Downloaded data: %s\n", downloadedData.String())
 	}
 
 	// ===== 3. list blobs =====
-	// The ListBlobs and ListContainers APIs return two channels, a values channel, and an errors channel.
-	// You should enumerate on a range over the values channel, and then check the errors channel, as only ONE value will ever be passed to the errors channel.
-	// The AutoPagerTimeout defines how long it will wait to place into the items channel before it exits & cleans itself up. A zero time will result in no timeout.
+	// List methods returns a pager object which can be used to iterate over the results of a paging operation.
+	// To iterate over a page use the NextPage(context.Context) to fetch the next page of results.
+	// PageResponse() can be used to iterate over the results of the specific page.
+	// Always check the Err() method after paging to see if an error was returned by the pager. A pager will return either an error or the page of results.
 	pager := container.ListBlobsFlat(nil)
-
-	for pager.NextPage(ctx) {
+	for pager.NextPage(context.TODO()) {
 		resp := pager.PageResponse()
 
 		for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
@@ -119,20 +114,21 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	// Delete the blob we created earlier.
-	_, err = blockBlob.Delete(ctx, nil)
+	// Delete the blob.
+	_, err = blockBlob.Delete(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Delete the container we created earlier.
-	_, err = container.Delete(ctx, nil)
+	// Delete the container.
+	_, err = container.Delete(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 // Awaiting Mohit's test PR, StorageError is barren for now.
+// TODO: is this still valid?
 func ExampleStorageError() {
 	/* This example demonstrates how to handle errors returned from the various Client methods. All these methods return an
 	   object implementing the azcore.Response interface and an object implementing Go's error interface.
@@ -353,11 +349,8 @@ func ExampleContainerClient_SetAccessPolicy() {
 		log.Fatal(err)
 	}
 
-	// Grab the background context, use no expiry
-	ctx := context.Background()
-
 	// Create the container (with no metadata and no public access)
-	_, err = container.Create(ctx, nil)
+	_, err = container.Create(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -365,7 +358,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 	// Upload a simple blob.
 	blob := container.NewBlockBlobClient("HelloWorld.txt")
 
-	_, err = blob.Upload(ctx, streaming.NopCloser(strings.NewReader("Hello World!")), nil)
+	_, err = blob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Hello World!")), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -377,7 +370,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 	}
 	if get.StatusCode == http.StatusNotFound {
 		_, err := container.SetAccessPolicy(
-			ctx,
+			context.TODO(),
 			&azblob.SetAccessPolicyOptions{
 				ContainerSetAccessPolicyOptions: azblob.ContainerSetAccessPolicyOptions{
 					Access: azblob.PublicAccessTypeBlob.ToPtr(),
@@ -422,7 +415,6 @@ func ExampleBlobAccessConditions() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx := context.Background() // This example uses a never-expiring context
 
 	// This helper function displays the results of an operation; it is called frequently below.
 	showResult := func(response *azblob.DownloadResponse, err error) {
@@ -456,14 +448,14 @@ func ExampleBlobAccessConditions() {
 	}
 
 	// Create the blob (unconditionally; succeeds)
-	upload, err := blockBlob.Upload(ctx, streaming.NopCloser(strings.NewReader("Text-1")), nil)
+	upload, err := blockBlob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Text-1")), nil)
 	showResultUpload(upload, err)
 
 	// showResult(upload, err)
 
 	// Download blob content if the blob has been modified since we uploaded it (fails):
 	showResult(blockBlob.Download(
-		ctx,
+		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{
@@ -475,7 +467,7 @@ func ExampleBlobAccessConditions() {
 
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
 	showResult(blockBlob.Download(
-		ctx,
+		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{
@@ -485,7 +477,7 @@ func ExampleBlobAccessConditions() {
 	))
 
 	// Upload new content if the blob hasn't changed since the version identified by ETag (succeeds):
-	upload, err = blockBlob.Upload(ctx, streaming.NopCloser(strings.NewReader("Text-2")),
+	upload, err = blockBlob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Text-2")),
 		&azblob.UploadBlockBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfMatch: upload.ETag},
@@ -494,14 +486,14 @@ func ExampleBlobAccessConditions() {
 	showResultUpload(upload, err)
 
 	// Download content if it has changed since the version identified by ETag (fails):
-	showResult(blockBlob.Download(ctx,
+	showResult(blockBlob.Download(context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
 		}))
 
 	// Upload content if the blob doesn't already exist (fails):
-	showResultUpload(blockBlob.Upload(ctx, streaming.NopCloser(strings.NewReader("Text-3")),
+	showResultUpload(blockBlob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Text-3")),
 		&azblob.UploadBlockBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: to.StringPtr(string(azcore.ETagAny))},
@@ -524,19 +516,17 @@ func ExampleContainerClient_SetMetadata() {
 		log.Fatal(err)
 	}
 
-	ctx := context.Background() // This example uses a never-expiring context
-
 	// Create a container with some metadata (string key/value pairs)
 	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
 	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
 	creatingApp, _ := os.Executable()
-	_, err = containerClient.Create(ctx, &azblob.CreateContainerOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	_, err = containerClient.Create(context.TODO(), &azblob.CreateContainerOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Query the container's metadata
-	get, err := containerClient.GetProperties(ctx, nil)
+	get, err := containerClient.GetProperties(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -553,7 +543,7 @@ func ExampleContainerClient_SetMetadata() {
 
 	// Update the metadata and write it back to the container
 	metadata["author"] = "Aidan" // NOTE: The keyname is in all lowercase letters
-	_, err = containerClient.SetMetadata(ctx, &azblob.SetMetadataContainerOptions{Metadata: metadata})
+	_, err = containerClient.SetMetadata(context.TODO(), &azblob.SetMetadataContainerOptions{Metadata: metadata})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -578,19 +568,17 @@ func ExampleBlobClient_SetMetadata() {
 		log.Fatal(err)
 	}
 
-	ctx := context.Background() // This example uses a never-expiring context
-
 	// Create a blob with metadata (string key/value pairs)
 	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
 	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
 	creatingApp, _ := os.Executable()
-	_, err = BlobClient.Upload(ctx, streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))), &azblob.UploadBlockBlobOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	_, err = BlobClient.Upload(context.TODO(), streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))), &azblob.UploadBlockBlobOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Query the blob's properties and metadata
-	get, err := BlobClient.GetProperties(ctx, nil)
+	get, err := BlobClient.GetProperties(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -610,7 +598,7 @@ func ExampleBlobClient_SetMetadata() {
 
 	// Update the blob's metadata and write it back to the blob
 	metadata["editor"] = "Grant" // Add a new key/value; NOTE: The keyname is in all lowercase letters
-	_, err = BlobClient.SetMetadata(ctx, metadata, nil)
+	_, err = BlobClient.SetMetadata(context.TODO(), metadata, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -635,10 +623,8 @@ func ExampleBlobHTTPHeaders() {
 		log.Fatal(err)
 	}
 
-	ctx := context.Background() // This example uses a never-expiring context
-
 	// Create a blob with HTTP headers
-	_, err = blobClient.Upload(ctx, streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))),
+	_, err = blobClient.Upload(context.TODO(), streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))),
 		&azblob.UploadBlockBlobOptions{HTTPHeaders: &azblob.BlobHTTPHeaders{
 			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 			BlobContentDisposition: to.StringPtr("attachment"),
@@ -648,7 +634,7 @@ func ExampleBlobHTTPHeaders() {
 	}
 
 	// GetMetadata returns the blob's properties, HTTP headers, and metadata
-	get, err := blobClient.GetProperties(ctx, nil)
+	get, err := blobClient.GetProperties(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -662,7 +648,7 @@ func ExampleBlobHTTPHeaders() {
 
 	// Update the blob's HTTP Headers and write them back to the blob
 	httpHeaders.BlobContentType = to.StringPtr("text/plain")
-	_, err = blobClient.SetHTTPHeaders(ctx, httpHeaders, nil)
+	_, err = blobClient.SetHTTPHeaders(context.TODO(), httpHeaders, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -687,8 +673,6 @@ func ExampleBlockBlobClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	ctx := context.Background() // This example uses a never-expiring context
 
 	// These helper functions convert a binary block ID to a base-64 string and vice versa
 	// NOTE: The blockID must be <= 64 bytes and ALL blockIDs for the block must be the same length
@@ -717,20 +701,20 @@ func ExampleBlockBlobClient() {
 		base64BlockIDs[index] = blockIDIntToBase64(index) // Some people use UUIDs for block IDs
 
 		// Upload a block to this blob specifying the Block ID and its content (up to 100MB); this block is uncommitted.
-		_, err := BlobClient.StageBlock(ctx, base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), nil)
+		_, err := BlobClient.StageBlock(context.TODO(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), nil)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
 	// After all the blocks are uploaded, atomically commit them to the blob.
-	_, err = BlobClient.CommitBlockList(ctx, base64BlockIDs, nil)
+	_, err = BlobClient.CommitBlockList(context.TODO(), base64BlockIDs, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// For the blob, show each block (ID and size) that is a committed part of it.
-	getBlock, err := BlobClient.GetBlockList(ctx, azblob.BlockListTypeAll, nil)
+	getBlock, err := BlobClient.GetBlockList(context.TODO(), azblob.BlockListTypeAll, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -740,7 +724,7 @@ func ExampleBlockBlobClient() {
 
 	// Download the blob in its entirety; download operations do not take blocks into account.
 	// NOTE: For really large blobs, downloading them like allocates a lot of memory.
-	get, err := BlobClient.Download(ctx, nil)
+	get, err := BlobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -775,21 +759,20 @@ func ExampleAppendBlobClient() {
 		log.Fatal(err)
 	}
 
-	ctx := context.Background() // This example uses a never-expiring context
-	_, err = appendBlobClient.Create(ctx, nil)
+	_, err = appendBlobClient.Create(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for i := 0; i < 5; i++ { // Append 5 blocks to the append blob
-		_, err := appendBlobClient.AppendBlock(ctx, streaming.NopCloser(strings.NewReader(fmt.Sprintf("Appending block #%d\n", i))), nil)
+		_, err := appendBlobClient.AppendBlock(context.TODO(), streaming.NopCloser(strings.NewReader(fmt.Sprintf("Appending block #%d\n", i))), nil)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
 	// Download the entire append blob's contents and show it.
-	get, err := appendBlobClient.Download(ctx, nil)
+	get, err := appendBlobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -824,39 +807,25 @@ func ExamplePageBlobClient() {
 		log.Fatal(err)
 	}
 
-	ctx := context.Background() // This example uses a never-expiring context
-	_, err = blobClient.Create(ctx, azblob.PageBlobPageBytes*4, nil)
+	_, err = blobClient.Create(context.TODO(), azblob.PageBlobPageBytes*4, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	page := [azblob.PageBlobPageBytes]byte{}
 	copy(page[:], "Page 0")
-	_, err = blobClient.UploadPages(ctx, streaming.NopCloser(bytes.NewReader(page[:])), nil)
+	_, err = blobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page[:])), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	copy(page[:], "Page 1")
-	_, err = blobClient.UploadPages(ctx, streaming.NopCloser(bytes.NewReader(page[:])), &azblob.UploadPagesOptions{PageRange: &azblob.HttpRange{0, 2 * azblob.PageBlobPageBytes}})
+	_, err = blobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page[:])), &azblob.UploadPagesOptions{PageRange: &azblob.HttpRange{0, 2 * azblob.PageBlobPageBytes}})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	getPages, err := blobClient.GetPageRanges(ctx, azblob.HttpRange{0 * azblob.PageBlobPageBytes, 10 * azblob.PageBlobPageBytes}, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, pr := range getPages.PageList.PageRange {
-		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
-	}
-
-	_, err = blobClient.ClearPages(ctx, azblob.HttpRange{0 * azblob.PageBlobPageBytes, 1 * azblob.PageBlobPageBytes}, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	getPages, err = blobClient.GetPageRanges(ctx, azblob.HttpRange{0 * azblob.PageBlobPageBytes, 10 * azblob.PageBlobPageBytes}, nil)
+	getPages, err := blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{0 * azblob.PageBlobPageBytes, 10 * azblob.PageBlobPageBytes}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -864,7 +833,20 @@ func ExamplePageBlobClient() {
 		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 	}
 
-	get, err := blobClient.Download(ctx, nil)
+	_, err = blobClient.ClearPages(context.TODO(), azblob.HttpRange{0 * azblob.PageBlobPageBytes, 1 * azblob.PageBlobPageBytes}, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	getPages, err = blobClient.GetPageRanges(context.TODO(), azblob.HttpRange{0 * azblob.PageBlobPageBytes, 10 * azblob.PageBlobPageBytes}, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, pr := range getPages.PageList.PageRange {
+		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
+	}
+
+	get, err := blobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -901,28 +883,26 @@ func Example_blobSnapshots() {
 	// Create a BlockBlobClient object to a blob in the container.
 	baseBlobClient := containerClient.NewBlockBlobClient("Original.txt")
 
-	ctx := context.Background() // This example uses a never-expiring context
-
 	// Create the original blob:
-	_, err = baseBlobClient.Upload(ctx, streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))), nil)
+	_, err = baseBlobClient.Upload(context.TODO(), streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Create a snapshot of the original blob & save its timestamp:
-	createSnapshot, err := baseBlobClient.CreateSnapshot(ctx, nil)
+	createSnapshot, err := baseBlobClient.CreateSnapshot(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	snapshot := *createSnapshot.Snapshot
 
 	// Modify the original blob & show it:
-	_, err = baseBlobClient.Upload(ctx, streaming.NopCloser(strings.NewReader("New text")), nil)
+	_, err = baseBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("New text")), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	get, err := baseBlobClient.Download(ctx, nil)
+	get, err := baseBlobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -940,7 +920,7 @@ func Example_blobSnapshots() {
 
 	// Show snapshot blob via original blob URI & snapshot time:
 	snapshotBlobClient := baseBlobClient.WithSnapshot(snapshot)
-	get, err = snapshotBlobClient.Download(ctx, nil)
+	get, err = snapshotBlobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -963,7 +943,7 @@ func Example_blobSnapshots() {
 	// List the blob(s) in our container; since a container may hold millions of blobs, this is done 1 segment at a time.
 	pager := containerClient.ListBlobsFlat(nil)
 
-	for pager.NextPage(ctx) {
+	for pager.NextPage(context.TODO()) {
 		resp := pager.PageResponse()
 		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			// Process the blobs returned
@@ -980,7 +960,7 @@ func Example_blobSnapshots() {
 	}
 
 	// Promote read-only snapshot to writable base blob:
-	_, err = baseBlobClient.StartCopyFromURL(ctx, snapshotBlobClient.URL(), nil)
+	_, err = baseBlobClient.StartCopyFromURL(context.TODO(), snapshotBlobClient.URL(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -989,7 +969,7 @@ func Example_blobSnapshots() {
 	// DeleteSnapshotsOptionOnly deletes all the base blob's snapshots but not the base blob itself
 	// DeleteSnapshotsOptionInclude deletes the base blob & all its snapshots.
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
-	_, err = baseBlobClient.Delete(ctx, &azblob.DeleteBlobOptions{DeleteSnapshots: azblob.DeleteSnapshotsOptionTypeInclude.ToPtr()})
+	_, err = baseBlobClient.Delete(context.TODO(), &azblob.DeleteBlobOptions{DeleteSnapshots: azblob.DeleteSnapshotsOptionTypeInclude.ToPtr()})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1012,7 +992,6 @@ func Example_progressUploadDownload() {
 		log.Fatal(err)
 	}
 
-	ctx := context.Background() // This example uses a never-expiring context
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
 	blobClient := containerClient.NewBlockBlobClient("Data.bin")
 
@@ -1020,7 +999,7 @@ func Example_progressUploadDownload() {
 	requestBody := streaming.NopCloser(strings.NewReader("Some text to write"))
 
 	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
-	_, err = blobClient.Upload(ctx, streaming.NewRequestProgress(streaming.NopCloser(requestBody), func(bytesTransferred int64) {
+	_, err = blobClient.Upload(context.TODO(), streaming.NewRequestProgress(streaming.NopCloser(requestBody), func(bytesTransferred int64) {
 		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody)
 	}), &azblob.UploadBlockBlobOptions{HTTPHeaders: &azblob.BlobHTTPHeaders{
 		BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
@@ -1031,7 +1010,7 @@ func Example_progressUploadDownload() {
 	}
 
 	// Here's how to read the blob's data with progress reporting:
-	get, err := blobClient.Download(ctx, nil)
+	get, err := blobClient.Download(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1071,10 +1050,8 @@ func ExampleBlobClient_startCopy() {
 		log.Fatal(err)
 	}
 
-	ctx := context.Background() // This example uses a never-expiring context
-
 	src := "https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"
-	startCopy, err := blobClient.StartCopyFromURL(ctx, src, nil)
+	startCopy, err := blobClient.StartCopyFromURL(context.TODO(), src, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1083,7 +1060,7 @@ func ExampleBlobClient_startCopy() {
 	copyStatus := *startCopy.CopyStatus
 	for copyStatus == azblob.CopyStatusTypePending {
 		time.Sleep(time.Second * 2)
-		getMetadata, err := blobClient.GetProperties(ctx, nil)
+		getMetadata, err := blobClient.GetProperties(context.TODO(), nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -1122,10 +1099,8 @@ func ExampleBlobClient_startCopy() {
 //		log.Fatal(err)
 //	}
 //
-//	ctx := context.Background() // This example uses a never-expiring context
-//
 //	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-//	response, err := UploadFileToBlockBlob(ctx, file, blockBlobURL,
+//	response, err := UploadFileToBlockBlob(context.TODO(), file, blockBlobURL,
 //		HighLevelUploadToBlockBlobOption{
 //			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 //			Progress: func(bytesTransferred int64) {
@@ -1232,7 +1207,6 @@ func ExampleBlobClient_Download() {
 //	if err != nil {
 //		log.Fatal(err)
 //	}
-//	ctx := context.Background() // This example uses a never-expiring context
 //
 //	// Create some data to test the upload stream
 //	blobSize := 8 * 1024 * 1024
@@ -1245,7 +1219,7 @@ func ExampleBlobClient_Download() {
 //	// Perform UploadStreamToBlockBlob
 //	bufferSize := 2 * 1024 * 1024 // Configure the size of the rotating buffers that are used when uploading
 //	maxBuffers := 3               // Configure the number of rotating buffers that are used when uploading
-//	_, err = UploadStreamToBlockBlob(ctx, bytes.NewReader(data), blockBlobURL,
+//	_, err = UploadStreamToBlockBlob(context.TODO(), bytes.NewReader(data), blockBlobURL,
 //		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 //
 //	// Verify that upload was successful
@@ -1285,27 +1259,24 @@ func ExampleContainerLeaseClient() {
 		log.Fatal(err)
 	}
 
-	// All operations allow you to specify a timeout via a Go context.Context object.
-	ctx := context.Background() // This example uses a never-expiring context
-
 	// Now acquire a lease on the container.
 	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
 	duration := int32(60)
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &azblob.AcquireLeaseContainerOptions{Duration: &duration})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(context.TODO(), &azblob.AcquireLeaseContainerOptions{Duration: &duration})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
 
 	// The container cannot be deleted without providing the lease ID.
-	_, err = containerLeaseClient.Delete(ctx, nil)
+	_, err = containerLeaseClient.Delete(context.TODO(), nil)
 	if err == nil {
 		log.Fatal("delete should have failed")
 	}
 	fmt.Println("The container cannot be deleted while there is an active lease")
 
 	// We can release the lease now and the container can be deleted.
-	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
+	_, err = containerLeaseClient.ReleaseLease(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1313,7 +1284,7 @@ func ExampleContainerLeaseClient() {
 
 	// Acquire a lease again to perform other operations.
 	// Duration is still 60
-	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(ctx, &azblob.AcquireLeaseContainerOptions{Duration: &duration})
+	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(context.TODO(), &azblob.AcquireLeaseContainerOptions{Duration: &duration})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1327,7 +1298,7 @@ func ExampleContainerLeaseClient() {
 	}
 
 	newLeaseID[0] = 1
-	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx,
+	changeLeaseResponse, err := containerLeaseClient.ChangeLease(context.TODO(),
 		&azblob.ChangeLeaseContainerOptions{ProposedLeaseID: to.StringPtr(newLeaseID.String())})
 	if err != nil {
 		log.Fatal(err)
@@ -1335,7 +1306,7 @@ func ExampleContainerLeaseClient() {
 	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
 
 	// The lease can be renewed.
-	renewLeaseResponse, err := containerLeaseClient.RenewLease(ctx, nil)
+	renewLeaseResponse, err := containerLeaseClient.RenewLease(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1343,7 +1314,7 @@ func ExampleContainerLeaseClient() {
 
 	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
 	duration = 60
-	_, err = containerLeaseClient.BreakLease(ctx, &azblob.BreakLeaseContainerOptions{BreakPeriod: &duration})
+	_, err = containerLeaseClient.BreakLease(context.TODO(), &azblob.BreakLeaseContainerOptions{BreakPeriod: &duration})
 	if err != nil {
 		log.Fatal(err)
 	}

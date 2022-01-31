@@ -426,7 +426,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		return ret(err)
 	}
 
-	if needsDrain {
+	if needsDrain && linksWithID != nil {
 		// start the drain asynchronously. Note that we ignore the user's context at this point
 		// since draining makes sure we don't get messages when nobody is receiving.
 		if err := linksWithID.Receiver.DrainCredit(context.Background()); err != nil {

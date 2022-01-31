@@ -8,4 +8,5 @@ scenarios:
 - "finiteSendAndReceive"
 - "infiniteSendAndReceive"
 - "longRunningRenewLock"
-- "rapidOpenClose"  
+- "rapidOpenClose"
+- "receiveCancellation"

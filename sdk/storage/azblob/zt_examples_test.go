@@ -183,7 +183,7 @@ func ExampleStorageError() {
 
 // This example demonstrates splitting a URL into its parts so you can examine and modify the URL in an Azure Storage fluent way.
 func ExampleBlobURLParts() {
-	// Let's begin with a snapshot SAS token.
+	// Here is an example of a blob snapshot.
 	u := "https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
 		"snapshot=2011-03-09T01:42:34Z&" +
 		"sv=2015-02-21&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&" +
@@ -192,15 +192,12 @@ func ExampleBlobURLParts() {
 	// Breaking the URL down into it's parts by conversion to BlobURLParts
 	parts := azblob.NewBlobURLParts(u)
 
-	// Now, we can access the parts (this example prints them.)
-	fmt.Println(parts.Host, parts.ContainerName, parts.BlobName, parts.Snapshot)
-	sas := parts.SAS
-	fmt.Println(sas.Version(), sas.Resource(), sas.StartTime(), sas.ExpiryTime(), sas.Permissions(),
-		sas.IPRange(), sas.Protocol(), sas.Identifier(), sas.Services(), sas.Signature())
+	// The BlobURLParts allows access to individual portions of a Blob URL
+	fmt.Printf("Host: %s\nContainerName: %s\nBlobName: %s\nSnapshot: %s\n", parts.Host, parts.ContainerName, parts.BlobName, parts.Snapshot)
+	fmt.Printf("Version: %s\nResource: %s\nStartTime: %s\nExpiryTime: %s\nPermissions: %s\n", parts.SAS.Version(), parts.SAS.Resource(), parts.SAS.StartTime(), parts.SAS.ExpiryTime(), parts.SAS.Permissions())
 
-	// You can also alter some of the fields and construct a new URL:
-	// Note that: SAS tokens may be limited to a specific container or blob.
-	// You should be careful about modifying SAS tokens, as you might take them outside of their original scope accidentally.
+	// You can alter fields toconstruct a new URL:
+	// Note: SAS tokens may be limited to a specific container or blob, be careful modifying SAS tokens, you might take them outside of their original scope accidentally.
 	parts.SAS = azblob.SASQueryParameters{}
 	parts.Snapshot = ""
 	parts.ContainerName = "othercontainer"
@@ -209,10 +206,9 @@ func ExampleBlobURLParts() {
 	fmt.Print(parts.URL())
 }
 
-// This example demonstrates how to use the SAS token convenience generators.
-// Though this example focuses on account SAS, these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
+// This example demonstrates how to use the SAS token generators, this example focuses on account SAS,
+// these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
 func ExampleServiceClient_GetSASToken() {
-	// Initialize a service client
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
@@ -222,26 +218,40 @@ func ExampleServiceClient_GetSASToken() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Provide the convenience function with relevant info (services, resource types, permissions, and duration)
+
+	// Provide the relevant info (services, resource types, permissions, and duration)
 	// The SAS token will be valid from this moment onwards.
-	accountSAS, err := serviceClient.GetSASToken(azblob.AccountSASResourceTypes{Object: true, Service: true, Container: true},
-		azblob.AccountSASPermissions{Read: true, List: true}, azblob.AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
+	accountSAS, err := serviceClient.GetSASToken(
+		azblob.AccountSASResourceTypes{Object: true, Service: true, Container: true},
+		azblob.AccountSASPermissions{Read: true, List: true},
+		azblob.AccountSASServices{Blob: true},
+		time.Now(),
+		time.Now().Add(48*time.Hour),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
-	// You can hand off this URL to someone else via any mechanism you choose.
 
-	// ******************************************
-
-	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceClient, err = azblob.NewServiceClientWithNoCredential(urlToSend, nil)
+	// This URL can be used to authenticate requests now
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
+	serviceClientUsingSAS, err := azblob.NewServiceClientWithNoCredential(sasURL, nil)
 	if err != nil {
+		log.Fatal(err)
+	}
+
+	// For example, you can now list all the containers
+	pager := serviceClientUsingSAS.ListContainers(nil)
+	for pager.NextPage(context.TODO()) {
+		for _, container := range pager.PageResponse().ContainerItems {
+			fmt.Println(*container.Name)
+		}
+	}
+	if err := pager.Err(); err != nil {
 		log.Fatal(err)
 	}
 
 	// You can also break a blob URL up into it's constituent parts
-	blobURLParts := azblob.NewBlobURLParts(serviceClient.URL())
+	blobURLParts := azblob.NewBlobURLParts(serviceClientUsingSAS.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
 
@@ -265,14 +275,11 @@ func ExampleAccountSASSignatureValues_Sign() {
 		log.Fatal(err)
 	}
 
-	qp := sasQueryParams.Encode()
-	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, qp)
-	// You can hand off this URL to someone else via any mechanism you choose.
+	queryParams := sasQueryParams.Encode()
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, queryParams)
 
-	// ******************************************
-
-	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceClient, err := azblob.NewServiceClientWithNoCredential(urlToSend, nil)
+	// This URL can be used to authenticate requests now
+	serviceClient, err := azblob.NewServiceClientWithNoCredential(sasURL, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -284,11 +291,8 @@ func ExampleAccountSASSignatureValues_Sign() {
 
 // This example demonstrates how to create and use a Blob service Shared Access Signature (SAS)
 func ExampleBlobSASSignatureValues() {
-	// Gather your account key and name from the Azure portal
-	// Supplying them via environment variables is recommended.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Use your storage account's name and key to form a credential object
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		log.Fatal(err)
@@ -302,28 +306,18 @@ func ExampleBlobSASSignatureValues() {
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
 		ContainerName: containerName,
 		BlobName:      blobName,
-
-		// To produce a container SAS, as opposed to a blob SAS, assign to permissions using ContainerSASPermissions
-		// and make sure the BlobName field is ""
-		Permissions: azblob.BlobSASPermissions{Add: true, Read: true, Write: true}.String(),
+		Permissions:   azblob.BlobSASPermissions{Add: true, Read: true, Write: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Create the URL of this resource you wish to access, and append the SAS query parameters.
-	// Since this is a blob SAS, the URL is to the Azure Storage blob.
+	// Create the SAS URL for the resource you wish to access, and append the SAS query parameters.
 	qp := sasQueryParams.Encode()
-	urlToSendToSomeone := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s",
-		accountName, containerName, blobName, qp)
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, qp)
 
-	// At this point, you can send the URL to someone via communication method of your choice, and it will provide
-	// anonymous access to the resource.
-
-	// **************
-
-	// When someone receives the URL, they can access the SAS-protected resource like this:
-	blob, err := azblob.NewBlobClientWithNoCredential(urlToSendToSomeone, nil)
+	// Access the SAS-protected resource
+	blob, err := azblob.NewBlobClientWithNoCredential(sasURL, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -335,7 +329,6 @@ func ExampleBlobSASSignatureValues() {
 
 // This example shows how to manipulate a container's permissions.
 func ExampleContainerClient_SetAccessPolicy() {
-	// Obtain your storage account's name and key from the Azure portal
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
@@ -349,7 +342,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 		log.Fatal(err)
 	}
 
-	// Create the container (with no metadata and no public access)
+	// Create the container
 	_, err = container.Create(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
@@ -369,6 +362,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 		log.Fatal(err)
 	}
 	if get.StatusCode == http.StatusNotFound {
+		// Change the blob to be a public access blob
 		_, err := container.SetAccessPolicy(
 			context.TODO(),
 			&azblob.SetAccessPolicyOptions{
@@ -386,27 +380,21 @@ func ExampleContainerClient_SetAccessPolicy() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer func(Body io.ReadCloser) {
-			err := Body.Close()
-			if err != nil {
-
-			}
-		}(get.Body)
 		var text bytes.Buffer
 		_, err = text.ReadFrom(get.Body)
 		if err != nil {
 			return
 		}
-		fmt.Println(text.String())
+		defer get.Body.Close()
+
+		fmt.Println("Public access blob data: ", text.String())
 	}
 }
 
 // This example shows how to perform operations on blob conditionally.
 func ExampleBlobAccessConditions() {
-	// From the Azure portal, get your Storage account's name and account key.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a BlockBlobClient object that wraps a blob's URL and a default pipeline.
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		log.Fatal(err)
@@ -416,42 +404,43 @@ func ExampleBlobAccessConditions() {
 		log.Fatal(err)
 	}
 
-	// This helper function displays the results of an operation; it is called frequently below.
+	// This function displays the results of an operation
 	showResult := func(response *azblob.DownloadResponse, err error) {
 		if err != nil {
-			if stgErr, ok := err.(*azblob.StorageError); !ok {
-				log.Fatal(err) // Network failure
-			} else {
+			var stgErr *azblob.StorageError
+			if errors.As(err, &stgErr) {
 				// TODO: Port storage error
-				fmt.Print("Failure: " + stgErr.Error() + "\n")
+				log.Fatalf("Failure: " + stgErr.Error() + "\n")
+			} else {
+				log.Fatal(err) // Network failure
 			}
-		} else {
-			err := response.Body(azblob.RetryReaderOptions{}).Close()
-			if err != nil {
-				return
-			} // The client must close the response body when finished with it
-			fmt.Print("Success: " + response.RawResponse.Status + "\n")
 		}
+
+		// Close the response
+		err = response.Body(azblob.RetryReaderOptions{}).Close()
+		if err != nil {
+			return
+		}
+		fmt.Print("Success: " + response.RawResponse.Status + "\n")
+
 	}
 
 	showResultUpload := func(upload azblob.BlockBlobUploadResponse, err error) {
 		if err != nil {
-			if stgErr, ok := err.(*azblob.StorageError); !ok {
-				log.Fatal(err) // Network failure
-			} else {
+			var stgErr *azblob.StorageError
+			if errors.As(err, &stgErr) {
 				// TODO: Port storage error
-				fmt.Print("Failure: " + stgErr.Error() + "\n")
+				log.Fatalf("Failure: " + stgErr.Error() + "\n")
+			} else {
+				log.Fatal(err) // Network failure
 			}
-		} else {
-			fmt.Print("Success: " + upload.RawResponse.Status + "\n")
 		}
+		fmt.Print("Success: " + upload.RawResponse.Status + "\n")
 	}
 
-	// Create the blob (unconditionally; succeeds)
+	// Create the blob
 	upload, err := blockBlob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Text-1")), nil)
 	showResultUpload(upload, err)
-
-	// showResult(upload, err)
 
 	// Download blob content if the blob has been modified since we uploaded it (fails):
 	showResult(blockBlob.Download(
@@ -477,49 +466,53 @@ func ExampleBlobAccessConditions() {
 	))
 
 	// Upload new content if the blob hasn't changed since the version identified by ETag (succeeds):
-	upload, err = blockBlob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Text-2")),
+	showResultUpload(blockBlob.Upload(
+		context.TODO(),
+		streaming.NopCloser(strings.NewReader("Text-2")),
 		&azblob.UploadBlockBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfMatch: upload.ETag},
 			},
-		})
-	showResultUpload(upload, err)
+		},
+	))
 
 	// Download content if it has changed since the version identified by ETag (fails):
-	showResult(blockBlob.Download(context.TODO(),
+	showResult(blockBlob.Download(
+		context.TODO(),
 		&azblob.DownloadBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
 		}))
 
 	// Upload content if the blob doesn't already exist (fails):
-	showResultUpload(blockBlob.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Text-3")),
+	showResultUpload(blockBlob.Upload(
+		context.TODO(),
+		streaming.NopCloser(strings.NewReader("Text-3")),
 		&azblob.UploadBlockBlobOptions{
 			BlobAccessConditions: &azblob.BlobAccessConditions{
 				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: to.StringPtr(string(azcore.ETagAny))},
-			}}))
+			},
+		}))
 }
 
-// This examples shows how to create a container with metadata and then how to read & update the metadata.
 func ExampleContainerClient_SetMetadata() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
-	// Create a containerClient object that wraps a soon-to-be-created container's URL and a default pipeline.
-	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		log.Fatal(err)
 	}
-	containerClient, err := azblob.NewContainerClientWithSharedKey(u, credential, nil)
+	containerClient, err := azblob.NewContainerClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName), credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Create a container with some metadata (string key/value pairs)
-	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
-	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
-	creatingApp, _ := os.Executable()
+	// Create a container with some metadata, key names are converted to lowercase before being sent to the service.
+	// You should always use lowercase letters, especially when querying a map for a metadata key.
+	creatingApp, err := os.Executable()
+	if err != nil {
+		log.Fatal(err)
+	}
 	_, err = containerClient.Create(context.TODO(), &azblob.CreateContainerOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
@@ -531,24 +524,22 @@ func ExampleContainerClient_SetMetadata() {
 		log.Fatal(err)
 	}
 
-	// Show the container's metadata
 	if get.Metadata == nil {
 		log.Fatal("metadata is empty!")
 	}
 
-	metadata := get.Metadata
-	for k, v := range metadata {
-		fmt.Print(k + "=" + v + "\n")
+	for k, v := range get.Metadata {
+		fmt.Printf("%s=%s\n", k, v)
 	}
 
 	// Update the metadata and write it back to the container
-	metadata["author"] = "Aidan" // NOTE: The keyname is in all lowercase letters
-	_, err = containerClient.SetMetadata(context.TODO(), &azblob.SetMetadataContainerOptions{Metadata: metadata})
+	get.Metadata["author"] = "Aidan"
+	_, err = containerClient.SetMetadata(context.TODO(), &azblob.SetMetadataContainerOptions{Metadata: get.Metadata})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// NOTE: The SetMetadata & SetProperties methods update the container's ETag & LastModified properties
+	// NOTE: SetMetadata & SetProperties methods update the container's ETag & LastModified properties
 }
 
 // This examples shows how to create a blob with metadata and then how to read & update

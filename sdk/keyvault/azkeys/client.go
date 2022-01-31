@@ -68,12 +68,12 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
 type CreateKeyOptions struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	Curve *KeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
-	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyAttributes *KeyAttributes   `json:"attributes,omitempty"`
+	KeyOps        []*KeyOperations `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -154,8 +154,8 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 
 // CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
 type CreateECKeyOptions struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	CurveName *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	CurveName *KeyCurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -288,12 +288,12 @@ type CreateRSAKeyOptions struct {
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	Curve *KeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
-	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyAttributes *KeyAttributes   `json:"attributes,omitempty"`
+	KeyOps        []*KeyOperations `json:"key_ops,omitempty"`
 
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
@@ -901,8 +901,8 @@ type UpdateKeyPropertiesOptions struct {
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
-	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
-	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	// Json web key operations. For more information on possible key operations, see KeyOperations.
+	KeyOps []*KeyOperations `json:"key_ops,omitempty"`
 
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`

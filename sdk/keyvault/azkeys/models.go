@@ -18,16 +18,16 @@ type Attributes struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
+	ExpiresOn *time.Time `json:"exp,omitempty"`
 
 	// Not before date in UTC.
 	NotBefore *time.Time `json:"nbf,omitempty"`
 
 	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // KeyAttributes - The attributes of a key managed by the key vault service.
@@ -36,7 +36,7 @@ type KeyAttributes struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
+	ExpiresOn *time.Time `json:"exp,omitempty"`
 
 	// Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
@@ -45,7 +45,7 @@ type KeyAttributes struct {
 	NotBefore *time.Time `json:"nbf,omitempty"`
 
 	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
@@ -56,7 +56,7 @@ type KeyAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // converts a KeyAttributes to *generated.KeyAttributes
@@ -68,10 +68,10 @@ func (k *KeyAttributes) toGenerated() *generated.KeyAttributes {
 		RecoverableDays: k.RecoverableDays,
 		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
 		Enabled:         k.Enabled,
-		Expires:         k.Expires,
+		Expires:         k.ExpiresOn,
 		NotBefore:       k.NotBefore,
-		Created:         k.Created,
-		Updated:         k.Updated,
+		Created:         k.CreatedOn,
+		Updated:         k.UpdatedOn,
 		Exportable:      k.Exportable,
 	}
 }
@@ -86,10 +86,10 @@ func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyAttributes {
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   DeletionRecoveryLevel(*i.RecoveryLevel).ToPtr(),
 		Enabled:         i.Enabled,
-		Expires:         i.Expires,
+		ExpiresOn:         i.Expires,
 		NotBefore:       i.NotBefore,
-		Created:         i.Created,
-		Updated:         i.Updated,
+		CreatedOn:         i.Created,
+		UpdatedOn:         i.Updated,
 		Exportable:      i.Exportable,
 	}
 }
@@ -114,8 +114,8 @@ type KeyBundle struct {
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Crv *JSONWebKeyCurveName `json:"crv,omitempty"`
+	// Elliptic curve name. For valid values, see KeyCurveName.
+	Crv *KeyCurveName `json:"crv,omitempty"`
 
 	// RSA private exponent, or the D component of an EC private key.
 	D []byte `json:"d,omitempty"`
@@ -168,7 +168,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 	}
 
 	return &JSONWebKey{
-		Crv:     (*JSONWebKeyCurveName)(i.Crv),
+		Crv:     (*KeyCurveName)(i.Crv),
 		D:       i.D,
 		DP:      i.DP,
 		DQ:      i.DQ,
@@ -305,10 +305,10 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		KeyItem: KeyItem{
 			Attributes: &KeyAttributes{
 				Enabled:         i.Attributes.Enabled,
-				Expires:         i.Attributes.Expires,
+				ExpiresOn:         i.Attributes.Expires,
 				NotBefore:       i.Attributes.NotBefore,
-				Created:         i.Attributes.Created,
-				Updated:         i.Attributes.Updated,
+				CreatedOn:         i.Attributes.Created,
+				UpdatedOn:         i.Attributes.Updated,
 				Exportable:      i.Attributes.Exportable,
 				RecoverableDays: i.Attributes.RecoverableDays,
 				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),

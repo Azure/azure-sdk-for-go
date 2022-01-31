@@ -396,13 +396,13 @@ func TestUpdateKeyProperties(t *testing.T) {
 					"Tag1": "Val1",
 				},
 				KeyAttributes: &KeyAttributes{
-					Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
+					ExpiresOn: to.TimePtr(time.Now().AddDate(1, 0, 0)),
 				},
 			})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Attributes)
 			require.Equal(t, resp.Tags["Tag1"], "Val1")
-			require.NotNil(t, resp.Attributes.Updated)
+			require.NotNil(t, resp.Attributes.UpdatedOn)
 
 			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)
 			require.Error(t, err)
@@ -452,7 +452,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 					Immutable:     to.BoolPtr(true),
 					EncodedPolicy: marshalledPolicy,
 				},
-				KeyOps: []*JSONWebKeyOperation{JSONWebKeyOperationEncrypt.ToPtr(), JSONWebKeyOperationDecrypt.ToPtr()},
+				KeyOps: []*KeyOperations{KeyOperationsEncrypt.ToPtr(), KeyOperationsDecrypt.ToPtr()},
 			})
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
